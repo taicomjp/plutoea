@@ -1,0 +1,117 @@
+// Advance Class jobchanger after kRO Normals.
+// Checks if the player have any questskills, cart\falcon, level and such.
+// Made by Nana.
+
+// -== 十字刺客 ==-
+valkyrie.gat,44,58,6	script	十字刺客	725,{
+	if(getskilllv(149) > 0) set @qsk,1;
+	if(getskilllv(150) > 0) set @qsk1,1;
+	if(getskilllv(151) > 0) set @qsk2,1;
+	if(getskilllv(152) > 0) set @qsk3,1;
+	if(checkcart(0) > 0) goto L_Cart;
+	if(readparam(12) > 0) goto Skill_Points;
+	if(readparam(19) >= 4008) goto L_Advance;
+	if((readparam(19) == 4001) && (readparam(55) >= 10)) goto L_HNov;
+	if((readparam(19) == 4007) && (readparam(55) >= 45)) goto L_HTHF;
+	if(readparam(19) < 7) goto L_Class;
+	if(readparam(19) == 4001) goto L_Class1;
+	if(readparam(19) == 4007) goto L_Class;
+	if((readparam(11) >= 99) && (readparam(55) >= 50) && (readparam(19) >= 7)) goto L_Change;
+	if((readparam(11) < 99) && (readparam(55) < 50)) goto L_Levels;
+	mes "[十字刺客]";
+	mes "Hi 你好";
+	close;
+
+L_Change:
+	mes "[十字刺客]";
+	mes "你好 "+strcharinfo(0)+"!";
+	mes "你勇敢的選擇了重生并且已經將要走向十字刺客的階段,";
+	mes "我祝愿你有一個美好的未來!";
+	jobchange 24;
+	resetlvl(1);
+	close;
+
+L_Cart:
+	mes "[十字刺客]";
+	mes "請將身上的裝備都卸載下來.";
+	close;
+
+L_Class1:
+	mes "[十字刺客]";
+	mes "你還沒有成為一個進階盜賊.";
+	close;
+
+L_Class:
+	mes "[十字刺客]";
+	mes "你已經做得很不錯了，不過你還沒有成為作為十字刺客的準備.";
+	close;
+
+L_Levels:
+	mes "[十字刺客]";
+	mes "做得不錯！你已經達到了作為一個十字刺客的標準。";
+	close;
+
+L_HNov:
+	mes "[十字刺客]";
+	mes "輕裝前進吧，你會獲得巨大的成功!.";
+	jobchange 30;
+	next;
+	mes "[十字刺客]";
+	mes "如果轉生前你已經學會了一些特殊技能，讓我幫你把失去的技能還給你, "+strcharinfo(0)+".";
+	next;
+	if(@qsk > 0) goto qsk;
+	if(@qsk1 > 0) goto qsk1;
+	if(@qsk2 > 0) goto qsk2;
+	if(@qsk3 > 0) goto qsk3;
+	next;
+qsk:
+	skill 149,1,0;
+	set @qsk,0;
+	if(@qsk1 > 0) goto qsk1;
+	if(@qsk2 > 0) goto qsk2;
+	if(@qsk3 > 0) goto qsk3;
+	goto L_HNov_2;
+qsk1:
+	skill 150,1,0;
+	set @qsk1,0;
+	if(@qsk > 0) goto qsk;
+	if(@qsk2 > 0) goto qsk2;
+	if(@qsk3 > 0) goto qsk3;
+	goto L_HNov_2;
+qsk2:
+	skill 151,1,0;
+	set @qsk2,0;
+	if(@qsk > 0) goto qsk;
+	if(@qsk1 > 0) goto qsk1;
+	if(@qsk3 > 0) goto qsk3;
+	goto L_HNov_2;
+qsk3:
+	skill 152,1,0;
+	set @qsk3,0;
+	if(@qsk > 0) goto qsk;
+	if(@qsk1 > 0) goto qsk1;
+	if(@qsk2 > 0) goto qsk2;
+	goto L_HNov_2;
+
+L_HNov_2:
+	mes "[十字刺客]";
+	mes "固定儀式結束，我祝賀你已經成為了一個進階盜賊。";
+	close;
+L_HTHF:
+	mes "[十字刺客]";
+	mes "祝賀你!";
+	mes "在艱苦的努力后，你終于成為了一名十字刺客!";
+	jobchange 36;
+	close;
+
+Skill_Points:
+	mes "[十字刺客]";
+	mes "請首先把你的技能點數用完.";
+	close;
+
+L_Advance:
+	mes "[十字刺客]";
+	mes "哦，你已經是進階二轉的職業了，目前不能再高了!";
+	mes "期待三轉吧。";
+	close;
+}

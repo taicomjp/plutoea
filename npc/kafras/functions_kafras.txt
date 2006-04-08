@@ -1,0 +1,569 @@
+// 卡普拉函式庫
+// 
+// 中文化作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041119.0.2
+//			20050227.0.1	修正卡普拉銀行手續費 1% -> 0.1%
+//					變更卡普拉銀行利息由 0.1% ->0.01%
+//			20050317.0.1	加入雨檀族村落 汶巴拉傳送資料
+//			20050324.0.1	與 eAthena 2.3 對應
+//			20050412.0.1	修改卡普拉銀行存款輸入金額提示訊息，超過一千萬以一千萬計
+//			20050420.0.1	與 eAthena 2.4 對應
+//
+// 增加內容:		朱諾傳送服務項目、卡普拉銀行(可設定是否要計算利息，預設為否)
+//
+// 注意事項:		F_MercKafra 函式另外寫在商人轉職腳本中
+//
+//			以下函式庫包括所有卡普拉 NPC 腳本中儲存重生點、倉庫功能、
+//			手推車租用、卡普拉傳送以及卡普拉使用卷等功能.
+//
+//			arg(0): 函式攜帶參數一表示選擇使用哪一個歡迎詞
+//			arg(1): 函式攜帶參數二表示選擇使用哪一組選擇項目
+//			arg(2): 函式攜帶參數三表示是否使用其他卡普拉服務資料
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Kafra Functions
+//===== By: ================================================== 
+//= Lotsa People (1.0)
+//= eAthena Dev Team
+//= Darlskies, Darkchild, Syrus22, Lupus, kobra_k88 (2.0)
+//===== Current Version: ===================================== 
+//= 3.2
+//===== Compatible With: ===================================== 
+//= eAthena 1.0
+//===== Description: ===============================================
+//= These functions  handle save, storage, cart rental, teleport,
+//= and Kafra pass options for all Kafra NPCs.
+//===== Additional Comments: ================================= 
+//= v1.1 Now using functions v2.1 Added Cart Rent for Classes: Whitesmith, Professor.
+//= Replaced checkoption(x) into checkcart(0) [Lupus] v2.1b Added Fix Kafra Pass Func [Kobra_k88]
+//= 2.2 Final fix of the Kafra Pass Exploit! [Lupus] a -Izlude[4] fix
+//= 2.2a Minor changes to function calls.  Using agruments. Added Guild options. [kobra_k88]
+//= 2.2b This version uses arrays for the teleport option. Rearranged next statements to make menu transitions smoother. [kobra_k88]
+//= 2.3 Removed SAVE from Niflheim. [Lupus]
+//= 2.3 removed "fix" by HawkMoon RTFM and check supernovice.txt . There's a SPECIAL Kafra which gives CARTS to SN for a special proce. [Lupus]
+//= 2.4 Added Baby Class Support (Baby Novice check) Removed annoying storage feature where u had to close dialog window to be able to use your storage [Lupus]
+//= 2.5 Added Louyang official Kafra, fixes some Kafras, not letting you to Save your position [Lupus]
+//= 2.6 Reverted Dungeons Kafras (they should offer only Storage). Added temp Ayothaya Kafra
+//= 2.7 Added correct Ayothaya, Louyang & Amatsu Kafras. [Lupus]
+//= 2.8 Fixed Amatsu Storage problems [Lupus] 2.9 Fixed spelling mistakes. [Nexon]
+//= 3.0 Added special "not working teleport menu" for Einbroch Kafras [Lupus]
+//= 3.1 Removed callfunc Is_####_Class in favor of baseClass [Silentdragon]
+//= 3.2 Fixed an exploit [Lupus]
+//============================================================ 
+
+
+// Main Function ===========================================================
+//=   arg(0): Used to determine which welcome message to show.
+//=   arg(1): Used to determine which menu to display.
+//=   arg(2): Used to determine if the info menu is shown in F_KafInfo.
+//==========================================================================
+
+function	script	KAFURALOGIN	{
+     L_RELOGIN:
+           if (@err > 2) goto L_GETOUT;
+           set @temp1,rand(100,909);
+           mes "[卡普拉服務人員]";
+           mes "為降低外掛對伺服器的侵擾，我們需要驗證才能服務";
+           mes "請輸入驗證碼"+@temp1+"，正確后即可使用卡普拉服務";
+           mes "您還有"+(3 - @err)+"次嘗試的機會。";
+next;
+           input @temp2;
+           if (@temp2 != @temp1) goto L_ERR;
+           return;
+     L_ERR:
+           set @err,@err + 1;
+           goto L_RELOGIN;
+     L_GETOUT:
+           mes "[卡普拉服務人員]";
+           mes "你連續3次輸入錯誤，禁止使用卡普拉服務。";
+close;
+}
+
+
+function	script	F_Kafra	{
+	set @kafPass, 0;
+	callfunc "KAFURALOGIN";
+	mes "[Kafra]";
+	if(getarg(0)==0) mes "歡迎使用卡普拉公司的服務,無論您在哪里,我們都伴隨著您.";
+	//Niflheim
+	if(getarg(0)==1) mes "歡迎....卡普拉服務...到死我們都和你在一起.....";
+	//Guilds Castles
+	if(getarg(0)==2) mes "歡迎, ^5533FF" + GetGuildName(@GID) + "^000000 成員.  我們將和你一起工作";
+	//Amatsu
+	if(getarg(0)==3) mes "你是來學習我們的文化還是僅僅來觀光的呢?";
+	if(getarg(0)==3) mes "無論是為什么而來,我們都歡迎你?";
+	if(getarg(0)==3) mes "The air is eternally heavy with the";
+	if(getarg(0)==3) mes "scent of pleasant wildflowers.";
+	//Louyang, Ayothaya
+	if(getarg(0)==4) mes "有我們的卡普拉服務員在";
+	if(getarg(0)==4) mes "無論你在哪里就會感覺在家里一樣";
+	next;
+
+	M_Menu:
+//Guilds Kafra
+	if(getarg(0)==2) menu "-倉庫服務",M_FStorage, "-工會倉庫服務",M_GStorage, "-租用手推車",M_Cart, "-傳送服務",M_Teleport, "-取消",M_End;
+//only Save & Storage
+	if(getarg(1)==1) menu "-保存位置",M_Save,"-倉庫服務",M_Storage, "-取消",M_End;
+//only Storage
+	if(getarg(1)==2) menu "-倉庫服務",M_Storage, "-取消",M_End;
+//Common w/o teleport
+	if(getarg(1)==3) menu	"-保存位置",M_Save, "-倉庫服務",M_Storage, "-租用手推車",M_Cart, "-卡普拉使用卷",M_Pass, 
+		"-其他資訊",M_Info, "-取消",M_End;
+//Common Kafra (with Teleport Notice in Einbroch)
+	if(getarg(1)==4) menu	"-保存位置",M_Save, "-倉庫服務",M_Storage, "-傳送服務",M_NoTeleport, "-租用手推車",M_Cart, "-卡普拉使用卷",M_Pass, 
+		"-其他資訊",M_Info, "-取消",M_End;
+//Common Kafra
+	menu	"-儲存服務",M_Save, "-倉庫服務",M_Storage, "-傳送服務",M_Teleport, "-手推車服務",M_Cart, "-卡普拉銀行",M_KafraBank, "-使用卡普拉使用券",M_Pass, 
+		"其他資訊",M_Info, "結束",M_End;
+
+	M_Save:
+		return;
+	M_Storage:
+		callfunc "F_KafStor",0;
+		next;
+		goto M_Menu;
+	M_GStorage:
+		callfunc "F_KafStor",1;
+		next;
+		goto M_Menu;
+	//Don't charge for a common Kafra Storage in your Castle
+	M_FStorage:
+		callfunc "F_KafStor",2;
+		next;
+		goto M_Menu;
+	M_Teleport:
+		callfunc "F_KafTele",getarg(0);
+		goto M_Menu;
+	M_Cart:
+		if(callfunc("F_KafCart",getarg(0)) == 1) next;
+		goto M_Menu;
+	M_KafraBank:
+		callfunc "F_KafraBank";
+		next;
+		goto M_Menu;
+	M_Pass:
+		if(callfunc("F_KafPass") == 1) next;
+		goto M_Menu;
+	M_Info:
+		callfunc "F_KafInfo",getarg(2);
+		goto M_Menu;
+	M_End:
+		callfunc "F_KafEnd",getarg(0),0;
+		end;
+	M_NoTeleport:
+		mes "[Kafra]";
+		mes "由于^FF0000傳送限制協議^000000, 卡普拉公司不能提供到這個地方的傳送服務...";
+		next;
+		mes "[Kafra]";
+		mes "我們建議你使用飛機服務";
+		mes "非常抱歉,再見!";
+		next;
+		goto M_Menu;
+}
+
+
+// Storage Function =======================================================
+function	script	F_KafStor	{
+	if(getarg(0) == 1) goto L_Guild;
+	if((BaseJob ==Job_Novice) && (JobLevel<6)) goto sL_JbLvl;
+	if(BaseJob == Job_Novice) set @fee, 30;
+	if(BaseJob != Job_Novice) set @fee, 60;
+	if(@kafPass==1 || getarg(0)==2) set @fee, 0;
+	if(Zeny<@fee) goto sL_Zeny;
+	set Zeny, Zeny-@fee;
+	set RESRVPTS, RESRVPTS + (@fee/5);
+
+	mes "[卡普拉服務人員]";
+	mes "倉庫在您關閉此窗口后將會開啟";
+	mes "謝謝您使用本公司所提供的服務";
+	close2;
+	openstorage;
+	cutin "", 255;
+	close;
+	end;
+
+	sL_JbLvl:
+		mes "[卡普拉服務人員]";
+		mes "很抱歉，您無法使用倉庫服務，這至少需要職業等級6以上。";
+		return;
+	sL_Zeny:
+		mes "[卡普拉服務人員]";
+		mes "很抱歉，您的金錢不足! 這至少需要 "+@fee+" Zeny.";
+		return;
+L_Guild:
+
+	if(guildopenstorage(0) == 1) goto L_InUse;
+	cutin "", 255;
+	emotion 15;
+//	callfunc "F_KafEnd",0,0;
+	close;
+
+	L_InUse:
+		mes "[卡普拉服務人員]";
+		mes "對不起，公會倉庫已經被某公會成員開啟，";
+		mes "同時只能有一人進行存取。";
+		close2;
+		cutin "", 255;
+		close;
+		end;
+
+}
+
+
+// Teleport Function ==================================================
+function	script	F_KafTele	{
+	mes "[卡普拉服務人員]";
+	if (@kafPass==1) mes "既然您有卡普拉使用券，那么就免費幫你傳送吧!";
+	mes "請選擇您想要去的地方.";
+	next;
+
+	menu 	@wrpC$[0],M_Wrp0, @wrpC$[1],M_Wrp1, @wrpC$[2],M_Wrp2, @wrpC$[3],M_Wrp3, 
+		@wrpC$[4],M_Wrp4, @wrpC$[5],M_Wrp5, @wrpC$[6],M_Wrp6, @wrpC$[7],M_Wrp7;
+
+	M_Wrp0:
+		set @num, 0;
+		goto L_Warp;
+	M_Wrp1:
+		set @num, 1;
+		goto L_Warp;
+	M_Wrp2:
+		set @num, 2;
+		goto L_Warp;
+	M_Wrp3:
+		set @num, 3;
+		goto L_Warp;
+	M_Wrp4:
+		set @num, 4;
+		goto L_Warp;
+	M_Wrp5:
+		set @num, 5;
+		goto L_Warp;
+	M_Wrp6:
+		set @num, 6;
+
+	L_Warp:
+		if (@wrpC$[@num] == "取消") return;
+		if (@kafPass==1) set @wrpP[@num], 0;
+		if (Zeny<@wrpP[@num]) goto sL_CantTele;
+		set Zeny, Zeny-@wrpP[@num];
+		if (@kafPass==0) set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
+
+		if (@wrpD$[@num] == "港口之都 艾爾貝塔") warp "alberta.gat", 117, 56;
+		if (@wrpD$[@num] == "運河之都 艾爾帕蘭") warp "aldebaran.gat",143,110;
+		if (@wrpD$[@num] == "海邊之都 克魔島") warp "comodo.gat", 207, 144;
+		if (@wrpD$[@num] == "衛星都市 依斯魯得島") warp "izlude.gat", 91, 105;
+		if (@wrpD$[@num] == "魔幻之都 吉芬") warp "geffen.gat", 120, 39;
+		if (@wrpD$[@num] == "邊境之都 夢羅克") warp "morocc.gat", 156, 46;
+		if (@wrpD$[@num] == "山岳之都 斐揚") warp "payon.gat", 168, 103;
+		if (@wrpD$[@num] == "盧恩 米德加爾特王國 首都 普隆德拉") warp "prontera.gat", 116, 72;
+		if (@wrpD$[@num] == "妙勒尼 山脈 礦坑") warp "mjolnir_02.gat", 82, 347;
+		if (@wrpD$[@num] == "發樂斯 燈塔島") warp "cmd_fild07.gat", 127, 134;
+		if (@wrpD$[@num] == "東邊 獸人村落") warp "gef_fild10.gat", 52, 326;
+		if (@wrpD$[@num] == "雨檀族村落 汶巴拉") warp "umbala.gat", 130, 130;
+		if (@wrpD$[@num] == "修發茲 共和國 首都 朱諾") warp "yuno.gat", 157, 123;
+		close2;		// this part safegaurds against errors/typos
+		set zeny, zeny + @wrpP[@num];
+		cutin "", 255;
+		close;
+		end;
+
+		sL_CantTele:
+			mes "[卡普拉服務人員]";
+			mes "很抱歉,您的金錢不足. 請確認您身上的現金.";
+			close2;
+			cutin "", 255;
+			close;
+			end;
+}
+
+
+// Cart Function ========================================================
+function	script	F_KafCart	{
+	if(baseClass != Job_Merchant) goto sL_CantRent;
+	if(getskilllv(39)==0) goto sL_NeedSkill;
+	if(checkcart(0) == 1) goto sL_GotCart;
+	if(getarg(0) == 2) goto L_Guild;
+	mes "[卡普拉服務人員]";
+	if(@kafPass==0) mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
+	if(@kafPass==1) mes "既然您有卡普拉使用券，那么就免費租給你手推車吧!";
+	next;
+	menu "租用手推車",-, "取消",M_End;
+
+		if(Zeny<800 && kafPass==0) goto sL_CartFee;
+		if(@kafPass==0) set Zeny,Zeny-800;
+		if(@kafPass==0) set RESRVPTS, RESRVPTS + 48;
+	L_Guild:
+		setcart;
+		mes "[卡普拉服務人員]";
+		mes "那么，這臺手推車就交給你了.";
+		return 1;
+
+	sL_CantRent:
+		mes "[卡普拉服務人員]";
+		mes "抱歉! 手推車是商人、鐵匠及煉金術士和超級初學者專用的服務";
+		return 1;
+	sL_NeedSkill:
+		mes "[卡普拉服務人員]";
+		mes "抱歉! 您必須先學會 ^0000FF'手推車使用'^000000 技能才可以租用手推車.";
+		return 1;
+	sL_GotCart:
+		mes "[卡普拉服務人員]";
+		mes "唔... 瞧瞧你的屁股后面，那不正是手推車嗎....";
+		emotion 4;
+		return 1;
+	sL_CartFee:
+		mes "[卡普拉服務人員]";
+		mes "很抱歉，您的金錢不足. 這至少需要 800 Zeny";
+		return 1;
+	M_End:
+		return 0;
+}
+
+
+// Pass Function ===============================================================
+function	script	F_KafPass	{
+
+	sM_Menu:
+	menu "使用卡普拉使用券",-, "什么是卡普拉使用券?",sM_PassInfo, "取消",sM_End;
+
+		mes "[卡普拉服務人員]";
+		mes "好的，讓我檢查一下.....";
+		next;
+		if(usedKafPass==0 && countitem(1084)<1) goto sL_NeedPass;
+		set @kafPass,1;
+		set usedKafPass, usedKafPass + 1;
+		if(usedKafPass>=3) goto sL_PassExpire;
+		delitem 1084,1;
+		if(usedKafPass > 1) goto L_Cont; //fixed Lupus
+		mes "(翻過來倒過去...)";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "好極了! 看起來一點問題也沒有，從現在開始你就是卡普拉公司的 VIP 會員了! 您可以有三次免費租用手推車或免費使用傳送服務的機會.";
+		mes "您的 VIP 號碼已經登記在卡普拉公司的會員登記簿中，在會員資格過期之前都不需要再檢查卡普拉使用券了!";
+		next;
+
+		L_Cont:
+		mes "[卡普拉服務人員]";
+		mes "您還有 ^5533FF"+(3 - usedKafPass)+"^000000 次機會免費租用手推車或免費使用傳送服務.";
+		return 1;
+
+		sL_NeedPass:
+			mes "[卡普拉服務人員]";
+			mes "抱歉! 您并沒有卡普拉使用券....";
+			next;
+			goto sM_Menu;
+		sL_PassExpire:
+			mes "[卡普拉服務人員]";
+			mes "這是您第三次、同時也是最后一次使用 VIP 的免費功能了，之后您的 VIP 將過期.";
+			next;
+			set usedKafPass,0;
+			mes "[卡普拉服務人員]";
+			mes "您現在可以免費租用手推車或免費使用傳送服務.";
+			return 1;
+	sM_PassInfo:
+		mes "[卡普拉服務人員]";
+		mes "^5533FF卡普拉使用券^000000 是卡普拉公司發行的 VIP 會員卡，有了它，你可以免費地使用卡普拉職員所提供的服務!";
+		mes "免費服務的項目有 ^FF3355傳送服務^000000 及 ^FF3355租用手推車^000000 服務.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "卡普拉使用券可以在卡普拉總公司買到. 卡普拉總公司位在艾爾帕蘭.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "要擁有卡普拉公司的 VIP 專屬功能只需要在與像我一樣的卡普拉職員對話時選擇 '使用卡普拉使用券' 即可.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "您的 VIP 會員編號將會登記在卡普拉公司的會員登記簿中，之后就可以免費地使用卡普拉職員所提供的傳送服務或租用手推車服務.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "當您選用了您想要的服務并與卡普拉職員結束對話后, 您尚可使用的免費次數將減少一次";
+		mes "您每使用卡普拉使用券注冊一次卡普拉 VIP 會員就可以擁有 ^5533FF 3 次 '免費服務' 的機會^000000";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "要再次享有 '免費服務' 的次數只需要攜帶新的卡普拉使用券并在與卡普拉職員對話時選擇 '使用卡普拉使用券' 選項重新注冊為 VIP 會員即可.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "相信我! 卡普拉使用券實在是一個超棒的東西!!";
+		mes "我們希望透過卡普拉使用券來吸引玩家們盡量使用我們所提供的服務.";
+		next;
+		goto sM_Menu;
+
+	sM_End:
+		return 0;
+}
+
+// Special Reserve Points Function ===========================================
+function	script	F_KafInfo	{
+
+	sM_Menu:
+	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分部",sM_KafLoc, "取消",sM_End;
+
+	sM_ResChk:
+		mes "[卡普拉服務人員]";
+		mes "您目前累積的點數共:";
+		mes "^0000ff"+RESRVPTS+"^000000 點.";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "別忘了多多使用卡普拉公司所提供的服務來累積點數喔!";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "您可以用這些累積的點數在艾爾帕蘭的卡普拉總公司兌換游戲中的物品，累積的點數越多，可兌換的物品越多!";
+		next;
+		if(getarg(0) == 1) return;
+		goto sM_Menu;
+	sM_KafLoc:
+		mes "[卡普拉服務人員]";
+		mes "在小地圖上閃爍的顯示位置是這個城市中所有卡普拉職員的所在位置";
+		viewpoint 1,@viewpX[0],@viewpY[0],1,0xFF00FF;
+		viewpoint 1,@viewpX[1],@viewpY[1],2,0xFF00FF;
+		viewpoint 1,@viewpX[2],@viewpY[2],3,0xFF00FF;
+		viewpoint 1,@viewpX[3],@viewpY[3],4,0xFF00FF;
+		next;
+		viewpoint 2,@viewpX[0],@viewpY[0],1,0xFF00FF;
+		viewpoint 2,@viewpX[1],@viewpY[1],2,0xFF00FF;
+		viewpoint 2,@viewpX[2],@viewpY[2],3,0xFF00FF;
+		viewpoint 2,@viewpX[3],@viewpY[3],4,0xFF00FF;
+		goto sM_Menu;
+	sM_End:
+		return;
+}
+
+
+// End Function =====================================================
+//  arg(0): used to determine what message to display.
+//  arg(1): used to determine if save message is diplayed.
+//===================================================================
+function	script	F_KafEnd	{
+	mes "[卡普拉服務人員]";
+	if(getarg(1)==1) mes "已經儲存好了, 謝謝您的使用!";		// only shown when a player uses save
+	if(getarg(0)==0) mes "謝謝您使用卡普拉公司所提供的服務，希望很快能再見到您!";
+	if(getarg(0)==1) mes "以服務和管理業務為目標，我們卡普拉的服務會更加完善，請安心使用，往后的日子里會盡力幫助玩家，卡普拉公司謝謝您的使用!";
+	close2;
+	cutin "", 255;
+	emotion 15;
+	close;
+	end;
+}
+
+// Kafra Bank Function ===============================================================
+function	script	F_KafraBank	{
+	mes "[卡普拉服務人員]";
+	mes "您好! "+strcharinfo(0);
+	mes "歡迎使用卡普拉銀行!";
+
+	//calculate %
+	set $@countbankincomeornot,0;						//設定是否要計算利息: 0=不要/1=要
+	if($@countbankincomeornot==0) goto L_NoIncomeToday;
+	set @kb_int,(gettime(6)*31)+gettime(5);					//today's number
+	set @income,0;
+	if (#kafrabank<=0 || #kb_int>=@kb_int) goto L_NoIncomeToday;
+	set @income,(#kafrabank/10000)*(@kb_int-#kb_int);			//@income == % of the summ
+	set #kb_int,@kb_int;							//reset days timer
+
+	L_NoIncomeToday:
+
+		if(#kafrabank==0) mes "我們可以幫您開一個帳戶";
+		if(@income>0) mes "今天的利息總共是 ^135445" + @income + "^000000 zeny.";
+		set #kafrabank,#kafrabank+@income;
+		if(#kafrabank>0) mes "您的帳戶共有: ^135445" + #kafrabank + "^000000 zeny.";
+		mes "請問您需要哪項服務?";
+		next;
+		if(#kafrabank==0) menu "請幫我開一個銀行帳戶",BANK_IN,"改天再來",B_EXIT2;
+		if(#kafrabank>0) menu "存款",BANK_IN,"提款",BANK_OUT,"改天再來",B_EXIT2;
+
+	BANK_IN:
+		if(#kafrabank>999999999) goto BANK_Full;
+		mes "[卡普拉服務人員]";
+		mes "每存入一筆錢我們將收取";
+		mes "0.1%的手續費，以維持我們的服務";
+		next;
+		mes "[卡普拉服務人員]";
+		mes "您銀行戶頭里目前共有";
+		mes "^135445" + #kafrabank + "^000000 Zeny";
+		mes " ";
+		mes "最多還可存進";
+		set @more,1000000000-#kafrabank;
+		mes "^135445" + @more + "^000000 Zeny";
+		next;
+	BANK_IN_AGAIN:
+		mes "[卡普拉服務人員]";
+		mes "每筆存款交易";
+		mes "最低限度是 1,000 Zeny";
+		mes "最高限度是 10,000,000 Zeny";
+		mes "超過 10,000,000 以 10,000,000 計";
+		mes "請輸入要儲存的金額";
+		mes "輸入 0 離開";
+		next;
+		input @kafrabank;
+
+		if(@kafrabank<1) goto B_EXIT2;
+		if(@kafrabank<1000) goto BANK_IN_AGAIN;
+		if(@kafrabank>Zeny) goto BANK_F;
+		set @kafrabank2,@kafrabank*1/1000;
+		if(#kafrabank+@kafrabank-@kafrabank2>1000000000) goto BANK_Full;
+		set Zeny,Zeny-@kafrabank;
+		set @kafrabank,@kafrabank-@kafrabank2;
+		set #kafrabank,#kafrabank+@kafrabank;
+		mes "[卡普拉服務人員]";
+		mes "手續費^135445" + @kafrabank2 + "z^000000 已從你存的金額中扣除";
+		mes "存入的金額為 ^135445" + @kafrabank + "z^000000.";
+		mes " ";
+		mes "您銀行戶頭里目前共有";
+		mes "^135445" + #kafrabank + "^000000 Zeny";
+		goto sM_End;
+
+	BANK_OUT:
+		if(#kafrabank==0) goto BANK_F2;
+		mes "[卡普拉服務人員]";
+		mes "您銀行戶頭里目前共有";
+		mes "^135445" + #kafrabank + "^000000 Zeny";
+		mes " ";
+		mes "最多可提領";
+		set @more,1000000000-Zeny;
+		if(@more>#kafrabank) set @more,#kafrabank;
+		mes "^135445" + @more + "^000000 Zeny";
+		next;
+		input @kafrabank;
+
+		if(@kafrabank<1) goto B_EXIT2;
+		if(@kafrabank>#kafrabank) goto BANK_F;
+		if(Zeny+@kafrabank>1000000000) goto Zeny_Full;
+		set #kafrabank,#kafrabank-@kafrabank;
+		set Zeny,Zeny+@kafrabank;
+		mes"[卡普拉服務人員]";
+		mes "這里是您提領的 ^135445" + @kafrabank + "z^000000，請在這里簽名...";
+		goto sM_End;
+
+	BANK_F:
+		mes "[卡普拉服務人員]";
+		mes "您沒有那么多錢哩!";
+		goto sM_End;
+
+	BANK_Full:
+		mes "[卡普拉服務人員]";
+		mes "存款總金額超過上限!";
+		goto sM_End;
+
+	Zeny_Full:
+		mes "[卡普拉服務人員]";
+		mes "您所欲提領的的金額加上您目前所持有的現金超過上限!";
+		goto sM_End;
+
+	BANK_F2:
+		mes "[卡普拉服務人員]";
+		mes "您并沒有存款在本行喔!";
+		goto sM_End;
+
+	B_EXIT2:
+		mes "[卡普拉服務人員]";
+		mes "這樣啊...那等您需要的時候再來吧!";
+		goto sM_End;
+
+	sM_End:
+		return;
+}

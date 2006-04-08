@@ -1,0 +1,129 @@
+// 夢羅克導游腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041202.0.1
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Morroc Guides
+//===== By: ================================================== 
+//= kobra_k88
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= eAthena  0.5.2 +
+//===== Description: ========================================= 
+//=
+//===== Additional Comments: ================================= 
+//= Fully working.  Added a guide at every exit.
+//= v1.1 Now using duplicate command.
+//============================================================
+
+
+
+
+
+// North ------------------------------------------------
+morocc.gat,153,286,6	script	導游#1::Guide	707,{
+	cutin "moc_soldier",2;
+	mes "[夢羅克 導游]";
+	mes "歡迎光臨 沙漠之都 夢羅克!";
+	next;
+	mes "[夢羅克 導游]";
+	mes "我們為了來到夢羅克的旅客安排了導游為您們介紹這個城市, 當您們有問題的時候可以隨時詢問他們.";
+	mes "第一次來到這里的旅客建議先聽取注意事項, 了解必須注意的事情.";
+M_Menu:
+	next;
+	menu "開始由導游說明城市",M_1, "聽取注意事項",M_2, "取消",M_End;
+
+	M_1:
+		mes "[夢羅克 導游]";
+		mes "請問您需要要在微型地圖上留下記號嗎?";
+		next;
+		menu "不需要",sM_1a,"需要, 謝謝",sM_1b;
+		
+		sM_1a:
+			set @COMPASS_CHECK,0;
+			goto L_Cont;
+
+		sM_1b:
+			set @COMPASS_CHECK,1;
+
+		L_Cont:
+		mes "[夢羅克 導游]";
+		mes "請您選擇想知道的建筑物";
+		next;
+	sM_Menu:
+		menu "^FF0000盜賊公會^000000",M_1_1, "裝備商店",M_1_2, "旅館",M_1_3, "酒店",M_1_4, "傭兵公會",M_1_5,
+			"移除微型地圖上全部的記號",M_1_6, "取消",M_End;
+
+		M_1_1:
+			mes "[夢羅克 導游]";
+			mes "專門辦理盜賊轉職業務的盜賊協會位在金字 塔內...";
+			viewpoint 1,24,297,1,0xFF0000;
+			goto sL_Wipe;
+		M_1_2:
+			mes "[夢羅克 導游]";
+			mes "裝備商店位在城市的東南方.";
+			viewpoint 1,253,56,2,0xFF00FF;
+			goto sL_Wipe;
+		M_1_3:
+			mes "[夢羅克 導游]";
+			mes "旅館位在城市的東北方和南方各有一間.";
+			viewpoint 1,274,269,3,0xFF00FF;
+			viewpoint 1,197,66,4,0xFF00FF;
+			goto sL_Wipe;
+		M_1_4:
+			mes "[夢羅克 導游]";
+			mes "酒店位在城市的西北方.";
+			viewpoint 1,52,259,5,0xFF00FF;
+			goto sL_Wipe;
+		M_1_5:
+			mes "[夢羅克 導游]";
+			mes "傭兵工會位在城市的東方.";
+			viewpoint 1,284,171,6,0x00FF00;
+			goto sL_Wipe;
+		M_1_6:
+			set @COMPASS_CHECK, 2;
+
+		sL_Wipe:
+			if(@COMPASS_CHECK != 2) next;	// avoids a double 'next' when 'wipe indications' is chosen
+			if(@COMPASS_CHECK == 1) goto sM_Menu;
+			viewpoint 2,24,297,1,0xFF0000;
+			viewpoint 2,253,56,2,0xFF00FF;
+			viewpoint 2,274,269,3,0xFF00FF;
+			viewpoint 2,197,66,4,0xFF00FF;
+			viewpoint 2,52,259,5,0xFF00FF;
+			viewpoint 2,284,171,6,0x00FF00;
+			if (@COMPASS_CHECK == 0) goto sM_Menu;
+			mes "[夢羅克 導游]";
+			mes "所有的記號已經移除";
+			cutin "moc_soldier",255;
+			close;
+
+	M_2:
+		mes "[夢羅克 導游]";
+		mes "我們采用了最現代化的數位指引方式, 無論您在哪里都可以借由微型地圖知道您的位置.";
+		mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合后的廣網域測位系統的功能.";
+		next;
+		mes "[夢羅克 導游]";
+		mes "別忘了參考右上方的微型地圖";
+		mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
+		mes "微型地圖出現之后 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
+		goto M_Menu;
+
+	M_End:
+		mes "[夢羅克 導游]";
+		mes "后會有期!";
+		cutin "moc_soldier",255;
+		close;
+}
+
+// South --------------------------------------------
+morocc.gat,162,97,6	duplicate(Guide)	導游#2	707
+// West --------------------------------------------
+morocc.gat,28,161,6	duplicate(Guide)	導游#3	707
+// East  --------------------------------------------
+morocc.gat,294,203,9	duplicate(Guide)	導游#4	707

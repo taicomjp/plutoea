@@ -1,0 +1,458 @@
+// PvP 腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041204.0.1
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= PvP
+//===== By: ================================================== 
+//= kobra_k88
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= eAthena 0.5.2 +
+//===== Description: ========================================= 
+//=
+//===== Additional Comments: ================================= 
+//= v1.1 Fixed arena names for Nightmare mode.  Added room limit check.
+//============================================================ 
+
+
+//***********************************************************************************************************************************************************//
+//					PvP Narrator and Gate Keeper Scripts					//
+//***********************************************************************************************************************************************************//
+
+// Alberta =========================================================>\\
+// PvP解說員 ------------------------------------------------------
+function	script	F_PvPNarr	{
+	mes "[PvP解說員]";
+	mes "哈?! 歡迎光臨! 我是負責解釋 PvP 模式的解說員!";
+	M_Menu:
+	next;
+	menu "什么是 PvP?",M_0, "什么叫做 PvP 模式?",M_1, "PvP 的規則是什么?",M_2, "儲存現在位置",M_3,"結束對話",M_End;
+
+	M_0:
+		mes "[PvP解說員]";
+		mes "PvP模式就是 'Player VS Player Mode' 的簡寫..";
+		mes "也就是一種在假想的世界里，享受玩家間大戰的特別戰斗";
+		next;
+		mes "[PvP解說員]";
+		mes "簡單的說就是與其它玩家打斗的模式";
+		mes "只要向我身邊這位 ^3355ff守門人^000000 說一聲表示愿意嘗試的話。";
+		mes "他便會引導你進入為 PvP 模式所準備的打斗場";
+		next;
+		mes "[PvP解說員]";
+		mes "請你一定要小心, 也請好好享受戰斗的樂趣吧。";
+		mes "要進入 PvP 模式等級要達到 31 級以上。";
+		next;
+		mes "[PvP解說員]";
+		mes "擁有參加資格以后, 選擇下列模式中任意一種 '模式' 即可。";
+		next;
+		mes "[PvP解說員]";
+		mes "溜溜猴模式：其規則與實戰不同, 戰死后經驗值不會損失, 身上道具也不會掉落。";
+		next;
+		mes "[PvP解說員]";
+		mes "夢魘模式：其規則與實戰是一樣的, 戰死后經驗值會損失, 身上道具也會掉落。";
+		next;
+		mes "[PvP解說員]";
+		mes "請考慮清楚后再選擇進入。";
+		goto M_Menu;
+	M_1:
+		mes "[PvP解說員]";
+		mes "看見我身邊這位 PvP 守門人了？";
+		mes "與之對話，并交納 500 Zeny 便可以移動到PvP打斗場。";
+		next;
+		mes "[PvP解說員]";
+		mes "打斗模式分為溜溜猴模式和夢魘模式, 請小心選擇自己想參加的模式。";
+		next;
+		mes "[PvP解說員]";
+		mes "這 2 種模式的打斗場里各有數名解說員, 他們會將 31 級以上的參加者每 10 等級再做細分。";
+		next;
+		mes "[PvP解說員]";
+		mes "有 5 個 PvP 專用房間可供選擇, 選擇你所想去的那個房間便可移動到那里";
+		next;
+		mes "[PvP解說員]";
+		mes "從解說員頭上的窗口可以知道等級的限制以及此地圖正在進行打斗的人數, 這點請你要注意。";
+		next;
+		mes "[PvP解說員]";
+		mes "解說員頭上的窗口會出現【參加人數/總人數】這樣的資料。";
+		next;
+		mes "[PvP解說員]";
+		mes "另一點, PvP 專用地圖是無法儲存位置的。";
+		goto M_Menu;
+	M_2:
+		mes "[PvP解說員]";
+		mes "進入PvP模式后, 畫面右下角出現的是該地圖 玩家自己的排行 / 地圖玩家人數, 相信會對你有幫助。";
+		next;
+		mes "[PvP解說員]";
+		mes "在 PvP 模式中的經驗只有在 PvP 模式中適用, 這點要注意!";
+		next;
+		mes "[PvP解說員]";
+		mes "一開始每位玩家的經驗基本上都是 '5', 在途中若是贏得勝利的話可增加經驗 1 , 若是失敗的話則經驗會減少 5";
+		next;
+		mes "[PvP解說員]";
+		mes "如果經驗減到 0 以下則會被踢出 PvP 模式, 不得繼續參與。";
+		mes "但是如果經驗大于 0 卻被殺死的話, 可以藉由同伴復活或回復體力繼續參與游戲，這樣你懂了吧。";
+		next;
+		mes "[PvP解說員]";
+		mes "打斗的規則與外面戰斗的規則是一樣的。";
+		goto M_Menu;
+	M_3:
+		savepoint getarg(0),getarg(1),getarg(2);
+		mes "[PvP解說員]";
+		mes "已經成功存儲位置。";
+		mes "非常感謝您的使用。";
+		close;
+
+	M_End:
+		mes "[PVP解說員]";
+		mes "這是一個玩家與玩家間的大戰";
+		mes "能讓玩家在戰斗中找到樂趣";
+		mes "期待各位";
+		mes "勇于前來挑戰！";
+		close;
+}
+
+// Gate Keeper ---------------------------------------------------------------
+function	script	F_GateKeep	{
+		mes "[PvP守門人]";
+		mes "我是為您開啟PvP打斗場之門的PvP守門人。";
+		mes "有關PvP模式的說明請你去向旁邊那位解說員詢問。";
+		next;
+	menu	"^5533FF'PvP 溜溜猴模式'^000000 打斗場",M_0, 
+		"^FF5533'PvP 夢魘模式'^000000 打斗場",M_1, 
+		"^5533FF'PvP 決斗 (作戰) 模式'^000000 格斗場",M_2, "結束對話",M_End;
+	M_0:
+		set @mode$, "溜溜猴模式";
+		set @players1, 128;
+		set @players2, 128;
+		set @room1$, "普隆德拉";
+		set @room2$, "依斯魯得";
+		set @room3$, "裴揚";
+		set @room4$, "艾爾貝塔";
+		set @room5$, "夢羅克";
+		callsub sF_Move;
+		warp "pvp_y_room.gat", 51, 23;
+		end;
+	M_1:
+		set @mode$, "夢魘模式";
+		set @players1, 64;
+		set @players2, 32;
+		set @room1$, "三明治 房間";
+		set @room2$, "雷達鎖定 房間";
+		set @room3$, "四通道 房間";
+		set @room4$, "反十字 房間";
+		set @room5$, "羅盤 房間";
+		callsub sF_Move;
+		warp "pvp_n_room.gat", 51, 23;
+		end;
+	M_2:
+
+			mes "[PvP守門人]";
+			mes "要進入決斗 (作戰) 模式必須攜帶參觀卷, 你有帶來嗎?";
+		next;
+		menu "有,我帶來了",-, "參觀卷?!",sM_1;
+
+			if(countitem(7029) < 1) goto sM_1;
+			delitem 7029, 1;
+			set @mode$, "Fighting";
+			callsub sF_Move;
+			warp "pvp_y_room.gat", 51, 23;
+			end;
+
+		sM_1:
+				mes "[PvP守門人]";
+				mes "呃? 你沒有? 那抱歉啦! 只有攜帶參觀券我才能讓你進去!";
+			close;
+	M_End:
+		mes "[PvP守門人]";
+		mes "這是一個玩家與玩家間的大戰";
+		mes "能讓玩家在戰斗中找到樂趣";
+		mes "期待各位";
+		mes "勇于前來挑戰！";
+		close;
+
+sF_Move:
+	mes "[PvP守門人]";
+	mes "入場費用是500 Zeny 您要移動到 "+@mode$+" 式打斗場了嗎?";
+	next;
+	menu "移動",-, "取消",M_End;
+
+		if(BaseLevel < 31) goto sL_LowLvl;
+		if(Zeny < 500) goto sL_NdZeny;
+		set Zeny, Zeny - 500;
+		mes "[PvP守門人]";
+		mes "那么.......";
+		next;
+		return;
+
+		sL_LowLvl:
+			mes "[PvP守門人]";
+			mes "您的等級不到 ^FF4444'31'^000000 級, 無法進入.";
+			close;
+		sL_NdZeny:
+			mes "[PvP守門人]";
+			mes "您的 Zeny 不夠, 入場費用是 ^FF4444'500'^000000 Zeny.";
+			close;
+}
+
+// Alberta ===================================================>\\
+alberta_in.gat,22,146,4		script	PvP解說員	84,{callfunc "F_PvPNarr","alberta_in.gat",61,143;}
+alberta_in.gat, 26,146,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+// Geffen ===================================================>\\
+geffen_in.gat, 67,63,4	script	PvP解說員	84,{callfunc "F_PvPNarr","geffen_in.gat",69,59;}
+geffen_in.gat, 63,63,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+
+// Morroc ===================================================>\\
+morocc_in.gat,144,138,4	script	PvP解說員	84,{callfunc "F_PvPNarr","morocc_in.gat",142,140;}
+morocc_in.gat, 144,142,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+
+// Payon ===================================================>\\ 
+payon_in01.gat,6,55,4	script	PvP解說員	84,{callfunc "F_PvPNarr","payon_in01.gat",166,107;}
+payon_in01.gat,10,54,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+
+// Prontera =================================================>\\
+prt_in.gat,56,140,4	script	PvP解說員	84,{callfunc "F_PvPNarr","prt_in.gat",54,136;}
+prt_in.gat,52,140,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+
+prontera.gat,165,100,4	script	PvP解說員	84,{callfunc "F_PvPNarr","prt_in.gat",54,136;}
+prontera.gat,165,98,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+
+//***********************************************************************************************************************************************//
+// 				PvP Yoyo Mode Fight Square  Helpers					//
+//***********************************************************************************************************************************************//
+
+// LV31 ~ 40 ------------------------------------------------------------------------------
+pvp_y_room.gat,30,85,4	script	打斗場接待員::YHelper1	105,{
+	set @map$, "y_1";
+	set @lvl2, 40;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV31 ~ LV40",0;
+	end;
+}
+
+// LV41 ~ 50 ------------------------------------------------------------------------------
+pvp_y_room.gat,38,85,4	script	打斗場接待員::YHelper2	105,{
+	set @map$, "y_2";
+	set @lvl1, 41;
+	set @lvl2, 50;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV41 ~ LV50",0;
+	end;
+}
+
+// LV51 ~ 60 ------------------------------------------------------------------------------
+pvp_y_room.gat,46,85,4	script	打斗場接待員::YHelper3	105,{
+	set @map$, "y_3";
+	set @lvl1, 51;
+	set @lvl2, 60;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV51 ~ LV60", 0;
+	end;
+}
+
+// LV61 ~ 70 ------------------------------------------------------------------------------
+pvp_y_room.gat,54,85,4	script	打斗場接待員::YHelper4	105,{
+	set @map$, "y_4";
+	set @lvl1, 61;
+	set @lvl2, 70;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV61 ~ LV70", 0;
+	end;
+}
+
+// LV71 ~ 80 ------------------------------------------------------------------------------
+pvp_y_room.gat,62,85,4	script	打斗場接待員::YHelper5	105,{
+	set @map$, "y_5";
+	set @lvl1, 71;
+	set @lvl2, 80;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV71 ~ LV80", 0;
+	end;
+}
+
+// LV81 ~ 90 ------------------------------------------------------------------------------
+pvp_y_room.gat,70,85,4	script	打斗場接待員::YHelper6	105,{
+	set @map$, "y_6";
+	set @lvl1, 81;
+	set @lvl2, 90;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV81 ~ LV90", 0;
+	end;
+}
+
+// LV91 ~  ------------------------------------------------------------------------------
+pvp_y_room.gat,78,85,4	script	打斗場接待員::YHelper7	105,{
+	set @map$, "y_7";
+	set @lvl1, 91;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV91 ~ ", 0;
+	end;
+}
+
+// No Limit  ------------------------------------------------------------------------------
+pvp_y_room.gat,86,85,4	script	打斗場接待員::YHelper8	105,{
+	set @map$, "y_8";
+	set @lvl1, 0;
+	set @lvl2, 255;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "無等級限制", 0;
+	end;
+}
+
+
+
+//***********************************************************************************************************************************************//
+// 				PvP Nightmare Mode 打斗場接待員s				//
+//***********************************************************************************************************************************************//
+// LV31 ~ 40 ------------------------------------------------------------------------------
+pvp_n_room.gat,30,85,4	script	打斗場接待員#N1	105,{
+	set @map$, "n_1";
+	set @lvl2, 40;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV31 ~ LV40",0;
+	end;
+}
+
+// LV41 ~ 50 ------------------------------------------------------------------------------
+pvp_n_room.gat,38,85,4	script	打斗場接待員#N2	105,{
+	set @map$, "n_2";
+	set @lvl1, 41;
+	set @lvl2, 50;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV41 ~ LV50",0;
+	end;
+}
+
+// LV51 ~ 60 ------------------------------------------------------------------------------
+pvp_n_room.gat,46,85,4	script	打斗場接待員#N3	105,{
+	set @map$, "n_3";
+	set @lvl1, 51;
+	set @lvl2, 60;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV51 ~ LV60", 0;
+	end;
+}
+
+// LV61 ~ 70 ------------------------------------------------------------------------------
+pvp_n_room.gat,54,85,4	script	打斗場接待員#N4	105,{
+	set @map$, "n_4";
+	set @lvl1, 61;
+	set @lvl2, 70;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV61 ~ LV70", 0;
+	end;
+}
+
+// LV71 ~ 80 ------------------------------------------------------------------------------
+pvp_n_room.gat,62,85,4	script	打斗場接待員#N5	105,{
+	set @map$, "n_5";
+	set @lvl1, 71;
+	set @lvl2, 80;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV71 ~ LV80", 0;
+	end;
+}
+
+// LV81 ~ 90 ------------------------------------------------------------------------------
+pvp_n_room.gat,70,85,4	script	打斗場接待員#N6	105,{
+	set @map$, "n_6";
+	set @lvl1, 81;
+	set @lvl2, 90;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV81 ~ LV90", 0;
+	end;
+}
+
+// LV91 ~  ------------------------------------------------------------------------------
+pvp_n_room.gat,78,85,4	script	打斗場接待員#N7	105,{
+	set @map$, "n_7";
+	set @lvl1, 91;
+	set @lvl2, 255;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "LV91 ~ ", 0;
+	end;
+}
+
+// No Limit  ------------------------------------------------------------------------------
+pvp_n_room.gat,86,85,4	script	打斗場接待員#N8	105,{
+	set @map$, "n_8";
+	set @lvl1, 0;
+	set @lvl2, 255;
+	callfunc "F_PvPRoom";
+OnInit:
+	waitingroom "No Limit", 0;
+	end;
+}
+
+
+
+//***********************************************************************************************************************************************************//
+//					Function: PvP Fight Square Helper					//
+//***********************************************************************************************************************************************************//
+function	script	F_PvPRoom	{
+
+	mes "[打斗場接待員]";
+	if(BaseLevel < @lvl1) goto L_LowLvl;
+	if(BaseLevel > @lvl2) goto L_HiLvl;
+	mes "Please choose an arena to fight in...";
+	M_Menu:
+	next;
+	menu 	@room1$ + " [" + getmapusers("pvp_"+@map$ + "-1.gat") + "/" +@players1+ "]",M_Rm1, 
+		@room2$ + " [" + getmapusers("pvp_"+@map$ + "-2.gat") + "/" +@players2+ "]",M_Rm2, 
+		@room3$ + " [" + getmapusers("pvp_"+@map$ + "-3.gat") + "/" +@players2+ "]",M_Rm3, 
+		@room4$ + " [" + getmapusers("pvp_"+@map$ + "-4.gat") + "/" +@players2+ "]",M_Rm4, 
+		@room5$ + " [" + getmapusers("pvp_"+@map$ + "-5.gat") + "/" +@players2+ "]",M_Rm5, "Cancel",M_End;
+	M_Rm1:
+		if (getmapusers("pvp_"+@map$+"-1.gat") == @players1) goto L_Full;
+		warp "pvp_"+@map$+"-1.gat",0,0;
+		end;
+	M_Rm2:
+		if (getmapusers("pvp_"+@map$+"-2.gat") == @players2) goto L_Full;
+		warp "pvp_"+@map$+"-2.gat",0,0;
+		end;
+	M_Rm3:
+		if (getmapusers("pvp_"+@map$+"-3.gat") == @players2) goto L_Full;
+		warp "pvp_"+@map$+"-3.gat",0,0;
+		end;
+	M_Rm4:
+		if (getmapusers("pvp_"+@map$+"-4.gat") == @players2) goto L_Full;
+		warp "pvp_"+@map$+"-4.gat",0,0;
+		end;
+	M_Rm5:
+		if (getmapusers("pvp_"+@map$+"-5.gat") == @players2) goto L_Full;
+		warp "pvp_"+@map$+"-5.gat",0,0;
+		end;
+	M_End:
+		close;
+
+
+	L_LowLvl:
+		mes "抱歉, 要進入本打斗場您的 Lv 必須高于 " + @lvl1 + " 才行, 請選擇一個等級比較低的打斗場吧!";
+		close;
+	L_HiLvl:
+		mes "抱歉, 要進入本打斗場您的 Lv 必須低于 " + @lvl2 + " 才行, 請選擇一個等級比較高的打斗場吧!";
+		close;
+	L_Full:
+		mes "[打斗場接待員]";
+		mes "對不起, 本打斗場已經額滿了! 請選擇其他打斗場吧....";
+		goto M_Menu;
+}

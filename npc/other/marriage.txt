@@ -1,0 +1,1048 @@
+// 結婚腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041201.0.1
+//			20050306.0.1	修改檢查身上穿著為 getequipid(2) , 原本 getequipname(2) 會因伺服器不同而有出入不好
+//					修正結婚程式未完成就不能重新申請結婚的問題
+//					修正 marriage_ring NPC 沒辦法使用的問題 (因 eAthena 改變了 OnTouch 敘述)
+//			20050317.0.1	修正公證費用
+//			20050409.0.1	修正公證費用顯示的數值
+//
+// 原始腳本:		EVENT_MARRIAGE v1.1 BY Kingbo
+//			2004-06-18 修正 BY 索克
+// 			2005-05-21 增加 離婚服務人員	by xuwujun
+//
+//==================================================================
+	
+//==================================================================
+//			結婚腳本流程說明
+//
+//	1. 需要到"結婚 服務人員"處登記,如果當時有人在結婚,則稍后登記.
+//		** 登記服務人員使用請參見具體說明 **
+//
+//	2. 當男方和女方都登記后,男方先和國王對話.然后女方對話
+//	3. 對話都完成后,退后一步,取得戒指.完成婚禮
+//	4. 每個婚禮固定限制時間5分鐘.超出則無法完成婚禮并且無法再次結婚
+//	
+//	
+//
+//		2004-06-18 修正 BY 索克
+//		(參照 EVENT_MARRIAGE v1.1 BY Kingbo)
+ 
+ 
+ 
+ $@marriage_party_id
+ $@tmp_party_id
+ $@marry_male
+ $@marry_male_name$
+ $@marry_female
+ $@marry_female_name$
+ $@EVENT_MARRIAGE
+ EVENT_MARRIAGE_APPLY
+//==================================================================	
+//
+
+prt_church.gat,99,124,4	script	國王陛下	108,{
+	
+	if ( EVENT_MARRIAGE_APPLY == 0 ) goto L_SINGLE;
+	if ( EVENT_MARRIAGE_APPLY == 1 ) goto L_CHECK;
+	if ( EVENT_MARRIAGE_APPLY == 2 ) goto L_COME_HERE;
+	
+	mes "[國王陛下]";
+	mes "結婚的感覺怎樣";
+	mes "是不是很美妙呢！";
+	mes "祝你們幸福美滿";
+	close;
+	
+L_SINGLE:
+	mes "[國王陛下]";
+	mes "我的孩子";
+	mes "你還是孤身一人嗎？";
+	mes "祝愿你早日找到自己的另一半！";
+	close;
+	
+L_COME_HERE:
+	mes "[國王陛下]";
+	mes "來！我的孩子！";
+	mes "^FF0000走到我的身邊來！^000000";
+	close;	
+
+L_CHECK:
+	if ( Sex == 1 ) goto L_MALE_MARRIAGE;
+	goto L_FEMALE_MARRIAGE;
+	close;
+	
+L_MALE_MARRIAGE:
+	// 檢查隊伍ID、申請人ID來判斷是否是正確的登記人
+	if ( getcharid(1) == 0 || getcharid(1) != $@tmp_party_id || getcharid(0) != $@marry_male ) goto L_NOPARTY2;
+	// 檢查男女是否都登記完畢
+	if ( $@marry_female == 0 ) goto L_NOT_APPLY;
+	
+	mes "[國王陛下]";
+	mes "我親愛的孩子，你做好結婚的準備了嗎？";
+	next;
+	menu	"是的，我準備好了！",-,
+		"我……再讓我考慮一下……",L_MENU_2,
+		"我是無敵單身漢",L_MENU_3;
+
+	mes "[國王陛下]";
+	mes "那么我們開始吧";
+	mes "請準備好帥氣的新郎禮服";
+	mes "放松一下激動的心情";
+	next;
+
+	// 檢查是否將燕尾服穿上 Item 7170
+	if ( GetEquipID(02) != 7170 ) goto L_NOWEAR;
+
+	mes "[國王陛下]";
+	mes "嗯，看來你準備的相當好，那么開始吧";
+	next;
+	announce "[國王陛下]：諸位親愛的弟兄姐妹，我們現在聚集在這里，是為了這對新人要在上帝的面前結婚立約建立美滿的家庭來做見證。婚姻的起源是上帝設立的。幸福的家庭是由于上帝的恩賜，所有敬畏上帝，遵行他的道理的，必定蒙受賜福，所以要用圣潔的心，以正式的禮儀來結婚，才能建立幸福和快樂的家庭。",15;
+	mes "[國王陛下]";
+	mes "我親愛的孩子，請把你所愛的人名字寫下來吧，我要讓所有到來的人為你們祝福!!";
+	next;
+
+	// 檢查輸入的名字是否和女方申請人相同
+	input $@name$;
+	if($@marry_female_name$ != $@name$) goto L_DISAGREE;
+
+	announce "[國王陛下]：這對幸福的人兒是"+ strcharinfo(0) + " 和 "+ $@marry_female_name$ + "，讓我們一起來祝福這對新人。",15;
+	mes "[國王陛下]";
+	mes "請用圣潔的心，來聆聽來自主的祝福吧！！";
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!";
+	announce "[國王陛下]：婚姻是上帝的安排，夫婦是上帝所配合的，所以要用恭敬的心來領受上帝所安排的恩賜。 因為上帝起初創造亞當和夏娃，是一男一女的家庭，做我們的榜樣，妻子還在丈夫不可再娶，丈夫還在妻子亦不可再嫁。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!";
+	announce "[國王陛下]：結婚是一生的盟約，五倫之中夫婦最親蜜。圣經說：他們要結連二人成為一體，丈夫不可離棄妻子。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!!";
+	announce "[國王陛下]：主耶穌說：上帝所配合的人便不可分開。 夫婦要相愛，丈夫要愛惜照顧他的妻子，如同基督愛惜他的教會，妻子當順服她的丈夫，如同教會順服基督，夫婦同居一處，要和睦并要尊重長輩愛護小輩。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!!!";
+	announce "[國王陛下]：上帝使你活在世上，你當以溫柔和耐心來照顧對方，敬愛對方，無論對方富有還是貧窮，健康還是患病，你在上帝和眾人面前許諾愿意這樣嗎？",15;
+	next;
+	mes "[國王陛下]";
+	mes "現在你們二人已經聽見圣經的這些教訓，你們若愿意結合，請用舉起你的手到頭上立誓。";
+	announce "[國王陛下]：來讓我們聽聽來自["+ strcharinfo(0) + "]的誓言吧!!",15;
+	next;
+	mes "[國王陛下]";
+	mes "宣誓：";
+	announce "我宣誓：我——["+ strcharinfo(0) + "]愿意承受接納 "+ $@marry_female_name$ + " 做我的妻子，誠實遵照上帝的旨命，和他生活在一起。無論在什么環境，都愿意終生養她、愛惜她、安慰她、尊重她、保護她，以至奉召歸主。",15;
+	next;
+	announce "[國王陛下]：現在應該換問女方了",15;
+	
+	// 男方完成宣誓，等待女方宣誓！
+	set $@EVENT_MARRIAGE, 1;
+	set EVENT_MARRIAGE_APPLY, 2;
+	close;
+
+L_FEMALE_MARRIAGE:
+	// 檢查男方是否宣誓完成
+	if ( $@EVENT_MARRIAGE != 1 ) goto L_WAIT;
+	// 檢查是否是正確的隊伍和申請人
+	if ( getcharid(1) == 0 || getcharid(1) != $@tmp_party_id || getcharid(0) != $@marry_female ) goto L_NOPARTY2;
+
+	mes "[國王陛下]";
+	mes "那么我們開始吧";
+	mes "請準備好漂亮的新娘禮服,放松一下激動的心情";
+	next;
+
+	// 檢查是否將結婚禮服穿上 Item 2338
+	if ( GetEquipID(02) != 2338) goto L_NOWEAR;
+
+	mes "[國王陛下]";
+	mes "嗯，看來你準備的相當好，那么開始吧";
+	next;
+	announce "[國王陛下]：諸位親愛的弟兄姐妹，我們現在聚集在這里，是為了這對新人要在上帝的面前結婚立約建立美滿的家庭來做見證。婚姻的起源是上帝設立的。幸福的家庭是由于上帝的恩賜，所有敬畏上帝，遵行他的道理的，必定蒙受賜福，所以要用圣潔的心，以正式的禮儀來結婚，才能建立幸福和快樂的家庭。",15;
+	mes "[國王陛下]";
+	mes "我親愛的孩子，請把你所愛的人名字寫下來吧，我要讓所有到來的人為你們祝福!!";
+	next;
+
+	//檢查輸入的名字是否和男方申請人相同
+	input $@name$;
+	if($@marry_male_name$ != $@name$) goto L_DISAGREE;
+
+	announce "[國王陛下]：這對幸福的人兒是"+ strcharinfo(0) + " 和 "+ $@marry_male_name$ + "，讓我們一起來祝福這對新人。",15;
+	mes "[國王陛下]";
+	mes "請用圣潔的心，來聆聽來自主的祝福吧！！";
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!";
+	announce "[國王陛下]：婚姻是上帝的安排，夫婦是上帝所配合的，所以要用恭敬的心來領受上帝所安排的恩賜。 因為上帝起初創造亞當和夏娃，是一男一女的家庭，做我們的榜樣，妻子還在丈夫不可再娶，丈夫還在妻子亦不可再嫁。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!";
+	announce "[國王陛下]：結婚是一生的盟約，五倫之中夫婦最親蜜。圣經說：他們要結連二人成為一體，丈夫不可離棄妻子。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!!";
+	announce "[國王陛下]：主耶穌說：上帝所配合的人便不可分開。 夫婦要相愛，丈夫要愛惜照顧他的妻子，如同基督愛惜他的教會，妻子當順服她的丈夫，如同教會順服基督，夫婦同居一處，要和睦并要尊重長輩愛護小輩。",15;
+	next;
+	mes "[國王陛下]";
+	mes "請仔細的聆聽!!!";
+	announce "[國王陛下]：上帝使你活在世上，你當以溫柔和耐心來照顧對方，敬愛對方，無論對方富有還是貧窮，健康還是患病，你在上帝和眾人面前許諾愿意這樣嗎？",15;
+	next;
+	mes "[國王陛下]";
+	mes "現在你們二人已經聽見圣經的這些教訓，你們若愿意結合，請用舉起你的手到頭上立誓。";
+	announce "[國王陛下]：來讓我們聽聽來自["+ strcharinfo(0) + "]的誓言吧!!",15;
+	next;
+	menu "我發誓，終生不悔！",-,"我……再讓我考慮一下……",L_MENU_2;
+	mes "[國王陛下]";
+	mes "宣誓：";
+	announce "我宣誓：我——["+ strcharinfo(0) + "]愿意承受接納 "+ $@marry_male_name$ + " 做我的丈夫，誠實遵照上帝的旨命，和他生活在一起。無論在什么環境，都愿意終生養他、愛惜他、安慰他、尊重他、保護他，以至奉召歸主。",15;
+	next;
+	announce "[國王陛下]：到我身邊來，我的孩子！讓所有人來見證你們的幸福！",15;
+	
+	// 女方同意并完成對話啟動戒指管理員
+	set EVENT_MARRIAGE_APPLY, 2;
+	enablenpc "marriage_ring";
+	close;
+	
+L_MENU_2:
+	mes "[國王陛下]";
+	mes "好好想想吧，畢竟這是你的選擇……";
+	close;
+L_MENU_3:
+	mes "[國王陛下]";
+	mes "單身………倒也是一種選擇......";
+	close;
+L_NOWEAR:
+	mes "[國王陛下]";
+	mes "看來沒還沒有準備好，快去準備一下結婚的衣服吧！！";
+	mes "難道你要光著身子結婚嗎？";
+	close;
+L_DISAGREE:
+	mes "[國王陛下]";
+	mes "哦！？我的上帝啊！";
+	mes "你居然記錯了愛人的名字！";
+	mes "看來雙方的意見還沒有統一,好好商量一下吧！！";
+	close;
+L_NOT_APPLY:
+	mes "[國王陛下]";
+	mes "你怎么沒有帶來你的新娘？";
+	mes "是不是你一個人偷偷跑來的？";
+	mes "哈哈！真是個傻瓜啊！";
+	close;
+
+L_NOPARTY:
+	mes "[國王陛下]";
+	mes "你還沒有和你要結婚的對象組隊嗎";
+	mes "還不趕快去，組隊好后再回來找我";
+	close;
+
+L_NOPARTY2:
+	mes "[國王陛下]";
+	mes "我的孩子別急別急";
+	mes "還沒有輪到你們這對新人";
+	mes "請稍待喔";
+	close;
+L_WAIT:
+	mes "[國王陛下]";
+	mes "我的孩子別急別急";
+	mes "先等男方宣誓吧！";
+	close;
+
+}
+
+
+prt_church.gat,99,123,4	script	marriage_ring	139,1,0,{
+
+OnTouch:
+	// 檢查性別
+	if ( Sex == 0 ) goto L_FEMALE;
+	goto L_MALE;
+	end;
+	
+L_FEMALE:
+	// 檢查人物ID
+	if ( getcharid(0) != $@marry_female ) end;
+	// 檢查是否沒有完成婚典
+	if ( EVENT_MARRIAGE_APPLY != 2 ) end;
+	// 檢查是否是婚典進行
+	if ( $@EVENT_MARRIAGE == 1 ) goto L_FEMALE_FIRST;
+	
+	// 女方后移動
+	mes "[國王陛下]";
+	mes "好來聽我的宣布吧！";
+	announce "[國王陛下]：那么我在此宣布，祝賀你們成為夫妻！",15;
+	announce $@marry_male_name$ + "和" + $@marry_female_name$ + "的婚禮完成了！",15;
+	// 取得戒指
+	getitem 2635, 1;
+	set EVENT_MARRIAGE_APPLY, 3;
+	set $@tmp_party_id,0;
+	set $@marry_male,0;
+	set $@marry_male_name$,0;
+	set $@marry_female,0;
+	set $@marry_female_name$,0;
+	stopnpctimer "TimerMarriage";
+	disablenpc "marriage_ring";
+	close;
+
+	// 女方先移動
+L_FEMALE_FIRST:
+	// 完成婚典
+	set EVENT_MARRIAGE_APPLY, 3;
+	set $@EVENT_MARRIAGE, 0;
+	
+	// 取得戒指
+	getitem 2635, 1;
+	// 完成結婚
+	marriage($@marry_male_name$);
+	end;	
+
+L_MALE:
+	// 檢查人物ID
+	if ( getcharid(0) != $@marry_male ) end;
+	// 檢查是否沒有完成婚典
+	if ( EVENT_MARRIAGE_APPLY != 2 ) end;
+	// 檢查是否是婚典進行
+	if ( $@EVENT_MARRIAGE == 1 ) goto L_MALE_FIRST;
+	
+	// 男方后移動
+	mes "[國王陛下]";
+	mes "好來聽我的宣布吧！";
+	announce "[國王陛下]：那么我在此宣布，祝賀你們成為夫妻！",15;
+	announce $@marry_male_name$ + "和" + $@marry_female_name$ + "的婚禮完成了！",15;
+	// 取得戒指
+	getitem 2634, 1;
+	set EVENT_MARRIAGE_APPLY, 3;
+	set $@tmp_party_id,0;
+	set $@marry_male,0;
+	set $@marry_male_name$,0;
+	set $@marry_female,0;
+	set $@marry_female_name$,0;
+	stopnpctimer "TimerMarriage";
+	disablenpc "marriage_ring";
+	close;
+
+	// 男方先移動
+L_MALE_FIRST:
+	// 完成婚典
+	set EVENT_MARRIAGE_APPLY, 3;
+	set $@EVENT_MARRIAGE, 0;
+	
+	// 取得戒指
+	getitem 2634, 1;
+	// 完成結婚
+	marriage($@marry_female_name$);
+	end;
+
+OnInit:
+	disablenpc "marriage_ring";
+	end;
+}
+
+
+
+//
+//	========================================================
+//			結婚登記人員 使用說明
+//	1. 要求男方先登記,記錄下aid,name,partyid.
+//	2. 女方登記時,檢查partyid.通過則登記aid,name.
+//	3. 在有人登記后的5分鐘之內,其他男ID無法登記
+//	4. 如果僅僅男方登記而沒有女方登記.5分鐘后該ID
+//	   也會被認為是結婚結束而導致無法再次申請.
+//	   解決方法:選擇"重新開始",但是結婚成功的不能選擇
+//	5. 結婚登記所需要的物品
+//	   1) 男方：130W現金，鉆石戒指×1，燕尾服×1(不被扣除)
+//	   2) 女方：120W現金，鉆石戒指×1，禮服×1(不被扣除)
+//	========================================================
+//
+ 
+prt_church.gat,94,100,4	script	結婚 服務人員	71,{
+	if ( EVENT_MARRIAGE_APPLY != 3 ) set EVENT_MARRIAGE_APPLY, 0;
+	mes "[結婚 快樂]";
+	mes "所謂結婚是指，";
+	mes "期待著幸福，所有人們的希望，";
+	mes "請問你是否有，";
+	mes "想要結婚的對象嗎？";
+	next;
+	menu "請說明有關結婚典禮的事情",L_MENU_1,
+             "請問結婚典禮的過程是什么樣子呢？",L_MENU_2,
+             "我想要申請結婚典禮",L_MENU_3,
+             "我們是無敵的單身軍團！",L_MENU_4,
+             "重新開始",L_MENU_5;
+	close;
+	
+L_MENU_5:
+	//如果正式完成了婚禮.則不能重新開始
+	if ( EVENT_MARRIAGE_APPLY == 3 ) goto L_MARRIAGED;
+	mes "[結婚 快樂]";
+	mes "或許重新開始也不錯";
+	mes "希望你能找到真正合適的伴侶";
+	set EVENT_MARRIAGE_APPLY, 0;
+	close;
+	
+L_MARRIAGED:
+	mes "[結婚 快樂]";
+	mes "不行哦";
+	mes "你已經有合法的伴侶了";
+	mes "怎么能隨便放棄呢？";
+	close;
+	
+// 婚典說明
+L_MENU_1:
+	mes "[結婚 快樂]";
+	mes "現在結婚是在盧恩-米德加茲王國，";
+	mes "國王特力期坦3世陛下，";
+	mes "為了下達對王國內所有的百姓們的祝福，";
+	mes "用尊貴的語言，親自主持證婚人的角色";
+	next;
+	mes "[結婚 快樂]";
+	mes "雖然每天忙碌于國家大事，";
+	mes "為了即將重新出發的小兩口，";
+	mes "特地來到了普隆德拉教堂，";
+	mes "期期糐所有人都能過著幸福的生活，";
+	mes "這是國王陛下給的恩德";
+	next;
+	mes "[結婚 快樂]";
+	mes "求婚要慎重，";
+	mes "鄭重的提出，";
+	mes "只要有結過一次婚的人，";
+	mes "再也不能恢復原狀，結婚的兩個人，";
+	mes "除非離開這人世間為止，";
+	mes "否則就永遠在一起";
+	next;
+	mes "[結婚 快樂]";
+	mes "此外男性和女性，";
+	mes "女性只能與男性結婚，";
+	mes "另外也有可能，";
+	mes "有些人會提出，和同性者或和魔物結婚，";
+	mes "這樣的主張…是不會被成立的";
+	next;
+	mes "[結婚 快樂]";
+	mes "假如有約定好未來的對象的話，";
+	mes "不妨試著求婚看看吧，";
+	mes "愿期待未來幸福的所有戀人，";
+	mes "祝幸福美滿！！";
+	close;
+	
+// 過程說明
+L_MENU_2:
+	mes "[結婚 快樂]";
+	mes "首先確認新郎新娘們，";
+	mes "有都向我申請嗎？";
+	mes "當然兩位都是，沒有結過婚的人才對啊？";
+	mes "假如有申請的話，只請兩位組隊之后，";
+	mes "請到國王陛下那里吧！";
+	next;
+	mes "[結婚 快樂]";
+	mes "到國王陛下那里后，";
+	mes "男方先說話，";
+	mes "然后再說要結婚女性的名字，";
+	mes "名字不能講錯，要講正確，";
+	mes "結婚典禮才能執行";
+	next;
+	mes "[結婚 快樂]";
+	mes "當講完話時，";
+	mes "緊接著女方跟國王陛下講話，";
+	mes "國王陛下會問你，";
+	mes "你要結婚對象的名字，";
+	mes "相對的也一樣的回答男性的名字";
+	next;
+	mes "[結婚 快樂]";
+	mes "假如結婚對象的名字正確的話，";
+	mes "會交換結婚戒指，";
+	mes "從那瞬間開始，";
+	mes "兩個人會永遠的在一起，不錯吧？";
+	mes "說不定被委婉的拒絕也不一定，";
+	mes "也不要太難過啊";
+	next;
+	mes "[結婚 快樂]";
+	mes "當想要結婚的人，";
+	mes "太多聚集在一起時，";
+	mes "請大家尊守秩序，接順序來跟國王說話，";
+	mes "國王陛下不可能同時的，";
+	mes "主持好幾對婚禮";
+	next;
+	mes "[結婚 快樂]";
+	mes "最后一點，講完名字后，回答要快";
+	mes "當^ff0000新郎講完話，在3分鐘之內，把所有的過程都做完吧^000000";
+	mes "要不然，結婚典禮會停止，再也不能結婚了";
+	next;
+	mes "[結婚 快樂]";
+	mes "寫結婚對象的名字，最簡單的方法是，";
+	mes "先寄給對方一張紙條，";
+	mes "在對話窗口里放名字的部份，";
+	mes "點選箭頭標示，左邊即可";
+	next;
+	mes "[結婚 快樂]";
+	mes "那就會顯示走紙條給對方的名字，";
+	mes "按住 Ctrl鍵的同時，";
+	mes "再按 C鍵，那名字會被記錄，";
+	mes "以后要放入名字時，";
+	mes "按住 Shift鍵的同時，";
+	mes "再按 Insert鍵，那么名字就很快，";
+	mes "很方便的寫在上面了";
+	next;
+	mes "[結婚 快樂]";
+	mes "那么就試驗一次吧，";
+	mes "把想要結婚對象的名字，";
+	mes "依告訴你的方式寫一遍，";
+	mes "按住 Ctrl鍵的同時，";
+	mes "再按 C鍵是記錄…回答是，";
+	mes "按住 Shift鍵的同時，";
+	mes "再按 Insert鍵";
+	next;
+	input @name$; //need to try
+	mes "[結婚 快樂]";
+	mes "很好，寫的不錯，";
+	mes "若在你的心里面己決定好了的話，";
+	mes "一定要來這里申請";
+	close;
+	
+// 結婚申請
+L_MENU_3:
+	mes "[結婚 快樂]";
+	mes "想要結婚的話要申請噢，";
+	mes "男性要交出^0000881,300,000金幣和";
+	mes "燕尾服1件^000000，女性要交^0000881200,000";
+	mes "金幣和結婚禮服1件^000000";
+	mes "然后填寫申請書即可，";
+	mes "假如男女雙方都有申請的話，";
+	mes "就可以結婚了";
+	next;
+	mes "[結婚 快樂]";
+	mes "別忘了還要準備結婚戒指，";
+	mes "男女雙方都需要^000088鉆石戒指1個^000000";
+	mes "當申請的時候，一起給我就好了";
+	next;
+	mes "[結婚 快樂]";
+	mes "兩位都申請好之后，";
+	mes "就可以馬上執行結婚典禮了，";
+	mes "請問你現在要申請結婚嗎？";
+	next;
+	menu "是",-,"不是",L_NOMARRY;
+	
+	// 檢查是否登記或者已經結婚
+	if ( EVENT_MARRIAGE_APPLY >= 1 ) goto L_APPLY2;
+	
+	// 將流程完全分開，方便以后修改
+	if ( Sex == 1 ) goto L_MALE_APPLY;
+	goto L_FEMALE_APPLY;
+	close;
+	
+	//	====================男方登記====================
+L_MALE_APPLY:
+	// 沒有組隊則提示并退出！
+	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
+	// 如果有人已經申請或開始結婚，則提示等候
+	if (( getcharid(1) != $@tmp_party_id ) && ($@tmp_party_id !=0)) goto L_MUST_WAIT;
+	
+	// 檢查要求的報名道具
+	if( countitem(2613) < 1 ) goto L_LOSTD;	// 檢查鉆石戒指
+	if( Zeny < 1300000 ) goto L_LOSTM;		// 檢查登記費用
+	if( countitem(7170) < 1 ) goto L_LOSTCM;// 檢查燕尾服
+	// 全部帶齊則扣除報名費
+	delitem 2613 , 1;
+	set Zeny, Zeny - 1300000;
+	
+	// 暫存申請人AID，NAME
+	set $@marry_male, getcharid(0);
+	set $@marry_male_name$, strcharinfo(0);
+	// 暫存申請人PARTY ID
+	set $@tmp_party_id, getcharid(1);
+	// 將申請人狀態改為申請完畢！
+	set EVENT_MARRIAGE_APPLY, 1; 
+	
+	mes "[結婚 快樂]";
+	mes "嗯！接下來請到‘國王陛下’那里去吧";
+	mes "國王陛下會為你們主持婚禮";
+	mes "請在^FF00005分鐘^000000內完成婚典哦！";
+	
+	// 男方申請完畢，開始計時！
+	initnpctimer "TimerMarriage";
+	close;
+		
+	//	====================女方登記====================
+L_FEMALE_APPLY:
+	// 沒有組隊則提示并退出！
+	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
+	// 檢查是否為申請人同一組隊！
+	if (( getcharid(1) != $@tmp_party_id ) && ($@tmp_party_id !=0))goto L_MUST_WAIT;
+	
+	// 檢查要求的報名道具
+	if( countitem(2613) < 1 ) goto L_LOSTD;	// 檢查鉆石戒指
+	if( Zeny < 1200000 ) goto L_LOSTM;		// 檢查登記費用
+	if( countitem(2338) < 1 ) goto L_LOSTCM;// 檢查禮服
+	// 全部帶齊則扣除報名費
+	delitem 2613, 1;
+	set Zeny, Zeny - 1200000;
+	
+	// 暫存申請人AID，NAME
+	set $@marry_female, getcharid(0);
+	set $@marry_female_name$, strcharinfo(0);
+	// 將申請人狀態改為申請完畢！
+	set EVENT_MARRIAGE_APPLY, 1;
+	
+	mes "[結婚 快樂]";
+	mes "嗯！接下來請到‘國王陛下’那里去吧";
+	mes "國王陛下會為你們主持婚禮";
+	mes "請在^FF00005分鐘^000000內完成婚典哦！";
+	close;
+
+//	==================不滿足條件后的跳轉====================
+L_NO_TEAM:
+	mes "[結婚 快樂]";
+	mes "不行哦！";
+	mes "必須先和你的愛人^FF0000組隊^000000！";
+	close;
+	
+L_MUST_WAIT:
+	mes "[結婚 快樂]";
+	mes "嗯，好像已經有人申請了";
+	mes "看樣子，你不得不等一會";
+	mes "不好意思啊！";
+	close;
+	
+L_LOSTD:
+	mes "[結婚 快樂]";
+	mes "你好像忘記帶，";
+	mes "做結婚戒指時要用的鉆石戒指了，";
+	mes "是不是放在別的地方了呢？";
+	mes "仔細的找找之后，再來找我吧";
+	close;
+	
+L_LOSTM:
+	next;
+	mes "[結婚 快樂]";
+	mes "你身上的現金好像不足喔";
+	close;
+	
+L_LOSTCM:
+	next;
+	mes "[結婚 快樂]";
+	mes "您好像忘了帶禮服來喔";
+	close;
+
+L_NOMARRY:
+	mes "[結婚 快樂]";
+	mes "祝你有一個幸福的一天…！";
+	close;
+
+L_APPLY2:
+	mes "[結婚 快樂]";
+	mes "讓我先來檢查一下";
+	if (EVENT_MARRIAGE_APPLY == 1) mes "已經申請過就不能再申請?";
+	if (EVENT_MARRIAGE_APPLY == 3) mes "你已經結過婚啦";
+	close;
+	
+//	===================單身軍團出現=========================
+L_MENU_4:
+	enablenpc "wed01";
+	enablenpc "wed02";
+	enablenpc "wed03";
+	enablenpc "wed04";
+	enablenpc "wed05";
+	enablenpc "wed06";
+	emotion 23;
+	mes "[單身 軍團]";
+	mes "精煉要自己做，才會做出好東西！";
+	mes "在洞穴里面組隊是奢侈的行為！";
+	mes "我可以施下出心型的 NPC！";
+	mes "從出生到轉職，都是自己練的！";
+	mes "過圣誕節的時候，到外面拔草求生！";
+	mes "…我們是無敵的單身軍團！";
+	next;
+	emotion 4;
+	disablenpc "wed01";
+	disablenpc "wed02";
+	disablenpc "wed03";
+	disablenpc "wed04";
+	disablenpc "wed05";
+	disablenpc "wed06";
+	close;
+	
+}
+
+
+// 用于整個婚典的計時！從開始到結束規定時間：5分鐘
+prt_church.gat,97,99,0	script	TimerMarriage	-1,{
+	end;
+
+
+// 5分鐘到后，強制結束婚禮，并且臨時數據歸零！
+OnTimer300000:
+	announce $@marry_male_name$ + "和" + $@marry_female_name$ + "的婚禮中止了！",15;
+	set $@tmp_party_id,0;
+	set $@marry_male,0;
+	set $@marry_male_name$,0;
+	set $@marry_female,0;
+	set $@marry_female_name$,0;
+	stopnpctimer;
+	end;
+}
+
+
+// 單身軍團！拉風六人組！
+prt_church.gat,97,102,0	script	單身 軍團::wed01	105,{
+	close;
+OnInit:
+	disablenpc "wed01";
+	end;
+}
+prt_church.gat,98,102,0	script	單身 軍團::wed02	705,{
+	close;
+OnInit:
+	disablenpc "wed02";
+	end;
+}
+prt_church.gat,99,102,0	script	單身 軍團::wed03	707,{
+	close;
+OnInit:
+	disablenpc "wed03";
+	end;
+}
+prt_church.gat,100,102,0	script	單身 軍團::wed04	708,{
+	close;
+OnInit:
+	disablenpc "wed04";
+	end;
+}
+prt_church.gat,101,102,0	script	單身 軍團::wed05	767,{
+	close;
+OnInit:
+	disablenpc "wed05";
+	end;
+}
+prt_church.gat,102,102,0	script	單身 軍團::wed06	780,{
+	close;
+OnInit:
+	disablenpc "wed06";
+	end;
+}
+
+
+//
+//	========================================================
+//			離婚登記人員 使用說明
+//	1. 要求男方先登記,記錄下name,partyid.
+//	2. 女方登記時,檢查partyid.通過則登記name.
+//	3. 在有人登記后的2分鐘之內,其他男ID無法登記
+//	4. 如果僅僅男方登記而沒有女方登記.2分鐘后該ID
+//	   也會被認為是離婚結束而導致無法再次申請.
+//	   解決方法:選擇"重新開始",但是離婚成功的不能選擇
+//	5. 結婚登記所需要的物品
+//	   1) 男方：130W現金，結婚戒指×1
+//	   2) 女方：120W現金，結婚戒指×1
+$@li_party_id
+$@divorce_male_name$
+EVENT_DIVORCE_APPLY
+$@EVENT_DIVORCE
+$@divorce_male
+$@divorce_female
+//	========================================================
+//
+prt_church.gat,94,97,4	script	離婚 服務人員	71,{
+        mes "[離婚 服務人員]";
+	mes "請問你是否有要離婚的對象啊";
+        next;
+	menu "請問離婚的過程是什么樣子呢？",L_MENU_1,
+             "我想要申請離婚",L_MENU_2,
+             "重新開始",L_MENU_3,
+             "我們是無敵的單身軍團！",L_MENU_4;
+	close;
+// 過程說明
+L_MENU_1:
+        mes "[離婚 服務人員]";
+	mes "首先確認新郎新娘們，";
+	mes "有都向我申請嗎？";
+	mes "當然兩位都是結過婚的人才對啊？";
+	mes "假如有申請的話，請兩位組隊之后申請.";
+	next;
+        mes "[離婚 服務人員]";
+	mes "男方先說話，然后確定要";
+	mes "離婚的決心，離婚才能執行";
+	mes "離婚才能執行,說完后請等待新娘說.";
+	next;
+        mes "[離婚 服務人員]";
+	mes "然后我會問新娘男方的名字";
+	mes "名字不能講錯，要講正確";
+	mes "離婚才能執行.";
+	next;  
+        mes "[離婚 服務人員]";
+	mes "最后一點，講完名字后，回答要快";
+	mes "當^ff0000新郎講完話，在2分鐘之內，把所有的過程都做完吧^000000";
+	mes "要不然，離婚會停止";
+        close;
+L_MENU_3:
+        //如果正式完成了離婚.則不能重新開始
+	if ( EVENT_DIVORCE_APPLY == 2 ) goto L_DIVORCE;
+	mes "[離婚 服務人員]";
+	mes "或許重新開始也不錯";
+	mes "希望你能找到真正合適的伴侶";
+	set EVENT_DIVORCE_APPLY, 0;
+	close;
+//	===================單身軍團出現=========================
+L_MENU_4:
+	enablenpc "wed01";
+	enablenpc "wed02";
+	enablenpc "wed03";
+	enablenpc "wed04";
+	enablenpc "wed05";
+	enablenpc "wed06";
+	emotion 23;
+	mes "[單身 軍團]";
+	mes "精煉要自己做，才會做出好東西！";
+	mes "在洞穴里面組隊是奢侈的行為！";
+	mes "我可以施下出心型的 NPC！";
+	mes "從出生到轉職，都是自己練的！";
+	mes "過圣誕節的時候，到外面拔草求生！";
+	mes "…我們是無敵的單身軍團！";
+	next;
+	emotion 4;
+	disablenpc "wed01";
+	disablenpc "wed02";
+	disablenpc "wed03";
+	disablenpc "wed04";
+	disablenpc "wed05";
+	disablenpc "wed06";
+	close;
+L_DIVORCE:
+        mes "[離婚 服務人員]";
+	mes "你還沒有伴侶哦~";
+        next;
+        close;
+// 離婚申請
+L_MENU_2:
+	mes "[離婚 服務人員]";
+	mes "想要離婚的話要申請噢，";
+	mes "男性要交出^0000881,300,000金幣和結婚戒指";
+	mes "女性要交^0000881,200,000";
+	mes "金幣和結婚戒指然后填寫申請書即可，";
+	mes "假如男女雙方都有申請的話，";
+	mes "就可以離婚了";
+	next;
+	mes "[離婚 服務人員]";
+	mes "請問你要申請離婚嗎?";
+        menu "是",-,"不是",L_NOdivorce;
+        // 是否登記或者已經結婚
+	if ( EVENT_MARRIAGE_APPLY < 3 ) goto L_L1;
+        if ( EVENT_DIVORCE == 1 ) goto L_L2;
+        
+        // 將流程完全分開，方便以后修改
+        if ( Sex == 1 ) goto L_MALE_LI;
+	goto L_FEMALE_LI;
+	close;
+	//	====================男方登記====================
+L_MALE_LI:
+        // 沒有組隊則提示并退出！
+	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
+        // 如果有人已經申請或開始離婚，則提示等候
+	if ( $@li_party_id != 0 ) goto L_MUST_WAIT;
+        // 檢查要求的報名道具
+	if( countitem(2634) < 1 ) goto L_LOSTD;	// 檢查結婚戒指
+	if( Zeny < 1300000 ) goto L_LOSTM;	// 檢查登記費用
+        // 全部帶齊則扣除報名費
+	set Zeny, Zeny - 1300000;
+	// 暫存申請人AID，NAME
+	set $@divorce_male, getcharid(0);
+	set $@divorce_male_name$, strcharinfo(0);
+        // 暫存申請人PARTY ID
+	set $@li_party_id, getcharid(1);
+        // 將申請人狀態改為申請完畢！
+	set EVENT_DIVORCE_APPLY, 1;
+        
+        set $@EVENT_DIVORCE, 1;
+	
+	mes "[離婚 服務人員]";
+	mes "請在^FF00002分鐘^000000內完成離婚哦！";
+	
+	// 男方申請完畢，開始計時！
+	initnpctimer "TimerDivorce";
+	close;
+//	====================女方登記====================
+L_FEMALE_LI:
+        if ( $@EVENT_DIVORCE != 1 ) goto L_WAIT;
+	// 沒有組隊則提示并退出！
+	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
+	// 檢查是否為申請人同一組隊！
+	if ( getcharid(1) != $@li_party_id ) goto L_MUST_WAIT;
+	// 檢查要求的報名道具
+	if( countitem(2635) < 1 ) goto L_LOSTD;	// 檢查結婚戒指
+	if( Zeny < 1200000 ) goto L_LOSTM;	// 檢查登記費用
+        // 核對名字是否與男方登記人一樣
+        mes "[離婚 服務人員]";
+        mes "請輸入^FF0000男方^000000的名字！";
+        next;
+        input $@li_name$;
+	if($@divorce_male_name$ != $@li_name$) goto L_DISAGREE;
+	// 全部帶齊則扣除報名費
+	set Zeny, Zeny - 1200000;
+        // 暫存女方AID，NAME
+	set $@divorce_female, getcharid(0);
+	set $@divorce_female_name$, strcharinfo(0);
+        // 將申請人狀態改為申請完畢！
+	set EVENT_DIVORCE_APPLY, 1;
+        
+        mes "[離婚 服務人員]";
+	mes "請在^FF00002分鐘^000000內完成離婚哦！";
+        enablenpc "divorce_ring";
+        close;
+//	==================不滿足條件后的跳轉====================
+L_NO_TEAM:
+	mes "[離婚 服務人員]";
+	mes "不行哦！";
+	mes "必須先和你的愛人^FF0000組隊^000000！";
+	close;
+	
+L_MUST_WAIT:
+	mes "[離婚 服務人員]";
+	mes "嗯，好像已經有人申請了";
+	mes "看樣子，你不得不等一會";
+	mes "不好意思啊！";
+	close;
+	
+L_LOSTD:
+	mes "[離婚 服務人員]";
+	mes "你好像忘記帶，";
+	mes "離婚時的戒指了，";
+	mes "是不是放在別的地方了呢？";
+	mes "仔細的找找之后，再來找我吧";
+	close;
+	
+L_LOSTM:
+	next;
+	mes "[離婚 服務人員]";
+	mes "你身上的現金好像不足喔";
+	close;
+L_L1:
+	mes "[離婚 服務人員]";
+	mes "你還沒結婚哦";
+	close;
+L_L2:
+       mes "[離婚 服務人員]";
+       mes "申請過了就不要申請了.";
+       close;
+L_NOdivorce:
+	mes "[離婚 服務人員]";
+	mes "祝你有一個開心的一天…！";
+	close;
+L_WAIT:
+	mes "[離婚 服務人員]";
+	mes "我的孩子別急別急";
+	mes "先等男方宣誓吧！";
+	close;
+L_DISAGREE:
+	mes "[離婚 服務人員]";
+	mes "哦！？我的上帝啊！";
+	mes "你居然記錯了愛人的名字！";
+	mes "看來雙方的意見還沒有統一,好好商量一下吧！！";
+	close;
+}
+prt_church.gat,94,97,4 script divorce_ring  111,20,20,{
+	// 檢查性別
+	if ( Sex == 0 ) goto L_FEMALE;
+	goto L_MALE;
+	end;
+L_FEMALE:
+	// 檢查人物ID
+	if ( getcharid(0) != $@divorce_female ) end;
+	// 檢查是否沒有完成婚典
+	if ( EVENT_DIVORCE_APPLY != 1 ) end;
+	// 檢查是否婚典進行
+	if ( $@EVENT_DIVORCE == 1 ) goto L_FEMALE_FIRST;
+	
+        // 女方后移動
+        if ( $@GOOD != 1 ) goto Fall;
+	mes "[離婚 服務人員]";
+	mes "聽我的宣布吧！";
+	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚完成了！",15;
+	set EVENT_DIVORCE_APPLY, 2;
+        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標志設為0
+	set $@li_party_id,0;
+        set $@divorce_male,0;
+        set $@divorce_female,0;
+	set $@divorce_male_name$,0;
+	set $@divorce_female_name$,0;
+        set $@GOOD, 0;
+	stopnpctimer "TimerDivorce";
+	disablenpc "divorce_ring";
+	close;
+// 女方先移動
+L_FEMALE_FIRST:
+	set EVENT_MARRIAGE_APPLY, 0;//把結婚的標志設為0
+	set $@EVENT_DIVORCE, 0;
+        set EVENT_DIVORCE_APPLY, 2;
+	// 完成離婚
+	set Result, divorce($@divorce_male_name$);
+        if (Result>0) goto L_DivorceOK;
+        if (Result==0) goto L_DivorceFail;
+	close;
+L_MALE:
+	// 檢查人物ID
+	if ( getcharid(0) != $@divorce_male ) end;
+	// 檢查是否沒有完成婚典
+	if ( EVENT_DIVORCE_APPLY != 1 ) end;
+	// 檢查是否是婚典進行
+	if ( $@EVENT_DIVORCE == 1 ) goto L_MALE_FIRST;
+	
+	// 男方后移動
+        if ( $@GOOD != 1 ) goto Fall;
+	mes "[離婚 服務人員]";
+	mes "聽我的宣布吧！";
+	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚完成了！",15;
+	set EVENT_DIVORCE_APPLY, 2;
+        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標志設為0
+	set $@li_party_id,0;
+        set $@divorce_male,0;
+        set $@divorce_female,0;
+	set $@divorce_male_name$,0;
+	set $@divorce_female_name$,0;
+        set $@GOOD, 0;
+	stopnpctimer "TimerDivorce";
+	disablenpc "divorce_ring";
+	close;
+
+	// 男方先移動
+L_MALE_FIRST:
+        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標志設為0
+	set $@EVENT_DIVORCE, 0;
+        set EVENT_DIVORCE_APPLY, 2;
+	// 完成離婚
+	set Result, divorce($@divorce_female_name$);
+        if (Result>0) goto L_DivorceOK;
+        if (Result==0) goto L_DivorceFail;
+	close;
+L_DivorceOK:
+        mes "[離婚 服務人員]";
+	mes "成功~";
+        set $@GOOD, 1;
+        close;
+L_DivorceFail:
+        mes "[離婚 服務人員]";
+	mes "失敗~";
+        close;
+Fall:   
+        mes "[離婚 服務人員]";
+	mes "離婚失敗~";
+        close;	
+OnInit:
+	disablenpc "divorce_ring";
+	end;
+}
+// 用于整個離婚的計時！從開始到結束規定時間：2分鐘
+prt_church.gat,97,99,0	script	TimerDivorce	-1,{
+	end;
+OnTimer120000:
+	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚終止了！",15;
+	set $@li_party_id,0;
+        set $@divorce_male,0;
+        set $@divorce_female,0;
+	set $@divorce_male_name$,0;
+	set $@divorce_female_name$,0;
+	stopnpctimer;
+	end;
+OnInit:
+	disablenpc "divorce_ring";
+	end;
+}

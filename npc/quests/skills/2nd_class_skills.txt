@@ -1,0 +1,826 @@
+//===== DAthena Script ======================================= 
+//= 新技能任務
+//===== By: ================================================== 
+//= Lupus, Reddozen    TRANS BY ZZRR3[DAthena]
+//===== Current Version: ===================================== 
+//= 1.3a
+//===== Compatible With: ===================================== 
+//= eAthena Revision 3800+
+//===== Description: ========================================= 
+//= Temp quests for new skills for 2nd classes
+//===== Additional Comments: ================================= 
+//= 1.0 for fully working skills only [Lupus]
+//= 1.1 Added more new skill quests for more classes [Lupus]
+//= Somehow eA engine doesn't let you keep learn't skill V_V'
+//= 1.2 Added to correct locations, correct NPC's, fixed
+//= some of the items required and made them into real
+//= quests. [Reddozen] 
+//= 1.3 Fixed bugs and minor typos. Optimized [Lupus]
+//= 1.3a fixed an item ID typo, thx 2Spiritual Kid
+//============================================================
+
+
+//============================================================
+// SAGE SKILL - 制造轉換器 + 元素轉換器
+//============================================================
+yuno_in03.gat,176,24,3	script	Mischna	755,{
+	mes "[Mischna]";
+	if(BaseJob!=Job_Sage) goto L_sageno;
+	if(getskilllv(1007)) goto L_elemental;
+
+	mes "我能教會你新的技能";
+	mes "但是你必須帶給我點東西~";
+	mes "學技能所要用到的~.";
+	next;
+	
+	mes "[Mischna]";
+	mes "我們需要:";	
+	mes "10 蝎子尾巴";
+	mes "7 硬角";
+	mes "12 彩色昆蟲外殼";
+	mes "10 蝸牛殼";
+	mes "4 空白卷軸";
+	next;
+	
+	mes "[Mischna]";
+	mes "檢查一下你的物品哦.";
+	next;
+	
+	if(countitem(904)<10 || countitem(947)<7 || countitem(1013)<12 || countitem(946)<10 || countitem(7433)<4) goto L_noitems;//Items: Scorpion_Tail, Horn, Rainbow_Shell, Snail's_Shell, Blank_Scroll,
+	delitem 904, 10;//Items: Scorpion_Tail,
+	delitem 947, 7;//Items: Horn,
+	delitem 1013, 12;//Items: Rainbow_Shell,
+	delitem 946, 10;//Items: Snail's_Shell,
+	delitem 7433, 4;//Items: Blank_Scroll,
+	
+	mes "[Mischna]";
+	mes "讓我展示下我的才能吧~~";
+	skill 1007,1,0;
+	next;
+	
+	mes "[Mischna]";
+	mes "你能在自然中領悟嗎？";
+	close;
+
+L_noitems:
+	mes "[Mischna]";
+	mes "你沒帶足物品哦~~";
+	mes "等你收集完了再來找我吧";
+	close;
+	
+L_sageno:
+	mes "Hi~~";
+	mes "祝賀你 你的名字將會";
+	mes "留在賢者工會的墻上";
+	close;
+
+L_sagefail:
+	mes "[Mischna]";
+	mes "你沒有足夠的物品.";
+	mes "等你有了再回來找我";
+	mes "那時我會教你使用元素的力量";
+	close;
+	
+L_alreadyhave:
+	mes "你是個不錯的學生";
+	mes "可惜..我沒什么能再教你了";
+	close;
+			
+L_elemental:
+	if(getskilllv(1008) || getskilllv(1017) || getskilllv(1018) || getskilllv(1019)) goto L_alreadyhave;
+	
+	mes "我能教會你另一個技能~";
+	mes "但是你得帶些東西給我做為回報";
+	next;
+	
+	mes "[Mischna]";
+	mes "20 火靈礦石";
+	mes "20 水靈礦石";
+	mes "20 風靈礦石";
+	mes "20 地靈礦石";
+	next;
+	
+	mes "[Mischna]";
+	mes "我只能教會你一個！！";
+	mes "選的時候要仔細哦！！";
+	next;
+	
+	menu "水屬性轉換器",sage_1, "地屬性轉換器",sage_2, "火屬性轉換器",sage_3, "風屬性轉換器",sage_4;
+
+		sage_1:
+		if(countitem(991)<20)goto L_sagefail;//Items: Crystal_Blue,
+		delitem 991, 20;		//Items: Crystal_Blue,
+		skill 1008,1,0;
+		goto L_alreadyhave;
+
+		sage_2:
+		if(countitem(993)<20)goto L_sagefail;//Items: Green_Live,
+		delitem 993, 20;//Items: Green_Live,
+		skill 1017,1,0;
+		goto L_alreadyhave;
+
+		sage_3:
+		if(countitem(990)<20)goto L_sagefail;//Items: Red_Blood,
+		delitem 990, 20;//Items: Red_Blood,
+		skill 1018,1,0;
+		goto L_alreadyhave;
+
+		sage_4:
+		if(countitem(992)<20)goto L_sagefail;//Items: Wind_of_Verdure,
+		delitem 992, 20;//Items: Wind_of_Verdure,
+		skill 1019,1,0;
+		goto L_alreadyhave;
+}
+
+//============================================================
+// 獵人的技能 - 幻箭
+//============================================================
+payon_in02.gat,54,13,7	script	Master Kabac	55,{
+	mes "[Master Kabac]";
+	if(BaseJob!=Job_Hunter) goto L_hunterno;
+	if(getskilllv(1009)) goto L_alreadyhave;
+	if(JobLevel<40) goto L_nojob;
+
+	mes "我告訴你個秘密哦~";
+	mes "這個技能是我的家族一代代傳下來的";
+	mes "我們家族保守這個秘密很久了";
+	mes "但是我能透露點給你";
+	mes "作為參考~";
+	next;
+	mes "[Master Kabac]";
+	mes "我需要點東西~";
+	mes "5 詛咒紅寶石";
+	mes "5 哈比的羽毛";
+	mes "30 寵物飼料";
+	next;
+	
+	mes "[Master Kabac]";
+	mes "我來檢查下你帶的東西.";
+	next;
+	
+	if(countitem(724)<5 || countitem(7115)<5 || countitem(537)<30) goto L_noitems;//Items: Cursed_Ruby, Harpy_Feather, Pet_Food,
+	delitem 724, 5;//Items: Cursed_Ruby,
+	delitem 7115, 5;//Items: Harpy_Feather,
+	delitem 537, 30;//Items: Pet_Food,
+	
+	mes "[Master Kabac]";
+	mes "都帶來了,";
+	mes "我來教你我引以為傲的技能吧！";
+	skill 1009,1,0;
+	close;
+
+L_noitems:
+	mes "[Master Kabac]";
+	mes "你沒帶足東西.";
+	mes "等你有了再來找我吧";
+	close;
+		
+L_nojob:
+	mes "當你成為個真正的獵人的時候";
+	mes "再來吧.";
+	mes "最起碼40級！";
+	close;
+
+L_alreadyhave:
+	mes "哈~你回來我看我了？";
+	close;
+	
+L_hunterno:
+	mes "我能幫你什么忙嗎？";
+	mes "我想你大概找錯人了 我只是個老頭";
+	close;
+}
+
+//============================================================
+// 鐵匠技能 - 貪欲 + 可疑的商業策略
+//============================================================
+//== DOODDAY - GREED SKILL ===================================
+geffen.gat,172,53,7	script	Goodday	826,{
+	mes "[Goodday]";
+	if(BaseJob!=Job_Blacksmith) goto L_nosmith;
+	if(getskilllv(1013)) goto L_alreadyhave;
+	if(Weight < 5000 || (Weight > MaxWeight-MaxWeight/10)) goto L_notstrong;
+
+	mes "你看起來非常強壯啊！";
+	mes "我想我能教你個技能~";
+	mes "就像巫師移動東西不用手一樣";
+	skill 1013,1,0;
+	close;
+
+L_notstrong:
+	mes "等你再強壯些回來找我吧";
+	mes "當你的負重超過5000";
+	mes "但不高與你90%的負重";
+	close;
+
+L_nosmith:
+	mes "吉芬是個不錯的城市啊.";
+	mes "難道你不這樣認為嗎?";
+	next;
+	emotion 23;
+	mes "[Goodday]";
+	mes "什么？";
+	mes "你不這樣想？!";	
+	close;
+
+L_alreadyhave:
+	mes "我已經把我知道的傳授給你了";
+	mes "所以你不必再回來找我了";
+	close;
+}
+
+//== AKI - UNFAIR TRICK SKILL ==================================
+geffen.gat,178,72,7	script	Aki	726,{
+	mes "[Aki]";
+	if(BaseJob!=Job_Blacksmith) goto L_nosmith;
+	if(getskilllv(1012)) goto L_alreadyhave;
+	if(getskilllv(1013)<1) goto L_nogreed;
+	if(JobLevel<30) goto L_nojob;
+	mes "我們需要點東西";
+	mes "幫我帶來我就教你:";
+	mes "2 鋼鐵";
+	mes "8 煤礦";
+	mes "2 鋼鐵錘子";
+	mes "1 帝特立米藥水";
+	mes "500 Zeny";
+	next;
+	
+	mes "[Aki]";
+	mes "讓我檢查下你的物品.";
+	next;
+	
+	if(countitem(999)<2 || countitem(1003)<8 || countitem(613)<2 || countitem(971)<1 || zeny<500) goto L_noitems;//Items: Steel, Coal, Iron_Hammer, Detrimindexta,
+	delitem 999, 2;//Items: Steel,
+	delitem 1003, 8;//Items: Coal,
+	delitem 613, 2;//Items: Iron_Hammer,
+	delitem 971, 1;//Items: Detrimindexta,
+	set zeny, zeny-500;
+	
+	mes "[Aki]";
+	mes "很好，你把東西都帶來了";
+	mes "我們開始學習吧~";
+	skill 1012,1,0;
+	next;
+	
+	specialeffect 183;
+	mes "哇！你學的真快！";
+	mes "好好使用你的新技能!";
+	close;
+
+L_noitems:
+	mes "[Aki]";
+	mes "你沒有足夠的東西哦.";
+	mes "等你有了再來找我吧";
+	close;
+	
+L_nosmith:
+	mes "不要整天呆在這無聊的地方.";
+	mes "但是~他卻喜歡這個無聊的地方~";
+	emotion e_laugh;
+	close;
+
+L_nogreed:
+	mes "如果你還想學點什么";
+	mes "那你就站在這跟天氣說話吧~";
+	close;
+
+L_alreadyhave:
+	mes "我想你已經學過了";
+	mes "吉芬那你也許還能再學會個技能~";
+	close;
+	
+L_nojob:
+	mes "等你成為名鐵匠再來吧";
+	mes "最起碼30級的鐵匠啊！";
+	close;
+}
+
+//============================================================
+// 十字軍技能 - 退避
+//============================================================
+geffen.gat,110,118,3	script	Ford	752,{
+	mes "[Ford]";
+	if(BaseJob!=Job_Crusader) goto L_nocruz;
+	if(getskilllv(1002)) goto L_alreadyhave;
+	mes "也許我能教你個技能";
+	mes "但你得帶點東西給我...";
+	next;
+	mes "[Ford]";
+	mes "1 紅色藥水";
+	mes "20 粘稠液體";
+	mes "3 空瓶";
+	mes "5 杰勒比結晶";
+	mes "1 青蘋果";
+	mes "1 葡萄";
+	mes "1 煤礦";
+	mes "3 賽依伐";
+	next;
+	
+	mes "[Ford]";
+	mes "我來檢查下你的東西~.";
+	next;
+	
+	if(countitem(501)<1 || countitem(938)<20 || countitem(713)<3 || countitem(909)<5 || countitem(619)<1 || countitem(514)<1 || countitem(1003)<1 || countitem(7053)<3)goto L_noitems;//Items: Red_Potion, Sticky_Mucus, Empty_Bottle, Jellopy, Unripe_Apple, Grape, Coal, Cyfar,
+	delitem 501, 1;//Items: Red_Potion,
+	delitem 938, 20;//Items: Sticky_Mucus,
+	delitem 713, 3;//Items: Empty_Bottle,
+	delitem 909, 5;//Items: Jellopy,
+	delitem 619, 1;//Items: Unripe_Apple,
+	delitem 514, 1;//Items: Grape,
+	delitem 1003, 1;//Items: Coal,
+	delitem 7053, 3;//Items: Cyfar,
+	mes "[Ford]";
+	mes "拾次篩子.";
+	mes "我可從來沒輸過~";
+//TODO: add DICE emotions? 8)
+	emotion 29;
+	next;
+	if(rand(1,6)!=3) goto L_lose;
+	emotion 58;
+	next;
+	
+	skill 1002,1,0;
+	mes "[Ford]";
+	mes "我不相信我輸了！！";
+	mes "我從沒輸過！。。新技能你已經學會了";
+	emotion 28;
+	close;
+	
+L_noitems:
+	mes "[Ford]";
+	mes "你還沒足夠的物品來學習啊.";
+	mes "等你有了再來找我~";
+	close;
+		
+L_lose:
+	emotion 63;
+	next;
+	mes "[Ford]";
+	mes "我又贏了!!";
+	mes "不打算教你了~";
+	mes "如果你想學那就再來次吧";
+	close;
+	
+L_nocruz:
+	mes "如果你不是十字軍,";
+	mes "那我們沒什么可談的";
+	close;
+	
+L_alreadyhave:
+	mes "嘿！你真幸運啊！~";
+	mes "這個技能就是要的幸運~";
+	close;
+}
+
+//============================================================
+// 武僧 - 氣力注入 + 氣爆發  //好象有點問題？客戶端補丁上是BALKYOUNG 而這里是KI EXPLODE
+//============================================================
+monk_test.gat,316,69,3	script	Krate	823,{
+	mes "[Krate]";
+	if(BaseJob!=Job_Monk) goto L_nomonk;
+	if(getskilllv(1015) && getskilllv(1016)) goto L_alreadyhave;
+	if(monk_skill) goto L_verif;
+	if(Weight>0) goto L_heavymonk;
+	mes "我能教你個技能~但你得帶點東西給外哦:";
+	mes "40 植物梗";
+	mes "3 芽苗";
+	set monk_skill, 1;
+	next;
+	goto L_verif;
+	
+L_verif:
+	mes "我來檢查下你的東西.";
+	next;
+	if(countitem(711)<3 || countitem(905)<40) goto L_noitems;//Items: Shoot, Stem,
+	delitem 711, 3;//Items: Shoot,
+	delitem 905, 40;//Items: Stem,
+	next;
+	mes "[Krate]";
+	mes "你都帶來了,";
+	mes "那我現在來教你吧.";
+	skill 1015,1,0;
+	skill 1016,1,0;
+	set monk_skill, 0;
+	close;
+	
+L_noitems:
+	mes "[Krate]";
+	mes "你沒足夠的物品.";
+	mes "等你有了再來找我";
+	close;
+	
+L_nomonk:
+	mes "看上去你的靈魂與你的肉體不吻合";
+	mes "等你的身體與靈魂達到了陰陽合壁的時候再來找我吧.";
+	emotion e_gasp;
+	close;
+	
+L_alreadyhave:
+	mes "我已經教過你了";
+	close;
+
+L_heavymonk:
+	mes "等你忘記了人世間的浮塵再來找我吧";
+	close;
+}
+
+//============================================================
+// 練金 - 屬性藥水制造
+//============================================================
+yuno_in04.gat,33,108,5	script	Pislik	750,{
+	mes "[Pislik]";
+	if(BaseJob!=Job_Alchem) goto L_noalche;
+	if(countitem(7434)) goto L_alreadyhave;//Items: Elemental_Potion_Creation_Guide,
+	if(JobLevel<40) goto L_nojob;
+
+	mes "要我教你新技能";
+	mes "但你得帶些東西給我";
+	mes "5 黃色魔力礦石";
+	mes "4 空藥瓶";
+	mes "10 人魚之心";
+	mes "10 蛾蝶蟲翅膀粉末";
+	mes "20 噬人樹花";
+	mes "1 旋轉眼鏡0洞";
+	next;
+	
+	mes "[Pislik]";
+	mes "Let me check your items.";
+	next;
+	
+	if(countitem(715)<5 || countitem(1093)<4 || countitem(950)<10 || countitem(1057)<10 || countitem(1032)<20 || countitem(2243)<1) goto L_noitems;//Items: Yellow_Gemstone, Empty_Potion_Bottle, Heart_of_Mermaid, Moth_Dust, Maneater_Blossom, Geek_Glasses,
+	delitem 715, 5;//Items: Yellow_Gemstone,
+	delitem 1093, 4;//Items: Empty_Potion_Bottle,
+	delitem 950, 10;//Items: Heart_of_Mermaid,
+	delitem 1057, 10;//Items: Moth_Dust,
+	delitem 1032, 20;//Items: Maneater_Blossom,
+	delitem 2243, 1;//Items: Geek_Glasses,
+	getitem 7434, 1;//Items: Elemental_Potion_Creation_Guide,
+
+	mes "[Pislik]";
+	mes "我想你都帶來了,";
+	mes "我把我的手冊也給你.";
+	close;
+	
+L_noitems:
+	mes "[Pislik]";
+	mes "你沒足夠的東西.";
+	mes "等你有了再來找我";
+	close;
+	
+L_noalche:
+	mes "對不起，我的知識僅限于練金.";
+	mes "很遺憾不能幫你..";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經給你啦";
+	mes "我的屬性藥水制造手冊...";
+	close;
+
+L_nojob:
+	mes "當你成為一名練金時再來我找吧";
+	close;
+}
+
+//prontera.gat,147,135,6	script	Skill Master	749,{
+//	//Rocker Egg x 2
+//	callfunc "F_Skill2Quest","Skill Master", 238,"Basis of Life", Job_Alchem, 9011,2, //250000;
+//	end;
+//}
+
+//============================================================
+// 刺客 - 音速投擲加速 + 投擲劇毒短刀
+//============================================================
+in_moc_16.gat,14,21,3	script	Kiltin	884,{
+	mes "[Kiltin]";
+	if(BaseJob!=Job_Assassin) goto L_nosin;
+	if(getskilllv(1003) && getskilllv(1004)) goto L_alreadyhave;
+
+	mes "給我點物品我能教你的新技能！";
+	mes "3 藍寶石";
+	mes "1 紅寶石";
+	next;
+	
+	mes "[Kiltin]";
+	mes "讓我檢查下你的東西帶全沒.";
+	next;
+	
+	if(countitem(726)<3 || countitem(723)<1) goto L_noitems;//Items: Sapphire, Ruby,
+	delitem 726, 3;//Items: Sapphire,
+	delitem 723, 1;//Items: Ruby,
+
+	mes "[Kiltin]";
+	mes "我決定教你了！";
+	mes "看好啦~~";
+	skill 1003,1,0;
+	skill 1004,1,0;
+	close;
+	
+L_noitems:
+	mes "[Kiltin]";
+	mes "你沒帶足物品.";
+	mes "等你帶足了再來找我吧";
+	close;
+		
+L_nosin:
+	mes "對不起，你不是刺客.";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+}
+
+//============================================================
+// BARD - 苦痛之聲
+//============================================================
+prontera.gat,134,328,7	script	Timid man	89,{
+	mes "[Timid man]";
+	if(BaseJob!=Job_Bard) goto L_nobard;
+	if(getskilllv(1010)) goto L_alreadyhave;
+	if(JobLevel<40) goto L_nojob;
+
+	mes "我能教你個技能";
+	mes "但是你得給我一樣我一直渴望得到的物品";
+	mes "1 熱帶_蘇克拉特";
+	next;
+	
+	mes "[Timid man]";
+	mes "我來檢查下你的物品.";
+	next;
+	
+	if (countitem(12112)<1) goto L_noitems;//Items: Tropical_Sograt,
+	delitem 12112, 1;//Items: Tropical_Sograt,
+	mes "[Timid man]";
+	mes "你帶來了我想要的東西,";
+	mes "所以我也會教你新的技能.";
+	skill 1010,1,0;
+	close;
+	
+L_noitems:
+	mes "[Timid man]";
+	mes "你沒帶來我要的東西.";
+	mes "等你帶來了再來找我吧";
+	close;
+		
+L_nobard:
+	mes "你看上去不像個有音樂天分的人";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你了";
+	close;
+
+L_nojob:
+	mes "等你成為一名詩人在來找我吧";
+	close;
+}
+
+//============================================================
+// DANCER - WINK OF CHARM
+//============================================================
+comodo.gat,205,171,7	script	Chanel	724,{
+	mes "[Chanel]";
+	if(BaseJob!=Job_Dancer) goto L_nodancer;
+	if(getskilllv(1011)) goto L_alreadyhave;
+	mes "帶來這些東西我將會教你個技能~！";
+	mes "1 水晶鏡子";
+	mes "1 酒精";
+	mes "1 白色盤子";
+	mes "1 蘋果";
+	mes "3 香蕉";
+	mes "5 姜餅";
+	next;
+	
+	mes "[Chanel]";
+	mes "檢查下你的物品哦~";
+	next;
+	
+	if(countitem(747)<1 || countitem(970)<1 || countitem(736)<1 || countitem(512)<1 || countitem(513)<3 || countitem(538)<5) goto L_noitems;//Items: Crystal_Mirror, Alcohol, China, Apple, Banana, Well-baked_Cookie,
+	delitem 747, 1;//Items: Crystal_Mirror,
+	delitem 970, 1;//Items: Alcohol,
+	delitem 736, 1;//Items: China,
+	delitem 512, 1;//Items: Apple,
+	delitem 513, 3;//Items: Banana,
+	delitem 538, 5;//Items: Well-baked_Cookie,
+
+	mes "[Chanel]";
+	mes "你都帶來了,";
+	mes "很好，我們開始學技能.";
+	skill 1011,1,0;
+	close;
+	
+L_noitems:
+	mes "[Chanel]";
+	mes "你還沒帶足所需的物品.";
+	mes "等收集滿了再來找我";
+	close;
+		
+L_nodancer:
+	mes "你看上去不像是個有音樂天分的人";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+}
+
+//============================================================
+// 騎士 - 沖鋒攻擊
+//============================================================
+prt_in.gat,84,98,3	script	Esope	734,{
+	mes "[Esope]";
+	if(BaseJob!=Job_Knight) goto L_noknight;
+	if(getskilllv(1001)) goto L_alreadyhave;
+
+	mes "給我這點東西我將教你個新技能:";
+	mes "5 拐杖糖";
+	mes "3 永恒玫瑰";
+	next;
+	
+	mes "[Esope]";
+	mes "我來檢查下你的東西哦~.";
+	next;
+	
+	if(countitem(530)<5 || countitem(748)<3)goto L_noitems;//Items: Candy_Cane, Witherless_Rose,
+	delitem 530, 5;//Items: Candy_Cane,
+	delitem 748, 3;//Items: Witherless_Rose,
+	
+	mes "[Esope]";
+	mes "你帶來了足夠的東西";
+	mes "那我也開始教你新的技能~.";
+	skill 1001,1,0;
+	close;
+
+L_noitems:
+	mes "[Esope]";
+	mes "你還沒帶足道具.";
+	mes "等你收集完了再來找我吧";
+	close;
+		
+L_noknight:
+	mes "回來看你師傅來了?";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+}
+
+//============================================================
+// 流氓 - 緊密封鎖
+//============================================================
+in_rogue.gat,387,94,3	script	Hyzaragrack	84,{
+	mes "[Hyzaragrack]";
+	if(BaseJob!=Job_Rogue) goto L_norogue;
+	if(getskilllv(1005)) goto L_alreadyhave;
+
+	mes "給我這點東西我將教你個新技能";
+	mes "5 不死心臟";
+	mes "5 石心";
+	mes "2 燃燒的心臟";
+	next;
+	
+	mes "[Hyzaragrack]";
+	mes "我來檢查下你的東西哦~";
+	next;
+	
+	if(countitem(929)<5 || countitem(953)<5 || countitem(7097)<2) goto L_noitems;//Items: Immortal_Heart, Stone_Heart, Burning_Heart,
+	delitem 929, 5;//Items: Immortal_Heart,
+	delitem 953, 5;//Items: Stone_Heart,
+	delitem 7097, 2;//Items: Burning_Heart,
+	
+	mes "[Hyzaragrack]";
+	mes "你帶來了足夠的東西~";
+	mes "現在我開始教你新技能~.";
+	skill 1005,1,0;
+	close;
+
+L_noitems:
+	mes "[Hyzaragrack]";
+	mes "你還沒帶足道具.";
+	mes "等你收集完了再來找我吧";
+	close;
+	
+L_norogue:
+	mes "回來看你師傅來了?";
+	emotion e_gasp;
+	close;
+	
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+}
+
+//============================================================
+// 巫師 - 火狩沖擊
+//============================================================
+gef_tower.gat,116,37,1	script	Nyao	748,{
+	mes "[Nyao]";
+	if(BaseJob!=Job_Wizard) goto L_nowiz;
+	if(getskilllv(1006)) goto L_alreadyhave;
+
+	mes "給我這點東西我將教你個新技能:";
+	mes "10 火靈礦石";
+	mes "10 水靈礦石";
+	mes "10 風靈礦石";
+	mes "10 地靈礦石";
+	next;
+	
+	mes "[Nyao]";
+	mes "我來檢查下你的東西哦~";
+	next;
+	
+	if(countitem(990)<10 || countitem(991)<10 || countitem(992)<10 || countitem(993)<10) goto L_noitems;//Items: Red_Blood, Crystal_Blue, Wind_of_Verdure, Green_Live,
+	delitem 990, 10;//Items: Red_Blood,
+	delitem 991, 10;//Items: Crystal_Blue,
+	delitem 992, 10;//Items: Wind_of_Verdure,
+	delitem 993, 10;//Items: Green_Live,
+	
+	mes "[Nyao]";
+	mes "你帶來了足夠的東西~";
+	mes "現在我開始教你新技能~.";
+	skill 1006,1,0;
+	close;
+	
+L_noitems:
+	mes "[Nyao]";
+	mes "你還沒帶足道具.";
+	mes "等你收集完了再來找我吧";
+	close;
+	
+L_nowiz:
+	mes "你一定要有魔力才行啊~呵呵.";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+}
+
+//============================================================
+// 牧師 - 犧牲
+//============================================================
+prt_church.gat,111,112,3	script	Nun Linus	79,{
+	mes "[Nun Linus]";
+	if(BaseJob!=Job_Priest) goto L_nopriest;
+	if(getskilllv(1014)) goto L_alreadyhave;
+	if(getskilllv(54)<1) goto L_norez;
+
+	mes "給我這點東西我將教你個新技能";
+	mes "1 藍色魔力礦石";
+	mes "1 圣水";
+	next;
+	
+	mes "[Nun Linus]";
+	mes "我來檢查下你的東西哦~";
+	next;
+	
+	if(countitem(717)<1 || countitem(523)<1) goto L_noitems;//Items: Blue_Gemstone, Holy_Water,
+	delitem 717, 1;//Items: Blue_Gemstone,
+	delitem 523, 1;//Items: Holy_Water,
+	
+	mes "[Nun Linus]";
+	mes "你把東西都帶來了~,";
+	mes "現在看看上帝肯不肯讓我教你";
+	next;
+	if(rand(100)<JobLevel+25) goto L_bless;
+	mes "[Nun Linus]";
+	mes "不好意思~上帝沒看見你哦~";
+	mes "再試一次！給他看吧";
+	mes "證明你是個很強的牧師！";
+	close;
+	
+L_bless:
+	mes "[Nun Linus]";
+	mes "上帝同意咯~~";
+	skill 1014,1,0;
+	close;
+	
+L_noitems:
+	mes "[Nun Linus]";
+	mes "你還沒帶足道具.";
+	mes "等你收集完了再來找我吧";
+	close;
+		
+L_nopriest:
+	mes "對不起，你應該相信上帝才對.";
+	emotion e_gasp;
+	close;
+
+L_alreadyhave:
+	mes "我已經教過你啦~！";
+	close;
+
+L_norez:
+	mes "等你成為一名為上帝代言的牧師";
+	mes "在來吧~";
+	close;
+}
+

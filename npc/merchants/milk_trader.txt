@@ -1,0 +1,86 @@
+// 牛奶商人腳本
+// 
+// 中文化作者:		Robert 蝴蝶君 2004-1-30 Mailto:robert_st@21cn.com
+// 
+// 中文版本編號:	20041201.0.1
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Milk Trader
+//===== By: ================================================== 
+//= kobra_k88
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= eAthena 7.15 +
+//===== Description: ========================================= 
+//= trades bottles for milk
+//===== Additional Comments: ================================= 
+//= Fully working
+//= 1.1 Negative input bug fixed [Lupus]
+//============================================================ 
+
+
+
+
+// 牛奶商人 -------------------------------------------------------------
+prontera.gat,71,131,7	script	牛奶商人	86,{
+	mes "[牛奶商人]";
+	mes "只要你有一個空瓶子和15個金幣，就可以到我這里來換取一瓶牛奶，怎么樣，想換嗎？";
+	next;
+	menu	"幫我把所有空瓶都換成牛奶",M0,
+		"我要換取一定數量的牛奶",M1,
+		"不了，謝謝",MEnd;
+	M0:
+		set @l0,countitem(713);
+		if(@l0 < 1)
+			goto NoBottle;
+		if(Zeny < @l0 * 15)
+			goto NoZeny;
+		delitem 713,@l0;
+		set Zeny,zeny-@l0 * 15;
+		getitem 519,@l0;
+		mes "[牛奶商人]";
+		mes "已經把空瓶子都裝滿了牛奶了，謝謝您的光臨！";
+		close;end;
+		end;
+	M1:
+		mes "[牛奶商人]";
+		mes "那好吧，請在提示訊框內輸入數量。";
+		next;
+		input @number;
+		if(@number < 1 || @number > 100)
+			goto Failnum;
+		if(countitem(713) < @number)
+			goto NoBottle;
+		if(Zeny < @number * 15)
+			goto NoZeny;
+		delitem 713,@number;
+		set Zeny,Zeny - @number * 15;
+		getitem 519,@number;
+		mes "[牛奶商人]";
+		mes "OK！已經把空瓶子都裝滿了牛奶了，謝謝您的光臨！";
+		close;end;
+		end;
+	NoBottle:
+		mes "[牛奶商人]";
+		mes "對不起，你沒有足夠的空瓶子。";
+		close;end;
+		end;
+	NoZeny:
+		mes "[牛奶商人]";
+		mes "換取一瓶牛奶需要15個金幣，你沒有那么多的金幣！";
+		close;end;
+		end;
+	Failnum:
+		mes "[牛奶商人]";
+		mes "對不起，每次兌換的數量不得少于1瓶，不得多于100瓶。";
+		close;end;
+		end;
+	MEnd:
+		mes "[牛奶商人]";
+		mes "那好吧，再見！";
+		close;end;
+		end;
+}

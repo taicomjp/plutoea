@@ -1,0 +1,1482 @@
+// 鐵匠轉職腳本
+// 
+// 重整作者:		Dino9021
+// 
+// 中文版本編號:	20041202.0.1
+//
+// 原始腳本:		made by EREMES THE CANIVALIZER
+//			Converted For Athena By WestChen 2004.02.13
+//
+//============================================================
+
+
+geffen_in.gat,110,169,4	script	公會員	63,{
+	mes "[鐵匠公會 阿爾特阿伊間]";
+	mes "你好?! 我們是 鐵匠 公會!";
+	mes "我們操作在心理深處的熱情.";
+	next;
+	mes "[鐵匠公會 阿爾特阿伊間]";
+	mes "把熔化的金屬做出新武器是我們的技術!";
+	next;
+	if(Class == 0 || Class == 4001) goto LNovice;
+	if ((Class == 1) || (Class == 7) || (Class == 13)  || (Class == 14) || (Class == 4002) || (Class == 4008)  || (Class == 4015) || (Class == 4014) || (Class == 4022)) goto LSwordman;
+	if ((Class == 2) || (Class == 9) || (Class == 16) || (Class == 4003) || (Class == 4010) || (Class == 4017)) goto LMage;
+	if ((Class == 3) || (Class == 11) || (Class == 19)  || (Class == 20) || (Class == 4004) || (Class == 4012) || (Class == 4020) || (Class == 4021)) goto LArcher;
+	if ((Class == 4) || (Class == 8) || (Class == 15)  || (Class == 4005) || (Class == 4009) || (Class == 4016)) goto LAcolyte;
+	if ((Class == 6) || (Class == 12) || (Class == 17) || (Class == 4007) || (Class == 4013) || (Class == 4018)) goto LThief;
+	if(Class == 10 || Class == 4011) goto LBlacksmith;
+	if(Class == 5 || Class == 4006) goto LMerchant;
+	goto LOthers;
+
+LMerchant:
+	if(SkillPoint != 0) goto LNotReady;
+	if(Job_Black == 0) goto LTalk1;
+	goto LJobChange;
+LTalk1:
+	mes "[阿爾特阿伊間]";
+	mes "不要身為商人就滿足,不如和我們玩美麗的煙火如何啊?";
+	mes "請你寫下在那的轉職轉職申請書上寫下你的性名和職業等級.";
+	next;
+	menu "申請轉職 .",LJobChange,"要轉職需要那些條件?",LAsk,"等一下...",LCancel;
+LJobChange:
+	if(SkillPoint != 0) goto LNotReady;
+	if((JobLevel > 39) & (Job_Black == 0)) goto LTakeQuest;
+	if(JobLevel < 40) goto LNotReady2;
+	if((Job_Black > 0) & (Job_Black < 8)) goto LNotReady3;
+	if((Job_Black > 8) & (Job_Black < 15)) goto LNotReady4;
+	if(Job_Black == 15) goto LTalk2;
+	if(Job_Black == 16) goto LTalk3;
+	if((Job_Black == 17) & (countitem(1005) > 0)) goto LAllDone;
+	close;
+
+HighBla:
+	mes "[阿爾特阿伊間]";
+	mes "哎呀! 你已經是上位商人了呢!";
+	mes "很抱歉! 我沒有辦法讓你轉職成鐵匠!";
+	mes "請你去找銀匠轉職吧!";
+	mes "那才是適合你的職業!";
+	close;
+
+LTakeQuest:
+	if (Class == 4006 || ReBirth > 0) goto HighBla;
+	mes "[阿爾特阿伊間]";
+	mes "嗯...";
+	mes "你的等級還不錯喔.";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "好吧, 我們也要過慮受留公會員...";
+	mes "至少要有商人的誠實和, 有著要當鐵匠的積極的心應付考試就好了..我看看...";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "- 翻來翻去 -";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "嗯...從艾爾貝塔出差中的公會員 '蓋修坢士特'有通報, 說那邊人手不足.";
+	mes "你去幫他的忙吧... 你的第一次考試.";
+	next;
+	set Job_Black,1;
+	mes "[阿爾特阿伊間]";
+	mes "那么路上小心.";
+	close;
+LTalk2:
+	mes "[阿爾特阿伊間]";
+	mes "辛苦了!!. 第一個考試已經結束了...";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "嗯? ......哈哈哈, 并不是只考一次.";
+	mes "去夢羅克看看吧. 那邊會有負責下個考試的公會員.";
+	next;
+	menu "...太過分了吧. 但是...還是要去啊.",LTakeQuest2,"...咳啊啊啊啊嗚啊啊啊!! 我不轉職了啦!! 我不要!!",LCancel2;
+LTakeQuest2:
+	set Job_Black,16;
+	mes "[阿爾特阿伊間]";
+	mes "....很抱歉...但是辦法.";
+	mes "你應該也很清楚吧? ";
+	mes "隨便亂收一些亂七八糟的家伙之后所造成的我們公鐵匠們的下場!!";
+	mes "造成著一些不禮貌的事情而被其他人指著的小部分的人!!!";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "就是因為他們, 我們鐵匠全體都在受到很大的困擾呢!!!";
+	mes "....嗯.";
+	mes "不管怎樣....去一下夢羅克吧.你會遇到負責下場考試的公會員的.";
+	close;
+LCancel2:
+	mes "[阿爾特阿伊間]";
+	mes "什么? 你要放棄轉職?";
+	mes "再說一次看看!! 你竟然說出這種話... 這是對我們公會的污辱!!";
+	mes "給我滾出去! 再也不要想要成為鐵匠!";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "連一點耐心也沒有的爛人!!!";
+	mes "連這種小事情也無法認手, 你認為成為鐵匠之后會怎么撐下去啊!!!!!";
+	close;
+LTalk3:
+	mes "[阿爾特阿伊間]";
+	mes "嗯? 不是說要去夢羅克的嗎?";
+	mes "還有一個考試再等著呢..";
+	close;	
+LAsk:
+	mes "[阿爾特阿伊間]";
+	mes "轉職的條件啊 ?";
+	mes "首先, 職業等級要40以上才可以喔,";
+	mes "再來就是要通過公會要求的考試...";
+	mes "這兩樣. 嗯..雖然考試有一點難不過只要用心就可以過的.";
+	mes "把考試用品運送到各地區之后了解各地區的特產考試, 為了要當鐵匠的筆試這兩樣.";
+	close;
+LCancel:
+	mes "[阿爾特阿伊間]";
+	mes "嗯. 那么待會再見.";
+	close;
+LAllDone:
+	mes "[阿爾特阿伊間]";
+	mes "喔, 果然... 我的眼光沒有錯. 成功的轉職了啊!";
+	mes "我給你, 可以繼承火焰之美學的權利.";
+	next;
+	delitem 1005,1;
+	setoption 0;
+	jobchange 10;
+	callfunc "F_ClearJobVar";
+	set Job_Black,0;
+	mes "[阿爾特阿伊間]";
+	mes "但是不要忘了. 我們是把美放進體里的人呢...";
+	mes "不要陷入似欲而脫離正道.!!!";
+	next;
+	mes "[阿爾特阿伊間]";
+	mes "這是...給你的禮物!! 恭喜你轉職!!!";
+	if(JobLevel > 48) goto LGiveMore;
+	getitem 999,5;
+	close;
+LGiveMore:
+	getitem 999,30;
+	close;
+LNotReady:
+	mes "[阿爾特阿伊間]";
+	mes "還有剩點數技能就不能申請轉職.";
+	mes "全部消耗之后再來吧!";
+	close;
+LNotReady2:
+	mes "[阿爾特阿伊間]";
+	mes "嗯..你目前還不能當商人...";
+	mes "轉職為商人是職業等級40以上才可以.";
+	mes "我是很想寬容你, 不過這是這里的規定...";
+	mes "你下次再來好了";
+	close;
+LNotReady3:
+	mes "[阿爾特阿伊間]";
+	mes "你還沒出發阿?";
+	mes "快去找艾爾貝塔的'蓋修坢士特'啊~";
+	mes "那么待會再見.";
+	close;
+LNotReady4:
+	mes "[阿爾特阿伊間]";
+	mes "蓋修坢士特交代你的事還順利嗎???";
+	mes "......他會要求比較高喔....";
+	close;
+LNovice:
+	if(Sex == 0) goto LGirl;
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "你的眼神很魅力.. 你想當鐵匠？我們是從商人轉職的. 在港口之都 艾爾貝塔 可以 轉職 商人.";
+	close;
+LGirl:
+	mes "[鐵匠公會 阿爾特阿伊間]";
+	mes "...可愛的女孩子. 你想當鐵匠？我們是從商人轉職的. 在港口之都 艾爾貝塔 可以 轉職 商人.";
+	close;
+LSwordman:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "你要制作什么劍?";
+	mes "很可惜，我做不到.";
+	close;
+LMage:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "對屬性，有什么想要說的話？";
+	mes "你們的指教很有幫助!";
+	close;
+LArcher:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "很可惜. 商人以外，其他職業不能加入我們公會!";
+	close;
+LAcolyte:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "是圣者!";
+	mes "請祝福我做出來的金屬!";
+	close;
+LThief:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "對不起. 這里沒有值得偷走的東西";
+	mes "只制作短劍而已. . .";
+	close;
+LBlacksmith:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "啊~  好久不見！想要購買物品？";
+	mes "只在辦公室里真無聊";
+	close;
+LOthers:
+	mes "[鐵匠公會  阿爾特阿伊間]";
+	mes "很可惜. 商人以外，其他職業不能加入我們公會!";
+	close;
+}
+
+alberta_in.gat,174,22,4	script	公會員	63,{
+	mes "[蓋修坢士特]";
+	mes "熱血!! 我是個熱血的鐵匠!";
+	mes "'蓋修坢士特'~ 很高興見到你!!";
+	next;
+	if(Class == 5 || Class == 4006) goto LTalk;
+	mes "[蓋修坢士特]";
+	mes "鐵匠是個很幸福的工作呢!!";
+	mes "不這么覺得嗎? 哇哈哈哈哈哈哈!!";
+	close;
+LTalk:
+	mes "[蓋修坢士特]";
+	mes "喔喔喔! 是商人嗎!! 呵呵...很高興見到你!!";
+	mes "剛好我需要一些幫手的呢!!";
+	next;
+	if(Job_Black == 0) goto LGoAway;
+	if(Job_Black == 1) goto LTask1;
+	if(Job_Black == 2) goto LTask2;
+	if(Job_Black == 3) goto LTask3;
+	if((Job_Black > 3) & (Job_Black < 9)) goto LCheckItem;
+	if((Job_Black > 8) & (Job_Black < 14)) goto LTellAgain;
+	if(Job_Black == 14) goto LCheckTask;
+	if(Job_Black == 15) goto LNothing1;
+	if(Job_Black > 15) goto LNothing2;
+	close;
+LGoAway:
+	mes "[蓋修坢士特]";
+	mes ".....但是!!!";
+	mes "我也不能攬住忙人!";
+	mes "趕快走你的路吧!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "Crash! Crash! 丹 丹 丹丹~";
+	mes "(哼哼哼)我是個~ 熱血的 鐵匠啊~ ";
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 你還在那啊?!";
+	close;
+LTask1:
+	mes "[蓋修坢士特]";
+	mes "你確定是來自鐵匠公會的沒有錯吧!!?";
+	mes "因為最近太多東西要做出來, 我一個人都忙不過來了呢!! 哈哈哈!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯. 總而言之, 你是來幫我的是吧?";
+	mes "嗯. 應該不會錯吧. 那么..簡單的作個面試之后再把事情交給你好了!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "前幾天也有個家伙來過這里, 但是實在不懂的基本, 而買錯材料來了呢!";
+	mes "白白浪費了一筆錢的說!";
+	mes "我要給你一個叫困難的事情呢...因為這需要基本之制裁可以辦的到.";
+	mes "那我要問問題?!! 可以吧?";
+	next;
+	menu "可以~",LTakeQuest,"現在還不行..去準備一下狀備之后再來好了",LCancel;
+LTakeQuest:
+	set @Score,0;
+	set @Question,rand(1,3);
+	if(@Question == 1) goto LQuestionList1;
+	goto LQuestionList2;
+
+LQuestionList1:
+	mes "[蓋修坢士特]";
+	mes "1. 下列例子中有什么是把地區跟特產品的連結是不一直的?!";
+	next;
+	menu "夢羅克 – 盜賊之衣",LQ1_1Wrong,"艾爾貝塔 - 雙手斧",LQ1_1Wrong,"克魔島 - 菠色克藥水",LQ1_1Wrong,"艾爾貝塔 - 尖刃鐵錘",LQ1_1Right;
+LQ1_1Right:
+	set @Score,@Score+10;
+LQ1_1Wrong:
+	mes "[蓋修坢士特]";
+	mes "2. 下列那一像是鐵匠的技能中'大地之擊'的能力?";
+	next;
+	menu "混亂",LQ1_2Right,"黑暗",LQ1_2Wrong,"沉沒",LQ1_2Wrong,"睡眠",LQ1_2Wrong;
+LQ1_2Right:
+	set @Score,@Score+10;
+LQ1_2Wrong:
+	mes "[蓋修坢士特]";
+	mes "3. 什么是商人不擅長的事情?";
+	next;
+	menu "開商店",LQ1_3Wrong,"低價買貨",LQ1_3Wrong,"高價賣貨",LQ1_3Wrong,"快跑",LQ1_3Right;
+LQ1_3Right:
+	set @Score,@Score+10;
+LQ1_3Wrong:
+	mes "[蓋修坢士特]";
+	mes "4. 賣藍色魔力礦石的商店的位置是!?";
+	next;
+	menu "艾爾貝塔",LQ1_4Wrong,"夢羅克",LQ1_4Wrong,"吉芬",LQ1_4Right,"普隆德拉",LQ1_4Wrong;
+LQ1_4Right:
+	set @Score,@Score+10;
+LQ1_4Wrong:
+	mes "[蓋修坢士特]";
+	mes "5. 那么, 吉芬道具店在哪里!!?";
+	next;
+	menu "吉芬塔為中心8點鐘方向",LQ1_5Right,"吉芬塔為中心11點鐘方向",LQ1_5Wrong,"吉芬塔為中心6點鐘方向",LQ1_5Wrong,"吉芬塔為中心5點鐘方向",LQ1_5Wrong;
+LQ1_5Right:
+	set @Score,@Score+10;
+LQ1_5Wrong:
+	mes "[蓋修坢士特]";
+	mes "6. 以下哪一種武器是商人無法使用?";
+	next;
+	menu "雙刃短劍",LQ1_6Wrong,"圓柄馬刀",LQ1_6Wrong,"鏈錘",LQ1_6Wrong,"圣言之書",LQ1_6Right;
+LQ1_6Right:
+	set @Score,@Score+10;
+LQ1_6Wrong:
+	mes "[蓋修坢士特]";
+	mes "7. 選擇以下防具當中防御力最高的東西!!";
+	next;
+	menu "三角褲",LQ1_7Wrong,"毛皮大衣",LQ1_7Right,"木制鎧甲",LQ1_7Wrong,"絲質外袍",LQ1_7Wrong;
+LQ1_7Right:
+	set @Score,@Score+10;
+LQ1_7Wrong:
+	mes "[蓋修坢士特]";
+	mes "8. 制作等級3的武器時安全界線是到哪里!!";
+	next;
+	menu "+3",LQ1_8Wrong,"+4",LQ1_8Wrong,"+5",LQ1_8Right,"+6",LQ1_8Wrong;
+LQ1_8Right:
+	set @Score,@Score+10;
+LQ1_8Wrong:
+	mes "[蓋修坢士特]";
+	mes "9. 可以用'瑪哪樹枝'做得到的物品是什么?";
+	next;
+	menu "草帽",LQ1_9Right,"亡者發箍",LQ1_9Wrong,"山羊頭盔",LQ1_9Wrong,"鹿角頭飾",LQ1_9Wrong;
+LQ1_9Right:
+	set @Score,@Score+10;
+LQ1_9Wrong:
+	mes "[蓋修坢士特]";
+	mes "10. 對商人而言最重要的是什么!!?";
+	next;
+	menu "信用",LQ1_10,"誠懇",LQ1_10,"金錢",LQ1_10,"口才",LQ1_10;
+LQ1_10:
+	set @Score,@Score+10;
+	goto LShowScore;
+
+LQuestionList2:
+	mes "[蓋修坢士特]";
+	mes "1. 下列例子中有什么是把地區跟特產品的連結是不一直的?!!";
+	next;
+	menu "艾爾帕蘭 - 天地樹葉子",LQ2_1Wrong,"艾爾貝塔 - 鋼斧",LQ2_1Wrong,"克魔島 - 菠色克藥水",LQ2_1Wrong,"艾爾帕蘭 - 鋼斧",LQ2_1Right;
+LQ2_1Right:
+	set @Score,@Score+10;
+LQ2_1Wrong:
+	mes "[蓋修坢士特]";
+	mes "2. 杰勒比結晶的價格是多少?";
+	next;
+	menu "1 zeny",LQ2_2Wrong,"2 zeny",LQ2_2Wrong,"3 zeny",LQ2_2Right,"4 zeny",LQ2_2Wrong;
+LQ2_2Right:
+	set @Score,@Score+10;
+LQ2_2Wrong:
+	mes "[蓋修坢士特]";
+	mes "3. 開商店的必要條件是什么?!";
+	next;
+	menu "要有手推車.",LQ2_3Right,"要有物品可以賣出去.",LQ2_3Wrong,"要攜帶著武器.",LQ2_3Wrong,"要穿著盔甲.",LQ2_3Wrong;
+LQ2_3Right:
+	set @Score,@Score+10;
+LQ2_3Wrong:
+	mes "[蓋修坢士特]";
+	mes "4. 下列哪各地放式商人的轉職所所在地?";
+	next;
+	menu "艾爾貝塔",LQ2_4Right,"夢羅克",LQ2_4Wrong,"吉芬",LQ2_4Wrong,"普隆德拉",LQ2_4Wrong;
+LQ2_4Right:
+	set @Score,@Score+10;
+LQ2_4Wrong:
+	mes "[蓋修坢士特]";
+	mes "5. 夢羅克的武器店在哪里?";
+	next;
+	menu "以城為中心7點方向",LQ2_5Wrong,"以城為中心11點方向?",LQ2_5Wrong,"以城為中心6點方向?",LQ2_5Wrong,"以城為中心5點方向",LQ2_5Right;
+LQ2_5Right:
+	set @Score,@Score+10;
+LQ2_5Wrong:
+	mes "[蓋修坢士特]";
+	mes "6. 以下哪一種武器是商人無法使用?";
+	next;
+	menu "笨拙短劍",LQ2_6Wrong,"寬劍",LQ2_6Right,"鏈錘",LQ2_6Wrong,"雙手斧",LQ2_6Wrong;
+LQ2_6Right:
+	set @Score,@Score+10;
+LQ2_6Wrong:
+	mes "[蓋修坢士特]";
+	mes "7. 以下防具中防御力最強的是什么!!";
+	next;
+	menu "三角褲",LQ2_7Wrong,"毛皮大衣",LQ2_7Right,"木制鎧甲",LQ2_7Wrong,"絲質外袍",LQ2_7Wrong;
+LQ2_7Right:
+	set @Score,@Score+10;
+LQ2_7Wrong:
+	mes "[蓋修坢士特]";
+	mes "8. 制作等級4的武器的界線是哪里!!";
+	next;
+	menu "+3 ",LQ2_8Wrong,"+4 ",LQ2_8Right,"+5 ",LQ2_8Wrong,"+6 ",LQ2_8Wrong;
+LQ2_8Right:
+	set @Score,@Score+10;
+LQ2_8Wrong:
+	mes "[蓋修坢士特]";
+	mes "9. 不是掉落鐵礦石的怪獸是什么?";
+	next;
+	menu "蒼蠅",LQ2_9Wrong,"綠蒼蠅",LQ2_9Wrong,"杰洛米",LQ2_9Wrong,"虎蜥人",LQ2_9Right;
+LQ2_9Right:
+	set @Score,@Score+10;
+LQ2_9Wrong:
+	mes "[蓋修坢士特]";
+	mes "10. 對商人而言最重要的是什么!!?";
+	next;
+	menu "口才",LQ2_10,"信用",LQ2_10,"金錢",LQ2_10,"做人的態度",LQ2_10;
+LQ2_10:
+	set @Score,@Score+10;
+LShowScore:
+	mes "[蓋修坢士特]";
+	mes "嗯. 好了!! 辛苦你了!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "那么... 分數是 " + @Score + "分.....";
+	next;
+	if(@Score == 100) goto LGiveQuest1;
+	if((@Score > 80) & (Job_Black == 2)) goto LGiveQuest1;
+	if(Job_Black == 2) goto LTryAgain;
+	set Job_Black,2;
+	mes "[蓋修坢士特]";
+	mes ".............";
+	next;
+	mes "[蓋修坢士特]";
+	mes "那個. 不好意思, 如果你連這種知識也沒有的話";
+	mes "沒有辦法把事情交給你呢. 再去念點書在來吧!";
+	close;
+LGiveQuest1:
+	set Job_Black,3;
+	mes "[蓋修坢士特]";
+	mes "喔喔!! 這樣就沒問題了! 來來...";
+	next;
+	mes "[蓋修坢士特]";
+	mes "那么, 我就把事情交給你好了!!";
+	mes "我去準備一下..等一下再見吧!!";
+	close;
+LTryAgain:
+	set Job_Black,2;
+	mes "[蓋修坢士特]";
+	mes ".............";
+	next;
+	mes "[蓋修坢士特]";
+	mes "那個. 不好意思, 你又錯了耶, 是不是有點過分啊!";
+	mes "如果繼續這樣錯下去的話就沒有辦法把事情交給你呢, 再去念點書過來吧!";
+	close;
+LCancel:
+	mes "[蓋修坢士特]";
+	mes "好...那么 去準備一下再來吧.";
+	mes "有備無患! 安全第一!!";
+	mes "小心的態度也不算是不好啦";
+	close;
+LTask2:
+	mes "[蓋修坢士特]";
+	mes "嗯嗯! 好. 看起來準備了不少嗎! ";
+	mes "這次我會讓你輕松一點, 錯一題也沒關系的!!";
+	mes "那么!! 我要出題?!!";
+	next;
+	goto LTakeQuest;
+LTask3:
+	mes "[蓋修坢士特]";
+	mes "嗯...訂購書在哪里呢...";
+	next;
+	mes "[蓋修坢士特]";
+	mes "- 啪啦啪啦 -";
+	next;
+	mes "[蓋修坢士特]";
+	mes "- 咻咻咻咻 -";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊啊! 找到了.";
+	mes "累積最多的訂約是...";
+	mes "嗯嗯.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "首先...需要的材料有...";
+	next;
+	set Black_Item,rand(1,6);
+	if(Black_Item == 1) goto LFindItem1;
+	if(Black_Item == 2) goto LFindItem2;
+	if(Black_Item == 3) goto LFindItem3;
+	if(Black_Item == 4) goto LFindItem4;
+	goto LFindItem5;
+
+LFindItem1:
+	set Job_Black,4;
+	mes "[蓋修坢士特]";
+	mes "鋼鐵 2個";
+	mes "腐爛繃帶 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有是...在商店賣的言靈魔杖 1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呵呵... 我們絕不是因為對前有可惜的心態而這樣的啦. 這是考驗啦, 考驗.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "再講一次喔.";
+	mes "鋼鐵 2個";
+	mes "腐爛繃帶 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有...在商店賣的言靈魔杖1個就好了..";
+	next;
+	goto LWaitItem;
+LFindItem2:
+	set Job_Black,5;
+	mes "[蓋修坢士特]";
+	mes "星星的粉末 2個";
+	mes "死人遺骨 1個";
+	mes "剎勒空結晶1個";
+	mes "還有是...商店再賣的長柄短劍 1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呵呵... 我們絕不是因為對前有可惜的心態而這樣的啦. 這是考驗啦, 考驗.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "再講一次喔.";
+	mes "星星的粉末 2個";
+	mes "死人遺骨 1個";
+	mes "剎勒空結晶 1個";
+	mes "還有是...商店在賣的長柄短劍1個就好了..";
+	next;
+	goto LWaitItem;
+LFindItem3:
+	set Job_Black,6;
+	mes "[蓋修坢士特]";
+	mes "煤礦 2個";
+	mes "堅硬外殼 2個";
+	mes "火靈礦石 2個";
+	mes "還有是..商店在賣的日本刀1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呵呵... 我們絕不是因為對前有可惜的心態而這樣的啦. 這是考驗啦, 考驗.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "再講一次喔.";
+	mes "煤礦 2個";
+	mes "堅硬外殼 2個";
+	mes "火靈礦石 2個";
+	mes "還有是..商店再賣的日本刀1個就好了?.";
+	next;
+	goto LWaitItem;
+LFindItem4:
+	set Job_Black,7;
+	mes "[蓋修坢士特]";
+	mes "鐵礦石 8個";
+	mes "獨眼龍眼罩 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有是..商店在賣的亞伯雷弓1個就好了..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呵呵... 我們絕不是因為對前有可惜的心態而這樣的啦. 這是考驗啦, 考驗.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "再講一次喔.";
+	mes "鐵礦石 8個";
+	mes "獨眼龍眼罩 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有是..商店在賣的亞伯雷弓1個就好了..";
+	next;
+	goto LWaitItem;
+LFindItem5:
+	set Job_Black,8;
+	mes "[蓋修坢士特]";
+	mes "鐵 8個";
+	mes "綠色藥草 20個";
+	mes "動物外皮 2個";
+	mes "還有是..商店在賣的圓柄馬刀 1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呵呵... 我們絕不是因為對前有可惜的心態而這樣的啦. 這是考驗啦, 考驗.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "再講一次喔.";
+	mes "鐵 8個";
+	mes "綠色藥草 20個";
+	mes "動物外皮 ?? 2個";
+	mes "還有是..商店在賣的圓柄馬刀 1個就好了.";
+	next;
+LWaitItem:
+	mes "[蓋修坢士特]";
+	mes "那么... 拜托你了... 要平安回來喔!";
+	close;
+LCheckItem:
+	if(Job_Black == 4) goto LCheckItem1;
+	if(Job_Black == 5) goto LCheckItem2;
+	if(Job_Black == 6) goto LCheckItem3;
+	if(Job_Black == 7) goto LCheckItem4;
+	if(Job_Black == 8) goto LCheckItem5;
+
+LCheckItem1:
+	mes "[蓋修坢士特]";
+	mes "嗯? 讓我看看...我要你準備的已經準備好了吧?";
+	next;
+	if((countitem(999) > 1) & (countitem(930) > 0) & (countitem(717) > 1) & (countitem(1610) > 0)) goto LDoneItem1;
+	mes "[蓋修坢士特]";
+	mes ".....還早了嗎....";
+	mes "...到底要講多次啊?!!!";
+	mes "鋼鐵 2個";
+	mes "腐爛繃帶 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有...商店在賣的言靈魔杖 1個啦..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "要徹底準備好喔!! 這是可是啦! 考試!";
+	mes "咿咿....要以那種精神狀態怎么能工作呢.";
+	close;
+LDoneItem1:
+	mes "[蓋修坢士特]";
+	mes "不是說鋼鐵....3 個的嗎?";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊 2個沒有錯..剩下的是....好! 準備的很好..";
+	mes "嗯...那么 等我一下喔..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊, 對了... 你注意看看你的物品當中^FF0000有沒有其他 言靈魔杖 混在一起^000000";
+	next;
+	menu "啊..等一下",LWaitAMinute,"在我的身上只戴專職用物品..",LGive1;
+LGive1:
+	mes "[蓋修坢士特]";
+	mes "那，好!!";
+	next;
+	delitem 999,2;
+	delitem 930,1;
+	delitem 717,2;
+	delitem 1610,1;
+	set Job_Black,9;
+	mes "[蓋修坢士特]";
+	mes "嘿咻.......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "喝啊啊.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呼.";
+	mes "好了...";
+	mes "那么. 把這個交給吉芬的 '巴伊斯里特'之后把收據拿給我就好了.";
+	getitem 1610,1;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 看起來沒什么特別的嗎?!!";
+	mes "....仔細看看手拔那邊吧.";
+	mes "增加握住感的!!";
+	mes "超  言靈魔杖 蓋修坢士特 Mk 2 版本 !!!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....在甩的時候的感覺就不一樣啦! 不一樣!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....反正, 你走到吉芬之把它交給'巴伊斯里特'然后把收據拿給我就好了!";
+	close;
+LCheckItem2:
+	mes "[蓋修坢士特]";
+	mes "嗯? 讓我看看...我要你準備的已經準備好了吧?";
+	next;
+	if((countitem(1001) > 1) & (countitem(932) > 0) & (countitem(912) > 0) & (countitem(1219) > 0)) goto LDoneItem2;
+	mes "[蓋修坢士特]";
+	mes ".....還早了嗎....";
+	mes "...到底要講多次啊?!!!";
+	mes "星星的粉末 2個";
+	mes "死人遺骨 1個";
+	mes "剎勒空結晶 1個";
+	mes "還有...商店在賣的長柄短劍1個啦.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "要徹底準備好喔!! 這是可是啦! 考試!";
+	mes "咿咿....要以那種精神狀態怎么能工作呢.";
+	close;
+LDoneItem2:
+	mes "[蓋修坢士特]";
+	mes "不是說星星的粉末....3 個的嗎?";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊.  2個沒有錯.. 剩下的是…  好! 準備的很好..";
+	mes "嗯...那么 等我一下喔..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊, 對了... 你注意看看你的物品當中^FF0000有沒有其他 長柄短劍 混在一起^000000";
+	next;
+	menu "啊..等一下",LWaitAMinute,"在我的身上只戴專職用物品..",LGive2;
+LGive2:
+	mes "[蓋修坢士特]";
+	mes "那，好!!";
+	next;
+	delitem 1001,2;
+	delitem 932,1;
+	delitem 912,1;
+	delitem 1219,1;
+	set Job_Black,10;
+	mes "[蓋修坢士特]";
+	mes "嘿咻.......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "喝啊啊.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呼.";
+	mes "好了...";
+	mes "那么. 把這個交給夢羅克的 '修咖巴殷'之后把收據拿給我就好了.";
+	getitem 1219,1;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 看起來沒什么特別的嗎?!!";
+	mes "....你仔細看看刀刃的部分.";
+	mes "是有裝飾的耶!!!!";
+	mes "終極長柄短劍 蓋修坢士特 Mk 2 !!!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....光看著就覺得很燦爛的不是嗎!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....反正, 你就把把這個交給夢羅克的 '修咖巴殷'之后把收據拿給我就好了!";
+	close;
+LCheckItem3:
+	mes "[蓋修坢士特]";
+	mes "嗯? 讓我看看...我要你準備的已經準備好了吧?";
+	next;
+	if((countitem(1003) > 1) & (countitem(935) > 1) & (countitem(990) > 1) & (countitem(1119) > 0)) goto LDoneItem3;
+	mes "[蓋修坢士特]";
+	mes ".....還早了嗎....";
+	mes "...到底要講多次啊?!!!";
+	mes "煤礦 2個";
+	mes "堅硬外殼2個";
+	mes "火靈礦石 2個";
+	mes "還有...商店在賣的日本刀1個啦.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "要徹底準備好喔!! 這是可是啦! 考試!";
+	mes "咿咿....要以那種精神狀態怎么能工作呢.";
+	close;
+LDoneItem3:
+	mes "[蓋修坢士特]";
+	mes "不是說煤礦...3 個的嗎?";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊.  2個沒有錯.. 剩下的是…  好! 準備的很好..";
+	mes "嗯...那么 等我一下喔..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊, 對了... 你注意看看你的物品當中^FF0000有沒有其他 日本刀 混在一起^000000";
+	next;
+	menu "啊..等一下",LWaitAMinute,"在我的身上只戴專職用物品..",LGive3;
+LGive3:
+	mes "[蓋修坢士特]";
+	mes "那~ 好~!!";
+	next;
+	delitem 1003,2;
+	delitem 935,2;
+	delitem 990,2;
+	delitem 1119,1;
+	set Job_Black,11;
+	mes "[蓋修坢士特]";
+	mes "嘿咻.......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "喝啊啊.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呼.";
+	mes "好了...";
+	mes "那么. 把這個交給依斯魯得島的 '哥掄鉿史特'之后把收據拿給我就好了.";
+	getitem 1119,1;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 看起來沒什么特別的嗎?!!";
+	mes "....仔細看看刀刃的部分.";
+	mes "有做裝飾的耶!!!!";
+	mes "二文斬斷日本刀 蓋修坢士特 Mk 2 !!!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....光看著就覺得不覺得很燦爛嗎!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....反正, 你就把把這個交給依斯魯得島的 '哥掄鉿史特'之后把收據拿給我就好了!";
+	close;
+LCheckItem4:
+	mes "[蓋修坢士特]";
+	mes "呵呵? 讓我來看看...我請你帶來的東西都有帶回來嗎?";
+	next;
+	if((countitem(1002) > 7) & (countitem(2212) > 0) & (countitem(717) > 1) & (countitem(1713) > 0)) goto LDoneItem4;
+	mes "[蓋修坢士特]";
+	mes ".....還早了嗎....";
+	mes "...到底要講多次啊?!!!";
+	mes "鐵礦石 8個";
+	mes "獨眼龍眼罩 1個";
+	mes "藍色魔力礦石 2個";
+	mes "還有..在商店賣的亞伯雷弓 1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "要徹底準備好喔!! 這是可是啦! 考試!";
+	mes "咿咿....要以那種精神狀態怎么能工作呢.";
+	close;
+LDoneItem4:
+	mes "[蓋修坢士特]";
+	mes "鐵礦石...不是說好需要30 個?";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊 2個沒有錯..剩下的是....好! 準備的很好..";
+	mes "嗯...那么 等我一下喔..";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊, 對了... 你注意看看你的物品當中^FF0000有沒有其他 亞伯雷弓 混在一起^000000";
+	next;
+	menu "啊..等一下",LWait4,"在我的身上只戴專職用物品..",LGive4;
+LWait4:
+	mes "[蓋修坢士特]";
+	mes "嗯..除了專職用物品以外，其他的呢，在倉庫里保管最好~";
+	close;
+LGive4:
+	mes "[蓋修坢士特]";
+	mes "那，好吧！";
+	next;
+	delitem 1002,8;
+	delitem 2212,1;
+	delitem 717,2;
+	delitem 1713,1;
+	set Job_Black,12;
+	mes "[蓋修坢士特]";
+	mes "嘿咻.......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "喝啊啊.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呼.";
+	mes "好了...";
+	mes "那么. 把這個交給斐揚的 '鐵痞子'之后把收據拿給我就好了.";
+ 	getitem 1713,1;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 看起來沒什么特別的嗎?!!";
+	mes "....仔細看看弓的本體吧!";
+	mes "有獨眼龍眼罩做的受納空間!!!!";
+	mes "極品袋鼠(假名) 亞伯雷弓 蓋修坢士特 Mk 2 !!!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....提高了獨眼龍眼罩 方便性的說!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....反正, 你就去斐揚把貨交給'鐵痞子'之后把收據拿來就好了!";
+	close;
+LCheckItem5:
+	if((countitem(998) > 7) & (countitem(511) > 19) & (countitem(919) > 1) & (countitem(1122) > 0)) goto LDoneItem5;
+	mes "[蓋修坢士特]";
+	mes ".....還早了嗎....";
+	mes "...到底要講多次啊?!!!";
+	mes "鐵 8個";
+	mes "綠色藥草 20個";
+	mes "動物外皮2個";
+	mes "還有..商店在賣的圓柄馬刀 1個就好了.";
+	next;
+	mes "[蓋修坢士特]";
+	mes "要徹底準備好喔!! 這是可是啦! 考試!";
+	mes "咿咿....要以那種精神狀態怎么能工作呢.";
+	close;
+LDoneItem5:
+	mes "[蓋修坢士特]";
+	mes "嗯...不是說是40 個的嗎?";
+	next;
+	mes "[蓋修坢士特]";
+	mes "啊8個沒有錯..剩下的是....好! 準備的很好..";
+	mes "嗯...那么 等我一下喔..";
+	next;
+	delitem 998,8;
+	delitem 511,20;
+	delitem 919,2;
+	delitem 1122,1;
+	set Job_Black,13;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嘿咻.......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "喝啊啊.....";
+	next;
+	mes "[蓋修坢士特]";
+	mes "呼.";
+	mes "好了...";
+	mes "那么. 把這個交給克魔島的 '逼爾馬爾柯'之后把收據拿給我就好了.";
+	getitem 1122,1;
+	next;
+	mes "[蓋修坢士特]";
+	mes "嗯? 看起來很普通嗎?!!";
+	mes "....仔細看看刀刃的部分吧!";
+	mes "有加入綠色藥草的濃縮液的!!!!";
+	mes "綠色藥草濃縮液的圓柄馬刀 蓋修坢士特 Mk 2 !!!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....中毒時用這把刀直接刺下去的話馬上就好的!!";
+	mes "....雖然有可能傷口會變的更大!! 但是可以解毒的不是嗎!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "....反正, 你就去克魔島把貨交給 '逼爾馬爾柯'之后麻收據回來就好了!";
+	close;
+LWaitAMinute:
+	mes "[蓋修坢士特]";
+	mes "嗯..除了專職用物品以外，其他的呢，在倉庫里保管最好~";
+	close;
+LTellAgain:
+	mes "[蓋修坢士特]";
+	mes "嗯? 趕快去啊~";
+	mes "該不會去不知道地點吧?";
+	next;
+	if(Job_Black == 9) goto LTell1;
+	if(Job_Black == 10) goto LTell2;
+	if(Job_Black == 11) goto LTell3;
+	if(Job_Black == 12) goto LTell4;
+	goto LTell5;
+
+LTell1:
+	mes "[蓋修坢士特]";
+	mes "交給吉芬的11點方向的'巴伊斯里特', 然后把收據拿回來就好了.";
+	close;
+LTell2:
+	mes "[蓋修坢士特]";
+	mes "交給夢羅克 尖刃鐵錘 商人 附近的 '修咖巴殷', 然后把收據拿回來就好了.";
+	close;
+LTell3:
+	mes "[蓋修坢士特]";
+	mes "交給依斯魯得島的11點方向的銅像附近的'哥掄鉿史特',. 拿收據回來就好了.";
+	close;
+LTell4:
+	mes "[蓋修坢士特]";
+	mes "交給斐揚5點方向的 '鐵痞子' 之后拿收據回來就好了.";
+	close;
+LTell5:
+	mes "[蓋修坢士特]";
+	mes "交給克魔島的12點方向的'逼爾馬爾柯'之后拿收據回來就好了.";
+	close;
+LCheckTask:
+	mes "[蓋修坢士特]";
+	mes "嗯. 回來??";
+	mes "那么, 讓我看看收據吧!!!";
+	next;
+	menu "是,在這里.",LGiveProof,"等..等我一下喔.",LNotNow;
+LGiveProof:
+	if(countitem(1073) > 0) goto LAllDone;
+	set Job_Black,3;
+	mes "[蓋修坢士特]";
+	mes ".....忘了把收據放在那里了啊?";
+	mes ".....真是的......";
+	next;
+	mes "[蓋修坢士特]";
+	mes "......是不是太過分的啊? 你?";
+	mes "到底把它賣給誰了啊!!";
+	next;
+	mes "[蓋修坢士特]";
+	mes "收據是 商人之命耶! 是類似于鐵匠生命線的!!!";
+	mes "從頭再來一次!!";
+	close;
+LAllDone:
+	set Job_Black,15;
+	delitem 1073,1;
+	mes "[蓋修坢士特]";
+	mes "喔喔! 好....很好.";
+	mes "真的很好!! 你是個很干脆的商人啊!!";
+	mes "好吧!! 你就到吉芬的 '阿爾特阿伊間'去看看吧! 是那個第一個申請 轉職的家伙!";
+	mes "辛苦了!! 你有足夠的資格當商人了!!";
+	close;
+LNotNow:
+	mes "[蓋修坢士特]";
+	mes "好吧. 等你找到收據再告訴我~";
+	mes "該不會是忘了拿收據回來的吧?";
+	close;
+LNothing1:
+	mes "[蓋修坢士特]";
+	mes "嗯. 謝謝你在這里工作. 趕外去 吉芬的 '阿爾特阿伊間'看看吧!";
+	close;
+LNothing2:
+	mes "[蓋修坢士特]";
+	mes "嗯.....你已經在我這兒沒事了, 不是嗎? 商人?";
+	mes "除了夢羅克或是 吉芬....?";
+	close;
+}
+
+geffen.gat,46,164,4	script	巴伊斯里特	69,{
+	if((Job_Black == 9) & (countitem(1610) > 0)) goto LAskForItem;
+	if(Job_Black == 14) goto LThanks;
+	mes "[巴伊斯里特]";
+	mes "真是的....這里跟艾爾貝塔離太遠了";
+	mes "沒有收到訂購的物品真是麻煩啊..";
+	next;
+	mes "[巴伊斯里特]";
+	mes "我之前拜托了吉芬的 鐵匠 公會, 但是說";
+	mes "艾爾貝塔有個很有能力的人...就把事情交給那個人了呢!!";
+	next;
+	mes "[巴伊斯里特]";
+	mes "我訂購的 '感覺好的 言靈魔杖' 是什么時候才會到呢...?";
+	close;
+LAskForItem:
+	mes "[巴伊斯里特]";
+	mes "哇哇哇!! 總算來了啊?!";
+	mes "啊啊啊啊...謝謝你...我等了很久呢...";
+	next;
+	mes "[巴伊斯里特]";
+	mes "就是我訂的吧? 插在已使用過的卡... 那樣的二手品 言靈魔杖, 我不要~";
+	next;
+	menu "是我使用過的",LNotThis,"放心，是新的",LOkay;
+LNotThis:
+	mes "[巴伊斯里特]";
+	mes "...你不要這樣子糊里糊涂";
+	close;
+LOkay:
+	mes "[巴伊斯里特]";
+	mes "是真的~? 哈哈~";
+	next;
+	set Job_Black,14;
+	delitem 1610,1;
+	next;
+	mes "[巴伊斯里特]";
+	mes "我之前拜托了吉芬的 鐵匠 公會, 但是說";
+	mes "艾爾貝塔有個很有能力的人...就把事情交給那個人了呢!!";
+	next;
+	mes "[巴伊斯里特]";
+	mes "謝謝你,   來到這么遠的地放送貨, 謝謝你~";
+	mes "那個死 蓋修坢士特,有機會的話幫我打一拳! 為什么這么遲啊..";
+	next;
+	mes "[巴伊斯里特]";
+	mes "等我一下喔~ 現在把收據給你~";
+	next;
+	mes "-啪啦啪啦-";
+	next;
+	getitem 1073,1;
+	mes "[巴伊斯里特]";
+	mes "在這里~ 那么 ~ 辛苦你了~ 真的謝謝你";
+	mapannounce "geffen.gat"," " + strcharinfo(0) + ", 謝謝你送貨~~~ ",3;
+	close;
+LThanks:
+	mes "[巴伊斯里特]";
+	mes "謝謝你送貨~~~";
+	close;
+}
+
+morocc.gat,27,112,4	script	修咖巴殷	725,{
+	if((Job_Black == 10) & (countitem(1219) > 0)) goto LAskForItem;
+	if(Job_Black == 14) goto LThanks;
+	mes "[修咖巴殷]";
+	mes "..........";
+	mes ".....拜托的物品..到低什么時候才到呢? ";
+	next;
+	mes "[修咖巴殷]";
+	mes "吉芬 鐵匠 公會, 蓋修坢士特";
+	mes "兩個都很慢喵!";
+	next;
+	mes "[修咖巴殷]";
+	mes "我會生氣喵.";
+	close;
+LAskForItem:
+	mes "[修咖巴殷]";
+	mes ".....到了嗎喵!!";
+	mes "給我喵!!!";
+	next;
+	mes "[修咖巴殷]";
+	mes "就是我訂的喵? 你那邊使用過的... 有屬性的... 那樣的 長柄短劍, 我不要喵~";
+	next;
+	menu "是我使用過的",LNotThis,"放心，是新的",LOkay;
+LNotThis:
+	mes "[修咖巴殷]";
+	mes "喵~~~~~~~~！";
+	next;
+	mes "-好像生氣的樣子-";
+	close;
+LOkay:
+	mes "[修咖巴殷]";
+	mes "哈哈~";
+	next;
+	mes "-好像很高興的樣子-";
+	next;
+	set Job_Black,14;
+	delitem 1219,1;
+	next;
+	mes "[修咖巴殷]";
+	mes "告訴吉芬 鐵匠 公會以及";
+	mes "你老師蓋修坢士特喵!";
+	next;
+	mes "[修咖巴殷]";
+	mes "遲到了喵.";
+	mes "等很久了喵.";
+	next;
+	mes "[修咖巴殷]";
+	mes "但是東西好喵. 滿足喵. .";
+	next;
+	mes "(在寫什么東西.)";
+	next;
+	getitem 1073,1;
+	mes "[修咖巴殷]";
+	mes "收據. 我也覺得你很辛苦了喵~";
+	mapannounce "morocc.gat"," " + strcharinfo(0) + "...謝謝, 送貨喵",3;
+	close;
+LThanks:
+	mes "[修咖巴殷]";
+	mes "謝謝, 送貨喵~";
+	close;
+}
+
+izlude.gat,69,181,4	script	哥掄鉿史特	734,{
+	if((Job_Black == 11) & (countitem(1119) > 0)) goto LAskForItem;
+	if(Job_Black == 14) goto LThanks;
+	mes "[哥掄鉿史特]";
+	mes "..........";
+	mes ".....訂購的東西什么時候才會到啊.";
+	next;
+	mes "[哥掄鉿史特]";
+	mes "要使用2文字斬刀的話..";
+	mes "只有那把刀才可以呢!! 啊啊...";
+	next;
+	mes "[哥掄鉿史特]";
+	mes "啊啊啊啊.......";
+	close;
+LAskForItem:
+	mes "[哥掄鉿史特]";
+	mes "喔喔..到么嗎?";
+	mes "很好...讓我看一看.";
+	next;
+	mes "[哥掄鉿史特]";
+	mes "就是我訂的吧? 你那邊使用過的... 有屬性的... 那樣的 日本刀, 我不要~";
+	next;
+	menu "是我使用過的",LNotThis,"放心，是新的",LOkay;
+LNotThis:
+	mes "[哥掄鉿史特]";
+	mes "我要沒問題的物品！不要這樣的!";
+	next;
+	mes "-好像生氣的樣子-";
+	close;
+LOkay:
+	mes "[哥掄鉿史特]";
+	mes "沒問題的吧？那，我帶走. ";
+	next;
+	set Job_Black,14;
+	delitem 1119,1;
+	next;
+	mes "[哥掄鉿史特]";
+	mes "喔喔....這樣的話...";
+	mes "比我拜托的還要好呢.";
+	next;
+	mes "[哥掄鉿史特]";
+	mes "如果是這把刀的話...可以使用我的必殺技...二文字斬刀了!";
+	mes "我很滿意!!";
+	next;
+	mes "[哥掄鉿史特]";
+	mes "那么... 我給你收據.";
+	next;
+	mes "-寫來寫去-";
+	next;
+	getitem 1073,1;
+	mes "[哥掄鉿史特]";
+	mes "這是收據...辛苦你了~!!";
+	mapannounce "izlude.gat"," " + strcharinfo(0) + ", 謝謝你送貨~",3;
+	close;
+LThanks:
+	mes "[哥掄鉿史特]";
+	mes "謝謝你送貨~";
+	close;
+}
+
+payon.gat,214,79,4	script	鐵痞子	59,{
+	if((Job_Black == 12) & (countitem(1713) > 0)) goto LAskForItem;
+	if(Job_Black == 14) goto LThanks;
+	mes "[鐵痞子]";
+	mes "啊啊.......";
+	mes ".....我拜托的東系要什么時候才到呢..";
+	next;
+	mes "[鐵痞子]";
+	mes "我需要可以放 獨眼龍眼罩的好口袋呢...";
+	mes "啊啊...可以做那種口袋的人也只有'他'呢...哈啊..";
+	next;
+	mes "[鐵痞子]";
+	mes "啊啊啊啊......什么時候才來啊....";
+	close;
+LAskForItem:
+	mes "[鐵痞子]";
+	mes ".......喔喔. 終于!!! 還了啊啊啊啊啊啊啊啊!!!";
+	mes "給我看!! 趕快!! 呵呵呵..";
+	next;
+	mes "[鐵痞子]";
+	mes "就是我訂的吧? 你那邊使用過的... 有屬性的... 那樣的 二手品 亞伯雷弓, 我不要~";
+	next;
+	menu "是我使用過的",LNotThis,"放心，是新的",LOkay;
+LNotThis:
+	mes "[鐵痞子]";
+	mes "我要沒問題的物品！不要這樣的!";
+	next;
+	mes "-好像很生氣的樣子-";
+	close;
+LOkay:
+	mes "[鐵痞子]";
+	mes "沒問題的吧？是新的吧？ ";
+	next;
+	set Job_Black,14;
+	delitem 1713,1;
+	next;
+	mes "[鐵痞子]";
+	mes "呵呵呵呵....";
+	mes "太..太帥了!! 這東西!!!嗚喔喔喔喔喔喔!!!";
+	next;
+	mes "[鐵痞子]";
+	mes "這..這 獨眼龍眼罩 口袋!! 真的是名品啊!! 太棒了啦!!!";
+	mes "太滿意了,  真是太滿意了!!";
+	next;
+	mes "[鐵痞子]";
+	mes "謝謝!! 謝謝!!! 如果是這物品的話以后以中古賣出的話也可以賺出本錢了!!";
+	next;
+	mes "-寫來寫去-";
+	next;
+	getitem 1073,1;
+	mes "[鐵痞子]";
+	mes "來!!!! 這是收據!!! 辛苦你了~!! 非常謝謝你~!!!!";
+	mapannounce "payon.gat"," " + strcharinfo(0) + ", 謝謝你送貨! 越看就越..!! 嗚喔喔喔!!!",3;
+	close;
+LThanks:
+	mes "[鐵痞子]";
+	mes "真的是, 極品中的極品啊啊啊啊啊啊啊!! 嗚喔喔喔喔喔!!!";
+	close;
+}
+
+comodo.gat,158,342,4	script	逼爾馬爾柯	118,{
+	if((Job_Black == 13) & (countitem(1122) > 0)) goto LAskForItem;
+	if(Job_Black == 14) goto LThanks;
+	mes "[逼爾馬爾柯]";
+	mes "......呼...呼....";
+	mes ".....到底我所拜托的東西是什么時候才到呢...";
+	next;
+      	mes "[逼爾馬爾柯]";
+	mes "....毒性也已經擴散到全身了....";
+	mes "呵....咳咳.....";
+	next;
+	mes "[逼爾馬爾柯]";
+	mes "....快...快要把解毒劑直解用在體內…解毒…解…要解毒…";
+	close;
+LAskForItem:
+	mes "[逼爾馬爾柯]";
+	mes ".......咳咳...";
+	mes "哈啊...哈啊....給..給我看看..";
+	next;
+	mes "[逼爾馬爾柯]";
+	mes "就是我訂的吧? 你那邊使用過的... 有屬性的... 那樣的 圓柄馬刀呢, 給我帶來死~";
+	next;
+	menu "是我使用過的",LNotThis,"放心，是新的",LOkay;
+
+LNotThis:
+	mes "[逼爾馬爾柯]";
+	mes "... 焦... 焦急了... 咳... 毒... 毒... ";
+	next;
+	mes "-慢慢死掉-";
+	close;
+LOkay:
+	mes "[逼爾馬爾柯]";
+	mes "趕... 趕快... 咳... 給我刀... ";
+	next;
+	set Job_Black,14;
+	delitem 1122,1;
+	mes "[逼爾馬爾柯]";
+	mes "咳....";
+	mes "綠色要草已經處理了...應該不會有問題的...";
+	next;
+	mes "[逼爾馬爾柯]";
+	mes "拜..拜托你讓我起來好嗎....毒性已經擴散到全身了...";
+	mes "....咿咿.....";
+	next;
+	mes "- 噗 -";
+	next;
+	mes "[逼爾馬爾柯]";
+	mes "嗚啊啊啊啊!!!!";
+	next;
+	mes "[逼爾馬爾柯]";
+	mes "嗯...! ....解毒效果...還不錯嗎... 好,已經確認了.";
+	next;
+	getitem 1073,1;
+	mes "[逼爾馬爾柯]";
+	mes "這里...這是收據. 希望下次再遇到你之前能夠存活下來...咳咳..";
+	mapannounce "comodo.gat"," " + strcharinfo(0) + ", 謝謝你送貨過來...已經沒有問題了..",3;
+	close;
+LThanks:
+	mes "[逼爾馬爾柯]";
+	mes "謝謝你...感謝救命之恩..";
+	close;
+}
+
+morocc.gat,95,133,4	script	鐵匠 公會員	726,{
+	if(Job_Black == 16) goto LAsk;
+	if(Job_Black == 17) goto LTalk2;
+	mes "[鐵匠公會的米特麻依兒]";
+	mes "哦... 夢羅克太陽真的好大哦...";
+	mes "托它福我們的皮膚不也曬的很健康嗎...";
+	next;
+	mes "[鐵匠 公會的米特麻依兒]";
+	mes "哦? 我們鐵匠每天都要在大太陽下生活, 所以我們都已經習慣了!!";
+	next;
+	mes "[鐵匠 公會的米特麻依兒]";
+	mes "...你說　皮膚會曬黑啊? 曬黑不是很好嗎...";
+	mes "看起來很健康很好啊.";
+	close;
+LAsk:
+	mes "[米特麻依兒]";
+	mes "歡迎光臨... 呵呵... 原來是一個想要成為鐵匠的年情人啊 .";
+	mes "也罷... 但是你應該也有經過測試而已經知道的...雖然是商人, 但是也不一定是每個人都會可以轉職的.";
+	next;
+	mes "[米特麻依兒]";
+	mes "你知道有關於礦石的多少內容... 或著對鐵匠了解多少...";
+	mes "我會問類似這種的一些問題的喔… 那么我們開始吧...";
+	next;
+	menu "是.",LBeginTest,"否.",LNotYet;
+LBeginTest:
+	mes "[米特麻依兒]";
+	mes "好...那么要出題目?...";
+	mes "沒有好好的達對的話就會被淘汰的喔..";
+	next;
+	mes "[米特麻依兒]";
+	mes "我要出題目了, 那就好好回答吧..";
+	mes "就算錯了, 也不會告訴你是錯在哪里的.";
+	next;
+	set @Question2,rand(1,3);
+	set @Final_Score,0;
+	mes "[米特麻依兒]";
+	mes "....那么要注意看題目之后好好的回答以下的問題吧...";
+	next;
+	if(@Question2 == 1) goto LQ1;
+	if(@Question2 == 2) goto LQ2;
+	goto LQ3;
+LQ1:
+	mes "[米特麻依兒]";
+	mes "1. 為了學習 低價買進 所需要的過程是什么?";
+	next;
+	menu "手推車使用 Lv 3",LQ1_1Wrong,"檢定物品",LQ1_1Wrong,"金錢攻擊 Lv 10",LQ1_1Wrong,"持有量增加 Lv 3",LQ1_1Right;
+LQ1_1Right:
+	set @Final_Score,@Final_Score+20;
+LQ1_1Wrong:
+	mes "[米特麻依兒]";
+	mes "2. 利用大地之擊攻擊怪物時, 有何種追加效果出現?";
+	next;
+	menu "定住",LQ1_2Right,"黑暗",LQ1_2Wrong,"混亂",LQ1_2Wrong,"沉沒",LQ1_2Wrong;
+LQ1_2Right:
+	set @Final_Score,@Final_Score+20;
+LQ1_2Wrong:
+	mes "[米特麻依兒]";
+	mes "3. 金錢攻擊 練滿時(Lv 10)所消耗的zeny為多少?";
+	next;
+	menu "900zeny",LQ1_3Wrong,"1000zeny",LQ1_3Right,"2000zeny",LQ1_3Wrong,"10萬zeny",LQ1_3Wrong;
+LQ1_3Right:
+	set @Final_Score,@Final_Score+20;
+LQ1_3Wrong:
+	mes "[米特麻依兒]";
+	mes "4. 低價買進 練滿時的折現?為多少?";
+	next;
+	menu "21 % ",LQ1_4Wrong,"22 % ",LQ1_4Wrong,"23 % ",LQ1_4Wrong,"24 % ",LQ1_4Right;
+LQ1_4Right:
+	set @Final_Score,@Final_Score+20;
+LQ1_4Wrong:
+	mes "[米特麻依兒]";
+	mes "5. 高價賣出 練滿時的利潤率為多少?";
+	next;
+	menu "21 % ",LShowFinalScore,"22 % ",LShowFinalScore,"23 % ",LQ1_5Right,"24 % ",LShowFinalScore;
+LQ1_5Right:
+	set @Final_Score,@Final_Score+20;
+	goto LShowFinalScore;
+
+LQ2:
+	mes "[米特麻依兒]";
+	mes "1. 以下那一個怪物是提供鋼鐵的?";
+	next;
+	menu "杰洛米",LQ2_1Wrong,"綠蒼蠅",LQ2_1Wrong,"邪骸礦工",LQ2_1Right,"諾可伊",LQ2_1Wrong;
+LQ2_1Right:
+	set @Final_Score,@Final_Score+20;
+LQ2_1Wrong:
+	mes "[米特麻依兒]";
+	mes "2. 以下的物品中, 哪一個是可以用火靈礦石制造出來的屬性石?";
+	next;
+	menu "火靈原石",LQ2_2Right,"風靈原石",LQ2_2Wrong,"土靈原石",LQ2_2Wrong,"水靈原石",LQ2_2Wrong;
+LQ2_2Right:
+	set @Final_Score,@Final_Score+20;
+LQ2_2Wrong:
+	mes "[米特麻依兒]";
+	mes "3. 在自己的倉庫中哪種屬性的原石最多？";
+	next;
+	menu "風靈礦石",LQ2_3,"火靈礦石",LQ2_3,"地靈礦石",LQ2_3,"水靈礦石",LQ2_3;
+LQ2_3:
+	set @Final_Score,@Final_Score+20;
+	mes "[米特麻依兒]";
+	mes "4. 一般來說. 哪一種屬性的怪獸在被風屬性的武器攻擊時所受到的損失為最大?";
+	next;
+	menu "火屬性",LQ2_4Wrong,"水屬性",LQ2_4Right,"地屬性",LQ2_4Wrong,"風屬性",LQ2_4Wrong;
+LQ2_4Right:
+	set @Final_Score,@Final_Score+20;
+LQ2_4Wrong:
+	mes "[米特麻依兒]";
+	mes "5. 用幾各鐵塊才可以做出一個鋼鐵?";
+	next;
+	menu "5個",LQ2_5Right,"4個",LShowFinalScore,"3個",LShowFinalScore,"6個",LShowFinalScore;
+LQ2_5Right:
+	set @Final_Score,@Final_Score+20;
+	goto LShowFinalScore;
+LQ3:
+	mes "[米特麻依兒]";
+	mes "1. 在路上有人跟你求救時你要怎么處理?";
+	next;
+	menu "尋問需要什么.",LQ3_1Right,"暫時跟他聊天.",LQ3_1Right,"不理他.",LQ3_1Wrong,"給他物品后再走人.",LQ3_1Wrong;
+LQ3_1Right:
+	set @Final_Score,@Final_Score+20;
+LQ3_1Wrong:
+	mes "[米特麻依兒]";
+	mes "2. 可以學到吵鬧以及改變貨車的村子是哪里?";
+	next;
+	menu "艾爾帕蘭城",LQ3_2Wrong,"艾爾貝塔城",LQ3_2Right,"夢羅克",LQ3_2Wrong,"依斯魯得島",LQ3_2Wrong;
+LQ3_2Right:
+	set @Final_Score,@Final_Score+20;
+LQ3_2Wrong:
+	mes "[米特麻依兒]";
+	mes "3. 以吉份城塔為中心, 鐵匠工會所在的方向為?";
+	next;
+	menu "11時方向",LQ3_3Wrong,"5時方向",LQ3_3Right,"7時方向",LQ3_3Wrong,"12時方向",LQ3_3Wrong;
+LQ3_3Right:
+	set @Final_Score,@Final_Score+20;
+LQ3_3Wrong:
+	mes "[米特麻依兒]";
+	mes "4. 哪個地方鐵匠族人最多?";
+	next;
+	menu "普隆德拉",LQ3_4Wrong,"夢羅克",LQ3_4Wrong,"艾爾貝塔",LQ3_4Wrong,"吉芬",LQ3_4Right;
+LQ3_4Right:
+	set @Final_Score,@Final_Score+20;
+LQ3_4Wrong:
+	mes "[米特麻依兒]";
+	mes "5. 會影響制造的能力值是什么?";
+	next;
+	menu "STR (力) ",LShowFinalScore,"DEX (技巧) ",LQ3_5Right,"AGI (敏捷) ",LShowFinalScore,"VIT (體力) ",LShowFinalScore;
+LQ3_5Right:
+	set @Final_Score,@Final_Score+20;
+LShowFinalScore:
+	mes "[米特麻依兒]";
+	mes "辛苦你了...";
+	next;
+	mes "[米特麻依兒]";
+	mes "那么接下來... 分數是 " + @Final_Score + "分.....";
+	if(@Final_Score > 70) goto LPass;
+	mes "不合格... 你還要多訓練再來找我吧!!";
+	next;
+	mes "[米特麻依兒]";
+	mes "這... 只知道這些是不夠的喔...";
+	mes "玩火可是會受傷的喔. 你還要多學習之后再來找我吧.";
+	close;
+LPass:
+	set Job_Black,17;
+	mes "哈哈... 你好厲害哦...! 合格耶.   恭喜恭喜!";
+	next;
+	mes "[米特麻依兒]";
+	mes "不過還不可以掉以輕心..依賴鐵匠生活每天都要提心吊膽.";
+	mes "你應該需要用到合格的證明...這兒, 我送你一個高級鐵砧.";
+	getitem 1005,1;
+	next;
+	mes "[米特麻依兒]";
+	mes "拿著這個... 你回去吉芬 鐵匠房.";
+	next;
+	mes "[米特麻依兒]";
+	mes "那么...祝你好運!!!";
+	close;
+LNotYet:
+	mes "[米特麻依兒]";
+	mes "對嘛...總是要有備無患啊. 再準備一些再來吧..";
+	close;
+LTalk2:
+	mes "[米特麻依兒]";
+	mes "啊..我不是說過是合格的啊?";
+	next;
+	mes "[米特麻依兒] ";
+	mes "你快回吉芬去吧~";
+	next;
+	mes "[米特麻依兒]";
+	mes "你記得要取回高級鐵砧哦!";
+	next;
+	mes "[米特麻依兒]";
+	mes "記得戰斗時要使用技能點數哦!";
+	close;
+}

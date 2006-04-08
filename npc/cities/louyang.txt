@@ -1,0 +1,1562 @@
+// 洛陽城市腳本
+// 
+// 中文化作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041217.0.3
+//			20050404.0.1	以 Aegis 的腳本修改傳送 NPC 腳本，可以說跟 eAthena 的腳本完全無關了
+//
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Lou Yang City NPC's 
+//===== By: ================================================== 
+//= Vidar (1.0)
+//= Mass Zero (1.1)
+//===== Current Version: ===================================== 
+//= 1.0 
+//===== Compatible With: ===================================== 
+//= Any eAthena Version
+//===== Description: ========================================= 
+//= Unofficial NPC's for Lou Yang city.
+//===== Additional Comments: ================================= 
+//= Originally made for Vidar
+//============================================================
+
+louyang.gat,260,96,2	script	春花	770,{
+	mes "[^000080春花^000000]";
+	mes "嗨! 旅行的人! 你一定又餓又渴吧?";
+	mes "請進來吧! 這里有很多食物喔!";
+	next;
+	mes "[^000080春花^000000]";
+	mes "別怕吃不夠, 這里的東西足夠你吃上一輩子呢!";
+	close;
+}
+
+// Modify by Dino9021
+lou_fild01.gat,190,100,1	script	姑娘	815,{
+	mes "[姑娘]";
+	mes "那么要回去了呀？";
+	next;
+	menu "回到艾爾貝塔",L_Return,"取消",L_Cancle;
+
+	L_Return:
+		mes "[姑娘]";
+		mes "下次再來呀～";
+		mes "出發～～";
+		next;
+		warp "alberta.gat",235,45;
+		close;
+
+	L_Cancle:
+		mes "[姑娘]";
+		mes "可以的話就留下來呀，";
+		mes "有美食又有漂亮美眉呀";
+		close;
+}
+
+// Modify by Dino9021
+alberta.gat,245,45,4	script	姑娘	815,{
+	mes "[姑娘]";
+	mes "那那～ 那那那那～ 今天的心情";
+	mes "真好呢～ 好想要";
+	mes "出去玩喔～";
+	next;
+	menu "有關龍之城．．．",L_AboutLouyang,"去龍之城",L_GoToLouyang,"取消",L_Cancle;
+
+	L_AboutLouyang:
+		mes "[姑娘]";
+		mes "您想去龍之城嗎？";
+		mes "那兒真的是個很棒的地方呀，";
+		mes "擁有數千年神秘之都市呀，";
+		mes "都市也很漂亮，原野也很漂亮呀";
+		next;
+		mes "[姑娘]";
+		mes "尤其這里也會發生與";
+		mes "神秘魔物之間不可";
+		mes "預測的事情呀，還可以";
+		mes "找到稀少且可醫治百病的藥呀";
+		next;
+		mes "[姑娘]";
+		mes "也有很多會拳法的人，";
+		mes "姑娘每天早上也是在那里";
+		mes "努力的修練拳法的呀，";
+		mes "姑娘很堅強的呀．．．！";
+		next;
+		mes "[姑娘]";
+		mes "想去的話隨時跟我說呀，";
+		mes "我會收一點錢，然后";
+		mes "把您踢到龍之城去呀．．．";
+		mes "哈哈-哈，不要當真呀！";
+		close;
+
+	L_GoToLouyang:
+		mes "[姑娘]";
+		mes "馬上出發呀，";
+		mes "給我 10,000 金幣就幫您送過去呀，";
+		mes "去玩的愉快一點呀";
+		next;
+		mes "[姑娘]";
+		mes "好，可以出發了呀？";
+		next;
+		menu "出發！",L_KickToLouyang,"取消",L_Cancle;
+
+	L_KickToLouyang:
+		if(Zeny < 10000) goto L_NoZeny;
+		mes "[姑娘]";
+		mes "咿～　哈啊～～";
+		mes "出發了呀～～～";
+		next;
+		set Zeny,Zeny-10000;
+		warp "lou_fild01.gat",190,101;
+		close;
+
+	L_NoZeny:
+		mes "[姑娘]";
+		mes "沒錢呀～";
+		mes "需要 10,000 金幣呀～";
+		mes "沒有的話絕對不行呀！";
+		close;
+
+	L_Cancle:
+		mes "[姑娘]";
+		mes "哼！ 失望呀，回家";
+		mes "去包餃子吃呀！！";
+		close;
+}
+
+//巴
+louyang.gat,213,213,3	script	士兵	825,{
+
+		mes "[士兵]";
+		mes "歡迎來到擁有悠久歷史氣息的";
+		mes "洛陽，";
+		mes "這次為了與國外的積極交流，";
+		mes "開拓新的航路，";
+		mes "以便這樣從外地來的人";
+		mes "可以安心的進出";
+		next;
+		mes "[士兵]";
+		mes "我們洛陽擁有悠久的歷史";
+		mes "及各式各樣的東西，";
+		mes "由于到目前為止";
+		mes "從來沒有交流，";
+		mes "因此也許會有在其他地方";
+		mes "難以見到的東西，";
+		mes "請你慢慢觀賞喔！";
+		next;
+		menu "詢問村落的地圖",L_lousolbaCase1,"移除地圖上的所有標志",L_lousolbaCase2,"取消",L_lousolbaCase3;
+
+				L_lousolbaCase1:
+					set @COMPASS_CHECK,rand(0,1);
+					mes "[士兵]";
+					mes "要我介紹哪里呢?";
+					next;
+					menu "城",L_baCase1,"醫院",L_baCase2,"官廳",L_baCase3,"武器店",L_baCase4,"道具店",L_baCase5,"酒店",L_baCase6,"取消",L_baCase7;
+
+							L_baCase1:
+								mes "[士兵]";
+								mes "城位于^FF3355+^000000，";
+								mes "城里是城主";
+								mes "及一些高官所居住的地方，";
+								mes "來到了陌生的地方，";
+								mes "向城主打個招呼是基本禮儀吧?";
+								if (@COMPASS_CHECK == 1)viewpoint 1,218,255,2,0xFF3355;
+								viewpoint 0,218,255,2,0xFF3355;
+								close;
+					
+							L_baCase2:
+								mes "[士兵]";
+								mes "在我們洛陽里有一座著名醫院";
+								mes "位于^CE6300+^000000，";
+								mes "根據傳說";
+								mes "沒有什么病是治不好的， ";
+								mes "不過，不知道是不是事實";
+								if (@COMPASS_CHECK == 1)viewpoint 1,263,94,3,0xCE6300;
+								viewpoint 0,263,94,3,0xCE6300;
+								close;
+						
+							L_baCase3:
+								mes "[士兵]";
+								mes "這洛陽里";
+								mes "在^A5BAAD+^000000會有官廳，";
+								mes "如果發生問題或有什么情況時，";
+								mes "先去官廳看看吧！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,309,80,4,0x00FF00;
+								viewpoint 0,309,80,4,0x00FF00;
+								close;
+
+							L_baCase4:
+								mes "[士兵]";
+								mes "武器店位于^55FF33+^000000，";
+								mes "你將會看到經過長時間冶煉";
+								mes "所鑄造的優秀武器";
+								if (@COMPASS_CHECK == 1)viewpoint 1,145,174,5,0x55FF33;
+								viewpoint 0,145,174,5,0x55FF33;
+								close;
+
+							L_baCase5:
+								mes "[士兵]";
+								mes "道具店位于 ^3355FF+^000000，";
+								mes "知彼知己，百戰百勝!";
+								mes "就是要準備的徹底，";
+								mes "...不要在意成語啦，嘿嘿！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,135,98,6,0x3355FF;
+								viewpoint 0,135,98,6,0x3355FF;
+								close;
+	
+							L_baCase6:
+								mes "[士兵]";
+								mes "旅途中累了就去酒店坐坐吧！";
+								mes "酒店位于^00FF00+^000000，";
+								mes "誰知道會從別的旅客中，得知什么好消息呢！ ";
+								if (@COMPASS_CHECK == 1)viewpoint 1,280,167,7,0x00FF00;
+								viewpoint 0,280,167,7,0x00FF00;
+								close;
+
+							L_baCase7:
+								mes "[士兵]";
+								mes "想要移除位置標志的話，";
+								mes "請選擇：";
+								mes "'移除地圖上的所有標志'";
+								close;
+				
+				L_lousolbaCase2:
+					viewpoint 2,218,255,2,0x00FF00;
+					viewpoint 2,263,94,3,0x00FF00;
+					viewpoint 2,309,80,4,0x00FF00;
+					viewpoint 2,145,174,5,0x00FF00;
+					viewpoint 2,135,98,6,0x00FF00;
+					viewpoint 2,280,167,7,0x00FF00;
+					set @COMPASS_CHECK,0;
+					mes "[士兵]";
+					mes "已移除地圖上的所有標志，";
+					mes "想要重新在地圖上做標志的話隨時再問我吧！";
+					close;
+
+				L_lousolbaCase3:
+					mes "[士兵]";
+					mes "親自邊逛邊熟悉環境也是蠻有趣的，那么祝你一路順風！";
+					close;
+}
+
+//碑
+louyang.gat,160,175,3	script	士兵	825,{
+
+		mes "[士兵]";
+		mes "歡迎來到擁有悠久歷史氣息的";
+		mes "洛陽，";
+		mes "這次為了與國外的積極交流，";
+		mes "開拓新的航路，";
+		mes "以便這樣從外地來的人";
+		mes "可以安心的進出";
+		next;
+		mes "[士兵]";
+		mes "我們洛陽擁有悠久的歷史";
+		mes "及各式各樣的東西，";
+		mes "由于到目前為止";
+		mes "從來沒有交流，";
+		mes "因此也許會有在其他地方";
+		mes "難以見到的東西，";
+		mes "請你慢慢觀賞喔！";
+		next;
+		menu "詢問村落的地圖",L_lousolbeCase1,"移除地圖上的所有標志",L_lousolbeCase2,"取消",L_lousolbeCase3;
+
+				L_lousolbeCase1:
+					set @COMPASS_CHECK,rand(0,1);
+					mes "[士兵]";
+					mes "要我介紹哪里呢?";
+					next;
+					menu "城",L_beCase1,"醫院",L_beCase2,"官廳",L_beCase3,"武器店",L_beCase4,"道具店",L_beCase5,"酒店",L_beCase6,"取消",L_beCase7;
+
+							L_beCase1:
+								mes "[士兵]";
+								mes "城位于^FF3355+^000000，";
+								mes "城里是城主";
+								mes "及一些高官所居住的地方，";
+								mes "來到了陌生的地方，";
+								mes "向城主打個招呼是基本禮儀吧?";
+								if (@COMPASS_CHECK == 1)viewpoint 1,218,255,2,0xFF3355;
+								viewpoint 0,218,255,2,0xFF3355;
+								close;
+					
+							L_beCase2:
+								mes "[士兵]";
+								mes "在我們洛陽里有一座著名醫院";
+								mes "位于^CE6300+^000000，";
+								mes "根據傳說";
+								mes "沒有什么病是治不好的， ";
+								mes "不過，不知道是不是事實";
+								if (@COMPASS_CHECK == 1)viewpoint 1,263,94,3,0xCE6300;
+								viewpoint 0,263,94,3,0xCE6300;
+								close;
+						
+							L_beCase3:
+								mes "[士兵]";
+								mes "這洛陽里";
+								mes "在^A5BAAD+^000000會有官廳，";
+								mes "如果發生問題或有什么情況時，";
+								mes "先去官廳看看吧！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,309,80,4,0x00FF00;
+								viewpoint 0,309,80,4,0x00FF00;
+								close;
+
+							L_beCase4:
+								mes "[士兵]";
+								mes "武器店位于^55FF33+^000000，";
+								mes "你將會看到經過長時間冶煉";
+								mes "所鑄造的優秀武器";
+								if (@COMPASS_CHECK == 1)viewpoint 1,145,174,5,0x55FF33;
+								viewpoint 0,145,174,5,0x55FF33;
+								close;
+
+							L_beCase5:
+								mes "[士兵]";
+								mes "道具店位于 ^3355FF+^000000，";
+								mes "知彼知己，百戰百勝!";
+								mes "就是要準備的徹底，";
+								mes "...不要在意成語啦，嘿嘿！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,135,98,6,0x3355FF;
+								viewpoint 0,135,98,6,0x3355FF;
+								close;
+
+							L_beCase6:
+								mes "[士兵]";
+								mes "旅途中累了就去酒店坐坐吧！";
+								mes "酒店位于^00FF00+^000000，";
+								mes "誰知道會從別的旅客中，得知什么好消息呢！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,280,167,7,0x00FF00;
+								viewpoint 0,280,167,7,0x00FF00;
+								close;
+
+							L_beCase7:
+								mes "[士兵]";
+								mes "想要移除位置標志的話，";
+								mes "請選擇：";
+								mes "'移除地圖上的所有標志'";
+								close;
+
+				
+				L_lousolbeCase2:
+					viewpoint 2,218,255,2,0x00FF00;
+					viewpoint 2,263,94,3,0x00FF00;
+					viewpoint 2,309,80,4,0x00FF00;
+					viewpoint 2,145,174,5,0x00FF00;
+					viewpoint 2,135,98,6,0x00FF00;
+					viewpoint 2,280,167,7,0x00FF00;
+					set @COMPASS_CHECK,0;
+					mes "[士兵]";
+					mes "已移除地圖上的所有標志，";
+					mes "想要重新在地圖上做標志的話隨時再問我吧！";
+					close;
+
+				L_lousolbeCase3:
+					mes "[士兵]";
+					mes "親自邊逛邊熟悉環境也是蠻有趣的，那么祝你一路順風！";
+					close;
+}
+
+//服務 NPC
+louyang.gat,224,104,3	script	宣傳使節	818,{
+
+		mes "[宣傳使節]";
+		mes "歡迎來到擁有悠久歷史氣息的";
+		mes "洛陽，";
+		mes "這次為了與國外的積極交流，";
+		mes "開拓新的航路，";
+		mes "以便這樣從外地來的人";
+		mes "可以安心的進出";
+		next;
+		mes "[宣傳使節]";
+		mes "我們洛陽擁有悠久的歷史";
+		mes "及各式各樣的東西，";
+		mes "由于到目前為止";
+		mes "從來沒有交流， ";
+		mes "因此也許會有在其他地方";
+		mes "難以見到的東西， ";
+		mes "請你慢慢觀賞！";
+		next;
+		menu "詢問村落的地圖",L_sukeCase1,"移除地圖上的所有標志",L_sukeCase2,"取消",L_sukeCase3;
+
+				L_sukeCase1:
+					set @COMPASS_CHECK,rand(0,1);
+					mes "[宣傳使節]";
+					mes "要我介紹哪里呢?";
+					next;
+					menu "城",L_sukeInCase1,"醫院",L_sukeInCase2,"官廳",L_sukeInCase3,"武器店",L_sukeInCase4,"道具店",L_sukeInCase5,"酒店",L_sukeInCase6,"取消",L_sukeInCase7;
+
+							L_sukeInCase1:
+								mes "[宣傳使節]";
+								mes "城位于^FF3355+^000000，";
+								mes "城里是城主";
+								mes "及一些高官所居住的地方，";
+								mes "來到了陌生的地方，";
+								mes "向城主打個招呼是基本禮儀吧?";
+								if (@COMPASS_CHECK == 1)viewpoint 1,218,255,2,0xFF3355;
+								viewpoint 0,218,255,2,0xFF3355;
+								close;
+					
+							L_sukeInCase2:
+								mes "[宣傳使節]";
+								mes "在我們洛陽里有一座著名醫院";
+								mes "位于^CE6300+^000000，";
+								mes "根據傳說";
+								mes "沒有什么病是治不好的， ";
+								mes "不過，不知道是不是事實";
+								if (@COMPASS_CHECK == 1)viewpoint 1,263,94,3,0xCE6300;
+								viewpoint 0,263,94,3,0xCE6300;
+								close;
+						
+							L_sukeInCase3:
+								mes "[宣傳使節]";
+								mes "這洛陽里";
+								mes "在^A5BAAD+^000000會有官廳，";
+								mes "如果發生問題或有什么情況時，";
+								mes "先去官廳看看吧！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,309,80,4,0x00FF00;
+								viewpoint 0,309,80,4,0x00FF00;
+								close;
+
+							L_sukeInCase4:
+								mes "[宣傳使節]";
+								mes "武器店位于^55FF33+^000000，";
+								mes "你將會看到經過長時間冶煉";
+								mes "所鑄造的優秀武器";
+								if (@COMPASS_CHECK == 1)viewpoint 1,145,174,5,0x55FF33;
+								viewpoint 0,145,174,5,0x55FF33;
+								close;
+
+							L_sukeInCase5:
+								mes "[宣傳使節]";
+								mes "道具店位于 ^3355FF+^000000，";
+								mes "知彼知己，百戰百勝!";
+								mes "就是要準備的徹底，";
+								mes "...不要在意成語啦，嘿嘿！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,135,98,6,0x3355FF;
+								viewpoint 0,135,98,6,0x3355FF;
+								close;
+	
+							L_sukeInCase6:
+								mes "[宣傳使節]";
+								mes "旅途中累了就去酒店坐坐吧！";
+								mes "酒店位于^00FF00+^000000，";
+								mes "誰知道會從別的旅客中，得知什么好消息呢！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,280,167,7,0x00FF00;
+								viewpoint 0,280,167,7,0x00FF00;
+								close;
+
+							L_sukeInCase7:
+								mes "[宣傳使節]";
+								mes "想要移除位置標志的話，";
+								mes "請選擇：";
+								mes "'移除地圖上的所有標志'";
+								close;
+
+				
+				L_sukeCase2:
+					viewpoint 2,218,255,2,0x00FF00;
+					viewpoint 2,263,94,3,0x00FF00;
+					viewpoint 2,309,80,4,0x00FF00;
+					viewpoint 2,145,174,5,0x00FF00;
+					viewpoint 2,135,98,6,0x00FF00;
+					viewpoint 2,280,167,7,0x00FF00;
+					set @COMPASS_CHECK,0;
+					mes "[宣傳使節]";
+					mes "已移除地圖上的所有標志，";
+					mes "想要重新在地圖上做標志的話隨時再問我吧！";
+					close;
+
+				L_sukeCase3:
+					mes "[宣傳使節]";
+					mes "親自邊逛邊熟悉環境也是蠻有趣的，那么祝你一路順風！";
+					close;
+}
+
+louyang.gat,297,167,2	script	看起來很堅強的女人	815,{
+
+	if (SEX == 0) goto L_strongwom;
+	mes "[季岑琉]";
+	mes "..........";
+	mes "現在很忙不要煩我";
+	mes "..........";
+	close;
+
+	L_strongwom:
+	mes "[季岑琉]";
+	mes "在我們少女宮里， ";
+	mes "宮主以下的成員是由女性所構成的，";
+	mes "不過";
+	mes "最近想要加入宮里的人比較少，";
+	mes "所以目前宮里并不是在很理想的情況";
+	Emotion 20;
+	next;
+	mes "[季岑琉]";
+	mes "所以我這次為了打聽";
+	mes "有沒有人想要加入宮里，";
+	mes "所以就從宮里出來走走";
+	close;
+}
+
+louyang.gat,274,136,4	script	散發著強烈氣息的男人	819,{
+
+	mes "[阿吉拉]";
+	mes "'八極龍拳'這個名稱含有三種意義，";
+	mes "所謂的一，";
+	mes "極就是簡，";
+	mes "二是變，";
+	mes "三就是不變";
+	next;
+	mes "[阿吉拉]";
+	mes "易是指著萬物生生不息，";
+	mes "這也叫做德，";
+	mes "擁有易簡的意思，";
+	mes "變易是指著萬物生生不息的道理，";
+	mes "雖然會變， ";
+	mes "但是會互相接續的，";
+	next;
+	mes "[阿吉拉]";
+	mes "不易是指天地的定位，";
+	mes "也就是說不能互相定位";
+	mes "變更的東西，";
+	mes "易就是以變化的道理，";
+	mes "指宇宙萬物不停地運作的意思，";
+	mes "不停的運作(生生不息)";
+	mes "就是在不斷的";
+	mes "變化的意思";
+	close;
+}
+
+louyang.gat,276,136,4	script	領悟到權利的人	819,{
+
+	mes "[鄭克志]";
+	mes "不過天地間的萬物";
+	mes "當然正在改變當中，";
+	mes "但在這變化中還有不變的法則，";
+	mes "除了支持這變化的變易之外，";
+	mes "還會有";
+	mes "不易的道理";
+	next;
+	mes "[鄭克志]";
+	mes "變易是現象，";
+	mes "不易是法則，";
+	mes "簡易則成為那方法，";
+	mes "伏羲一下就開啟天地，";
+	mes "并不是如此的簡單";
+	next;
+	mes "[鄭克志]";
+	mes "太極當作為第一，陰陽當作為第二，";
+	mes "所以萬象萬變不會脫離那陰陽的，";
+	mes "從簡變為繁， ";
+	mes "有連續";
+	mes "又有理";
+	next;
+	mes "[鄭克志]";
+	mes "從繁化為簡，";
+	mes "才會有系統又有根源，";
+	mes "八極龍拳術就是";
+	mes "以這一個原理作為基礎";
+	close;
+}
+
+louyang.gat,276,133,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "哈啊~!";
+	mes "愛G靄~!!";
+	mes "呵";
+	close;
+}
+louyang.gat,276,131,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "喔~!";
+	mes "愛G靄~!!";
+	mes "呵呵...";
+	close;
+}
+louyang.gat,276,129,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "恰啊~";
+	mes "呀~~!!";
+	mes ".......";
+	close;
+}
+louyang.gat,274,133,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "呼~!";
+	mes "呼呼~~!!";
+	mes "呼...";
+	close;
+}
+louyang.gat,274,131,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "哇? !";
+	mes "啊啾~~!!";
+	mes "哇愛G“““...";
+	close;
+}
+louyang.gat,274,129,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "呀啊~";
+	mes "...!";
+	mes "........!!";
+	close;
+}
+louyang.gat,278,133,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "沖啾!!";
+	mes "呼~~!!";
+	mes "呵喔~~";
+	close;
+}
+louyang.gat,278,131,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "抓咯~!";
+	mes ".....";
+	mes "呼";
+	close;
+}
+louyang.gat,278,129,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "打一擊~!";
+	mes "愛G靄~!!";
+	mes "呀~!!";
+	close;
+}
+louyang.gat,272,133,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "唉呀唉呀..";
+	mes "呀啊啊~~";
+	mes "翻來翻去......";
+	close;
+}
+louyang.gat,272,131,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "牛啊...";
+	mes "一~~!!";
+	mes "二~~!!!";
+	close;
+}
+louyang.gat,272,129,0	script	修練生	819,{
+	mes "[修練生]";
+	mes "咿呀~!";
+	mes "啊好累喔~~!!";
+	mes "暈倒.....";
+	close;
+}
+
+lou_in02.gat,53,174,7	script	服務生#1	822,6,2,{
+
+	if (((gettime(3) >= 10)) && ((gettime(3) <= 22))) goto L_pai;
+		mes "[昌派]";
+		mes "恩呀恩呀...";
+		close;
+	L_pai:
+		mes "[昌派]";
+		mes "啊啊！客人~~~~~ 歡迎光臨-!!!";
+		mes "有很多很多位子喔！";
+		mes "來！來！請上2樓~";
+		close;
+OnTouch:
+	set jar_find_3,rand(1,10);
+	if (ch_tre == 2) || (ch_tre == 3) goto L_paigon;
+		goto L_painothing;
+	L_paigon:
+		if (((gettime(3) >= 10)) && ((gettime(3) < 14))) goto L_paigon1;
+		if (((gettime(3) >= 14)) && ((gettime(3) < 17))) goto L_paigon2;
+		if (((gettime(3) >= 17)) && ((gettime(3) < 22))) goto L_paigon3;
+		if (jar_find_3 < 5) goto L_paigon4;
+		goto L_painothing;
+
+	L_paigon1:
+		if (jar_find_3 < 9) goto L_paigon12;
+		goto L_painothing;
+	L_paigon2:
+		if (jar_find_3 < 10) goto L_paigon12;
+		goto L_painothing;
+	L_paigon3:
+		if (jar_find_3 < 6) goto L_paigon12;
+		goto L_painothing;
+	L_paigon4:
+		mes "[昌派]";
+		mes "喔嗯...好困喔....";
+		mes "喔唷? 你是誰!!!";
+		mes "有小偷- !!!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+	L_painothing:
+		end;
+	L_paigon12:
+		mes "[昌派]";
+		mes "等等!! 你是誰!!!";
+		mes "當場放下之后走開!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+}
+
+lou_in02.gat,76,181,3	script	服務生#2	822,2,2,{
+
+	if (((gettime(3) >= 10)) && ((gettime(3) <= 22))) goto L_shan;
+		mes "[黃家善]";
+		mes "嗚嗚...我做錯了...";
+		mes "....................";
+		mes "...滴鈴鈴...咳咳...";
+		close;
+	L_shan:
+		mes "[黃家善]";
+		mes "歡迎光臨- ";
+		mes "唉呀！沒精神..";
+		mes "想要休息的話請上樓";
+		next;
+		mes "[黃家善]";
+		mes "由于最近旅客經常來到我們村落，";
+		mes "所以比平常還要忙百倍，";
+		mes "連吃飯的時間都沒有，";
+		mes "真的好餓喔！";
+		close;
+OnTouch:
+	set jar_find_4,rand(1,10);
+	if (ch_tre == 2) || (ch_tre == 3) goto L_shangon;
+		goto L_shannothing;
+	L_shangon:
+		if (((gettime(3) >= 10)) && ((gettime(3) < 14))) goto L_shangon1;
+		if (((gettime(3) >= 14)) && ((gettime(3) < 17))) goto L_shangon2;
+		if (((gettime(3) >= 17)) && ((gettime(3) < 22))) goto L_shangon3;
+		if (jar_find_4 < 5) goto L_shangon4;
+		goto L_shannothing;
+
+	L_shangon1:
+		if (jar_find_4 < 9) goto L_shangon12;
+		goto L_shannothing;
+	L_shangon2:
+		if (jar_find_4 < 10) goto L_shangon12;
+		goto L_shannothing;
+	L_shangon3:
+		if (jar_find_4 < 6) goto L_shangon12;
+		goto L_shannothing;
+	L_shangon4:
+		mes "[黃家善]";
+		mes "喔嗯...好困喔....";
+		mes "喔唷? 你是誰!!!";
+		mes "有小偷- !!!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+	L_shannothing:
+		end;
+	L_shangon12:
+		mes "[黃家善]";
+		mes "等等!! 你是誰!!!";
+		mes "當場放下之后走開!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+}
+
+lou_in02.gat,61,175,3	script	服務生#3	822,2,2,{
+
+	if (((gettime(3) >= 10)) && ((gettime(3) <= 22))) goto L_hwa;
+		mes "[阿花]";
+		mes "嗯呀恩呀...";
+		close;
+	L_hwa:
+		if (ch_tre == 5) goto L_hwa2;
+			mes "[阿花]";
+			mes "啊啊！客人~ 歡迎光臨-!!!";
+			mes "還有很多位子呢~";
+			mes "來~ 來~，請上2樓~ 快點快點~";
+			close;
+	L_hwa2:
+		mes "[阿花]";
+		mes "啊啊！客人~ 歡迎光臨- !!";
+		mes "還有很多位子啊?";
+		mes "來~ 請上2樓，呵呵!";
+		next;
+		emotion 4;
+		mes "[阿花]";
+		mes "啊！假如是來吃四龍轉入湯的話";
+		mes "不好意思我們已經不賣了，";
+		mes "我們也有很多其他美味的餐點喔！請多多利用!";
+		close;
+OnTouch:
+	set jar_find_5,rand(1,10);
+	if (ch_tre == 2) || (ch_tre == 3) goto L_hwagon;
+		goto L_hwanothing;
+	L_hwagon:
+		if (((gettime(3) >= 10)) && ((gettime(3) < 14))) goto L_hwagon1;
+		if (((gettime(3) >= 14)) && ((gettime(3) < 17))) goto L_hwagon2;
+		if (((gettime(3) >= 17)) && ((gettime(3) < 22))) goto L_hwagon3;
+		if (jar_find_5 < 5) goto L_hwagon4;
+		goto L_hwanothing;
+
+	L_hwagon1:
+		if (jar_find_5 < 9) goto L_hwagon12;
+		goto L_hwanothing;
+	L_hwagon2:
+		if (jar_find_5 < 10) goto L_hwagon12;
+		goto L_hwanothing;
+	L_hwagon3:
+		if (jar_find_5 < 6) goto L_hwagon12;
+		goto L_hwanothing;
+	L_hwagon4:
+		mes "[阿花]";
+		mes "喔嗯...好困喔....";
+		mes "喔唷? 你是誰!!!";
+		mes "大家快起來! 有小偷~ !!!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+	L_hwanothing:
+		end;
+	L_hwagon12:
+		mes "[阿花]";
+		mes "等等!! 你是誰!!!";
+		mes "當場放下之后走開!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+}
+
+lou_in02.gat,62,183,3	script	廚師#1-2	820,2,2,{
+
+	if ((ch_tre > 0) & (ch_tre < 4)) goto L_wangsalong;
+	if ((ch_tre > 3) & (ch_tre < 6)) goto L_wangsalong2;
+		mes "[王沙隆]";
+		mes "嗯? 是客人嗎?";
+		mes "我是這家店的廚師";
+		next;
+		mes "[王沙隆]";
+		mes "太守世世代代的餐飲， ";
+		mes "通常是由我們的祖先料理的呢！";
+		mes "這家店是我們家族的榮耀，而我是這家店的繼承者! 喔呼~";
+		next;
+		mes "[王沙隆]";
+		mes "我們店里的主力料理";
+		mes "四龍轉入湯， ";
+		mes "連很挑食的太守";
+		mes "也喊著：特好啊~的程度， ";
+		mes "它的口味是一流呢！";
+		next;
+		mes "[王沙隆]";
+		mes "特別嚴選的新鮮及品質又好的材料，";
+		mes "使料理顯的更加高級! 哈哈!";
+		next;
+		mes "[王沙隆]";
+		mes "托你的福，";
+		mes "我們店里這幾百年來";
+		mes "都沒遇到任何困難，";
+		mes "并享受著美好的現況！";
+		next;
+		mes "[王沙隆]";
+		mes "在最近沒胃口的季節來說，是個很棒的料理，";
+		mes "有興趣的話不妨吃吃看吧！";
+		close;
+	L_wangsalong:
+		mes "[王沙隆]";
+		mes "嗯? 是客人嗎?";
+		mes "我是這家店的廚師，叫做王沙隆";
+		next;
+		mes "[王沙隆]";
+		mes "太守世世代代的餐飲， ";
+		mes "通常是由我們的祖先料理的呢！";
+		mes "這家店是我們家族的榮耀，而我是這家店的繼承者! 喔呼~";
+		next;
+		mes "[王沙隆]";
+		mes "四龍轉入湯是我們本店的驕傲，";
+		mes "當湯食一入口時， ";
+		mes "就算坐著也會自動站起來的！";
+		mes "四龍轉入湯是";
+		mes "太守極度稱贊的料理!";
+		next;
+		mes "[王沙隆]";
+		mes "特別嚴選的新鮮及品質又好的材料，";
+		mes "使料理顯的更加高級! 哈哈!";
+		next;
+		mes "[王沙隆]";
+		mes "托你的福，";
+		mes "我們店里這幾百年來";
+		mes "都沒遇到任何困難，";
+		mes "并享受著美好的現況！";
+		next;
+		mes "[王沙隆]";
+		mes "不過最近好像一直有人，";
+		mes "想要貪圖我們店的感覺..";
+		mes ".............";
+		mes "是心情的關系嗎?";
+		close;
+	L_wangsalong2:
+		mes "[王沙隆]";
+		mes "喀呵呵呵呵..";
+		mes "本店完美的歷史，已經結束了嗎？";
+		mes "有人把用于四龍轉入湯原材料的湯頭偷走了，";
+		mes "我要怎么辦才好呢？嗚嗚..";
+		next;
+		mes "[王沙隆]";
+		mes "以后不能再賣四龍轉入湯了，";
+		mes "必須轉變成一般的餐廳了...";
+		close;
+OnTouch:
+	set jar_find_1,rand(1,10);
+	if (ch_tre == 2) || (ch_tre == 3) goto L_wangsalonggon;
+		goto L_wangsalongnothing;
+
+	L_wangsalonggon:
+		if (((gettime(3) >= 10)) && ((gettime(3) < 14))) goto L_wangsalonggon1;
+		if (((gettime(3) >= 14)) && ((gettime(3) < 17))) goto L_wangsalonggon2;
+		if (((gettime(3) >= 17)) && ((gettime(3) < 22))) goto L_wangsalonggon3;
+		if (jar_find_1 < 5) goto L_wangsalonggon4;
+		goto L_wangsalongnothing;
+
+	L_wangsalonggon1:
+		if (jar_find_1 < 9) goto L_wangsalonggon12;
+		goto L_wangsalongnothing;
+	L_wangsalonggon2:
+		if (jar_find_1 < 10) goto L_wangsalonggon12;
+		goto L_wangsalongnothing;
+	L_wangsalonggon3:
+		if (jar_find_1 < 6) goto L_wangsalonggon12;
+		goto L_wangsalongnothing;
+	L_wangsalonggon4:
+		mes "[王沙隆]";
+		mes "恩呀恩呀..";
+		mes "嗯? 是誰呢? 喔? 你是誰!!!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		next;
+		warp "louyang.gat",280,161;
+		close;
+	L_wangsalongnothing:
+		end;
+	L_wangsalonggon12:
+		mes "[王沙隆]";
+		mes "等等!! 你是誰!!!";
+		mes "當場放下之后走開!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		next;
+		warp "louyang.gat",280,161;
+		close;
+}
+
+lou_fild01.gat,195,177,5	script	古炎寶#1-1	819,{
+
+	if (ch_tre == 0) goto L_gugonStart;
+	if (ch_tre == 1) goto L_gugonOne;
+	if (ch_tre == 2) goto L_gugonTwo;
+	if (ch_tre == 3) goto L_gugonThree;
+	if ((ch_tre > 3) && (ch_tre < 6)) goto L_gugonThreeMore;
+		mes "[古炎寶]";
+		mes "你是誰!";
+		mes "你也是像村民一樣來煩我的吧!";
+		mes "哼! 走開!!";
+		close;
+	L_gugonOne:
+		mes "[古炎寶]";
+		mes "四龍轉入湯怎樣了呢?";
+		mes "成功了嗎? 失敗了嗎?";
+		mes "麻煩你了，交給你? !!";
+		close;
+	L_gugonTwo:
+		mes "[古炎寶]";
+		mes "喔喔!! 拿回來了啊!!!";
+		mes "讓我看看...";
+		next;
+		mes "[古炎寶]";
+		mes "不是不是，不是這個，";
+		mes "這不是四龍轉入湯，";
+		mes "再次麻煩你了~ 對不起!";
+		set ch_tre,1;
+		close;
+	L_gugonThree:
+		mes "[古炎寶]";
+		mes "喔喔!! 拿回來了啊!!!";
+		mes "讓我看看....";
+		next;
+		mes "[古炎寶]";
+		mes "沒錯!! 就是這個...";
+		mes "...喀喀喀喀...";
+		mes "有了這個，那傲慢的廚師應該會清醒一點吧！";
+		next;
+		mes "[古炎寶]";
+		mes "呼呼，非常感謝你!";
+		mes "為了我這么辛苦，我就讓你參觀很漂亮的地方!";
+		mes "好~跟我來!";
+		set ch_tre,4;
+		next;
+		warp "lou_fild01.gat",180,170;
+		close;
+	L_gugonThreeMore:
+		mes "[古炎寶]";
+		mes "歐！朋友，好久不見！";
+		mes "過的好嗎?";
+		mes "你還要去上次那里嗎?";
+		next;
+		menu "是",L_gugonTMCase1,"不是",L_gugonTMCase2;
+
+			L_gugonTMCase1:
+				mes "[古炎寶]";
+				mes "好，跟我來";
+				next;
+				warp "lou_fild01.gat",180,170;
+				close;
+			L_gugonTMCase2:
+				mes "[古炎寶]";
+				mes "是喔?";
+				mes "下次心情不好或郁悶的時候來找我吧！";
+				close;
+
+	L_gugonStart:
+		mes "[古炎寶]";
+		mes "呀啊- 你好?";
+		mes "在這里干嘛呢?";
+		mes "我不喜歡人多的地方，我正在靜靜的聽著江水聲";
+		mes "讓心情安定中";
+		next;
+		mes "[古炎寶]";
+		mes "最近多了很多陌生人，感到非常不悅!";
+		mes "對第一次看到的風景，雖然大家都睜大眼驚奇的看著，但這里也只不過是人住的村落而已！";
+		next;
+		mes "[古炎寶]";
+		mes "人過的不都一樣嗎? 哼!! 反正大人都是貪心鬼!";
+		mes "尤其是那家店!!! 真的要狠狠地整一頓!";
+		next;
+		menu "哪家店呢?",L_guCase1,"不理他直接經過",L_guCase2;
+
+			L_guCase1:
+				mes "[古炎寶]";
+				mes "有一家蓋在村落西邊，荷花池上面的大酒店，";
+				mes "是個很古老的店，只是因為悠久且稍微好吃的理由，就不當的以高價販賣呢！";
+				next;
+				mes "[古炎寶]";
+				mes "以熱愛村落的青年來說，這種事是絕對不會原諒的!!";
+				mes "可是..由我自己來行動.. 這村落太小了，馬上會被抓到的";
+				next;
+				mes "[古炎寶]";
+				mes "...上次在江老先生的墻上涂鴉時.. 到底是被誰看到的呢.. 切..碎碎念...";
+				mes "喔，反正你要不要幫我嘛?";
+				next;
+				mes "[古炎寶]";
+				mes "代替我偷偷潛入村落酒店之后，偷走^3131FF四龍轉入湯的湯頭^000000!!";
+				next;
+				mes "[古炎寶]";
+				mes "四龍轉入湯的湯頭是世世代代傳承下來的，那只不過在里面加點水來煮的，就騙大家說是幾百年的四龍轉入湯，并以高價賣給人們!";
+				next;
+				mes "[古炎寶]";
+				mes "如果你拿那個給我的話，我就帶你去一個地方";
+				mes "嗯?怎么樣?";
+				next;
+				menu "好",L_guOk,"不要",L_guNo;
+
+					  L_guOk:
+						mes "[古炎寶]";
+						mes "太棒了- !!!!";
+						mes "酒店在村落的西邊，";
+						mes "那里的老板叔叔有點兇，小心不要被抓到了!!!";
+						mes "那么等順利的把任務完成之后，就把湯頭交給我啊！懂嗎?";
+						mes "祝你好運!!!";
+						set ch_tre,1;
+						close;
+					  L_guNo:
+						mes "[古炎寶]";
+						mes "哼!!";
+						mes "走開!!";
+						close;
+
+			L_guCase2:
+				mes "[古炎寶]";
+				mes "嘀咕嘀咕..碎碎念..";
+				close;
+	
+}
+
+lou_fild01.gat,175,173,3	script	古炎寶#1-2	819,{
+
+	emotion 18;
+	if (ch_tre == 4) goto L_gulook;
+	if (ch_tre == 5) goto L_gulook2;
+		mes "[古炎寶]";
+		mes "喂!! 這里很危險，";
+		mes "快下去！";
+		next;
+		warp "lou_fild01.gat",200,174;
+		close;
+	L_gulook:
+		mes "[古炎寶]";
+		mes "怎么樣? 很棒吧?";
+		mes "每當我心情不好時，我都會來到這里，";
+		mes "靜靜的吹著風， ";
+		mes "讓心情平靜下來， ";
+		mes "不知不覺心情就好很多了";
+		next;
+		mes "[古炎寶]";
+		mes "哈哈，我是搗蛋鬼";
+		mes "也常被姊姊挨罵";
+		next;
+		mes "[古炎寶]";
+		mes "你也是靜靜的坐著閉上眼睛，";
+		mes "感受風碰觸皮膚時的柔和，";
+		mes "我想一定會";
+		mes "有著不同的感受";
+		next;
+		emotion 20;
+		mes "[古炎寶]";
+		mes "還有，另外一個，";
+		mes "雖然很棒...";
+		next;
+		mes "[古炎寶]";
+		mes "通常人會在心里藏著很多話，";
+		mes "如果那些話無法成為聲音，";
+		mes "就這樣停滯在心里的話，";
+		mes "不知不覺的";
+		mes "就會形成毒， ";
+		mes "并會慢慢的讓自己痛苦…";
+		next;
+		mes "[古炎寶]";
+		mes "就算說出任何無關緊要的話，";
+		mes "也就可以解除不少的操心";
+		mes "或者是郁悶，";
+		mes "你知道嗎?";
+		next;
+		mes "[古炎寶]";
+		mes "來-- 把手用力握緊，";
+		mes "大--口--深呼吸";
+		next;
+		mes "[古炎寶]";
+		mes "把你藏在心里的話";
+		mes "說出口吧！ ";
+		mes "就算是發出吐氣聲也好，";
+		mes "把你心里的毒釋放出來吧！";
+		next;
+		mes "[古炎寶]";
+		mes "來-!!!";
+		mes "喊喊看!";
+		next;
+		input @string$; 
+		mes "["+strcharinfo(0)+"]";
+		mes ""+@string$+"";
+		set shout2,"在某個地方 '"+strcharinfo(0)+"'的大喊 : "+@string$+"";
+		mapannounce "lou_fild01.gat",""+shout2+"",17;
+		next;
+		mes "[古炎寶]";
+		mes "怎么樣?";
+		mes "心情有好一點了吧? 嘿嘿";
+		mes "以后你也會常常來這里的，";
+		mes "那么有需要的話再找我吧！";
+		mes "今天的事非常感謝你!";
+		set ch_tre,5;
+		close;
+	L_gulook2:
+		mes "[古炎寶]";
+		mes "好，要如何呢?";
+		next;
+		menu "我要大喊",L_guLCase1,"我要下去",L_guLCase2;
+
+			L_guLCase1:
+	  			mes "[古炎寶]";
+	  			mes "來-!!!";
+	  			mes "喊喊看!";
+	  			next;
+				input @string$; 
+				mes "["+strcharinfo(0)+"]";
+				mes ""+@string$+"";
+				set shout2,"在某個地方 '"+strcharinfo(0)+"'的大喊 : "+@string$+"";
+				mapannounce "lou_fild01.gat",""+shout2+"",17;
+	  			next;
+				mes "[古炎寶]";
+	  			mes "怎么樣?";
+	  			mes "心情有好一點了吧?";
+	  			mes "那么需要的話再來找我吧！";
+	  			close;
+			L_guLCase2:
+				mes "[古炎寶]";
+				mes "好，我知道了";
+				next;
+				warp "lou_fild01.gat",200,174;
+				close;
+}
+
+lou_in02.gat,50,185,5	script	缸#1	111,{
+
+	if (ch_tre == 1) goto L_gon1QStart;
+	if ((ch_tre > 3) && (ch_tre < 6)) goto L_gon1QEnd;
+	if ((gettime(3) >= 10) && (gettime(3) < 22)) goto L_gon1Donttouch;
+		mes "^3131FF- 在陰涼處有一個看起來 -^000000 ";
+		mes "^3131FF- 又大又笨重的缸，-^000000 ";
+		mes "^3131FF- 缸里裝滿著-^000000 ";
+		mes "^3131FF- 暗紅色的液體 -^000000 ";
+		close;
+	L_gon1Donttouch:
+		mes "[廚師]";
+		mes "啊！請勿觸摸那里";
+		close;
+	L_gon1QEnd:
+		mes "^3131FF- 看到了空缸 -^000000";
+		close;
+	L_gon1QStart:
+		set jar_china_2,rand(1,4);
+		mes "^3131FF- 在陰涼處，-^000000 ";
+		mes "^3131FF- 有一個看起來又大又笨重的缸，-^000000 ";
+		mes "^3131FF- 缸里裝滿著暗紅色的液體，-^000000 ";
+		mes "^3131FF- 要怎么辦呢? -^000000 ";
+		next;
+		menu "把缸帶走",L_gon1QSCase1,"尋找別的缸",L_gon1QSCase2;
+
+			L_gon1QSCase1:
+				if ((gettime(3) >= 10) && (gettime(3) < 14)) goto L_gon1QSC1Time1;
+				if ((gettime(3) >= 14) && (gettime(3) < 17)) goto L_gon1QSC1Time2;
+				if ((gettime(3) >= 17) && (gettime(3) < 22)) goto L_gon1QSC1Time3;
+				mes "^3131FF- 你為了拿缸-^000000";
+				mes "^3131FF- 而觀察了一下周圍， -^000000";
+				mes "^3131FF- 營業結束的店里-^000000";
+				mes "^3131FF- 就像公演后的舞臺般平靜又凄涼， -^000000";
+				mes "^3131FF- 到處都有服務生 -^000000";
+				mes "^3131FF- 昏昏欲睡 -^000000";
+				next;
+				goto L_gon1QSC1End;
+
+			L_gon1QSCase2:
+				mes "^3131FF- 你已決定要尋找  -^000000";
+				mes "^3131FF- 其他的缸  -^000000";
+				close;
+	L_gon1QSC1Time1:
+		mes "^3131FF- 你為了拿缸 -^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里有還沒睡飽的服務生 -^000000";
+		mes "^3131FF- 以及來用餐的客人，-^000000";
+		mes "^3131FF- 是個應該很繁忙  -^000000";
+		mes "^3131FF- 可是看起來又很閑暇的景象  -^000000";
+		next;
+		goto L_gon1QSC1End;
+	L_gon1QSC1Time2:
+		mes "^3131FF- 你為了拿缸 -^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里的服務生閑散的顧著店，-^000000";
+		mes "^3131FF- 有些在聊天，-^000000";
+		mes "^3131FF- 還有些在玩耍 -^000000";
+		next;
+		goto L_gon1QSC1End;
+	L_gon1QSC1Time3:
+		mes "^3131FF- 你為了拿缸-^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里擠滿了客人，-^000000";
+		mes "^3131FF- 是個非常繁忙 -^000000";
+		mes "^3131FF- 及熱鬧的景象，-^000000";
+		mes "^3131FF- 服務生及廚師也正忙于- ^000000";
+		mes "^3131FF- 準備客人的餐點，-^000000";
+		mes "^3131FF- 而好像沒有發現-^000000";
+		mes "^3131FF- 你在缸的附近  -^000000";
+		next;
+		goto L_gon1QSC1End;
+	L_gon1QSC1End:
+		mes "^3131FF- 你小心翼翼的走近缸， -^000000";
+		mes "^3131FF- 看起來有點困難-^000000";
+		mes "^3131FF- 不過應該可以帶走， -^000000";
+		mes "^3131FF- 你伸出兩手  -^000000";
+		mes "^3131FF- 抱住了缸，  -^000000";
+		mes "^3131FF- 現在只剩下順利的 -^000000";
+		mes "^3131FF- 帶著缸  -^000000";
+		mes "^3131FF- 逃出這家店  -^000000";
+		if (jar_china_2 < 4)set ch_tre,2;
+		set ch_tre,3;
+		close;
+}
+lou_in02.gat,49,185,5	script	缸#2	111,{
+
+	if (ch_tre == 1) goto L_gon2QStart;
+	if ((ch_tre > 3) && (ch_tre < 6)) goto L_gon2QEnd;
+	if ((gettime(3) >= 10) && (gettime(3) < 22)) goto L_gon2Donttouch;
+		mes "^3131FF- 在陰涼處有一個看起來 -^000000 ";
+		mes "^3131FF- 又大又笨重的缸，-^000000 ";
+		mes "^3131FF- 缸里裝滿著-^000000 ";
+		mes "^3131FF- 暗紅色的液體 -^000000 ";
+		close;
+	L_gon2Donttouch:
+		mes "[廚師]";
+		mes "啊！請勿觸摸那里";
+		close;
+	L_gon2QEnd:
+		mes "^3131FF- 看到了空缸 -^000000";
+		close;
+	L_gon2QStart:
+		set jar_china,rand(1,4);
+		mes "^3131FF- 在陰涼處，-^000000 ";
+		mes "^3131FF- 有一個看起來又大又笨重的缸，-^000000 ";
+		mes "^3131FF- 缸里裝滿著暗紅色的液體，-^000000 ";
+		mes "^3131FF- 要怎么辦呢? -^000000 ";
+		next;
+		menu "把缸帶走",L_gon2QSCase1,"尋找別的缸",L_gon2QSCase2;
+
+			L_gon2QSCase1:
+				if ((gettime(3) >= 10) && (gettime(3) < 14)) goto L_gon2QSC1Time1;
+				if ((gettime(3) >= 14) && (gettime(3) < 17)) goto L_gon2QSC1Time2;
+				if ((gettime(3) >= 17) && (gettime(3) < 22)) goto L_gon2QSC1Time3;
+				mes "^3131FF- 你為了拿缸-^000000";
+				mes "^3131FF- 而觀察了一下周圍， -^000000";
+				mes "^3131FF- 營業結束的店里-^000000";
+				mes "^3131FF- 就像公演后的舞臺般平靜又凄涼， -^000000";
+				mes "^3131FF- 到處都有服務生 -^000000";
+				mes "^3131FF- 昏昏欲睡 -^000000";
+				next;
+				goto L_gon2QSC1End;
+
+			L_gon2QSCase2:
+				mes "^3131FF- 你已決定要尋找  -^000000";
+				mes "^3131FF- 其他的缸  -^000000";
+				close;
+	L_gon2QSC1Time1:
+		mes "^3131FF- 你為了拿缸 -^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里有還沒睡飽的服務生 -^000000";
+		mes "^3131FF- 以及來用餐的客人，-^000000";
+		mes "^3131FF- 是個應該很繁忙  -^000000";
+		mes "^3131FF- 可是看起來又很閑暇的景象  -^000000";
+		next;
+		goto L_gon2QSC1End;
+	L_gon2QSC1Time2:
+		mes "^3131FF- 你為了拿缸 -^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里的服務生閑散的顧著店，-^000000";
+		mes "^3131FF- 有些在聊天，-^000000";
+		mes "^3131FF- 還有些在玩耍 -^000000";
+		next;
+		goto L_gon2QSC1End;
+	L_gon2QSC1Time3:
+		mes "^3131FF- 你為了拿缸-^000000";
+		mes "^3131FF- 而觀察了一下周圍， -^000000";
+		mes "^3131FF- 店里擠滿了客人，-^000000";
+		mes "^3131FF- 是個非常繁忙 -^000000";
+		mes "^3131FF- 及熱鬧的景象，-^000000";
+		mes "^3131FF- 服務生及廚師也正忙于- ^000000";
+		mes "^3131FF- 準備客人的餐點，-^000000";
+		mes "^3131FF- 而好像沒有發現-^000000";
+		mes "^3131FF- 你在缸的附近  -^000000";
+		next;
+		goto L_gon2QSC1End;
+	L_gon2QSC1End:
+		mes "^3131FF- 你小心翼翼的走近缸， -^000000";
+		mes "^3131FF- 看起來有點困難-^000000";
+		mes "^3131FF- 不過應該可以帶走， -^000000";
+		mes "^3131FF- 你伸出兩手  -^000000";
+		mes "^3131FF- 抱住了缸，  -^000000";
+		mes "^3131FF- 現在只剩下順利的 -^000000";
+		mes "^3131FF- 帶著缸  -^000000";
+		mes "^3131FF- 逃出這家店  -^000000";
+		if (jar_china < 4)set ch_tre,2;
+		set ch_tre,3;
+		close;
+}
+
+lou_in02.gat,58,183,5	script	廚房助理	823,5,5,{
+
+	mes "[金唯英]";
+	mes "老實說過去我是個武術家，";
+	mes "雖然現在成了料理師，不過我的心里總是活著武術人的靈魂";
+	next;
+	mes "[金唯英]";
+	mes "所以我正在做料理結合武術的研究，";
+	mes "像我們店里這么大的地方，有時候客滿時不但非常忙碌，也非常的擁擠呢！";
+	next;
+	mes "[金唯英]";
+	mes "像這時候-!!!";
+	mes "直接用武功的話，可以迅速的準備好材料，";
+	mes "哈哈，武術好棒喔~";
+	next;
+	misceffect 12;
+	mes "[金唯英]";
+	mes "啊道-!!!!";
+	next;
+	misceffect 11;
+	mes "[金唯英]";
+	mes "托呵喔喔-!!!!!";
+	next;
+	misceffect 143;
+	mes "[金唯英]";
+	mes "愛G““““!!!!!";
+	next;
+	misceffect 122;
+	mes "- ?";
+	next;
+	emotion 21;
+	mes "[金唯英]";
+	mes "呼呼呼~瞧瞧吧!! 毫無誤差地切在菜板上的蔬菜!! 哇哈哈!!";
+	mes "我會一直研究推廣，直到所有料理店的廚師，都使用武術來做菜的那一天為止!! 加油!!";
+	close;
+OnTouch:
+	set jar_find_2,rand(1,10);
+	if (ch_tre == 2) || (ch_tre == 3) goto L_kingweinggon;
+		goto L_kingweingnothing;
+	L_kingweinggon:
+		if (((gettime(3) >= 10)) && ((gettime(3) < 14))) goto L_kingweinggon1;
+		if (((gettime(3) >= 14)) && ((gettime(3) < 17))) goto L_kingweinggon2;
+		if (((gettime(3) >= 17)) && ((gettime(3) < 22))) goto L_kingweinggon3;
+		if (jar_find_2 < 5) goto L_kingweinggon4;
+		goto L_kingweingnothing;
+
+	L_kingweinggon1:
+		if (jar_find_2 < 9) goto L_kingweinggon12;
+		goto L_kingweingnothing;
+	L_kingweinggon2:
+		if (jar_find_2 < 10) goto L_kingweinggon12;
+		goto L_kingweingnothing;
+	L_kingweinggon3:
+		if (jar_find_2 < 6) goto L_kingweinggon12;
+		goto L_kingweingnothing;
+	L_kingweinggon4:
+		mes "[金唯英]";
+		mes "喔嗯...好困喔....";
+		mes "喔唷? 你是誰!!!";
+		mes "大家快起來! 有小偷~ !!!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+	L_kingweingnothing:
+		end;
+	L_kingweinggon12:
+		mes "[金唯英]";
+		mes "等等!! 你是誰!!!";
+		mes "當場放下之后走開!";
+		next;
+		mes "^3131FF- 您已失敗  -^000000";
+		mes "^3131FF- 取得缸	-^000000";
+		set ch_tre,1;
+		close;
+}
+
+lou_in02.gat,80,173,3	script	李敏	746,{
+
+	if (ch_tre == 5) goto L_liminTalk;
+		mes "[李敏]";
+		mes "雖然我不是這村子的住民，";
+		mes "但無法忘記不久前吃過唯一那一次的料理，而再次的找上門了";
+		next;
+		mes "[李敏]";
+		mes "吃過一次就絕不會忘記，";
+		mes "那種在嘴里薄薄的散開并融化的甜感..";
+		mes "喀喔....那是什么呢~";
+		next;
+		mes "[李敏]";
+		mes "對!!! 沒錯!! 那就是蜂膠，對，沒錯！沒錯！";
+		mes "喔呵呵~~ 越想嘴里的口水就越多了..";
+		close;
+	L_liminTalk:
+		mes "[李敏]";
+		mes "啊! 這個~~ 我從老遠跑來竟然說什么也不再賣了!!!";
+		mes "怎么會有這種讓人虛脫的事情..";
+		mes "啊啊，我已經對那個口味上癮了呢..嗚..";
+		close;
+}
+
+lou_in02.gat,42,186,5	script	劉家林	816,{
+
+	if (ch_tre == 5) goto L_lugalinTalk;
+		mes "[劉家林]";
+		mes "你知道這家店人氣最旺的料理是什么嗎?";
+		mes "就是四龍轉入湯!";
+		mes "因為是擁有悠久歷史的店，連細微的地方也非常用心";
+		next;
+		mes "[劉家林]";
+		mes "雖然我很喜歡那細心做出來的口味，最主要是它的肉不老不硬， ";
+		mes "也會先把油擠過一次，是注重身材的小姐們的最愛呢！";
+		mes "有各種對身體有益的材料.. 一句話就是健康食品呢!";
+		close;
+	L_lugalinTalk:
+		mes "[劉家林]";
+		mes "你知道這家店人氣最旺的料理是什么嗎?";
+		mes "就是四龍轉入湯!";
+		mes "因為是擁有悠久歷史的店，連細微的地方也非常用心";
+		next;
+		emotion 14;//ET_THROB
+		mes "[劉家林]";
+		mes "雖然我很喜歡那細心做出來的口味，最主要是它的肉不老不硬， ";
+		mes "也會先把油擠過一次，是注重身材的小姐們的最愛呢！";
+		next;
+		mes "[劉家林]";
+		mes "可是呢~不知道什么原因，他們說不再賣了呢?";
+		mes "果然是價格太貴所以人們不想要買了嗎？";
+		close;
+}
+
+lou_in02.gat,43,169,1	script	張勇	827,{
+
+	mes "[張勇]";
+	mes "四龍轉入湯的人氣當然是在于那清爽香甜又微辣的口味，";
+	mes "而且加入很多有益的藥材，也是對健康非常好的食品呢!!";
+	next;
+	mes "[張勇]";
+	mes "可以除掉身體上不需要的熱量，也可以暢通處處阻塞的氣血，";
+	mes "會使新陳代謝順暢，可以維持自然健康，就像個補藥般食品! 喀哈哈!!";
+	next;
+	mes "[張勇]";
+	mes "因為我年輕的時候常吃四龍轉入湯的關系，現在就算這個年紀也是個血氣旺盛的老人家呢! 不是嗎?";
+	close;
+}
+
+louyang.gat,261,123,3	script	賊五平	824,{
+
+	mes "[賊五平]";
+	mes "沒什么胃口..是中暑了嗎..";
+	mes "呵喔，好無力喔...";
+	mes "唉呀，我的頭、腰、肩膀、膝蓋啊...";
+	mes "這個時候，應該要吃那個呢...";
+	next;
+	emotion 23;//ET_SURPRISE
+	mes "[賊五平]";
+	mes "喂，你不是這里的人吧？";
+	mes "順著這條路上去的話，有家很大的酒店，";
+	mes "那家賣的食品是在這村子里最健康的養生食品呢";
+	next;
+	mes "[賊五平]";
+	if (BaseLevel < 80)mes "對你這種瘦巴巴的人，是必備的食品呢！";
+	mes "對你這種心身疲勞的人，是必備的食品呢！";
+	close;
+}
+
+louyang.gat,174,150,5	script	古嘉玲	815,{
+
+	if (ch_tre == 5) goto L_gugalinTalk;
+		mes "[古嘉玲]";
+		mes "從人們口中聽到了奇怪的謠言，";
+		mes "聽說酒店里的主打料理四龍轉入湯不再賣了..";
+		next;
+		mes "[古嘉玲]";
+		mes "...該不會是我弟弟闖了什么禍吧?";
+		mes "啊啊.. 如果真的是那樣..該怎么辦才好呢";
+		close;
+	L_gugalinTalk:
+		mes "[古嘉玲]";
+		mes "好擔心我弟弟喔，";
+		mes "因為年紀還小，";
+		mes "而且正是叛逆時期， ";
+		mes "說什么都不聽呢..";
+		next;
+		mes "[古嘉玲]";
+		mes "剛剛也說村子的酒店";
+		mes "怎樣怎樣的， ";
+		mes "然后自己生氣就離家出走了";
+		next;
+		mes "[古嘉玲]";
+		mes "唉呦！真是的~~";
+		mes "這家伙一旦回來的話，一定要揍他一頓!!";
+		close;
+}

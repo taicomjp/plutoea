@@ -1,0 +1,71 @@
+// 公會城堡旗幟設定函式
+//===== eAthena Script =======================================
+//= War of Emperium Guild Flags Function
+//===== By: ==================================================
+//= jAthena - kalen (1.0)
+//= 1.1 by Akaru, ho|yAnge|X, and Valaris
+//===== Current Version: =====================================
+//= 1.2
+//===== Compatible With: =====================================
+//= eAthena 0.1+; RO Episode 4+
+//===== Description: =========================================
+//= Flags display messages stating whether or not a guild castle has been captured.
+//= Allows the guild members to return to a captured castle.
+//======================================
+//= Break down of arguments used in the function:
+//=   arg(0): name of City.
+//=   arg(1): name of guild castle.
+//=   arg(2): x1 coordinate for warp
+//=   arg(3): y1 coordinate for warp
+//=
+//= 中文化及修正 by xuwujun
+//=
+//===== Additional Comments: =================================
+//= v1.2: All Guild flags scripts use this function. [kobra_k88]
+//============================================================
+
+function	script	F_Flags	{
+
+
+	set @GID, GetCastleData(getarg(1)+".gat",1);
+	if (@GID != 0) goto L_Startg;
+
+	mes "[ " + getarg(0) + " 公告 ]";
+	mes " ";
+	mes "1、依據神圣的盧恩-米德加茲王國" + getarg(0) + "公告令，把這里公布為沒有正式所有權的秘密基地。";
+	mes " ";
+	mes "2、戰勝守在這里的，可怕的考驗之后，給破壞華麗金屬的人，國王會賜予經國王認證的,秘密基地所有權。";
+	mes " ";
+	return;
+L_Startg:
+	if (getcharid(2) == @GID) goto L_Startg2;
+	mes "[ " + getarg(0) + " 公告 ]";
+	mes " ";
+	mes "1、依據神圣的盧恩-米德加茲王國" + getarg(0) + "公告令，這里被認定為^ff0000" + GetGuildName(@GID) + "^000000公會的私有物。";
+	mes " ";
+	mes "2、^ff0000"+ GetGuildName(@GID) + "^000000的工會的主人是^0000ff" + GetGuildMaster(@GID) + "^000000，如果有任何人對這件事情有意見，請舉起你的劍，維護自己的名譽吧。";
+	mes " ";
+	return;
+L_Startg2:
+	mes "[ 響亮的聲音 ]";
+	mes " ";
+	mes "勇士...你要回歸屬于你的榮耀嗎，你是否現在就要回到城堡中去...?";
+	next;
+	menu "是的",M_Enter,"取消",-;
+	return;
+
+	M_Enter:
+
+//判斷工會戰是否正在進行之中，此處$AgitStarted變數是ev_agit_event.txt中的，請忽修改。
+
+	if($AgitStarted == 1) goto L_Startg3;
+		warp getarg(1)+".gat",getarg(2),getarg(3);
+		return;
+L_Startg3:
+	mes "[ 響亮的聲音 ]";
+	mes " ";
+	mes "非常抱歉，目前工會戰正在進行之中，所以您無法通過這里直接進入城堡中去。";
+	return;
+
+	
+}

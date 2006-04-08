@@ -1,0 +1,860 @@
+// 尼芙菲姆城市腳本
+// 
+// 中文化作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041119.0.2
+//			20050411.0.1	修改兩個 warp 前面的敘述改為 close2;
+//
+// 參考腳本:		Write by Dizzy from aegis forum (Thanks skyiing & orlong & Gravity & Gameflier & KoreEasy)
+//			ATHENA 翻譯 : 琉菜 Luna
+//
+//============================================================
+
+//======Niflheim npc script======//
+//Modified 7-3-2004 18:40
+
+// From eAthena
+// ---------------------------------------------------------------
+// 由中央城直接傳送去死城的 NPC
+//~prontera.gat,164,161,4	script	Traveler	68,{
+//~	mes "[Traveler]";
+//~	mes "I've come across some strange things in my time. Things you'd have to see to belive. Have you heard of Niffleheim, the City of the Dead?";
+//~	next;
+//~	menu "Show me, please...",M_show, "Sounds scarey...Nevermind...",-;
+//~
+//~	mes "[Traveler]";
+//~	mes "A wise choice by any means...";
+//~	close;
+//~M_show:
+//~	warp "niflheim.gat",202,171;
+//~	close;
+//~}
+
+niflheim.gat,213,221,0	script	靈魂::spirits	802,{
+	mes "[靈魂]";
+	mes "歡迎光臨我們的世界...";
+	mes "我們稱之為....";
+	mes "死者國度 尼芙菲姆....";
+	percentheal -85,-85;
+	close;
+}
+
+niflheim.gat,39,146,0	duplicate(spirits)	靈魂#2	802
+niflheim.gat,95,61,0	duplicate(spirits)	靈魂#3	802
+niflheim.gat,313,187,0	duplicate(spirits)	靈魂#4	802
+niflheim.gat,212,264,0	duplicate(spirits)	靈魂#5	802
+niflheim.gat,247,72,0	duplicate(spirits)	靈魂#6	802
+niflheim.gat,130,176,0	duplicate(spirits)	靈魂#7	802
+niflheim.gat,173,110,0	duplicate(spirits)	靈魂#8	802
+niflheim.gat,182,167,0	duplicate(spirits)	靈魂#9	802
+
+niflheim.gat,184,199,5	script	小女孩	793,{
+	mes "[紗玲]";
+	if(niflheimlost2 == 1) goto L_thanks;
+	if(niflheimlost == 1) goto L_foundhim;
+	if(lostgirl == 1) goto L_sure2;
+	if(sex == 1) goto man;
+	mes "女士! 你可以幫我一個忙嗎?";
+	goto continum;
+	man: mes "先生!你可以幫我一個忙嗎?";
+	continum:
+	next;
+	menu "沒問題!",-, "再說吧...",M_no;
+
+	mes "[紗玲]";
+	mes "我的朋友跟我一起來健行但是走失在這個陌生的地方了.";
+	next;
+	mes "[紗玲]";
+	mes "突然，我發現一個娃娃，我把他撿了起來，結果它變成了一個幽魂!";
+	next;
+	mes "[紗玲]";
+	mes "我尖叫著逃開，盡我所能地快跑。之后當我停下來的時候，我發現我身處在這個陌生的城市里..";
+	next;
+	mes "[紗玲]";
+	mes "這里沒有人愿意幫主我，而且這里到處都是幽靈! 你可以幫我找到我的朋友嗎?";
+	next;
+	menu "沒問題!",-, "你的朋友該不會也是幽魂吧...",M_no;
+L_sure2:
+	set lostgirl,1;
+	mes "請你幫我找到他并且轉告他我在這里! 我最后一次見到他是在城外的原野，第一個原野...";
+	close;
+
+L_foundhim:
+	mes "你找到馬猷斯了?";
+	mes "噢! 真是太感謝你了!";
+	mes "這里有點小東西算是我給你的謝禮.";
+	getitem 642,1;
+	set niflheimlost2,1;
+	close;
+L_thanks:
+	mes "謝謝你協助我們!";
+M_no:
+	close;
+}
+
+nif_fild01.gat,213,268,5	script	小男孩	797,{
+	mes "[馬猷斯]";
+	if(niflheimlost == 1) goto L_alreadydone;
+	if(lostgirl == 1) goto L_sure2;
+	mes "紗玲...你在哪里?";
+	close;
+L_alreadydone:
+	mes "謝謝你協助我們!";
+	set niflheimlost,1;
+	close;
+L_sure2:
+	mes "你是誰?";
+	mes "...";
+	mes "你知道紗玲在哪里?";
+	mes "他跑進城里去了?";
+	next;
+	mes "[馬猷斯]";
+	mes "你可以轉告他我立刻動身去找她嗎?";
+	mes "我走路有點慢，但是請務必讓她知道我已經上路了，這很重要.";
+	menu "沒問題!",L_alreadydone, "那你就慢慢走吧!",-;
+	close;
+}
+
+// ---------------------------------------------------------------
+
+//npc "niflheim" "柯資" 4_M_NFDEADSWDMAN 52 174 3 5 5
+niflheim.gat,52,174,3	script	柯資	796,{
+	mes "[柯資]";
+	mes "活著的人不準進來";
+	mes "這里 -! 不允許";
+	mes "活著的人通行-!";
+	close;
+}
+
+//npc "niflheim" "徘徊的人" 4_M_NFMAN 186 190 5 5 5
+niflheim.gat,186,190,5	script	徘徊的人	798,{
+	mes "[利卡爾]";
+	mes "怎么會來到這么恐怖的村落了呢，我看你也是迷路才走到這里來";
+	mes "我被巨大的樹木所吸引來到這里之后，待了很久都還沒逃出去";
+	next;
+	mes "[利卡爾]";
+	mes "可是為了找出口而徘徊了很久對村落的地理很熟悉，";
+	mes "記住村落的地理的話也許對逃生有幫助的";
+	next;
+	menu "詢問村落地理",-,"刪掉小地圖上的所有標志",L_MENU_2,"取消",L_end;
+		mes "[利卡爾]";
+		mes "想要去哪里呢?";
+		next;
+		menu "魔女之城",M_Magic,"道具店",M_item,"武器店",M_weapon,"酒店",M_hotel,"取消",L_cancel;
+
+		M_Magic:
+		viewpoint 2,255,194,1,0xFF3366;
+		mes "[利卡爾]";
+		mes "在尼芙菲姆里住著一位可怕的魔女，";
+		mes "去^FF3366+^000000那邊的話有位魔女住的城，";
+		mes "進去之后太恐怖了就馬上跑出來了";
+		close;
+
+		M_item:  
+		viewpoint 3,219,198,1,0xCC6600;
+		mes "[利卡爾]";
+		mes "道具店在 ^CC6600+^000000那邊，";
+		mes "那邊有在賣外面世界買不到的物品，不妨去看";
+		close;
+
+		M_weapon:
+		viewpoint 4,219,170,1,0x66FF33;
+		mes "[利卡爾]";
+		mes "武器店在 ^66FF33+^000000那邊，";
+		mes "那邊有在賣別的地方看不到的物品，不妨去看";
+		close;
+
+		M_hotel:
+		viewpoint 5,189,210,1,0x3366FF;
+		mes "[利卡爾]";
+		mes "酒店在 ^3366FF+^000000那邊，";
+		mes "偶而會有死者在那里舉行派對";
+		close;
+
+		L_cancel:
+		mes "[利卡爾]";
+		mes "想要刪掉位置標志的話，";
+		mes "請點選，";
+		mes "刪掉小地圖上的所有標志";
+		close;
+  
+	L_MENU_2:
+	viewpoint 2,255,194,2,0xFF3366;
+	viewpoint 3,219,198,2,0xCC6600;
+	viewpoint 4,219,170,2,0x66FF33;
+	viewpoint 5,189,210,2,0x3366FF;
+	mes "[利卡爾]";
+	mes "已刪掉小地圖上的所有標志了，";
+	mes "想要在小地圖上重新做記號的話，隨時來找我吧";
+	close;
+
+	L_end: 
+	mes "[利卡爾]";
+	mes "親自去熟悉路況會很危險的...";
+	mes "那么好好保重吧";
+	close;
+}
+
+
+
+//npc "niflheim" "卡普拉服務人員" 4_F_NFDEADKAFRA 202 180 3 5 5
+niflheim.gat,202,180,3	script	卡普拉服務人員	791,{
+	mes "[卡普拉服務人員]";
+	mes "歡迎...光臨. 卡普拉公司...";
+	mes "死了...也會...為您們...服務...";
+	mes "...需要...什么服務嗎?";
+	next;
+	menu "倉庫服務.",-,"總結.",L_summary;  
+
+	if (getskilllv(1) >= 6) goto L_sub1;
+	mes "[卡普拉服務人員]";
+	mes "對不起…";
+	mes "要想使用…倉庫服務的話…";
+	mes "…初學者的基本技能…等級要到達";
+	mes "6級…以上";
+	close;
+
+	L_sub1:
+	if (Zeny >= 150) goto L_sub2;
+	mes "[卡普拉服務人員]";
+	mes "您的金額…不…足";
+	mes "倉庫使用費是…150金幣…";
+	mes "您的金額...不足的話...";
+	mes "把您的生命...分給我吧...";
+	percentheal -50,-50;
+	close;
+
+	L_sub2:
+	set Zeny,Zeny-150; 
+	openstorage;
+	mes "[卡普拉服務人員]";
+	mes "謝謝...您的...使用...";
+	mes "謝謝...您的...使用...";
+	mes "謝謝...您的...使用...";
+	mes "謝謝...您的...使用...";
+	mes "謝謝...您的...使用...";
+	close;
+
+	L_summary:
+	mes "[卡普拉服務人員]";
+	mes "卡普拉公司是...隨時...";
+	mes "為您們...服務...";
+	close;
+}
+
+//npc "niflheim" "其甘提阿" 4_M_NFDEADSWDMAN 195 211 5 5 5
+niflheim.gat,195,211,5	script	其甘提阿	796,{
+	mes "[其甘提阿]";
+	mes "死靈騎士總是看的一清二楚";
+	close;
+}
+
+//npc "niflheim" "妃依琳" 4_M_NFDEADMAN2 153 215 3 5 5
+niflheim.gat,153,215,3	script	妃依琳	794,{
+	mes "[妃依琳]";
+	mes "干嘛要來到這么危險的村落呢?";
+	mes "快點回去吧";
+	close;
+}
+
+//npc "nif_in" "死雞" 4_NFCOCK 16 27 1 5 5
+nif_in.gat,16,27,1	script	死雞	800,{
+	mes "[瞎眼雞]";
+	mes "活著的時候被人們吃掉了，";
+	mes "現在換我來吃你了，咕咕咕，";
+	mes "啊啊，沒想到死了后還會有這種世界，咕咕咕";
+	percentheal -5,0;
+	close;
+}
+
+//npc "nif_in" "死的 吸血蝙蝠" 4_NFBAT 16 30 4 5 5
+nif_in.gat,16,30,4	script	死的 吸血蝙蝠	799,{
+	mes "[帕豆曼]";
+	mes "不管活著或死了，人類的血";
+	mes "還是很好喝，";
+	mes "什么? 你也想要";
+	mes "被我吸血嗎?";
+	percentheal -5,0;
+	close;
+}
+
+/*-------------詛咒任務-----------------*/
+
+//npc "nif_in" "小孩" 4_F_NFLOSTGIRL 156 93 5 5 5
+nif_in.gat,156,93,5	script	小孩	793,{
+	mes "[阿拉克娜 安]";
+	mes "這里，是哪里呢...? 睡一覺起來，";
+	mes "就來到這里了... 我媽媽，";
+	mes "沒有看到我媽媽嗎? 嗯...? 嗚嗚嗚...";
+	mes "我想要回家...";
+	next;
+	menu "關於魔女...",L_Wizzard,"關於詛咒...",L_Curse,"停止對話",L_end;
+
+L_Wizzard:
+	mes "[阿拉克娜 安]";
+	mes "魔女...? 我不知道所謂的魔女...";
+	mes "雖然在童話書里有讀過，";
+	mes "不過不知道真的有沒有那種人，";
+	mes "如果有的話一定很可怕啊...";
+	next;
+	mes "[阿拉克娜 安]";
+	mes "可是為什么會這么冷呢...?";
+	if (sex == 1) mes "哥哥你不會冷嗎? 好奇怪... 呼唷";
+	if (sex == 0) mes "姊姊你不會冷嗎? 好奇怪... 呼唷";
+	mes "想回到我溫暖的家，";
+	mes "幫幫忙吧... 嗯...? 嗯...?";
+	close;
+   
+L_Curse:
+	mes "[阿拉克娜 安]";
+	mes "詛咒... 想起奶奶曾經";
+	mes "所說過的話，她說有種方法";
+	mes "可以躲避無法以祝福";
+	mes "解開的狠毒詛咒";
+	next;
+	mes "[阿拉克娜 安]";
+	mes "克拉圖(Klaatu)...";
+	mes "北拉塔(Verata).....";
+	mes "再來是... 什么... 什么的...? 是什么啦?";
+	mes "最后面記不起來了";
+	next;
+	mes "[阿拉克娜 安]";
+	mes "她還說過按照順序念那3種咒文的話，";
+	mes "可以從被詛咒的命運中逃過，";
+	mes "現在已不太記得她主要在";
+	mes "講什么了... 我也忘了";
+	close;
+   
+L_end:
+	mes "[阿拉克娜 安]";
+	mes "好冷... 好冷喔... 想要回到";
+	mes "家里... 方便的話帶我一起走..";
+	mes "這里太可怕了啦.....";
+	mes "拜托你幫幫忙... 救救我...";
+	close;
+}
+
+//npc "niflheim" "被詛咒的 靈魂" 4_NFWISP 350 258 5 5 5
+niflheim.gat,350,258,5	script	被詛咒的 靈魂	802,{
+	killmonster "niflheim.gat","mymob";	//resetmymob
+	mes "[艾書 布路斯]";
+	mes "在你身上感受到強烈的詛咒啊啊啊，";
+	mes "我拒絕你的存在啊啊啊啊，";
+	mes "不退回去否則會死啊啊啊，";
+	mes "不準動我的書啊啊啊";
+	next;
+	menu "拿起第一本書",L_book1,"拿起第二本書",L_book2,"拿起第三本書",L_book3,"乖乖的退回去",L_back;
+   
+L_book1:
+	mes "[艾書 布路斯]";
+	mes "不要隨便動我的書啊啊!!";
+	mes "喀哈啊啊! 詛咒你被咬被撕被抓傷!!";
+	mes "永遠被埋在束縛的詛咒里!!";
+	monster "niflheim.gat",350,258,"飛行魔書",1478,1,"mymob";
+	close;
+
+L_book2:
+	mes "[艾書 布路斯]";
+	mes "我說過不準動我的書啊啊...";
+	mes "給我滾遠一點..";
+	mes "不要妨礙我休息啊啊啊!";
+	warp "niflheim.gat",34,162;
+	close;
+
+L_book3:
+	set nif_t,0;
+	set @nif_random1,rand(10);
+	mes "[艾書 布路斯]";
+	mes "喀哈哈啊啊.... 相當有膽量";
+	mes "的家伙啊啊...!! 來...";
+	mes "開始念咒文吧啊啊啊...!!";
+	next;
+L_MENU1:
+	menu "克羅柏(Clover).",L_MENU1_1,"克拉圖(Klaatu).",L_MENU1_2,"克雷易托思(Kleitos).",L_MENU1_3;
+
+	L_MENU1_1:
+	goto L_MENU2;
+
+	L_MENU1_2:
+	set nif_t,nif_t + 10;
+	goto L_MENU2;
+
+	L_MENU1_3: 
+	goto L_MENU2;
+
+L_MENU2:
+	menu "北利特(Verit).",L_MENU2_1,"北利塔司(Veritas).",L_MENU2_2,"北拉塔 (Verata).",L_MENU2_3;
+	
+	L_MENU2_1:
+	goto L_MENU3;
+
+	L_MENU2_2: 
+	goto L_MENU3;
+
+	L_MENU2_3:
+	set nif_t,nif_t + 10;
+	goto L_MENU3;
+
+L_MENU3:
+	menu "內塔易(Necktie).",L_MENU3_1,"內克利司(Necklace).",L_MENU3_2,"內羅(Nero).",L_MENU3_3,"^FFFFFF尼圖(Nictu).^000000",L_MENU3_4;
+
+	L_MENU3_1: 
+	goto L_score;
+
+	L_MENU3_2: 
+	goto L_score;
+
+	L_MENU3_3:
+	goto L_score;
+
+	L_MENU3_4:
+	set nif_t,nif_t + 10;
+	goto L_score;
+
+
+L_score:
+	if (nif_t == 30) goto L_sucess1;
+	mes "[艾書 布路斯]";
+	mes "哈哈哈啊啊啊!!! 咒文錯了!";
+	mes "你即將要面臨死亡了喔喔喔，";
+	mes "愿你一輩子都受到詛咒吧啊啊啊...!!";
+	monster "niflheim.gat",349,256,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",347,258,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",347,254,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",350,252,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",344,255,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",348,252,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",347,259,"邪骸獸人",1462,1,"mymob";
+	close;
+
+L_sucess1:
+	if (@nif_random1 == 10) goto L_sucess2;
+	mes "[艾書 布路斯]";
+	mes "咒文對了啊啊啊啊啊啊.....";
+	mes "不過詛咒沒有解開啊啊啊...";
+	mes "喀哈哈啊啊.....!!!";
+	close;
+
+L_sucess2:
+       mes "[艾書 布路斯]";
+       mes "哈哈哈啊啊啊!!! 詛咒解開了啊啊!";
+       mes "喀哈哈啊啊.....!!!";
+       close;
+
+L_back:
+	mes "[艾書 布路斯]";
+	mes "喀哈啊啊! 想的不錯啊啊啊啊...";
+	mes "我會幫你祈禱活著回去啊啊啊....";
+	close;
+}
+
+
+
+
+
+/*-----------------魔女任務--------------*/
+
+//npc "niflheim" "阿雷戈" 4_M_NFDEADMAN 224 243 3 5 5
+niflheim.gat,224,243,3	script	阿雷戈	795,{
+	if (nif_quest1 > 0) goto event_01;
+	mes "[阿雷戈]";
+	mes "我喜歡肉 嗯哈，";
+	mes "你看起來...好好吃喔";
+	next;
+	mes "[阿雷戈]";
+	mes "我要吃你";
+	next;
+	mes "-嘖 嘖 嘖 -";
+	percentheal -60,0;
+	next;
+	mes "[阿雷戈]";
+	mes "好久沒吃到這么好吃的肉了...";
+	mes "是西式烤肉師傅等級，喜歡的肉，";
+	mes "相似服務腓力牛排定食時，";
+	mes "交叉附帶做出來的話，";
+	mes "應該會很好吃... ";
+	next;
+	mes "[阿雷戈]";
+	mes "用這個來當謝禮，是不久前";
+	mes "在地上撿到的，嗝喔";
+	getitem 7184,1;
+	set nif_quest1,1;
+	close;
+
+event_01:
+	mes "[阿雷戈]";
+	mes "我喜歡肉 嗯哈，";
+	mes "你看起來...好好吃喔";
+	next;
+	mes "[阿雷戈]";
+	mes "我要吃你";
+	next;
+	mes "-嘖 嘖 嘖 -" ;
+	percentheal -30,0;
+ 	close;
+}
+
+
+//npc "nif_in" "克雷佑" 4_M_NFDEADMAN2 105 81 3 5 5
+nif_in.gat,105,81,3	script	克雷佑	794,{
+	if (nif_quest1 > 1) goto event_00;
+	if (nif_quest1 == 0) goto event_01;
+	set @nif_random,rand(4);
+	mes "[克雷佑]";
+	mes "活在世上的人類啊..";
+	mes "不知從何時，從哪個人開始..";
+	mes "什么都不知道的詩，";
+	mes "就這樣流傳下來";
+	next;
+	mes "[克雷佑]";
+	mes "^FF0000當日落掛在西山時，^000000";
+	mes "^FF0000紫色黃昏所指的地方，^000000";
+	mes "^FF0000漂亮的旋律纏繞在身上時，^000000";
+	mes "^FF0000是避開死靈騎士的鑰匙^000000";
+	next;
+
+	if (@nif_random == 1) goto L_RAN_1;
+	if (@nif_random == 2) goto L_RAN_2;
+	if (@nif_random == 3) goto L_RAN_3;
+	if (@nif_random == 4) goto L_RAN_4;
+
+	L_RAN_1:
+		mes "[克雷佑]";
+		mes "那么在此測驗一下! 請把剛剛所聽到";
+		mes "那首詩的第一句，";
+		mes "完整的寫一遍!";
+		next;
+		input @inputstr1$;
+		set @str1$,"當日落掛在西山時，";
+		if (@inputstr1$ == @str1$) goto L_RAN_1_SC;
+		mes "[克雷佑]";
+		mes "唉唷... 如果有專心聽的話，";
+		mes "一定會答對的!";
+		mes "好好的想想之后，";
+		mes "再來挑戰吧!";
+		close;
+
+	L_RAN_1_SC:
+		mes "[克雷佑]";
+		mes "喔喔...有注意聽啊!";
+		mes "我克雷佑，身為吟游詩人，";
+		mes "你是最受歡迎的聽眾，";
+		mes "這是送你的獎勵";
+		getitem 7184,1;
+		set nif_quest1,2;
+		next;
+		mes "[克雷佑]";
+		mes "那么希望對其他吟游詩人，";
+		mes "也是一樣要有禮貌";
+		close;
+
+	L_RAN_2:
+		mes "[克雷佑]";
+		mes "那么在此測驗一下! 請把剛剛所聽到";
+		mes "那首詩的第二句，";
+		mes "完整的寫一遍!";
+		next;
+		input @inputstr2$;
+		set @str2$,"紫色黃昏所指的地方，";
+		if (@inputstr2$ == @str2$) goto L_RAN_2_SC;
+		mes "[克雷佑]";
+		mes "唉唷... 如果有專心聽的話，";
+		mes "一定會答對的!";
+		mes "好好的想想之后，";
+		mes "再來挑戰吧!";
+		close;
+
+	L_RAN_2_SC:
+		mes "[克雷佑]";
+		mes "喔喔...有注意聽啊!";
+		mes "我克雷佑，身為吟游詩人，";
+		mes "你是最受歡迎的聽眾，";
+		mes "這是送你的獎勵";
+		getitem 7184,1;
+		set nif_quest1,2;
+		next;
+		mes "[克雷佑]";
+		mes "那么希望對其他吟游詩人，";
+		mes "也是一樣要有禮貌";
+		close;
+
+	L_RAN_3:
+		mes "[克雷佑]";
+		mes "那么在此測驗一下! 請把剛剛所聽到";
+		mes "那首詩的第三句，";
+		mes "完整的寫一遍!";
+		next;
+		input @inputstr3$;
+		set @str3$,"紫色黃昏所指的地方，";
+		if (@inputstr3$ == @str3$) goto L_RAN_3_SC;
+		mes "[克雷佑]";
+		mes "唉唷... 如果有專心聽的話，";
+		mes "一定會答對的!";
+		mes "好好的想想之后，";
+		mes "再來挑戰吧!";
+		close;
+
+	L_RAN_3_SC:
+		mes "[克雷佑]";
+		mes "喔喔...有注意聽啊!";
+		mes "我克雷佑，身為吟游詩人，";
+		mes "你是最受歡迎的聽眾，";
+		mes "這是送你的獎勵";
+		getitem 7184,1;
+		set nif_quest1,2;
+		next;
+		mes "[克雷佑]";
+		mes "那么希望對其他吟游詩人，";
+		mes "也是一樣要有禮貌";
+		close;
+
+	L_RAN_4:
+		mes "[克雷佑]";
+		mes "那么在此測驗一下! 請把剛剛所聽到";
+		mes "那首詩的第四句，";
+		mes "完整的寫一遍!";
+		next;
+		input @inputstr4$;
+		set @str4$,"紫色黃昏所指的地方，";
+		if (@inputstr4$ == @str4$) goto L_RAN_4_SC;
+		mes "[克雷佑]";
+		mes "唉唷... 如果有專心聽的話，";
+		mes "一定會答對的!";
+		mes "好好的想想之后，";
+		mes "再來挑戰吧!";
+		close;
+
+
+	L_RAN_4_SC:
+		mes "[克雷佑]";
+		mes "喔喔...有注意聽啊!";
+		mes "我克雷佑，身為吟游詩人，";
+		mes "你是最受歡迎的聽眾，";
+		mes "這是送你的獎勵";
+		getitem 7184,1;
+		set nif_quest1,2;
+		next;
+		mes "[克雷佑]";
+		mes "那么希望對其他吟游詩人，";
+		mes "也是一樣要有禮貌";
+		close;
+
+event_00:
+	mes "[克雷佑]";
+	mes "活在世上的人類啊..";
+	mes "不知從何時，從哪個人開始..";
+	mes "什么都不知道的詩，";
+	mes "就這樣流傳下來";
+	next;
+	mes "[克雷佑]";
+	mes "^FF0000當日落掛在西山時，^000000";
+	mes "^FF0000紫色黃昏所指的地方，^000000";
+	mes "^FF0000漂亮的旋律纏繞在身上時，^000000";
+	mes "^FF0000是避開死靈騎士的鑰匙^000000";
+	next;
+	mes "[克雷佑]";
+	mes "是什么意義呢... 再仔細看的話，";
+	mes "又非常的深奧，";
+	mes "確實像是含有，";
+	mes "什么秘密的詩";
+	close;
+
+event_01:
+	mes "[克雷佑]";
+	mes "活在世上的人類啊..";
+	mes "不知從何時，從哪個人開始..";
+	mes "什么都不知道的詩，";
+	mes "就這樣流傳下來";
+	next;
+	mes "[克雷佑]";
+	mes "^FF0000當日落掛在西山時，^000000";
+	mes "^FF0000紫色黃昏所指的地方，^000000";
+	mes "^FF0000漂亮的旋律纏繞在身上時，^000000";
+	mes "^FF0000是避開死靈騎士的鑰匙^000000";
+	next;
+	mes "[克雷佑]";
+	mes "是什么意義呢... 再仔細看的話，";
+	mes "又非常的深奧，";
+	mes "確實像是含有，";
+	mes "什么秘密的詩";
+	close;
+}
+
+
+
+//npc "nif_in" "庫茲咖希納" 4_M_NFDEADMAN2 31 20 3 5 5
+nif_in.gat,31,20,3	script	庫茲咖希納	794,{
+	if (nif_quest > 2) goto event_02;
+	if (nif_quest1 == 0) goto event_00;
+	if (nif_quest1 == 1) goto event_01;
+	mes "[庫茲咖希納]";
+	mes "目前生意真是很差...";
+	mes "上輩子我的店也是";
+	mes "生意很差呢~!";
+	next;
+	mes "[庫茲咖希納]";
+	mes "喂 那位! 出去時幫我，";
+	mes "把這個丟掉再走";
+	getitem 7184,1;
+	set nif_quest1,3;
+	next;
+	mes "[庫茲咖希納]";
+	mes "到底生意為什么會";
+	mes "這么差呢... 嘀咕嘀咕嘀咕嘀咕";
+	close;
+
+event_02:
+  mes "[庫茲咖希納]";
+  mes "目前生意真是很差...";
+  mes "上輩子我的店也是";
+  mes "生意很差呢~!";
+  close;
+
+event_00:
+  mes "[庫茲咖希納]";
+  mes "目前生意真是很差...";
+  mes "上輩子我的店也是";
+  mes "生意很差呢~!";
+  close;
+
+event_01:
+  mes "[庫茲咖希納]";
+  mes "目前生意真是很差...";
+  mes "上輩子我的店也是";
+  mes "生意很差呢~!";
+  close;
+  
+}
+
+
+
+//npc "niflheim" " " HIDDEN_NPC 169 71 5 2 2
+niflheim.gat,169,71,5	script	#1	111,2,2{
+	if (nif_quest1 == 3) goto event_03;
+	end;
+
+event_03:
+	mes "- 你發現在墳墓附近 -";
+	mes "- 有個東西 -";
+	mes "- 被埋沒了一半 -";
+	mes "- 是什么的碎片? -";
+	mes "- 像是修整過的樣子 -";
+	next;
+	mes "- 要撿起來嗎? -";
+	menu "是的",-,"不是",L_end;
+	getitem 7184,1;
+	set nif_quest1,4;
+	close;
+
+L_end:
+	close;
+	end;
+}
+
+
+
+//npc "niflheim" " " HIDDEN_NPC 208 103 5 2 2
+niflheim.gat,208,103,5	script	#2	111,2,2{
+	if (nif_quest1 == 4) goto event_04;
+	end;
+
+event_04:
+	mes "- 你發現在墳墓附近 -";
+	mes "- 有個東西 -";
+	mes "- 被埋沒了一半 -";
+	mes "- 是什么的碎片? -";
+	mes "- 像是修整過的樣子 -";
+	next;
+	mes "- 要撿起來嗎? -";
+	menu "是的",-,"不是",L_end;
+	getitem 7184,1;
+	set nif_quest1,5;
+	close;
+
+L_end:
+	close;
+	end;
+}
+
+
+//npc "niflheim" " " HIDDEN_NPC 209 103 5 3 3
+niflheim.gat,209,103,5	script	#3	111,3,3{
+	if (nif_quest1 == 5) goto event_05;
+	end;
+
+event_05:
+	mes "- 你在剛挖出來的地方 -";
+	mes "- 發現那土里還有東西 -";
+	mes "- 被埋起來了 -";
+	mes "- 果然像是個修整 -";
+	mes "- 過的碎片 -";
+	next;
+	mes "- 要撿起來嗎? -";
+	menu "是的",-,"不是",L_end;
+	getitem 7184,1;
+	set nif_quest1,6;
+	close;
+
+L_end:
+	close;
+	end;
+}
+
+
+//npc "nif_in" " " HIDDEN_NPC 115 181 5 3 3
+nif_in.gat,115,181,5	script	#4	111,3,3{
+	if ((nif_quest1 == 6) && (countitem(7184) > 5)) goto L_event;
+	end;
+
+L_event:
+	delitem 7184,6;
+	set nif_quest1,7;
+	mes "- 你在鋼琴脫落的部分 -";
+	mes "- 把鍵盤一個一個 -";
+	mes "- 插進去了，可是 -";
+	mes "- 發現最左邊 -";
+	mes "- 的部分缺少一個 -";
+	mes "- 鍵盤 -";
+	close;
+}
+
+
+//npc "nif_in" " " HIDDEN_NPC 118 151 5 3 3
+nif_in.gat,118,151,5	script	#5	111,3,3{
+	if (nif_quest1 > 6) goto L_event;
+	end;
+
+L_event:
+	mes "- 你身體延長的影子 -";
+	mes "- 剛好迭在脫落 -";
+	mes "- 的鋼琴鍵盤上 -";
+	mes "- 的那一刻 -";
+	next;
+	mes "- 身體有著變輕的感覺， -";
+	mes "- 周圍的視野也 -";
+	mes "- 開始模糊不清了-";
+	close2;
+	warp "nif_in.gat",179,163;
+	close;
+}
+
+//npc "nif_in" "魔女" 4_F_NFDEADMGCIAN 188 168 3 5 5
+nif_in.gat,188,168,3	script	魔女	792,{
+	mes "[奇樂凱娜]";
+	mes "嗯?... 你不是活的人嗎，";
+	mes "來到這里，";
+	mes "應該不容易啊...";
+	mes "不管理由是什么，這里不是活著的人";
+	mes "可以來的地方";
+	next;
+	mes "[奇樂凱娜]";
+	mes "利用我的力量把你傳到";
+	mes "外面去，以后最好是";
+	mes "不要再來了";
+	close2;
+	warp "umbala.gat",138,208;
+	close;
+}

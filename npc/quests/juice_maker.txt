@@ -1,0 +1,318 @@
+// 果汁任務腳本
+// 
+// 中文化作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041212.0.1
+//			20050322.0.1	修正馬雷克漢森的位置應該是 payon_in03.gat,188,146,5
+//			20050324.0.1	與 eAthena 1.3a 對應
+//			20050410.0.1	修正 if(MARIANNE == 1) , 修正 sM_1End; 的錯誤, 將敘述與 eA 版本對齊
+//
+//============================================================
+
+//===== eAthena Script =======================================
+//= Juice Maker Quest
+//===== By: ==================================================
+//= kobra_k88
+//===== Current Version: =====================================
+//= 1.3a
+//===== Compatible With: =====================================
+//= eAthena 7.15 +
+//===== Description: =========================================
+//= 
+//===== Additional Comments: =================================
+//= Fully working
+//= 1.1 fixed input number check [Lupus]
+//= 1.2 fixed misplaced Grape<->Carrot juices [Lupus]
+//= 1.3 added a loopless menu 'as many as possible' [Lupus]
+//= 1.3a Turned the juice making part of the Juicer npc into a
+//= subfunc.  Changed fruit amount needed to 1.[kobra_k88]
+//============================================================
+
+
+// Morrison ------------------------------------------------
+prt_in.gat,47,173,2	script	莫尼森	97,{
+	mes "[小莫尼森]";
+	if(MEAT > 10) goto L_Candy;
+	if(MARIANNE == 1) goto L_GoAway;
+
+	mes "哇...哇...我..我不要";
+	mes "我再也... 不要吃... 任何愚蠢的 ^0000ff水果^000000 了!!";
+	emotion 28;
+	next;
+	menu "交談",M_Talk,"取消",M_End;
+
+	M_Talk:
+		if(countitem(517) > 0) goto L_Meat; //Meat
+
+		mes "[小莫尼森]";
+		mes "啊啊啊啊啊!! 我受夠了!!! 我再也不要吃任何 ^0000ff水果^000000 了!";
+		mes "那么酸..... 而且既要剝皮又要吐子的.....真是麻煩透頂的食物......";
+		mes "而且還黏黏滑滑的, 真是令人厭惡!!!!";
+		emotion 16;
+		next;
+		mes "[小莫尼森]";
+		mes "我恨水果! 而且吃水果根本吃不飽.(~嘆息~)";
+		mes "再給我一些食物吧..... 給我一些...... ^ff0000肉^000000!!!";
+		close;
+
+		L_Meat:
+		mes "[小莫尼森]";
+		mes "...(望)....(瞧)(看).... 噢! 那是 ^ff0000肉^000000 嗎???";
+		emotion 5;
+		next;
+		mes "[小莫尼森]";
+		mes "你有沒有肉 ^ff0000肉^000000?!!!~(咽口水)~";
+		mes "唔... 好餓啊... 好香的味道啊... 那香味讓我又餓了起來!!!";
+		emotion 37;
+		next;
+		mes "[小莫尼森]";
+		mes "... 唔... 請問..... 你能把那些肉給我嗎?";
+		emotion 28;
+		next;
+		menu "那好吧",sM_Give,"不理他",sM_Ignore;
+		
+		sM_Give:
+			set MORRISON,1;
+			set MEAT,MEAT + 1;
+			delitem 517,1;	//Meat
+			mes "[小莫尼森]";
+			mes "哇~!!! 真的是肉耶! 肉!";
+			mes "咕嚕! 我口水都流下來了.";
+			mes "真是太感謝你了. 我現在覺得快樂多了. 哈哈...";
+			emotion 38;
+			close;
+
+		sM_Ignore:
+			set MORRISON,2;
+			mes "[小莫尼森]";
+			mes "哼...";
+			mes "哼... 好... 很好, 非常好~!!! 自私的家伙!";
+			emotion 36;
+			close;
+	M_End:
+		mes "[小莫尼森]";
+		mes "啊啊啊啊!!! 無論我怎么努力嘗試, 我就是沒辦法吃蔬菜或 ^0000ff水果^000000!";
+		mes "那實在是太惡心了!!";
+		emotion 28;
+		close;
+
+L_GoAway:
+	mes "哼... 滾開! 別管我!";
+	mes "我會因為這些愚蠢的蔬菜水果而死, 你快滾一邊去吧!";
+	emotion 32;
+	close;
+
+L_Candy:
+	mes "呃..我已經吃飽了.";
+	mes "你不用再給我了. 在繼續吃下去的話我非撐死不可.";
+	next;
+	mes "[小莫尼森]";
+	mes "那么... 嗯... 這給你吧.";
+	next;
+	getitem 529,3;
+	getitem 530,1;
+	set MEAT,0;
+	mes "[小莫尼森]";
+	mes "這是我背著媽媽偷偷藏起來的糖果.";
+	mes "如果再給我一些肉的話, 我愿意拿糖果和你換." ;
+	close;
+
+}
+
+// 家庭主婦 瑪麗安妮 ---------------------------------------------------
+prt_in.gat,49,172,2	script	瑪麗安妮	53,{
+	mes "[家庭主婦 瑪麗安妮]";
+	if(MORRISON == 1) goto L_GaveMeat;
+	if(MORRISON == 2) goto L_Juice;
+
+	mes "莫尼森!! 拜托你吃點水果好嗎? 吃水果~!";
+	mes "*敲*~!! 像你爸爸一樣...";
+	emotion 28;
+	next;
+	menu "交談",M_Talk,"取消",M_Cancel;
+	close;	
+
+	M_Talk:
+		mes "[家庭主婦 瑪麗安妮]";
+		mes "(~嘆氣~)...這是莫尼森... 我唯一的孩子";
+		mes "看看他的臉, 氣色糟透了,";
+		mes "盡管如此他還是拒絕吃任何的 ^0000ff水果^000000 或是蔬菜.";
+		emotion 40;
+		next;
+		mes "[家庭主婦 瑪麗安妮]";
+		mes "噢! 你看看他的表情! 只要聽到 ^0000ff水果^000000 兩個字他就滿臉不高興...";
+		next;
+		mes "[家庭主婦 瑪麗安妮]";
+		mes "永遠只想吃 ^ff0000肉^000000... (嘆息)...";
+		mes "它需要 ^0000ff水果^000000 和蔬菜來維持均衡的營養啊!";
+		next;
+
+	M_Cancel:
+		mes "[家庭主婦 瑪麗安妮]";
+		mes "莫尼森!! 你在這樣下去我會非常生氣的!";
+		emotion 36;
+		close;
+	
+L_GaveMeat:
+	set MORRISON,0;
+	mes "噢! 我的天啊!!... 噢! 上帝啊...";
+	emotion 23;
+	next;
+	mes "[家庭主婦 瑪麗安妮]";
+	mes "瞧你干了什么好事!! 你竟敢拿東西給我兒子吃!! 而且什么不好給, 偏偏給他 ^ff0000肉^000000 !!!";
+	next;
+	mes "[家庭主婦 瑪麗安妮]";
+	mes "走~~!! 馬上給我滾出去!!!!!!";
+	emotion 32;
+	close;
+
+L_Juice:
+	set MORRISON,0;
+	set MARIANNE,1;
+	mes "感謝你沒給我兒子肉吃.";
+	mes "我想盡辦法要讓他多吃些 ^0000ff水果^000000 及蔬菜,";
+	mes "但這孩子除了肉以外什么都不想吃...";
+	next;
+	mes "[家庭主婦 瑪麗安妮]";
+	mes "要是我能把 ^0000ff水果^000000 弄成 ^0000ff果汁^000000...";
+	mes "比如說...柳橙汁... 我的孩子會喜歡嗎?";
+	emotion 20;
+	next;
+	mes "[家庭主婦 瑪麗安妮]";
+	mes "呃! 我想起來了..";
+	mes "有個城市里有人能幫人把 ^0000ff水果^000000 做成 ^0000ff果汁^000000.";
+	emotion 5;
+	next;
+	mes "[家庭主婦 瑪麗安妮]";
+	mes "... 那是在哪兒呢...^ff0000裴楊^000000...還是 ^ff0000夢羅克^000000...?";
+	emotion 20;
+	next;
+	close;
+
+}
+
+// 馬雷克漢森 -----------------------------------------------------------------------
+payon_in03.gat,188,146,5	script	馬雷克漢森	86,{
+	mes "[馬雷克漢森]";
+	if(MARIANNE == 1) goto L_Juice;
+	mes "歡迎光臨我的商店, 什么風把你吹來的啊?";
+	next;
+	menu "對話",M_0a,"我只是參觀一下",M_0b;
+		
+	M_0a:
+		mes "[馬雷克漢森]";
+		mes "在人類發展史的最初期, 水果是人類的主食, 它讓人類得以維持最基本的溫飽.";
+		mes "水果是讓人類活下去的基本食物之一, 如果沒有水果的話, 人類將會很快地死亡.";
+		mes "在那個蠻荒的時代, 大地之母慷慨地賜給我們這珍貴的禮物.";
+		next;
+		mes "[馬雷克漢森]";
+		mes "到了現在, 食物的取得變得容易了, 而且各式各樣, 各種口味應有盡有.";
+		mes "在有這么多選擇之下, 水果變得不像從前那樣倍受重視了.";
+		mes "尤其是青少年及兒童, 比起水果來說, 他們更喜歡吃披薩或零食.";
+		next;
+		mes "[馬雷克漢森]";
+		mes "正因如此, 我想盡辦法找到一條路能讓這些年輕人能夠了解攝取水果營養的重要性.";
+		mes "我發現將水果做成果汁的話, 它的便利與口未能讓年輕人接受.";
+		close;
+	M_0b:
+		mes "[馬雷克漢森]";
+		mes "那么, 這里當自己家吧.";
+		close;
+
+//--------------
+L_Juice:
+//---------
+	mes "歡迎光臨我的商店, 您需要加工果汁嗎?";
+	next;
+	menu "沒錯, 那就是我來的目的",M_1a,"你是怎么制作果汁的?",M_1b,"噢! 不需要, 謝謝",M_1End;
+		
+	M_1a:
+		mes "[馬雷克漢森]";
+		mes "那么, 你想要加工哪一種果汁?";
+		next;
+		menu "蘋果汁",sM_1a,"香蕉汁",sM_1b,"葡萄汁",sM_1c,"紅蘿卜汁",sM_1d,"呃...沒有我喜歡的...",M_1End;
+
+		sM_1a:
+			callsub sF_Make, 512, "apples", 531;
+			goto M_1a;
+		sM_1b:
+			callsub sF_Make, 513, "bananas", 532;
+			goto M_1a;
+		sM_1c:
+			callsub sF_Make, 514, "grapes", 533;
+			goto M_1a;
+		sM_1d:
+			callsub sF_Make, 515, "carrots", 534;
+			goto M_1a;
+	M_1b:
+		mes "[馬雷克漢森]";
+		mes "# 果汁加工需要材料 #";
+		mes "蘋果汁 - 蘋果 3 顆, 空瓶 1 個, 3 Zeny.";
+		mes "香蕉汁 - 香蕉 3 根, 空瓶 1 個, 3 Zeny.";
+		mes "葡萄汁 - 葡萄 3 顆, 空瓶 1 個, 3 Zeny.";
+		mes "紅蘿卜汁 - 紅蘿卜 3 根, 空瓶 1 個, 3 Zeny.";
+		close;
+	M_1End:
+		mes "[馬雷克漢森]";
+		mes "噢! 那么... 下次再見了.";
+		close;
+
+// Subfunction for making juice
+//----------------------------------
+sF_Make:
+	mes "[馬雷克漢森]";
+	mes "那么, 你需要多少瓶呢?";
+	next;
+	menu "讓我想想...",M_Tell, "看我有多少材料統統做吧",-, "嗯...我材料好像沒帶夠...",M_1End;
+
+		set @amount,1000;		//max possible amount of Juice
+		//calc max possible # juices
+		if(Zeny/3 < @amount) set @ipnut, Zeny/3;
+		if(countitem(getarg(0)) < @amount) set @amount, countitem(getarg(0));
+		if(countitem(713) < @amount) set @amount, countitem(713);
+		if(@amount > 0) goto L_Make;
+		mes "[馬雷克漢森]";
+		mes "噢...您的材料不夠呢!";
+		emotion 0;
+		close;
+
+	M_Tell:
+		mes "[馬雷克漢森]";
+		mes "那么...決定了請告訴我.";
+		mes " 如果不想做了請輸入 0 ";
+		next;
+		input @amount;
+		if(@amount < 1 || @amount > 1000) return;
+		if(countitem(getarg(0)) < @amount) goto sL_NoFruits;
+		if(countitem(713) <  @amount) goto sL_NoBottles;
+		if(Zeny < @amount * 3) goto sL_NoZeny;
+
+	L_Make:
+		delitem getarg(0), @amount;	//del Fruit
+		delitem 713, @amount;		//del Empty Bottle
+		set Zeny, Zeny - @amount * 3;
+		getitem getarg(2), @amount;	//get Juice
+		mes "[馬雷克漢森]";
+		mes "來，都做好了，拿去吧!";
+		close;
+
+		sL_NoFruits:
+			mes "[馬雷克漢森]";
+			mes "你沒有足夠的水果吶!";
+			mes "你需要 " +@amount+ " 個 " +getarg(1)+ " 才能做那么多果汁.";
+			next;
+			return;
+		sL_NoBottles:
+			mes "[馬雷克漢森]";
+			mes "你沒有足夠的空瓶吶! 你需要 "+@amount+" 個空瓶才能做那么多果汁.";
+			next;
+			return;
+		sL_NoZeny:
+			mes "[馬雷克漢森]";
+			mes "你沒有足夠的金錢吶! 你需要 " +(@amount*3)+ " Zeny 才能做那么多果汁.";
+			next;
+			return;
+}

@@ -1,0 +1,306 @@
+//===== Athena Script =======================================
+//= Ayothaya Quests
+//===== By ================================================
+//= Fredzilla
+//===== Version ===========================================
+//= 1.0 - First Release, made with infomation from RagnaInfo
+//===== Compatible With ===================================
+//= eAthena 1.0
+//===== Description =======================================
+//= 1 Quests with 2 parts for Ayothaya
+//===== Comments ==========================================
+//= List or Variables used
+//= @fishing - 	Checks for if you have caught a fish or not, 
+//=	       	1/10 chance you will get the wedding ring if 
+//=		you have started that quest.
+//= weddingring - Signifies the start of the wedding ring 
+//=               quest, and used throughout to keep track of 
+//=               progress.
+//= recoveredring - Signifies you have retrieved the ring 
+//=		    and therefore can't just drop the ring and 
+//=		    get the same quest again.
+
+ayo_dun02.gat,277,178,1	script	神秘箱子	139,4,4,{
+	if (AyoOBB==1 || weddingring!=3) goto L_Cancel;
+	mes "["+strcharinfo(0)+"]";
+	mes "這是什么?, 沒有腳印, 這是一個破破的藍色箱子";
+	next;
+	set AyoOBB,1;
+	getitem 603,1;
+	mes "["+strcharinfo(0)+"]";
+	mes "還是留著好了";
+	close;
+L_Cancel:
+	end;
+}
+//Dungeon 1 foot prints x 5
+ayo_dun01.gat,30,149,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "這里有些腳印, 好像往東邊去了.";
+	set @footprints1,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun01.gat,70,149,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "那里又有一些腳印, 好像也是去東邊了!";
+	set @footprints2,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun01.gat,100,149,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "又是一些去東邊的腳印, 它們到底是誰的?";
+	set @footprints3,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun01.gat,190,149,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "又有腳印了, 但是這次是去北邊了.";
+	set @footprints4,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun01.gat,261,263,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "又是腳印, 這次好像是進了那個洞.";
+	set @footprints5,1;
+	close;
+L_Cancel:
+	end;
+}
+
+//Dungeon 2 foot prints x 4 + 1 fake
+ayo_dun02.gat,222,204,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "更多的腳印, 有去南邊的也有去西邊的.";
+	set @footprints6,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun02.gat,169,212,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "看起來這些腳印是去西邊的.";
+	set @footprints7,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun02.gat,129,212,1	script	線索	139,5,5,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "這次又有些去了北邊，有些去了西邊.";
+	set @footprints8,1;
+	close;
+L_Cancel:
+	end;
+}
+ayo_dun02.gat,79,212,1	script	線索	139,7,7,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "這些腳印非常新, 他們去北邊了.";
+	set @footprints9,1;
+	close;
+L_Cancel:
+	end;
+}
+//FAKE
+ayo_dun02.gat,245,166,1	script	線索	139,7,7,{
+	if (weddingring!=3) goto L_Cancel;
+	npctalk "看起來有東西從這邊來, 去了東邊.";
+	close;
+L_Cancel:
+	end;
+}
+
+ayothaya.gat,233,105,7	script	淑達	818,{
+	mes "[淑達]";
+	if (weddingring==2) goto L_Quest2;
+	if (weddingring==3) goto L_OnQ2;
+	if (weddingring==4) goto L_QuestComplete;
+	if (weddingring==5) goto L_QuestOver;
+	if (countitem(7288)==1) goto L_RingFound;
+	mes "請幫幫我好嗎， 我愛人失蹤了，如果我能找到我的 ^FF0000結婚戒指^000000 , 也許有什么辦法能把他從海里 ^0000FF釣^000000 出來.";
+	set weddingring,1;
+	close;
+L_RingFound:
+	mes "那不是我的戒指嗎!?!";
+	next;
+	mes "[淑達]";
+	mes "能把它還給我嗎?";
+	next;
+	menu "好的，給你",N_Yes,"不，是我找到它的，現在它是我的了",-;
+	mes "[淑達]";
+	mes "你怎么能這么說，那個戒指是我的，沒有它我永遠不能嫁給我的愛人了.";
+	mes "";
+	mes "管他呢.";
+	close;
+N_Yes:
+	delitem 7288,1;
+	mes "[淑達]";
+	mes "非常感謝，現在我拿回了它，我的愛人應該也會回來了.";
+	set weddingring,2;
+	next;
+	mes "[淑達]";
+	mes "如果有時間的再來找我一下，我還有一些事希望你能幫幫忙.";
+	close;
+L_Quest2:
+	mes "雖然我拿回了我的戒指，但是我的愛人 ^FF0000阿弄^000000 還是沒回來";
+	mes "也許他在哪里迷路了";
+	mes "";
+	mes "你能幫我找到他嗎";
+	next;
+	menu "好的, 我很樂意",L_YesQ2,"不, 他回自己回來的",-;
+	mes "[淑達]";
+	mes "他也許會吧, 但是我還是希望有人能去找找他, 我很擔心他也許出了什么事.";
+	close;
+L_YesQ2:
+	set weddingring,3;
+	mes "[淑達]";
+	mes "真是非常感謝, 我想城里應該有人以前去過他去的那兒, 也許他能給你點線索";
+	close;
+L_OnQ2:
+	mes "還沒找到我的愛人嗎?";
+	mes " ";
+	mes "請快點.";
+	mes "*眼淚*";
+	close;
+L_QuestComplete:
+	mes "你找到他了 ?!?";
+	mes "他在哪???";
+	next;
+	mes "你向她解釋了整個情況.";
+	next;
+	mes "[淑達]";
+	mes "我就知道他是我的唯一.";
+	mes "我想我再也找不到任何人能像他那樣了.";
+	mes "*tear*";
+	next;
+	set weddingring,5;
+	mes "[淑達]";
+	mes "我能理解, 但是為什么不來告訴我呢, 我們也許能一起商量一下.";
+	close;
+L_QuestOver:
+	mes "很高興再次見到你 "+strcharinfo(0)+" 最近怎么樣?";
+	close;
+}
+
+
+ayothaya.gat,208,102,4	script	漁夫	100,{
+	mes "[漁夫]";
+	mes "嗨, 今天真是不錯啊.";
+	mes "我喜歡釣魚, 你呢?";
+	mes "我可以讓你用我的釣竿.";
+	next;
+	mes "[漁夫]";
+	mes "當然，你必須給我 50z, 以及一個魔物飼料作為誘餌，我才讓你用我的釣竿.";
+	mes " ";
+	mes "你覺得呢?";
+	next;
+	menu "好的",-,"不要",L_No;
+	if (countitem(528) < 1 || zeny < 50) goto L_Fail;
+	delitem 528,1;
+	set zeny,zeny-50;
+	mes "[漁夫]";
+	mes "來個漂亮的甩竿吧.";
+	mes "看看你釣到了什么.";
+	next;
+	set @fishing, rand(1,10);
+	mes "[漁夫]";
+	if (@fishing<5) goto L_Nothing;
+	if (@fishing<10) goto L_Fish;
+	if (@fishing==10) goto L_RingCheck;
+L_No:
+	mes "[漁夫]";
+	mes "下次再來哦.";
+	close;
+L_Fail:
+	mes "[漁夫]";
+	mes "看起來你沒有我要的東西啊";
+	mes "等你有了魔物飼料和 50 zeny再來找我吧.";
+	close;
+L_Nothing:
+	mes "看起來什么都沒釣到哦, 再來一次吧.";
+	close;
+L_Fish:
+	getitem 544,1;
+	mes "看啊，你釣到一條魚, 干得不錯.";
+	close;
+L_RingCheck:
+	if (weddingring!=1 || recoveredring==1) goto L_Fish;
+	mes "這是什么, 好像是某種戒指!!!";
+	mes "我想既然是你釣到的，那就你拿著吧";
+	next;
+	getitem 7288,1;
+	mes "[漁夫]";
+	mes "隨時再來啊";
+	set weddingring,0;
+	set recoveredring,1;
+	close;
+}
+ayothaya.gat,192,171,4	script	老人	824,{
+	mes "[老人]";
+	if (weddingring==3) goto L_OnQ2;
+	mes "多好的一天啊, 你說呢?";
+	close;
+L_OnQ2:
+	mes "什么! 阿弄不見了, 我剛剛還看見他呢.";
+	next;
+	mes "[老人]";
+	mes "他為了神秘箱子去了泰國密穴, 現在你居然說他還沒回來?!?";
+	mes "我想你應該跟著他去那兒, 可能他出了什么事了";
+	next;
+	mes "[老人]";
+	mes "也許他留了洞里的什么東西可以讓某人帶你去找他";
+	mes "那個人正是我";
+	next;
+	mes "[老人]";
+	mes "你穿過老廟那兒就能到密穴了, 就在右邊地圖的山腳下.";
+	close;
+}
+
+ayo_dun02.gat,91,264,4	script	阿弄	822,{
+	if (weddingring==4) goto L_QuestComplete;
+	if (weddingring==5) goto L_Talkedshuda;
+	if (@footprints1==1 && @footprints2==1 && @footprints3==1 && @footprints4==1 && @footprints5==1 && @footprints6==1 && @footprints7==1 && @footprints8==1 && @footprints9==1) goto L_Groom;
+end;
+L_Groom:
+	mes "[阿弄]";
+	mes "有人叫你來找我?";
+	next;
+	mes "[阿弄]";
+	mes "我明白了, 我前女友叫你來看看我是不是還好.";
+	mes " ";
+	mes "請你告訴她我很好, 但是我不能和她結婚.";
+	next;
+	mes "[阿弄]";
+	mes "我不能說出確切的理由, 只能告訴她我愛她, 但是還沒有愛到下半輩子都陪著他.";
+	next;
+	mes "[阿弄]";
+	mes "我希望她能理解.";
+	mes " ";
+	mes "你應該想要什么回報吧.";
+	next;
+	mes "[阿弄]";
+	mes "我能訓練你, 給你一點經驗值.";
+	mes " ";
+	mes "現在就開始吧.";
+	next;
+	set BaseExp,BaseExp+100000;
+	set weddingring,4;
+	mes "[阿弄]";
+	mes "好了, 請回去把我說的告訴淑達, 盡量不要讓她哭好嗎";
+	close;
+L_QuestComplete:
+	mes "[阿弄]";
+	mes "你還沒見淑達?";
+	close;
+L_Talkedshuda:
+	mes "[阿弄]";
+	mes "她明白了嗎?";
+	close;
+}

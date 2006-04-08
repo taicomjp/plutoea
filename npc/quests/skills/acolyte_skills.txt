@@ -1,0 +1,132 @@
+// 服事新技能 -- 神圣之光技能腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041119.0.1
+//
+// 參考腳本:		Kingbo 2004/2/7 上午 10:08
+//
+//============================================================
+
+//===== eAthena Script =======================================
+//= Acolyte Skill Quest
+//===== By: ==================================================
+//= kobra_k88
+//===== Current Version: =====================================
+//= 1.0a
+//===== Compatible With: =====================================
+//= eAthena 7.15 +
+//===== Description: =========================================
+//= <Description> 
+//===== Additional Comments: =================================
+//= v1.0a Now using functions found in "Global_Functions.txt"
+//= for class checks.
+//============================================================
+
+
+prt_church.gat,173,23,4	script	主任 服事	79,{
+	mes "[服事 克利福特]";
+	if (callfunc("Is_Holy_Class")) goto L_Start;
+
+L_Other:
+	mes "噢! 歡迎光臨普隆德拉大圣堂，這里是最神圣的地方.";
+	mes "如果你有圣職者朋友的話，請轉告他們";
+	mes "我可以協助他們啟發圣職者所擁有的^3355FF隱藏能力^000000..";
+	close;
+
+L_Start:
+	if (HOLYLIGHT == 1) goto L_Check;
+	if (getskilllv(156)>0) goto L_GotSkill;
+	if(sex==1) mes "噢! 親愛的兄弟!!";
+	if(sex==0) mes "噢! 親愛的姊妹!!";
+	mes "想要拯救可憐的小綿羊是否覺得心有余而力不足呢?";
+	mes "我可以協祝你";
+	next;
+	menu "有關^3355FF服事隱藏的能力^000000..",M_0, "結束對話",M_End;
+
+	M_0:
+		mes "[服事 克利福特]";
+		mes "像我們這樣的圣職者要獨自發現自己的隱藏能力之外，";
+		mes "必須要透過資深圣職者們移交后所得到的技能才能徹底的發揮使用";
+		next;
+		mes "[服事 克利福特]";
+		mes "為了防止邪惡的勢力逃脫，可以拯救他們無限期的痛苦";
+		mes "可以使用有一個叫做^3355FF神圣之光^000000 技能";
+		next;
+		mes "[服事 克利福特]";
+		mes "你要學習這項技能嗎?";
+		next;
+		menu "是的，請教我吧",-, "讓我再想一想吧",M_End;
+
+			if(Class == 8 || Class == 15 || Class == 4005 || Class == 4009 || Class == 4016) goto neednoquest;
+		needwhat:
+			mes "[服事 克利福特]";
+			mes "想把這技能移交給你的話要使用特別的力量";
+			mes "所需要幾個媒介物是";
+			mes "^FF3355白寶石1個^000000";
+			mes "^FF3355水靈礦石1個^000000";
+			mes "^FF3355幸運珠鏈1個^000000";
+			next;
+			mes "[服事 克利福特]";
+			mes "但是為了移交這能力時";
+			mes "需要某種程度的天份才可以";
+			mes "^FF3355職業等級 30 以上^000000";
+			mes "才能做移交的動作";
+			next;
+			mes "[服事 克利福特]";
+			mes "等你準備好之后再來找我吧!";
+			set HOLYLIGHT, 1;
+			close;
+
+	M_End:
+		mes "[服事 克利福特]";
+		mes ". . . . .";
+		mes "我了解你的意思了";
+		mes "請你慢慢的思考之后";
+		mes "好好的實踐吧";
+		mes "祝你前途無量啊 . . . . .";
+		close;
+
+L_Check:
+	mes "你準備好了嗎? 讓我檢查一下.";
+	next;
+	mes "[服事 克利福特]";
+	if ((Class == 4 && JobLevel<30) || (countitem(727)<1 || countitem(991)<1 || countitem(2608)<1)) goto L_LowLvlorNoItems;
+	mes "嗯! 非常好，我所需要的東西一樣都沒少.";
+	next;
+neednoquest:
+	mes "[服事 克利福特]";
+	mes "對信任感，抱著忠誠態度的你";
+	mes "給你有使用神圣之光";
+	mes "的資格";
+	mes "對你以后即將要走的路";
+	mes "將與幸福同在 . . . . .";
+	next;
+	delitem 727,1;
+	delitem 991,1;
+	delitem 2608,1;
+	skill 156,1,0;
+	set HOLYLIGHT, 0;
+ 	mes "[服事 克利福特]";
+	mes "來 ，以后你就";
+	mes "盡情的使用神圣之光吧 ，希望你把這能力";
+	mes "用在善行吧. . . . .";
+	emotion 21;
+	close;
+
+	L_LowLvlorNoItems:
+		if(sex==1) mes "噢! 親愛的兄弟!!";
+		if(sex==0) mes "噢! 親愛的姊妹!!";
+		mes "你還不夠資格移交";
+		mes "神圣之光啊..";
+		next;
+		goto needwhat;
+		close;
+
+L_GotSkill:
+	if(sex==1) mes "噢! 親愛的兄弟!!";
+	if(sex==0) mes "噢! 親愛的姊妹!!";
+	mes "你已經是擁有神圣之光使用資格的人了 ..";
+	mes "請把這能力用在行善方面吧..";
+	close;
+}

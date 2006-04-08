@@ -1,0 +1,136 @@
+// 煉金術士職業相關物品販賣員
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041215.0.1
+//			20050210.0.1	重新從煉金術士轉職腳本中分離出來并以 eAthena 腳本重新翻譯
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Alchemist Shop
+//===== By: ================================================== 
+//= Darkchild (1.0)
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= eAthena 1.0+
+//===== Description: ========================================= 
+//= Selling Alchemist Shit :)
+//===== Additional Comments: ================================= 
+//= Working.
+//============================================================ 
+alde_alche.gat,24,188,3	script	葛伯 阿 紗普	740,{
+	mes "[葛伯 阿 紗普]";
+	mes "歡迎來到煉金術師組織，";
+	mes "需要什么服務嗎?";
+	next;
+	menu "購買制藥物品",M_Material, "購買制作說明書",M_Manual, "取消", M_Bye;
+
+	M_Material:
+		mes "[葛伯 阿 紗普]";
+		mes "請問你需要什么物品?";
+		next;
+		menu "藥缽 - 8z",-,"停止交易",M_Bye;
+
+			mes "[葛伯 阿 紗普]";
+			mes "你想買多少個啊?";	
+			mes "如果不想買的話請輸入 0 吧!";
+			next;
+			input @num;
+			if((@num < 1) || (@num > 10000)) goto M_Bye;
+			set @price,@num * 8;
+			mes "[葛伯 阿 紗普]";
+			mes "來... 這是你的藥缽..";
+			mes "歡迎下次再來啊!";
+			if(zeny < @price) goto sL_NoZeny;
+			if (checkweight(@item,@num) == 0) goto sL_OverW;
+			set zeny,Zeny-@price;
+			getitem 7134,@num;
+			goto L_Bye;
+	M_Manual:
+		mes "[葛伯 阿 紗普]";
+		mes "請問需要哪些物品?";
+		mes "除了比較特殊的幾種制作說明書除外，";
+		mes "一般的制作說明書是 100,000 金幣";
+		next;
+		menu 	"一般藥水制作說明書",sM_Pot,
+			"酒精制作說明書",sM_Alc,
+			"火煙瓶制作說明書",sM_Gren,
+			"鹽酸瓶制作說明書",sM_Acid,
+			"植物瓶制作說明書",sM_Plant,
+			"刺錘瓶制作說明書",sM_Mar,
+			"護貝藥制作說明書",sM_Coat,
+			"纖細藥水制作說明書",sM_Con,
+			"取消交易",M_Bye;
+		sM_Pot:
+			set @itemid,7144;
+			set @price,100000;
+			set @itemname$,"一般藥水";
+			goto L_Choice;
+		sM_Alc:
+			set @itemid,7127;
+			set @price,100000;
+			set @itemname$,"酒精";
+			goto L_Choice;
+		sM_Gren:
+			set @itemid,7128;
+			set @price,100000;
+			set @itemname$,"火煙瓶";
+			goto L_Choice;
+		sM_Acid:
+			set @itemid,7129;
+			set @price,100000;
+			set @itemname$,"鹽酸瓶";
+			goto L_Choice;
+		sM_Plant:
+			set @itemid,7130;
+			set @price,100000;
+			set @itemname$,"植物瓶";
+			goto L_Choice;
+		sM_Mar:
+			set @itemid,7131;
+			set @price,100000;
+			set @itemname$,"刺錘瓶";
+			goto L_Choice;
+		sM_Coat:
+			set @itemid,7132;
+			set @price,100000;
+			set @itemname$,"護貝藥";
+			goto L_Choice;
+		sM_Con:
+			set @itemid,7133;
+			set @price,240000;
+			set @itemname$,"纖細藥水";
+			goto L_Choice;
+	L_Choice:
+		mes "[葛伯 阿 紗普]";
+		mes "你要 " + @itemname$ + "制作說明書??";
+		if(@price == 100000) mes "這玩意兒一本 100,000 Zeny";
+		if(@price == 240000) mes "這玩意兒一本 240,000 Zeny";
+		next;
+		menu "購買",-,"取消",M_Bye;
+
+			mes "[葛伯 阿 紗普]";
+			if(zeny < @price) goto sL_NoZeny;	
+			if (checkweight(@itemid,1) == 0) goto sL_OverW;
+			getitem @itemid,1;
+			set zeny,zeny-@price;
+		L_Bye:
+			mes "來...這是你的" + @itemname$ + "制作說明書..";
+			mes "歡迎下次再來啊!";
+			close;
+
+			sL_NoZeny:
+				mes "你的錢不夠喔!!";
+				close;
+			sL_OverW:
+				mes "唔...你好像沒有手拿了...先清清你的負重吧!";
+				close;
+
+
+	M_Bye:
+		mes "[葛伯 阿 紗普]";
+		mes "歡迎再度光臨~";
+		close;
+}

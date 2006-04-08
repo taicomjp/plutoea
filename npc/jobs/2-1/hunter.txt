@@ -1,0 +1,2632 @@
+// 獵人轉職腳本
+// 
+// 重整作者:		dino9021
+// 
+// 中文版本編號:	20041118.0.2
+//
+// 原始腳本:		made by eremes the canivalizer
+//			converted for athena by westchen 2004.02.13
+//
+//============================================================
+
+
+job_hunte.gat mapflag nomemo dummy
+job_hunte.gat mapflag noteleport dummy
+
+pay_fild10.gat,148,252,4	script	獵人 公會	97,{
+	mes "[獵人公會人員]";
+	mes "你是要來轉職成為獵人的嗎？";
+	mes "請跟著我。";
+	next;
+	menu "不用了..",lend,"好的。",lok;
+lok:
+	warp "in_hunter.gat",100,90;
+	end;
+lend:
+ 	mes "[獵人公會人員]";
+	mes "祝你有美好的一天。";
+	close;
+}
+
+in_hunter.gat,99,99,4	script	獵人 公會員	727,{
+	if((class == 3 || class == 4004) & (joblevel < 40)) goto lnotready;
+	if(skillpoint != 0) goto lnotready2;
+	if(class == 0 || class == 4001) goto lnovice;
+	if ((class == 1) || (class == 7) || (class == 13)  || (class == 14) || (class == 4002) || (class == 4008)  || (class == 4015) || (class == 4014) || (class == 4022)) goto lswordman;
+	if ((class == 2) || (class == 9) || (class == 16) || (class == 4003) || (class == 4010) || (class == 4017)) goto lmage;
+	if ((class == 4) || (class == 8) || (class == 15)  || (class == 4005) || (class == 4009) || (class == 4016)) goto lacolyte;
+	if ((class == 5) || (class == 10) || (class == 18)  || (class == 4006) || (class == 4011) || (class == 4019)) goto lmerchant;
+	if ((class == 6) || (class == 12) || (class == 17) || (class == 4007) || (class == 4013) || (class == 4018)) goto lthief;
+	if(class == 11 || class == 4012) goto lhunter;
+	if(class == 3 || class == 4004) goto larcher;
+	goto lothers;
+	close;
+larcher:
+	if(skillpoint != 0) goto lnotready2;
+	if((job_hunter_ == 17) & (countitem(1007) == 0))	goto lnotready3;
+	if((job_hunter_ == 17) & (countitem(1007) > 0))	goto lalldone;
+	if((joblevel > 39) & (job_hunter_ == 0))	goto ltalk1;
+	if((joblevel > 39) & (job_hunter_ == 1))	goto ltalk2;
+	if((job_hunter_ > 2) & (job_hunter_ < 10))	goto ltalk3;
+	if(job_hunter_ == 2)	goto ltalk4;
+	mes "[獵人 雪霖]";
+	mes "嗯...你應該要去找別人喔?";
+	mes "譬如說, 目前出差的公會長啊...等等的?";
+	next;
+	mes "[獵人 雪霖]";
+	mes "聽說他在裴揚城或著,";
+	mes "弓箭手村, 兩各地放之一的..";
+	mes "望那里去看看吧.. 嘻嘻.";
+	close;
+ltalk1:
+	mes "[獵人 公會員]";
+	mes "啊...是弓箭手喔!";
+	mes "看起來好像你已經把弓箭手應有的熟練度?練到一定的程度的了啊...";
+	mes "是為了要轉職到獵人而來的...是吧?";
+	next;
+	menu "是的. 我就是為了轉職而來這里的.",ljobchange,"轉職的條件是什么啊?",lask,"....還不想要轉職.",lcancel;
+
+highhun:
+	mes "[獵人 公會員]";
+	mes "哎呀! 你已經是上位弓箭手了呢!";
+	mes "很抱歉! 我沒有辦法讓你轉職成獵人!";
+	mes "請你去找狙擊手轉職吧!";
+	mes "那才是適合你的職業!";
+	close;
+
+ljobchange:
+	mes "[獵人 公會員]";
+	mes "嘻嘻~ 果然沒錯. 那么顯把你的名字列在轉職對象的名單上之后~~我來看看吧~~";
+	next;
+	if (class == 4004 || ReBirth > 0) goto highhun;
+	mes "[獵人 公會員]";
+	mes "嗯...那先從面試開始吧~";
+	mes "放輕松之后就這樣不要動喔~ 我會自己好好辦辦的";
+	next;
+	mes "...東看西看....";
+	next;
+	mes "...啪拉啪拉....";
+	next;
+	mes "[獵人 公會員]";
+	mes "啊";
+	mes "找到了...面試調查書~";
+	mes "首先, 我的名字叫'雪霖'. 請多指教~";
+	next;
+	mes "[獵人 雪霖]";
+	mes "那么..現在就要進行面試嗎?";
+	next;
+	menu "好啊~ 現在就開始吧",laccepttest,"不用了..等以下再來做好了",lcancel2;
+
+laccepttest:
+	mes "[獵人 雪霖]";
+	mes "仔細聽我講的話之后我會問一些問題的話再做一些適當的回答就好了.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "是為了想問你在生活當中有何想法以及為什么要當獵人的原因而已的, 所以不用太緊張的~";
+lbegintest:
+	next;
+	set @score,0;
+	mes "[獵人 雪霖]";
+	mes "那么, 要開始?~";
+	next;
+	mes "[獵人 雪霖]";
+	mes "你是位弓箭手, 想要去某各地放要打獵, 但是你卻不曉得要往哪里去. 到時候你要如何?";
+	next;
+	menu "到處亂喊要往哪里走.",lq1_1wrong,"會悄悄的問一下路過的人.",lq1_1right,"自己一個人到處亂走.",lq1_1right;
+
+lq1_1right:
+	set @score,@score+10;
+lq1_1wrong:
+	mes "[獵人 雪霖]";
+	mes "你已經決定狩獵場了啊..";
+	mes "我要到蘇克拉特沙漠去抓蚯蚓.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "但是這里是裴揚啊!! 你要怎么去沙漠啊?";
+	next;
+	menu "去求祭司讓你免費傳送.",lq1_2wrong,"去找卡普拉服務人員.",lq1_2right,"跟朋友一起走路過去.",lq1_2right;
+
+lq1_2right:
+	set @score,@score+10;
+lq1_2wrong:
+	mes "[獵人 雪霖]";
+	mes "周圍也沒有祭司..也沒有朋友可以跟你走路過去, 只能去找卡普拉姊姊了呢, 但是也前也不夠用啊!";
+	next;
+	mes "[獵人 雪霖]";
+	mes "要怎么存錢呢?";
+	next;
+	menu "求人家.",lq1_3wrong,"把沒有用的物品給賣掉.",lq1_3right,"到最近的狩獵場打怪獸.",lq1_3right;
+
+lq1_3right:
+	set @score,@score+10;
+lq1_3wrong:
+	mes "[獵人 雪霖]";
+	mes "經過一些困難當中, 總算來到有蚯蚓的沙漠了.";
+	mes "但是要抓蚯蚓的時候覺得有點困難耶.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "要如何克服這種現況呢?";
+	next;
+	menu "到山丘上面, 往下攻擊位在下面的蚯蚓.",lq1_4wrong,"去村落.",lq1_4right,"去攻擊人家在打的蚯蚓.",lq1_4wrong;
+
+lq1_4right:
+	set @score,@score+10;
+lq1_4wrong:
+	mes "[獵人 雪霖]";
+	mes "看起來好像沒辦法, 只好回到村落了.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "但是來到村落之后發現自己的體力已經剩下多了. 但是剛好遇到祭司, 你要怎么求他?";
+	next;
+	menu "可不可以請你幫我用治愈術?",lq1_5right,"請給我治愈術.",lq1_5wrong,"治愈術.",lq1_5wrong;
+
+lq1_5right:
+	set @score,@score+10;
+lq1_5wrong:
+	mes "[獵人 雪霖]";
+	mes "但是你再檢查這次狩獵的時候得到的物品當中發現一各很貴重的物品.";
+	mes "為了要賣物品而來掉廣場,  發現很多人開了商店跟聊天室.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "那么為了要把物品賣掉, 如何做才是最好的呢?";
+	next;
+	menu "到處告訴周圍的人.",lq1_6wrong,"在聊天室里找找是否有人要買.",lq1_6right,"找找看是否有人在要那個物品.",lq1_6right;
+
+lq1_6right:
+	set @score,@score+10;
+lq1_6wrong:
+	mes "[獵人 雪霖]";
+	mes "你就這樣等待的時候真的發現有人在求人家.";
+	mes "要如何好呢?";
+	next;
+	menu "把我的錢跟物品分給他.",lq1_7wrong,"忽略他.",lq1_7wrong,"告訴他他可以狩獵的地方.",lq1_7right;
+
+lq1_7right:
+	set @score,@score+10;
+lq1_7wrong:
+	mes "[獵人 雪霖]";
+	mes "這次打算自己一個人要去迷宮森林看看.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "但是在中途遇到迷路的人.";
+	mes "要如何才好呢?";
+	next;
+	menu "告訴他路程 .",lq1_8right,"跟他一起到目的地.",lq1_8right,"忽略他.",lq1_8wrong;
+
+lq1_8right:
+	set @score,@score+10;
+lq1_8wrong:
+	mes "[獵人 雪霖]";
+	mes "只告他路程之后繼續在狩獵.";
+	mes "但是看到有人在攻擊頭目級怪獸!";
+	next;
+	mes "[獵人 雪霖]";
+	mes "要如何才好?";
+	next;
+	menu "在旁邊觀看, 等他求救再攻擊.",lq1_9right,"先攻擊再說.",lq1_9wrong,"直接回到村落.",lq1_9wrong;
+
+lq1_9right:
+	set @score,@score+10;
+lq1_9wrong:
+	mes "[獵人 雪霖]";
+	mes "現在已經很累了, 已經差不多要回村落了.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "但是在路上發現一個很貴的物品喔?";
+	mes "要怎么處理它呢?";
+	next;
+	menu "撿起來當作己有.",lq1_10wrong,"尋找看看物品的主人.",lq1_10right,"忽略它.",lq1_10right;
+
+lq1_10right:
+	set @score,@score+10;
+lq1_10wrong:
+	mes "[獵人 雪霖]";
+	mes "好, 這樣, 我所擔任的考試就結束了!";
+	next;
+	if(@score == 100) goto lpass1;
+	if(@score == 90) goto lpass2;
+	set job_hunter_,1;
+	mes "[獵人 雪霖]";
+	mes "嗯... 我覺得, 還是不行.";
+	mes "沒有把基本的作好的話無法讓你轉職成獵人.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "你回去好好想想我剛剛問你的問題吧.";
+	mes "為了要養成一各能夠昭想自然的心之前,  首先是要養成一個要如何重視人際關系..";
+	next;
+	mes "[獵人 雪霖]";
+	mes "那么...等你愿意的時候再來吧.";
+	close;
+lpass1:
+	set job_hunter_,2;
+	mes "[獵人 雪霖]";
+	mes "做的很好, 你是種態度活下來了的話就夠了!";
+	mes "你已經有充分的資格當獵人了~";
+	next;
+	mes "[獵人 雪霖]";
+	mes "那么我就壤你通過面試好了~ 剩下的就到那邊角落的人確認一下轉職考試用的物品就好了~";
+	close;
+lpass2:
+	set job_hunter_,2;
+	mes "[獵人 雪霖]";
+	mes "....有些部分不太滿意就是啦.";
+	mes "我先算你是通過面試好了, 但是不曉得公會長是如何想呢.";
+	mes "以后慢慢思考一下基本的問題吧";
+	next;
+	mes "[獵人 雪霖]";
+	mes "希望你能把以后的考試更加努力讓我雪霖高興一點, 好嗎?~";
+	close;
+lcancel2:
+	mes "[獵人 雪霖]";
+	mes "好的...那么我等你能夠把心靜下來之后再來好了~";
+	close;
+lask:
+	mes "[獵人 公會員]";
+	mes "轉職條件嗎?";
+	mes "首先. 定要是一位弓箭手.";
+	mes "第二. 弓箭手的職業等級要40以上.";
+	mes "第三. 要拿公會所要求的物品回來.";
+	mes "第四. 要通過公會所舉辦的考試";
+	mes "如果你是以弓箭手些訓練的話";
+	mes "考試應該很容易就通過的~~";
+	close;
+lcancel:
+	mes "[獵人 公會員]";
+	mes "嗯...好.那么下次再來好了~";
+	close;
+ltalk2:
+	mes "[獵人 雪霖]";
+	mes "你又來了喔...~";
+	mes "那么~ 先從面試開始吧~";
+	mes "這次就跟雪霖一步一步來好了~";
+	goto lbegintest;
+	close;
+ltalk3:
+	mes "[獵人 雪霖]";
+	mes "把物品交給我左邊的迪文獵人就好了~";
+	next;
+	if(sex == 0)	goto lgirl;
+	mes "[獵人 雪霖]";
+	mes "到時候你成為獵人的話一定要來找我 雪霖喔~";
+	mes "因為你成獵人的話應該會很帥的說~";
+	close;
+lgirl:
+	mes "[獵人 雪霖]";
+	mes "到時候你成為獵人的話一定要來找我 雪霖喔~";
+	mes "因為姊姊很漂亮, 我很想看看成為獵人你呢.. 嘻嘻";
+	close;
+ltalk4:
+	mes "[獵人 雪霖]";
+	mes "????";
+	next;
+	mes "[獵人 雪霖]";
+	mes "還沒有找到迪文獵人嗎?";
+	mes "迪文獵人就在我的左方向的啦~嘻嘻..";
+	next;
+	mes "[獵人 雪霖]";
+	mes "我很想趕快看到轉職之后的樣子呢...嗚嗚..";
+	mes "一定是很帥的說~~";
+	close;
+lalldone:
+	mes "[獵人 雪霖]";
+	mes "啊? 已經通過了轉職考試喔?!!";
+	mes "恭喜你~!!";
+	next;
+	mes "[獵人 雪霖]";
+	mes "好..那么我現在就幫你轉職成獵人~";
+	next;
+	delitem 1007,1;
+	mes "[獵人 雪霖]";
+	mes "鏘鏘~ 恭喜你!";
+	mes "獵人的服裝非常適合你耶";
+	setoption 0;
+	jobchange 11;
+	callfunc "f_clearjobvar";
+	next;
+	mes "[獵人 雪霖]";
+	mes "就跟你的帥氣的樣子一樣, 不要做出讓自己丟臉的事情喔,";
+	mes "要表現出以獵人的 身分一樣能夠愛大自然的心喔~";
+	next;
+	mes "[獵人 雪霖]";
+	mes "然后這是為了獎賞你的,";
+	mes "小禮物~";
+	if(joblevel > 49) goto lgetbetter;
+	getitem 1711,1;
+	close;
+lgetbetter:
+	getitem 1718,1;
+	close;
+lnotready:
+	mes "[獵人 公會員]";
+	mes "不足弓箭手鍛煉...";
+	mes "最小要當獵人的話, 弓箭手職業的";
+	mes "修煉要達到一定水準..";
+	next;
+	mes "[獵人 公會員]";
+	mes "那么..再去多多修行再來喔~";
+	mes "...正確的轉職條件是職業等級40以上呢..";
+	mes "..練到那個條件以上的話..也沒什么特別的啦.";
+	mes "那么再見~";
+	close;
+lnotready2:
+	mes "[獵人 雪霖]";
+	mes "如果有剩下的技能點數的話就無法轉職的.";
+	mes "全部用完再來吧~.";
+	close;
+lnotready3:
+	mes "[獵人 雪霖]";
+	mes "嗯嗯...我有受到通過考試的消息了..";
+	mes "但是沒有證據 '慧眼'喔.";
+	next;
+	mes "[獵人 雪霖]";
+	mes "只有這次我會偷偷的幫你轉職的, 絕不能讓公會長知道的喔";
+	mes "趕快去找 '慧眼'過來吧..";
+	close;
+lnovice:
+	mes "[獵人 公會員]";
+	mes "...是初學者啊...好像在這也沒什么事情可做吧..?";
+	close;
+lswordman:
+	mes "[獵人 公會員]";
+	mes "你是邁向劍路的人喔..";
+	mes "好像沒話可以再說. 我先失陪了..";
+	close;
+lmage:
+	mes "[獵人 公會員]";
+	mes "你是利用魔力(mana)的人喔..";
+	mes "好像沒話可以再說. 我先失陪了..";
+	close;
+lacolyte:
+	mes "[獵人 公會員]";
+	mes "你是拜神的人喔!";
+	mes "你好. 很少有人會來到這里呢~ 嘻嘻.";
+	close;
+lmerchant:
+	mes "[獵人 公會員]";
+	mes "啊...";
+	mes "....事業做的很好嗎?";
+	close;
+lthief:
+	mes "[獵人 公會員]";
+	mes "甚?!";
+	mes "這...這里并沒有可以偷走的東西, 也沒有要殺掉的人!!";
+	close;
+lhunter:
+	mes "[獵人 公會員]";
+	mes "啊~ " + strcharinfo(0) + "!!";
+	mes "好久不見喔~ 有什么是嗎? 老鷹逃跑了嗎?";
+	mes "...好像沒有看到什么公會的公告耶....";
+	mes "希望你不是來這里白費力氣喔~";
+	close;
+lothers:
+	mes "[獵人 公會員]";
+	mes "很可惜. 弓箭手以外，其他職業不能加入我們公會!";
+	close;
+}
+
+in_hunter.gat,55,99,4	script	獵人公會 考試報名人員	727,{
+	if(job_hunter_ == 2)	goto ltalk;
+	if(job_hunter_ == 3)	goto ltalk2;
+	if(job_hunter_ == 4)	goto ltalk3;
+	if(job_hunter_ == 5)	goto ltalk4;
+	if(job_hunter_ == 6)	goto ltalk5;
+	if(job_hunter_ == 7)	goto ltalk6;
+	if(job_hunter_ == 8)	goto ltalk7;
+	if(job_hunter_ == 9)	goto ltalk8;
+	if((job_hunter_ > 9) & (job_hunter_ < 17))	goto ltalk9;
+	if(job_hunter_ == 17)	goto ltalk10;
+	mes "[迪文獵人]";
+	mes "想要轉職成獵人要先報名才可以的.";
+	close;
+
+
+ltalk:
+	mes "[獵人公會 考試報名人員]";
+	mes "你好. 我是 獵人公會的 考試報名人員'迪文獵人'.";
+	mes "你的名字是..." + strcharinfo(0) + "... 對嗎?";
+	next;
+	menu "是的.",lyes1,"不是啊~~~(呼呼呼)",lno1;
+
+lyes1:
+	mes "[迪文獵人]";
+	mes "好. 那么..我現在就告訴你轉職考試的時候所需要的物品.";
+	mes "因為在考試期間所用到的箭會由我們來負擔的..";
+	mes "但是要做箭的時候需要一點材料..";
+	mes "我們的財務狀況也并不是很好的呢...";
+	mes "嗯...現在也需要一些物品呢..";
+ldecidequest:
+	next;
+//~	if(joblevel == 50) goto now50;
+	set @quest,rand(1,7);
+	if(@quest == 1)	goto ltakequest1;
+	if(@quest == 2)	goto ltakequest2;
+	if(@quest == 3)	goto ltakequest3;
+	if(@quest == 4)	goto ltakequest4;
+	if(@quest == 5)	goto ltakequest5;
+	if(@quest == 6)	goto ltakequest6;
+	goto ltakequest7;
+
+//~now50:
+//~	mes "[迪文獵人]";
+//~	mes "喔！你職業等級已經達到50級";
+//~	mes "那么第一項的收集任務就可以免除了";
+//~	mes "因為你已經很努力的證明你的能力！";
+//~	mes "那你現在就去找出差到斐揚城的公會長的話它會告訴你可往考場走的路的.";
+//~	set job_hunter_,10;
+//~	close;
+
+ltakequest1:
+	mes "[迪文獵人]";
+	mes "嗯. 做箭頭所需要的'沙漠狼指甲' 5個.";
+	mes "可以用在許多地放的'瑪哪樹枝' 5個.";
+	mes "然后...'白色藥草' 3個就好了.";
+	set job_hunter_,3;
+	goto ltell1;
+	close;
+ltakequest2:
+	mes "[迪文獵人]";
+	mes "嗯...做箭頭的’鳥嘴’  3個.";
+	mes "可以用在很多地放的 '死人遺骨' 5個.";
+	mes "還有...'綠色藥草' 3個就好了.";
+	set job_hunter_,4;
+	goto ltell1;
+	close;
+ltakequest3:
+	mes "[迪文獵人]";
+	mes "嗯...做箭頭的'毒牙' 3個.";
+	mes "可以用在一些地放的 '動物外皮' 3個.";
+	mes "還有...'紅色藥草' 5個就好了.";
+	set job_hunter_,5;
+	goto ltell1;
+	close;
+ltakequest4:
+	mes "[迪文獵人]";
+	mes "嗯...用來做箭頭的'土人之角' 3個.";
+	mes "可以用在某些地放的'蛋殼碎片' 3個.";
+	mes "還有...'毛' 10個就好了.";
+	set job_hunter_,6;
+ltell1:
+	next;
+	mes "[迪文獵人]";
+	mes "啊...對了.還有我們 獵人公會啊";
+	mes "有位公會長出差到裴揚城..";
+	mes "你要去見一下他才行.";
+	mes "因為…它就是擔任考試的人呢.";
+	mes "那么~ 等全部找到之后再來這里吧~";
+	close;
+ltakequest5:
+	mes "[迪文獵人]";
+	mes "嗯...用來做箭頭的'堅硬外殼' 9個.";
+	mes "用在某些地放的'昆蟲外殼' 9個.";
+	mes "還有... '黃色藥草' 9 個.";
+	set job_hunter_,7;
+	goto ltell2;
+	close;
+ltakequest6:
+	mes "[迪文獵人]";
+	mes "嗯..要做箭頭的'蝙蝠牙' 3個.";
+	mes "要做一些貼水用的'粘稠液體' 1個.";
+	mes "還有... '熊掌 ' 1 個就好了";
+	set job_hunter_,8;
+	goto ltell2;
+	close;
+ltakequest7:
+	mes "[迪文獵人]";
+	mes "嗯... 要做箭頭的'刺?尖刺 ' 2個.";
+	mes "作弓要用的道的 '猴子尾巴 ' 1個.";
+	mes "還有.. '橡實 ' 1 個就好了.";
+	set job_hunter_,9;
+ltell2:
+	next;
+	mes "[迪文獵人]";
+	mes "啊...對了.還有我們 獵人公會啊";
+	mes "有位公會長出差到弓箭手公會..";
+	mes "你要去找一下他才行.";
+	mes "因為…它就是擔任考試的人呢.";
+	mes "那么~ 等全部找到之后再來這里吧~";
+	close;
+lno1:
+	mes "[迪文獵人]";
+	mes "...不要開玩笑了啦...";
+	mes "" + strcharinfo(0) + "...沒有錯吧?";
+	next;
+	menu "是...",lyes2,"..嘻嘻嘻. 我不是那個人啦~~",lno2;
+lyes2:
+	goto ldecidequest;
+	close;
+lno2:
+	mes "[迪文獵人]";
+	mes "....如果你要開玩笑的話, 給我滾. 呼.";
+	mes "給你好臉色看就覺得我很好欺負啊!";
+	next;
+	warp "pay_fild10.gat",133,235;
+	end;
+ltalk2:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(7030) > 4) & (countitem(1019) > 4) & (countitem(509) > 2)) goto lfinishq1;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'沙漠狼指甲5個.";
+	mes "'瑪哪樹枝' 5 個.";
+	mes "'白色藥草' 3 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq1:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊...";
+	mes "那你現在就去找出差到斐揚城的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,10;
+	delitem 7030,5;
+	delitem 1019,5;
+	delitem 509,3;
+	close;
+ltalk3:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(925) > 2) & (countitem(932) > 4) & (countitem(511) > 2)) goto lfinishq2;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'鳥嘴' 3 個.";
+	mes "'死人遺骨' 5 個.";
+	mes "'綠色藥草' 3 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq2:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊..";
+	mes "那你現在就去找出差到斐揚城的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,10;
+	delitem 925,3;
+	delitem 932,5;
+	delitem 511,3;
+	close;
+ltalk4:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(937) > 2) & (countitem(919) > 2) & (countitem(507) > 4)) goto lfinishq3;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'毒牙' 3 個.";
+	mes "'動物外皮’3 個.";
+	mes "'紅色藥草' 5 個";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq3:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊...";
+	mes "那你現在就去找出差到斐揚城的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,10;
+	delitem 937,3;
+	delitem 919,3;
+	delitem 507,5;
+	close;
+ltalk5:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(1021) > 2) & (countitem(7032) > 2) & (countitem(914) > 9)) goto lfinishq4;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'土人之角' 3 個.";
+	mes "'蛋殼碎片' 3 個.";
+	mes "'毛' 10 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq4:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊...";
+	mes "那你現在就去找出差到斐揚城的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,10;
+	delitem 1021,3;
+	delitem 7032,3;
+	delitem 914,10;
+	close;
+ltalk6:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(935) > 8) & (countitem(955) > 8) & (countitem(508) > 8)) goto lfinishq5;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'堅硬外殼' 9 個.";
+	mes "'昆蟲外殼' 9 個.";
+	mes "'黃色藥草' 9 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq5:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊...";
+	mes "那你現在就去找出差到斐揚城的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,10;
+	delitem 935,9;
+	delitem 955,9;
+	delitem 508,9;
+	close;
+ltalk7:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(913) > 2) & (countitem(938) > 0) & (countitem(948) > 0)) goto lfinishq6;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'蝙蝠牙' 3 個.";
+	mes "'粘稠液體' 1 個.";
+	mes "'熊掌' 1 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq6:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊...";
+	mes "那你現在就去找出差到弓箭手公會的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,11;
+	delitem 913,3;
+	delitem 938,1;
+	delitem 948,1;
+	close;
+ltalk8:
+	mes "[迪文獵人]";
+	mes "嗯? ";
+	next;
+//~	if(joblevel == 50) goto now50;
+	if((countitem(1027) > 1) & (countitem(942) > 0) & (countitem(1026) > 0)) goto lfinishq7;
+	mes "[迪文獵人]";
+	mes "還沒有準備好物品喔...";
+	mes "你所需要的物品是";
+	mes "'刺?尖刺' 2 個.";
+	mes "'猴子尾巴' 1 個.";
+	mes "'橡實' 1 個.";
+	mes "那么把品準備好之后再來找我吧.";
+	close;
+lfinishq7:
+	mes "[迪文獵人]";
+	mes "你已經把需要的物品全都準備好了啊..";
+	mes "那你現在就去找出差到弓箭手公會的公會長";
+	mes "他會告訴你可往考場走的路的.";
+	set job_hunter_,11;
+	delitem 1027,2;
+	delitem 942,1;
+	delitem 1026,1;
+	close;
+ltalk9:
+	mes "[迪文獵人]";
+	mes "嗯? 他不在斐揚城以及弓箭手村嗎?";
+	mes "他應該會在兩各地放當中之一的, 到那里去找找看吧.";
+	close;
+ltalk10:
+	mes "[迪文獵人]";
+	mes "喔...你已經通過考試?..恭喜你~ 那你到雪霖那邊看看吧.";
+	close;
+}
+
+payon_in01.gat,146,48,4	script	獵人	59,{
+	if(job_hunter_ == 10)	goto ltalk;
+	if((job_hunter_ > 1) & (job_hunter_ < 10))	goto ltalk2;
+	if(job_hunter_ == 11)	goto ltalk3;
+	if((job_hunter_ > 11) & (job_hunter_ < 16))	goto ltalk4;
+	if(job_hunter_ == 16)	goto ltalk5;
+	if(job_hunter_ == 17)	goto ltalk6;
+	mes "[獵人]";
+	mes "......是什么事情呢?";
+	mes "我因為是在出差而很忙...所以希望你能夠安靜一下.";
+	close;
+ltalk:
+	mes "[獵人 公會長]";
+	mes "嗯. 你是為了獵人的轉職考試而來的啊...";
+	mes "那么, 我來告訴考試內容吧.";
+	mes "你就問一些你像知道的事情吧.";
+lask:
+	set @a0,1;
+	next;
+	menu "考試內容是什么?",lcontent,"通過考試的條件呢?",lcondition,"注意事項呢?",lattention,"開始考試吧.",lbegintest;
+	close;
+lcontent:
+	mes "[獵人 公會長]";
+	mes "突破到處所存在的陷阱";
+	mes "去抓那些有特定名字的怪獸, 這就是大概的考試內容.";
+	next;
+	mes "[獵人 公會長]";
+	mes "為了成位獵人而最重要的移動能例以及,";
+	mes "可以判別目標的的能力就是這考試的目的.";
+	set @a0,@a0+1;
+	close;
+lcondition:
+	mes "[獵人 公會長]";
+	mes "在一定的時間內,";
+	mes "從地圖的 6點鐘方向開始, 把目標怪獸抓起來就好了";
+	next;
+	mes "[獵人 公會長]";
+	mes "之后再開啟地圖中央的逃出用按鈕,";
+	mes "走到12點方向逃出來就成功了.";
+	set @a0,@a0+1;
+	close;
+lattention:
+	mes "[獵人 公會長]";
+	mes "嗯. 注意事項嗎...";
+	mes "當然的, 如果掉到陷阱的話要從新開始才行以及.";
+	next;
+	mes "[獵人 公會長]";
+	mes "一次只有一個人可以參加考試.";
+	mes "我把你送你考場的畫會看到休息室的,";
+	mes "如果有人在進行考試的話你要到聊天室等待才可以的.";
+	next;
+	mes "[獵人 公會長]";
+	mes "前面的人失敗或過關的話按照順序會把連天室里的人移動過去的.";
+	mes "如果前面沒有人的畫會直接進行考試的.";
+	set @a0,@a0+1;
+	close;
+lbegintest:
+	if((job_hunter_ > 11) & (job_hunter_ <16))	goto ltell2;
+	if(@a0 == 1)	goto ltell;
+	mes "[獵人 公會長]";
+	mes "....好吧. 那你就加油喔. 我現在就送你過去.";
+	next;
+	goto lwarp;
+ltell:
+	mes "[獵人 公會長]";
+	mes "....好吧. 我現在傳送你過去. 不要因為沒有聽到說明而賣怨我喔.";
+	next;
+lwarp:
+	mes "[獵人 公會長]";
+	mes "那么....以應該用之前的材料做出箭矢來了吧...";
+	mes "你首先用我給你的箭矢來進行考試吧.";
+	getitem 1751,200;
+	next;
+	mes "[獵人 公會長]";
+	mes "好, 那么.";
+	next;
+	set job_hunter_,12;
+	warp "job_hunte.gat",176,22;
+	end;
+ltalk2:
+	mes "[獵人 公會長]";
+	mes "嗯. . .?";
+	mes "弓箭手為何來找我的啊?";
+	mes "我沒有從獵人公會聽到任何消息呢...";
+	mes "是不是省略了中間的過程而來的啊?";
+	mes "你就先把需要用再轉職考試的物品拿到獵人公會再來我這里吧.";
+	close;
+ltalk3:
+	mes "[獵人]";
+	mes "嗯? 你對我有什么事情嗎?";
+	mes "如果你是要轉職的話...你應該要去找出差到弓箭手公會的人才對.";
+	close;
+ltalk4:
+	mes "[獵人 公會長]";
+	mes "嗯.. 你是之前放棄轉職的弓箭手啊?";
+	mes "你已經準備好了吧? 那么直接盡情考試好了.";
+	mes "對了...如果有什么想問的問題的話現在就問吧.";
+	goto lask;
+	close;
+ltell2:
+	mes "[獵人 公會長]";
+	mes "....好吧. 那就加油吧. 我現在就送你到考場.";
+	next;
+	mes "[獵人 公會長]";
+	mes "嗯? 你說我為何不給你銀箭矢嗎?";
+	mes "......不給材料而期待什么的話你想的也太美了吧.";
+	mes "...相信你已經準備好了. 那么現在就開始吧.";
+	next;
+	menu "好.那就開始吧.",lwarp2,"啊..等我一下.",lcancel;
+	close;
+lwarp2:
+	mes "好!! 你這次一定要通過喔!";
+	next;
+	set job_hunter_,12;
+	warp "job_hunte.gat",176,22;
+	end;
+lcancel:
+	mes "等你準備好之后再來吧.";
+	close;
+ltalk5:
+	mes "[獵人 公會長]";
+	mes "嗯. 你平安回來了啊. 辛苦你了.";
+	mes "那么. . 我給你通過考試的證明的你就拿著他到獵人公會吧.";
+	mes "我還有點事情要在這里辦呢.";
+	set job_hunter_,17;
+	next;
+	savepoint "payon.gat",144,48;
+	getitem 1007,1;
+	mes "[獵人 公會長]";
+	mes "來. . 這個給你.";
+	mes "那么再會了.";
+	close;
+ltalk6:
+	mes "[獵人 公會長]";
+	mes "不想趕快成位一個獵人嗎?";
+	mes "我當初成當獵人的時候馬上就沖出去了呢. 因為太高興了啊. 呼呼.";
+	next;
+	mes "[獵人 公會長]";
+	mes "還不趕快回去獵人公會啊~";
+	close;
+}
+
+payon_in02.gat,21,31,4	script	獵人	59,{
+	if(job_hunter_ == 11)	goto ltalk;
+	if((job_hunter_ > 1) & (job_hunter_ < 10))	goto ltalk2;
+	if(job_hunter_ == 10)	goto ltalk3;
+	if((job_hunter_ > 11) & (job_hunter_ < 16))	goto ltalk4;
+	if(job_hunter_ == 16)	goto ltalk5;
+	if(job_hunter_ == 17)	goto ltalk6;
+	mes "[獵人]";
+	mes "......是什么事情呢?";
+	mes "我因為是在出差而很忙...所以希望你能夠安靜一下.";
+	close;
+ltalk:
+	mes "[獵人 公會長]";
+	mes "嗯. 你是為了獵人的轉職考試而來的啊...";
+	mes "那么, 我來告訴考試內容吧.";
+	mes "你就問一些你像知道的事情吧.";
+lask:
+	set @a0,1;
+	next;
+	menu "考試內容是什么?",lcontent,"通過考試的條件呢?",lcondition,"注意事項呢?",lattention,"開始考試吧.",lbegintest;
+	close;
+lcontent:
+	mes "[獵人 公會長]";
+	mes "突破到處所存在的陷阱";
+	mes "去抓那些有特定名字的怪獸, 這就是大概的考試內容.";
+	next;
+	mes "[獵人 公會長]";
+	mes "為了成位獵人而最重要的移動能例以及,";
+	mes "可以判別目標的的能力就是這考試的目的.";
+	set @a0,@a0+1;
+	close;
+lcondition:
+	mes "[獵人 公會長]";
+	mes "在一定的時間內,";
+	mes "從地圖的 6點鐘方向開始, 把目標怪獸抓起來就好了";
+	next;
+	mes "[獵人 公會長]";
+	mes "之后再開啟地圖中央的逃出用按鈕,";
+	mes "走到12點方向逃出來就成功了.";
+	set @a0,@a0+1;
+	close;
+lattention:
+	mes "[獵人 公會長]";
+	mes "嗯. 注意事項嗎...";
+	mes "當然的，如果掉到陷阱的話要重新開始才行以及.";
+	next;
+	mes "[獵人 公會長]";
+	mes "一次只有一個人可以參加考試.";
+	mes "我把你送你考場的畫會看到休息室的,";
+	mes "如果有人在進行考試的話你要到聊天室等待才可以的.";
+	next;
+	mes "[獵人 公會長]";
+	mes "前面的人失敗或過關的話按照順序會把連天室里的人移動過去的.";
+	mes "如果前面沒有人的畫會直接進行考試的.";
+	set @a0,@a0+1;
+	close;
+lbegintest:
+	if((job_hunter_ > 11) & (job_hunter_ <16))	goto ltell2;
+	if(@a0 == 1)	goto ltell;
+	mes "[獵人 公會長]";
+	mes "....好吧. 那你就加油喔. 我現在就送你過去.";
+	next;
+	goto lwarp;
+ltell:
+	mes "[獵人 公會長]";
+	mes "....好吧. 我現在傳送你過去. 不要因為沒有聽到說明而賣怨我喔.";
+	next;
+lwarp:
+	mes "[獵人 公會長]";
+	mes "那么....以應該用之前的材料做出箭矢來了吧...";
+	mes "你首先用我給你的箭矢來進行考試吧.";
+	getitem 1751,200;
+	next;
+	mes "好, 那么.";
+	set job_hunter_,12;
+	warp "job_hunte.gat",176,22;
+	end;
+ltalk2:
+	mes "[獵人 公會長]";
+	mes "嗯. . .?";
+	mes "弓箭手對我有什么事嗎?";
+	mes "我沒有受到任何獵人公會的通報呢...";
+	mes "你是不是勝略了中間的過程而來找我的啊?";
+	mes "你就準備好轉職考試所需要的物品之后去獵人公會再來我這里吧.";
+	close;
+ltalk3:
+	mes "[獵人]";
+	mes "嗯? 對我有什么";
+	mes "事嗎?";
+	next;
+	mes "[獵人]";
+	mes "如果你是想要轉職的話...";
+	mes "去找出差到斐揚城的人吧.";
+	close;
+ltalk4:
+	mes "[獵人 公會長]";
+	mes "嗯.. 是之前放棄轉職的弓箭手喔?";
+	mes "已經準備好了吧? 那么我們就直接繼續考試好了.";
+	mes "啊...如果有想要問的問題的話現在問我吧.";
+	goto lask;
+	close;
+	mes "[獵人 公會長]";
+	mes "....好吧. 那就加油吧. 我現在就送你到考場.";
+	next;
+	mes "[獵人 公會長]";
+	mes "嗯? 你說我為何不給你銀箭矢嗎?";
+	mes "......不給材料而期待什么的話你想的也太美了吧.";
+	mes "...相信你已經準備好了. 那么現在就開始吧.";
+	next;
+	menu "好.那就開始吧.",lwarp3,"啊..等我一下.",lcancel;
+	close;
+lwarp3:
+	mes "好!! 你這次一定要通過喔!";
+	close;
+	set job_hunter_,12;
+	warp "job_hunte.gat",176,22;
+	end;
+lcancel:
+	mes "等你準備好之后再來吧.";
+	close;
+ltalk5:
+	mes "[獵人 公會長]";
+	mes "嗯. 你平安回來了啊. 辛苦你了.";
+	mes "那么. . 我給你通過考試的證明的你就拿著他到獵人公會吧.";
+	mes "我還有點事情要在這里辦呢.";
+	set job_hunter_,17;
+	next;
+	savepoint "payon.gat",21,28;
+	getitem 1007,1;
+	mes "[獵人 公會長]";
+	mes "來. . 這個給你.";
+	mes "那么再回了.";
+	close;
+ltalk6:
+	mes "[獵人 公會長]";
+	mes "不想趕快成位一個獵人嗎?";
+	mes "我當初成當獵人的時候馬上就沖出去了呢. 因為太高興了啊. 呼呼.";
+	next;
+	mes "[獵人 公會長]";
+	mes "還不趕快回去獵人公會啊~";
+	close;
+}
+
+job_hunte.gat,178,32,4	script	服務人員	107,{
+	if(job_hunter_ == 12) goto ltalk;
+	if((job_hunter_ > 12) & (job_hunter_ < 16)) goto ltalk2;
+	mes "[服務人員]";
+	mes "你并不是適合在這里的人. 不管怎樣你還是要找出慧眼之后轉職才行啊?";
+	next;
+	savepoint "payon.gat",179,97;
+	warp "payon.gat",179,97;
+	end;
+ltalk:
+	mes "[服務人員]";
+	mes "歡迎光臨到獵人轉職考場.";
+	next;
+	mes "[服務人員]";
+	mes "進到在我旁邊的休息室的話就可以開始考試了,";
+	mes "就跟前面聽過的說明一樣";
+	next;
+	mes "[服務人員]";
+	mes "從開始位置進行考試, 而從遇到的怪獸當中";
+	mes "只選擇名字是 '轉職考試專用怪獸' ";
+	mes "而能夠抓住4只以上的之后";
+	mes "就會啟動地圖中間的按鈕.";
+	next;
+	mes "[服務人員]";
+	mes "破壞了按鈕的話就會開啟12點方向的話出口,";
+	mes "把這些過程再一定時間完成的話就成功了.";
+	next;
+	mes "[服務人員]";
+	mes "中途如果昏倒, 陷入陷阱, 以及超過時限的話就算失敗.";
+	mes "而要重新進行考試才可以.";
+	next;
+	mes "[服務人員]";
+	mes "箭矢會由我們提供的, 所以各位只準備弓箭就好了.";
+	mes "那么. 準備好了的話請各位進入休息室.";
+	savepoint "job_hunte.gat",176,22;
+	close;
+ltalk2:
+	mes "[服務人員]";
+	mes "嗯...是失手了嗎.";
+	mes "先幫你把hp跟sp給回復的.";
+	percentheal 100,100;
+	mes "如果覺得困難的話下次在挑戰也可以的..";
+	mes "你要放棄考試嗎?";
+	next;
+	menu "繼續挑戰.",lgoon,"放棄轉職.",lgiveup;
+	close;
+lgoon:
+	mes "好. 我知道了. 那請你繼續努力, 希望能夠成為獵人.";
+	mes "那么...請你移動到休息室.";
+	mes "前面有人在等待順序的話你要等到她們結束為止.";
+	close;
+lgiveup:
+	mapannounce "job_hunte.gat"," " + strcharinfo(0) + "放棄轉職,下一位請進.",8;
+	mes "好.. 我知道了. 我會幫你送到斐揚城的.";
+	mes "希望下次再見.";
+	mes "不要忘了存檔喔.";
+	set job_hunter_,13;
+	savepoint "payon.gat",179,97;
+	warp "payon.gat",179,97;
+	end;
+
+}
+
+job_hunte.gat,176,38,4	script	獵人轉職等待處::jobhunter_room	66,{
+
+	mes "[戰斗進行助理]";
+	mes "歡迎你來到獵人轉職戰斗場.";
+	mes "想要參加考試的人請進入等待室.";
+	next;
+	mes "[戰斗進行助理]";
+	mes "有人在進行考試時,就請先稍等一下";
+	mes "進行情況會通知給大家知道, 結束之后會馬上開始進行.";
+	next;
+	mes "[戰斗進行助理]";
+	mes "每個人的戰斗過程是3分鐘.";
+	mes "如果有人想離開戰斗場的話就要再重新申請.";
+	close;
+	end;
+
+oninit:
+	waitingroom "轉職等待處",20,"jobhunter_room::onstart",1;
+	end;
+onstart:
+	disablewaitingroomevent;
+	initnpctimer "hunte_user_check";
+	warpwaitingpc "job_hunte.gat",90,73;
+	set $@jobhut_pid,$@warpwaitingpc[0];
+	if( attachrid($@jobhut_pid)==0 ) goto l_error;
+		set $@jobhut_pname$,strcharinfo(0);
+		killmonster "job_hunte.gat","all";
+		donpcevent "jobhunt_mob::onmob1";
+		donpcevent "jobhunt_mob::onmob2";
+		donpcevent "啟動陷阱::onactive";
+		disablenpc "開關";
+		disablenpc "jhun02";
+		disablenpc "jhun03";
+		disablenpc "出口";
+		end;
+l_error:
+	enablewaitingroomevent;
+	end;
+onenable:
+	enablewaitingroomevent;
+	end;
+}
+
+job_hunte.gat,1,1,1	script	jobhunt_mob	-1,{
+
+onmob1:
+	set $@mobcountone, 0;
+	set $@mt, 0;
+	monster "job_hunte.gat",67,80,"轉職考試專用怪獸",1015,1,"jobhunt_mob::onhunt_mob1";
+	monster "job_hunte.gat",114,78,"轉職考試專用怪獸",1015,1,"jobhunt_mob::onhunt_mob1";
+	monster "job_hunte.gat",89,127,"轉職考試專用怪獸",1002,1,"jobhunt_mob::onhunt_mob1";
+	monster "job_hunte.gat",53,73,"轉職考試專用怪獸",1041,1,"jobhunt_mob::onhunt_mob1";
+	monster "job_hunte.gat",125,70,"轉職考試專用怪獸",1016,1,"jobhunt_mob::onhunt_mob1";
+	monster "job_hunte.gat",90,92,"轉職考試專用怪獸",1015,1,"jobhunt_mob::onhunt_mob1";
+
+
+	initnpctimer;
+	end;
+
+	onhunt_mob1:
+		set $@mobcountone,$@mobcountone + 1;
+		if($@mobcountone > 3) goto lswitchon;
+		set $@mt,4-$@mobcountone;
+		mapannounce "job_hunte.gat","好~ 再"+$@mt+"只就好了!!",8;
+		end;
+	lswitchon:
+		mapannounce "job_hunte.gat","很好. 太棒了...注意陷阱去找地圖中央的開關吧!!",8;
+		killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob1";
+		killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob2";
+		set job_hunter_,14;
+		enablenpc "開關";
+		end;
+
+onmob2:
+
+	monster "job_hunte.gat",85,100,"轉職試驗用怪獸",1016,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",72,102,"轉職試驗用怪獸",1041,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",108,103,"轉職試驗用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",88,127,"轉職試驗用怪獸",1002,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",125,69,"轉職試驗用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	monster "job_hunte.gat",77,112,"轉職考試用怪獸",1016,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",53,106,"轉職考試用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",53,73,"轉職考試用怪獸",1002,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",125,70,"轉職考試用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",90,91,"轉職考試用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	monster "job_hunte.gat",67,80,"獵人轉職用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",77,112,"獵人轉職用怪獸",1016,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",53,106,"獵人轉職用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",53,73,"獵人轉職用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",125,70,"獵人轉職用怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	monster "job_hunte.gat",90,91,"轉職監考官怪獸",1041,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",85,100,"轉職監考官怪獸",1002,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",72,102,"轉職監考官怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",108,103,"轉職監考官怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",77,112,"轉職監考官怪獸",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	monster "job_hunte.gat",112,139,"菲尼  普",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",112,139,"搭霖白  呆爾",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",112,139,"佛客史",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",112,139,"菲爾 案在卯",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",90,91,"啊娜莉案",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	monster "job_hunte.gat",53,73,"怪獸樣本",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",53,106,"不是我啦",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",77,112,"饒了我啦啊",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",72,102,"請不要打我",1015,1,"jobhunt_mob::onhunt_mob2";
+	monster "job_hunte.gat",108,103,"攻速184",1015,1,"jobhunt_mob::onhunt_mob2";
+
+	end;
+
+	onhunt_mob2:
+		set job_hunter_,13;
+		set $@mobcountone,0;
+		stopnpctimer;
+		killmonster "job_hunte.gat","all";
+		disablenpc "開關";
+		disablenpc "出口";
+		donpcevent "jobhunter_room::onenable";
+		donpcevent "關閉陷阱::onactive";
+		mapannounce "job_hunte.gat"," " + $@jobhut_pname$ + "!! 你做錯了. 請再試試.",8;
+		warp "job_hunte.gat",176,22;
+		end;
+
+ontimer1000:
+	mapannounce "job_hunte.gat","那么. " + $@jobhut_pname$ + "的獵人轉職考試要開始了.",8;
+	end;
+ontimer3000:
+	mapannounce "job_hunte.gat","前面也有說明過, 在許多怪獸當中只選擇抓住 ‘轉職考試專用怪獸' 就好了.",8;
+	end;
+ontimer5000:
+	mapannounce "job_hunte.gat","***** 請注意陷阱而抓住怪獸. *****",8;
+	end;
+ontimer7000:
+	mapannounce "job_hunte.gat","能夠抓住4只以上的'轉職考試專用怪獸' 的話就可以啟動中央的脫離用按鈕的.",8;
+	end;
+ontimer9000:
+	mapannounce "job_hunte.gat","請啟動脫離用按鈕之后就會看到12點方向的出口的,  經過那里離開考場就成功了.",8;
+	end;
+ontimer11000:
+	mapannounce "job_hunte.gat","這些過程一定要在3分鐘內迅速地完成才行.",8;
+	end;
+ontimer13000:
+	mapannounce "job_hunte.gat","好, 現在開始要進入倒數了. 每一分鐘會提醒大家的.",8;
+	end;
+ontimer15000:
+	mapannounce "job_hunte.gat"," ****** 剩下3分鐘. ****** ",8;
+	end;
+ontimer75000:
+	mapannounce "job_hunte.gat"," ****** 剩下2分鐘. ****** ",8;
+	end;
+ontimer145000:
+	mapannounce "job_hunte.gat"," ****** 剩下1分鐘. ****** ",8;
+	end;
+ontimer175000:
+	mapannounce "job_hunte.gat"," ****** 剩下30秒. ****** ",8;
+	end;
+ontimer195000:
+	mapannounce "job_hunte.gat"," 考試終了還剩下5秒. . . . .",8;
+	end;
+ontimer196000:
+	mapannounce "job_hunte.gat"," 考試終了還剩下4秒. . . . .",8;
+	end;
+ontimer197000:
+	mapannounce "job_hunte.gat"," 考試終了還剩下3秒. . . . .",8;
+	end;
+ontimer198000:
+	mapannounce "job_hunte.gat"," 考試終了還剩下2秒. . . . .",8;
+	end;
+ontimer199000:
+	mapannounce "job_hunte.gat"," 考試終了還剩下1秒. . . . .",8;
+	end;
+ontimer200000:
+	mapannounce "job_hunte.gat"," 0 ",8;
+	end;
+ontimer201000:
+	mapannounce "job_hunte.gat"," 時間到了 . 請再次挑戰.",8;
+	areawarp "job_hunte.gat",50,64,129,143,"job_hunte.gat",176,22;
+	stopnpctimer;
+	donpcevent "關閉陷阱::onactive";
+	killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob1";
+	killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob2";
+	disablenpc "開關";
+	disablenpc "出口";
+	donpcevent "jobhunter_room::onenable";
+	end;
+}
+
+job_hunte.gat,93,101,4	script	開關	723,2,2,{
+	mes "開關共有 3個按鈕.";
+	set job_hunter_,15;
+	next;
+	menu "脫離",lrunaway,"取消",lcancel,"再考試",lagain;
+
+lrunaway:
+	mes "結束 逃避出口 warp 的運轉.";
+	enablenpc "出口";
+	mapannounce "job_hunte.gat"," ## 結束 逃避出口 warp 的運轉. ## ",8;
+	donpcevent "對話專用::onrunaway";
+	close;
+lcancel:
+	mes "被取消運轉.";
+	mapannounce "job_hunte.gat"," ## 被取消運轉. ## ",8;
+	donpcevent "對話專用::oncancel";
+	close;
+lagain:
+	mapannounce "job_hunte.gat"," ## 轉職 取消 warp 運轉中. . . . ## ",8;
+	mes "稍后 回到休息室.";
+	stopnpctimer "jobhunt_mob";
+	donpcevent "jobhunter_room::onenable";
+	donpcevent "關閉陷阱::onactive";
+	set job_hunter_,13;
+	warp "job_hunte.gat",176,22;
+	end;
+}
+
+job_hunte.gat,89,139,4	script	出口	45,2,2,{
+	if(class != 3)	goto lnothing;
+	set job_hunter_,16;
+	savepoint "payon.gat",179,97;
+	set @place,rand(1,2);
+	stopnpctimer "jobhunt_mob";
+	donpcevent "jobhunter_room::onenable";
+	donpcevent "關閉陷阱::onactive";
+	if(@place == 1)	goto lplace1;
+	warp "payon_in01.gat",144,48;
+	end;
+lplace1:
+	warp "payon_in02.gat",21,30;
+	end;
+lnothing:
+	disablenpc "出口";
+	end;
+}
+
+job_hunte.gat,1,1,1	script	hunte_traps	-1,{
+	mapannounce "job_hunte.gat"," " + $@jobhut_pname$ + "陷入陷阱了. 要回到原來的位置了.",8;
+	set job_hunter_,13;
+	set $@mobcountone,0;
+	stopnpctimer "jobhunt_mob";
+	killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob1";
+	killmonster "job_hunte.gat","jobhunt_mob::onhunt_mob2";
+	donpcevent "關閉陷阱::onactive";
+	disablenpc "開關";
+	disablenpc "出口";
+	donpcevent "jobhunter_room::onenable";
+	warp "job_hunte.gat",176,22;
+	end;
+}
+
+job_hunte.gat,1,1,1	script	啟動陷阱	-1,{
+	end;
+onactive:
+	enablenpc "1-1";
+	enablenpc "1-2";
+	enablenpc "1-3";
+	enablenpc "1-4";
+	enablenpc "1-5";
+	enablenpc "1-6";
+	enablenpc "1-7";
+	enablenpc "1-8";
+	enablenpc "2-1";
+	enablenpc "2-2";
+	enablenpc "2-3";
+	enablenpc "2-4";
+	enablenpc "2-5";
+	enablenpc "2-6";
+	enablenpc "2-7";
+	enablenpc "2-8";
+	enablenpc "3-1";
+	enablenpc "3-2";
+	enablenpc "3-3";
+	enablenpc "3-4";
+	enablenpc "4-1";
+	enablenpc "4-2";
+	enablenpc "4-3";
+	enablenpc "4-4";
+	enablenpc "5-1";
+	enablenpc "5-2";
+	enablenpc "5-3";
+	enablenpc "5-4";
+	enablenpc "6-1";
+	enablenpc "6-2";
+	enablenpc "6-3";
+	enablenpc "6-4";
+	enablenpc "7-1";
+	enablenpc "7-2";
+	enablenpc "7-3";
+	enablenpc "7-4";
+	enablenpc "8-1";
+	enablenpc "8-2";
+	enablenpc "8-3";
+	enablenpc "8-4";
+	enablenpc "9-1";
+	enablenpc "9-2";
+	enablenpc "9-3";
+	enablenpc "9-4";
+	enablenpc "10-1";
+	enablenpc "10-2";
+	enablenpc "10-3";
+	enablenpc "10-4";
+	enablenpc "11-1";
+	enablenpc "11-2";
+	enablenpc "11-3";
+	enablenpc "11-4";
+	enablenpc "12-1";
+	enablenpc "12-2";
+	enablenpc "12-3";
+	enablenpc "12-4";
+	enablenpc "13-1";
+	enablenpc "13-2";
+	enablenpc "13-3";
+	enablenpc "13-4";
+	enablenpc "14-1";
+	enablenpc "14-2";
+	enablenpc "14-3";
+	enablenpc "14-4";
+	enablenpc "15-1";
+	enablenpc "15-2";
+	enablenpc "15-3";
+	enablenpc "15-4";
+	enablenpc "16-1";
+	enablenpc "16-2";
+	enablenpc "16-3";
+	enablenpc "16-4";
+	enablenpc "17-1";
+	enablenpc "17-2";
+	enablenpc "17-3";
+	enablenpc "17-4";
+	enablenpc "18-1";
+	enablenpc "18-2";
+	enablenpc "18-3";
+	enablenpc "18-4";
+	enablenpc "19-1";
+	enablenpc "19-2";
+	enablenpc "19-3";
+	enablenpc "19-4";
+	enablenpc "20-1";
+	enablenpc "20-2";
+	enablenpc "20-3";
+	enablenpc "20-4";
+	enablenpc "21-1";
+	enablenpc "21-2";
+	enablenpc "21-3";
+	enablenpc "21-4";
+	enablenpc "22-1";
+	enablenpc "22-2";
+	enablenpc "22-3";
+	enablenpc "22-4";
+	enablenpc "23-1";
+	enablenpc "23-2";
+	enablenpc "23-3";
+	enablenpc "23-4";
+	enablenpc "23-5";
+	enablenpc "23-6";
+	enablenpc "24-1";
+	enablenpc "24-2";
+	enablenpc "24-3";
+	enablenpc "24-4";
+	enablenpc "25-1";
+	enablenpc "25-2";
+	enablenpc "25-3";
+	enablenpc "25-4";
+	enablenpc "26-1";
+	enablenpc "26-2";
+	enablenpc "26-3";
+	enablenpc "26-4";
+	enablenpc "27-1";
+	enablenpc "27-2";
+	enablenpc "27-3";
+	enablenpc "27-4";
+	enablenpc "28-1";
+	enablenpc "28-2";
+	enablenpc "28-3";
+	enablenpc "28-4";
+	enablenpc "29-1";
+	enablenpc "29-2";
+	enablenpc "29-3";
+	enablenpc "29-4";
+	enablenpc "30-1";
+	enablenpc "30-2";
+	enablenpc "30-3";
+	enablenpc "30-4";
+	enablenpc "31-1";
+	enablenpc "31-2";
+	enablenpc "31-3";
+	enablenpc "32-1";
+	enablenpc "32-2";
+	enablenpc "32-3";
+	enablenpc "32-4";
+	enablenpc "33-1";
+	enablenpc "33-2";
+	enablenpc "33-3";
+	enablenpc "33-4";
+	enablenpc "34-1";
+	enablenpc "34-2";
+	enablenpc "34-3";
+	enablenpc "34-4";
+	enablenpc "35-1";
+	enablenpc "35-2";
+	enablenpc "35-3";
+	enablenpc "35-4";
+	enablenpc "36-1";
+	enablenpc "36-2";
+	enablenpc "36-3";
+	enablenpc "36-4";
+	enablenpc "37-1";
+	enablenpc "37-2";
+	enablenpc "37-3";
+	enablenpc "38-1";
+	enablenpc "38-2";
+	enablenpc "38-3";
+	enablenpc "38-4";
+	enablenpc "39-1";
+	enablenpc "39-2";
+	enablenpc "39-3";
+	enablenpc "39-4";
+	enablenpc "40-1";
+	enablenpc "40-2";
+	enablenpc "40-3";
+	enablenpc "40-4";
+	enablenpc "41-1";
+	enablenpc "42-1";
+	enablenpc "43-1";
+	enablenpc "44-1";
+	enablenpc "44-2";
+	enablenpc "44-3";
+	enablenpc "44-4";
+	enablenpc "45-1";
+	enablenpc "45-2";
+	enablenpc "45-3";
+	enablenpc "45-4";
+	enablenpc "46-1";
+	enablenpc "46-2";
+	enablenpc "46-3";
+	enablenpc "46-4";
+	enablenpc "47-1";
+	enablenpc "47-2";
+	enablenpc "47-3";
+	enablenpc "47-4";
+	enablenpc "48-1";
+	enablenpc "48-2";
+	enablenpc "48-3";
+	enablenpc "48-4";
+	enablenpc "49-1";
+	enablenpc "49-2";
+	enablenpc "49-3";
+	enablenpc "49-4";
+	enablenpc "50-1";
+	enablenpc "50-2";
+	enablenpc "50-3";
+	enablenpc "50-4";
+	enablenpc "51-1";
+	enablenpc "51-2";
+	enablenpc "51-3";
+	enablenpc "51-4";
+	enablenpc "53-1";
+	enablenpc "53-2";
+	enablenpc "53-3";
+	enablenpc "53-4";
+	enablenpc "54-1";
+	enablenpc "54-2";
+	enablenpc "54-3";
+	enablenpc "54-4";
+	enablenpc "55-1";
+	enablenpc "55-2";
+	enablenpc "55-3";
+	enablenpc "55-4";
+	enablenpc "56-1";
+	enablenpc "56-2";
+	enablenpc "56-3";
+	enablenpc "56-4";
+	enablenpc "56-5";
+	enablenpc "56-6";
+	enablenpc "56-7";
+	enablenpc "56-8";
+	enablenpc "57-1";
+	enablenpc "57-2";
+	enablenpc "57-3";
+	enablenpc "57-4";
+	enablenpc "58-1";
+	enablenpc "58-2";
+	enablenpc "58-3";
+	enablenpc "58-4";
+	enablenpc "59-1";
+	enablenpc "59-2";
+	enablenpc "59-3";
+	enablenpc "59-4";
+	enablenpc "60-1";
+	enablenpc "60-2";
+	enablenpc "60-3";
+	enablenpc "60-4";
+	enablenpc "61-1";
+	enablenpc "61-2";
+	enablenpc "61-3";
+	enablenpc "61-4";
+	enablenpc "62-1";
+	enablenpc "62-2";
+	enablenpc "62-3";
+	enablenpc "62-4";
+	enablenpc "63-1";
+	enablenpc "63-2";
+	enablenpc "64-1";
+	enablenpc "64-2";
+	enablenpc "64-3";
+	enablenpc "64-4";
+	enablenpc "65-1";
+	enablenpc "65-2";
+	enablenpc "65-3";
+	enablenpc "65-4";
+	enablenpc "66-1";
+	enablenpc "66-2";
+	enablenpc "66-3";
+	enablenpc "66-4";
+	enablenpc "67-1";
+	enablenpc "67-2";
+	enablenpc "67-3";
+	enablenpc "67-4";
+	enablenpc "68-1";
+	enablenpc "68-2";
+	enablenpc "68-3";
+	enablenpc "68-4";
+	enablenpc "69-1";
+	enablenpc "69-2";
+	enablenpc "69-3";
+	enablenpc "69-4";
+	enablenpc "70-1";
+	enablenpc "70-2";
+	enablenpc "70-3";
+	enablenpc "70-4";
+	enablenpc "71-1";
+	enablenpc "71-2";
+	enablenpc "71-3";
+	enablenpc "71-4";
+	enablenpc "72-1";
+	enablenpc "72-2";
+	enablenpc "72-3";
+	enablenpc "72-4";
+	enablenpc "73-1";
+	enablenpc "73-2";
+	enablenpc "73-3";
+	enablenpc "73-4";
+	enablenpc "74-1";
+	enablenpc "74-2";
+	enablenpc "74-3";
+	enablenpc "74-4";
+	enablenpc "75-1";
+	enablenpc "75-2";
+	enablenpc "75-3";
+	enablenpc "75-4";
+	enablenpc "76-1";
+	enablenpc "76-2";
+	enablenpc "76-3";
+	enablenpc "76-4";
+	enablenpc "77-1";
+	enablenpc "77-2";
+	enablenpc "77-3";
+	enablenpc "77-4";
+	enablenpc "78-1";
+	enablenpc "78-2";
+	enablenpc "78-3";
+	enablenpc "78-4";
+	enablenpc "79-1";
+	enablenpc "79-2";
+	enablenpc "79-3";
+	enablenpc "79-4";
+	enablenpc "80-1";
+	enablenpc "80-2";
+	enablenpc "80-3";
+	enablenpc "80-4";
+	enablenpc "81-1";
+	enablenpc "81-2";
+	enablenpc "81-3";
+	enablenpc "81-4";
+	enablenpc "82-1";
+	enablenpc "82-2";
+	enablenpc "82-3";
+	enablenpc "82-4";
+	enablenpc "83-1";
+	enablenpc "83-2";
+	enablenpc "83-3";
+	enablenpc "83-4";
+	enablenpc "84-1";
+	enablenpc "84-2";
+	enablenpc "84-3";
+	enablenpc "84-4";
+	enablenpc "85-1";
+	enablenpc "85-2";
+	enablenpc "85-3";
+	enablenpc "85-4";
+	enablenpc "86-1";
+	enablenpc "86-2";
+	enablenpc "86-3";
+	enablenpc "86-4";
+	enablenpc "87-1";
+	enablenpc "87-2";
+	enablenpc "87-3";
+	enablenpc "87-4";
+	enablenpc "88-1";
+	enablenpc "88-2";
+	enablenpc "88-3";
+	enablenpc "88-4";
+	enablenpc "89-1";
+	enablenpc "89-2";
+	enablenpc "89-3";
+	enablenpc "89-4";
+	enablenpc "90-1";
+	enablenpc "90-2";
+	enablenpc "90-3";
+	enablenpc "90-4";
+	enablenpc "91-1";
+	enablenpc "91-2";
+	enablenpc "91-3";
+	enablenpc "91-4";
+	enablenpc "92-1";
+	enablenpc "92-2";
+	enablenpc "92-3";
+	enablenpc "92-4";
+	enablenpc "93-1";
+	enablenpc "93-2";
+	enablenpc "93-3";
+	enablenpc "93-4";
+	enablenpc "94-1";
+	enablenpc "94-2";
+	enablenpc "94-3";
+	enablenpc "94-4";
+	enablenpc "95-1";
+	enablenpc "95-2";
+	enablenpc "95-3";
+	enablenpc "95-4";
+	enablenpc "96-1";
+	enablenpc "96-2";
+	enablenpc "96-3";
+	enablenpc "96-4";
+	enablenpc "97-1";
+	enablenpc "97-2";
+	enablenpc "97-3";
+	enablenpc "97-4";
+	end;
+}
+
+job_hunte.gat,1,1,1	script	關閉陷阱	-1,{
+	end;
+onactive:
+	disablenpc "1-1";
+	disablenpc "1-2";
+	disablenpc "1-3";
+	disablenpc "1-4";
+	disablenpc "1-5";
+	disablenpc "1-6";
+	disablenpc "1-7";
+	disablenpc "1-8";
+	disablenpc "2-1";
+	disablenpc "2-2";
+	disablenpc "2-3";
+	disablenpc "2-4";
+	disablenpc "2-5";
+	disablenpc "2-6";
+	disablenpc "2-7";
+	disablenpc "2-8";
+	disablenpc "3-1";
+	disablenpc "3-2";
+	disablenpc "3-3";
+	disablenpc "3-4";
+	disablenpc "4-1";
+	disablenpc "4-2";
+	disablenpc "4-3";
+	disablenpc "4-4";
+	disablenpc "5-1";
+	disablenpc "5-2";
+	disablenpc "5-3";
+	disablenpc "5-4";
+	disablenpc "6-1";
+	disablenpc "6-2";
+	disablenpc "6-3";
+	disablenpc "6-4";
+	disablenpc "7-1";
+	disablenpc "7-2";
+	disablenpc "7-3";
+	disablenpc "7-4";
+	disablenpc "8-1";
+	disablenpc "8-2";
+	disablenpc "8-3";
+	disablenpc "8-4";
+	disablenpc "9-1";
+	disablenpc "9-2";
+	disablenpc "9-3";
+	disablenpc "9-4";
+	disablenpc "10-1";
+	disablenpc "10-2";
+	disablenpc "10-3";
+	disablenpc "10-4";
+	disablenpc "11-1";
+	disablenpc "11-2";
+	disablenpc "11-3";
+	disablenpc "11-4";
+	disablenpc "12-1";
+	disablenpc "12-2";
+	disablenpc "12-3";
+	disablenpc "12-4";
+	disablenpc "13-1";
+	disablenpc "13-2";
+	disablenpc "13-3";
+	disablenpc "13-4";
+	disablenpc "14-1";
+	disablenpc "14-2";
+	disablenpc "14-3";
+	disablenpc "14-4";
+	disablenpc "15-1";
+	disablenpc "15-2";
+	disablenpc "15-3";
+	disablenpc "15-4";
+	disablenpc "16-1";
+	disablenpc "16-2";
+	disablenpc "16-3";
+	disablenpc "16-4";
+	disablenpc "17-1";
+	disablenpc "17-2";
+	disablenpc "17-3";
+	disablenpc "17-4";
+	disablenpc "18-1";
+	disablenpc "18-2";
+	disablenpc "18-3";
+	disablenpc "18-4";
+	disablenpc "19-1";
+	disablenpc "19-2";
+	disablenpc "19-3";
+	disablenpc "19-4";
+	disablenpc "20-1";
+	disablenpc "20-2";
+	disablenpc "20-3";
+	disablenpc "20-4";
+	disablenpc "21-1";
+	disablenpc "21-2";
+	disablenpc "21-3";
+	disablenpc "21-4";
+	disablenpc "22-1";
+	disablenpc "22-2";
+	disablenpc "22-3";
+	disablenpc "22-4";
+	disablenpc "23-1";
+	disablenpc "23-2";
+	disablenpc "23-3";
+	disablenpc "23-4";
+	disablenpc "23-5";
+	disablenpc "23-6";
+	disablenpc "24-1";
+	disablenpc "24-2";
+	disablenpc "24-3";
+	disablenpc "24-4";
+	disablenpc "25-1";
+	disablenpc "25-2";
+	disablenpc "25-3";
+	disablenpc "25-4";
+	disablenpc "26-1";
+	disablenpc "26-2";
+	disablenpc "26-3";
+	disablenpc "26-4";
+	disablenpc "27-1";
+	disablenpc "27-2";
+	disablenpc "27-3";
+	disablenpc "27-4";
+	disablenpc "28-1";
+	disablenpc "28-2";
+	disablenpc "28-3";
+	disablenpc "28-4";
+	disablenpc "29-1";
+	disablenpc "29-2";
+	disablenpc "29-3";
+	disablenpc "29-4";
+	disablenpc "30-1";
+	disablenpc "30-2";
+	disablenpc "30-3";
+	disablenpc "30-4";
+	disablenpc "31-1";
+	disablenpc "31-2";
+	disablenpc "31-3";
+	disablenpc "32-1";
+	disablenpc "32-2";
+	disablenpc "32-3";
+	disablenpc "32-4";
+	disablenpc "33-1";
+	disablenpc "33-2";
+	disablenpc "33-3";
+	disablenpc "33-4";
+	disablenpc "34-1";
+	disablenpc "34-2";
+	disablenpc "34-3";
+	disablenpc "34-4";
+	disablenpc "35-1";
+	disablenpc "35-2";
+	disablenpc "35-3";
+	disablenpc "35-4";
+	disablenpc "36-1";
+	disablenpc "36-2";
+	disablenpc "36-3";
+	disablenpc "36-4";
+	disablenpc "37-1";
+	disablenpc "37-2";
+	disablenpc "37-3";
+	disablenpc "38-1";
+	disablenpc "38-2";
+	disablenpc "38-3";
+	disablenpc "38-4";
+	disablenpc "39-1";
+	disablenpc "39-2";
+	disablenpc "39-3";
+	disablenpc "39-4";
+	disablenpc "40-1";
+	disablenpc "40-2";
+	disablenpc "40-3";
+	disablenpc "40-4";
+	disablenpc "41-1";
+	disablenpc "42-1";
+	disablenpc "43-1";
+	disablenpc "44-1";
+	disablenpc "44-2";
+	disablenpc "44-3";
+	disablenpc "44-4";
+	disablenpc "45-1";
+	disablenpc "45-2";
+	disablenpc "45-3";
+	disablenpc "45-4";
+	disablenpc "46-1";
+	disablenpc "46-2";
+	disablenpc "46-3";
+	disablenpc "46-4";
+	disablenpc "47-1";
+	disablenpc "47-2";
+	disablenpc "47-3";
+	disablenpc "47-4";
+	disablenpc "48-1";
+	disablenpc "48-2";
+	disablenpc "48-3";
+	disablenpc "48-4";
+	disablenpc "49-1";
+	disablenpc "49-2";
+	disablenpc "49-3";
+	disablenpc "49-4";
+	disablenpc "50-1";
+	disablenpc "50-2";
+	disablenpc "50-3";
+	disablenpc "50-4";
+	disablenpc "51-1";
+	disablenpc "51-2";
+	disablenpc "51-3";
+	disablenpc "51-4";
+	disablenpc "53-1";
+	disablenpc "53-2";
+	disablenpc "53-3";
+	disablenpc "53-4";
+	disablenpc "54-1";
+	disablenpc "54-2";
+	disablenpc "54-3";
+	disablenpc "54-4";
+	disablenpc "55-1";
+	disablenpc "55-2";
+	disablenpc "55-3";
+	disablenpc "55-4";
+	disablenpc "56-1";
+	disablenpc "56-2";
+	disablenpc "56-3";
+	disablenpc "56-4";
+	disablenpc "56-5";
+	disablenpc "56-6";
+	disablenpc "56-7";
+	disablenpc "56-8";
+	disablenpc "57-1";
+	disablenpc "57-2";
+	disablenpc "57-3";
+	disablenpc "57-4";
+	disablenpc "58-1";
+	disablenpc "58-2";
+	disablenpc "58-3";
+	disablenpc "58-4";
+	disablenpc "59-1";
+	disablenpc "59-2";
+	disablenpc "59-3";
+	disablenpc "59-4";
+	disablenpc "60-1";
+	disablenpc "60-2";
+	disablenpc "60-3";
+	disablenpc "60-4";
+	disablenpc "61-1";
+	disablenpc "61-2";
+	disablenpc "61-3";
+	disablenpc "61-4";
+	disablenpc "62-1";
+	disablenpc "62-2";
+	disablenpc "62-3";
+	disablenpc "62-4";
+	disablenpc "63-1";
+	disablenpc "63-2";
+	disablenpc "64-1";
+	disablenpc "64-2";
+	disablenpc "64-3";
+	disablenpc "64-4";
+	disablenpc "65-1";
+	disablenpc "65-2";
+	disablenpc "65-3";
+	disablenpc "65-4";
+	disablenpc "66-1";
+	disablenpc "66-2";
+	disablenpc "66-3";
+	disablenpc "66-4";
+	disablenpc "67-1";
+	disablenpc "67-2";
+	disablenpc "67-3";
+	disablenpc "67-4";
+	disablenpc "68-1";
+	disablenpc "68-2";
+	disablenpc "68-3";
+	disablenpc "68-4";
+	disablenpc "69-1";
+	disablenpc "69-2";
+	disablenpc "69-3";
+	disablenpc "69-4";
+	disablenpc "70-1";
+	disablenpc "70-2";
+	disablenpc "70-3";
+	disablenpc "70-4";
+	disablenpc "71-1";
+	disablenpc "71-2";
+	disablenpc "71-3";
+	disablenpc "71-4";
+	disablenpc "72-1";
+	disablenpc "72-2";
+	disablenpc "72-3";
+	disablenpc "72-4";
+	disablenpc "73-1";
+	disablenpc "73-2";
+	disablenpc "73-3";
+	disablenpc "73-4";
+	disablenpc "74-1";
+	disablenpc "74-2";
+	disablenpc "74-3";
+	disablenpc "74-4";
+	disablenpc "75-1";
+	disablenpc "75-2";
+	disablenpc "75-3";
+	disablenpc "75-4";
+	disablenpc "76-1";
+	disablenpc "76-2";
+	disablenpc "76-3";
+	disablenpc "76-4";
+	disablenpc "77-1";
+	disablenpc "77-2";
+	disablenpc "77-3";
+	disablenpc "77-4";
+	disablenpc "78-1";
+	disablenpc "78-2";
+	disablenpc "78-3";
+	disablenpc "78-4";
+	disablenpc "79-1";
+	disablenpc "79-2";
+	disablenpc "79-3";
+	disablenpc "79-4";
+	disablenpc "80-1";
+	disablenpc "80-2";
+	disablenpc "80-3";
+	disablenpc "80-4";
+	disablenpc "81-1";
+	disablenpc "81-2";
+	disablenpc "81-3";
+	disablenpc "81-4";
+	disablenpc "82-1";
+	disablenpc "82-2";
+	disablenpc "82-3";
+	disablenpc "82-4";
+	disablenpc "83-1";
+	disablenpc "83-2";
+	disablenpc "83-3";
+	disablenpc "83-4";
+	disablenpc "84-1";
+	disablenpc "84-2";
+	disablenpc "84-3";
+	disablenpc "84-4";
+	disablenpc "85-1";
+	disablenpc "85-2";
+	disablenpc "85-3";
+	disablenpc "85-4";
+	disablenpc "86-1";
+	disablenpc "86-2";
+	disablenpc "86-3";
+	disablenpc "86-4";
+	disablenpc "87-1";
+	disablenpc "87-2";
+	disablenpc "87-3";
+	disablenpc "87-4";
+	disablenpc "88-1";
+	disablenpc "88-2";
+	disablenpc "88-3";
+	disablenpc "88-4";
+	disablenpc "89-1";
+	disablenpc "89-2";
+	disablenpc "89-3";
+	disablenpc "89-4";
+	disablenpc "90-1";
+	disablenpc "90-2";
+	disablenpc "90-3";
+	disablenpc "90-4";
+	disablenpc "91-1";
+	disablenpc "91-2";
+	disablenpc "91-3";
+	disablenpc "91-4";
+	disablenpc "92-1";
+	disablenpc "92-2";
+	disablenpc "92-3";
+	disablenpc "92-4";
+	disablenpc "93-1";
+	disablenpc "93-2";
+	disablenpc "93-3";
+	disablenpc "93-4";
+	disablenpc "94-1";
+	disablenpc "94-2";
+	disablenpc "94-3";
+	disablenpc "94-4";
+	disablenpc "95-1";
+	disablenpc "95-2";
+	disablenpc "95-3";
+	disablenpc "95-4";
+	disablenpc "96-1";
+	disablenpc "96-2";
+	disablenpc "96-3";
+	disablenpc "96-4";
+	disablenpc "97-1";
+	disablenpc "97-2";
+	disablenpc "97-3";
+	disablenpc "97-4";
+	end;
+}
+
+//---------------------
+job_hunte.gat,52,140,0	script	1-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,53,140,0	script	1-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,54,141,0	script	1-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,141,0	script	1-4	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,140,0	script	1-5	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,54,140,0	script	1-6	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,52,138,0	script	1-7	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,138,0	script	1-8	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,62,140,0	script	2-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,63,140,0	script	2-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,63,140,0	script	2-3	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,64,141,0	script	2-4	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,140,0	script	2-5	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,141,0	script	2-6	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,62,138,0	script	2-7	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,63,138,0	script	2-8	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,72,140,0	script	3-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,73,140,0	script	3-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,72,138,0	script	3-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,72,138,0	script	3-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,78,140,0	script	4-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,78,141,0	script	4-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,140,0	script	4-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,141,0	script	4-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,138,0	script	5-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,139,0	script	5-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,138,0	script	5-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,139,0	script	5-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,99,138,0	script	6-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,99,139,0	script	6-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,138,0	script	6-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,139,0	script	6-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,106,140,0	script	7-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,140,0	script	7-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,106,138,0	script	7-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,138,0	script	7-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,112,140,0	script	8-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,112,141,0	script	8-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,140,0	script	8-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,141,0	script	8-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,116,140,0	script	9-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,116,141,0	script	9-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,117,140,0	script	9-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,117,141,0	script	9-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,120,138,0	script	10-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,120,139,0	script	10-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,121,138,0	script	10-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,121,139,0	script	10-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,139,0	script	11-1	139,0,2,{doevent "hunte_traps";end;}
+job_hunte.gat,127,139,0	script	11-2	139,0,2,{doevent "hunte_traps";end;}
+job_hunte.gat,126,136,0	script	11-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,136,0	script	11-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,52,134,0	script	12-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,53,134,0	script	12-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,52,132,0	script	12-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,132,0	script	12-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,124,130,0	script	13-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,124,131,0	script	13-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,130,0	script	13-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,131,0	script	13-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,64,128,0	script	14-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,64,129,0	script	14-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,128,0	script	14-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,129,0	script	14-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,68,126,0	script	15-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,68,127,0	script	15-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,69,126,0	script	15-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,69,127,0	script	15-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,75,128,0	script	16-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,75,129,0	script	16-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,128,0	script	16-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,129,0	script	16-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,126,0	script	17-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,127,0	script	17-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,126,0	script	17-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,127,0	script	17-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,96,128,0	script	18-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,96,129,0	script	18-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,97,128,0	script	18-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,97,129,0	script	18-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,100,126,0	script	19-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,100,127,0	script	19-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,126,0	script	19-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,127,0	script	19-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,106,128,0	script	20-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,106,129,0	script	20-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,128,0	script	20-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,129,0	script	20-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,112,126,0	script	21-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,112,127,0	script	21-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,126,0	script	21-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,127,0	script	21-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,126,0	script	22-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,127,0	script	22-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,126,0	script	22-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,127,0	script	22-4	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,126,0	script	22-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,127,0	script	22-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,126,0	script	22-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,127,0	script	22-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,52,122,0	script	23-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,52,122,0	script	23-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,53,120,0	script	23-3	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,54,121,0	script	23-4	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,121,0	script	23-5	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,120,0	script	23-6	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,66,120,0	script	24-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,66,121,0	script	24-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,120,0	script	24-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,121,0	script	24-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,114,118,0	script	25-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,114,119,0	script	25-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,118,0	script	25-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,119,0	script	25-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,124,120,0	script	26-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,125,120,0	script	26-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,124,118,0	script	26-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,118,0	script	26-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,66,116,0	script	27-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,66,117,0	script	27-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,67,116,0	script	27-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,117,0	script	27-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,76,114,0	script	28-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,76,115,0	script	28-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,114,0	script	28-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,115,0	script	28-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,116,0	script	29-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,117,0	script	29-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,116,0	script	29-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,117,0	script	29-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,86,114,0	script	30-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,86,115,0	script	30-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,87,114,0	script	30-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,87,115,0	script	30-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,92,115,0	script	31-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,92,114,0	script	31-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,90,115,0	script	31-3	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,102,116,0	script	32-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,102,117,0	script	32-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,116,0	script	32-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,117,0	script	32-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,114,114,0	script	33-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,114,115,0	script	33-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,114,0	script	33-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,115,0	script	33-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,54,110,0	script	34-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,54,110,0	script	34-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,54,108,0	script	34-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,108,0	script	34-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,64,112,0	script	35-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,64,113,0	script	35-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,112,0	script	35-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,113,0	script	35-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,80,110,0	script	36-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,80,111,0	script	36-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,81,110,0	script	36-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,81,111,0	script	36-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,90,108,0	script	37-1	139,0,6,{doevent "hunte_traps";end;}
+job_hunte.gat,91,108,0	script	37-2	139,0,5,{doevent "hunte_traps";end;}
+job_hunte.gat,91,102,0	script	37-3	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,98,109,0	script	38-1	139,0,2,{doevent "hunte_traps";end;}
+job_hunte.gat,99,109,0	script	38-2	139,0,2,{doevent "hunte_traps";end;}
+job_hunte.gat,103,109,0	script	38-3	139,3,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,108,0	script	38-4	139,3,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,97,106,0	script	39-1	139,2,0,{doevent "hunte_traps";end;}
+job_hunte.gat,96,107,0	script	39-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,94,108,0	script	39-3	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,95,109,0	script	39-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,95,108,0	script	40-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,94,106,0	script	40-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,96,102,0	script	40-3	139,0,3,{doevent "hunte_traps";end;}
+job_hunte.gat,97,102,0	script	40-4	139,0,3,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,95,98,0	script	41-1	139,2,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,94,99,0	script	42-1	139,1,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,92,98,0	script	43-1	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,112,110,0	script	44-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,112,111,0	script	44-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,110,0	script	44-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,111,0	script	44-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,108,0	script	45-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,127,108,0	script	45-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,126,106,0	script	45-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,106,0	script	45-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,53,102,0	script	46-1	139,1,1,{doevent "hunte_traps";end;}
+job_hunte.gat,55,102,0	script	46-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,53,100,0	script	46-3	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,100,0	script	46-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,64,106,0	script	47-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,64,107,0	script	47-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,106,0	script	47-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,107,0	script	47-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,66,100,0	script	48-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,66,101,0	script	48-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,100,0	script	48-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,101,0	script	48-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,86,106,0	script	49-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,86,106,0	script	49-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,82,104,0	script	49-3	139,5,0,{doevent "hunte_traps";end;}
+job_hunte.gat,81,105,0	script	49-4	139,4,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,76,105,0	script	50-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,76,104,0	script	50-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,78,101,0	script	50-3	139,0,2,{doevent "hunte_traps";end;}
+job_hunte.gat,79,101,0	script	50-4	139,0,2,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,76,99,0	script	51-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,98,0	script	51-2	139,2,0,{doevent "hunte_traps";end;}
+job_hunte.gat,74,99,0	script	51-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,74,98,0	script	51-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,100,0	script	53-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,101,0	script	53-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,100,0	script	53-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,101,0	script	53-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,106,104,0	script	54-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,106,105,0	script	54-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,104,0	script	54-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,105,0	script	54-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,112,104,0	script	55-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,113,104,0	script	55-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,112,102,0	script	55-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,102,0	script	55-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,54,92,0	script	56-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,54,93,0	script	56-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,92,0	script	56-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,93,0	script	56-4	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,52,90,0	script	56-5	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,52,91,0	script	56-6	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,90,0	script	56-7	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,91,0	script	56-8	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,64,92,0	script	57-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,64,93,0	script	57-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,92,0	script	57-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,93,0	script	57-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,76,94,0	script	58-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,76,95,0	script	58-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,94,0	script	58-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,95,0	script	58-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,78,92,0	script	59-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,78,93,0	script	59-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,92,0	script	59-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,93,0	script	59-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,86,92,0	script	60-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,86,93,0	script	60-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,87,92,0	script	60-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,87,93,0	script	60-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,90,96,0	script	61-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,90,97,0	script	61-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,91,96,0	script	61-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,91,97,0	script	61-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,99,95,0	script	62-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,99,94,0	script	62-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,94,0	script	62-3	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,100,93,0	script	62-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,100,92,0	script	63-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,92,0	script	63-2	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,102,98,0	script	64-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,102,99,0	script	64-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,98,0	script	64-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,99,0	script	64-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,102,90,0	script	65-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,102,91,0	script	65-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,90,0	script	65-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,91,0	script	65-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,114,96,0	script	66-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,114,97,0	script	66-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,96,0	script	66-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,97,0	script	66-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,112,90,0	script	67-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,112,91,0	script	67-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,90,0	script	67-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,113,91,0	script	67-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,125,97,0	script	68-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,96,0	script	68-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,96,0	script	68-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,97,0	script	68-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,52,86,0	script	69-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,52,87,0	script	69-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,86,0	script	69-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,87,0	script	69-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,66,88,0	script	70-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,66,89,0	script	70-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,88,0	script	70-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,89,0	script	70-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,114,84,0	script	71-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,114,85,0	script	71-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,84,0	script	71-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,85,0	script	71-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,86,0	script	72-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,87,0	script	72-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,86,0	script	72-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,87,0	script	72-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,54,80,0	script	73-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,55,80,0	script	73-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,54,78,0	script	73-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,78,0	script	73-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,64,82,0	script	74-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,65,82,0	script	74-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,64,80,0	script	74-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,65,80,0	script	74-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,66,78,0	script	75-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,66,79,0	script	75-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,78,0	script	75-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,67,79,0	script	75-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,74,78,0	script	76-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,74,79,0	script	76-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,75,78,0	script	76-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,75,79,0	script	76-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,78,80,0	script	77-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,78,81,0	script	77-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,80,0	script	77-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,79,81,0	script	77-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,78,0	script	78-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,79,0	script	78-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,78,0	script	78-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,79,0	script	78-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,94,78,0	script	79-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,94,79,0	script	79-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,95,78,0	script	79-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,95,79,0	script	79-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,101,80,0	script	80-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,81,0	script	80-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,81,0	script	80-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,103,80,0	script	80-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,104,78,0	script	81-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,104,79,0	script	81-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,105,78,0	script	81-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,105,79,0	script	81-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,110,78,0	script	82-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,110,79,0	script	82-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,111,78,0	script	82-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,111,79,0	script	82-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,114,80,0	script	83-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,114,81,0	script	83-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,80,0	script	83-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,115,81,0	script	83-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,124,78,0	script	84-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,124,79,0	script	84-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,78,0	script	84-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,79,0	script	84-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,82,0	script	85-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,83,0	script	85-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,82,0	script	85-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,83,0	script	85-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,52,68,0	script	86-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,53,68,0	script	86-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,52,66,0	script	86-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,53,66,0	script	86-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,54,70,0	script	87-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,55,70,0	script	87-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,54,68,0	script	87-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,55,68,0	script	87-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,59,66,0	script	88-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,59,67,0	script	88-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,61,67,0	script	88-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,61,66,0	script	88-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,68,68,0	script	89-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,69,68,0	script	89-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,68,66,0	script	89-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,69,66,0	script	89-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,76,66,0	script	90-1	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,76,67,0	script	90-2	139,0,1,{doevent "hunte_traps";end;}
+job_hunte.gat,77,66,0	script	90-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,77,67,0	script	90-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,82,68,0	script	91-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,82,69,0	script	91-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,68,0	script	91-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,83,69,0	script	91-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,96,66,0	script	92-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,96,67,0	script	92-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,97,66,0	script	92-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,97,67,0	script	92-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,100,68,0	script	93-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,100,69,0	script	93-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,68,0	script	93-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,101,69,0	script	93-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,107,66,0	script	94-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,107,67,0	script	94-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,109,67,0	script	94-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,109,66,0	script	94-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,117,69,0	script	95-1	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,117,68,0	script	95-2	139,1,0,{doevent "hunte_traps";end;}
+job_hunte.gat,119,69,0	script	95-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,119,68,0	script	95-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,124,66,0	script	96-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,124,67,0	script	96-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,66,0	script	96-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,125,67,0	script	96-4	139,0,0,{doevent "hunte_traps";end;}
+//---------------------
+job_hunte.gat,126,70,0	script	97-1	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,126,71,0	script	97-2	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,70,0	script	97-3	139,0,0,{doevent "hunte_traps";end;}
+job_hunte.gat,127,71,0	script	97-4	139,0,0,{doevent "hunte_traps";end;}
+
+
+
+//============================================================================================================
+// 檢查游戲中轉職任務是否有人正在進行
+//============================================================================================================
+//
+job_hunte.gat,1,1,1	script	hunte_user_check	-1,{
+//每30秒檢查一次
+OnTimer30000:
+	set $job_hunte_map1, getareausers("job_hunte.gat",50,64,129,143);
+	set $job_hunte_map2, getareausers("job_hunte.gat",164,18,187,41);
+	if($job_hunte_map1 == 0 && $job_hunte_map2 == 0) goto endhunte;
+	if($job_hunte_map1 == 0) goto endtest;
+	initnpctimer "hunte_user_check";
+	end;
+
+endtest:
+	areaannounce "job_hunte.gat",164,18,187,41,"考場目前已經空出來了!下一位申請者請準備!",8;
+	areawarp "job_hunte.gat",50,64,129,143,"in_hunter.gat",99,95;
+	killmonster "job_hunte.gat","All";
+	initnpctimer "hunte_user_check";
+	donpcevent "jobhunter_room::onenable";
+	stopnpctimer "jobhunt_mob";
+	end;
+
+endhunte:
+	stopnpctimer "hunte_user_check";
+	areawarp "job_hunte.gat",50,64,129,143,"in_hunter.gat",99,95;
+	areawarp "job_hunte.gat",164,18,187,41,"in_hunter.gat",99,95;
+	killmonster "job_hunte.gat","All";
+	donpcevent "jobhunter_room::onenable";
+	stopnpctimer "jobhunt_mob";
+	end;
+}
+
+
+//==============================================================================
+// 傳點設定
+//==============================================================================
+in_hunter.gat,100,15,0	warp	jhun01	0,0,pay_fild10.gat,143,250
+job_hunte.gat,89,139,0	warp	jhun02	3,3,job_hunte.gat,0,0
+job_hunte.gat,89,68,0	warp	jhun03	3,3,job_hunte.gat,0,0

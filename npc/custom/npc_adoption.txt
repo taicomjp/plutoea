@@ -1,0 +1,501 @@
+//===== Athena Script =======================================
+//= Simple Adoption Script
+//===== By ================================================
+//= Fredzilla with help from Kamari,Acky
+//===== Version ===========================================
+//= 1.6 Removed call to function Is_Taekwon_Class in favor of baseClass == Job_Taekwon [Silentdragon]
+//= 1.5 Added GM menu to reset current adoption [Lupus]
+//= 1.4 Got rid of useless "event_adoptXXX" variables [Lupus]
+//= 1.3c - Slightly rewrote the anti-taekwon protection to
+//=        detect problems more easily [DracoRPG]
+//= 1.3a - Added anti Taekwon Classes protection (they can't
+//= be adopted) [Lupus]
+//= 1.3 - Now it can teach parents/baby their missing skills.
+//=	 Your old families should talk to these NPCs to get
+//=  their family skills [Lupus]
+//= 1.2b - More fixes + Added Acky's teacher to the end 
+//=	  (stoped it from saying a particular word I thought
+//=	  was inapropriate for a kids game)
+//= 1.1 - Minor correction, replaced missing close; and mes :D
+//= 1.0 - First Release, most likely going to have some bugs
+//=	  Is using @adopt instead of proper NPC script command 
+//===== Compatible With ===================================
+//= eAthena Final (SVN), any version that contained the GM command @adopt
+//= This is any version released after 03/29/05, dont know the number
+//===== Description =======================================
+//= A simple adoption script that lets couples adopt a 
+//= lvl 1/1 novice without the help of a GM there
+//===== Comments ==========================================
+//= List or Variables used
+//= $@AdoptionActive = Stops other people trying to use 
+//= the adoption NPC's intill the currant one is over.
+//= @AdoptionReady = Marks person that talks to first NPC, 
+//= this person will end up being ParentOne.
+//= $@ParentOne$ = Explains itself.
+//= $@ParentTwo$ =    ""      ""  
+//= $@Baby$	=    ""      ""
+//= $@GenderBaby$ = Set so it can state boy or girl.
+//= $@FinalQuestion = Lets the parents take one last chance 
+//= to cancel the adoption before it is perminant.
+//= $@CheckAll = Follow on from the last one, when this = 3, 
+//= the adoption will take place and will be perminant.
+//= @regged = Stops the same person being counted twice 
+//= before the adoption is completed.
+//= Lupus removed:
+//= 	*event_adopt = Put on the parents so they cannot adopt again.
+//= 	*event_adopted = Put on baby so it cant be adopted again.
+//= 	Use "getchildid()>0" insread of event_adopt
+//= 	Use "Upper==2" insread of event_adopted
+//=========================================================
+//更新翻譯 by deepin[DDT] 2005/12/24
+
+prt_church.gat,115,122,0	warp	prtch03	1,2,prt_church.gat,164,171
+prt_church.gat,162,171,0	warp	prtch01-3	1,2,prt_church.gat,113,122
+
+prt_church.gat,166,176,3	script	收養登記人員	61,{
+//GM Menu: Start
+//If u're a GM you can always reset current Adoption process
+	if(getgmlevel(99)<90) goto L_SKIP;
+	mes "[GM 功能表]";
+	mes "你是否想重置當前的收養狀態?";
+	next;
+	menu "是",-,"否",L_SKIP;	
+	callfunc "AdoptReset","GM reset";
+	close;
+L_SKIP:
+//GM Menu: End
+	if($@AdoptionActive == 1) goto A_Cannot;
+	mes "[收養人員]";
+	if (Upper==2) goto A_YouBaby;
+	if (getchildid()>0 && getskilllv(410)<=0) goto A_GetSkill;
+	if (getchildid()>0) goto A_Already;
+	mes "你準備收養某個人嗎?";
+	next;
+	menu "是的",A_Yes,"不是",-;
+A_No:
+	mes "[收養人員]";
+	mes "啊噢，等你準備好了再來找我吧";
+	close;
+A_Cannot:
+	mes "[收養人員]";
+	mes "現在正有別人在進行收養中, 等它結束了再來吧";
+	close;
+A_Yes:
+	mes "[收養人員]";
+	mes "真高興聽到這個消息!";
+	mes "但是你是否符合收養的要求呢?";
+	next;
+	mes "[收養人員]";
+	mes "我們不能把孩子隨意給別人";
+	mes "在我們讓你帶走孩子之前必須證明你有足夠的實力來找看他";
+	next;
+	mes "[收養人員]";
+	mes "我們也必須證明你已經有了伴侶";
+	mes "我們不能將孩子托付給沒有結婚的伴侶";
+	next;
+	mes "[收養人員]";
+	mes "你確信你符合這些標準么?";
+	next;
+	menu "是的，我很樂意收養?",-,"不, 我認為我還不行",A_No;
+	mes "[收養人員]";
+	mes "看來你很有決心";
+	next;
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	if ($@AdoptionActive == 1) goto A_Cannot;
+	set $@AdoptionActive,1;
+	set @AdoptionReady,1;
+	mes "[收養人員]";
+	mes "我會把你介紹給我的同事的";
+	close;
+
+A_GetSkill:
+	mes "你已經收養了一個孩子,我將教你一個有用的技能-寶貝來我這里 !";
+	next;
+	emotion 46;
+	skill 410,1,0;
+	mes "[收養人員]";
+	mes "好了,告訴你的伴侶也來找我吧";
+	mes "我們孩子是我們的將來";
+	close;
+A_Already:
+	emotion 1;
+	mes "你的孩子今天如何?";
+	close;
+A_YouBaby:
+	emotion 2;
+	mes "你好啊";
+	if (getskilllv(408)<=0 || getskilllv(409)<=0) mes "我們的教師等著見你呢.";
+	close;
+}
+
+prt_church.gat,172,177,3	script	收養工作人員	103,{
+	if (Upper==2) goto A_YouBaby;
+	if (getchildid()>0 && getskilllv(410)<=0) goto A_GetSkill;
+	if (getchildid()>0) goto A_Already;
+	if ($@FinalQuestion==1 && $@ParentOne$==strcharinfo(0)) goto A_ParentOneEnd;
+	if ($@FinalQuestion==1 && $@ParentTwo$==strcharinfo(0)) goto A_ParentTwoEnd;
+	if ($@FinalQuestion==1 && $@Baby$==strcharinfo(0)) goto A_BabyEnd;
+	if (strcharinfo(0)==$@Baby$) goto A_FinalTest;
+	if (strcharinfo(0)==$@ParentTwo$) goto A_SecondReg;
+	if (@AdoptionReady==0 || $@AdoptionActive==0) goto A_SeeFriend;
+	mes "[收養工作人員]";
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	mes "那么...你認為你符合我們嚴格的條件嗎?";
+	mes "讓我看看，你是否達到了70級?";
+	next;
+	menu "是的, 我已經超過70級了",A_lvl,"還沒, 麻煩你了...",-;
+	mes "[收養工作人員]";
+	mes "噢, 很抱歉, 當你達到條件以后再回來找我吧";
+	callfunc "AdoptReset","父/母親沒有達到所需等級";
+	close;
+A_SeeFriend:
+	mes "[收養工作人員]";
+	mes "看起來你還沒跟我朋友談過吧";
+	mes "當他覺得你準備好了的時候會把你交給我的";
+	close;
+A_lvl:
+	if(BaseLevel >= 70) goto A_lvlpassed;
+	mes "[收養工作人員]";
+	mes "你不僅因等級不夠, 還試圖欺騙我";
+	next;
+ 	mes "[收養工作人員]";
+	mes "我不能把孩子給你";
+	callfunc "AdoptReset","父/母親沒有達到所需等級";
+	close;
+A_lvlpassed:
+	mes "[收養工作人員]";
+	mes "哇哦, 你已經通過了實力測試";
+	next;
+	mes "[收養工作人員]";
+	mes "現在再讓我們來看看你是否有著幸福的婚姻";
+	mes "請給我看看你的結婚戒指";
+	next;
+	mes "[收養工作人員]";
+	mes "你把結婚戒指帶來了嗎?";
+	next;
+	menu "是的， 給你",A_Wedring,"不, 我沒帶",A_Noring,"我還沒結婚",-;
+	mes "[收養工作人員]";
+	mes "就像我朋友說得那樣, 我們不能把孩子給一個沒有婚姻的家庭";
+	callfunc "AdoptReset","父/母親沒有結婚";
+	close;
+A_Noring:
+	mes "[收養工作人員]";
+	mes "我簡直不能相信你結了婚居然不一直帶著結婚戒指!!!";
+	next;
+	mes "[收養工作人員]";
+	mes "我認為你沒資格擁有小孩";
+	callfunc "AdoptReset","父/母親沒有帶結婚戒指以證明他們的婚姻";
+	close;
+A_Wedring:
+	if ( countitem(2634)>0 || countitem(2635)>0 ) goto A_Wedringpassed;
+	goto A_Noring;
+A_Wedringpassed:
+	mes "[收養工作人員]";
+	mes "哇, 多可愛的戒指, 你一定非常愛你的伴侶";
+	next;
+	if (getchildid()>0) goto A_AlreadyHaveBaby;
+	mes "[收養工作人員]";
+	mes "我需要看看他們，請告訴我他/她的名字";
+	next;
+	input $@ParentTwo$;
+	set $@ParentOne$, strcharinfo(0);
+	mes "[收養工作人員]";
+	mes "你的伴侶需要在5分鐘之內和我說話，否則領養將被取消";
+	next;
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	areaannounce "prt_church.gat",0,0,350,350," "+$@ParentTwo$+" 請過來我身邊",0; 
+	mes "[收養工作人員]";
+	mes "現在請等著我叫你的名字, 謝謝";
+	close;
+A_AlreadyHaveBaby:
+	mes "現在讓我們看看你結婚戒指的登記情況, 噢，看起來你已經有一個孩子了";
+	next;
+	mes "[收養工作人員]";
+	mes "對不起, 你只能收養一個小孩";
+	mes "請照顧好你的孩子";
+	callfunc "AdoptReset","父/母親已經收養過其他人";
+	close;
+A_SecondReg:
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	mes "[收養工作人員]";
+	mes "你一定是 "+$@ParentTwo$+", 我剛剛在和你的愛人 "+$@ParentOne$+" 談話, 他提到說你們想收養一個孩子";
+	next;
+	mes "[收養工作人員]";
+	mes "你同意 "+$@ParentOne$+" 他說的嗎, 你想收養一個孩子嗎?";
+	next;
+	menu "是的, 我愿意",A_agree,"不, 我不要收養小孩",-;
+	mes "[收養工作人員]";
+	mes "這真是一個壞消息, 我非常遺憾";
+	callfunc "AdoptReset","個父/母親不想收養孩子"; 
+	close;
+A_agree:
+	mes "[收養工作人員]";
+	mes "現在我將會測試你是否也符合我們的收養條件";
+	next;
+	if(BaseLevel >= 70) goto A_lvltwo;
+	mes "[收養工作人員]";
+	mes "對不起，你還沒到70級";
+	callfunc "AdoptReset","父/母親沒有達到所需等級";
+	close;
+A_lvltwo:
+	if ( countitem(2634)>0 || countitem(2635)>0 ) goto A_Wedringtwo;
+	mes "[收養工作人員]";
+	mes "對不起，你并沒有結婚戒指做你們婚姻的證明";
+	callfunc "AdoptReset","父/母親沒有帶結婚戒指以證明他們的婚姻";
+	close;
+A_Wedringtwo:
+	if (getchildid()>0) goto A_AlreadyHaveBaby;
+	mes "[收養工作人員]";
+	mes "你符合我們所有的條件";
+	mes "現在你們需要一名初學者來收養";
+	next;
+	mes "[收養工作人員]";
+	mes "你們有準備領養的初學者嗎?";
+	next;
+	menu "是的, 就在這",A_YesBaby,"不, 對不起",-;
+	mes "[收養工作人員]";
+	mes "我見你去找一個, 記得回來的時候先和我朋友談談";
+	callfunc "AdoptReset","當前沒有初學者需要領養";
+	close;
+A_YesBaby:
+	mes "[收養工作人員]";
+	mes "他的名字是?";
+	next;
+	input $@Baby$;
+	mes "[收養工作人員]";
+	mes "他必須在5分鐘之內過來和我說話, 否則領養將被取消";
+	next;
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	mes "[收養工作人員]";
+	mes "謝謝, 請和你伴侶一起休息一下, 我通知你們";
+	areaannounce "prt_church.gat",0,0,350,350," "+$@Baby$+" 請到我身邊來",0;
+	close;
+A_FinalTest:
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	if(Upper==2) goto A_AlreadyAdopted;
+	if(baseClass == Job_Taekwon) goto A_CantBeAdopted;
+	mes "[收養工作人員]";
+	mes "你一定是 "+$@Baby$+"了, 非常高興見到你";
+	mes "有兩個非常好的人, "+$@ParentOne$+" 和 "+$@ParentTwo$+", 希望收養你";
+	next;
+	if(sex!=0) set $@GenderBaby$,"男孩";
+	if(sex==0) set $@GenderBaby$,"女孩";
+
+	mes "[收養工作人員]";
+	mes "你能當一個好 "+$@GenderBaby$+" ，并且跟這兩個好人一起生活嗎?";
+	next;
+	menu "恩, 偶很高興",A_BabyYes,"不~要！！！！！",-;
+	mes "[收養工作人員]";
+	mes "請冷靜";
+	mes "下次我會幫你找到更好的父母的";
+	callfunc "AdoptReset","初學者不想被領養";
+	close;
+A_BabyYes:
+	mes "[收養工作人員]";
+	mes "阿哈, 好可愛, 很高興聽到你這么說哦";
+	mes "現在讓我們看看";
+	next;
+	mes "[收養工作人員]";
+	mes "我現在要檢驗你的等級來證明你是一個初學者, 站著別動";
+	next;
+	if (BaseLevel == 1 && JobLevel == 1) goto A_Ready;
+	mes "[收養工作人員]";
+	mes "對不起，你已經超過1級了, 只有基礎1級和職業等級都是1級才能證明你是一個純粹的初學者";
+	callfunc "AdoptReset","將被領養的人等級高于1級";
+	close;
+A_Ready:
+	mes "[收養工作人員]";
+	mes "我們的上帝創造了天真無邪的你";
+	next;
+	mes "[收養工作人員]";
+	mes "我不反對別人收養你";
+	mes "在你被領養錢我需要最后一次看看你的父母和你";
+	set $@FinalQuestion,1;
+	areaannounce "prt_church.gat",0,0,350,350,"請參加這次收養的人都過來一下",0;
+	deltimer "timeadopt";
+	addtimer 300000,"timeadopt";
+	close;
+A_AlreadyAdopted:
+	mes "[收養工作人員]";
+	mes "哦,你已經被收養的,所以不能再被收養.";
+	callfunc "AdoptReset","這個人已經被收養了.";
+	close;
+A_CantBeAdopted:
+	mes "[收養工作人員]";
+	mes "對不起,你的職業不允許被收養.";
+	callfunc "AdoptReset","這個人的職業不能被收養.";
+	close;
+A_ParentOneEnd:
+	if (@regged>1) goto AlreadyReged;
+	if ($@ParentOne$==$@ParentTwo$) goto A_SameFail;
+	mes "[收養工作人員]";
+	mes "很高興再次見到你 "+$@ParentOne$;
+	mes "這是最后的反悔機會了";
+	next;
+	mes "[收養工作人員]";
+	mes "你只能領養一次，因此一旦你領養了 "+$@Baby$+", 你就不能再領養別人了"; 
+	next;
+	mes "[收養工作人員]";
+	mes "你確定繼續嗎？";
+	next;
+	menu "是的",A_FinalYesP,"不",-;
+	mes "[收養工作人員]";
+	mes "我簡直不敢相信到了這地步你居然還會說不!";
+	mes "你真的確定嗎??";
+	next;
+	menu "是的, 我不想領養",-,"不, 我說錯了",A_ParentOneEnd;
+A_Failend:
+	mes "[收養工作人員]";
+	mes "好吧，如果你確定的話";
+	callfunc "AdoptReset","父/母親或者孩子退出";
+	close;
+A_FinalYesP:
+	mes "[收養工作人員]";
+	mes "好了，領養工作已經準備好了";
+	mes "結束以后我會發公告通知所有人";
+	set @regged,1;
+	set $@checkall,$@checkall+1;
+	if ($@checkall==3) goto THEEND;
+	close;
+A_ParentTwoEnd:
+	if (@regged>1) goto AlreadyReged;
+	mes "[收養工作人員]";
+	mes "很高興再次見到你 "+$@ParentTwo$;
+	mes "這是最后的反悔機會了";
+	next;
+	mes "[收養工作人員]";
+	mes "你只能領養一次，因此一旦你領養了 "+$@Baby$+", 你就不能再領養別人了"; 
+	next;
+	mes "[收養工作人員]";
+	mes "你確定繼續嗎？";
+	next;
+	menu "是的",A_FinalYesP,"不",-;
+	mes "[收養工作人員]";
+	mes "我簡直不敢相信到了這地步你居然還會說不!";
+	mes "你真的確定嗎??";
+	next;
+	menu "是的, 我不想領養",A_Failend,"不, 我說錯了",A_ParentTwoEnd;
+A_AlreadyReged:
+	mes "[收養工作人員]";
+	mes "請等等，我還需要跟其他人談談";
+	close;
+A_BabyEnd:
+	if (@regged>1) goto AlreadyReged;
+	mes "[收養工作人員]";
+	mes "很高興再次見到你 "+$@Baby$;
+	mes "這是要反悔的最后機會了";
+	next;
+	mes "[收養工作人員]";
+	mes "你只能被領養一次, 所以一旦你被 "+$@ParentOne$+" 和 "+$@ParentTwo$+" 收養, 你就不能再被別人收養了"; 
+	next;
+	mes "[收養工作人員]";
+	mes "你確定繼續嗎？";
+	next;
+	menu "是的",A_FinalYesB,"不",-;
+	mes "[收養工作人員]";
+	mes "我簡直不敢相信到了這地步你居然還會說不!";
+	mes "你真的確定嗎?";
+	next;
+	menu "是的, 我不想被領養",A_Failend,"不, 我說錯了",A_BabyEnd;
+A_FinalYesB:
+	mes "[收養工作人員]";
+	mes "好了，領養工作已經準備好了";
+	mes "結束以后我會發公告通知所有人";
+	set @regged,1;
+	set $@checkall,$@checkall+1;
+	if ($@checkall==3) goto THEEND;
+	close;
+A_SameFail:
+	mes "[收養工作人員]";
+	mes "對不起, 看起來你同時了擔任父母雙方, 這是不允許的";
+	callfunc "AdoptReset","收養設定的父母是不能是同一個人";
+	close;
+
+A_GetSkill:
+	emotion 20;
+	mes "[收養工作人員]";
+	mes "你是不是不經常能夠看到你的寶寶,我會教你一個技能...噢,我的技能說明書呢?";
+	next;
+	mes "[Oliver]";
+	mes "....";
+	close;
+A_Already:
+	mes "[Inanna]";
+	emotion 21;
+	mes "你的寶寶最近如何?";
+	close;
+A_YouBaby:
+	mes "[Inanna]";
+	emotion 30;
+	mes "告訴你父親,他是一個好爸爸!";
+	if (getskilllv(408)<=0 || getskilllv(409)<=0) mes "You should talk to our Teacher.";
+	close;
+
+THEEND:
+	logmes "Adoption: "+$@Baby$+" adopted by "+$@ParentOne$+" and "+$@ParentTwo$+".";
+	adopt $@ParentOne$,$@ParentTwo$,$@Baby$;
+	announce $@ParentOne$+" 和 "+$@ParentTwo$+" 收養了一個小孩 "+$@GenderBaby$+", 名叫 "+$@Baby$,5;
+	deltimer "timeadopt";
+	set $@AdoptionActive, 0;
+	set $@ParentOne$, null;
+	set $@ParentTwo$, null;
+	set $@Baby$, null;
+	set $@GenderBaby$, null;
+	set $@FinalQuestion, 0;
+	set $@CheckAll, 0;
+	close;
+	end;
+}
+
+prt_church.gat,165,175,0	script	timeadopt	-1,{
+	callfunc "AdoptReset","你申請收養的過程太長而被中止了";
+	end;
+}
+function	script	AdoptReset	{
+	deltimer "timeadopt";
+	set $@AdoptionActive, 0;
+	set $@ParentOne$, null;
+	set $@ParentTwo$, null;
+	set $@Baby$, null;
+	set $@GenderBaby$, null;
+	set $@FinalQuestion, 0;
+	set $@CheckAll, 0;
+	areaannounce "prt_church.gat",0,0,350,350,"領養進程被取消是由于"+getarg(0),0;
+	return;
+}
+
+prt_church.gat,165,166,6	script	教師	97,{
+	mes "[收養工作人員]";
+	if (Upper==2 && (getskilllv(408)<=0 || getskilllv(409)<=0)) goto L_Teach;
+	if (Upper==2) mes "你好,寶貝";
+	if (Upper!=2) mes "你好嗎.";
+	next;
+	menu "太好了!",-,"不錯.",-,"一般...",-,"不太好.",-;
+	mes "[收養工作人員]";
+	mes "很好!";
+	emotion rand(19,21);
+	close;
+
+L_Teach:
+	skill 408,1,0;
+	skill 409,1,0;
+	mes "太好了,你學會了兩個有用的技能!";
+	mes "1. 爸媽我想念您 (當你在危險的時候使用).";
+	mes "2. 爸媽我愛你們!";
+	emotion 41;
+	next;
+	mes "[收養工作人員]";
+	mes "如果看到寶寶們,讓他們來找我.";
+	next;
+
+L_Cancel:
+	mes "[收養工作人員]";
+	mes "再見!";
+	close;
+}

@@ -1,0 +1,586 @@
+//===== DAthena Script ======================================= 
+//= Cooking Quest
+//===== By: ================================================== 
+//= Reddozen  TRANS：ZZRR3
+//===== Current Version: ===================================== 
+//= 1.5
+//===== Compatible With: ===================================== 
+//= eAthena 1.0+
+//===== Description: ========================================= 
+//= Official Cooking Quest
+//===== Additional Comments: ================================= 
+//= 1.1 修正了錯誤的物品代碼, 加入了遺漏的 ";, 優化 [天狼座]
+//= 1.1a 修正了較小的BUG, 感謝 2 Irmin [天狼座]
+//= 1.2 Fixed exploit, some typos [天狼座]
+//= 1.3 Fixed wrong label [天狼座] 1.3a updated to Reddozen's changes
+//= 1.3b Fixed wrong id, fixed Puch quest, added more Pouch Quest
+//= dialogues [天狼座]
+//= 1.4 Fixed spelling, added some dialoguesm optimized
+//= fixed bugs. Tested, fully working [天狼座]
+//= 1.5 More fixes [天狼座]
+//============================================================ 
+
+prt_castle.gat,43,30,6	script	Chef Apprentice	878,{
+
+	mes "[廚師的學徒]";
+
+	if(cooking == 1) goto L_Remind;
+
+	if(cooking == 2){
+		mes "我會看著你通過考試的.";
+		mes "好運!";
+		next;
+		mes "[廚師的學徒]";
+		mes "這本書將會對新的廚師有所幫助.";
+		getitem 7472, 1;//Items: Lv1 烹飪書,
+		set cook_book, 7472;
+		set cooking, 3;
+		close;
+	}
+
+	if(cooking == 3){
+		mes "嗨~ 這里. 有什么";
+		mes "我可以幫助你的嗎?";
+		next;
+		menu "購買補給",M_BuySupply, "有關烹飪",L_Cook_Talk, "離開",L_No_Talk;		
+
+		M_BuySupply:
+			mes "[廚師的學徒]";
+			mes "室外烹飪道具每個500Z";
+			mes " 要幾個?";
+			input @amount;
+			if(@amount < 1) goto ER_Invalid;
+			if(@amount > 100) goto ER_TooMuch;
+			if(@amount*500 > Zeny) goto ER_Zeny;
+			set Zeny, Zeny-(@amount*500);
+			getitem 12125, @amount;//Items: Outdoor Cooker,
+			next;
+			mes "[廚師的學徒]";
+			mes "過得愉快！";
+			close;
+
+		L_Cook_Talk:
+			mes "[廚師的學徒]";
+			mes "你通過了考試,";
+			mes "看看結果吧~~";
+			mes "嘗一下?";
+			next;
+			menu "品嘗我的料理",-, "不，看上去太可怕了",L_Taste_End;
+
+			mes "[廚師的學徒]";
+			mes "我不太懂...";
+			mes "也許不太安全...";
+			next;
+			menu "請品嘗一下",-, "你也許是對的",L_Taste_End;
+
+			mes "[廚師的學徒]";
+			mes "為什么我要去試？";
+			mes "一個廚師學徒的料理?";
+			next;
+			menu "請品嘗",-, "Yeah, 我剛上手",L_Taste_End;
+
+			mes "[廚師的學徒]";
+			mes "我將會跟你談；一筆生意.";
+			mes "如果你能烹飪這些";
+			mes "Lv 1 食物, 然后我再去試";
+			mes "你的烹飪...";
+			next;
+			menu "同意",-, "拒絕",L_Taste_End;
+
+			mes "[廚師的學徒]";
+			mes "你應該把全部的都做掉";
+			mes "一共6樣";
+			mes "等你做完了.";
+			set cooking, 4;
+			close;
+
+		L_Taste_End:
+			mes "[廚師的學徒]";
+			mes "等你領悟了就回來";
+			mes "自信一點.";
+			close;
+
+		L_No_Talk:
+			mes "[廚師的學徒]";
+			mes "隨時都可以回來哦!";
+			mes "一會見~.";
+			close;
+	}
+
+	if(cooking == 4){
+		if(countitem(12056)
+			&& countitem(12061)
+			&& countitem(12046)
+			&& countitem(12066)
+			&& countitem(12041)
+			&& countitem(12051)) {//Items: Frog Spawn Soup, Grape Juice with Honey, Grape Juice and Tea, Fried Monkey Tail, Boiled Locust, Steamed Crab Pincer,
+
+			delitem 12056, 1;//Items: Frog Spawn Soup,
+			delitem 12061, 1;//Items: Grape Juice with Honey,
+			delitem 12046, 1;//Items: Grape Juice and Tea,
+			delitem 12066, 1;//Items: Fried Monkey Tail,
+			delitem 12041, 1;//Items: Boiled Locust,
+			delitem 12051, 1;//Items: Steamed Crab Pincer,
+
+			mes "什么？！已經完成了?";
+			mes "讓我看看你做的";
+			next;
+
+			mes "[廚師的學徒]";
+			mes "不錯，但是..";
+			mes "我還需要一樣東西";
+			mes "你去跟一個朋友說";
+			mes "我們需要他 他在斐揚";
+			mes "我們一起做.";
+			next;
+			mes "[廚師的學徒]";
+			mes "把這個給他 ^000080皮袋^000000,";
+			mes "我將會在老師那給你個好的評語~.";
+
+			getitem 7432, 1;//Items: Leather Pouch,
+			set cooking, 5;
+		} else {
+			mes "等你烹飪好了就回來";
+			mes "所以的LV1食物.";
+			next;
+			menu "購買補給",M_BuySupply, "離開",L_No_Talk;		
+		}
+		close;
+	}
+
+	if(cooking == 5){
+		mes "Please, don't forget to";
+		mes "hand my ^000080Leather Pouch^000000";
+		mes "to my friend in Payon.";
+		next;
+		mes "[廚師的學徒]";
+		mes "Well... Is there something";
+		mes "that I can help you with?";
+		next;
+		menu "購買補給",-, "離開",L_No_Talk2;
+
+			mes "[廚師的學徒]";
+			mes "室外烹飪用道具500Z一個.";
+			mes " 要多少?";
+			input @amount;
+			if(@amount < 1) goto ER_Invalid;
+			if(@amount > 100) goto ER_TooMuch;
+			if(@amount*500 > Zeny) goto ER_Zeny;
+			set Zeny, Zeny-(@amount*500);
+			getitem 12125, @amount;//Items: Outdoor Cooker,
+
+			next;
+			mes "[廚師的學徒]";
+			mes "過得愉快!";
+			close;
+
+		L_No_Talk2:
+			mes "[廚師的學徒]";
+			mes "隨時都歡迎你回來!";
+			mes "祝您今天過的愉快.";
+			close;
+	}
+
+	if(cooking == 6){
+		mes "謝謝你幫我送這個";
+		mes "我朋友的皮袋";
+		mes "這是我送你的禮物~.";
+		set cooking, 7;
+		getitem 12126, 10;//Items: Home Cooking Set,
+		next;
+		mes "[廚師的學徒]";
+		mes "一會回來";
+		mes "需要些別的東西!";
+		close;
+	}
+
+	if(cooking == 7){
+		mes "歡迎回來";
+		mes "有什么能幫助你嗎?";
+		next;
+		menu "購買補給",-, "訪問",L_Leave3;
+
+				mes "[廚師的學徒]";
+				mes "你想要什么?";
+				next;
+				menu "室外烹飪用炊具 500Z一個",-, "家用烹飪炊具 1000Z一個",L_HomeCooking, "沒事",L_Leave3;
+
+				set @price, 500;
+				set @tool, 12125;
+				goto L_Cooking_Tools4;
+
+			L_HomeCooking:
+				set @price, 1000;
+				set @tool, 12126;
+
+		L_Cooking_Tools4:
+			mes "[廚師的學徒]";
+			mes " 多少?";
+			input @amount;
+			if(@amount < 1) goto ER_Invalid;
+			if(@amount > 100) goto ER_TooMuch;
+			if(@amount*@price > Zeny) goto ER_Zeny;
+			set Zeny, Zeny-(@amount*@price);
+			getitem @tool, @amount;
+
+			next;
+			mes "[廚師的學徒]";
+			mes "過得愉快!";
+			close;		
+
+		L_Leave3:
+			mes "[廚師的學徒]";
+			mes "隨時歡迎你回來!";
+			mes "祝你今天過的愉快.";
+			close;
+	}			
+			
+	mes "嗨";
+	mes "我能幫你什么忙嗎?";
+	next;
+	menu "只是看看~",-, "我想學烹飪",ap_2;
+
+		mes "[廚師的學徒]";
+		mes "如果你喜歡";
+		mes "那就隨便看吧.";
+		mes "但是不要打擾我的老師";
+		close;
+
+	ap_2:
+		if(baseLevel < 50){
+			mes "[廚師的學徒]";
+			mes "你還需要再鍛煉點";
+			mes "再這之前還有很多煩人的東西";
+			mes "比如烹飪";
+			close;
+		}
+
+		set cooking, 1;
+		mes "[廚師的學徒]";
+	L_Remind:
+		mes "因此你還要學嗎";
+		mes "哈";
+		mes "如果你能做到,";
+		mes "那就跟我老師說.";
+		next;
+		mes "[廚師的學徒]";
+		mes "不要忘記你的";
+		mes "^000080廚師帽^000000 和 抹布？";
+		mes "在呼喚你.";
+		close;
+
+	ER_Zeny:
+		next;
+		mes "[廚師的學徒]";
+		mes "你沒足夠的錢.";
+		close;
+
+	ER_TooMuch:
+		next;
+		mes "[廚師的學徒]";
+		mes "你不能在同一時間買這個!.";
+		mes "不用1次購買所有的東西.";
+		close;
+	ER_Invalid:
+		next;
+		mes "[廚師的學徒]";
+		mes "你想購買負數？？";
+		mes "裝備. 輸入一個有效的數字.";
+		close;
+}
+
+
+payon.gat,209,127,4	script	Cooking Friend	88,{
+	mes "[烹飪師的朋友]";
+	if(cooking == 5){
+		if(countitem(7432)) {
+			delitem 7432, 1;//Items: Leather Pouch,
+			mes "我朋友";
+			mes "叫你帶給我的東西在哪.";
+			set cooking, 6;
+			emotion e_thx;
+		} else {
+			mes "什么？！他只和你說了";
+			mes " Hello?";
+			emotion e_hmm;
+		}
+		mes "謝謝你啊";
+		mes "麻煩了.那你也跟他說聲,";
+		mes "Hello.";
+		close;
+	}
+	mes "Hello, 你好嗎?";
+	close;
+}
+
+
+prt_castle.gat,45,35,4	script	哈樂	886,{
+	mes "[哈樂]";
+	if(cooking && getequipid(1) != 5026) goto L_No_Uniform; //Item: Chef's Hat
+	if(cooking == 7)goto L_Cooking_7;
+	if(first_cooking)goto L_First_Cooking;
+
+	if(cooking == 1){
+		mes "你想學烹飪？?";
+		next;
+		menu "恩",M_GetQuest, "不啊",M_End;
+	}
+
+	mes "今天天氣多好啊~燒烤一定不錯";
+	mes "美好的款待!";
+	close;
+
+	M_GetQuest:
+		mes "[哈樂]";
+		mes "Ok. 我們一起試試吧~.";
+		set first_cooking,rand(1,6);
+
+	L_First_Cooking:
+		mes "我缺少一些特別的材料,";
+		mes "幫我帶來~:";
+		if(first_cooking == 1){
+			set @item1, 577;
+			set @item1a, 1;
+			set @item2, 908;
+			set @item2a, 10;
+			set @item3, 1024;
+			set @item3a, 1;
+			set @food1, 12056;
+
+			mes "1 谷, 10 青蛙蛋, and";
+			mes "1 烏賊魚的墨汁.";
+		}
+
+		if(first_cooking == 2){
+			set @item1, 518;
+			set @item1a, 1;
+			set @item2, 514;
+			set @item2a, 2;
+			set @item3, 501;
+			set @item3a, 1;
+			set @food1, 12061;
+
+			mes "1 蜂蜜, 2 葡萄, and";
+			mes "1 紅色藥水.";
+		}
+
+		if(first_cooking == 3){
+			set @item1, 514;
+			set @item1a, 3;
+			set @item2, 501;
+			set @item2a, 2;
+			set @item3, 0;
+			set @item3a, 0;
+			set @food1, 12046;
+
+			mes "3 葡萄（BBL） and 2 紅色藥水.";
+		}
+
+		if(first_cooking == 4){
+			set @item1, 942;
+			set @item1a, 5;
+			set @item2, 7031;
+			set @item2a, 1;
+			set @item3, 7457;
+			set @item3a, 1;
+			set @food1, 12066;
+
+			mes "5 溜溜猴尾巴（溜溜猴）, 1 平底鍋（魔鍋蛋）, and";
+			mes "1 烹飪油.";
+		}
+
+		if(first_cooking == 5){
+			set @item1, 940;
+			set @item1a, 5;
+			set @item2, 7031;
+			set @item2a, 1;
+			set @item3, 7457;
+			set @item3a, 1;
+			set @food1, 12041;
+
+			mes "5 蝗蟲腿（搖滾蝗蟲）, 1 平底鍋（魔鍋蛋）, and";
+			mes "1 烹飪油.";
+		}
+
+		if(first_cooking == 6){
+			set @item1, 960;
+			set @item1a, 10;
+			set @item2, 511;
+			set @item2a, 10;
+			set @item3, 503;
+			set @item3a, 1;
+			set @food1, 12051;
+
+			mes "10 鉗子, 10 綠色藥草（BBL）, and";
+			mes "1 黃色藥水.";
+		}
+
+		if(countitem(@item1) < @item1a || countitem(@item2) < @item2a || countitem(@item3) < @item3a) close;
+
+		delitem @item1, @item1a;
+		delitem @item2, @item2a;
+		delitem @item3, @item3a;
+		next;
+		set cooking, 2;
+
+		mes "[哈樂]";
+		mes "很好!";
+		mes "你現在可以去購買室外烹飪用炊具了";
+		mes "室外烹飪用炊具.";
+		getitem @food1, 1;
+		set first_cooking, 0;
+		close;
+
+	L_Cooking_7:
+		mes "檢查一下";
+		mes "我的^800000烹飪書^000000?";
+		next;
+		menu "是的",-, "不", M_End2, "還書", M_ReturnBook;
+
+		mes "[哈樂]";
+		if(cook_book){
+			mes "你要把書還我";
+			mes "需要借本新的書嗎.";
+			next;
+			menu "恩",-, "不",M_End2;
+
+			if(countitem(cook_book)==0){
+				mes "什么？！我借的書沒了?";
+				mes "這是1本 ^800000"+getitemname(cook_book)+"^000000.";
+				emotion e_sry;
+				close;
+			} 
+		}
+		mes "[哈樂]";
+		mes "你想要哪本?";
+		next;
+		menu "^800000Lv 1烹飪書",b_1, "Lv 2 烹飪書",b_2, "Lv 3 烹飪書",b_3, "Lv 4 烹飪書",b_4, "Lv 5 烹飪書",b_5, "^000000離開",M_End2;
+
+	b_1:
+		mes "[哈樂]";
+		mes "你需要:";
+		mes "10 南瓜（南瓜魂）";
+		next;
+		if(countitem(535) < 10) goto L_No_Items;//Items: Pumpkin,
+		delitem 535, 10;//Items: Pumpkin,
+		set @checkout, 7472;
+		mes "我等你回來";
+		next;
+		goto b_trade;
+
+	b_2:
+		mes "[哈樂]";
+		mes "你需要:";
+		mes "5 姜餅（甜面人）";
+		next;
+		if(countitem(538) < 5) goto L_No_Items;//Items: Well-baked Cookie,
+		delitem 538, 5;//Items: Well-baked Cookie,
+		set @checkout, 7473;
+		mes "我等你回來!";
+		next;
+		goto b_trade;
+
+	b_3:
+		mes "[哈樂]";
+		mes "你需要:";
+		mes "5 生魚壽司";
+		next;
+		if(countitem(551) < 5) goto L_No_Items;//Items: Sushi,
+		delitem 551, 5;//Items: Sushi,
+		set @checkout, 7474;
+		mes "我等你回來";
+		next;
+		goto b_trade;
+
+	b_4:
+		mes "[哈樂]";
+		mes "你需要:";
+		mes "5 包子（元宵童子）";
+		next;
+		if(countitem(553) < 5) goto L_No_Items;//Items: Dumpling,
+		delitem 553, 5;//Items: Dumpling,
+		set @checkout, 7475;
+		mes "我等你回來";
+		next;
+		goto b_trade;
+
+	b_5:
+		mes "[哈樂]";
+		mes "你需要:";
+		mes "10 芽苗";
+		next;
+		if(countitem(711) < 10) goto L_No_Items;//Items: Shoot,
+		delitem 711, 10;//Items: Shoot,
+		set @checkout, 7476;
+		mes "我等你回來";
+		next;
+		goto b_trade;
+
+	b_trade:
+		mes "[哈樂]";
+		mes "如果你需要新的書,";
+		mes "歡迎你回來";
+		mes "拿.";
+
+		if(cook_book){
+			if(countitem(cook_book)==0){
+				mes "什么？！你沒有我借你的書？?";
+				mes "這是1本 ^800000"+getitemname(cook_book)+"^000000.";
+				emotion e_sry;
+				close;
+			} 
+			delitem cook_book,1;
+			mes "開玩笑~ 好運哈!";
+		} else {
+			mes "好運~我希望你能多學點!";
+		}
+		getitem @checkout,1;
+		set cook_book, @checkout;
+		close;
+
+	M_End:
+		mes "[哈樂]";
+		mes "很好 回去吧";
+		mes "什么時候你還想來.";
+		close;
+
+	M_End2:
+		mes "[哈樂]";
+		mes "我會在這里無論你什么時候來";
+		mes "隨時恭候你的到來";
+		close;
+
+	M_ReturnBook:
+		if(cook_book == 0){
+			mes "[哈樂]";
+			mes "你沒有問我借過書.";
+			emotion e_hmm;
+			close;
+		}
+
+		if(countitem(cook_book)==0){
+			mes "什么？！你沒我借你的書?";
+			mes "這是一本 ^800000"+getitemname(cook_book)+"^000000.";
+			emotion e_sry;
+			close;
+		} 
+		delitem cook_book,1;
+		set cook_book, 0;
+		mes "[哈樂]";
+		mes "已經還了書？?";
+		mes "你需要什么想知道？";
+		emotion e_what;
+		close;
+
+	L_No_Items:
+		mes "[哈樂]";
+		mes "你還沒這些道具";
+		mes "你需要用到他們.";
+		close;
+
+	L_No_Uniform:
+		mes "你不能對我無理";
+		mes "等意見統一了再來吧.";
+		emotion e_bzz;
+		close;	
+}

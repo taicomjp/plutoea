@@ -1,0 +1,174 @@
+//------------------------------------------------------
+// [Deep Develop Team]  www.chinanog.org
+//------------------------------------------------------
+// 腳本名稱: Dathena 快速一轉NPC
+//------------------------------------------------------
+// 作者: deepin[DDT] 
+//------------------------------------------------------
+// 目前版本: V1.0
+//------------------------------------------------------
+// 更新說明:
+// V1.0 2005/12/24 完全重寫 [deepin]
+// V1.5 2005/12/24 將進階二轉合并到本腳本中  [deepin]
+// V1.6 2005/12/24 修正拳圣和靈媒轉職不限制性別  [deepin]
+//------------------------------------------------------
+
+prontera.gat,147,170,5	script	二轉就職輔助人員	754,{
+    if(JobLevel < 40) goto jobLow;
+    if(skillpoint > 0) goto haveSkpoint;
+    if(class >4001 && class!=4046) goto Hlevel;
+	mes"[二轉就職輔助人員]";
+	mes "你已經滿足轉職的基本條件,";
+	mes "請選擇你目前可以轉的二轉職業:";
+	next;
+	switch(class){
+		case 1:
+			menu "騎士",LKnight,"十字軍",LCrusader,"不轉了",LCancel;
+			LKnight:
+				jobchange 7;
+				break;
+			LCrusader:
+				jobchange 14;
+				break;
+		case 2:
+			menu "巫師",Lwizard,"賢者",LSage,"不轉了",LCancel;
+			Lwizard:
+				jobchange 9;
+				break;
+			LSage:
+				jobchange 16;
+				break;
+		case 3:
+			if(sex == 0) menu "獵人",LHunter,"舞娘",LDancer,"不轉了",LCancel;
+			else menu "獵人",LHunter,"詩人",LBard,"不轉了",LCancel;
+			LHunter:
+				jobchange 11;
+				break;
+			LBard:
+				jobchange 19;
+				break;
+			LDancer:
+				jobchange 20;
+				break;
+		case 4:
+			menu "牧師",LPriest,"武僧",LMonk,"不轉了",LCancel;
+			LPriest:
+				jobchange 8;
+				break;
+			LMonk:
+				jobchange 15;
+				break;
+		case 5:
+			menu "鐵匠",LBlacksmith,"煉金術士 ",LAlchemist,"不轉了",LCancel;
+			LBlacksmith:
+				jobchange 10;
+				break;
+			LAlchemist:
+				jobchange 18;
+				break;
+		case 6:
+			menu "刺客",LAssassin,"流氓",LRogue,"不轉了",LCancel;
+			LAssassin:
+				jobchange 12;
+				break;
+			LRogue:
+				jobchange 17;
+				break;
+		case 4046:
+			menu "靈媒",LSoulLinker,"拳圣",LStarKnight,"不轉了",LCancel;
+			LSoulLinker:
+				jobchange 4049;
+				break;
+			LStarKnight:
+				jobchange 4047;
+				break;
+	}
+
+    Hlevel:
+	mes"[二轉就職輔助人員]";
+	mes "你已經是進階一轉職業,";
+	mes "并且已經滿足進階二轉的基本條件,";
+	mes "目前你可以選擇的進階二轉職業為:";
+	next;
+	switch(class){
+		case 4002:
+			menu "騎士領主",LKnight1,"圣殿十字軍",LCrusader1,"不轉了",LCancel;
+			LKnight1:
+				jobchange 4008;
+				break;
+			LCrusader1:
+				jobchange 4015;
+				break;
+		case 4003:
+			menu "超魔導士",Lwizard1,"智者",LSage1,"不轉了",LCancel;
+			Lwizard1:
+				jobchange 4010;
+				break;
+			LSage1:
+				jobchange 4017;
+				break;
+		case 4004:
+			if(sex == 0) menu "神射手",LHunter1,"冷艷舞姬",LDancer1,"不轉了",LCancel;
+			else menu "神射手",LHunter1,"搞笑藝人",LBard1,"不轉了",LCancel;
+			LHunter1:
+				jobchange 4012;
+				break;
+			LBard1:
+				jobchange 4020;
+				break;
+			LDancer1:
+				jobchange 4021;
+				break;
+		case 4005:
+			menu "神官",LPriest1,"武術宗師",LMonk1,"不轉了",LCancel;
+			LPriest1:
+				jobchange 4009;
+				break;
+			LMonk1:
+				jobchange 4016;
+				break;
+		case 4006:
+			menu "神工匠",LBlacksmith1,"創造者",LAlchemist1,"不轉了",LCancel;
+			LBlacksmith1:
+				jobchange 4011;
+				break;
+			LAlchemist1:
+				jobchange 4019;;
+				break;
+		case 4007:
+			menu "十字刺客",LAssassin1,"神行太保",LRogue1,"不轉了",LCancel;
+			LAssassin1:
+				jobchange 4013;
+				break;
+			LRogue1:
+				jobchange 4018;
+				break;
+	}
+
+    JobChangeOk:
+       	mes"[二轉鋪助人員]";
+	mes"OK,恭喜你,轉職成功!";
+	mes"祝你在這里玩得愉快!";
+        close;
+	end;
+    LCancel:
+	mes"[二轉就職輔助人員]";
+	mes"嗯,好的,好好想想吧,";
+	mes"決定要轉了隨時歡迎回來找我!";
+	mes"祝你玩得愉快!";
+    	close;
+    	End;
+   jobLow:
+       	mes "[二轉就職輔助人員]";
+	mes "對不起,你的職業等級必須達到^008000 40級 ^000000才能進行轉職工作,繼續努力吧!^008000 40級 ^000000以后再來找我,快去練吧!";
+       	close;
+    	End;
+   haveSkpoint:
+       	mes "[二轉就職輔助人員]";
+	mes "對不起,你的職業技能點數必須加完，且不能有剩余點數才能進行轉職工作!";
+       	close;
+    	End;
+OnInit:
+	waitingroom "二轉就職輔助人員",0;
+	end;
+}

@@ -1,0 +1,2292 @@
+// 賢者轉職腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041118.0.2
+//			20050319.0.1	修正取得 生物學 教授 第三項任務會無法解的問題
+//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//			20050508.0.1	修正歷史學教授論文 goto L_START_2_1; 寫成 L_START_4_1 造成不能轉職的問題
+//
+// 原始腳本:		kingbo 2004/3/26 下午 04:54
+//
+//============================================================
+
+// -------------------------------------------------
+// 整個過程是依照我在官方測試伺服器轉職流程所完成
+// 部份流程參考巴哈姆特及天野幻境轉載
+// 目前有些資料還未明如下：
+//----------------------------------------------------------------
+// 生物學及歷史學教授題目不明
+//   (有補上天野所載的資料不過仍不完整)
+// 魔物數量不明 (過關太順了拍到的圖太少)
+// 寫論文過關條件不明 (文章亂選也是過 ?.? )
+//----------------------------------------------------------------
+// 補充：如果使用本腳本的話，請將其置放于 npu_yuno.txt 之后
+//       因為里面會有重覆的 NPC 以避免任務無法繼續
+
+job_sage.gat mapflag nomemo dummy
+job_sage.gat mapflag noteleport dummy
+job_sage.gat mapflag nosave SavePoint
+
+yuno_in02.gat,38,61,4	script	魔法學院 院長	743,{
+
+	if(JOB_SAGE_Q == 9 ) goto L_PART3;
+	if(JOB_SAGE_Q == 1 ) goto L_PART1;
+	if(JOB_SAGE_Q >= 2 ) goto L_PART2;
+	if(BaseJob == Job_Sage) goto IsSage;
+	if(BaseJob == Job_Mage) goto IsMagican;
+	if(BaseJob == Job_Novice) goto IsNovice;
+	mes "[凱倫 葛瑞]";
+	mes "呵呵，我們雖然在研究這世界";
+	mes "但只是那樣還不夠啊";
+	mes "果然其它職業的人們";
+	mes "擁有的寶貴經驗是更重要的";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "假如周圍有賢者，";
+	mes "多多告知及幫忙，";
+	mes "他們也會相對的幫助你的…";
+	close;
+
+HighSage:
+	mes "[凱倫 葛瑞]";
+	mes "哎呀! 你已經是上位魔法師了呢!";
+	mes "很抱歉! 我沒有辦法讓你轉職成賢者!";
+	mes "請你去找學者轉職吧!";
+	mes "那才是適合你的職業!";
+	close;
+
+IsNovice:
+	mes "[凱倫 葛瑞]";
+	mes "呵呵，到這種地方有什么事…";
+	mes "是來閑逛的嗎？";
+	mes "為了來到這種地方應該很辛苦，是因為對";
+	mes "賢者有興趣吧，";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "假如身為賢者對學問有意思的話，去過一";
+	mes "一下魔法師的生活再來吧，";
+	mes "我會滿心歡喜的等待重逢的日子的，";
+	close;
+IsSage:
+	mes "[凱倫 葛瑞]";
+	mes "什么事，你…有什么困難的事嗎？";
+	mes "不要因為已經成為賢者，而停止學習";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "我們的知識，就是發展這個大陸的原動力";
+	mes "，為了對所有人類有幫助，不要忘了要一";
+	mes "直探究及記錄";
+	close;
+
+IsMagican:
+	mes "[凱倫 葛瑞]";
+	mes "對于魔法充滿熱情的你，歡迎你，";
+	mes "來到這里有什么事？";
+	next;
+	menu "想要轉職成為賢者",L_MENU_1,"請告訴我關於賢者的事情",L_MENU_2,"沒有什么事",L_MENU_3;
+
+L_MENU_1:
+	if (((BaseJob == Job_Mage) && (Upper == 1)) || (ReBirth > 0)) goto HighSage;
+	mes "[凱倫 葛瑞]";
+	mes "嗯！想要轉職成為賢者嗎？";
+	mes "轉職啊… 不過最好先改變那想法吧";
+	set JOB_SAGE_Q, 1;
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "所謂賢者是對世上事物不停的研究與記錄";
+	mes "，圖謀大陸的發展的人們，";
+	mes "為了成為那種人，不是只有換個衣服穿";
+	mes "而已，";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "你先去報考，修巴依采勒大學吧，";
+	mes "那邊會幫你詳細說明的";
+	close;
+
+L_MENU_2:
+	mes "[凱倫 葛瑞]";
+	mes "轉職成賢者啊…";
+	mes "沒有任何人把成為賢者的事";
+	mes "說成轉職啊！";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "為了成為賢者，道先要報考";
+	mes "修巴依采勒比大學";
+	mes "然后參加入學考試";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "考完試后，要經過關於特定";
+	mes "科目的研究過程…";
+	mes "最后要將研究的結果寫成論文";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "然后將論文拿來給我，我會給予評價，";
+	mes "及格時，你就會以賢者的身分過生活";
+	next;
+
+L_MENU_3:
+	mes "[凱倫 葛瑞]";
+	mes "呵嗯，有那種時間，就多看一本書吧，";
+	mes "世上所有的事情，全部都在書里面，";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "當然，只用書是沒辦法知道所有的事…";
+	mes "不過對于我們賢者書還是很重要的";
+	close;
+
+L_PART1:
+	mes "[凱倫 葛瑞]";
+	mes "先到修巴依采勒比大學去吧！";
+	mes "就向梅泰伍司 詩夫的年經賢者申請";
+	close;
+
+L_PART2:
+	mes "[凱倫 葛瑞]";
+	mes "呵呵，成為賢者的路并沒有那么簡單，";
+	mes "只是很會使用魔法，并不是都可以";
+	mes "解決的…";
+	next;
+	mes "[凱倫 葛瑞]";
+	mes "努力點，把論文也完成后再回來吧";
+	mes "那么，辛苦你了！";
+	close;
+
+L_PART3:
+	if(Skillpoint == 0 ) goto L_PART3_1;
+	mes "[凱倫 葛瑞]";
+	mes "你還剩下一些技能啊…";
+	mes "給我看論文之前，解決好再來吧";
+	close;
+
+	L_PART3_1:
+		mes "[凱倫 葛瑞]";
+		mes "呼呼，完成論文了嗎？辛苦了";
+		mes "來給我看看吧，";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "呵嗯…";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "呵哦…";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "哦嗯…";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "文筆雖然還沒有成熟，不過寫的還不錯，";
+		mes "對…你看起來頗有研究天份，";
+		next;
+		setoption 0;
+		callfunc "Job_Change",Job_Sage;
+		mes "[凱倫 葛瑞]";
+		mes "你畢業了！";
+		mes "從現在起過著賢者的生活吧，";
+		mes "往后也不要忘了現在的心情…";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "要好好珍藏論文，因為是你唯一寫的書，";
+		mes "可能有用到的時候，還有，邊看邊珍藏";
+		mes "現在的記憶";
+		next;
+		mes "[凱倫 葛瑞]";
+		mes "那么……";
+		mes "希望你的未來充滿著知識，";
+		mes "努力研究吧！！";
+		close;
+}
+
+yuno_in03.gat,154,35,4	script	學院 相關人員	742,{
+
+	if(JOB_SAGE_Q == 1 ) goto L_SCHOOL_APPLY;
+	if(JOB_SAGE_Q == 2 ) goto L_SCHOOL_APPLY2;
+	if(JOB_SAGE_Q == 3 ) goto L_START_DONE2;
+	if(JOB_SAGE_Q >= 4 ) goto L_PART1;
+	mes "[梅泰伍司 詩夫]";
+	mes "歡迎，";
+	mes "這里是";
+	mes "修巴依采勒比魔法學院";
+	next;
+	mes "[梅泰伍司 詩夫]";
+	mes "我們是培養賢者的機關，研究魔物與魔法。";
+	mes "身為魔法師職業，等級40以上的人都可以入學";
+	next;
+	mes "[梅泰伍司 詩夫]";
+	mes "周邊有魔法師時，請告訴他們";
+	mes "還有，祝你有美好的一天。";
+	close;
+
+L_PART1:
+	mes "[梅泰伍司 詩夫]";
+	mes "啊，抱歉，現在有點忙，";
+	mes "以后再跟我說吧，真是抱歉";
+	close;
+
+L_SCHOOL_APPLY2:
+	mes "[梅泰伍司 詩夫]";
+	mes "歡迎，重新來入學的嗎";
+	next;
+	goto L_MENU_2_1;
+
+L_SCHOOL_APPLY:
+	mes "[梅泰伍司 詩夫]";
+	mes "歡迎，這里是";
+	mes "修巴依采勒比魔法學院";
+	mes "是魔法師啊，有什么事情嗎？";
+	next;
+	menu "請告訴我關於轉職賢者的事情",L_MENU_1,"想要申請入學",L_MENU_2,"沒什么事",L_MENU_3;
+
+	L_MENU_1:
+		mes "[梅泰伍司 詩夫]";
+		mes "希望轉職成為賢者嗎？";
+		mes "可是我們沒有幫你作轉職，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "進入我們的學院，經過一定的過程…";
+		mes "就會得到關於正式研究活動的認定，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "因為種理由我們不稱作轉職，";
+		mes "而稱作畢業，";
+		mes "不過怎樣入學申請時，要繳交學費";
+		mes "同時考入學考試";
+		next;
+		mes "[梅泰伍司 詩夫]"; 
+		mes "只是…";
+		mes "有個特別過程，限于有^000088古魔法書^000000";
+		mes "與^000088慧眼^000000的人免繳學費，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "辦好入學手續后，會考入學考試，";
+		mes "通過入學考試后，會經由主題研究";
+		mes "撰寫論文，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "論文寫好后，將論文拿給院長";
+		mes "讀過后決定合格可與否，";
+		mes "那么從那時起，就可以以賢者的身分";
+		mes "參與研究活動";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "有意愿時請隨時申請，";
+		mes "還有，祝你有個美好的一天";
+		close;
+	L_MENU_2:
+		mes "[梅泰伍司 詩夫]";
+		mes "是入學申請啊，";
+		mes "歡迎來到修巴依采勒比魔法學院，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "要入學的基本條件是，";
+		mes "職業等級到40以上過著魔法師生活的人";
+		mes "還有，要準備學習程過必要所定的學費";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "學費是70,000金幣，";
+		mes "或是帶著^000088古魔法書^000000";
+		mes "與^000088慧眼^000000來，就可以免繳學費，";
+		next;
+		mes "[梅泰伍司 詩夫]";
+		mes "那么，現在馬上申請入學嗎？";
+		set JOB_SAGE_Q, 2;
+		next;
+		menu "我要申請入學",L_MENU_2_1,"學費太貴了",L_MENU_2_2,"我下次再來",L_MENU_2_3;
+
+		L_MENU_2_1:
+
+		//入學學費為70,000zeny，但若是身上錢不夠，
+		//也沒有關系，只要收集了他所需要的物品，就可用30,000zeny入學。 
+		//如果不想要花入學學費，那么你可以身上帶著
+		//“古魔法書”和“慧眼”， 或者是JOB Lv50，就可免費入學 。
+
+			if(JobLevel < 40 ) goto L_START_0;
+			if(JobLevel == 50 ) goto L_START_1;
+			if(countitem(1006) > 0 && countitem(1007) > 0 ) goto L_START_2;
+			if(Zeny >= 70000 ) goto L_START_3;
+			if(Zeny >= 30000 && countitem(914) >=50 && countitem(916) >=50 && countitem(949) >=50 && countitem(705) >=50) goto L_START_4;
+
+			mes "[梅泰伍司 詩夫]";
+			mes "看樣子你還沒準備好喔";
+			mes "等你打算入學的時候";
+			mes "把東西帶齊了再來找我吧！";
+			close;
+
+			L_START_0:
+				mes "[梅泰伍司 詩夫]";
+				mes "要入學的基本條件是，";
+				mes "職業等級要達到40以上喔";
+				mes "請先去修練到達此等級再來吧";
+				close;
+			L_START_1:
+				mes "[梅泰伍司 詩夫]";
+				mes "你職業等級已經50級?，";
+				mes "都這么的努力了，";
+				goto L_START_DONE;
+			L_START_2:
+				mes "[梅泰伍司 詩夫]";
+				mes "你將^000088古魔法書^000000與^000088慧眼^000000帶來了，";
+				delitem 1006, 1;
+				delitem 1007, 1;
+				goto L_START_DONE;
+			L_START_3:
+				mes "[梅泰伍司 詩夫]";
+				mes "你準備好了70,000金幣了，";
+				set Zeny, Zeny - 70000;
+				goto L_START_DONE;
+			L_START_4:
+				mes "[梅泰伍司 詩夫]";
+				mes "你準備好了30,000金幣，";
+				mes "也把我交代的東西都找齊了";
+				set Zeny, Zeny - 30000;
+				delitem 705, 50;
+				delitem 914, 50;
+				delitem 916, 50;
+				delitem 949, 50;
+				goto L_START_DONE;
+
+			L_START_DONE:
+				mes "那么讓你入學吧！";
+				set JOB_SAGE_Q, 3;
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "那么，填寫入學申請書吧，";
+				mes "請在這里簽名";
+				next;
+				menu strcharinfo(0),-;
+
+				mes "[梅泰伍司 詩夫]";
+				mes "名字是… " + strcharinfo(0) + "對嗎？";
+				mes "是個好名字";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "好，入學手續辦好了，";
+				mes "那么馬上去考入學考試吧！";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "去見柯瑞土斯教授就可以了，";
+				mes "他在進去左邊的房間里";
+				close;
+
+			L_START_DONE2:
+				mes "[梅泰伍司 詩夫]";
+				mes "嗯？在做什么？要去考入學考式啊，";
+				mes "去見左邊房間的柯瑞土斯吧！";
+				close;
+		L_MENU_2_2:
+			mes "[梅泰伍司 詩夫]";
+			mes "好可惜，是錢不夠嗎？";
+			mes "按規定一定要準備好70,000金幣…";
+			next;
+			menu "沒有別的方法嗎？",L_MENU_2_2_1,"我下次再來",L_MENU_2_2_2;
+
+			L_MENU_2_2_1:
+				mes "[梅泰伍司 詩夫]";
+				mes "那么我就給你特別的機會！";
+				mes "就是將學費降到30,000";
+				mes "金幣的同時，要找幾物種物品來";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "請找以下的物品來，";
+				mes "^000088羽毛 ^000000 50個";
+				mes "^000088毛 ^000000 50個";
+				mes "^000088三葉幸運草 ^000000 50個";
+				mes "^000088柔毛 ^000000 50個";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "把我講的東西找來，就把學費降到";
+				mes "30,000金幣";
+				mes "這種條件就有可能吧！";
+				mes "請努力找找看吧！";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "當然那之前準備70,000金幣的話";
+				mes "就收學費的";
+				mes "這也是規定";
+				next;
+				mes "[梅泰伍司 詩夫]";
+				mes "還有找到^000088古魔法書^000000與^000088慧眼^000000來，也可以";
+				mes "那么，祝你有個美好的一天";
+				close;
+
+			L_MENU_2_2_2:
+				mes "[梅泰伍司 詩夫]";
+				mes "好，請慢慢準備…";
+				mes "還有，祝你有個美好的一天";
+				close;
+		L_MENU_2_3:
+			mes "[梅泰伍司 詩夫]";
+			mes "好，請慢慢準備…";
+			mes "還有，祝你有個美好的一天";
+			close;
+	L_MENU_3:
+		mes "[梅泰伍司 詩夫]";
+		mes "好，慢慢逛逛再回去吧";
+		mes "還有，祝你有個美好的一天";
+		close;
+}
+
+
+yuno_in03.gat,105,177,4	script	筆記考試 教授	754,{
+
+	if(JOB_SAGE_Q == 3 ) goto L_START_QUEST;
+	if(JOB_SAGE_Q == 4 ) goto L_START_QUEST2;
+	if(JOB_SAGE_Q == 5 ) goto L_QUEST_PASS2;
+	if(JOB_SAGE_Q >= 6 ) goto L_PART1;
+	if(BaseJob == Job_Novice) goto IsNovice;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "呵嗯…";
+	mes "人學是次要的，即然是不同的職業沒辦法成為賢者";
+	mes "所謂才能是從出生就累積的……";
+	next;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "所以，不要在這種地方徘徊…";
+	mes "與別人一起去打獵也好。";
+	close;
+IsNovice:
+	mes "[柯瑞土斯 貝多爾]";
+	mes "有事嗎，小朋友，";
+	mes "這里不是小孩玩耍的地方，";
+	next;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "去外面打波利玩吧，";
+	mes "趕快，叫你趕快出去？";
+	close;
+L_PART1:
+	mes "[柯瑞土斯 貝多爾]";
+	mes "因為現在在看其它入學生的考卷有點忙";
+	mes "有什么事要說，請下次再來找我吧！";
+	close;
+
+L_START_QUEST2:
+	mes "[柯瑞土斯 貝多爾]";
+	mes "歡迎，";
+	mes "這次有讀好書再來嗎？";
+	next;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "這次的條件也一樣，總共出20題";
+	mes "每題答對5分，80分以上就算合格，";
+	next;
+	goto L_SAGE_QUEST_AGAIN;
+
+L_START_QUEST:
+	set JOB_SAGE_Q, 4;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "歡迎，歡迎來到修巴依采勒比學院，";
+	mes "辦好入學考試才來的嗎？";
+	next;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "我來看看，";
+	mes "名字是 " + strcharinfo(0) + " ";
+	mes "啊…";
+	mes "那么馬上來考試吧！";
+	next;
+	mes "[柯瑞土斯 貝多爾]";
+	mes "我要考的考題是，關於構成這個";
+	mes "世界的所有事物，";
+	mes "共有20個問題，每個問題5分，";
+	mes "只要80分以上就算及格，";
+	next;
+
+L_SAGE_QUEST_AGAIN:
+
+	mes "[柯瑞土斯 貝多爾]";
+	mes "那么馬上開始吧";
+	mes "沒有馬上回答，考試就會中止";
+	next;
+		set @sage_t, 0;
+		set @sage_quest_c, rand(1,3);
+		if(@sage_quest_c == 1) goto L_QUEST1;
+		if(@sage_quest_c == 2) goto L_QUEST2;
+		if(@sage_quest_c == 3) goto L_QUEST3;
+//類型A：
+
+L_QUEST1:
+		mes "1. 普隆德拉的禮品商人不賣的物品是？";
+		menu "白色盤子",L_QUEST1_2,"紅色相框",L_QUEST1_2,"花束",-,"玻璃珠",L_QUEST1_2;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_2:
+		next;
+		mes "2. 不賣雙刃短劍的城市是？";
+		menu "普隆德拉",-,"夢羅克",L_QUEST1_3,"吉芬",L_QUEST1_3,"姜餅城",L_QUEST1_3;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_3:
+		next;
+		mes "3. 與烏龜島最近的城市是？";
+		menu "艾爾帕蘭",L_QUEST1_4,"艾爾貝塔",-,"克魔島",L_QUEST1_4,"依斯魯得島",L_QUEST1_4;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_4:
+		next;
+		mes "4. 以下不同種族的魔物是？";
+		menu "奈吉鳥",L_QUEST1_5,"單眼蟲",L_QUEST1_5,"傘蜥",L_QUEST1_5,"海星",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_5:
+		next;
+		mes "5. 以下屬性不同的魔物是？";
+		menu "螳螂",L_QUEST1_6,"重金屬蝗蟲",-,"搖滾蝗蟲",L_QUEST1_6,"鍬形蟲",L_QUEST1_6;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_6:
+		next;
+		mes "6. 以下大小不同的魔物是？";
+		menu "幽靈劍士",-,"幽靈弓箭手",L_QUEST1_7,"邪骸浪人",L_QUEST1_7,"鏡妖",L_QUEST1_7;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_7:
+		next;
+		mes "7. 以下不是給“酒精”的魔物是？";
+		menu "鬼火",L_QUEST1_8,"漂浮蟲",L_QUEST1_8,"毒魔菇",-,"蛙王",L_QUEST1_8;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_8:
+		next;
+		mes "8. 與騎士轉職沒關系的人是？";
+		menu "詹姆士 喜拉吉斯",L_QUEST1_9,"湯姆斯 塞爾班特斯",-,"艾咪 佩亞特麗絲",L_QUEST1_9,"愛德蒙登 克魯斯多",L_QUEST1_9;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_9:
+		next;
+		mes "9. 不是普隆德拉的居民是？";
+		menu "特諾",L_QUEST1_10,"比娜",-,"佑比",L_QUEST1_10,"忽克連",L_QUEST1_10;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_10:
+		next;
+		mes "10. 戴眼鏡的卡普拉員工的名字是？";
+		menu "狄波蘿太",L_QUEST1_11,"泰依琳",L_QUEST1_11,"克拉麗斯",-,"德帛硫",L_QUEST1_11;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_11:
+		next;
+		mes "11. 使用Lv.7的雷暴術時消耗的SP量是？";
+		menu "49",L_QUEST1_12,"59",-,"69",L_QUEST1_12,"74",L_QUEST1_12;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_12:
+		next;
+		mes "12. 當SP剩下 50％ 時，能量外套的傷害力減少量與SP消耗量是？";
+		menu "傷害力24％ SP1.5％",L_QUEST1_13,"傷害力24％ SP2％",L_QUEST1_13,"傷害力18％ SP1.5％",L_QUEST1_13,"傷害力18％ SP2％",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_13:
+		next;
+		mes "13. 在魔法師的“箭術”系列魔法中，少掉的一種屬性是什么？";
+		menu "水屬性",L_QUEST1_14,"地屬性",-,"火屬性",L_QUEST1_14,"風屬性",L_QUEST1_14;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_14:
+		next;
+		mes "14. 盜賊的情況，二刀連擊 Lv.7 時，機率與攻擊力是？";
+		menu "35％/ 120％",L_QUEST1_15,"35％/ 140％",-,"40％/ 120％",L_QUEST1_15,"40％/ 140％",L_QUEST1_15;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_15:
+		next;
+		mes "15. 下列哪一種怪獸弱于有加螃蟹卡片(對火屬性怪獸有20%的追加損失)武器？";
+		menu "綠蒼蠅",L_QUEST1_16,"小惡魔",L_QUEST1_16,"長老樹精",-,"巴風特",L_QUEST1_16;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_16:
+		next;
+		mes "16. 右手訓練 Lv.4 的效能是？";
+		menu "回復 80%的受損量",L_QUEST1_17,"回復 90%的受損量",-,"回復 100%的受損量",L_QUEST1_17,"回復 110%的受損量",L_QUEST1_17;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_17:
+		next;
+		mes "17. 以下哪種魔物的魔法防御力最強？";
+		menu "楸形蟲",L_QUEST1_18,"蒼蠅",L_QUEST1_18,"白蟻",L_QUEST1_18,"刺?蟲",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_18:
+		next;
+		mes "18. 從下面選出哪一種魔物最怕火屬性攻擊？";
+		menu "刺刀哥布靈",L_QUEST1_19,"鏈錘哥布靈",L_QUEST1_19,"刺錘哥布靈",L_QUEST1_19,"榔頭哥布靈",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_19:
+		next;
+		mes "19. 對不死系攻擊，有抵抗力的卡片是？";
+		menu "邪骸獸人卡片",L_QUEST1_20,"獸人腐尸卡片",-,"綠腐尸卡片",L_QUEST1_20,"邪骸礦工卡片",L_QUEST1_20;
+		set @sage_t, @sage_t + 5;
+L_QUEST1_20:
+		next;
+		mes "20. 僵尸與妖道在死前，是什么樣的關系？";
+		menu "妹妹與親哥哥",L_QUEST3_END,"鄰居姊姊與弟弟",-,"沒血緣的兄妹",L_QUEST3_END,"不認識的人",L_QUEST3_END;
+		set @sage_t, @sage_t + 5;
+		goto L_QUEST3_END;
+//類型B： 
+L_QUEST2:
+		mes "1. 夢羅克寶石商人不賣的寶石是？";
+		menu "黃寶石",L_QUEST2_2,"深紅寶石",-,"鉆石",L_QUEST2_2,"藍寶石",L_QUEST2_2;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_2:
+		next;
+		mes "2. 不賣魔物飼料的城市是？";
+		menu "普隆德拉",L_QUEST2_3,"夢羅克",L_QUEST2_3,"艾爾帕蘭",-,"艾爾貝塔",L_QUEST2_3;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_3:
+		next;
+		mes "3. 與迷藏森林最近的城市是？";
+		menu "普隆德拉",-,"夢羅克",L_QUEST2_4,"吉芬",L_QUEST2_4,"斐揚",L_QUEST2_4;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_4:
+		next;
+		mes "4. 以下不同種族的魔物是？";
+		menu "摩卡",L_QUEST2_5,"土波利",L_QUEST2_5,"漂浮蟲",L_QUEST2_5,"梅納海葵",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_5:
+		next;
+		mes "5. 以下屬性不同的魔物是？";
+		menu "土人",L_QUEST2_6,"蛇女伊絲",L_QUEST2_6,"基爾瑟",-,"小惡魔",L_QUEST2_6;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_6:
+		next;
+		mes "6. 以下大小不同的魔物是？";
+		menu "小盜蟲（先攻）",L_QUEST2_7,"鍬形蟲",L_QUEST2_7,"重金屬蝗蟲",L_QUEST2_7,"艾斯蜘蛛",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_7:
+		next;
+		mes "7. 以下不是給“天地樹葉子”的魔物是？";
+		menu "馬爾杜克",-,"小巴風特",L_QUEST2_8,"天使波利",L_QUEST2_8,"邪骸浪人",L_QUEST2_8;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_8:
+		next;
+		mes "8. 與祭司轉職沒有關系的人是？";
+		menu "湯姆斯 塞爾班特斯",L_QUEST2_9,"文強 派內迪特",-,"彼特 S 艾帕羅多",L_QUEST2_9,"欣詩 馬茹卡利特",L_QUEST2_9;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_9:
+		next;
+		mes "9. 不是夢羅克居民的人是？";
+		menu "世畢阿杰",L_QUEST2_10,"阿里卡哩",L_QUEST2_10,"安東尼奧",-,"尤塌亞邁尼",L_QUEST2_10;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_10:
+		next;
+		mes "10. 藍色的頭發很有魅力的卡普拉的職員叫什么名字？";
+		menu "狄波蘿太",-,"泰依琳",L_QUEST2_11,"克拉麗斯",L_QUEST2_11,"德帛硫",L_QUEST2_11;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_11:
+		next;
+		mes "11. 為了學火焰之壁不需要的過程是？";
+		menu "火箭術 Lv 4",L_QUEST2_12,"心靈爆破 Lv 4",-,"火球術 Lv 5",L_QUEST2_12,"火狩 Lv 1",L_QUEST2_12;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_12:
+		next;
+		mes "12. 沒有 int增加值把禪心學到 Lv.6的時，因為技能而恢復10秒的 SP是？";
+		menu "14",L_QUEST2_13,"16",L_QUEST2_13,"18",-,"21",L_QUEST2_13;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_13:
+		next;
+		mes "13. 在職業等級 33時，魔法師因增加值獲得的 INT 數值是？";
+		menu "7",L_QUEST2_14,"6",L_QUEST2_14,"5",L_QUEST2_14,"4",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_14:
+		next;
+		mes "14. 弓箭手的情況，心神凝聚Lv.5 的 SP 消耗量與持續時間是？";
+		menu "45 / 80秒",-,"50 / 80秒",L_QUEST2_15,"45 / 90秒",L_QUEST2_15,"50 / 90秒",L_QUEST2_15;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_15:
+		next;
+		mes "15. 選擇對火屬性武器短劍最弱的怪獸？";
+		menu "短劍刺刀哥布靈",L_QUEST2_16,"槌子刺刀哥布靈",L_QUEST2_16,"鐵錘 刺刀哥布靈",L_QUEST2_16,"鋼斧 刺刀哥布靈",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_16:
+		next;
+		mes "16. 可以插卡片的拳刃可以在哪一種怪獸身上得到？";
+		menu "土撥鼠",-,"沙漠之狼",L_QUEST2_17,"傀儡娃娃",L_QUEST2_17,"麥斯特",L_QUEST2_17;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_17:
+		mes "17. 和魔法沒有關連的卡片是？";
+		menu "馬爾杜克卡片",L_QUEST2_18,"魔鍋蛋卡片",-,"樹精卡片",L_QUEST2_18,"蟻后卡片",L_QUEST2_18;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_18:
+		next;
+		mes "18. 跟INT沒關系的卡片是？";
+		menu "白蟻幼蟲卡片",L_QUEST2_19,"戰蟻卡片",-,"沙漠幼狼卡片",L_QUEST2_19,"長老樹精卡片",L_QUEST2_19;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_19:
+		next;
+		mes "19. 對風魔賢者有效的屬性是？";
+		menu "水屬性",L_QUEST2_20,"地屬性",-,"火屬性",L_QUEST2_20,"風屬性",L_QUEST2_20;
+		set @sage_t, @sage_t + 5;
+L_QUEST2_20:
+		next;
+		mes "20. 下列HP最高的惡魔型魔物是？";
+		menu "基爾瑟",L_QUEST3_END,"魔鍋蛋",L_QUEST3_END,"土人",L_QUEST3_END,"傀儡娃娃",-;
+		set @sage_t, @sage_t + 5;
+		goto L_QUEST3_END;
+//類型C： 
+L_QUEST3:
+		mes "1. 吉芬的魔法商人不賣的物品是？";
+		menu "大衣",-,"橡木魔杖",L_QUEST3_2,"頭箍",L_QUEST3_2,"秘銀之衣",L_QUEST3_2;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_2:
+		next;
+		mes "2. 不賣厚刃劍的城市是？";
+		menu "普隆德拉",L_QUEST3_3,"依斯魯得島",L_QUEST3_3,"艾爾帕蘭",-,"斐揚",L_QUEST3_3;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_3:
+		next;
+		mes "3. 與克雷斯特漢姆古城最近的城市是？";
+		menu "普隆德拉",L_QUEST3_4,"吉芬",-,"夢羅克",L_QUEST3_4,"斐揚",L_QUEST3_4;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_4:
+		next;
+		mes "4. 以下不同種族的魔物是？";
+		menu "海星",L_QUEST3_5,"馬克",L_QUEST3_5,"烏賊",L_QUEST3_5,"冰波利",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_5:
+		next;
+		mes "5. 以下不同屬性的魔物是？";
+		menu "沙漠幼狼",L_QUEST3_6,"貍貓",-,"小雞",L_QUEST3_6,"巧克猴",L_QUEST3_6;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_6:
+		next;
+		mes "6. 以下不同大小的魔物是？";
+		menu "海盜之王",-,"惡靈",L_QUEST3_7,"闇神官",L_QUEST3_7,"卡利斯格",L_QUEST3_7;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_7:
+		next;
+		mes "7. 以下不是給“強化武器金屬---級數一”的魔物是？";
+		menu "蟲蛹",L_QUEST3_8,"大嘴鳥蛋",-,"小野豬",L_QUEST3_8,"沙漠幼狼",L_QUEST3_8;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_8:
+		next;
+		mes "8. 與鐵匠轉職沒有關系的人是？";
+		menu "巴伊斯里特",L_QUEST3_9,"修加巴殷",L_QUEST3_9,"巴爾卡帝",-,"哥倫卡史特",L_QUEST3_9;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_9:
+		next;
+		mes "9. 不是艾爾帕蘭居民的人是？";
+		menu "RS125",L_QUEST3_10,"莫克娜",-,"小題大作的青年",L_QUEST3_10,"裘卡緹",L_QUEST3_10;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_10:
+		next;
+		mes "10. 最年輕的卡普拉職員的名字是？";
+		menu "狄波蘿太",L_QUEST3_11,"泰依琳",L_QUEST3_11,"克拉麗斯",L_QUEST3_11,"德帛硫",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_11:
+		next;
+		mes "11. 使用暗之障壁 Lv.6時，消耗 SP與回避次數是？";
+		menu "SP 40，6次",L_QUEST3_12,"SP 35，6次",L_QUEST3_12,"SP 40，7次",-,"SP 35，7次",L_QUEST3_12;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_12:
+		next;
+		mes "12. 在使用心靈爆破 Lv.6時，給對方魔物的傷害力是 MATK的幾倍？";
+		menu "1.2倍",L_QUEST3_13,"1.3倍",-,"1.4倍",L_QUEST3_13,"1.5倍",L_QUEST3_13;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_13:
+		next;
+		mes "13. 初學者轉職成為魔法師時，可以成為混合劑4號的觸媒的礦石是？";
+		menu "藍色魔力礦石",L_QUEST3_14,"紅色魔力礦石",L_QUEST3_14,"黃色魔力礦石",L_QUEST3_14,"透明的寶石",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_14:
+		next;
+		mes "14. 劍士的情況，狂擊Lv.6 的 SP攻擊力與SP 消耗量是？";
+		menu "250％ / 8",L_QUEST3_15,"280％ / 8",L_QUEST3_15,"280％ / 15",-,"310％ / 15",L_QUEST3_15;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_15:
+		next;
+		mes "15. 練完盜賊的回避率增加技能之后增加的回避率是什么？";
+		menu "30",-,"40",L_QUEST3_16,"50",L_QUEST3_16,"60",L_QUEST3_16;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_16:
+		next;
+		mes "16. 在Job Lv.50的時候刺客以加值的形式來拿到的AGI是多少？";
+		menu "7",L_QUEST3_17,"8",L_QUEST3_17,"9",L_QUEST3_17,"10",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_17:
+		next;
+		mes "17. 在下列魔物當中選出不同屬性的魔物？";
+		menu "螳螂",L_QUEST3_18,"卡那多斯",-,"基爾瑟",L_QUEST3_18,"刺?蟲",L_QUEST3_18;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_18:
+		next;
+		mes "18. 哪一個是不同的魔物？";
+		menu "溜溜猴",L_QUEST3_19,"魔鍋蛋",L_QUEST3_19,"重金屬蝗蟲",L_QUEST3_19,"杰洛米",-;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_19:
+		next;
+		mes "19. 為了學習“治療術”，“治愈術”最小的技能等級是？";
+		menu "Lv. 1",L_QUEST3_20,"Lv. 2",-,"Lv. 3",L_QUEST3_20,"Lv. 4",L_QUEST3_20;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_20:
+		next;
+		mes "20. 天使之護Lv. 7時，對不死系增加的防御力是？";
+		menu "21",-,"22",L_QUEST3_END,"23",L_QUEST3_END,"24",L_QUEST3_END;
+		set @sage_t, @sage_t + 5;
+L_QUEST3_END:
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "20 題都答好了嗎？";
+		mes "那么，來算分數吧，";
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "我來看看…";
+		mes "呵嗯…呵嗯…";
+		if(@sage_t >= 90) goto L_QUEST_PASS1;
+		if(@sage_t >= 80) goto L_QUEST_PASS;
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "你的分數是 " + @sage_t + " 分，";
+		mes "很可惜沒有合格";
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "再給你考筆試的資格，";
+		mes "再累積點關於世界的知識再來吧！";
+		close;
+
+	L_QUEST_PASS:
+		set JOB_SAGE_Q, 5;
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "你的分數是 " + @sage_t + " 分，";
+		mes "真是差強人意，";
+		mes "不過這種水準應該可以聽課了";
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "這樣你通過了筆試";
+		mes "那么，去海爾梅斯教授那里考術科吧！";
+		close;
+
+	L_QUEST_PASS1:
+		set JOB_SAGE_Q, 5;
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "你的分數是 " + @sage_t + " 分，";
+		mes "真是了不起，";
+		mes "這種高水準絕對可以聽課了";
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "這樣你通過了筆試";
+		mes "那么，去海爾梅斯教授那里考術科吧！";
+		close;
+
+	L_QUEST_PASS2:
+		mes "[柯瑞土斯 貝多爾]";
+		mes "怎么樣，還想再考試嗎？";
+		mes "你通過了筆試";
+		next;
+		mes "[柯瑞土斯 貝多爾]";
+		mes "去海爾梅斯教受那里考術科吧，";
+		mes "不趕快去在做什么？";
+		close;
+}
+
+yuno_in03.gat,169,180,4	script	術科考試 教授	755,{
+
+	if(JOB_SAGE_Q == 2 ) goto L_NOT_PASS_PRE;
+	if(JOB_SAGE_Q == 5 ) goto L_START;
+	if(JOB_SAGE_Q == 6 ) goto L_START2;
+	if(JOB_SAGE_Q == 7 ) goto L_START3;
+	if(JOB_SAGE_Q == 8 ) goto L_START3;
+	if(BaseJob == Job_Novice) goto IsNovice;
+	mes "[海爾梅斯 特利斯]";
+	mes "歡迎，";
+	mes "這里是修巴依采勒比魔法學院。";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "我們賢者與其說是魔法師更接近學者，";
+	mes "在組隊中有很多幫助，";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "也許下次遠征時帶著賢者去看看吧，";
+	mes "光憑一起走動應該就可以成功的扮演自己的角色…";
+	close;
+IsNovice:
+	mes "[海爾梅斯 特利斯]";
+	mes "呵呵，是個可愛的初學者啊，";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes " 米德加爾特大陸上還有很多，連我都不";
+	mes "知道的東西，";
+	mes "很多的魔物們，神秘的物品，英雄與傳說";
+	mes "…";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "怎么樣，你也懷著身為賢者的夢想怎么樣";
+	mes "？";
+	mes "是可以更詳細的探究這個世界的機會，";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "如果有意愿，會再見到面吧，";
+	mes "那么，小心點回去吧，";
+	close;
+
+L_NOT_PASS_PRE:
+	mes "[海爾梅斯 特利斯]";
+	mes "我是擔任術科考試的海爾梅斯教授，";
+	mes "你是想要成為賢者的學生嗎";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "先通過柯瑞土斯教授的筆試再來吧，";
+	mes "那之后再來考我的測驗吧！";
+	close;
+
+L_START:
+	mes "[海爾梅斯 特利斯]";
+	mes "歡迎，是完成筆試的學生啊？";
+	mes "那么來考術科吧！";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "術科沒什么特別的，";
+	mes "在時間內抓到所有登場的魔物就結束了";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "比聽一百次，親自去做做看更容易暸解";
+	mes "怎樣，現在考試好嗎？";
+	next;
+L_START2_1:
+	menu "我要考術科",L_MENU_1,"給我準備的時間",L_MENU_2;
+	L_MENU_1:
+		mes "[海爾梅斯 特利斯]";
+		mes "那么馬上那開始吧，";
+		mes "努力考試平安回來吧！";
+		next;
+		set JOB_SAGE_Q, 6;
+		savepoint "yuno_in03.gat",163,180;
+		warp "job_sage.gat",50,154; 
+		end;
+	L_MENU_2:
+		mes "[海爾梅斯 特利斯]";
+		mes "好，那么…慢慢準備再來吧";
+		set JOB_SAGE_Q, 6;
+		close;
+L_START2:
+	mes "[海爾梅斯 特利斯]";
+	mes "那么，要重考嗎？";
+	next;
+	goto L_START2_1;
+
+L_START3:
+	if(JOB_SAGE_Q_M == 1 ) goto L_START3_1_0;
+	if(JOB_SAGE_Q_M == 2 ) goto L_START3_2_0;
+	if(JOB_SAGE_Q_M == 3 ) goto L_START3_3_0;
+	mes "[海爾梅斯 特利斯]";
+	mes "辛苦了，術科考試也合格了：";
+	mes "我們接受你的入學";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "那么，要幫你定要研究的領城才可以…";
+	mes "我來看看…";
+	mes "筆試的分數與戰斗考試的時間？";
+	next;
+	mes "[海爾梅斯 特利斯]";
+	mes "呵嗯，呵嗯…是這樣啊，";
+	mes "好…這種程度應該沒問題";
+	next;
+
+// 三個研究項目
+
+	set JOB_SAGE_Q_M, rand(1,3);
+	if(JOB_SAGE_Q_M == 1 ) goto L_START3_1;
+	if(JOB_SAGE_Q_M == 2 ) goto L_START3_2;
+	if(JOB_SAGE_Q_M == 3 ) goto L_START3_3;
+
+	L_START3_1:
+		mes "[海爾梅斯 特利斯]";
+		mes "你就做關於歷史魔法的研究吧，";
+		mes "是增廣有關我們在處理，基本魔法的暸解";
+		mes "的科目";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "是可以深入暸解，";
+		mes "關於魔法的本質的領域";
+		mes "去請求在魔法學院的";
+		mes "斯必安萊利斯教授的幫忙，";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "那么，祝你好運，";
+		mes "希望你有好結果！";
+		set JOB_SAGE_Q, 8;
+		close;
+	L_START3_2:
+		mes "[海爾梅斯 特利斯]";
+		mes "你就做關於生物魔法的研究吧，";
+		mes "是增廣有關我們在處理，基本魔法的暸解";
+		mes "的科目";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "是可以深入暸解，";
+		mes "關於魔法的本質的領域";
+		mes "去請求在魔物博物館的";
+		mes "路西伍司凱莎斯教授的幫忙，";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "那么，祝你好運，";
+		mes "希望你有好結果！";
+		set JOB_SAGE_Q, 8;
+		close;
+	L_START3_3:
+		mes "[海爾梅斯 特利斯]";
+		mes "你就做關於屬性魔法的研究吧，";
+		mes "是增廣有關我們在處理，基本魔法的暸解";
+		mes "的科目";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "是可以深入暸解，";
+		mes "關於魔法的本質的領域";
+		mes "去請求在生化工學研究所的";
+		mes "艾貝西喬勒奇教授的幫忙，";
+		next;
+		mes "[海爾梅斯 特利斯]";
+		mes "那么，祝你好運，";
+		mes "希望你有好結果！";
+		set JOB_SAGE_Q, 8;
+		close;
+
+		L_START3_1_0:
+				mes "[海爾梅斯 特利斯]";
+				mes "嗯？要再講一次才聽的懂嗎？";
+				mes "不是叫你做有關歷史魔法的研究嗎？";
+				next;
+				mes "[海爾梅斯 特利斯]";
+				mes "去找在生化工學研究所的";
+				mes "斯必安萊利斯教授";
+				close;
+		L_START3_2_0:
+				mes "[海爾梅斯 特利斯]";
+				mes "嗯？要再講一次才聽的懂嗎？";
+				mes "不是叫你做有關生物魔法的研究嗎？";
+				next;
+				mes "[海爾梅斯 特利斯]";
+				mes "去找在魔物博物館的";
+				mes "路西伍司凱莎斯教授";
+				close;
+		L_START3_3_0:
+				mes "[海爾梅斯 特利斯]";
+				mes "嗯？要再講一次才聽的懂嗎？";
+				mes "不是叫你做有關屬性魔法的研究嗎？";
+				next;
+				mes "[海爾梅斯 特利斯]";
+				mes "去找在生化工學研究所的";
+				mes "艾貝西喬勒奇教授";
+				close;
+}
+
+job_sage.gat,50,165,4	script	術科 考試 服務 人員::job_sage_wroom	700,{
+
+	mes "[術科考試助理]";
+	mes "歡迎到賢者術科考試場來";
+	mes "想要考試的話，就到考試等待室去";
+	next;
+	mes "[術科考試助理]";
+	mes "有其它人在考試時，請稍后，";
+	mes "進行的狀況會告知在本地圖的玩家";
+	mes "結束的同時，重新開始";
+	next;
+	mes "[術科考試助理]";
+	mes "每個人所需考試的時間是";
+	mes "5至10分鐘";
+	mes "在戰斗場上想要出去時請重新登入";
+	close;
+OnInit:
+	waitingroom "考試等待室",20,"job_sage_wroom::OnStart",1;
+	end;
+OnStart:
+	disablewaitingroomevent;
+	initnpctimer "sage_user_check";
+	warpwaitingpc "job_sage.gat",117,98;
+	set $@job_sage_pid, $@warpwaitingpc[0];
+	if( attachrid($@job_sage_pid)==0 ) goto L_Error;
+		set $@job_sage_pname$, strcharinfo(0);
+		donpcevent "job_sage_mob1::OnStart";
+		end;
+L_Error:
+	enablewaitingroomevent;
+	end;
+OnEnable:
+	enablewaitingroomevent;
+	end;
+}
+
+// 賢者術科考試第一場
+job_sage.gat,0,0,0	script	job_sage_mob1	-1,{
+
+OnStart:
+	killmonster "job_sage.gat","job_sage_mob1::OnKilled";
+	set $@job_sage_m, 16;
+	//蒼蠅
+	monster "job_sage.gat",115,106,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",111,102,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",120,102,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",107,98,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",124,98,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",111,93,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",120,93,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",115,90,"--ja--",1183,1,"job_sage_mob1::OnKilled";
+	//綠棉蟲
+	monster "job_sage.gat",107,106,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",124,106,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",107,89,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",124,89,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",115,113,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",100,98,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",114,82,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	monster "job_sage.gat",131,97,"--ja--",1184,1,"job_sage_mob1::OnKilled";
+	initnpctimer;
+	end;
+
+OnKilled:
+	set $@job_sage_m, $@job_sage_m - 1;
+	if( $@job_sage_m > 0 )goto L_NotWin;
+		stopnpctimer;
+		mapannounce "job_sage.gat","考試場：" + $@job_sage_pname$ + " 先生／小姐成功打敗魔物",9;
+		donpcevent "job_sage_mob2::OnStart";
+	L_NotWin:
+		end;
+
+OnTimer1000:
+	mapannounce "job_sage.gat","考試場：第一場考試－限定時間３分鐘",9;
+	end;
+OnTimer2000:
+	mapannounce "job_sage.gat","考試場：在有效時間內，把魔物全部殺掉",9;
+	end;
+OnTimer32000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 2分30秒",9;
+	end;
+OnTimer62000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 2分",9;
+	end;
+OnTimer92000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 1分30秒",9;
+	end;
+OnTimer122000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 1分",9;
+	end;
+OnTimer152000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 30秒",9;
+	end;
+OnTimer172000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 10秒！",9;
+	end;
+OnTimer182000:
+	mapannounce "job_sage.gat","考試場：時間終了！",9;
+	killmonster "job_sage.gat","job_sage_mob1::OnKilled";
+	end;
+OnTimer183000:
+	mapannounce "job_sage.gat","考試場：" + $@job_sage_pname$ + "的測驗失敗了",9;
+	areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+	end;
+OnTimer184000:
+	mapannounce "job_sage.gat","考試場：下一位申請者請準備.",9;
+	end;
+OnTimer185000:
+	donpcevent "job_sage_wroom::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+// 賢者術科考試第二場
+job_sage.gat,0,0,0	script	job_sage_mob2	-1,{
+
+OnStart:
+	killmonster "job_sage.gat","job_sage_mob2::OnKilled";
+	set $@job_sage_m, 18;
+	//瘋兔
+	monster "job_sage.gat",111,102,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	monster "job_sage.gat",120,102,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	monster "job_sage.gat",107,98,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	monster "job_sage.gat",124,98,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	monster "job_sage.gat",111,93,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	monster "job_sage.gat",120,93,"--ja--",1063,3,"job_sage_mob2::OnKilled";
+	initnpctimer;
+	end;
+
+OnKilled:
+	set $@job_sage_m, $@job_sage_m - 1;
+	if( $@job_sage_m > 0 )goto L_NotWin;
+		stopnpctimer;
+		mapannounce "job_sage.gat","考試場：" + $@job_sage_pname$ + " 先生／小姐成功打敗魔物",9;
+		donpcevent "job_sage_mob3::OnStart";
+	L_NotWin:
+		end;
+
+OnTimer1000:
+	mapannounce "job_sage.gat","考試場：第二場考試－限定時間３分鐘",9;
+	end;
+OnTimer2000:
+	mapannounce "job_sage.gat","考試場：在有效時間內，把魔物全部殺掉",9;
+	end;
+OnTimer32000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 2分30秒",9;
+	end;
+OnTimer62000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 2分",9;
+	end;
+OnTimer92000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 1分30秒",9;
+	end;
+OnTimer122000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 1分",9;
+	end;
+OnTimer152000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 30秒",9;
+	end;
+OnTimer172000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 10秒！",9;
+	end;
+OnTimer182000:
+	mapannounce "job_sage.gat","考試場：時間終了！",9;
+	killmonster "job_sage.gat","job_sage_mob2::OnKilled";
+	end;
+OnTimer183000:
+	mapannounce "job_sage.gat","考試場：" + $@job_sage_pname$ + "的測驗失敗了",9;
+	areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+	end;
+OnTimer184000:
+	mapannounce "job_sage.gat","考試場：下一位申請者請準備.",9;
+	end;
+OnTimer185000:
+	donpcevent "job_sage_wroom::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+// 賢者術科考試第三場
+job_sage.gat,0,0,0	script	job_sage_mob3	-1,{
+
+OnStart:
+	killmonster "job_sage.gat","job_sage_mob1::OnKilled";
+	set $@job_sage_m, 1;
+	//白幽靈
+	monster "job_sage.gat",115,98,"--ja--",1179,1,"job_sage_mob3::OnKilled";
+	monster "job_sage.gat",106,107,"--ja--",1179,1,"job_sage_mob3::OnKilled";
+	monster "job_sage.gat",125,107,"--ja--",1179,1,"job_sage_mob3::OnKilled";
+	monster "job_sage.gat",106,88,"--ja--",1179,1,"job_sage_mob3::OnKilled";
+	monster "job_sage.gat",125,88,"--ja--",1179,1,"job_sage_mob3::OnKilled";
+	initnpctimer;
+	end;
+
+OnKilled1:
+	end;
+
+OnKilled:
+	set $@job_sage_m, $@job_sage_m - 1;
+	if( $@job_sage_m > 0 )goto L_NotWin;
+		stopnpctimer;
+		set JOB_SAGE_Q, 7;
+		mapannounce "job_sage.gat","考試場：恭禧 " + $@job_sage_pname$ + " 先生／小姐，術科考試合格了",9;
+		mapannounce "job_sage.gat","考試場 服務人員：回去把剩下的轉職過程，全部結束吧",9;
+		mapannounce "job_sage.gat","考試場：下一位申請者請準備.",9;
+		areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+		end;
+	L_NotWin:
+		end;
+
+OnTimer1000:
+	mapannounce "job_sage.gat","考試場：第三場考試－限定時間１分鐘",9;
+	end;
+OnTimer31000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 30秒",9;
+	end;
+OnTimer51000:
+	mapannounce "job_sage.gat","考試場：時間限制還剩下 10秒！",9;
+	end;
+OnTimer61000:
+	mapannounce "job_sage.gat","考試場：時間終了！",9;
+	killmonster "job_sage.gat","job_sage_mob3::OnKilled";
+	end;
+OnTimer62000:
+	mapannounce "job_sage.gat",$@job_sage_pname$ + "的測驗失敗了",9;
+	areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+	end;
+OnTimer63000:
+	mapannounce "job_sage.gat","考試場：下一位申請者請準備.",9;
+	end;
+OnTimer64000:
+	donpcevent "job_sage_wroom::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+//============================================================================================================
+// 檢查游戲中轉職任務是否有人正在進行
+//============================================================================================================
+//
+job_sage.gat,1,1,1	script	sage_user_check	-1,{
+//每30秒檢查一次
+OnTimer30000:
+	set $job_sage_map1, getareausers("job_sage.gat",100,82,131,113);
+	set $job_sage_map2, getareausers("job_sage.gat",38,154,61,177);
+	if($job_sage_map1 == 0 && $job_sage_map2 == 0) goto endsage;
+	if($job_sage_map1 == 0) goto endtest;
+	initnpctimer "sage_user_check";
+	end;
+
+endtest:
+	mapannounce "job_sage.gat","考場目前已經空出來了!下一位申請者請準備!",8;
+	areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+	killmonster "job_sage.gat","All";
+	initnpctimer "sage_user_check";
+	stopnpctimer "job_sage_mob1";
+	stopnpctimer "job_sage_mob2";
+	stopnpctimer "job_sage_mob3";
+	end;
+
+endsage:
+	stopnpctimer "sage_user_check";
+	areawarp "job_sage.gat",100,82,131,113,"yuno_in03.gat",163,180;
+	areawarp "job_sage.gat",38,154,61,177,"yuno_in03.gat",163,180;
+	killmonster "job_sage.gat","All";
+	donpcevent "job_sage_wroom::OnEnable";
+	stopnpctimer "job_sage_mob1";
+	stopnpctimer "job_sage_mob2";
+	stopnpctimer "job_sage_mob3";
+	end;
+}
+
+yuno_in03.gat,32,102,4	script	生物學 教授	755,{
+	if(JOB_SAGE_Q == 9) goto L_PART1;
+	if(JOB_SAGE_Q_M == 2) goto L_START;
+	if(BaseJob == Job_Novice) goto LNovice;
+	mes "[路西伍司 凱莎斯]";
+	mes "嗯？什么事，";
+	mes "是來觀看魔物的嗎？";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "看可以，";
+	mes "不過不要任意觸摸或喧嘩，";
+	mes "這里有很多摸了會危險的物品，";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "還有，";
+	mes "假如抓到稀有的魔物跟我說，";
+	mes "我會以高價買那情報。";
+	close;
+LNovice:
+	mes "[路西伍司 凱莎斯]";
+	mes "什么事，小朋友，";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "不要在這里閑晃，";
+	mes "跟朋友出去玩吧，";
+	close;
+L_START:
+	if(JOB_SAGE_Q_M_2 == 1) goto L_START_1;
+	if(JOB_SAGE_Q_M_2 == 2) goto L_START_2;
+	if(JOB_SAGE_Q_M_2 == 3) goto L_START_3;
+	mes "[路西伍司 凱莎斯]";
+	mes "你好？很高興見到你，";
+	mes "是來見我的嗎？是學生嗎？";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "呼呼呼，我就是要指導你的教授，";
+	mes "向我這種人學習高興嗎？";
+	mes "愉快嗎？呼呼！";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "不過在上課前，要幫我一個忙，";
+	mes "不是很難應該會答應我吧？呼呼呼，";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "我現在需要";
+	mes "^000088蛤蜊肉^0000005個";
+	mes "^000088人魚之心^0000005個";
+	mes "^000088鉗子^0000005個，這樣就好了";
+	mes "不會很難吧？對吧？呼呼，";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "那將我要的東西帶來";
+	mes "就開始吧～呼呼呼，";
+	set JOB_SAGE_Q_M_2, 1;
+	close;
+
+	L_START_1:
+		if(countitem(950) >= 5 && countitem(966) >= 5 && countitem(960) >= 5) goto L_START_1_1;
+		mes "[路西伍司 凱莎斯]";
+		mes "在作什么…跟我開玩笑嗎？呼呼，";
+		mes "不要開玩笑快去快回吧～";
+		next;
+		mes "[路西伍司 凱莎斯]";
+		mes "我現在需要";
+		mes "^000088蛤蜊肉^0000005個";
+		mes "^000088人魚之心^0000005個";
+		mes "^000088鉗子^0000005個，這樣就好了";
+		mes "輕松的找來吧～";
+		close;
+
+		L_START_1_1:
+			delitem 950, 5;
+			delitem 966, 5;
+			delitem 960, 5;
+			set JOB_SAGE_Q_M_2, 2;
+			mes "[路西伍司 凱莎斯]";
+			mes "呀呼，拿來的真好！謝謝～";
+			mes "等一下，有事要做？呼呼呼，";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "阿不拉卡達不拉！！";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "阿不拉～卡達不拉！！";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "阿不～拉卡～達不拉！！";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "來來來隨便選一個吧";
+			menu "水屬",L_START_1_Q1,"魚貝",L_START_1_Q2,"雷擊術",L_START_1_Q3;
+
+			L_START_1_Q1:
+			L_START_1_Q2:
+			L_START_1_Q3:
+
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "我的請求多了一個…高興嗎？";
+			mes "會高興的接受吧？呼呼呼，";
+			mes "應該是啊，";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "我現在需要";
+			mes "^000088硬角^0000005個";
+			mes "^000088蝸牛殼^0000005個";
+			mes "^000088蛾蝶蟲翅膀粉末^0000005個";
+			mes "不會很難吧？對吧？";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "那將我要的東西帶來";
+			mes "就開始吧～呼呼呼，";
+			close;
+
+	L_START_2:
+		if(countitem(947) >= 5 && countitem(946) >= 5 && countitem(1057) >= 5) goto L_START_2_1;
+		mes "[路西伍司 凱莎斯]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		next;
+		mes "[路西伍司 凱莎斯]";
+		mes "我現在需要";
+		mes "^000088硬角^0000005個";
+		mes "^000088蝸牛殼^0000005個";
+		mes "^000088蛾蝶蟲翅膀粉末^0000005個";
+		mes "不會很難吧？對吧？";
+		close;
+
+		L_START_2_1:
+			delitem 947, 5;
+			delitem 946, 5;
+			delitem 1057, 5;
+			set JOB_SAGE_Q_M_2, 3;
+
+			mes "[路西伍司 凱莎斯]";
+			mes "呀呼，拿來了真好！謝謝～";
+			mes "好，好，現在要上課了？呼呼，";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "念給你聽要記好喔～呼呼，";
+			mes "不要忘了在重點下面畫線～";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "有各種屬性";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "預先了解屬性";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "魔法接近";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "注意圣屬性跟暗屬性怪物";
+			mes "都記下來了嗎～";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "就這樣下課了～呼呼，";
+			mes "學到很多了吧？";
+			mes "是因為教得好很容易暸解吧？";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "就用這個寫論文就好了～";
+			mes "呼呼，還是我講的課最好，呼呼呼，";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "準備寫論文的材料再來吧～呼呼～";
+			mes "當作筆用的^000088羽毛^000000１個";
+			mes "制做羊皮紙的^000088動物外皮^000000１個";
+			mes "制本所需要的^000088瑪哪樹枝^000000１個";
+			mes "當作墨水的^000088墨汁^000000１個";
+			mes "盛裝墨水的^000088空瓶^000000１個";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "那快去快回吧～呼呼～";
+			close;
+	L_START_3:
+		if(countitem(916) > 0 && countitem(919) > 0 && countitem(1019) > 0 && countitem(1024) > 0 && countitem(713) > 0 ) goto L_START_3_1;
+		mes "[路西伍司 凱莎斯]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		mes "忘記了嗎？要再講一次嗎？呼呼呼，";
+		next;
+		mes "[路西伍司 凱莎斯]";
+		mes "當作筆用的^000088羽毛^000000１個";
+		mes "制做羊皮紙的^000088動物外皮^000000１個";
+		mes "制本所需要的^000088瑪哪樹枝^000000１個";
+		mes "當作墨水的^000088墨汁^000000１個";
+		mes "盛裝墨水的^000088空瓶^000000１個";
+		next;
+		mes "[路西伍司 凱莎斯]";
+		mes "準備這種事要自己做吧～不是嗎？";
+		mes "呼一定要找來喔，呼呼呼";
+		close;
+
+		L_START_3_1:
+			delitem 916,1;
+			delitem 919,1;
+			delitem 1019,1;
+			delitem 1024,1;
+			delitem 713,1;
+
+			mes "[路西伍司 凱莎斯]";
+			mes "那寫看看吧～好好寫看看吧～呼呼～";
+			mes "照我告訴你的內容就足夠了～那么～";
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+
+		L_Dissc_1:
+			mes "… …每種不同的魔物會";
+			menu "有各種屬性",L_Dissc_1_1,"有各種屬性",L_Dissc_1_2,"有各種屬性",L_Dissc_1_3;
+			L_Dissc_1_1:
+				mes "有各種屬性";
+				goto L_Dissc_2;
+			L_Dissc_1_2:
+				mes "有各種屬性";
+				goto L_Dissc_2;
+			L_Dissc_1_3:
+				mes "有各種屬性";
+				goto L_Dissc_2;
+		L_Dissc_2:
+			mes "所以要出發打怪時要……";
+			menu "預先了解屬性",L_Dissc_2_1,"預先了解屬性",L_Dissc_2_2,"預先了解屬性",L_Dissc_2_3;
+			L_Dissc_2_1:
+				mes "預先了解屬性";
+				goto L_Dissc_3;
+			L_Dissc_2_2:
+				mes "預先了解屬性";
+				goto L_Dissc_3;
+			L_Dissc_2_3:
+				mes "預先了解屬性";
+				goto L_Dissc_3;
+		L_Dissc_3:
+			mes "屬性和…接近";
+			menu "魔法接近",L_Dissc_3_1,"魔法接近",L_Dissc_3_2,"魔法接近",L_Dissc_3_3;
+			L_Dissc_3_1:
+				mes "魔法接近";
+				goto L_Dissc_4;
+			L_Dissc_3_2:
+				mes "魔法接近";
+				goto L_Dissc_4;
+			L_Dissc_3_3:
+				mes "魔法接近";
+				goto L_Dissc_4;
+		L_Dissc_4:
+			mes "除此之外還要……";
+			menu "注意圣屬性跟暗屬性怪物",L_Dissc_4_1,"注意圣屬性跟暗屬性怪物",L_Dissc_4_2,"注意圣屬性跟暗屬性怪物",L_Dissc_4_3;
+			L_Dissc_4_1:
+				mes "注意圣屬性跟暗屬性怪物";
+				goto L_Dissc_5;
+			L_Dissc_4_2:
+				mes "注意圣屬性跟暗屬性怪物";
+				goto L_Dissc_5;
+			L_Dissc_4_3:
+				mes "注意圣屬性跟暗屬性怪物";
+				goto L_Dissc_5;
+		L_Dissc_5:
+
+			// 真正過關的論文不知(?)
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+			getitem 1550, 1;
+			set JOB_SAGE_Q, 9;
+			set JOB_SAGE_Q_M_2, 0;
+			set JOB_SAGE_Q_M, 0;
+			mes "[路西伍司 凱莎斯]";
+			mes "呼呼，寫好了嗎？";
+			mes "應該寫好了吧～";
+			mes "不能重寫所以要小心點～呼呼呼";
+			next;
+			mes "[路西伍司 凱莎斯]";
+			mes "把那個拿給院長看吧～";
+			mes "現在你也要畢業了～呼呼，恭喜～";
+			close;
+L_PART1:
+	mes "[路西伍司 凱莎斯]";
+	mes "在做什么？想在這里玩嗎？";
+	mes "不趕快走還在做什么？呼呼，";
+	next;
+	mes "[路西伍司 凱莎斯]";
+	mes "這樣會失去的，呼呼，";
+	mes "在晚上之前趕快回去吧，呼呼呼";
+	close;
+}
+
+yuno_in03.gat,62,176,4	script	歷史課 教授	109,{
+	if(JOB_SAGE_Q == 9) goto L_PART1;
+	if(JOB_SAGE_Q_M == 1) goto L_START;
+	if(BaseJob == Job_Novice) goto IsNovice;
+	mes "[斯必安 萊利斯]";
+	mes "歡迎，本人在此擔任歷史學教授";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "現在的世界是由無數歲月的記錄累積而生成的，";
+	mes "自古，知道過去就等於知道現在與未來，";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "你也看看自己的過去，";
+	mes "一定的明確的看到未來…";
+	close;
+IsNovice:
+	mes "[斯必安 萊利斯]";
+	mes "初學者？ 初學者怎么會在這種地方？";
+	next;
+	mes "你身上擁有無限發展的可能性，";
+	mes "以后想要走什么樣的路？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "不管選擇哪一條路，所有的事都取決于自";
+	mes "己的選擇，";
+	mes "千萬要找正確的路走下去…";
+	close;
+
+L_START:
+	if(JOB_SAGE_Q_M_1 == 1) goto L_START_1;
+	if(JOB_SAGE_Q_M_1 == 2) goto L_START_2;
+	mes "[斯必安 萊利斯]";
+	mes "你好？很高興見到你";
+	mes "是來見我的嗎？是學生嗎？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "我就是要指導你的教授，";
+	mes "向我這種人學習高興嗎？";
+	mes "愉快嗎？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "不過在上課前，要幫我一個忙，";
+	mes "不是很難應該會答應我吧？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "拿^000088天地樹葉子^00000010個來，這樣就好了";
+	mes "不會很難吧？對吧？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "那帶10個來就開始吧～";
+	set JOB_SAGE_Q_M_1, 1;
+	close;
+
+	L_START_1:
+		if(countitem(610) >= 10) goto L_START_1_1;
+		mes "[斯必安 萊利斯]";
+		mes "在作什么…跟我開玩笑嗎？";
+		mes "不要開玩笑快去快回吧～";
+		next;
+		mes "[斯必安 萊利斯]";
+		mes "找^000088天地樹葉子^00000010個來吧？";
+		mes "輕松的找來吧～";
+		close;
+
+		L_START_1_1:
+			delitem 610, 10;
+			set JOB_SAGE_Q_M_1, 2;
+			mes "[斯必安 萊利斯]";
+			mes "呀呼，拿來了真好！謝謝～";
+			mes "好，好，現在要上課了？呼呼，";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "念給你聽要記好喔～呼呼，";
+			mes "不要忘了在重點下面畫線～";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "巨大的蛇堯樂門加特";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "巨人族們生活的晤德加爾特";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "人類生活的米德加爾特";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "神生活的阿斯加爾特";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "巨大的幕暴雷樹";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "阿斯加爾特";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "優托海音，泥波海音、HP/SP全滿";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "就這樣下課了～呼呼，";
+			mes "學到很多了吧？";
+			mes "是因為教得好很容易暸解吧？";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "就用這個寫論文就好了～";
+			mes "呼呼，還是我講的課最好";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "準備寫論文的材料再來吧～";
+			mes "當作筆用的^000088羽毛^000000１個";
+			mes "制做羊皮紙的^000088動物外皮^000000１個";
+			mes "制本所需要的^000088瑪哪樹枝^000000１個";
+			mes "當作墨水的^000088墨汁^000000１個";
+			mes "盛裝墨水的^000088空瓶^000000１個";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "那快去快回吧～呼呼～";
+			close;
+	L_START_2:
+		if(countitem(916) > 0 && countitem(919) > 0 && countitem(1019) > 0 && countitem(1024) > 0 && countitem(713) > 0 ) goto L_START_2_1;
+		mes "[斯必安 萊利斯]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		mes "忘記了嗎？要再講一次嗎？呼呼呼，";
+		next;
+		mes "[斯必安 萊利斯]";
+		mes "當作筆用的^000088羽毛^000000１個";
+		mes "制做羊皮紙的^000088動物外皮^000000１個";
+		mes "制本所需要的^000088瑪哪樹枝^000000１個";
+		mes "當作墨水的^000088墨汁^000000１個";
+		mes "盛裝墨水的^000088空瓶^000000１個";
+		next;
+		mes "[斯必安 萊利斯]";
+		mes "準備這種事要自己做吧～不是嗎？";
+		mes "呼一定要找來喔，呼呼呼";
+		close;
+
+		L_START_2_1:
+			delitem 916,1;
+			delitem 919,1;
+			delitem 1019,1;
+			delitem 1024,1;
+			delitem 713,1;
+
+			mes "[斯必安 萊利斯]";
+			mes "那寫看看吧～好好寫看看吧～呼呼～";
+			mes "照我告訴你的內容就足夠了～那么～";
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+
+		L_Dissc_1:
+			mes "… …天地樹葉子來自于";
+			menu "巨大的蛇堯樂門加特",L_Dissc_1_1,"巨大的蛇堯樂門加特",L_Dissc_1_2,"巨大的蛇堯樂門加特",L_Dissc_1_3;
+			L_Dissc_1_1:
+				mes "巨大的蛇堯樂門加特";
+				goto L_Dissc_2;
+			L_Dissc_1_2:
+				mes "巨大的蛇堯樂門加特";
+				goto L_Dissc_2;
+			L_Dissc_1_3:
+				mes "巨大的蛇堯樂門加特";
+				goto L_Dissc_2;
+		L_Dissc_2:
+			mes "對巨人族們來說是……";
+			menu "巨人族們生活的晤德加爾特",L_Dissc_2_1,"巨人族們生活的晤德加爾特",L_Dissc_2_2,"巨人族們生活的晤德加爾特",L_Dissc_2_3;
+			L_Dissc_2_1:
+				mes "巨人族們生活的晤德加爾特";
+				goto L_Dissc_3;
+			L_Dissc_2_2:
+				mes "巨人族們生活的晤德加爾特";
+				goto L_Dissc_3;
+			L_Dissc_2_3:
+				mes "巨人族們生活的晤德加爾特";
+				goto L_Dissc_3;
+		L_Dissc_3:
+			mes "對人類來說是……";
+			menu "人類生活的米德加爾特",L_Dissc_3_1,"人類生活的米德加爾特",L_Dissc_3_2,"人類生活的米德加爾特",L_Dissc_3_3;
+			L_Dissc_3_1:
+				mes "人類生活的米德加爾特";
+				goto L_Dissc_4;
+			L_Dissc_3_2:
+				mes "人類生活的米德加爾特";
+				goto L_Dissc_4;
+			L_Dissc_3_3:
+				mes "人類生活的米德加爾特";
+				goto L_Dissc_4;
+		L_Dissc_4:
+			mes "對神而言是……";
+			menu "神生活的阿斯加爾特",L_Dissc_4_1,"神生活的阿斯加爾特",L_Dissc_4_2,"神生活的阿斯加爾特",L_Dissc_4_3;
+			L_Dissc_4_1:
+				mes "神生活的阿斯加爾特";
+				goto L_Dissc_5;
+			L_Dissc_4_2:
+				mes "神生活的阿斯加爾特";
+				goto L_Dissc_5;
+			L_Dissc_4_3:
+				mes "神生活的阿斯加爾特";
+				goto L_Dissc_5;
+		L_Dissc_5:
+			next;
+			mes "在那里可以找到……";
+			menu "巨大的幕暴雷樹",L_Dissc_5_1,"巨大的幕暴雷樹",L_Dissc_5_2,"巨大的幕暴雷樹",L_Dissc_5_3;
+			L_Dissc_5_1:
+				mes "巨大的幕暴雷樹";
+				goto L_Dissc_6;
+			L_Dissc_5_2:
+				mes "巨大的幕暴雷樹";
+				goto L_Dissc_6;
+			L_Dissc_5_3:
+				mes "巨大的幕暴雷樹";
+				goto L_Dissc_6;
+		L_Dissc_6:
+			mes "神所使用的名字是……";
+			menu "阿斯加爾特",L_Dissc_6_1,"阿斯加爾特",L_Dissc_6_2,"阿斯加爾特",L_Dissc_6_3;
+			L_Dissc_6_1:
+				mes "阿斯加爾特";
+				goto L_Dissc_7;
+			L_Dissc_6_2:
+				mes "阿斯加爾特";
+				goto L_Dissc_7;
+			L_Dissc_6_3:
+				mes "阿斯加爾特";
+				goto L_Dissc_7;
+		L_Dissc_7:
+			mes "最終的效果是……";
+			menu "優托海音，泥波海音、HP/SP全滿",L_Dissc_7_1,"優托海音，泥波海音、HP/SP全滿",L_Dissc_7_2,"優托海音，泥波海音、HP/SP全滿",L_Dissc_7_3;
+			L_Dissc_7_1:
+				mes "優托海音，泥波海音、HP/SP全滿";
+				goto L_Dissc_8;
+			L_Dissc_7_2:
+				mes "優托海音，泥波海音、HP/SP全滿";
+				goto L_Dissc_8;
+			L_Dissc_7_3:
+				mes "優托海音，泥波海音、HP/SP全滿";
+				goto L_Dissc_8;
+		L_Dissc_8:
+
+			// 真正過關的論文不知(?)
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+			getitem 1550, 1;
+			set JOB_SAGE_Q, 9;
+			set JOB_SAGE_Q_M_1, 0;
+			set JOB_SAGE_Q_M, 0;
+			mes "[斯必安 萊利斯]";
+			mes "呼呼，寫好了嗎？";
+			mes "應該寫好了吧～";
+			mes "不能重寫所以要小心點～呼呼呼";
+			next;
+			mes "[斯必安 萊利斯]";
+			mes "把那個拿給院長看吧～";
+			mes "現在你也要畢業了～呼呼，恭喜～";
+			close;
+
+L_PART1:
+	mes "[斯必安 萊利斯]";
+	mes "在做什么？想在這里玩嗎？";
+	mes "不趕快走還在做什么？";
+	next;
+	mes "[斯必安 萊利斯]";
+	mes "這樣會失去的，";
+	mes "在晚上之前趕快回去吧";
+	close;
+}
+
+yuno_in03.gat,244,31,4	script	物理學 教授	120,{
+	if(JOB_SAGE_Q == 9) goto L_PART1;
+	if(JOB_SAGE_Q_M == 3) goto L_START;
+	mes "[艾貝西 喬勒奇]";
+	mes "你在說什么我聽不懂";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "對物理不懂？";
+	mes "那你還敢來修我的課";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "不怕我把你當掉嗎？";
+	mes "現在的小孩真是的！";
+	close;
+
+L_START:
+	if(JOB_SAGE_Q_M_3 == 1) goto L_START_1;
+	if(JOB_SAGE_Q_M_3 == 2) goto L_START_2;
+	if(JOB_SAGE_Q_M_3 == 3) goto L_START_3;
+	if(JOB_SAGE_Q_M_3 == 4) goto L_START_4;
+	mes "[艾貝西 喬勒奇]";
+	mes "你好？很高興見到你，呼呼，";
+	mes "是來見我的嗎？是學生嗎？";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "呼呼呼，我就是要指導你的教授，";
+	mes "向我這種人學習高興嗎？";
+	mes "愉快嗎？呼呼！";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "不過在上課前，要幫我一個忙，";
+	mes "不是很難應該會答應我吧？呼呼呼，";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "拿^000088石頭^00000030個來，這樣就好了";
+	mes "不會很難吧？對吧？呼呼，";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "撿石頭看起來很累的話";
+	mes "請盜賊服友幫忙吧，呼呼，";
+	mes "那帶30個來就開始吧～呼呼呼，";
+	set JOB_SAGE_Q_M_3, 1;
+	close;
+
+	L_START_1:
+		if(countitem(7049) >= 30) goto L_START_1_1;
+		mes "[艾貝西 喬勒奇]";
+		mes "在作什么…跟我開玩笑嗎？呼呼，";
+		mes "不要開玩笑快去快回吧～";
+		next;
+		mes "[艾貝西 喬勒奇]";
+		mes "找^000088石頭^00000030個來吧？";
+		mes "路邊滾來滾去的都是石頭";
+		mes "輕松的找來吧～呼呼";
+		close;
+
+		L_START_1_1:
+			delitem 7049, 30;
+			mes "[艾貝西 喬勒奇]";
+			mes "呀呼，拿來的真好！謝謝～";
+			mes "等一下，有事要做？呼呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "阿不拉卡達不拉！！";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "阿不拉～卡達不拉！！";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "阿不～拉卡～達不拉！！";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "呼呼，壞石頭～";
+			mes "只有３個成功了？呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "我的請求多了一個…高興嗎？";
+			mes "會高興的接受吧？呼呼呼，";
+			mes "應該是啊，";
+			next;
+
+			getitem 991,1;
+			getitem 992,1;
+			getitem 993,1;
+			set JOB_SAGE_Q_M_3, 2;
+
+			mes "[艾貝西 喬勒奇]";
+			mes "我給你這屬性原石…";
+			mes "但這可不是禮物呢？";
+			mes "呼呼，聽到最后吧～還沒結束，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "用這個作成箭矢再來吧～";
+			mes "^000088水靈箭矢^000000 50個";
+			mes "^000088地靈箭矢^000000 50個";
+			mes "^000088風靈箭矢^000000 50個";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "要是有弓箭手的朋友應該會";
+			mes "好好幫你做的，呼呼，";
+			mes "那拜托你了～呼呼，～快去快回吧！";
+			close;
+
+	L_START_2:
+		if(countitem(1754) >= 50 && countitem(1755) >= 50 && countitem(1756) >= 50) goto L_START_2_1;
+		mes "[艾貝西 喬勒奇]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		mes "剛剛給你的屬性原石怎樣了？";
+		mes "賣掉了嗎～呼呼呼";
+		next;
+		mes "[艾貝西 喬勒奇]";
+		mes "^000088水靈箭矢^000000 50個";
+		mes "^000088地靈箭矢^000000 50個";
+		mes "^000088風靈箭矢^000000 50個";
+		mes "請求弓箭手朋友來做吧～呼呼";
+		close;
+
+		L_START_2_1:
+			delitem 1754, 50;
+			delitem 1755, 50;
+			delitem 1756, 50;
+			set JOB_SAGE_Q_M_3, 3;
+
+			mes "[艾貝西 喬勒奇]";
+			mes "呀呼，拿來了真好！謝謝～";
+			mes "好，好，現在要上課了？呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "念給你聽要記好喔～呼呼，";
+			mes "不要忘了在重點下面畫線～";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "水屬性的魔法對火屬性強！簡單嗎？";
+			mes "這想到在火上倒水就好了，呼呼";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "風屬性的魔法對水屬性強！啊呼～";
+			mes "湖面被雷打到會怎么樣，呼呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "地屬性的魔法對風屬性強！呼～";
+			mes "要擋風時就用土蓋房子？";
+			mes "就是這個，呼呼";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "火屬性的魔法對地屬性的強！呼呼";
+			mes "失火時房子會全部燒掉，呼呼，有點奇怪";
+			mes "也記下來～";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "啊呼，時間已經這么晚了，呼呼，";
+			mes "那么次下有時間再做吧！呼呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "到下次見面前要準備^000088圣水^000000一個～";
+			mes "朋有中有圣職者吧？";
+			mes "沒有就交一個吧，呼呼呼，";
+			close;
+
+	L_START_3:
+		if(countitem(523) > 0) goto L_START_3_1;
+		mes "[艾貝西 喬勒奇]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		mes "忘記了嗎？要再講一次嗎？呼呼呼，";
+		next;
+		mes "[艾貝西 喬勒奇]";
+		mes "^000088圣水^0000001個";
+		mes "請求服事或祭司朋友幫忙吧～呼呼";
+		close;
+
+		L_START_3_1:
+			delitem 523, 1;
+			set JOB_SAGE_Q_M_3, 4;
+
+			mes "[艾貝西 喬勒奇]";
+			mes "呀呼，拿來了真好！謝謝～";
+			mes "好，那要繼續上課了？呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "這次也會念給你考要記好喔～呼呼，";
+			mes "不太暸解也聽著～知道嗎？呼呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "水屬性對風屬性的魔法弱！";
+			mes "對，就是這樣～";
+			mes "凍冰以后被雷擊術打會很痛～呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "風屬性對地屬性的魔法弱！～呼";
+			mes "在天上飛的掉到地上就會死掉～呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "地屬性對火屬性的魔法弱！～對啊";
+			mes "像從地里長出來的樹多么容易";
+			mes "被火燒～呼呼";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "火屬性對水屬性的魔法弱！～對啊";
+			mes "把熱的東西降溫還是水最好～呼呼";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "就這樣下課了～呼呼，";
+			mes "學到很多了吧？";
+			mes "是因為教得好很容易暸解吧？";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "就用這個寫論文就好了～";
+			mes "呼呼，還是我講的課最好，呼呼呼，";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "準備寫論文的材料再來吧～呼呼～";
+			mes "當作筆用的^000088羽毛^000000１個";
+			mes "制做羊皮紙的^000088動物外皮^000000１個";
+			mes "制本所需要的^000088瑪哪樹枝^000000１個";
+			mes "當作墨水的^000088墨汁^000000１個";
+			mes "盛裝墨水的^000088空瓶^000000１個";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "那快去快回吧～呼呼～";
+			close;
+	L_START_4:
+		if(countitem(916) > 0 && countitem(919) > 0 && countitem(1019) > 0 && countitem(1024) > 0 && countitem(713) > 0 ) goto L_START_4_1;
+		mes "[艾貝西 喬勒奇]";
+		mes "在做什么…跟我開玩笑嗎？呼呼";
+		mes "忘記了嗎？要再講一次嗎？呼呼呼，";
+		next;
+		mes "[艾貝西 喬勒奇]";
+		mes "當作筆用的^000088羽毛^000000１個";
+		mes "制做羊皮紙的^000088動物外皮^000000１個";
+		mes "制本所需要的^000088瑪哪樹枝^000000１個";
+		mes "當作墨水的^000088墨汁^000000１個";
+		mes "盛裝墨水的^000088空瓶^000000１個";
+		next;
+		mes "[艾貝西 喬勒奇]";
+		mes "準備這種事要自己做吧～不是嗎？";
+		mes "呼一定要找來喔，呼呼呼";
+		close;
+
+		L_START_4_1:
+			delitem 916,1;
+			delitem 919,1;
+			delitem 1019,1;
+			delitem 1024,1;
+			delitem 713,1;
+
+			mes "[艾貝西 喬勒奇]";
+			mes "那寫看看吧～好好寫看看吧～呼呼～";
+			mes "照我告訴你的內容就足夠了～那么～";
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+
+		L_Dissc_1:
+			mes "… …屬性魔法是以4元素為基本";
+			menu "分成水，地，火，風",L_Dissc_1_1,"分成地，水，火，風",L_Dissc_1_2,"分成水，風，地，火",L_Dissc_1_3;
+			L_Dissc_1_1:
+				mes "分成水，地，火，風";
+				goto L_Dissc_2;
+			L_Dissc_1_2:
+				mes "分成地，水，火，風";
+				goto L_Dissc_2;
+			L_Dissc_1_3:
+				mes "分成水，風，地，火";
+				goto L_Dissc_2;
+		L_Dissc_2:
+			mes "各個屬性擁有相克屬性";
+			menu "風屬性魔法對水屬性強",L_Dissc_2_1,"水屬性魔法對火屬性強",L_Dissc_2_2,"火屬性魔法對地屬性強",L_Dissc_2_3;
+			L_Dissc_2_1:
+				mes "風屬性魔法對水屬性強";
+				goto L_Dissc_3;
+			L_Dissc_2_2:
+				mes "水屬性魔法對火屬性強";
+				goto L_Dissc_3;
+			L_Dissc_2_3:
+				mes "火屬性魔法對地屬性強";
+				goto L_Dissc_3;
+		L_Dissc_3:
+			mes "地屬性魔法對風屬性強";
+			menu "只是相反的情況時不同",L_Dissc_3_1,"屬性武器的情況也一樣",L_Dissc_3_2,"各種族別有多樣的屬性",L_Dissc_3_3;
+			L_Dissc_3_1:
+				mes "只是相反的情況時不同";
+				goto L_Dissc_4;
+			L_Dissc_3_2:
+				mes "屬性武器的情況也一樣";
+				goto L_Dissc_4;
+			L_Dissc_3_3:
+				mes "各種族別有多樣的屬性";
+				goto L_Dissc_4;
+		L_Dissc_4:
+			menu "有必要正確的暸解自己的能力",L_Dissc_4_1,"根據場所用不同的屬性才好",L_Dissc_4_2,"也有紅色藥水是草莓味道的謠言",L_Dissc_4_3;
+			L_Dissc_4_1:
+				mes "有必要正確的暸解自己的能力";
+				goto L_Dissc_5;
+			L_Dissc_4_2:
+				mes "根據場所用不同的屬性才好";
+				goto L_Dissc_5;
+			L_Dissc_4_3:
+				mes "也有紅色藥水是草莓味道的謠言";
+				goto L_Dissc_5;
+		L_Dissc_5:
+			next;
+			menu "最可愛的是普隆德拉的佑比",L_Dissc_5_1,"聽說紅色藥水是波利做的",L_Dissc_5_2,"魔法那么深廣是沒辦法暸解的",L_Dissc_5_3;
+			L_Dissc_5_1:
+				mes "最可愛的是普隆德拉的佑比";
+				goto L_Dissc_6;
+			L_Dissc_5_2:
+				mes "聽說紅色藥水是波利做的";
+				goto L_Dissc_6;
+			L_Dissc_5_3:
+				mes "魔法那么深廣是沒辦法暸解的";
+				goto L_Dissc_6;
+		L_Dissc_6:
+			menu "夢羅克的商人小姐也很可愛",L_Dissc_6_1,"不曉得為什么會有草莓味",L_Dissc_6_2,"隨便掉入魔力中很危險",L_Dissc_6_3;
+			L_Dissc_6_1:
+				mes "夢羅克的商人小姐也很可愛";
+				goto L_Dissc_7;
+			L_Dissc_6_2:
+				mes "不曉得為什么會有草莓味";
+				goto L_Dissc_7;
+			L_Dissc_6_3:
+				mes "隨便掉入魔力中很危險";
+				goto L_Dissc_7;
+		L_Dissc_7:
+			menu "要是我有一個兔耳發圈",L_Dissc_7_1,"那么白色藥水的味道是",L_Dissc_7_2,"適當的魔法使用與休息是",L_Dissc_7_3;
+			L_Dissc_7_1:
+				mes "要是我有一個兔耳發圈";
+				goto L_Dissc_8;
+			L_Dissc_7_2:
+				mes "那么白色藥水的味道是";
+				goto L_Dissc_8;
+			L_Dissc_7_3:
+				mes "適當的魔法使用與休息是";
+				goto L_Dissc_8;
+		L_Dissc_8:
+			menu "偶爾不會想送禮物嗎？",L_Dissc_8_1,"實在是沒辦法想像",L_Dissc_8_2,"給予安全戰斗的保障",L_Dissc_8_3;
+			L_Dissc_8_1:
+				mes "偶爾不會想送禮物嗎？";
+				goto L_Dissc_9;
+			L_Dissc_8_2:
+				mes "實在是沒辦法想像";
+				goto L_Dissc_9;
+			L_Dissc_8_3:
+				mes "給予安全戰斗的保障";
+				goto L_Dissc_9;
+		L_Dissc_9:
+			menu "免耳發圈適合服事",L_Dissc_9_1,"險象還生的感覺真好",L_Dissc_9_2,"與其它職業們結成組隊后",L_Dissc_9_3;
+			L_Dissc_9_1:
+				mes "免耳發圈適合服事";
+				goto L_Dissc_10;
+			L_Dissc_9_2:
+				mes "險象還生的感覺真好";
+				goto L_Dissc_10;
+			L_Dissc_9_3:
+				mes "與其它職業們結成組隊后";
+				goto L_Dissc_10;
+		L_Dissc_10:
+			menu "真的很納悶適不適合修監發仁",L_Dissc_10_1,"就算體力到底了也沒辦法喝",L_Dissc_10_2,"獎勵去戰斗",L_Dissc_10_3;
+			L_Dissc_10_1:
+				mes "真的很納悶適不適合修監發仁";
+				goto L_Dissc_11;
+			L_Dissc_10_2:
+				mes "就算體力到底了也沒辦法喝";
+				goto L_Dissc_11;
+			L_Dissc_10_3:
+				mes "獎勵去戰斗";
+				goto L_Dissc_11;
+		L_Dissc_11:
+			// 真正過關的論文不知(?)
+			next;
+			mes "… … … …";
+			next;
+			mes "… … … … … … …";
+			next;
+			mes "… … … … … … … … … …";
+			next;
+			getitem 1550, 1;
+			set JOB_SAGE_Q, 9;
+			set JOB_SAGE_Q_M_3, 0;
+			set JOB_SAGE_Q_M, 0;
+			mes "[艾貝西 喬勒奇]";
+			mes "呼呼，寫好了嗎？";
+			mes "應該寫好了吧～";
+			mes "不能重寫所以要小心點～呼呼呼";
+			next;
+			mes "[艾貝西 喬勒奇]";
+			mes "把那個拿給院長看吧～";
+			mes "現在你也要畢業了～呼呼，恭喜～";
+			close;
+L_PART1:
+	mes "[艾貝西 喬勒奇]";
+	mes "在做什么？想在這里玩嗎？";
+	mes "不趕快走還在做什么？呼呼，";
+	next;
+	mes "[艾貝西 喬勒奇]";
+	mes "這樣會失去的，呼呼，";
+	mes "在晚上之前趕快回去吧，呼呼呼";
+	close;
+}

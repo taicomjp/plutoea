@@ -1,0 +1,448 @@
+// 詩人轉職任務
+
+comodo.gat,198,148,3	script	漂泊的吟游詩人	741,{
+	mes "[^000080拉菲爾^000000]";
+	if (class != 0) goto bard;
+	mes "哈?.";
+	mes "您好嗎?";
+	mes "您喜歡 ^00FF00克魔島^000000 嗎?";
+	next;
+	menu "當然.",GOOD,"還好.",OKAY,"其實, 我覺得有點無聊.",-,"您是 ^800000吟游詩人^000000嗎?",ASK;
+		mes "[^000080拉菲爾^000000]";
+		mes "看的出來。";
+		mes "嗯, 其實這地方不一定都適合大家來逛。";
+		next;
+		mes "[^000080拉菲爾^000000]";
+		mes "慢慢習慣就好。";
+		close;
+	GOOD:
+		mes "[^000080拉菲爾^000000]";
+		mes "很好呀.";
+		next;
+		mes "[^000080拉菲爾^000000]";
+		mes "沒目標的到處行走, 您不會喜歡吧, 除非您有些事必須這樣做.";
+		close;
+	ASK:
+		mes "[^000080拉菲爾^000000]";
+		mes "我是呀.";
+		next;
+		mes "[^000080拉菲爾^000000]";
+		mes "我教 ^800000弓箭手^000000 并且訓練他們成為 ^800000吟游詩人^000000.";
+		next;
+		mes "[^000080拉菲爾^000000]";
+		if (sex ==0) goto FEM;
+			mes "當您成為 ^800000弓箭手^000000, 又想要成為 ^800000吟游詩人^000000 ,就回來找我吧.";
+			close;
+		FEM:
+			mes "....您是女孩子。";
+			next;
+			mes "[^000080拉菲爾^000000]";
+			mes "只有男孩子才能成為 ^800000吟游詩人^000000.";
+			mes "如果您想成為 ^800000舞娘^000000, 您需要在去別處.";
+			close;
+		OKAY:
+			mes "[^000080拉菲爾^000000]";
+			mes "噢, 如果您不喜歡那只是浪費時間和金錢.";
+			close;
+	bard:
+		if (class == 3) goto bard0;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000";
+		mes "那, 您準備享受樂趣了嗎?";
+		next;
+		menu "一切準備好了.",-,"再讓我想想好了.",SWORD;
+			mes "[^000080拉菲爾^000000]";
+			mes "很高興聽到您這么說.";
+			close;
+		SWORD:
+			mes "[^000080拉菲爾^000000]";
+			mes "........";
+			next;
+			mes "[^000080拉菲爾^000000]";
+			mes "嗯, 假如有發生什么事情, 我會好好的照顧您的.";
+			close;
+	bard0:
+		if (class == 3) goto bard1;
+		if (class == 4) goto bard2;
+		mes "嘿, 哈?.";
+		mes "怎么每個人都是 ^008000魔法師公會^000000 的呀?";
+		next;
+		menu "是真的還不錯呀.",-,"還好.",MAGE,"不好.",MAGE0;
+			mes "[^000080拉菲爾^000000]";
+			mes "很高興聽到您這么說.";
+			close;
+		MAGE:
+			mes "[^000080拉菲爾^000000]";
+			mes "喔, 好吧. 我希望一切都很好。";
+			close;
+		MAGE0:
+			mes "[^000080拉菲爾^000000]";
+			mes "喔, 真的嗎?  是發生什么事呀?";
+			close;
+	bard1:
+		if (sex==0) goto FEM0;
+		if (Job_BA == 1) goto PART1;
+		if (Job_BA == 2) goto PART2;
+		if (Job_BA == 3) goto PART3;
+		if (Job_BA > 3) goto CONT;
+		mes "嘿, 那邊的.";
+		mes "我能幫您什么嗎?";
+		next;
+		menu "我想成為 ^800000吟游詩人^000000.",JOB,"不用了, 我很好.",-;
+			NO:
+				set Job_BA,1;
+				mes "[^000080拉菲爾^000000]";
+				mes "喔, 那您保重吧.";
+				next;
+				mes "[^000080拉菲爾^000000]";
+				mes "嘿, 阿... 您想成為 ^800000吟游詩人^000000 的話, 盡管來找我.";
+				close;
+			JOB:
+				set Job_BA,2;
+				mes "[^000080拉菲爾^000000]";
+				mes "酷.";
+				next;
+				mes "[^000080拉菲爾^000000]";
+				mes "好, 剛開始, 要收集一些材料。";
+				set @RND,rand(1,3);
+				if (@RND == 1) goto job1;
+				if (@RND == 2) goto job2;
+				if (@RND == 3) goto job3;
+				job1:
+						mes "幫我收集一個 ^FF0000花朵頭飾^000000";
+						set quest_type,1;
+						mes "找到了再回來找我吧。";
+						close;
+				job2:
+						mes "幫我收集一朵 ^FF0000花葉^000000";
+						set quest_type,2;
+						mes "找到了再回來找我吧。";
+						close;
+				job3:
+						mes "幫我收集一朵 ^FF0000幻想花^000000";
+						set quest_type,3;
+						mes "找到了再回來找我吧。";
+						close;
+
+			PART1:
+				mes "您要重新考慮成為 ^800000吟游詩人^000000 嗎?";
+				next;
+				menu "是的",JOB,"不用",NO;
+			PART2:
+				mes "這么快就收集完成了?";
+				next;
+
+				if (quest_type == 1) goto job_fin1;
+				if (quest_type == 2) goto job_fin2;
+				if (quest_type == 3) goto job_fin3;
+
+			job_fin1:
+				if(countitem(2207) == 0) goto NOITEM;
+				delitem 2207,1;
+				mes "[^000080拉菲爾^000000]";
+				mes "好了,那么接下來,幫我到姜餅城找我的好朋友 ^000080德璞^000000.";
+				set Job_BA,3;
+				close;
+
+			job_fin2:
+				if(countitem(2269) == 0) goto NOITEM;
+				delitem 2269,1;
+				mes "[^000080拉菲爾^000000]";
+				mes "好了,那么接下來,幫我到姜餅城找我的好朋友 ^000080德璞^000000.";
+				set Job_BA,3;
+				close;
+
+			job_fin3:
+				if(countitem(710) == 0) goto NOITEM;
+				delitem 710,1;
+				mes "[^000080拉菲爾^000000]";
+				mes "好了,那么接下來,幫我到姜餅城找我的好朋友 ^000080德璞^000000.";
+				set Job_BA,3;
+				close;
+			
+			NOITEM:
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯... 您少了一些東西唷.";
+				if (quest_type == 1) goto nojob1;
+				if (quest_type == 2) goto nojob2;
+				if (quest_type == 3) goto nojob3;
+			nojob1:
+						mes "一個^FF0000花朵頭飾^000000";
+						mes "找到了再回來找我吧.";
+						close;
+			nojob2:
+						mes "一朵^FF0000花葉^000000";
+						mes "找到了再回來找我吧.";
+						close;
+			nojob3:
+						mes "一朵^FF0000幻想花^000000";
+						mes "找到了再回來找我吧.";
+						close;
+			PART3:
+				if (xmas_npc == 11) goto PART4;
+				mes "需要我傳送到 ^00FF00姜餅城^000000 嗎?";
+				next;
+				menu "是的.",-,"不用了.",EXIT;
+				warp "xmas.gat",148,129;
+			EXIT:
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯, 慢走.";
+				close;
+				end;
+			CONT:
+				if (Job_BA == 4) goto PART5;
+				if (Job_BA == 5) goto PART6;
+				if (Job_BA == 6) goto PART7;
+				mes "祝您能在 ^00FF00姜餅城^000000 順順利利.";
+				close;
+			PART5:
+				mes "哈?, 您準備好要開始最后的測試了嗎?";
+				goto AGAIN;
+			PART6:
+				mes "哈?, 您準備好要開始最后的測試了嗎?";
+				goto AGAIN;
+			PART4:
+				mes "好, 看起來像一切都準備好了。";
+				mes "要繼續了嗎?";
+				set Job_BA,4;
+				next;
+				menu "好的.",JOB0,"等一下.",-;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯, 等您準備好了, 再來找我吧.";
+				close;
+			JOB0:
+				set Job_BA,5;
+				mes "[^000080拉菲爾^000000]";
+				mes "很好.";
+				next;
+				mes "這是最后的測試.我會唱首歌, 而您必須重覆我唱的歌.";
+				mes "好了嗎?";
+				next;
+				mes "那么開始了...";
+				next;
+				mes "^3355FF大聲點，再大聲點，再大聲點響亮，^000000";
+				mes "把天空搖晃，讓大地生氣吧，";
+				mes "讓快要爆炸的心臟，重新跳躍吧!";
+				mes "喇叭聲音響起時，開始爬城墻吧，";
+				mes "只有一天的瞬間，再也不會來的";
+				next;
+				input @string$;
+				if(@string$ != "把天空搖晃，讓大地生氣吧，") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，繼續..";
+				next;
+				input @string$;
+				if(@string$ != "讓快要爆炸的心臟，重新跳躍吧!") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，接下去...";
+				next;
+				input @string$;
+				if(@string$ != "喇叭聲音響起時，開始爬城墻吧，") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，還有呢？";
+				next;
+				input @string$;
+				if( @string$ != "只有一天的瞬間，再也不會來的") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，...";
+				next;
+			GOOD0:
+				mes "[^000080拉菲爾^000000]";
+				mes "很優唷!";
+				mes "您很有可能成為 ^800000吟游詩人^000000!";
+				set Job_BA,6;
+				next;
+			CHECK:
+				mes "[^000080拉菲爾^000000]";
+				mes "再讓我看一下您的條件.";
+				next;
+				mes "[^000080拉菲爾^000000]";
+				if (JobLevel > 39) goto OKAY0;
+				mes "很抱歉, 您的職業等級至少要40級以上唷.";
+				close;
+			OKAY0:
+				if (SkillPoint == 0) goto OKAY1;
+				mes "呵呵, 您的技能點數要用完唷.";
+				close;
+			OKAY1:
+				mes "很好!";
+				mes "那么接下來.";
+				setoption 0;
+				callfunc "Job_Change",Job_Bard;
+				emotion 46;
+				mes "這是我送給你的禮物";
+				mes "恭喜您轉職了！";
+				getitem 1901,1;
+			NO_BON:
+				close;
+			AGAIN:
+				mes "好了嗎?";
+				next;
+				mes "那么開始了...";
+				mes "";
+				next;
+				mes "^3355FF大聲點，再大聲點，再大聲點響亮，^000000";
+				mes "把天空搖晃，讓大地生氣吧，";
+				mes "讓快要爆炸的心臟，重新跳躍吧!";
+				mes "喇叭聲音響起時，開始爬城墻吧，";
+				mes "只有一天的瞬間，再也不會來的";
+				next;
+				input @string$;
+				if(@string$ != "把天空搖晃，讓大地生氣吧，") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，繼續..";
+				next;
+				input @string$;
+				if(@string$ != "讓快要爆炸的心臟，重新跳躍吧!") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，接下去...";
+				next;
+				input @string$;
+				if(@string$ != "喇叭聲音響起時，開始爬城墻吧，") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，還有呢？";
+				next;
+				input @string$;
+				if( @string$ != "只有一天的瞬間，再也不會來的") goto Error;
+				mes "[^000080拉菲爾^000000]";
+				mes "嗯，...";
+				next;
+				goto GOOD0;
+			Error:	
+				mes "[^000080拉菲爾^000000]";
+				mes "很抱歉, 您要重新測試.";
+				close;
+
+			PART7:
+				mes "準備好轉職了嗎?";
+				next;
+				menu "是.",CHECK,"等一下, 我還沒有心理準備.",-;
+				mes "[^000080拉菲爾^000000]";
+				mes "什么!不是吧...";
+				mes "這有那么難決擇嗎?";
+				close;
+			FEM0:
+				mes "哈?, 若您想要成為 ^800000舞娘^000000, 去跟 ^000080 柏勒 羅本 ^000000 聊聊.";
+				close;
+	bard2:
+		if (class == 5) goto bard3;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		close;
+	bard3:
+		if (class == 6) goto bard4;
+		mes "嗨, 您覺的這里的商店如何?";
+		next;
+		menu "很好.",-,"還不錯.",MER,"很糟糕.",MER0;
+			mes "[^000080拉菲爾^000000]";
+			mes "很高興聽到您這么說.!";
+			close;
+		MER:
+			mes "[^000080拉菲爾^000000]";
+			mes "喔, 仔細看價格吧.";
+			close;
+		MER0:
+			mes "[^000080拉菲爾^000000]";
+			mes "看來很不妙.";
+			close;
+	bard4:
+		if (class == 6) goto bard5;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		mes "祝您有美好時光.";
+		close;
+	bard5:
+		if (class == 7) goto bard6;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		mes "我望在您身，那樣會比較安全點.";
+		close;
+	bard6:
+		if (class == 8) goto bard7;
+		//Code for Priest
+		close;
+	bard7:
+		if (class == 9) goto bard8;
+		mes "很高興看到高手來這里.";
+		mes "歡迎來到 ^00FF00克魔島^000000.";
+		close;
+	bard8:
+		if (class == 10) goto bard9;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		close;
+	bard9:
+		if (class == 11) goto bard10;
+		mes "勝利之路就在前方不遠處.";
+		mes "一定很好玩.";
+		close;
+	bard10:
+		if (class == 12) goto bard11;
+		mes "您是 ^800000刺客^000000, 有多人人被您殺掉?";
+		close;
+	bard11:
+		if (class == 14) goto bard12;
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		mes "希望每人都平安無事.";
+		close;
+	bard12:
+		if (class == 15) goto bard13;
+		mes "歡迎來到 ^00FF00克魔島^000000, 很高興有您們在這.";
+		close;
+	bard13:
+		if (class == 16) goto bard14;
+		mes "有一個偉大的 ^800000賢者^000000 來到這.";
+		mes "帶來了給我們一些安全感.";
+		close;
+	bard14:
+		if (class == 17) goto bard15;
+		mes "歡迎來到 ^00FF00克魔島^000000, 要小心這里的警衛.";
+		mes "如果您沒有正常的在這玩, 他們會不高興的.";
+		close;
+	bard15:
+		if (class == 18) goto bard16;
+		mes "歡迎來到 ^00FF00克魔島^000000, 希望您喜歡這里.";
+		next;
+		menu "我會的.",-,"再說吧.",ALCH,"我可不想喜歡這里.",ALCH0;
+			mes "[^000080拉菲爾^000000]";
+			mes "嗯.";
+			close;
+		ALCH:
+			mes "[^000080拉菲爾^000000]";
+			mes "或許您該玩些小游戲, 輕松一下....";
+			close;
+		ALCH0:
+			mes "[^000080拉菲爾^000000]";
+			mes "嗯....希望您不會發生什么事.";
+			close;
+	bard16:
+		if (class == 19) goto bard17;
+		mes "您做的真好.";
+		mes "希望能再看您天才的一面!";
+		close;
+	bard17:
+		if (class == 20) goto bard18;
+		mes "哈?~ 您好嗎?";
+		next;
+		menu "我很好, 謝謝.",-,"一般",DAN,"感覺有點糟.",DAN0;
+			mes "[^000080拉菲爾^000000]";
+			mes "那真是太好了!";
+			close;
+		DAN:
+			mes "[^000080拉菲爾^000000]";
+			mes "喔, 那您小心點吧, 希望您今天不會很糟.";
+			close;
+		DAN0:
+			mes "[^000080拉菲爾^000000]";
+			mes "希望今天會過的很好.";
+			close;
+	bard18:
+		if (class == 22) goto bard19;
+		if (sex==0) goto MALE;
+			mes "嘿, 酷唷.";
+			mes "看來, 您已經結婚過?!";
+			mes "是那位幸運兒呀?";
+			close;
+		MALE:
+			mes "不錯唷, 多了個伴侶在身邊.";
+			close;
+	bard19:
+		mes "哈?, 歡迎來到 ^00FF00克魔島^000000.";
+		mes "祝您有美好的一天.";
+	close;
+}

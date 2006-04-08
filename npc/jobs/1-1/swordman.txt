@@ -1,0 +1,669 @@
+// 劍士轉職腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041118.0.2
+//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//
+// 原始腳本:		不明
+//
+//============================================================
+
+
+//=====================================================================================
+// 劍士轉職任務 1.0
+//=====================================================================================
+
+sword_1-1.gat mapflag nomemo dummy
+sword_1-1.gat mapflag noteleport dummy
+sword_1-1.gat mapflag nosave SavePoint
+
+izlude_in.gat,74,172,4	script	劍士公會人員	119,{
+		mes "[劍士公會服務人員]";
+		mes "這里是劍士公會！請問你有什么事情嗎？";
+		next;
+		menu "轉職成為劍士。",L_APP,"詢問有關劍士。",L_INFO_S,"詢問有關轉職成為劍士的條件。",L_INFO_J,"放棄。",-;
+		mes "[劍士公會服務人員]";
+		mes "年輕就是本錢啊～～再多考慮看看吧。";
+		close;
+L_APP:
+	if (callfunc("Is_Sword_Class")) goto OUT_1;
+	if (BaseJob != Job_Novice) goto OUT_2;
+	if ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Knight) && (ReBirth != Job_Crusader)) goto OUT_2;		// 判斷轉生過但原職業非劍士系
+	if (JobLevel < 10) goto OUT_3;
+	if (SkillPoint != 0) goto OUT_4;
+	if (JOB_SW_Q != 0) goto L_NEXT_1;
+	mes "[劍士公會服務人員]";
+	mes "你想要轉職成為劍士？好的，請先填寫劍士轉職申請書。";
+	next;
+	menu "申請轉職為劍士。",L_APP_IN,"放棄。",-;
+
+	mes "[劍士公會服務人員]";
+	mes "往后若是想到的話，再來申請好了。";
+	close;
+
+L_APP_IN:
+		if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Knight) || (ReBirth == Job_Crusader))) goto HighSwdM;			// 判斷轉生過且原職業為劍士系
+		savepoint "izlude_in.gat",65,165;
+		set JOB_SW_Q,1;
+		mes "[劍士公會服務人員]";
+		mes "很好，我馬上為你遞出申請書。";
+		mes "啊，你已經準備好轉職成為劍士的條件的話，你可以立刻考口試。";
+		mes "要不要？";
+		next;
+		menu "要。",L_NEXT_1,"不要。",-;
+
+		mes "[劍士公會服務人員]";
+		mes "如果對于轉職條件有任何疑問的話，歡迎向我詢問。";
+		mes "接下來只要符合我們所開出來的條件就可以了。祝你好運！";
+		close;
+
+HighSwdM:
+	mes "[劍士公會服務人員]";
+	mes "嗯，你的基本技能等級足夠。轉生名單上也有你的名字，我就接受你的請求，讓你轉職成為上位劍士。";
+	next;
+	setoption 0;
+	callfunc "Job_Change",Job_Swordman;
+	skill 144,1,0;
+	skill 145,1,0;
+	skill 146,1,0;
+	mes "[劍士公會服務人員]";
+	mes "恭喜你再次成為劍士，希望你往后能踴躍參與劍士公會舉辦的各種活動。";
+	close;
+
+L_NEXT_1:
+		mes "[劍士公會服務人員]";
+		mes "要嗎？那么，我看看你的力量吧。";
+		next;
+		mes "[劍士公會服務人員]";
+	if (JOB_SW_Q == 4) goto SUCCESS;
+		mes "初心者的技能等級已經夠了，實戰考試還沒有考過，是不是？";
+		mes "如果連這種最基本的考試都過不了，你想要成為劍士的夢想，只能沖出大氣層飛向遙遠的宇宙，繼續賣力的飛行。";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "考試地點，在左邊的房間。";
+		mes "雖然入口是封閉的，但是向劍士工會服務人員詢問的話，他們就會讓你進去的。";
+		close;
+
+SUCCESS:
+		mes "恭喜你！你現在已經成為人人稱羨的劍士了！";
+		mes "現在就馬上開始轉職！";
+		next;
+		setoption 0;
+		callfunc "Job_Change",Job_Swordman;
+		mes "[劍士公會服務人員]";
+		mes "再次恭喜你成為劍士，希望你往后能踴躍參與劍士公會舉辦的各種活動。";
+		close;
+OUT_1:
+		mes "[劍士公會服務人員]";
+		mes "哈哈哈哈，你真幽默！你的職業已經是劍士啦！";
+		close;
+OUT_2:
+		mes "[劍士公會服務人員]";
+		mes "哈哈！真可笑！我代表劍士公會慎重地拒絕。";
+		mes "你已經從事劍士以外的職業了，不是嗎？";
+		close;
+OUT_3:
+		mes "[劍士公會服務人員]";
+		mes "你基本技能等級還未到達要求的標準呢！";
+		mes "問清楚轉職條件，等基本技能等級提升至要求的標準后再過來吧！";
+		close;
+OUT_4:
+		mes "[劍士公會服務人員]";
+		mes "嘿....既然你都已經確實的升級了，那為";
+		mes "什么不把技能學起來呢？";
+		close;
+L_INFO_S:
+		mes "[劍士公會服務人員]";
+		mes "想要對劍士這個職業了解更多嗎？好吧！那我就說給你聽吧。";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "劍士最大的優勢，就是在近距離戰時能發揮最強大的威力。";
+		mes "近距離戰時，它比其它職業多三個優點！";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "１. 和其它職業相比ＨＰ高出許多。";
+		mes "２. 除了弓箭類和權杖類之外，所有的武器都可以裝備，可以視情況需要充分發揮。";
+		mes "３. 劍士的技能大部份都具有強大的攻擊力。";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "簡單說來就是這樣，我想你應該聽的懂。";
+		mes "另外，我個人認為，劍士不管做什么事，都是世界上最耀眼的職業！";
+		close;
+L_INFO_J:
+		mes "[劍士公會服務人員]";
+		mes "你想成為劍士？";
+		if ((BaseJob == Job_Swordman) || ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Knight) || (ReBirth == Job_Crusader)))) mes "可是你的職業已經是劍士啦！";
+		if ((BaseJob != Job_Swordman) && ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Knight) && (ReBirth != Job_Crusader))) mes "可是，你已經有了其他的職業了，你是不是搞錯了？";
+		mes "還是說你只想聽聽看條件是嗎？真的是這樣的話，說給你聽也無妨。";
+		next;
+		menu "是的，我想聽聽看。",L_GETINFO,"不了，我只是走錯路的。",-;
+
+		mes "[劍士公會服務人員]";
+		mes "我是不知道你為什么在這里閑晃啦。不過如果你想要出城的話，請往南邊去。";
+		close;
+L_GETINFO:
+		mes "[劍士公會服務人員]";
+		mes "想要成為劍士的話，基本技能等級要達到９級以上。若連這一點都辦不到的話，那還有什么資格成為劍士呢？你說是不是啊？";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "第二 要通過劍士轉職考試的話，更詳細的內容，在考場等候區有考試服務人員會為你服務。";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "只要完全符合我們所要求的條件的話，我就會如你所愿將你轉職成為劍士。";
+		close;
+}
+
+izlude_in.gat,62,169,6	script	劍士公會人員	85,{
+		mes "[劍士公會服務人員]";
+	if (callfunc("Is_Sword_Class")) goto OUT_1;
+	if (BaseJob != Job_Novice) goto OUT_2;
+	if (JobLevel < 10) goto OUT_3;
+	if (JOB_SW_Q == 0) goto APP_FIRST;
+	if (JOB_SW_Q == 4) goto SUCCESS;
+		mes "加油吧，希望你早日達成目標。";
+		next;
+		savepoint "izlude_in.gat",65,165;
+		warp "izlude_in",39,170;
+		end;
+APP_FIRST:
+		mes "站住！想要參加轉職考試嗎？";
+		mes "那么首先，填好劍士轉職申請表格之后再來！";
+		close;
+SUCCESS:
+		mes "你已經通過考試了，請到中央位置找轉職管理服務人員！";
+		close;
+OUT_1:
+		mes "站住！這里是初學者考試場！";
+		mes "都已經轉職成劍士的家伙，沒理由進到這里面！回去吧！";
+		close;
+OUT_2:
+		mes "是誰？！已經有其它職業的家伙沒理由進到這里面！回去吧！";
+		close;
+OUT_3:
+		mes "站住！這里是初心者技能等級不到９的家伙不能進去的地方。";
+		mes "若初心者技能等級到９的話，才能就讓你進去轉職考場。";
+		close;
+}
+
+izlude_in.gat,30,175,4	script	劍士公會人員	92,{
+		mes "[劍士公會服務人員]";
+		mes "有關實戰考試，簡單的向你說明一次！請你聽好不要到時候不認帳";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "這考試的目的是，我要確認參賽者，有沒有充沛的體力和堅強的意志力，作為身為一名劍士的后盾！";
+		mes "若沒有天份的人，會在這場考試落榜。";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "考試 ^0083CF及格條件^000000非常簡單！";
+		mes "考場里面所有的行程都通過之后，到達最后檢查地點，向一位監考人員索取合格證就可以啦";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "相反的，參賽者放棄或者在有限的時間內，沒有抵達檢查點就算是失敗";
+		mes "假如想要宣布放棄的話，進入到每個場地入口處，或者在各檢查點向我們管理人員詢問";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "考場分為三個場地，有陷阱和迷路不小心失誤的話，可是會掉進無底洞的呦！";
+		mes "祝你好運";
+		close;
+}
+
+izlude_in.gat,30,163,0	script	考場負責人	105,{
+		mes "[考場負責人]";
+	if (callfunc("Is_Sword_Class")) goto OUT_1;
+	if (BaseJob != Job_Novice) goto OUT_2;
+	if (JOB_SW_Q == 0) goto OUT_3;
+
+	set $sword_map, getmapusers("sword_1-1.gat");
+	if($sword_map > 0) goto MSG_0;
+
+	if (JOB_SW_Q == 1) goto MSG_1;
+	if (JOB_SW_Q == 2) goto MSG_2;
+		mes "不要放棄！再挑戰吧！";
+		next;
+		warp "sword_1-1",10,245;
+		end;
+MSG_0:
+		mes "[考場負責人]";
+		mes "現在有正人在進行考試當中";
+		mes "請在此等候！";
+		close;
+
+MSG_1:
+		mes "想要成為劍士嗎？嗯！看起來很壯碩啊！";
+		mes "和你以后的人生相比的話，這不算很難的行程，所以說不要太緊張好好的去再回來吧";
+		next;
+		set JOB_SW_Q,2;
+		warp "sword_1-1",10,245;
+		end;
+MSG_2:
+		mes "重考嘛....不過，不放棄重新挑戰的精神，我很喜歡！吃下這個繼續加油啊！";
+		next;
+		getitem 512,5;
+		set JOB_SW_Q,3;
+		warp "sword_1-1",10,245;
+		end;
+OUT_1:
+	mes "你不是已經轉職了嗎？怎么會進到這里來？趕快出去吧！";
+	next;
+	warp "izlude_in",66,170;
+	end;
+OUT_2:
+	mes "你是誰呀？！這里是劍士考場，不是你進來的地方！趕快出去吧！";
+	next;
+	warp "izlude_in",66,170;
+	end;
+OUT_3:
+	mes "如果你想要參加劍士轉職考試的話，請你先去報名。";
+	next;
+	warp "izlude_in",66,170;
+	end;
+}
+
+sword_1-1.gat,230,245,2	script	醫務小組	105,{
+		mes "[醫務小組]";
+		mes  "這里是第一個檢查點！ 我會幫你恢復體力，請你加油！";
+		percentheal 100,100;
+		close;
+}
+
+sword_1-1.gat,230,242,2	script	考場服務人員	105,{
+		mes "[考場服務人員]";
+		mes "你要放棄考試嗎？";
+		next;
+		menu "是",-,"不是",L_GO;
+		mapannounce "sword_1-1.gat","應試者 " + strcharinfo(0) + "考生放棄考試了。",3;
+		warp "izlude_in",65,165;
+		end;
+L_GO:
+		mes "[考場服務人員]";
+		mes "明智的決定！靠著年青人的毅力再奮戰一次！";
+		close;
+}
+
+sword_1-1.gat,230,207,2	script	考場服務人員	105,{
+		mes "[醫務小組]";
+		mes  "這里是第二個檢查點！ 我會幫你恢復體力，請你加油！";
+		percentheal 100,100;
+		close;
+}
+
+sword_1-1.gat,230,204,2	script	考場服務人員	105,{
+		mes "[考場服務人員]";
+		mes "你要放棄考試嗎？";
+		next;
+		menu "是",-,"不是",L_GO;
+		mapannounce "sword_1-1.gat","應試者 " + strcharinfo(0) + "考生放棄考試了。",3;
+		next;
+		warp "izlude_in",65,165;
+		end;
+L_GO:
+		mes "[考場服務人員]";
+		mes "明智的決定！靠著年青人的毅力再奮戰一次！";
+		close;
+}
+
+sword_1-1.gat,7,245,0	script	warp	45,1,1,{
+		mes "[考場服務人員]";
+		mes "你要放棄考試嗎？";
+		next;
+		menu "是",-,"不是",L_GO;
+		mapannounce "sword_1-1.gat","應試者 " + strcharinfo(0) + "考生放棄考試了。",3;
+		next;
+		warp "izlude_in",65,165;
+		end;
+L_GO:
+	warp "sword_1-1.gat",10,245;
+	end;
+}
+sword_1-1.gat,8,207,0	script	warp	45,1,1,{
+		mes "[考場服務人員]";
+		mes "你要放棄考試嗎？";
+		next;
+		menu "是",-,"不是",L_GO;
+		mapannounce "sword_1-1.gat","應試者 " + strcharinfo(0) + "考生放棄考試了。",3;
+		next;
+		warp "izlude_in",65,165;
+		end;
+L_GO:
+	warp "sword_1-1.gat",11,207;
+	end;
+}
+sword_1-1.gat,8,169,0	script	warp	45,1,1,{
+		mes "[考場服務人員]";
+		mes "你要放棄考試嗎？";
+		next;
+		menu "是",-,"不是",L_GO;
+		mapannounce "sword_1-1.gat","應試者 " + strcharinfo(0) + "考生放棄考試了。",3;
+		next;
+		warp "izlude_in",65,165;
+		end;
+L_GO:
+	warp "sword_1-1.gat",11,169;
+	end;
+}
+
+
+
+sword_1-1.gat,223,167,2	script	馬修塔印	92,{
+		set JOB_SW_Q,4;
+		mes "[馬修塔印]";
+       		mes "恭喜你通過考試了！";
+		mes "合格通知書，已經送達到管理部門了，從這邊走出去，到中央轉職管理部門詢問即可。";
+		next;
+		warp "izlude_in",66,173;
+       		end;
+}
+
+sword_1-1.gat,193,244,0	script	warp	45,2,2,{
+	mapannounce "sword_1-1.gat","恭禧應試者 " + strcharinfo(0) + "通過第一關。",3;
+	warp "sword_1-1.gat",215,243;
+	end;
+}
+sword_1-1.gat,193,206,0	script	warp	45,2,2,{
+	mapannounce "sword_1-1.gat","恭禧應試者 " + strcharinfo(0) + "通過第二關。",3;
+	warp "sword_1-1.gat",215,205;
+	end;
+}
+sword_1-1.gat,193,169,0	script	warp	45,2,2,{
+	mapannounce "sword_1-1.gat","恭禧應試者 " + strcharinfo(0) + "通過第三關。",3;
+	warp "sword_1-1.gat",217,167;
+	end;
+}
+
+//==============================================================================
+// 怪物設定
+//==============================================================================
+
+sword_1-1.gat,0,0,0,0		monster	蒼蠅	1183,5,0,0,0
+sword_1-1.gat,201,36,0,0	monster	蒼蠅	1183,5,0,0,0
+sword_1-1.gat,161,94,0,0	monster	蒼蠅	1183,5,0,0,0
+sword_1-1.gat,35,79,0,0		monster	蒼蠅	1183,5,0,0,0
+sword_1-1.gat,35,78,0,0		monster	綠棉蟲	1184,3,60000,30000,0
+sword_1-1.gat,50,108,0,0	monster	綠棉蟲	1184,3,60000,30000,0
+sword_1-1.gat,61,28,0,0		monster	綠棉蟲	1184,3,60000,30000,0
+sword_1-1.gat,61,92,0,0		monster	綠棉蟲	1184,3,60000,30000,0
+sword_1-1.gat,110,112,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,161,94,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,130,76,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,103,58,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,130,24,0,0	monster	綠棉蟲	1184,5,60000,30000,0
+sword_1-1.gat,201,36,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,201,16,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,239,44,0,0	monster	綠棉蟲	1184,3,60000,30000,0
+sword_1-1.gat,239,76,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,231,101,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,234,117,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,198,91,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+sword_1-1.gat,200,63,0,0	monster	綠棉蟲	1184,2,60000,30000,0
+
+//==============================================================================
+// 傳點、陷阱設定
+//==============================================================================
+sword_1-1.gat,65,117,0	warp	swd101	1,1,sword_1-1.gat,10,245
+sword_1-1.gat,98,27,0	warp	swd102	1,1,sword_1-1.gat,11,207
+sword_1-1.gat,161,27,0	warp	swd103	1,1,sword_1-1.gat,11,207
+sword_1-1.gat,223,205,0	warp	swd104	1,1,sword_1-1.gat,11,168
+sword_1-1.gat,223,243,0	warp	swd105	1,1,sword_1-1.gat,11,206
+sword_1-1.gat,239,117,0	warp	swd106	1,1,sword_1-1.gat,11,169
+
+sword_1-1.gat,192,244,0	warp	SwordWarp0	2,2,sword_1-1.gat,215,244
+sword_1-1.gat,223,243,0	warp	SwordWarp1	2,2,sword_1-1.gat,12,206
+sword_1-1.gat,192,206,0	warp	SwordWarp2	2,2,sword_1-1.gat,215,205
+sword_1-1.gat,223,205,0	warp	SwordWarp3	2,2,sword_1-1.gat,12,168
+sword_1-1.gat,192,168,0	warp	SwordWarp4	2,2,sword_1-1.gat,215,167
+sword_2-1.gat,65,117,0	warp	swd201		1,1,sword_2-1.gat,10,245
+sword_2-1.gat,98,27,0	warp	swd202		1,1,sword_2-1.gat,11,207
+sword_2-1.gat,161,27,0	warp	swd203		1,1,sword_2-1.gat,11,207
+sword_2-1.gat,223,205,0	warp	swd204		1,1,sword_2-1.gat,11,168
+sword_2-1.gat,223,243,0	warp	swd205		1,1,sword_2-1.gat,11,206
+sword_2-1.gat,239,117,0	warp	swd206		1,1,sword_2-1.gat,11,169
+sword_3-1.gat,65,117,0	warp	swd301		1,1,sword_3-1.gat,10,245
+sword_3-1.gat,98,27,0	warp	swd302		1,1,sword_3-1.gat,11,207
+sword_3-1.gat,161,27,0	warp	swd303		1,1,sword_3-1.gat,11,207
+sword_3-1.gat,223,205,0	warp	swd304		1,1,sword_3-1.gat,11,168
+sword_3-1.gat,223,243,0	warp	swd305		1,1,sword_3-1.gat,11,206
+sword_3-1.gat,239,117,0	warp	swd306		1,1,sword_3-1.gat,11,169
+
+// 1st
+//==================================================================
+sword_1-1.gat,16,250,0	script	1st_fall	-1,{
+	set @r,rand(5);
+	if(@r==0) goto w1;
+	if(@r==1) goto w2;
+	if(@r==2) goto w3;
+	if(@r==3) goto w4;
+	warp "sword_1-1.gat",65,56; end;
+w1:	warp "sword_1-1.gat",29,26; end;
+w2:	warp "sword_1-1.gat",43,16; end;
+w3:	warp "sword_1-1.gat",23,112; end;
+w4:	warp "sword_1-1.gat",58,83; end;
+}
+sword_1-1.gat,16,251,0	script	1_blank_1_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,19,251,0	script	1_blank_1_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,17,250,0	script	1_blank_1_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,16,238,0	script	1_blank_2_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,19,238,0	script	1_blank_2_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,17,239,0	script	1_blank_2_c	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,28,247,0	script	1_blank_3_a	139,4,0,{doevent "1st_fall";end;}
+sword_1-1.gat,33,245,0	script	1_blank_3_b	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,29,242,0	script	1_blank_3_c	139,4,0,{doevent "1st_fall";end;}
+sword_1-1.gat,24,244,0	script	1_blank_3_d	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,38,251,0	script	1_blank_4_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,41,251,0	script	1_blank_4_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,39,250,0	script	1_blank_4_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,38,238,0	script	1_blank_5_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,41,238,0	script	1_blank_5_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,39,239,0	script	1_blank_5_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,54,251,0	script	1_blank_6_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,71,251,0	script	1_blank_6_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,62,250,0	script	1_blank_6_c	139,9,0,{doevent "1st_fall";end;}
+sword_1-1.gat,62,247,0	script	1_blank_7_a	139,8,0,{doevent "1st_fall";end;}
+sword_1-1.gat,71,244,0	script	1_blank_7_b	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,63,242,0	script	1_blank_7_c	139,8,0,{doevent "1st_fall";end;}
+sword_1-1.gat,54,244,0	script	1_blank_7_d	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,54,238,0	script	1_blank_8_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,71,238,0	script	1_blank_8_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,62,239,0	script	1_blank_8_c	139,9,0,{doevent "1st_fall";end;}
+sword_1-1.gat,102,247,0	script	1_blank_9_a	139,2,0,{doevent "1st_fall";end;}
+sword_1-1.gat,105,245,0	script	1_blank_9_b	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,103,242,0	script	1_blank_9_c	139,2,0,{doevent "1st_fall";end;}
+sword_1-1.gat,100,244,0	script	1_blank_9_d	139,0,2,{doevent "1st_fall";end;}
+sword_1-1.gat,156,249,0	script	1_blank_10_a	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,156,248,0	script	1_blank_10_b	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,249,0	script	1_blank_10_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,248,0	script	1_blank_10_d	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,156,245,0	script	1_blank_11_a	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,156,244,0	script	1_blank_11_b	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,245,0	script	1_blank_11_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,244,0	script	1_blank_11_d	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,156,241,0	script	1_blank_12_a	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,156,240,0	script	1_blank_12_b	139,14,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,241,0	script	1_blank_12_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,170,240,0	script	1_blank_12_d	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,180,251,0	script	1_blank_13_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,183,251,0	script	1_blank_13_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,181,250,0	script	1_blank_13_c	139,1,0,{doevent "1st_fall";end;}
+sword_1-1.gat,180,238,0	script	1_blank_14_a	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,183,238,0	script	1_blank_14_b	139,0,1,{doevent "1st_fall";end;}
+sword_1-1.gat,181,239,0	script	1_blank_14_c	139,1,0,{doevent "1st_fall";end;}
+// 2nd
+//==================================================================
+sword_1-1.gat,56,211,0	script	2nd_fall	-1,{
+	set @r,rand(5);
+	if(@r==0) goto w1;
+	if(@r==1) goto w2;
+	if(@r==2) goto w3;
+	if(@r==3) goto w4;
+	warp "sword_1-1.gat",162,120; end;
+w1:	warp "sword_1-1.gat",94,120; end;
+w2:	warp "sword_1-1.gat",94,85; end;
+w3:	warp "sword_1-1.gat",162,85; end;
+w4:	warp "sword_1-1.gat",130,47; end;
+}
+sword_1-1.gat,26,212,0	script	2_blank_1_a	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,47,212,0	script	2_blank_1_b	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,68,212,0	script	2_blank_1_c	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,87,212,0	script	2_blank_1_d	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,26,210,0	script	2_blank_1_e	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,47,210,0	script	2_blank_1_f	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,68,210,0	script	2_blank_1_g	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,87,210,0	script	2_blank_1_h	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,16,206,0	script	2_blank_2_a	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,97,206,0	script	2_blank_2_b	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,26,203,0	script	2_blank_3_a	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,47,203,0	script	2_blank_3_b	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,68,203,0	script	2_blank_3_c	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,87,203,0	script	2_blank_3_d	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,26,201,0	script	2_blank_3_e	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,47,201,0	script	2_blank_3_f	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,68,201,0	script	2_blank_3_g	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,87,201,0	script	2_blank_3_h	139,10,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,113,212,0	script	2_blank_4_a	139,14,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,125,212,0	script	2_blank_4_b	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,113,210,0	script	2_blank_5_a	139,14,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,125,210,0	script	2_blank_5_b	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,100,206,0	script	2_blank_5_c	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,127,206,0	script	2_blank_5_d	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,113,203,0	script	2_blank_5_e	139,14,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,125,203,0	script	2_blank_5_f	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,113,201,0	script	2_blank_6_a	139,14,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,125,201,0	script	2_blank_6_b	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,132,212,0	script	2_blank_7_0	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,155,212,0	script	2_blank_7_a	139,21,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,181,212,0	script	2_blank_7_b	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,132,210,0	script	2_blank_8_0	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,155,210,0	script	2_blank_8_a	139,21,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,181,210,0	script	2_blank_8_b	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,130,206,0	script	2_blank_8_c	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,183,206,0	script	2_blank_8_d	139,0,3,{doevent "2nd_fall";end;}
+sword_1-1.gat,132,203,0	script	2_blank_8_1	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,155,203,0	script	2_blank_8_e	139,21,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,181,203,0	script	2_blank_8_f	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,132,201,0	script	2_blank_9_0	139,2,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,155,201,0	script	2_blank_9_a	139,21,0,{doevent "2nd_fall";end;}
+sword_1-1.gat,181,201,0	script	2_blank_9_b	139,2,0,{doevent "2nd_fall";end;}
+
+// 3rd
+//==================================================================
+
+sword_1-1.gat,17,174,0	script	3rd_fall	-1,{
+	set @r,rand(5);
+	if(@r==0) goto w1;
+	if(@r==1) goto w2;
+	if(@r==2) goto w3;
+	if(@r==3) goto w4;
+	warp "sword_1-1.gat",195,15; end;
+w1:	warp "sword_1-1.gat",195,38; end;
+w2:	warp "sword_1-1.gat",231,30; end;
+w3:	warp "sword_1-1.gat",198,65; end;
+w4:	warp "sword_1-1.gat",196,116; end;
+}
+sword_1-1.gat,17,174,0	script	3_blank_1_a	139,2,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,17,163,0	script	3_blank_2_a	139,2,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,29,171,0	script	3_blank_3_a	139,2,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,31,168,0	script	3_blank_3_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,28,166,0	script	3_blank_3_c	139,2,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,26,168,0	script	3_blank_3_d	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,36,169,0	script	3_blank_4_a	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,37,169,0	script	3_blank_4_b	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,37,168,0	script	3_blank_4_c	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,36,168,0	script	3_blank_4_c	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,40,175,0	script	3_blank_5_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,175,0	script	3_blank_5_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,171,0	script	3_blank_6_a	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,170,0	script	3_blank_6_b	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,167,0	script	3_blank_6_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,166,0	script	3_blank_6_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,42,169,0	script	3_blank_6_e	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,43,170,0	script	3_blank_6_f	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,43,167,0	script	3_blank_6_g	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,40,162,0	script	3_blank_7_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,41,162,0	script	3_blank_7_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,46,175,0	script	3_blank_8_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,51,175,0	script	3_blank_8_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,47,174,0	script	3_blank_8_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,50,174,0	script	3_blank_8_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,48,173,0	script	3_blank_8_e	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,49,173,0	script	3_blank_8_f	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,46,162,0	script	3_blank_9_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,51,162,0	script	3_blank_9_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,47,163,0	script	3_blank_9_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,50,163,0	script	3_blank_9_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,48,164,0	script	3_blank_9_e	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,49,164,0	script	3_blank_9_f	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,54,170,0	script	3_blank_10_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,55,170,0	script	3_blank_10_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,54,167,0	script	3_blank_10_c	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,55,167,0	script	3_blank_10_d	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,53,169,0	script	3_blank_10_e	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,53,168,0	script	3_blank_10_f	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,56,169,0	script	3_blank_10_g	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,56,168,0	script	3_blank_10_h	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,58,175,0	script	3_blank_11_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,59,174,0	script	3_blank_11_b	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,60,173,0	script	3_blank_11_c	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,61,172,0	script	3_blank_11_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,58,162,0	script	3_blank_12_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,59,163,0	script	3_blank_12_b	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,60,164,0	script	3_blank_12_c	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,61,165,0	script	3_blank_12_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,76,172,0	script	3_blank_13_a	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,77,173,0	script	3_blank_13_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,78,174,0	script	3_blank_13_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,79,175,0	script	3_blank_13_d	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,76,165,0	script	3_blank_14_a	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,77,164,0	script	3_blank_14_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,78,163,0	script	3_blank_14_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,79,162,0	script	3_blank_14_d	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,94,175,0	script	3_blank_15_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,95,174,0	script	3_blank_15_b	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,98,174,0	script	3_blank_15_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,99,175,0	script	3_blank_16_d	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,96,169,0	script	3_blank_17_a	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,97,169,0	script	3_blank_17_b	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,97,168,0	script	3_blank_17_c	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,96,168,0	script	3_blank_17_d	139,0,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,94,162,0	script	3_blank_18_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,95,163,0	script	3_blank_18_b	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,98,163,0	script	3_blank_18_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,99,162,0	script	3_blank_18_d	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,114,175,0	script	3_blank_19_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,115,175,0	script	3_blank_19_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,114,162,0	script	3_blank_20_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,115,162,0	script	3_blank_20_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,126,175,0	script	3_blank_21_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,127,175,0	script	3_blank_21_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,126,162,0	script	3_blank_23_a	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,127,162,0	script	3_blank_23_b	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,160,174,0	script	3_blank_24_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,161,174,0	script	3_blank_24_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,160,163,0	script	3_blank_25_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,161,163,0	script	3_blank_25_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,168,175,0	script	3_blank_26_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,169,175,0	script	3_blank_26_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,168,162,0	script	3_blank_27_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,169,162,0	script	3_blank_27_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,176,174,0	script	3_blank_28_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,177,174,0	script	3_blank_28_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,178,173,0	script	3_blank_28_c	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,178,172,0	script	3_blank_28_d	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,181,174,0	script	3_blank_28_e	139,2,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,179,169,0	script	3_blank_29_a	139,3,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,179,168,0	script	3_blank_29_b	139,3,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,182,169,0	script	3_blank_29_c	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,183,169,0	script	3_blank_29_d	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,181,167,0	script	3_blank_29_e	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,181,166,0	script	3_blank_29_f	139,1,0,{doevent "3rd_fall";end;}
+sword_1-1.gat,183,167,0	script	3_blank_29_g	139,0,1,{doevent "3rd_fall";end;}
+sword_1-1.gat,176,163,0	script	3_blank_30_a	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,177,163,0	script	3_blank_30_b	139,0,2,{doevent "3rd_fall";end;}
+sword_1-1.gat,181,163,0	script	3_blank_30_c	139,2,0,{doevent "3rd_fall";end;}
+
+//============================================================================================================
+// 檢查游戲中轉職任務是否有人正在進行
+//============================================================================================================
+// 已設定

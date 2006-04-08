@@ -1,0 +1,65 @@
+//===== eAthena Script ======================================= 
+//= Ayotaya Town
+//===== By: ================================================== 
+//= 
+//===== Current Version: =====================================
+//= 0.3
+//===== Compatible With: ===================================== 
+//= Any eAthena +
+//===== Description: ========================================= 
+//=
+//===== Additional Comments: ================================= 
+//= Added a Sailor NPC to get back to Alberta [ZoDIaC]
+//= 0.2 fixed coords, dialogues
+//= 0.3 Fixed Warp name, ayotaya.gat doesnt exist, even though iRO 
+//= 	decided to call it Ayotaya, it really is Ayothaya, like 
+//=	that Yuno/Juno thing
+//============================================================ 
+
+
+ayothaya.gat,154,67,4	script	海員	100,{
+mes "[海員]";
+mes "Would you like to go back to Alberta?";
+next;
+menu "Yeah",-,"No, I'll stay",M_End; 
+
+warp "alberta.gat",245,43;
+M_End:
+close;
+} 
+
+// 泰國水手 --------------------------------------------------------------------
+
+alberta.gat,242,45,3	script	艾巴克斯因	100,{
+mes "[艾巴克斯因]";
+mes "嗨... 你們,";
+mes "想知道一個遙遠地方的事嗎?";
+next;
+menu "告訴我",-,"8要",M_End;
+
+mes "[艾巴克斯因]"; 
+mes "它被稱為 ^000088泰國^000000.";
+mes "我能送你去那里, 但是要花點錢.";
+next; 
+mes "[艾巴克斯因]"; 
+mes "給我 10000 zeny的話, 我就送你去.";
+next;
+menu "送我去那兒!",-,"不用了，謝謝",M_End2; 
+
+if(Zeny < 10000) goto NoZenyM1;
+set Zeny, Zeny - 10000;
+warp "ayothaya.gat",149,57;
+close;
+
+NoZenyM1:
+mes "[艾巴克斯因]";
+mes "我告訴過你...";
+mes "不給我 10000 zeny的話我不能送你去那兒.";
+close;
+
+M_End:
+mes "[艾巴克斯因]";
+mes "好吧，隨你.";
+M_End2:
+close;
+} 

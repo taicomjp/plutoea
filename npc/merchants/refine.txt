@@ -1,0 +1,896 @@
+// 精煉腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041201.0.1	
+//			20050204.0.1	修正 Material Salesmen 部分 NPC 名字的敘述
+//			20050210.0.1	修正華麗金屬鐵砧為不販賣
+//					修正部分 close;end; 敘述 為 close;
+//			20050302.0.1	修正賣強化金屬 NPC 某些對話不顯示 NPC 名字的問題
+// deepin[DDT] 2005/12/26更新到EA 腳本 1.6
+//
+//============================================================
+//===== eAthena Script =======================================
+//= Refining NPCs
+//===== By: ==================================================
+//= Syrus22 (1.1)
+//= dafide18 (1.4)
+//= Skotlex (1.5)
+//===== Current Version: =====================================
+//= 1.6
+//===== Compatible With: =====================================
+//= Any Athena Version
+//===== Description: =========================================
+//= Refining NPCs and Metal Salesmen.
+//===== Additional Comments: =================================
+//= 1.0 - by A bunch of people!
+//= Syrus22 - Completely redid the script using functions... also
+//= added the option for auto safe refining and multiple refining.
+//= 1.1 Negative input bug fixed [Lupus]
+//= 1.2 Added additional reparimen in morroc and payon.  Added
+//= Christopher the blacksmith in Geffen.  Edited some dialogue [kobra_k88]
+//= 1.3 New Payon Locations [Darkchild]
+//=       Corrected zeny subtraction thx to jpnmania77.[kobra_k88]
+//= 1.3a - Temporary corrected an exploit. Need to check sources
+//=        to fully fix bug [Shinigami]
+//=        Fixed repairman prices [shadowlady]
+//=        Fixed bug that skips requirements thanks to sir_loon [massdriller]
+//=        Fixed itemid error thanks to -Vitamin- [massdriller]
+//= 1.4 - check again item in refining procedure to avoid
+//=        hacker that can change item [dafide18]
+//= 1.5 - Fixed crashing due to badly used callfunc's [Skotlex]
+//        Lupus, don't rollback this important fix again! >.<
+//= 1.5a - Corrected an unneeded callfunc, fixed the anti-bot 
+//=       exploit ruining the safe refine loop. [Skotlex]
+//= 1.5b - Fixed Spelling mistakes. [Nexon] 
+//= 1.6	- Replaced all breaks for ends as per the new script engine [Skotlex]
+//============================================================
+
+
+//=========================================================
+// Christopher: Geffen Blacksmith
+//=========================================================
+geffen_in.gat,110,172,2	script	克理斯多福	63,{
+	mes "[克理斯多福]";
+	mes "歡迎來到'克理斯多福'的工作室，在這里你可以制作各種各樣的東西。親愛的，有什么可以幫你的嗎？";
+	M_Menu:
+	next;
+	menu "購買鐵砧",M_0,"購買鍛造工具",M_1,"購買金屬",M_2,"原石加工",M_3,"取消",M_End;
+
+	M_0:
+		mes "[克理斯多福]";
+		mes "你必須知道，更好的鐵砧可以打造出更好的武器，但是它們的價格是非常昂貴的，在這里你可以選擇更適合你的材料。";
+		next;
+		menu "鐵砧 - 30000z.",sM_Anvil, "神之金屬鐵砧 - 120000z.",sM_OriAnvil, "黃金鐵砧l - 300000z.",sM_GolAnvil,
+			"更好的鐵砧",sM_BetAnvil, "取消",M_Menu;
+
+		sM_Anvil:
+			if(Zeny < 30000) goto L_NoZeny;
+			mes "[克理斯多福]";
+			mes "你選擇的這一種是比較便宜的一種。";
+			set Zeny, Zeny - 30000;
+			getitem 986,1;
+			next;
+			goto L_Thanks;
+		sM_OriAnvil:
+			if(Zeny < 120000) goto L_NoZeny;
+			mes "[克理斯多福]";
+			mes "噢！看來你是個行家。這一定是一個適合鐵匠的鐵砧，你說是嗎？";
+			set Zeny, Zeny - 120000;
+			getitem 987,1;
+			next;
+			goto L_Thanks;
+		sM_GolAnvil:
+			if(Zeny < 300000) goto L_NoZeny;
+			mes "[克理斯多福]";
+			mes "這一個是工作室之中的最好的一種，用這種鐵砧，你絕對可以稱霸鐵匠界。";
+			set Zeny, Zeny - 300000;
+			getitem 988,1;
+			next;
+			goto L_Thanks;
+		sM_BetAnvil:
+			mes "[克理斯多福]";
+			mes "很抱歉，我這里沒有比黃金鐵砧更好的鐵砧了，";
+			mes "或許傳說中的'Ringgel'有比這更好的鐵砧，但是它只是一個傳說而已。.";
+			close;
+
+	M_1:
+		mes "[克理斯多福]";
+		mes "一個值得尊敬的鍛造師，必須擁有一套優秀的工具。";
+		mes "你可以在我這里選購一套適合你的，自己看看吧！";
+		sM_Menu1:
+		next;
+		menu "攜帶用熔礦爐 - 150z.",sM_Furn, "鋼鐵錘子 - 1000z.",sM_IrHam, "黃金錘子 - 3000z.",sM_GldHam,
+		     "神之金屬錘子 - 5000z.",sM_OriHam, "取消",M_Menu;
+
+		sM_Furn:
+			mes "[克理斯多福]";
+			mes "這是金屬打造的精煉工具，你打算購買多少個呢？請在提示訊框內輸入數量(最多1000個)，如果想再次挑選，請輸入'0'。";
+			set @input, 0;
+			input @input;
+			next;
+			if(@input < 1 ) goto sM_Menu1;
+			if(@input > 1000 ) goto sM_Max;
+			if(Zeny < 150 * @input) goto L_NoZeny;
+			set Zeny, Zeny - (150 * @input);
+			getitem 612, @input;
+			goto L_Thanks;
+		sM_IrHam:
+			if(Zeny < 1000) goto L_NoZeny;
+			set Zeny, Zeny - 1000;
+			getitem 613,1;
+			goto L_Thanks;
+		sM_GldHam:
+			if(Zeny < 3000) goto L_NoZeny;
+			set Zeny, Zeny - 3000;
+			getitem 614,1;
+			goto L_Thanks;
+		sM_OriHam:
+			if(Zeny < 5000) goto L_NoZeny;
+			set Zeny, Zeny - 5000;
+			getitem 615,1;
+			goto L_Thanks;
+		sM_Max:
+			mes "[克理斯多福]";
+			mes "對不起,你一次不能購買超過1000個.";
+			close;
+
+	M_2:
+		mes "[克理斯多福]";
+		mes "我有兩種強化金屬可以出售,你需要哪一種?";
+		set @chris, 1;
+		set @name$, "Christopher Guillenrow";
+		callfunc "phramain";
+
+	M_3:
+		mes "[克理斯多福]";
+		mes "我這里可以制作優質的金屬礦石，5個神之金屬原石可以制作成一個神之金屬，5個鋁原石可以制作成一個鋁，你打算做哪一種呢？";
+		set @chris, 1;
+		set @name$, "克理斯多福";
+		callfunc "orimain";
+
+	M_End:
+		close;
+
+	L_NoZeny:
+		mes "[克理斯多福]";
+		mes "我覺得這個價格已經是最低的了，因為這么低的價錢，所以也不允許賒帳……";
+		emotion 4;
+		close;
+
+	L_Thanks:
+		mes "[克理斯多福]";
+		mes "感謝您的光臨，歡迎下次光臨！";
+		emotion 15;
+		close;
+}
+
+
+
+//=====================================================================================
+// Weapon/Armor Refiners
+//=====================================================================================
+prt_in.gat,63,60,4	script	忽克連	85,{
+	set @name$,"忽克連";
+	callfunc "refinemain";
+	end;
+}
+morocc_in.gat,73,38,4	script	亞拉甘	99,{
+	set @name$,"亞拉甘";
+	callfunc "refinemain";
+	end;
+}
+payon.gat,144,173,4	script	安東尼奧	88,{
+	set @name$,"安東尼奧";
+	callfunc "refinemain";
+	end;
+}
+alberta_in.gat,28,58,4	script	弗雷德利	85,{
+	set @name$,"弗雷德利";
+	callfunc "refinemain";
+	end;
+}
+yuno_in01.gat,164,26,6	script	尤思特	88,{
+	set @name$,"尤思特";
+	callfunc "refinemain";
+	end;
+}
+
+//============================================================
+//= Main Refiner Function
+//============================================================
+//= To allow auto safe refining/multiple refining set the
+//= @features variable to 1
+//============================================================
+function	script	refinemain	{
+	set @features,0;
+
+	mes "[" + @name$ + "]";
+	mes "我是專門鍛治武器與防具的鐵匠，我可以為你鍛治裝置專案中的物品。";
+	mes "你想要鍛治裝置專案中的哪一項物品呢？";
+	M_Menu:
+	next;
+	menu getequipname(1),PART1,getequipname(2),PART2,getequipname(3),PART3,getequipname(4),PART4,getequipname(5),PART5,
+	     getequipname(6),PART6,getequipname(7),PART7,getequipname(8),PART8,getequipname(9),PART9,getequipname(10),PART10;
+
+	//Head Gear
+	PART1:
+		set @part,1;
+		if (getequipisequiped(1)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "要不要我把你的頭腦鍛治得聰明一點啊？";
+		emotion 6;
+		goto M_Menu;
+	//Armor
+	PART2:
+		set @part,2;
+		if (getequipisequiped(2)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "來吧！我會用我熱情的身體來鍛治你的全身。";
+		emotion 6;
+		goto M_Menu;
+	//Left Hand
+	PART3:
+		set @part,3;
+		if (getequipisequiped(3)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "很抱歉現在還沒有哪種技術能在你的左手裝上火箭拳耶..";
+		emotion 4;
+		goto M_Menu;
+	//Right Hand
+	PART4:
+		set @part,4;
+		if (getequipisequiped(4)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "很抱歉現在還沒有哪種技術能在你的右手裝上火箭拳耶！";
+		emotion 4;
+		goto M_Menu;
+	//Garment
+	PART5:
+		set @part,5;
+		if (getequipisequiped(5)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你擁有的裝置項目中沒有外衣不是嗎?";
+		goto M_Menu;
+	//Foot Gear
+	PART6:
+		set @part,6;
+		if (getequipisequiped(6)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你的腳真不是普通的臭耶！";
+		emotion 16;
+		goto M_Menu;
+	//Accessory1
+	PART7:
+		set @part,7;
+		if (getequipisequiped(7)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你說的是哪種裝飾品?";
+		emotion 20;
+		goto M_Menu;
+	//Accessory2
+	PART8:
+		set @part,8;
+		if (getequipisequiped(8)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你說的是哪種裝飾品?";
+		emotion 20;
+		goto M_Menu;
+	PART9:
+		set @part,9;
+		if (getequipisequiped(9)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你說的是哪種裝飾品? 你指的該不會是頭部的其他部位吧?";
+		emotion 20;
+		goto M_Menu;
+	PART10:
+		set @part,10;
+		if (getequipisequiped(10)) goto CHECK1;
+		mes "[" + @name$ + "]";
+		mes "你說的是哪種裝飾品? 你指的該不會是頭部的其他部位吧?";
+		emotion 20;
+		goto M_Menu;
+
+//Check if the item is refinable...
+CHECK1:
+	if(getequipisenableref(@part)) goto CHECK2;
+	mes "[" + @name$ + "]";
+	mes "你說的這個項目是無法鍛治的項目喔！";
+	close;
+
+//Check if the item is identified... (Don't know why this is in here... but kept it anyway)
+CHECK2:
+	if(getequipisidentify(@part)) goto CHECK3;
+	mes "[" + @name$ + "]";
+	mes "這項武器還沒通過鑒定，無法鍛治..";
+	close;
+
+//Check to see if the items is already +10
+CHECK3:
+	if(getequiprefinerycnt(@part) < 10) goto REFINE0;
+	mes "[" + @name$ + "]";
+	mes "這項武器已經鍛治到最高等級，無法再鍛治了..";
+	close;
+
+//Refine Armor
+REFINE0:
+	set @refineitemid, getequipid(@part); // save id of the item
+	set @refinerycnt, getequiprefinerycnt(@part); //save refinery count
+	if(getequipweaponlv(@part) > 0) goto REFINE1;
+	set @matname$,"Elunium";
+	set @material,985;
+	set @price,2000;
+	set @safe,4;
+	if(@features == 1) goto L_refinefeatures;
+	goto L_refinenormal;
+//Refine Level 1 Weapon
+REFINE1:
+	if(getequipweaponlv(@part) > 1) goto REFINE2;
+	set @matname$,"Phracon";
+	set @material,1010;
+	set @price,50;
+	set @safe,7;
+	if(@features == 1) goto L_refinefeatures;
+	goto L_refinenormal;
+//Refine Level 2 Weapon
+REFINE2:
+	if(getequipweaponlv(@part) > 2) goto REFINE3;
+	set @matname$,"Emveretarcon";
+	set @material,1011;
+	set @price,200;
+	set @safe,6;
+	if(@features == 1) goto L_refinefeatures;
+	goto L_refinenormal;
+//Refine Level 3 Weapon
+REFINE3:
+	if(getequipweaponlv(@part) > 3) goto REFINE4;
+	set @matname$,"Oridecon";
+	set @material,984;
+	set @price,5000;
+	set @safe,5;
+	if(@features == 1) goto L_refinefeatures;
+	goto L_refinenormal;
+//Refine Level 4 Weapon
+REFINE4:
+	set @matname$,"Oridecon";
+	set @material,984;
+	set @price,20000;
+	set @safe,4;
+	if(@features == 1) goto L_refinefeatures;
+	goto L_refinenormal;
+
+L_refinenormal:
+	mes "[" + @name$ + "]";
+	mes "要鍛治你所選擇的這項裝備需要 ^ff9999" + @matname$ + "^000000 以及費用 " + @price + " Zeny.";
+	mes "你要繼續嗎?";
+	next;
+	menu "繼續",-,"取消",Lcancel;
+
+		if (getequippercentrefinery(@part) == 100) goto L_Sub;
+		mes "[" + @name$ + "]";
+		mes "看來這武器已經鍛治很多次了的樣子...";
+		mes "要是再繼續鍛治的話，可能會造成損壞喔！";
+		next;
+		mes "["+@name$+"]";
+		mes "要是損壞的話可就不能繼續使用了！！插在里面的卡片和特征也^ff0000全部都會消失^000000！！";
+		mes "而且，裝備也會消失掉哦，你確定要繼續嗎？";
+		next;
+		menu "繼續",L_Sub,"取消",Lcancel1;
+
+		L_Sub:
+			if ((countitem(@material) < 1) || (Zeny < @price)) goto Lcancel2;
+			delitem @material,1;
+			set Zeny,Zeny-@price;
+
+Lrefine:
+	if (getequipisequiped(@part) == 0) goto LNoItem; // hacker has removed the item (not changed, why?)
+	if (getequipid(@part) != @refineitemid) goto LNoFake; // hacker has changed the item
+	if (getequiprefinerycnt(@part) != @refinerycnt) goto LNoFake; // hacker has changed the item
+	if (getequippercentrefinery(@part) <= rand(100)) goto Lfail;
+	mes "["+@name$+"]";
+	mes "鏘！鏘！！鏘！";
+	successrefitem @part;
+	next;
+	mes "["+@name$+"]";
+	mes "拿去吧！已經做好了。好久沒鍛治出那么優質的武器了，武器變強了你一定也很高興吧！";
+	emotion 21;
+	close;
+
+Lfail:
+	mes "[" + @name$ + "]";
+	mes "鏘！鏘！！鏘！";
+	failedrefitem @part;
+	next;
+	mes "["+@name$+"]";
+	mes "咳咳咳咳咳咳咳！！！";
+	emotion 16;
+	next;
+	mes "["+@name$+"]";
+	mes "真...丟臉。";
+	mes "武器在鍛治的程式中損壞了。";
+	next;
+	mes "["+@name$+"]";
+	mes "我...我...早就告訴過你會這樣的嘛！";
+	close;
+
+LNoItem:
+	mes "[" + @name$ + "]";
+	mes "這些就是你所擁有的所有物品嗎？";
+	mes "對不起,材料不夠我也不能幫你..";
+	close;
+
+LNoFake:
+	mes "[" + @name$ + "]";
+	mes "不要開玩笑了,你以為我是笨蛋嗎 !?!";
+	mes "快出去,不然我會用我的鐵錘打你..";
+	close;
+
+Lcancel:
+	mes "[" + @name$ + "]";
+	mes "那好吧，歡迎下次再來！";
+	close;
+
+Lcancel1:
+	mes "[" + @name$ + "]";
+	mes "很好。";
+	mes "如果太過無理的鍛治武器，而造成損壞，我心情也會跟著變壞的。";
+	close;
+
+Lcancel2:
+	mes "[" + @name$ + "]";
+	mes "這些就是你所擁有的所有物品嗎？";
+	mes "雖然很可惜，但是你的材料不足，我也實在愛莫能助，再說，我付出也應該得要有所收獲嘛！";
+	close;
+
+// New Refining Functions ========================
+L_refinefeatures:
+	if(getequiprefinerycnt(@part) >= @safe) goto Lnosafe;
+	mes "[" + @name$ + "]";
+	mes "你可以選擇直接鍛冶到安全值，或是要鍛冶的次數... 我都沒意見...";
+	next;
+	menu "鍛冶到安全值",Lsafe,"我自己決定鍛冶次數",Lnosafe,"我改變主意了...",Lcancel;
+
+Lsafe:
+	set @refinecnt,@safe - getequiprefinerycnt(@part);
+	set @fullprice,@price * @refinecnt;
+	mes "[" + @name$ + "]";
+	mes "總共需要 " + @refinecnt + " " + @matname$ + " 以及費用 " + @fullprice + " Zeny. 要鍛冶嗎?";
+	next;
+	menu "繼續",-,"取消",Lcancel;
+	if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
+	delitem @material,@refinecnt;
+	set Zeny,Zeny - @fullprice;
+	goto L_refinesafe;
+
+Lnosafe:
+	mes "[" + @name$ + "]";
+	mes "那么，你要我幫你鍛冶多少次呢?";
+	next;
+	input @refinecnt;
+	if (@refinecnt<1) goto Lcancel3; //fixed by Lupus
+	set @refinecheck,@refinecnt + getequiprefinerycnt(@part);
+	if(@refinecheck > 10) goto Lcancel3;
+	set @fullprice,@price * @refinecnt;
+	mes "[" + @name$ + "]";
+	mes "總共需要 " + @refinecnt + " " + @matname$ + " 以及費用 " + @price + " Zeny... 要鍛冶嗎?";
+	next;
+	menu "繼續",-,"取消",Lcancel;
+		if(@refinecheck > @safe) goto Lwarn;
+		if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
+		delitem @material,@refinecnt;
+		set Zeny,Zeny - @fullprice;
+		goto L_refinenumber;
+		end;
+
+		Lwarn:
+			set @refinecheck,@refinecheck - @safe;
+			mes "[" + @name$ + "]";
+			mes "那么，我要開始鍛冶 " + @refinecheck + " 次，這將超過安定值. 你的裝備有可能會壞掉... 要鍛冶嗎?";
+			next;
+			menu "繼續",-,"取消",Lcancel1;
+				if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
+				delitem @material,@refinecnt;
+				set Zeny,Zeny - @fullprice;
+				goto L_refinenumber;
+
+Lcancel3:
+	mes "[" + @name$ + "]";
+	mes "我無法鍛冶這項裝備這么多次.";
+	close;
+
+// SubFunction: Safe Refine ---------------------
+L_refinesafe:
+	if (getequipisequiped(@part) == 0) goto LNoItem; // hacker has removed the item (no changed, why?)
+	if (getequipid(@part) != @refineitemid) goto LNoFake; // hacker has changed the item
+	if (getequippercentrefinery(@part) < 100) goto LNoFake; // hacker has changed the item (it is not safe anymore)
+	mes "鏘！鏘！";
+	successrefitem @part;
+	emotion 21;
+	set @refinecnt,@refinecnt - 1;
+	next;
+	if(@refinecnt == 0) goto Lend;
+	goto L_refinesafe;
+
+	Lend:
+		mes "[" + @name$ + "]";
+		mes "拿去吧！已經做好了。好久沒鍛治出那么優質的武器了，武器變強了你一定也很高興吧！";
+		close;
+		
+// SubFunction: Refine 
+L_refinenumber:
+	mes "鏘！鏘！";
+	if (getequippercentrefinery(@part)<=rand(100)) goto Lfail_number;
+	successrefitem @part;
+	emotion 21;
+	set @refinecnt,@refinecnt - 1;
+	next;
+	if(@refinecnt == 0) goto Lend;
+	goto L_refinenumber;
+
+	Lfail_number:
+		failedrefitem @part;
+		emotion 23;
+		mes "[" + @name$ + "]";
+		mes "咳咳咳咳咳咳咳！！！";
+		mes "武器在鍛治的程式中損壞了。";
+		mes "我...我...早就告訴過你會這樣的嘛！";
+		set @refinecnt,@refinecnt - 1;
+		if(@refinecnt == 0) goto Lend2;
+		mes "Here's the unused Zeny and Material back...";
+		getitem @material,@refinecnt;
+		set @fullprice,@refinecnt * @price;
+		set Zeny,Zeny + @fullprice;
+
+	Lend2:
+		close;
+}
+
+
+
+//==============================================================================
+// Material Salesmen
+//==============================================================================
+prt_in.gat,56,69,4	script	普勒越	86,{
+	set @name$,"普勒越";
+	callfunc "phramain";
+	end;
+}
+payon.gat,145,178,4	script	伯克納德	88,{
+	set @name$,"伯克納德";
+	callfunc "phramain";
+	end;
+}
+morocc_in.gat,65,37,4	script	沙德	99,{
+	set @name$,"沙德";
+	callfunc "phramain";
+	end;
+}
+alberta_in.gat,18,59,5	script	卡拉曼莉斯	86,{
+	set @name$,"卡拉曼莉斯";
+	callfunc "phramain";
+	end;
+}
+yuno_in01.gat,171,26,6	script	艾爾來特	88,{
+	set @name$,"艾爾來特";
+	callfunc "phramain";
+	end;
+}
+
+//============================================================
+//= Material Salesmen Functions
+//============================================================
+function	script	phramain	{
+	if(@chris == 1) goto M_Menu;
+	mes "[" + @name$ + "]";
+	mes "這里有賣鐵或是鋼鐵制武品鍛治時所需要的金屬！";
+	mes "這里有賣鍛治武器等級1的^007777強化武器用金屬-強化級數一^000000";
+	mes "與...鍛治武器等級2的^007777強化武器用金屬-強化級數二^000000等金屬。";
+	M_Menu:
+	set @chris, 0;
+	next;
+	menu"強化武器用金屬-強化級數一- 200金幣",PHARA,"強化武器用金屬-強化級數二- 1000金幣",EMVER,"有沒有其他金屬?",OTHERMETAL;
+
+	PHARA:
+		set @itemid,1010;
+		set @value,200;
+		goto CONTINUE;
+
+	EMVER:
+		set @itemid,1011;
+		set @value,1000;
+
+CONTINUE:
+	mes "[" + @name$ + "]";
+	mes "你想要購買多少數量？";
+	next;
+	input @ammount;
+	if (@ammount <= 0) goto L_BELOW;
+	if (@ammount > 999) goto L_ABOVE;
+	if (zeny < @value * @ammount) goto L_NOZENY;
+	if (checkweight(@itemid,@ammount) == 0) goto L_WEIGHT;
+	getitem @itemid,@ammount;
+	set Zeny,Zeny-@value*@ammount;
+	mes "[" + @name$ + "]";
+	mes "好了，這是你要的強化武器用金屬，請收好。";
+	close;
+
+L_NOZENY:
+	mes "對不起哦，你現在的金幣不夠，這里可不許賒帳的。";
+	close;
+L_WEIGHT:
+	mes "抱歉！您的負重狀態無法購買那么多東西";
+	close;
+L_BELOW:
+	mes "你是要送我還是要向我購買?!";
+	close;
+L_ABOVE:
+	mes "抱歉！您無法購買那么多東西";
+	close;
+}
+
+
+
+//==============================================================================
+// Ori/Elu Refiners
+//==============================================================================
+prt_in.gat,63,69,4	script	帝特立西	84,{
+	set @name$,"帝特立西";
+	callfunc "orimain";
+	end;
+}
+payon.gat,137,178,4	script	夏金	88,{
+	set @name$,"夏金";
+	callfunc "orimain";
+	end;
+}
+morocc_in.gat,72,32,4	script	亞度拉	99,{
+	set @name$,"亞度拉";
+	callfunc "orimain";
+	end;
+}
+alberta_in.gat,21,63,5	script	智諾普	84,{
+	set @name$,"智諾普";
+	callfunc "orimain";
+	end;
+}
+yuno_in01.gat,171,22,6	script	湯馬思	88,{
+	set @name$,"湯馬思";
+	callfunc "orimain";
+end;
+}
+
+//============================================================
+//= Ori/Elu Functions
+//============================================================
+function	script	orimain	{
+	if(@chris == 1) goto M_Menu;
+	mes "[" + @name$ + "]";
+	mes "只要你將^FF0000神之金屬原石^000000或^FF0000鋁原石^000000拿來給我，我馬上就可以為你提煉神之金屬以及鋁。我需要5個原石我才有辦法幫你。";
+	M_Menu:
+	set @chris, 0;
+	next;
+	menu "提煉神之金屬。",M_Ori, "提煉鋁。",M_Elu, "詢問有關屬性石相關事項。",M_Stones;
+
+	M_Ori:
+		if(countitem(756) < 5) goto L_NoOri;
+		delitem 756,5;
+		getitem 984,1;
+		mes "[" + @name$ + "]";
+			mes "這是你要的神之金屬，歡迎下次再來。";
+		close;
+
+		L_NoOri:
+			mes "[" + @name$ + "]";
+			mes "哈哈哈...你真愛開玩笑。我不是跟你說過，要是沒有5個神之金屬原石的話，是無法制作神之金屬的嗎？";
+			close;
+	M_Elu:
+		if(countitem(757) < 5) goto L_NoElu;
+		delitem 757,5;
+		getitem 985,1;
+		mes "[" + @name$ + "]";
+	  		mes "這是你要的鋁，歡迎下次再來。";
+		close;
+
+		L_NoElu:
+			mes "[" + @name$ + "]";
+		mes "哈哈哈...你真愛開玩笑。";
+		mes "我不是跟你說過，要是沒有5個鋁原石的話，是無法制作鋁的嗎?";
+			close;
+	M_Stones:
+		mes "[" + @name$ + "]";
+		mes "所謂屬性石...";
+		next;
+		mes "我做鍛冶金屬這行已經做了二十年，聽過很多這類別的傳說...但還沒實際見過呢!";
+		mes "我聽說金屬都各自擁有水、地、火、風等屬性。";
+		next;
+		mes "[" + @name$ + "]";
+		mes "聽說在鍛冶武器時加入屬性時的話...所制作出來的武器將擁有那屬性時的超強力量。";
+		mes "哈哈..不過話說回來，能做出這種武器的人想必一定擁有極高的鍛冶技術。";
+		goto M_Menu;
+}
+
+
+
+//=====================================================================================
+// Equipment Repairmen
+//=====================================================================================
+prt_in.gat,62,54,2	script	格藍德	84,{
+	set @name$,"格藍德";
+	callfunc "repairmain";
+	end;
+}
+
+//Temp Spot, Not Shure Where To place
+payon.gat,149,182,2	script	瑞休利斯	88,{
+	set @name$,"瑞休利斯";
+	callfunc "repairmain";
+	end;
+}
+
+morocc_in.gat,71,40,2	script	艾爾發	99,{
+	set @name$,"艾爾發";
+	callfunc "repairmain";
+	end;
+}
+
+//============================================================
+//= Equipment Repair Function
+//============================================================
+function	script	repairmain	{
+	set @repairprice,5000;
+	mes "[" + @name$ + "]";
+	mes "我可以幫你修理壞掉的裝備及武器";
+	mes "請選擇你想修理的東西";
+	set @broken1,getbrokenid(1);
+	set @broken2,getbrokenid(2);
+	set @broken3,getbrokenid(3);
+	set @broken4,getbrokenid(4);
+	set @broken5,getbrokenid(5);
+	set @broken6,getbrokenid(6);
+	set @broken7,getbrokenid(7);
+	set @broken8,getbrokenid(8);
+	set @broken9,getbrokenid(9);
+	set @broken10,getbrokenid(10);
+	next;
+	if(@broken1==NULL) goto L_CANCEL_3;
+	menu getitemname(@broken1),REPAIR1,getitemname(@broken2),REPAIR2,getitemname(@broken3),REPAIR3,
+		getitemname(@broken4),REPAIR4,getitemname(@broken5),REPAIR5,getitemname(@broken6),REPAIR6,
+		getitemname(@broken7),REPAIR7,getitemname(@broken8),REPAIR8,getitemname(@broken9),REPAIR9,
+		getitemname(@broken10),REPAIR10;
+	REPAIR1:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(1);
+			goto L_CLOSE;
+	REPAIR2:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(2);
+			goto L_CLOSE;
+	REPAIR3:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(3);
+			goto L_CLOSE;
+	REPAIR4:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(4);
+			goto L_CLOSE;
+	REPAIR5:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(5);
+			goto L_CLOSE;
+	REPAIR6:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(6);
+			goto L_CLOSE;
+	REPAIR7:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(7);
+			goto L_CLOSE;
+	REPAIR8:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(8);
+			goto L_CLOSE;
+	REPAIR9:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(9);
+			goto L_CLOSE;
+	REPAIR10:
+		mes "[" + @name$ + "]";
+		mes "你想要修理 " + getitemname(@broken1) + "啊.";
+		mes "修理這個項目我需要 ^ff9999一個鋼鐵^000000和和" + @repairprice + " Zeny.";
+		mes "要繼續嗎?";
+		next;
+		menu "繼續",-,"取消",L_CANCEL_2;
+		if (countitem(999) < 1 || Zeny < @repairprice) goto L_CANCEL_1;
+			delitem 999,1;
+			set Zeny,Zeny-@repairprice;
+			repair(10);
+			goto L_CLOSE;
+
+L_CANCEL_1:
+	mes "[" + @name$ + "]";
+	mes "這些就是你所擁有的所有物品嗎?";
+	mes "我也是有老婆孩子要養的!";
+	goto L_CLOSE;
+L_CANCEL_2:
+	mes "[" + @name$ + "]";
+	mes "好吧, 不過別期待他會自己修理自己...";
+	goto L_CLOSE;
+L_CANCEL_3:
+	mes "[" + @name$ + "]";
+	mes "看來你并沒有任何壞掉的東西需要修理吶...";
+	goto L_CLOSE;
+L_CLOSE:
+	close;
+}

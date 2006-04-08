@@ -1,0 +1,150 @@
+// 朱諾城任務腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041118.0.2
+//
+// 修改部分:		非煉金術士任務時得到的物品改為正常
+//
+// 注:			本腳本對應煉金術士轉職腳本 if(ALCH_Q == 6) goto L_Alchemist;
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Quests NPCs located in Yuno City
+//===== By: ================================================== 
+//= DiaDz (v1.0)
+//===== Current Version: ===================================== 
+//= 1.2
+//===== Compatible With: ===================================== 
+//= eAthena 7.15 +
+//===== Description: ========================================= 
+//=
+//===== Additional Comments: ================================= 
+//= v1.1 Re-did the text and re-organized the script.  Corrected some items. [kobra_k88]
+//= v1.2 Added part to Bro's for alchemist quest [Darkchild]
+//============================================================ 
+
+
+
+
+//===========================================================================
+yuno_in01.gat,103,158,4	script	發仁	98,{
+	set @name$, "[發仁]";
+	if(bainbajin_q == 1) goto L_Check;
+OnStart:
+	mes @name$;
+	mes "我們要發明一種可以與人交談對話的娃娃! 呃... 至少...那是我們想要做的....";
+	mes "這個點子是來自一個古老的傳說，傳說中的娃娃可以像真人一樣的活動.";
+	next;
+	mes @name$;
+	mes "我想如果有人能做出這樣的娃娃，那一定就是我們了.";
+	next;
+	mes @name$;
+	mes "但是我現在還缺少一些材料.";
+	mes "雖然有些東西是買得到的，但是仍然有許多東西是怪物們才有的......";
+	next;
+	mes @name$;
+	mes "我的武藝太差了，根本打不贏那些怪物....... 這樣下去怎么能完成這個發明??.....";
+	next;
+	menu "我幫你搜集需要的物品吧",-, "祝你好運",M_End;
+
+		mes @name$;
+		mes "真的嗎? 現在已經很少人愿意幫助陌生人了. 我們會很感激你的協助的.";
+		mes "以下是我們需要的物品.......";
+		callsub sF_List;
+		set bainbajin_q, 1;
+		close;
+
+	M_End:
+		mes @name$;
+		mes "我們的確需要非常多的好運才能成功. 如果你知道有誰能夠協助我們，請告訴我們.";
+		close;
+
+L_Check:
+	mes @name$;
+	if((countitem(974) < 1) || (countitem(612) < 5) || (countitem(7068) < 5) || (countitem(1003) < 5) || (countitem(7043) < 5) || 
+	(countitem(757) < 3) || (countitem(756) < 3) || (Zeny < 2000)) goto L_NotEnuf;
+	mes "真是太感謝你了! 你找到了我所需要的全部東西. 沒有你的協助我們真不知道該怎么繼續這個計劃.";
+	next;
+	delitem 974,1;
+	delitem 612,5;
+	delitem 7068,5;
+	delitem 1003,5;
+	delitem 7043,5;
+	delitem 757,3;
+	delitem 756,3;
+	set Zeny, Zeny-2000;
+	mes @name$;
+	set bainbajin_q, 0;
+	if(ALCH_Q == 6) goto L_Alchemist;
+
+	L_Other:
+		mes "這里是一點小意思，感謝你的協助.";
+		set @greatful,rand(0,4);
+		if(@greatful==0) getitem 969, 3;
+		if(@greatful>0 && @greatful<3) getitem 999, 5;
+		if(@greatful>2) getitem 969, 3;
+		close;
+
+	L_Alchemist:
+		mes "嗯...現在我們來試試這個...";
+		mes "等一等...";
+		next;
+		mes "-喔喔呼呼啊啊啊啊啊啊";
+		next;
+		mes "-喀啦喀啦喀啦喀啦喀啦";
+		next;
+		mes "-碰叮鏘鏘鏘碰碰碰嘩啦";
+		next;
+		mes @name$;
+		mes "喔喔喔喔! 成功了!";
+		mes "不知道還能做什么，不過這次我們制造出了";
+		set @wowitem,rand(2);
+		if(@wowitem == 0) mes "5 個紅寶石!";
+		if(@wowitem == 1) mes "3 個黃金!";
+		next;
+		set ALCH_Q2, 2;
+		mes @name$;
+		mes "現在我們知道這是可行的了";
+		mes "不過這些成品我們不需要留著.";
+		mes "何不就送給你呢?";
+		mes "如果你還發現了其他的材料";
+		mes "別忘了帶來給我們喔! 呵呵呵呵...";
+		if(@wowitem == 0) getitem 723,5;
+		if(@wowitem == 1) getitem 969,3;
+		next;
+		mes @name$;
+		mes "謝謝你協助我們";
+		mes "我們會永遠記得你，感激你的.";
+		mes "祝你旅途一路順利!";
+		close;
+
+	L_NotEnuf:
+		mes "你忘記了我們需要的東西了嗎? 我建議你拿紙筆記下來......";
+		callsub sF_List;
+		close;
+
+sF_List:
+	next;
+	mes @name$;
+	mes "^5533FF混合劑 1 瓶";
+	mes "攜帶用熔礦爐 5 具";
+	mes "燃燒一半的木材 5 根";
+	mes "煤礦 5 份";
+	mes "黃晶沙 5 份";
+	mes "神之金屬原石 3 顆";
+	mes "鋁原石 3 顆^000000";
+	next;
+	mes @name$;
+	mes "另外我們還需要 ^5533FF2,000 zeny^000000.";
+	mes "這些錢可以減輕我們執行這個計劃的經濟負擔. 祝你好運!";
+	return;
+}
+
+//=====================================================================
+yuno_in01.gat,99,153,4	script	發鎮	47,{
+	set @name$, "[發鎮]";
+	doevent "發仁::OnStart";
+	close;
+}

@@ -1,0 +1,474 @@
+// 攻城戰啟動及結束設定
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041217.0.2
+//			20050216.0.1	更新至 eAthena 版本 1.4
+//			20050216.0.2	修正周六及周日的攻城提示公告與怪物攻城事件
+//			20050216.0.3	修改每日攻城戰結束時的公告訊息
+//			20050216.0.4	修正系統檢查事件參數為 CheckNullMG (無角色執行狀態)
+//					修正攻城戰沒有開始及結束的錯誤 (漏掉 AgitStart 及 AgitEnd 敘述...)
+//			20050302.0.1	加入以城為單位的強制釋放城堡選項
+
+//			Deepin 修改定時啟動指令
+//
+// 修改內容:		攻城戰時間為 21:30-22:30
+//			21:28、21:29 會隨機釋放一座城堡
+//			另，加入公會城堡一覽表
+//			其中必須設定 $@ServerAdministrator 為可強制釋放城堡帳號的 account_id
+//			P.S 若于攻城戰時間內將城堡釋放，該城堡中將不會有任何怪物出現
+//
+//			20041217.0.2 加入檢查異常空置城堡的判斷
+//			說明: 持有城堡的公會若執行解散，會造成城堡有所有人 (GuildMaster) 但實際上不屬于任何公會的錯誤
+//			      詳細解是就是: 城堡部屬于任何公會，但是城堡管理員 NPC 會為 (null) 會長服務
+//			      因此在攻城戰開始之前加入判斷是否有城堡異常空置的情況
+//
+//			F_CheckCastle 檢查城堡狀態函式，必須配合 F_ReleaseCastle 使用 (檢查后會呼叫 F_ReleaseCastle 函式)
+//			附帶參數零: 城堡編號 (A0? , G0? , Py0? , Pt0?)
+//			附帶參數一: 檢查種類 (CheckNull:檢查異常空置 , ForceRelease:強制釋放 , MonsterAttack:怪物攻城)
+//					      CheckNullMG:與城堡管理人對話時檢查異常空置 , ReleaseMG:由城堡管理員釋放)
+//			注意: CheckNull 會使用大量系統資源故須分為四個部分分別執行
+//			      若設定為一次檢查所有城堡將會造成 Map-Server 的錯誤 (不會 Dump 但大約只會檢查十個城堡左右)
+//
+//			F_ReleaseCastle 釋放城堡函式，須配合 F_CheckCastle 函式使用較不易出錯
+//			附帶參數零: 城堡地圖名稱 (不含 .gat)
+//			附帶參數一: 城堡編號 (A0? , G0? , Py0? , Pt0?)
+//			附帶參數二: 對應檢查種類的顯示訊息
+//
+//============================================================
+//===== eAthena Script =======================================
+//= War of Emperium - WoE Auto-Start
+//===== By: ==================================================
+//= kalen (1.0)
+//= 1.1 by Akaru and ho|yAnge|
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: =====================================
+//= eAthena 0.1+; RO Episode 4+
+//===== Description: =========================================
+//= Auto Start for War of Emperium
+//=============================================
+//= gettime(3): Gets hour (24 hour time)
+//= gettime(4): Gets day of week 1=Monday, 2=Tuesday,
+//= 3=Wednesday, 4=Thursday, etc.
+//===== Additional Comments: =================================
+//= v1.1a changed OnInit to OnAgitInit.[kobra_k88]
+//= v1.2 added gettime checks. removed $AgitStarted var.[kobra_k88]
+//= v1.3 Moved treasure spawn time here.[kobra_k88]
+//= v1.3a Implemented Shadowlady's idea to allow for different
+//= start/stop times on different days.[kobra_k88]
+//= 1.4 Fixed treasure chests spawn! We had to unroll some loops
+//= Now they appear in castles from 00:01 to 00:24. [Lupus]
+//============================================================
+
+// WoE Start/Stop times
+//======================================
+- script Agit_Event -1,{
+	end;
+
+OnTue1900:
+	Announce "[公告]請各工會會長注意,距離攻城戰開始還有30分鐘,請安排你們的作戰計劃！！",8;
+	End;
+OnTue1920:
+	Announce "[公告]請各工會會長注意,距離攻城戰開始還有最后10分鐘,請組織好會員集中！！",8;
+	End;
+OnTue1930:
+	AgitStart;
+	End;
+OnTue2030:
+	Announce "[公告]勇士們提起士氣，攻城時間尚余30分鐘~~~",8;
+	End;
+OnTue2100:
+	Announce "[公告]下次攻城戰時間為星期六晚上7:30pm-09:00pm",16;
+	AgitEnd;
+	End;
+OnSat1900:
+	Announce "[公告]請各工會會長注意,距離攻城戰開始還有30分鐘,請組織好會員！！",8;
+	End;
+OnSat1920:
+	Announce "[公告]請各工會會長注意,距離攻城戰開始還有最后10分鐘,請組織好會員！！",8;
+	End;
+OnSat1930:
+	AgitStart;
+	End;
+OnSat2030:
+	Announce "[公告]勇士們提起士氣，攻城時間尚余30分鐘~~~",8;
+	End;
+OnSat2100:
+	Announce "[公告]下次攻城戰時間為星期二晚上7:30pm-9:00pm",16;
+	AgitEnd;
+	End;
+
+
+
+OnAgitStart:
+	Announce "[公告] 攻城戰開始了~~~~ 勇士們請拿起武器，捍衛自己的榮譽吧!",8;
+	set $AgitStarted,1;
+	end;
+
+OnAgitEnd:
+	Announce "[公告] 攻城戰已結束了，請大家下次再繼續努力哦~~~",8;
+	set $AgitStarted,0;
+
+	//攻城戰結束清場
+	//青林湖泊 工會
+		killmonsterall "pay_gld.gat"; killmonsterall "payg_cas05.gat"; killmonsterall "payg_cas04.gat"; killmonsterall "payg_cas03.gat"; killmonsterall "payg_cas02.gat"; killmonsterall "payg_cas01.gat";
+	//露依納 工會
+		killmonsterall "alde_gld.gat"; killmonsterall "aldeg_cas05.gat"; killmonsterall "aldeg_cas04.gat"; killmonsterall "aldeg_cas03.gat"; killmonsterall "aldeg_cas02.gat"; killmonsterall "aldeg_cas01.gat";
+	//咘哩妥利亞 工會
+		killmonsterall "gefg_cas05.gat"; killmonsterall "gefg_cas04.gat"; killmonsterall "gefg_cas03.gat"; killmonsterall "gefg_cas02.gat"; killmonsterall "gefg_cas01.gat";
+	//巴基力雷恩 工會
+		killmonsterall "prt_gld.gat"; killmonsterall "prtg_cas05.gat"; killmonsterall "prtg_cas04.gat"; killmonsterall "prtg_cas03.gat"; killmonsterall "prtg_cas02.gat"; killmonsterall "prtg_cas01.gat";
+	end;
+OnInit:
+	if ($AgitStarted == 1) agitstart;
+	end;
+}
+
+// Treasure Spawn Time
+//========================================
+- script TreasSpawn -1,{
+	end;
+
+OnClock2300:
+	announce "新公會寶箱出現!!請會長去主人房拿取。",15;
+	callfunc "F_GldTreas","aldeg_cas01","A01",$boxNumA01,$@bxA01,$@boxIdA01,1324,114,218,123,227,0;
+	callfunc "F_GldTreas","aldeg_cas02","A02",$boxNumA02,$@bxA02,$@boxIdA02,1326,130,226,138,235,0;
+	callfunc "F_GldTreas","aldeg_cas03","A03",$boxNumA03,$@bxA03,$@boxIdA03,1328,220,264,229,273,0;
+	callfunc "F_GldTreas","aldeg_cas04","A04",$boxNumA04,$@bxA04,$@boxIdA04,1330,80,8,89,17,0;
+	callfunc "F_GldTreas","aldeg_cas05","A05",$boxNumA05,$@bxA05,$@boxIdA05,1332,58,8,65,15,0;
+	callfunc "F_GldTreas","gefg_cas01","G01",$boxNumG01,$@bxG01,$@boxIdG01,1334,150,108,158,114,0;
+	callfunc "F_GldTreas","gefg_cas02","G02",$boxNumG02,$@bxG02,$@boxIdG02,1336,136,112,145,118,0;
+	callfunc "F_GldTreas","gefg_cas03","G03",$boxNumG03,$@bxG03,$@boxIdG03,1338,266,286,275,293,0;
+	callfunc "F_GldTreas","gefg_cas04","G04",$boxNumG04,$@bxG04,$@boxIdG04,1340,112,114,119,123,0;
+	callfunc "F_GldTreas","gefg_cas05","G05",$boxNumG05,$@bxG05,$@boxIdG05,1342,140,106,147,113,0;
+	end;
+OnClock2301:
+	announce "新公會寶箱出現!!請會長去主人房拿取。",15;
+	callfunc "F_GldTreas","payg_cas01","Py01",$boxNumPy01,$@bxPy01,$@boxIdPy01,1344,286,4,295,13,0;
+	callfunc "F_GldTreas","payg_cas02","Py02",$boxNumPy02,$@bxPy02,$@boxIdPy02,1346,140,140,148,149,0;
+	callfunc "F_GldTreas","payg_cas03","Py03",$boxNumPy03,$@bxPy03,$@boxIdPy03,1348,154,164,162,173,0;
+	callfunc "F_GldTreas","payg_cas04","Py04",$boxNumPy04,$@bxPy04,$@boxIdPy04,1350,142,44,151,51,0;
+	callfunc "F_GldTreas","payg_cas05","Py05",$boxNumPy05,$@bxPy05,$@boxIdPy05,1352,152,128,160,135,0;
+	callfunc "F_GldTreas","prtg_cas01","Pt01",$boxNumPt01,$@bxPt01,$@boxIdPt01,1354,6,204,15,213,0;
+	callfunc "F_GldTreas","prtg_cas02","Pt02",$boxNumPt02,$@bxPt02,$@boxIdPt02,1356,198,224,207,233,0;
+	callfunc "F_GldTreas","prtg_cas03","Pt03",$boxNumPt03,$@bxPt03,$@boxIdPt03,1358,184,128,193,135,0;
+	callfunc "F_GldTreas","prtg_cas04","Pt04",$boxNumPt04,$@bxPt04,$@boxIdPt04,1360,266,158,275,167,0;
+	callfunc "F_GldTreas","prtg_cas05","Pt05",$boxNumPt05,$@bxPt05,$@boxIdPt05,1362,272,174,279,181,0;
+	end;
+}
+
+// Add By Dino9021
+
+prontera.gat,139,98,5	script	公會城堡一覽	751,{
+
+	set $@ServerAdministrator,2000000;
+Main_Menu:
+	mes "[公會城堡一覽]";
+	if (GetGuildName(GetCastleData("prtg_cas01.gat",1)) != "null") mes GetCastleName("prtg_cas01.gat") + ": ^006699" + GetGuildName(GetCastleData("prtg_cas01.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("prtg_cas01.gat",1)) == "null") mes GetCastleName("prtg_cas01.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("prtg_cas02.gat",1)) != "null") mes GetCastleName("prtg_cas02.gat") + ": ^669900" + GetGuildName(GetCastleData("prtg_cas02.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("prtg_cas02.gat",1)) == "null") mes GetCastleName("prtg_cas02.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("prtg_cas03.gat",1)) != "null") mes GetCastleName("prtg_cas03.gat") + ": ^3355FF" + GetGuildName(GetCastleData("prtg_cas03.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("prtg_cas03.gat",1)) == "null") mes GetCastleName("prtg_cas03.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("prtg_cas04.gat",1)) != "null") mes GetCastleName("prtg_cas04.gat") + ": ^777777" + GetGuildName(GetCastleData("prtg_cas04.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("prtg_cas04.gat",1)) == "null") mes GetCastleName("prtg_cas04.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("prtg_cas05.gat",1)) != "null") mes GetCastleName("prtg_cas05.gat") + ": ^996600" + GetGuildName(GetCastleData("prtg_cas05.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("prtg_cas05.gat",1)) == "null") mes GetCastleName("prtg_cas05.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas01.gat",1)) != "null") mes GetCastleName("aldeg_cas01.gat") + ": ^006699" + GetGuildName(GetCastleData("aldeg_cas01.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas01.gat",1)) == "null") mes GetCastleName("aldeg_cas01.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas02.gat",1)) != "null") mes GetCastleName("aldeg_cas02.gat") + ": ^669900" + GetGuildName(GetCastleData("aldeg_cas02.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas02.gat",1)) == "null") mes GetCastleName("aldeg_cas02.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas03.gat",1)) != "null") mes GetCastleName("aldeg_cas03.gat") + ": ^3355FF" + GetGuildName(GetCastleData("aldeg_cas03.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas03.gat",1)) == "null") mes GetCastleName("aldeg_cas03.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas04.gat",1)) != "null") mes GetCastleName("aldeg_cas04.gat") + ": ^777777" + GetGuildName(GetCastleData("aldeg_cas04.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas04.gat",1)) == "null") mes GetCastleName("aldeg_cas04.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas05.gat",1)) != "null") mes GetCastleName("aldeg_cas05.gat") + ": ^996600" + GetGuildName(GetCastleData("aldeg_cas05.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("aldeg_cas05.gat",1)) == "null") mes GetCastleName("aldeg_cas05.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("payg_cas01.gat",1)) != "null") mes GetCastleName("payg_cas01.gat") + ": ^006699" + GetGuildName(GetCastleData("payg_cas01.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("payg_cas01.gat",1)) == "null") mes GetCastleName("payg_cas01.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("payg_cas02.gat",1)) != "null") mes GetCastleName("payg_cas02.gat") + ": ^669900" + GetGuildName(GetCastleData("payg_cas02.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("payg_cas02.gat",1)) == "null") mes GetCastleName("payg_cas02.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("payg_cas03.gat",1)) != "null") mes GetCastleName("payg_cas03.gat") + ": ^3355FF" + GetGuildName(GetCastleData("payg_cas03.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("payg_cas03.gat",1)) == "null") mes GetCastleName("payg_cas03.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("payg_cas04.gat",1)) != "null") mes GetCastleName("payg_cas04.gat") + ": ^777777" + GetGuildName(GetCastleData("payg_cas04.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("payg_cas04.gat",1)) == "null") mes GetCastleName("payg_cas04.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("payg_cas05.gat",1)) != "null") mes GetCastleName("payg_cas05.gat") + ": ^996600" + GetGuildName(GetCastleData("payg_cas05.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("payg_cas05.gat",1)) == "null") mes GetCastleName("payg_cas05.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("gefg_cas01.gat",1)) != "null") mes GetCastleName("gefg_cas01.gat") + ": ^006699" + GetGuildName(GetCastleData("gefg_cas01.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("gefg_cas01.gat",1)) == "null") mes GetCastleName("gefg_cas01.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("gefg_cas02.gat",1)) != "null") mes GetCastleName("gefg_cas02.gat") + ": ^669900" + GetGuildName(GetCastleData("gefg_cas02.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("gefg_cas02.gat",1)) == "null") mes GetCastleName("gefg_cas02.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("gefg_cas03.gat",1)) != "null") mes GetCastleName("gefg_cas03.gat") + ": ^3355FF" + GetGuildName(GetCastleData("gefg_cas03.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("gefg_cas03.gat",1)) == "null") mes GetCastleName("gefg_cas03.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("gefg_cas04.gat",1)) != "null") mes GetCastleName("gefg_cas04.gat") + ": ^777777" + GetGuildName(GetCastleData("gefg_cas04.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("gefg_cas04.gat",1)) == "null") mes GetCastleName("gefg_cas04.gat") + ": ^FF0000無人城堡^000000";
+	if (GetGuildName(GetCastleData("gefg_cas05.gat",1)) != "null") mes GetCastleName("gefg_cas05.gat") + ": ^996600" + GetGuildName(GetCastleData("gefg_cas05.gat",1)) +"^000000";
+	if (GetGuildName(GetCastleData("gefg_cas05.gat",1)) == "null") mes GetCastleName("gefg_cas05.gat") + ": ^FF0000無人城堡^000000";
+	if ((getcharid(3) == $@ServerAdministrator) && ($AgitStarted != 1)) goto CastleRelease;
+	close;
+
+	CastleRelease:
+		next;
+		menu	"檢閱結束",NoNeedRelease,
+			"檢查異常空置城堡-(普隆德拉)",CheckNullCastle_4,
+			"檢查異常空置城堡-(艾爾帕蘭)",CheckNullCastle_1,
+			"檢查異常空置城堡-(裴楊)",CheckNullCastle_3,
+			"檢查異常空置城堡-(吉芬)",CheckNullCastle_2,
+			"強制釋放-(普隆德拉) " + GetCastleName("prtg_cas01.gat"),Pt01_attack,
+			"強制釋放-(普隆德拉) " + GetCastleName("prtg_cas02.gat"),Pt02_attack,
+			"強制釋放-(普隆德拉) " + GetCastleName("prtg_cas03.gat"),Pt03_attack,
+			"強制釋放-(普隆德拉) " + GetCastleName("prtg_cas04.gat"),Pt04_attack,
+			"強制釋放-(普隆德拉) " + GetCastleName("prtg_cas05.gat"),Pt05_attack,
+			"強制釋放-(艾爾帕蘭) " + GetCastleName("aldeg_cas01.gat"),A01_attack,
+			"強制釋放-(艾爾帕蘭) " + GetCastleName("aldeg_cas02.gat"),A02_attack,
+			"強制釋放-(艾爾帕蘭) " + GetCastleName("aldeg_cas03.gat"),A03_attack,
+			"強制釋放-(艾爾帕蘭) " + GetCastleName("aldeg_cas04.gat"),A04_attack,
+			"強制釋放-(艾爾帕蘭) " + GetCastleName("aldeg_cas05.gat"),A05_attack,
+			"強制釋放-(裴楊) " + GetCastleName("payg_cas01.gat"),Py01_attack,
+			"強制釋放-(裴楊) " + GetCastleName("payg_cas02.gat"),Py02_attack,
+			"強制釋放-(裴楊) " + GetCastleName("payg_cas03.gat"),Py03_attack,
+			"強制釋放-(裴楊) " + GetCastleName("payg_cas04.gat"),Py04_attack,
+			"強制釋放-(裴楊) " + GetCastleName("payg_cas05.gat"),Py05_attack,
+			"強制釋放-(吉芬) " + GetCastleName("gefg_cas01.gat"),G01_attack,
+			"強制釋放-(吉芬) " + GetCastleName("gefg_cas02.gat"),G02_attack,
+			"強制釋放-(吉芬) " + GetCastleName("gefg_cas03.gat"),G03_attack,
+			"強制釋放-(吉芬) " + GetCastleName("gefg_cas04.gat"),G04_attack,
+			"強制釋放-(吉芬) " + GetCastleName("gefg_cas05.gat"),G05_attack,
+			"強制釋放-(普隆德拉)",Castle_attack_4,
+			"強制釋放-(艾爾帕蘭)",Castle_attack_1,
+			"強制釋放-(裴楊)",Castle_attack_3,
+			"強制釋放-(吉芬)",Castle_attack_2;
+		end;
+
+	NoNeedRelease: close;
+
+	CheckNullCastle_1:
+			callfunc "F_CheckCastle","A01","CheckNull";
+			callfunc "F_CheckCastle","A02","CheckNull";
+			callfunc "F_CheckCastle","A03","CheckNull";
+			callfunc "F_CheckCastle","A04","CheckNull";
+			callfunc "F_CheckCastle","A05","CheckNull";
+			set $@DoCheckNull,0;
+			next;
+	goto Main_Menu;
+
+	CheckNullCastle_2:
+			callfunc "F_CheckCastle","G01","CheckNull";
+			callfunc "F_CheckCastle","G02","CheckNull";
+			callfunc "F_CheckCastle","G03","CheckNull";
+			callfunc "F_CheckCastle","G04","CheckNull";
+			callfunc "F_CheckCastle","G05","CheckNull";
+			set $@DoCheckNull,0;
+			next;
+	goto Main_Menu;
+
+	CheckNullCastle_3:
+			callfunc "F_CheckCastle","Py01","CheckNull";
+			callfunc "F_CheckCastle","Py02","CheckNull";
+			callfunc "F_CheckCastle","Py03","CheckNull";
+			callfunc "F_CheckCastle","Py04","CheckNull";
+			callfunc "F_CheckCastle","Py05","CheckNull";
+			set $@DoCheckNull,0;
+			next;
+	goto Main_Menu;
+
+	CheckNullCastle_4:
+			callfunc "F_CheckCastle","Pt01","CheckNull";
+			callfunc "F_CheckCastle","Pt02","CheckNull";
+			callfunc "F_CheckCastle","Pt03","CheckNull";
+			callfunc "F_CheckCastle","Pt04","CheckNull";
+			callfunc "F_CheckCastle","Pt05","CheckNull";
+			set $@DoCheckNull,0;
+			next;
+	goto Main_Menu;
+
+		A01_attack: callfunc "F_CheckCastle","A01","ForceRelease"; next; goto Main_Menu;
+		A02_attack: callfunc "F_CheckCastle","A02","ForceRelease"; next; goto Main_Menu;
+		A03_attack: callfunc "F_CheckCastle","A03","ForceRelease"; next; goto Main_Menu;
+		A04_attack: callfunc "F_CheckCastle","A04","ForceRelease"; next; goto Main_Menu;
+		A05_attack: callfunc "F_CheckCastle","A05","ForceRelease"; next; goto Main_Menu;
+
+		G01_attack: callfunc "F_CheckCastle","G01","ForceRelease"; next; goto Main_Menu;
+		G02_attack: callfunc "F_CheckCastle","G02","ForceRelease"; next; goto Main_Menu;
+		G03_attack: callfunc "F_CheckCastle","G03","ForceRelease"; next; goto Main_Menu;
+		G04_attack: callfunc "F_CheckCastle","G04","ForceRelease"; next; goto Main_Menu;
+		G05_attack: callfunc "F_CheckCastle","G05","ForceRelease"; next; goto Main_Menu;
+
+		Py01_attack: callfunc "F_CheckCastle","Py01","ForceRelease"; next; goto Main_Menu;
+		Py02_attack: callfunc "F_CheckCastle","Py02","ForceRelease"; next; goto Main_Menu;
+		Py03_attack: callfunc "F_CheckCastle","Py03","ForceRelease"; next; goto Main_Menu;
+		Py04_attack: callfunc "F_CheckCastle","Py04","ForceRelease"; next; goto Main_Menu;
+		Py05_attack: callfunc "F_CheckCastle","Py05","ForceRelease"; next; goto Main_Menu;
+
+		Pt01_attack: callfunc "F_CheckCastle","Pt01","ForceRelease"; next; goto Main_Menu;
+		Pt02_attack: callfunc "F_CheckCastle","Pt02","ForceRelease"; next; goto Main_Menu;
+		Pt03_attack: callfunc "F_CheckCastle","Pt03","ForceRelease"; next; goto Main_Menu;
+		Pt04_attack: callfunc "F_CheckCastle","Pt04","ForceRelease"; next; goto Main_Menu;
+		Pt05_attack: callfunc "F_CheckCastle","Pt05","ForceRelease"; next; goto Main_Menu;
+
+	Castle_attack_1:
+		callfunc "F_CheckCastle","A01","ForceRelease";
+		callfunc "F_CheckCastle","A02","ForceRelease";
+		callfunc "F_CheckCastle","A03","ForceRelease";
+		callfunc "F_CheckCastle","A04","ForceRelease";
+		callfunc "F_CheckCastle","A05","ForceRelease";
+		next;
+	goto Main_Menu;
+
+	Castle_attack_2:
+		callfunc "F_CheckCastle","G01","ForceRelease";
+		callfunc "F_CheckCastle","G02","ForceRelease";
+		callfunc "F_CheckCastle","G03","ForceRelease";
+		callfunc "F_CheckCastle","G04","ForceRelease";
+		callfunc "F_CheckCastle","G05","ForceRelease";
+		next;
+	goto Main_Menu;
+
+	Castle_attack_3:
+		callfunc "F_CheckCastle","Py01","ForceRelease";
+		callfunc "F_CheckCastle","Py02","ForceRelease";
+		callfunc "F_CheckCastle","Py03","ForceRelease";
+		callfunc "F_CheckCastle","Py04","ForceRelease";
+		callfunc "F_CheckCastle","Py05","ForceRelease";
+		next;
+	goto Main_Menu;
+
+	Castle_attack_4:
+		callfunc "F_CheckCastle","Pt01","ForceRelease";
+		callfunc "F_CheckCastle","Pt02","ForceRelease";
+		callfunc "F_CheckCastle","Pt03","ForceRelease";
+		callfunc "F_CheckCastle","Pt04","ForceRelease";
+		callfunc "F_CheckCastle","Pt05","ForceRelease";
+		next;
+	goto Main_Menu;
+
+}
+
+
+// F_ReleaseCastle 釋放城堡函式，須配合 F_CheckCastle 函式使用較不易出錯
+// 附帶參數零: 城堡地圖名稱 (不含 .gat)
+// 附帶參數一: 城堡編號 (A0? , G0? , Py0? , Pt0?)
+// 附帶參數二: 釋放種類對應顯示訊息
+
+function	script	F_ReleaseCastle	{
+
+	if (getarg(2)=="CheckNull") goto L_CheckNull;
+	if (getarg(2)=="CheckNullMG") goto L_Loop;
+	if (getarg(2)=="ReleaseMG") goto L_ReleaseMG;
+	if (getarg(2)=="ForceRelease") goto L_ForceRelease;
+	return;
+
+	set $@i, 0;
+
+	L_CheckNull:
+		if ($@DoCheckNull == 0) mes "[公會城堡一覽]";
+		mes "空置城堡 " + GetCastleName(getarg(0)+".gat") + " 已經重整";
+		set $@DoCheckNull,$@DoCheckNull+1;
+		goto L_Loop;
+
+	L_ReleaseMG:
+		Announce "[" + GetGuildName(GetCastleData(getarg(0)+".gat",1)) + "] 公會將城堡 [" + GetCastleName(getarg(0)+".gat") + "] 讓出來了!!",0;
+		MapRespawnGuildID getarg(0)+".gat",GetCastleData(getarg(0)+".gat",1),7;
+		goto L_Loop;
+
+	L_ForceRelease:
+		if (GetGuildName(GetCastleData(getarg(0)+".gat",1)) == "null") goto L_ForceRelease_Null;
+		Announce "[" + GetGuildName(GetCastleData(getarg(0)+".gat",1)) + "] 公會的城堡 [" + GetCastleName(getarg(0)+".gat") + "] 被強制釋放了",8;
+		MapRespawnGuildID getarg(0)+".gat",GetCastleData(getarg(0)+".gat",1),7;
+		goto L_Loop;
+
+		L_ForceRelease_Null:
+			mes "[公會城堡一覽]";
+			mes GetCastleName(getarg(0)+".gat") + "城堡不屬于任何公會";
+			mes "無法強制釋放";
+			goto L_Loop;
+	L_Loop:
+		set $@i, $@i + 1;
+		SetCastleData getarg(0)+".gat",$@i,0;
+		if($@i < 25) goto L_Loop;
+
+		disablenpc "卡普拉服務人員#"+getarg(1);
+		killmonster getarg(0)+".gat", "Guardian_" +getarg(1)+ "::OnGuardianDied";
+
+		set $@i,0;
+		return;
+}
+
+
+// F_CheckCastle 檢查城堡狀態函式，必須配合 F_ReleaseCastle 使用 (檢查后會呼叫 F_ReleaseCastle 函式)
+// 附帶參數零: 城堡編號 (A0? , G0? , Py0? , Pt0?)
+// 附帶參數一: 檢查種類 (CheckNull:檢查異常空置 , ForceRelease:強制釋放 , MonsterAttack:怪物攻城)
+//			 CheckNullMG:與城堡管理人對話時檢查異常空置 , ReleaseMG:由城堡管理員釋放)
+// 注意: CheckNull 會使用大量系統資源故須分為四個部分分別執行
+//       若設定為一次檢查所有城堡將會造成 Map-Server 的錯誤 (不會 Dump 但大約只會檢查十個城堡左右)
+
+function	script	F_CheckCastle	{
+
+		if (getarg(0)=="A01") goto M_A01;
+		if (getarg(0)=="A02") goto M_A02;
+		if (getarg(0)=="A03") goto M_A03;
+		if (getarg(0)=="A04") goto M_A04;
+		if (getarg(0)=="A05") goto M_A05;
+		if (getarg(0)=="G01") goto M_G01;
+		if (getarg(0)=="G02") goto M_G02;
+		if (getarg(0)=="G03") goto M_G03;
+		if (getarg(0)=="G04") goto M_G04;
+		if (getarg(0)=="G05") goto M_G05;
+		if (getarg(0)=="Py01") goto M_Py01;
+		if (getarg(0)=="Py02") goto M_Py02;
+		if (getarg(0)=="Py03") goto M_Py03;
+		if (getarg(0)=="Py04") goto M_Py04;
+		if (getarg(0)=="Py05") goto M_Py05;
+		if (getarg(0)=="Pt01") goto M_Pt01;
+		if (getarg(0)=="Pt02") goto M_Pt02;
+		if (getarg(0)=="Pt03") goto M_Pt03;
+		if (getarg(0)=="Pt04") goto M_Pt04;
+		if (getarg(0)=="Pt05") goto M_Pt05;
+		goto M_End;
+
+		M_A01: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("aldeg_cas01.gat",1)) == "null"))) goto L_A01; goto M_End;
+		M_A02: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("aldeg_cas02.gat",1)) == "null"))) goto L_A02; goto M_End;
+		M_A03: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("aldeg_cas03.gat",1)) == "null"))) goto L_A03; goto M_End;
+		M_A04: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("aldeg_cas04.gat",1)) == "null"))) goto L_A04; goto M_End;
+		M_A05: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("aldeg_cas05.gat",1)) == "null"))) goto L_A05; goto M_End;
+		M_G01: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("gefg_cas01.gat",1)) == "null"))) goto L_G01; goto M_End;
+		M_G02: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("gefg_cas02.gat",1)) == "null"))) goto L_G02; goto M_End;
+		M_G03: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("gefg_cas03.gat",1)) == "null"))) goto L_G03; goto M_End;
+		M_G04: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("gefg_cas04.gat",1)) == "null"))) goto L_G04; goto M_End;
+		M_G05: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("gefg_cas05.gat",1)) == "null"))) goto L_G05; goto M_End;
+		M_Py01: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("payg_cas01.gat",1)) == "null"))) goto L_Py01; goto M_End;
+		M_Py02: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("payg_cas02.gat",1)) == "null"))) goto L_Py02; goto M_End;
+		M_Py03: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("payg_cas03.gat",1)) == "null"))) goto L_Py03; goto M_End;
+		M_Py04: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("payg_cas04.gat",1)) == "null"))) goto L_Py04; goto M_End;
+		M_Py05: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("payg_cas05.gat",1)) == "null"))) goto L_Py05; goto M_End;
+		M_Pt01: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("prtg_cas01.gat",1)) == "null"))) goto L_Pt01; goto M_End;
+		M_Pt02: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("prtg_cas02.gat",1)) == "null"))) goto L_Pt02; goto M_End;
+		M_Pt03: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("prtg_cas03.gat",1)) == "null"))) goto L_Pt03; goto M_End;
+		M_Pt04: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("prtg_cas04.gat",1)) == "null"))) goto L_Pt04; goto M_End;
+		M_Pt05: if ((getarg(1)=="ReleaseMG") || (getarg(1)=="ForceRelease") || (((getarg(1)=="CheckNull") || (getarg(1)=="CheckNullMG")) && (GetGuildMaster(GetCastleData("prtg_cas05.gat",1)) == "null"))) goto L_Pt05; goto M_End;
+
+	M_End:	return;
+
+		L_A01: callfunc "F_ReleaseCastle","aldeg_cas01","A01",getarg(1); goto M_End;
+		L_A02: callfunc "F_ReleaseCastle","aldeg_cas02","A02",getarg(1); goto M_End;
+		L_A03: callfunc "F_ReleaseCastle","aldeg_cas03","A03",getarg(1); goto M_End;
+		L_A04: callfunc "F_ReleaseCastle","aldeg_cas04","A04",getarg(1); goto M_End;
+		L_A05: callfunc "F_ReleaseCastle","aldeg_cas05","A05",getarg(1); goto M_End;
+		L_G01: callfunc "F_ReleaseCastle","gefg_cas01","G01",getarg(1); goto M_End;
+		L_G02: callfunc "F_ReleaseCastle","gefg_cas02","G02",getarg(1); goto M_End;
+		L_G03: callfunc "F_ReleaseCastle","gefg_cas03","G03",getarg(1); goto M_End;
+		L_G04: callfunc "F_ReleaseCastle","gefg_cas04","G04",getarg(1); goto M_End;
+		L_G05: callfunc "F_ReleaseCastle","gefg_cas05","G05",getarg(1); goto M_End;
+		L_Py01: callfunc "F_ReleaseCastle","payg_cas01","Py01",getarg(1); goto M_End;
+		L_Py02: callfunc "F_ReleaseCastle","payg_cas02","Py02",getarg(1); goto M_End;
+		L_Py03: callfunc "F_ReleaseCastle","payg_cas03","Py03",getarg(1); goto M_End;
+		L_Py04: callfunc "F_ReleaseCastle","payg_cas04","Py04",getarg(1); goto M_End;
+		L_Py05: callfunc "F_ReleaseCastle","payg_cas05","Py05",getarg(1); goto M_End;
+		L_Pt01: callfunc "F_ReleaseCastle","prtg_cas01","Pt01",getarg(1); goto M_End;
+		L_Pt02: callfunc "F_ReleaseCastle","prtg_cas02","Pt02",getarg(1); goto M_End;
+		L_Pt03: callfunc "F_ReleaseCastle","prtg_cas03","Pt03",getarg(1); goto M_End;
+		L_Pt04: callfunc "F_ReleaseCastle","prtg_cas04","Pt04",getarg(1); goto M_End;
+		L_Pt05: callfunc "F_ReleaseCastle","prtg_cas05","Pt05",getarg(1); goto M_End;
+
+}

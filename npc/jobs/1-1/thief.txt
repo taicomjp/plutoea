@@ -1,0 +1,479 @@
+// 盜賊轉職腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041219.0.1
+//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//			20050421.0.1	修正 gotoL_START_1 為 goto L_START_1，感謝 celest 對原始碼除錯訊息的修正才找到這個錯誤所在
+//
+// 原始腳本:		Kingbo 2004/1/1 10:30PM
+//
+// 修改內容:		20041218.0.1	將判斷各種職業的方式修改為函式
+//			20041219.0.1	修正判斷各種職業時的錯誤 (!(callfunc("Is_????_Class")))
+//			20050315.0.1	修正初心者被判斷為轉生的問題
+//
+//============================================================
+
+
+moc_prydb1.gat,39,129,2	script	工會服務人員	69,{
+	if (!(callfunc("Is_Thief_Class"))) goto L_START_1;
+		mes "[盜賊工會  服務人員]";
+		mes "有什么問題嗎!?";
+		close;
+ L_START_1:
+	if (BaseJob == Job_Novice) goto L_START_2;
+		mes "[盜賊工會  服務人員]";
+		mes "這是誰啊?";
+		if (!(callfunc("Is_Sword_Class"))) goto L_ROOT_1;
+		mes "這不是那無知的耍劍藝人嗎?";
+		goto L_SUB_1;
+	L_ROOT_1:
+		if (!(callfunc("Is_Magic_Class"))) goto L_ROOT_2;
+		mes "這不是馬戲團的噴火特技師嗎?";
+		goto L_SUB_1;
+	L_ROOT_2:
+		if (!(callfunc("Is_Bow_Class"))) goto L_ROOT_3;
+		mes "這不是笨蛋弓箭手嗎?";
+		goto L_SUB_1;
+	L_ROOT_3:
+		if (!(callfunc("Is_Holy_Class"))) goto L_ROOT_4;
+		mes "這不是那假慈悲的圣職者嗎?";
+		goto L_SUB_1;
+	L_ROOT_4:
+		if (!(callfunc("Is_Merc_Class"))) goto L_SUB_1;
+		mes "這不是那惡劣的商人嗎?";
+ L_SUB_1:
+		next;
+		mes "[盜賊工會  服務人員]";
+		if (Sex != 1) goto L_SUB_1_1;
+	   	mes "先生...";
+	   	mes "你來這兒干嘛？滾回去";
+		close;
+
+	L_SUB_1_1:
+	   	mes "小姐...";
+	   	mes "你來這兒干嘛？滾回去";
+		close;
+
+ L_START_2:
+	if ((BaseJob == Job_Novice) && (Upper == 1)) goto L_START_5;
+	if (JOB_THIEF_Q != 3) goto L_START_3;
+	if (countitem(1069)<1) goto L_START_3;
+	if (countitem(1070)<1) goto L_START_3;
+		mes "[盜賊工會  服務人員]";
+		mes "我的天，我只是隨便說說而已，你還真的把香菇摘來了呀！";
+		mes "你這個笨蛋？你被騙了，知不知道呀？";
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "好了，不跟你開玩笑了。";
+		mes "這個地方是接受想要成為盜賊申請的地方。想要轉職的話去隔壁的窗口看看。";
+		close;
+ L_START_3:
+	if (JOB_THIEF_Q != 3) goto L_START_4;
+		mes "[盜賊工會  服務人員]";
+		mes "如何?香菇農場好玩嗎?";
+		next;
+		menu "好玩。",-,"不好玩。",L_MENU_1;
+		mes "[盜賊工會  服務人員]";
+		mes "你這小子，還真厲害！ ";
+		mes "你跟其他去過那個地方的人一樣臭屁。";
+		mes "搞不好什么時候爬到我頭上來都不知道！快滾！ ";
+		close;
+	L_MENU_1:
+		mes "[盜賊工會  服務人員]";
+		mes "非常不錯，這位老兄有經驗嘛，知道得可真清楚。";
+		close;
+ L_START_4:
+	if (JOB_THIEF_Q != 2) goto L_START_5;
+		mes "[盜賊工會  服務人員]";
+		mes "你到底在干嘛?快去摘香菇呀?";
+		mes "還是你不清楚轉職條件?要我再講一遍嗎? ";
+		next;
+		menu "是。",-,"不是。",L_MENU_2;
+			mes "[盜賊工會  服務人員]";
+			mes "就是有像你一樣的人呢！";
+			mes "我再說明一次，你可得仔細聽好哦！";
+			next;
+			mes "[盜賊工會  服務人員]";
+			mes "這次的轉職考試是要你們到夢羅克，到一個惡質商人所經營的名為'西布'的香菇農場里偷取香菇。";
+			next;
+			mes "[盜賊工會  服務人員]";						
+			mes "你從這里出去，向金字塔原野東邊一直走去，應該在兩個大柱　子的中間可以看得到我們的同伴。";
+			mes "照那些家伙的話，他們應該會要你通過小洞到達香菇農場后方。";
+			mes "到那里去摘一個以上的香菇后，再回到這里，試驗即完全終了。";
+			close;
+		L_MENU_2:
+			mes "[盜賊工會  服務人員]";
+			mes "還不趕快去";
+			close;
+ L_START_5:
+		mes "[盜賊工會  服務人員]";
+		if (JOB_THIEF_Q != 0) goto L_START_6;
+			if (Sex != 1) goto L_SUB_5_1;
+    				mes "嘿嘿，看起來好像是那一個有錢人家的公子哥兒，怎么會來到我們這個骯臟的地方來呢? ";
+				goto L_START_7;
+	L_SUB_5_1:
+    				mes "嘿嘿，看起來好像是那一個有錢人家的大小姐，怎么會來到我們這個骯臟的地方來呢? ";
+				goto L_START_7;
+ L_START_6:
+       		mes "你又來啦！這次下定決心了嗎?";
+ L_START_7:
+		next;
+		menu "轉職成為盜賊。",-,"放棄。",L_MENU_3;
+			if (JOB_THIEF_Q != 0) goto L_START_8;
+       			mes "[盜賊工會  服務人員]";
+     			mes "了不起，真是了不起！理直氣狀地說要成為盜賊，還一點都不猶豫";
+			mes "當盜賊就是要低調，免得你以后做事不方便，了不了解?";
+       			next;
+       			mes "[盜賊工會  服務人員]";
+			mes "你真那么想成為盜賊是嗎?";
+			next;
+			menu "是。",-,"不是。",L_MENU_4,"你怎么可以說這樣的話!?",L_MENU_5;
+
+			if ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Assassin) && (ReBirth != Job_Rogue)) goto HighNotThi;		// 判斷轉生過且原職業非盜賊系
+
+			mes "[盜賊工會  服務人員]";
+     			mes "好吧，就如你所愿。";
+			goto L_SUB_2;
+	L_MENU_4:
+			mes "[盜賊工會  服務人員]";
+     			mes "那你還來干嘛，快滾";
+			goto L_SUB_2;
+
+
+	HighThi:
+			mes "嗯，你的基本技能等級足夠。轉生名單上也有你的名字，我就接受你的請求，讓你轉職成為上位盜賊。";
+			next;
+			setoption 0;
+			callfunc "Job_Change",Job_Thief;
+			skill 149,1,0;
+			skill 150,1,0;
+			skill 151,1,0;
+			skill 152,1,0;
+			mes "[盜賊工會頭頭'E']";
+			mes "'恭喜你轉職成為上位盜賊。'";
+			mes "'往后可別因為成為盜賊工會的一份子而自滿，要遵守工會的秩序與規定才行。'";
+			mes "'萬一你在外面的行動，對盜賊工會造成損害的話，就會被盜賊工會除名，希望不要發生這樣的事情，你好自為之。'";
+			mes "'不管如何，期待你有一番成績。就這樣了。'";
+			close;
+
+	 HighNotThi:
+			mes "[盜賊工會  服務人員]";
+			mes "你好像不是盜賊出身的嘛...?";
+			goto L_SUB_1;
+
+	L_MENU_5:
+			mes "[盜賊工會  服務人員]";
+			mes "你很臭屁喔";
+			mes "世間上的是非黑白，并不是只看表面就能判定，用心去看看世界上你們所認為是正直的人，你會發現里面有一些連我們都瞧不起的人。他們是偽君子，我們是真小人。";
+	L_SUB_2:
+			mes "還有你要是在現實的世界說要成為盜賊的話，是絕對不可以的！";
+         		next;
+         		mes "[盜賊工會 服務人員]";
+			mes "不管怎樣，你就是要申請成為盜賊是不是?";
+			next;
+			menu "申請轉職成為盜賊。",-,"放棄。",L_MENU_6;
+			mes "[盜賊工會  服務人員]";
+			mes "名字給我";
+			mes strcharinfo(0) + "。" + strcharinfo(0) + " ，真是好樣的";
+			next;
+
+			set JOB_THIEF_Q,1;
+			mes "[盜賊工會  服務人員]";
+			mes "這申請書沒有什么問題，我先收下了。";
+			mes "等你具備所有轉職條件再來找我，我會馬上為你安排面試。";
+			mes "你有沒有那個本事啊！要不要試試?";
+			next;
+			menu "好的，嘗試看看",L_START_8,"不，不需要。",-;
+
+			mes "[盜賊工會  服務人員]";
+        		mes "隨你高興，滾吧";
+			close;
+	L_MENU_6:
+			mes "[盜賊工會  服務人員]";
+     			mes "你到底在想什么呀?";
+			mes "你應該知道不申請的話就不能轉職的吧?";
+			close;
+ L_START_8:
+            	mes "[盜賊工會  服務人員]";
+            	mes "讓我來確認一下吧? ";
+   		next;
+		mes "[盜賊工會  服務人員]";
+		mes "名字是" + strcharinfo(0) + "。等我一下";
+		mes "啊！有了，在這。你叫" + strcharinfo(0) + "。";
+		mes "我看看有沒有問題";
+		next;
+		mes "[盜賊工會  服務人員]";
+		if (JobLevel != 10) goto L_SUB_8A;
+		if (SkillPoint == 0) goto L_START_9;
+ L_SUB_8A:
+		mes "做了不少壞事，看來你是很堅決要成為盜賊。";
+		mes "只是靠著決心就讓你這個流鼻涕的小鬼拿槍上戰場行嗎?基本技能最少要提升到9級以上再過來吧你。";
+		close;
+ L_START_9:
+		if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Assassin) || (ReBirth == Job_Rogue))) goto HighThi;		// 判斷轉生過且原職業為盜賊系
+		mes "從你的資料來看也有一些不錯的戰果，也算是具有一些基本的能力。";
+		mes "名字 " + strcharinfo(0) + "。盜賊轉職面試合格!";
+		set JOB_THIEF_Q,2;
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "好了，我現在要確認一下你有沒有成為盜賊的素質。";
+		mes "你清楚考試的內容嗎?";
+		next;
+		menu "清楚。",-,"不清楚。",L_MENU_7;
+		mes "[盜賊工會  服務人員]";
+		mes "這樣呀?太好了!";
+		goto L_START_10;
+	L_MENU_7:
+		mes "[盜賊工會  服務人員]";
+		mes "不清楚的話讓我來告訴你。";
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "這次新指定的轉職考試是要你們到夢羅克，到一個惡質商人所經營的名為'西布'的香菇農場里偷取香菇。";
+		mes "很簡單吧?";
+		next;
+		mes "[盜賊工會  服務人員]";						
+		mes "你從這里出去，向金字塔原野東邊一直走去，應該在兩個大柱子的中間可以看得到我們的同伴。";
+		mes "照那些家伙的話，他們應該會要你通過小洞到達香菇農場后方。";
+		mes "到那里去摘一個以上的香菇后再回到這里，試驗即完全終了。";
+ L_START_10:
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "只剩下其他兩件事。";
+		next;
+		mes "[盜賊工會  服務人員]";			
+		mes "你知道香菇農場有守護的魔物在嗎?";
+		mes "你要是天真的以為守護農場的會是像童話故事中那樣的老夫婦，那可就大錯特錯了，你最好不要有這種想法。";
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "你得要好好思考一下該用什么樣的方法摘取香菇。";
+		next;
+		mes "[盜賊工會  服務人員]";
+		mes "雖然我們的轉職考試是要你去摘香菇，但是你可別忘了這份職業是盜.賊！";
+		mes "為了轉職成盜賊而不得不又要偷魔菇，會變得越來越壞。如果你討厭這一點的話，就不能取得盜賊的資格。請再考慮一下！";
+		mes "那么，你確定要做了嗎?";
+		next;
+		menu "是的。",-,"還是不太清楚。",L_MENU_7;
+
+		mes "[盜賊工會  服務人員]";			
+		mes "我沒什么話好說了。你自己去看看吧!";
+		close;
+	L_MENU_3:
+		close;
+}
+
+
+moc_prydb1.gat,42,133,2	script	工會服務人員	118,{
+	if (!(callfunc("Is_Thief_Class"))) goto L_START_1;
+		mes "[布雷依德]";
+		mes "現在沒有什么特別的活動，我還有其他的事情，有消息的話我會盡快趕來的。";
+		close;
+ L_START_1:
+	if (BaseJob == Job_Novice) goto L_START_2;
+		mes "[盜賊工會  服務人員]";
+		mes "喂喂，這里是從事其他職業的人待的地方。";
+		mes "那可不是你家，快離開";
+		close;
+ L_START_2:
+	if (JOB_THIEF_Q >= 2) goto L_START_3;
+		mes "[盜賊工會  服務人員]";
+		mes "我的天，初學者來這做什么啊?";
+		mes "如果你想轉職成為盜賊的話，到旁邊去問那位姊姊吧！她會把詳細內容告訴你的。";
+		close;
+ L_START_3:
+	if (JOB_THIEF_Q != 2) goto L_START_4;
+		mes "[盜賊工會  服務人員]";
+		mes "嘿！面試的情況怎樣? ";
+		mes "這樣子的話，接下來應該是要接受摘香菇的考試?！加油喔！";
+		close;
+ L_START_4:
+	if (JOB_THIEF_Q != 3) goto L_START_5;
+		mes "[盜賊工會  服務人員]";
+		mes "你回來了啊?";
+		mes "來，來，看看你到底偷了多少香菇來? ";
+		next;
+		if (countitem(1069)>=1) goto L_SUB_1;
+		if (countitem(1070)>=1) goto L_SUB_1;
+    		mes "什么都沒有嘛！?";
+    		mes "喂喂！你現在是拿我來尋開心是不是啊！";
+   		close;
+	L_SUB_1:
+		set @NUM_A,countitem(1069);
+		set @NUM_B,countitem(1070);
+		set @POINT_A,@NUM_A*3;
+		set @POINT_B,@NUM_B;
+		set @TOTAL,@POINT_A+@POINT_B;
+	L_SUB_2:
+		mes "[盜賊工會  服務人員]";
+		mes "....讓我算一下......";
+		mes "惡臭香菇有 " + @NUM_B + " 個，共 " + @POINT_B + " 點。";
+		mes "毒香菇有 " + @NUM_A + " 個，共 " + @POINT_A + " 點。";
+		mes "總共是 " + @TOTAL + " 點。";
+		next;
+		mes "[盜賊工會  服務人員]";
+		if (@TOTAL > 25) goto L_SUB_4;
+		if (@TOTAL == 25) goto L_SUB_3;
+		mes "....25 點以下！？";
+		mes "至少要有25 點以下才能合格喔！";
+		mes "請你再多多加油！";
+		close;
+
+	L_SUB_3:
+		mes "[盜賊工會  服務人員]";
+    		mes "剛剛好 25 點，但還算可以...";
+		goto L_SUB_6;
+	L_SUB_4:
+    		mes "真不錯啊! 恭喜你及格?!!";
+		goto L_SUB_6;
+	L_SUB_5:
+		mes "你不要跟我開玩笑好嗎?!!!!";
+		close;
+	L_SUB_6:
+		mes "總之，你做的很好！現在就開始轉職儀式吧！";
+		next;
+		mes "[盜賊工會頭頭'E']";
+		if (Sex != 1) goto L_SUB_6_1;
+   			mes "'名字 " + strcharinfo(0) + " 先生。'";
+			goto L_SUB_6_2;
+	L_SUB_6_1:
+   			mes "'名字 " + strcharinfo(0) + " 小姐。'";
+	L_SUB_6_2:
+		mes "'在限定時間內通過考試，正式轉職成為盜賊，同時獲許成為盜賊工會的一員。'";
+		if (countitem(1069)<1) goto L_SUB_7;
+		delitem 1069, countitem(1069);
+	L_SUB_7:
+		if (countitem(1070)<1) goto L_SUB_8;
+		delitem 1070, countitem(1070);
+	L_SUB_8:
+		setoption 0;
+		callfunc "Job_Change",Job_Thief;
+		next;
+		mes "[盜賊工會頭頭'E']";
+		mes "'恭喜你轉職成為盜賊。'";
+		mes "'往后可別因為成為盜賊工會的一份子而自滿，要遵守工會的秩序與規定才行。'";
+		mes "'萬一你在外面的行動，對盜賊工會造成損害的話，就會被盜賊工會除名，希望不要發生這樣的事情，你好自為之。'";
+		mes "'不管如何，期待你有一番成績。就這樣了。'";
+		next;
+		mes "[布雷依德]";
+		mes "恭喜你入團！同志。";
+		mes "我的名字叫做'布雷依德'，在盜賊工會中負責轉職與會員管理的職務。";
+		mes "現在怎么樣我是不清楚，不過說不定以后我們會常見面喔！";
+		next;
+		mes "[布雷依德]";
+		mes "那，這個你收下。";
+		mes "這是給新加入的會員應急用的補助金，雖然不多，但是你可以好好利用。";
+		set Zeny,Zeny+100;
+		next;
+		mes "[布雷依德]";
+		mes "可以為你做的我都做了，接下來就要靠你自己?！我還有很多事情要忙呢！";
+		mes "那么，下次見?！ ";
+		close;
+ L_START_5:
+		close;
+}
+
+
+moc_ruins.gat,141,125,3	script	行跡可疑的人	83,{
+	if (!(callfunc("Is_Thief_Class"))) goto L_START_1;
+		mes "[盜賊工會  服務人員]";
+		mes "你成為盜賊?";
+		mes "雖然如此，你不可以進入此地喔！你應該清楚，這里是想成為盜賊的初學者所使用的轉職競試場。";
+		mes "你現在應該要離開這個小地方，飛向更寬廣的世界去看看才是！";
+		close;
+ L_START_1:
+	if (BaseJob == Job_Novice) goto L_START_2;
+		mes "[賓拉登]";
+		if (DOUBT_NPC != 0) goto L_SUB_1;
+			mes "你好。今天天氣真是不錯。";
+			mes "像今天這樣有著和煦的陽光照耀的 午后，真想在金字塔附近找塊蔭涼的地方和同伴一起吃午餐呢！";
+			set DOUBT_NPC,DOUBT_NPC+1;
+			close;
+	L_SUB_1:
+		if (DOUBT_NPC != 1) goto L_SUB_2;
+			mes "'有家可歸是幸福的開始。'";
+			mes "這可是我最喜歡的一段話呢！";
+			set DOUBT_NPC,DOUBT_NPC+1;
+			close;
+	L_SUB_2:
+		if (DOUBT_NPC != 2) goto L_SUB_3;
+			mes "...............";
+			set DOUBT_NPC,DOUBT_NPC+1;
+			close;
+	L_SUB_3:
+		if (DOUBT_NPC != 3) goto L_SUB_4;
+			mes "喔~我~不是行.跡.可.疑~的~人。";
+			mes "不要.用.那種眼神~看.我。";
+			set DOUBT_NPC,DOUBT_NPC+1;
+			close;
+	L_SUB_4:
+			mes "你再怎么問我，我都沒有任何可以告訴你的，你快去你該去的地方吧。 ";
+			set DOUBT_NPC,0;
+			close;
+ L_START_2:
+	if (JOB_THIEF_Q != 3) goto L_START_3;
+		mes "[盜賊工會  服務人員]";
+		mes "哈哈哈，什么啊，你還沒合格！真是笨蛋！哈哈哈哈！！";
+		mes "啊，對喔！！盜賊工會本來就是那些笨蛋才會來的地方！！哈哈哈！！";
+		mes "很好！再送你去試看看！";
+	L_SUB_0:
+		next;
+		set @WARP_JOB_THIEF,rand(5);
+		if (@WARP_JOB_THIEF != 0) goto L_SUB_5;
+		warp "job_thief1",228,106;
+		end;
+	L_SUB_5:
+		if (@WARP_JOB_THIEF != 1) goto L_SUB_6;
+		warp "job_thief1",38,50;
+		end;
+	L_SUB_6:
+		if (@WARP_JOB_THIEF != 2) goto L_SUB_7;
+		warp "job_thief1",66,331;
+		end;
+	L_SUB_7:
+		if (@WARP_JOB_THIEF != 3) goto L_SUB_8;
+		warp "job_thief1",196,331;
+		end;
+	L_SUB_8:
+		warp "job_thief1",309,234;
+		end;
+ L_START_3:
+	if (JOB_THIEF_Q != 2) goto L_START_4;
+		mes "[盜賊工會服務人員]";
+      		mes "你這臭小子原來是為了轉職考試來的！";
+  		mes "你叫 " + strcharinfo(0) + "，名單上有你啊!";
+   		mes "很好！我就送你去！不過你會不會合格我就不知道了！！ ";
+    	set JOB_THIEF_Q,3;
+		goto L_SUB_0;
+ L_START_4:
+	if (JOB_THIEF_Q != 1) goto L_START_5;
+   		mes "[賓拉登]";
+   		mes "全身散發出一股盜賊的味道";
+   		mes "你這小子，未來會變成盜賊嗎?";
+   		close;
+ L_START_5:
+   		mes "[賓拉登]";
+   		mes "那里！！菜鳥！";
+   		mes "你想過一個多采多姿的人生嗎? 想擁有更舒適的生活嗎！?";
+   		mes "想的話就加入盜賊工會成為盜賊吧！盜賊工會隨時歡迎你！現在馬上加入吧！";
+   		next;
+   		mes "[賓拉登]";
+   		mes "金字塔密穴一樓中央的地下通道下去就是了！";
+   		close;
+}
+
+
+//==============================================================================
+// 怪物設定
+//==============================================================================
+job_thief1.gat,0,0,0,0	monster	蘑菇	1014,30,0,0,0
+job_thief1.gat,0,0,0,0	monster	盜蘑菇	1182,180,0,0,0
+job_thief1.gat,0,0,0,0	monster	蒼蠅	1183,50,0,0,0
+job_thief1.gat,0,0,0,0	monster	綠棉蟲	1184,50,0,0,0
+
+//==============================================================================
+// 傳點設定
+//==============================================================================
+job_thief1.gat,180,15,0	warp	jthf	7,1,moc_ruins.gat,145,117

@@ -1,0 +1,138 @@
+//------------------------------------------------------
+// [Deep Develop Team]  www.chinanog.org
+//------------------------------------------------------
+// 腳本名稱: Dathena 快速一轉NPC
+//------------------------------------------------------
+// 作者: deepin[DDT] 
+//------------------------------------------------------
+// 目前版本: V1.0
+//------------------------------------------------------
+// 更新說明:
+// V1.0 2003/6/16 MivaBe
+// V2.0 2005/5 deepin 增加根據等級不同的傳送價格設定
+// V2.1 2005/7 xuwujun 增加驗證碼方能使用功能(可選)
+//------------------------------------------------------
+
+//Warper NPC
+prontera.gat,163,193,4	script	傳送人員::deliver	48,{
+//以下為驗證碼功能
+	set @yanzhen1,rand(100,999);
+	mes "[傳送人員]";
+	mes "請正確輸入下面的驗證碼方可使用。";
+	mes "驗證碼 ：[ ^FF0000"+@yanzhen1+"^000000 ]";
+	next;
+	input @yanzhen2;
+	if(@yanzhen2!=@yanzhen1) goto G_yanzhencuowu;
+//驗證碼功能結束
+	mes "[傳送人員]";
+	mes "我是傳送人員，我們無處不在的為你服務讓你在各大城市間穿梭。";
+	mes "傳送的基礎價格是500zeny。以后每升一級，使用傳送就要多化100zeny";
+	mes "如果你是初心者，可以免費使用。";
+	next;
+	set @usezeny,500+1000*BaseLevel/10;
+	mes "[傳送人員]";
+	mes "請選擇你要到達的地方:";
+	next;
+	menu	
+		"盧恩 米德加茲王國 首都 普隆德拉",Lpro,
+		"衛星之島 依斯魯德",Lizl,
+		"魔幻之城 吉芬",Lgef,
+		"邊陲之城 夢羅克",Lmor,
+		"山岳之城 斐揚",Lpay,
+		"港口之都 愛爾貝塔",Lalb,
+		"運河之都 艾爾帕蘭",Lald,
+		"夢幻之島 克魔島",Lcom,
+		"克雷斯特漢姆古城",Lgla,
+		"修發茲 共和國 首都 朱諾",Lyun,
+		"天水之國 櫻花城",Lama,
+		"神仙之島 昆侖",Lgon,
+		"雨檀族村落 汶巴拉",Lumb,
+		"白雪村落 姜餅城",LXmas,
+		"死者國家 尼芙菲姆",siwang,
+		"中國 洛陽城",zouyang,
+		"密月島 夏威夷",Ljaw;
+	
+	Lpro:	if(Class == Job_Novice) goto A0;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "prontera.gat",156,99;	close;
+	Lizl:	if(Class == Job_Novice) goto A1;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "izlude.gat",91,105;	close;
+	Lgef:	if(Class == Job_Novice) goto A2;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "geffen.gat",119,68;	close;
+	Lmor:	if(Class == Job_Novice) goto A3;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "morocc.gat",156,94;	close;
+	Lpay:	if(Class == Job_Novice) goto A4;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "payon.gat",131,55;	close;
+	Lalb:	if(Class == Job_Novice) goto A5;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "alberta.gat",117,56;	close;
+	Lald:	if(Class == Job_Novice) goto A6;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "aldebaran.gat",143,110;	close;
+	Lcom:	if(Class == Job_Novice) goto A7;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "comodo.gat",188,164;	close;
+	Lgla:	if(Class == Job_Novice) goto A8;	if(Zeny<@usezeny) goto NeedZenys;	set Zeny,Zeny-@usezeny;	warp "glast_01.gat",200,200;	close;
+	Lyun:   if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;     warp "yuno.gat",157,41;		close;
+	Lama:   if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;     warp "amatsu.gat",197,78;	close;
+	Lgon:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "gonryun.gat",161,18;	close;
+	Lumb:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "umbala.gat",126,132;	close;
+	LXmas:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "xmas.gat",138,106;	close;
+	siwang:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "niflheim.gat",202,177;	close;	
+	zouyang:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "louyang.gat",217,40;	close;
+	Ljaw:	if(Class == Job_Novice || BaseLevel < 50 || Zeny < @usezeny ) goto Fail;	set Zeny,Zeny-@usezeny;	warp "jawaii.gat",221,215;	close;	
+
+
+A0:	warp "prontera.gat",156,99;
+	close;
+A1:
+	warp "izlude.gat",91,105;
+	close;
+A2:
+	warp "geffen.gat",119,68;
+	close;
+A3:
+	warp "morocc.gat",156,94;
+	close;
+A4:
+	warp "payon.gat",131,55;
+	close;
+A5:
+	warp "alberta.gat",117,56;
+	close;
+A6:
+	warp "aldebaran.gat",143,110;
+	close;
+A7:
+	warp "comodo.gat",188,164;
+	close;
+A8:
+	warp "glast_01.gat",200,200;
+	close;
+A10:
+	warp "niflheim.gat",202,177;
+	close;
+A11:
+	warp "louyang.gat",217,40;
+	close;
+Fail:
+	mes "[傳送人員]";
+	mes "對不起，你的等級必須有50級才可以到這個地方，當然"+@usezeny+"Zeny也是少不了的。";
+	close;
+
+NeedZenys:
+	mes "[傳送人員]";
+	mes "對不起，你沒有足夠金錢！";
+	mes "你現在的級別要進行傳送，至少需要"+@usezeny+"Zeny才行";
+	close;
+G_yanzhencuowu:
+	mes "[傳送人員]";
+	mes "驗證碼輸入錯誤，無法使用此服務。";
+	close;
+}
+
+
+izlude.gat,128,116,4	duplicate(deliver)	傳送人員#2	48
+geffen.gat,122,62,1	duplicate(deliver)	傳送人員#3	48
+morocc.gat,152,97,4	duplicate(deliver)	傳送人員#4	48
+payon.gat,132,67,4	duplicate(deliver)	傳送人員#5	48
+alberta.gat,137,62,4	duplicate(deliver)	傳送人員#6	48
+aldebaran.gat,145,119,1	duplicate(deliver)	傳送人員#7	48
+comodo.gat,192,154,4	duplicate(deliver)	傳送人員#8	48
+glast_01.gat,200,206,4	duplicate(deliver)	傳送人員#9	48
+gonryun.gat,165,14,4	duplicate(deliver)	傳送人員#10	48
+amatsu.gat,202,81,4	duplicate(deliver)	傳送人員#11	48
+yuno.gat,164,44,4	duplicate(deliver)	傳送人員#12	48
+xmas.gat,144,135,4	duplicate(deliver)	傳送人員#13	48
+umbala.gat,122,127,4	duplicate(deliver)	傳送人員#14	48
+niflheim.gat,199,186,4	duplicate(deliver)	傳送人員#15	48
+louyang.gat,208,104,4	duplicate(deliver)	傳送人員#16	48
+jawaii.gat,231,208,4	duplicate(deliver)	傳送人員#17	48

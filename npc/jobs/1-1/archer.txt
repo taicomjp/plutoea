@@ -1,0 +1,220 @@
+// 弓箭手轉職腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041118.0.2
+//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//
+// 原始腳本:		Ayaa 20031216
+//
+//============================================================
+
+// -------------------------------------------------
+
+payon_in02.gat,64,71,4	script	工會公會人員	85,{
+
+	if (JOB_ARC_Q == 0) goto START_1;
+
+L_CHECK:
+		mes "[弓箭手公會人員]";
+		mes "你已經準備好所需要的樹枝了嗎？";
+		mes "那就讓我們來看看你的成果吧。";
+		next;
+		set @NUM_A,countitem(1066);
+		set @NUM_B,countitem(1067);
+		set @NUM_C,countitem(1068);
+		set @NUM_D,countitem(1019);
+		if ((@NUM_A == 0) & (@NUM_B == 0) & (@NUM_C == 0) & (@NUM_D == 0)) goto NOTREE;
+		set @POINT_A,@NUM_A*5;
+		set @POINT_B,@NUM_B*3;
+		set @POINT_C,@NUM_C*2;
+		set @POINT_D,@NUM_D;
+		set @TOTAL,@POINT_A+@POINT_B+@POINT_C+@POINT_D;
+		set @BONUS,@POINT_B+@POINT_B+@POINT_C+@POINT_C+@POINT_D;
+		mes "[弓箭手公會人員]";
+		mes "....讓我算一下......";
+		mes "天地樹枝有 " + @NUM_A + " 個，共 " + @POINT_A + " 點。";
+		mes "智慧樹枝有 " + @NUM_B + " 個，共 " + @POINT_B + " 點。";
+		mes "世界樹枝有 " + @NUM_C + " 個，共 " + @POINT_C + " 點。";
+		mes "瑪哪樹枝有 " + @NUM_D + " 個，共 " + @POINT_D + " 點。";
+		mes "總共是 " + @TOTAL + " 點。";
+		next;
+		mes "[弓箭手公會人員]";
+		if (@TOTAL > 40) goto HIGH_RANK;
+		if (@TOTAL > 30) goto MID_RANK;
+		if (@TOTAL >= 25) goto LOW_RANK;
+		mes "....２５點以下！？";
+		mes "至少要有２５點以下才能合格喔！";
+		mes "請你再多多加油！";
+		close;
+
+HIGH_RANK:
+		mes "哇～～４０點以上！！你真是太厲害了！";
+		mes "你已經合格了，恭喜你啊！";
+		goto SUCCESS;
+
+MID_RANK:
+		mes "嗯，超過了３０點啊，你也算蠻認真的！";
+		mes "恭喜你了～～";
+		goto SUCCESS;
+
+LOW_RANK:
+		mes "嗯......";
+		mes "雖然說只要２５點就合格了，但你拿捏的也太剛好了。";
+		mes "不管怎么樣，你合格了。";
+		goto SUCCESS;
+
+SUCCESS:
+		mes "[弓箭手公會人員]";
+		mes "那么這些樹枝我會交給制做部門的，請你";
+		mes "稍等一下。";
+		delitem 1066,@NUM_A;
+		delitem 1067,@NUM_B;
+		delitem 1068,@NUM_C;
+		delitem 1019,@NUM_D;
+		next;
+		mes "[弓箭手公會人員]";
+		mes "你已經成功了完成了弓箭手的轉職任務，現在馬上給你轉職。";
+		next;
+		setoption 0;
+		callfunc "Job_Change",Job_Archer;
+		mes "[弓箭手公會人員]";
+		mes "我在此衷心的恭喜你成轉職成為弓箭手。";
+		mes "以后也請你多多參與弓箭手公會的活動。";
+		mes "啊，制做部門好像已經把東西送來了，請你點收。";
+		getitem 1702,1;
+		getitem 1750,@BONUS;
+		next;
+		mes "[弓箭手公會人員]";
+		mes "有了弓和箭后，你現在可以成為名符其實的弓箭手了。";
+		mes "那么, 辛苦你了。希望你有杰出的表現。";
+		close;
+
+NOTREE:
+		mes "[弓箭手公會人員]";
+		mes "......怎么回事？你還沒有去準備轉職用的樹枝嗎？";
+		close;
+
+START_1:
+		mes "[弓箭手公會人員]";
+		mes "你好，請問你要什么服務嗎？";
+		next;
+		menu "轉職為弓箭手。",L_MENU_1,"詢問有關轉職為弓箭手的條件。",L_MENU_2,"放棄。",-;
+
+		mes "[弓箭手公會人員]";
+		mes "如果有需要的話下次再來吧。";
+		close;
+
+HighArc:
+	mes "[弓箭手公會人員]";
+	mes "嗯，你的基本技能等級足夠。轉生名單上也有你的名字，我就接受你的請求，讓你轉職成為上位弓箭手。";
+	next;
+	setoption 0;
+	callfunc "Job_Change",Job_Archer;
+	skill 147,1,0;
+	skill 148,1,0;
+	mes "[弓箭手公會人員]";
+	mes "那么, 辛苦你了。希望你有杰出的表現。";
+	close;
+
+L_MENU_1:
+	if (BaseJob == Job_Archer) goto OUT_1;
+	if (BaseJob != Job_Novice) goto OUT_2;
+	if ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Hunter) && (ReBirth != Job_Bard) && (ReBirth != Job_Dancer)) goto OUT_2;		// 判斷轉生過但原職業非弓手系
+	if (JobLevel < 10) goto OUT_3;
+	if (SkillPoint !=0) goto OUT_4;
+	if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Hunter) || (ReBirth == Job_Bard) || (ReBirth == Job_Dancer))) goto HighArc;		// 判斷轉生過且原職業為弓手系
+
+		mes "[弓箭手公會人員]";
+		mes "你想要轉職成為弓箭手嗎？";
+		mes "請你填一份弓箭手轉職申請書。";
+		next;
+		menu "申請弓箭手轉職申請書。",L_APP,"放棄",-;
+
+		mes "[弓箭手公會人員]";
+		mes "你還沒下定決心嗎？三心兩意的話只會白白讓時間經過喔。";
+		close;
+
+L_APP:
+		set JOB_ARC_Q,1;
+		mes "[弓箭手公會人員]";
+		mes "請在申請書上簽名，接下來若你具備好所有轉職條件的話，就馬上給你轉職。";
+		mes "你已經準備好轉職的物品了嗎？";
+	     	next;
+		menu "是。",L_CHECK,"不是。",-;
+		mes "[弓箭手公會人員]";
+		mes "讓我看看....";
+		mes "你的大名是 " + strcharinfo(0) + " 對嗎？";
+		mes "那，我在此為你說明弓箭手的轉職條件。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "弓箭手的轉職條件是必須帶來制作弓所需";
+		mes "要的 ^FF0000樹枝^000000 。樹枝有四種";
+		mes "，分別是天地樹枝、智慧樹枝、世界樹枝";
+		mes "和瑪哪樹枝。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "在你取得這四種樹枝后，我們會幫你計算";
+		mes "你的點數。總點數要在２５點以上才能轉";
+		mes "成為弓箭手。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "每一種樹枝的點數都不同，建議你最好每";
+		mes "一種都收集一些。";
+		mes "但是，越難收集的不代表點數越高。這一";
+		mes "點請你注意一下。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "那么，如果沒有問題的話，就出發吧！";
+		mes "祝你好運～～";
+		close;
+
+L_MENU_2:
+		mes "[弓箭手公會人員]";
+		mes "首先，初學者基本技能等級到達9級以上。";
+		mes "另外，要成為弓箭手必備的條鑒是高度的集中力，所以我們弓箭手工會不收行事迷迷糊糊、搞不請楚狀況的人。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "弓箭手的轉職條件是必須帶來制作弓所需";
+		mes "要的 ^FF0000樹枝^000000 。樹枝有四種";
+		mes "，分別是天地樹枝、智慧樹枝、世界樹枝";
+		mes "和瑪哪樹枝。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "在你取得這四種樹枝后，我們會幫你計算";
+		mes "你的點數。總點數要在２５點以上才能轉";
+		mes "成為弓箭手。";
+		next;
+		mes "[弓箭手公會人員]";
+		mes "每一種樹枝的點數都不同，建議你最好每";
+		mes "一種都收集一些。";
+		mes "但是，越難收集的不代表點數越高。這一";
+		mes "點請你注意一下。";
+		close;
+
+OUT_1:
+		mes "[弓箭手工會公會人員]";
+		mes "你是已經弓箭手了。";
+		close;
+
+OUT_2:
+		mes "[弓箭手公會人員]";
+		mes "你的樣子看來不像是初學者..";
+		mes "你已經選擇了其他職業，無法轉職為弓箭手。";
+		close;
+
+OUT_3:
+		mes "[弓箭手公會人員]";
+		mes "或許你內心非常的向往成為一個弓箭手。";
+		mes "但在那之前還是要請你先學好基本技能才行。";
+		close;
+
+OUT_4:
+		mes "[弓箭手公會人員]";
+		mes "或許你很急著成為一個弓箭手。";
+		mes "不過你是否忘了先把基本技能學起來呢？";
+		close;
+}

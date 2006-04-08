@@ -1,0 +1,287 @@
+// 超級初心者轉職腳本
+// 
+// 中文化作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041118.0.2
+//			20050410.0.1	修改一些敘述沒有對齊的情況
+//			20050420.0.1	修改 goto L_Lowlevel; 為 goto L_LowLevel;
+//					修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Super Novice Script
+//===== By: ================================================== 
+//= Darkchild
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= Any eAthena
+//===== Description: ========================================= 
+//= Super Novice Job Change Npc
+//= Super Novice Cart Rental Npc
+//= Some Other Useless Super Novice Npc
+//===== Additional Comments: ================================= 
+//= Dialogs From Some Other Scripts (Most Of It)
+//= 1.3 Added Baby class support (and to the Kafta SN Cart
+//= renter, too) [Lupus]
+//============================================================ 
+
+
+// -- Jobchanger --
+aldeba_in.gat,223,167,3	script	杰特雷諾	709,{
+	if(job_snovice == 1) goto L_Start2;
+	if(BaseJob == 23) goto L_Twice;
+	if((BaseJob != 0) || (Upper != 0) || (ReBirth > 0)) goto L_Otherjob;
+	mes "[杰特雷諾]";
+	mes "哈?! 初心者!";
+	mes "你為你身為一名初心者而快樂嗎? 寧愿當個普通人?";
+	next;
+	mes "[杰特雷諾]";
+	mes "你想不想加入初心者公會，躋身擁有各項一般能力的人";
+	mes "使我們能提供一般性的服務嗎?";
+	next;
+	mes "[杰特雷諾]";
+	mes "如果你加入我們，我可以幫你轉職成能高度使用各種一般能力的超級初心者!";
+	mes "聽起還不錯吧?";
+	next;
+	menu "我接受!",-,"超級初心者就是超級笨蛋",L_Stupid,"請告訴我更多相關資料",L_Well;
+        if(JobLevel < 10) goto L_LowSkill;
+        if(BaseLevel < 45) goto L_LowLevel;
+	if(SkillPoint != 0) goto L_StillSk; 
+	mes "[杰特雷諾]";
+	mes "好極了!";
+	mes "你正走在成為一名不尋常的普通人的道路上.";
+	next;
+	mes "[杰特雷諾]";
+	mes "不尋常是一個不錯的字眼不是嗎?";
+	next;
+	mes "[杰特雷諾]";
+	mes "雖然你接受加入初心者公會，但是并不表示你可以馬上成為超級初心者.";
+	mes "有一些東西需要你去搜集.";
+	next;
+	mes "[杰特雷諾]";
+	mes "要成為公會的一員，需要你帶一些普通的東西來給我.";
+	mes "那么，請搜集下列物品各 30 個";
+	mes "   ^FF0000黏稠液體^000000 和";
+     	mes "   ^FF0000枯木汁^000000.";
+   	next;
+	mes "[杰特雷諾]";
+	mes "等你搜集到了這些一般數量的普通物品，就可以回來找我這個普通公會里的一般人.";
+	set job_snovice,1;
+	close;
+
+L_Stupid:
+	mes "[杰特雷諾]";
+	mes "唔...你這是普通罪犯和一般社會邊緣人的普通想法.";
+	mes "...這種人不懂得與一般普通朋友相處應盡的義務.";
+	next;
+	mes "[杰特雷諾]";
+	mes "當然，普通的想法也很容易用普通的方法改變.";
+	mes "如果你改變了你的想法，請再來找我.";
+	close;
+
+L_Well:
+	mes "[杰特雷諾]";
+	mes "噢! 你想知道更多有關這個公會的事啊?";
+	mes "我很榮幸能為你解釋!";
+	next;
+	mes "[杰特雷諾]";
+	mes "讓我告訴你有關琪瑪的事吧，他是我們這個公會的創辦人.";
+	mes "琪瑪創辦這個公會是一位以前的普通朋友和普通社交圈";
+	mes "沒有足夠的凝聚力，也沒有辦法認識更多的朋友";
+	next;
+	mes "- 杰特雷諾 講了快十分鐘 - ";
+	mes "- 他的聲音是那么的普通讓你快要睡著了 -";
+	next;
+	mes "[杰特雷諾]";
+	mes "...總之，這個初心者公會從創辦開始就發展迅速.";
+	mes "我們為我們的口語驕傲: '普通的人，普通的目標，普通的夢想' !";
+	close;
+
+L_Start2:
+	if(countitem(938) < 30) goto L_ItemError;
+	if(countitem(907) < 30) goto L_ItemError;
+	mes "[杰特雷諾]";
+	mes "哦... 你的表現看起來很...呃...普通...但那對我們來說已經足夠了!";
+	mes "歡迎加入初心者公會!";
+	next;
+	mes "[杰特雷諾]";
+	mes "如同我先前對你的承諾，幫你轉職成超級初心者.";
+	mes "你準備好了嗎?!";
+	next;
+	menu "什么?!",-,"啊?!",-;
+	mes "- 杰特雷諾突然不尋常的舉動讓你錯愕 -";
+	mes "- 你突然不知道要說什么好! -";
+	next;
+	callfunc "Job_Change",Job_SuperNovice;
+	delitem 938,30;
+	delitem 907,30;
+	getitem 2339,1;
+	mes "[杰特雷諾]";
+	mes "哈哈哈! 你很驚訝嗎?!";
+	mes "我們是普通的人并不表示我們不能做錯任何事!";
+	next;
+	mes "[杰特雷諾]";
+	mes "那么，現在你的超級初心者旅途展開了!";
+	next;
+	mes "[杰特雷諾]";
+	mes "現在開始你就是琪瑪的家族成員!";
+	mes "請記得她那普通的名字";
+	close;
+
+L_LowSkill:
+	mes "[杰特雷諾]";
+	mes "唔...你的等級看來有一點太普通了.";
+	mes "你的技能等級必須達到 ^0000FF 10^000000 才能加入我們.";
+	close;
+
+L_LowLevel:
+	mes "[杰特雷諾]";
+	mes "唔...你的等級看來有一點太普通了.";
+	mes "你的基本等級必須達到 ^0000FF 45^000000 才能加入我們.";
+	close;
+
+L_StillSk:
+	mes "[杰特雷諾]";
+	mes "唔...你還有一些基本技能沒有學完.";
+	mes "這樣太不平常了，請把基本技能學完成為一個普通人才能加入我們.";
+	close;
+
+L_ItemError:
+	mes "[杰特雷諾]";
+	mes "你忘記了該搜集什么東西嗎?";
+	mes "我再告訴你一遍吧.";
+	next;
+	mes "[杰特雷諾]";
+	mes "請搜集下列物品各 30 個";
+	mes "   ^FF0000黏稠液體^000000 和";
+     	mes "   ^FF0000枯木汁^000000.";
+	close;
+
+L_Twice:
+	mes "[杰特雷諾]";
+	mes "嗨! 普通的初心者公會里普通的會員.";
+	mes "很高興又見到你了.";
+	mes "你那普通的生活里平常的遭遇有趣嗎?";
+	next;
+	mes "[杰特雷諾]";
+	mes "繼續過普通的生活吧，榮耀我們的公會.";
+	close;
+L_Otherjob:
+	mes "[杰特雷諾]";
+	mes "嘿! 你真是個一點都不普通的人!";
+	mes "我是杰特雷諾，初心者公會的公會長";
+	next;
+	mes "[杰特雷諾]";
+	mes "這里是那些擁有普通的生活目標";
+	mes "普通的信仰，普通的生活的人集會的地方";
+	mes "就你來說，這么一個不尋常的人待在這里實在是太不普通了.";
+	next;
+	mes "[杰特雷諾]";
+	mes "這么不普通的人不能加入我們公會，很抱歉!";
+	close;
+}
+
+// -- Totaly Useless :) --
+aldeba_in.gat,216,169,5	script	瑟雷	86,{
+	if(BaseJob == 23) goto L_Supernovice;
+	if((BaseJob != 0) || (Upper != 0) || (ReBirth > 0)) goto L_Otherjob;
+	mes "[瑟雷]";
+	mes "你長得真是普通.";
+	mes "一個普通的人應該過得很快樂.";
+	mes "你該考慮加入初心者公會.";
+	next;
+	mes "[瑟雷]";
+	mes "初心者萬歲!";
+	mes "哈哈哈哈哈哈哈!";
+	close;
+
+L_Supernovice:
+	mes "[瑟雷]";
+	mes "耶耶耶耶耶耶耶耶耶!";
+	mes "你是初心者公會的會員吶!";
+	next;
+	mes "[瑟雷]";
+	mes "真是太棒了!";
+	mes "你一直在嘗試找更多人加入公會嗎?";
+	next;
+	mes "[瑟雷]";
+	mes "我是公會長杰特雷諾的會員之一!";
+	close;
+
+L_Otherjob:
+	mes "[瑟雷]";
+	mes "噢不!";
+	mes "你是那些拒絕過普通生活的不尋常人!";
+	mes "你的生活方式會危害到那些只想平平淡淡過普通生活的人!";
+	mes "啊啊啊啊啊!";
+	close;
+}
+
+
+// -- Car Rental --
+aldebaran.gat,54,238,5	script	卡普拉服務人員	117,{
+	if(BaseJob != 23) goto L_Otherjob;
+	if(checkcart(0) == 1) goto L_GotCart;
+	mes "[卡普拉服務人員]";
+	mes "噢! 超級初心者!";
+	mes "你一定覺得其他的卡普拉服務人員很討厭，都不把手推車租給你吧?";
+	mes "沒問題!";
+	next;
+	mes "[卡普拉服務人員]";
+	mes "我可以租給你一臺手推車，但請把這當作是你我之間的秘密.";
+	mes "因為卡普拉服務人員服務規章規定我們不能把手推車租給任何一名初心者";
+	next;
+	mes "[卡普拉服務人員]";
+	mes "所以...你得付給我 ^FF00001900 zeny^000000 來租用手推車.";
+	next;
+	mes "[卡普拉服務人員]";
+	mes "你必須擁有 '手推車使用' 技能才能使用手推車.";
+	mes "如果你沒有這項技能，就不能使用手推車";
+	mes "那么你不但拿不到手推車，租金我也不能還你.";
+	mes "你要租用手推車嗎?";
+	next;
+	menu "請租給我一臺手推車",-,"不需要",L_End;
+	mes "[卡普拉服務人員]";
+	mes "因為我是偷偷把手推車租給你的";
+	mes "所以我無法幫你檢查你是否有 '手推車使用' 技能.";
+	mes "如果你沒有這項技能，就不能使用手推車";
+	mes "那么你不但拿不到手推車，租金我也不能還你.";
+	next;
+	menu "我已經知道了",-,"啊...等一下...",L_End;
+	if(Zeny < 1900) goto L_Error;
+	   set Zeny,Zeny-1900;
+	if(getskilllv(39)==0) goto L_End;
+	setcart;
+	mes "[卡普拉服務人員]";
+	mes "謝謝你使用卡普拉服務，即使我們是秘密交易.";
+	mes "嘿嘿嘿嘿...";
+	close;
+
+L_Error:
+	mes "[卡普拉服務人員]";
+	mes "唔...看來你的錢不夠喔.";
+	close;
+
+L_End:
+	mes "[卡普拉服務人員]";
+	mes "謝謝你的支持.";
+	mes "有需要時請再來找我.";
+	close;
+
+L_GotCart:
+	mes "[卡普拉服務人員]";
+	mes "嗨! 超級初心者!";
+	mes "又見面啦!";
+	close;
+
+L_Otherjob:
+	mes "[卡普拉服務人員]";
+	mes "很抱歉，我現在很忙，有一堆事情要處理";
+	mes "請你先找其他的卡普拉服務人員為你服務吧.";
+	close;
+}

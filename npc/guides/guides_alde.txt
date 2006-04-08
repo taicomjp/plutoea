@@ -1,0 +1,123 @@
+// 艾爾帕蘭導游腳本
+// 
+// 中文化作者:		Dino9021
+// 
+// 中文版本編號:	20041202.0.1
+//
+//============================================================
+
+//===== eAthena Script ======================================= 
+//= Al De Baran Guides
+//===== By: ================================================== 
+//= kobra_k88
+//===== Current Version: ===================================== 
+//= 1.0a
+//===== Compatible With: ===================================== 
+//= eAthena 7.15 +
+//===== Description: ========================================= 
+//=
+//===== Additional Comments: ================================= 
+//= Corrected building locations and descriptions
+//============================================================
+
+
+
+
+aldebaran.gat,139,63,4	script	士兵	105,{
+	cutin "prt_soldier",2;
+	mes "[艾爾帕蘭 士兵]";
+	mes "歡迎光臨 運河之都 艾爾帕蘭!";
+	next;
+	mes "[艾爾帕蘭 士兵]";
+	mes "我們會為您向導想去的地方, 若有需要時請向我們詢問.";
+M_Menu:
+	next;
+	menu "開始由導游說明城市",M_1, "聽取注意事項",M_2, "取消",M_End;
+
+	M_1:
+		mes "[艾爾帕蘭 士兵]";
+		mes "請問您需要要在微型地圖上留下記號嗎?";
+		next;
+		menu "不需要",sM_1a,"需要, 謝謝",sM_1b;
+		
+		sM_1a:
+			set @COMPASS_CHECK,0;
+			goto L_Cont;
+
+		sM_1b:
+			set @COMPASS_CHECK,1;
+
+		L_Cont:
+		mes "[艾爾帕蘭 士兵]";
+		mes "請您選擇想知道的建筑物";
+		next;
+	sM_Menu:
+		menu 	"^FF0000卡普拉總公司^000000",sM_2a, "裝備商店",sM_2b, "道具商店",sM_2c, "酒店",sM_2d,
+			"^00AAFF魔法工會 (Closed)^000000",sM_2e, "^DDAA00煉金術士公會^000000",sM_2f,
+			"移除微型地圖上全部的記號",sM_2g, "取消", M_End;
+
+		sM_2a:
+			mes "[艾爾帕蘭 士兵]";
+			mes "你可以在卡普拉總公司將您的卡普拉累積點數兌換成禮物";
+			viewpoint 1,56,225,1,0xFF0000;
+			goto sL_Wipe;
+		sM_2b:
+			mes "[艾爾帕蘭 士兵]";
+			mes "在 '裝備商店' 您可以買到武器及防具";
+			viewpoint 1,72,194,2,0x0000FF;
+			goto sL_Wipe;
+		sM_2c:
+			mes "[艾爾帕蘭 士兵]";
+			mes "在 '道具商店' 您可以買到各種有用的工具";
+			viewpoint 1,197,68,3,0x00FF00;
+			goto sL_Wipe;
+		sM_2d:
+			mes "[艾爾帕蘭 士兵]";
+			mes "在 '酒店' 您可以放松心情喝杯酒";
+			viewpoint 1,231,107,4,0xFF00FF;
+			goto sL_Wipe;
+		sM_2e:
+			mes "[艾爾帕蘭 士兵]";
+			mes "'魔法工會' 目前并沒有開放";
+			//viewpoint 1,48,198,5,0x00AAFF;
+			goto sL_Wipe;
+		sM_2f:
+			mes "[艾爾帕蘭 士兵]";
+			mes "^DDAA00'煉金術士公會'^000000 專司商人轉職成煉金術士的業務";
+			viewpoint 1,58,61,6,0xDDAA00;
+			goto sL_Wipe;
+		sM_2g:
+			set @COMPASS_CHECK, 2;
+
+		sL_Wipe:
+			if(@COMPASS_CHECK != 2) next;
+			if(@COMPASS_CHECK == 1) goto sM_Menu;
+			viewpoint 2,56,225,1,0xFF0000;
+			viewpoint 2,72,194,2,0x0000FF;
+			viewpoint 2,197,68,3,0x00FF00;
+			viewpoint 2,231,107,4,0xFF00FF;
+			viewpoint 2,48,198,5,0x00AAFF;
+			viewpoint 2,58,61,6,0xDDAA00;
+			if (@COMPASS_CHECK == 0) goto sM_Menu;
+			mes "[艾爾帕蘭 士兵]";
+			mes "所有的記號已經移除";
+			cutin "prt_soldier",255;
+			close;
+
+	M_2:
+		mes "[艾爾貝塔 導游]";
+		mes "我們采用了最現代化的數位指引方式, 無論您在哪里都可以借由微型地圖知道您的位置.";
+		mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合后的廣網域測位系統的功能.";
+		next;
+		mes "[艾爾貝塔 導游]";
+		mes "別忘了參考右上方的微型地圖";
+		mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
+		mes "微型地圖出現之后 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
+		goto M_Menu;
+
+	M_End:
+		mes "[艾爾帕蘭 士兵]";
+		mes "祝您好運, 再見!";
+		cutin "prt_soldier",255;
+		close;
+}

@@ -1,0 +1,285 @@
+// 服事轉職腳本
+// 
+// 重整作者:		Dino9021
+//
+// 版權宣告:		本檔案由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
+//			轉載請勿移除任何說明敘述與說明檔案，并需注明論壇連結 http://eathena.twbbs.org
+// 
+// 中文版本編號:	20041118.0.2
+//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職指令改用 eAthena 之轉職函式
+//
+// 原始腳本:		Ayaa 20031213 -- AEGIS 20030625
+//			新增祭司轉職任務事件 2004/3/18 下午 12:47
+//
+//============================================================
+
+// 負責處理服事轉職申請的神父
+
+prt_church.gat,184,41,4	script	神父	60,{
+	if (JOB_ACO_Q == 0) goto START_1;
+	mes "[馬勒西斯神父]";
+	mes "很高興又見到你了。不知道你是否已經完成了你的任務了呢？";
+	mes "讓我看看最近收到的通知書里有沒有你的名字......";
+	next;
+	if (JOB_ACO_Q > 3) goto SUCCESS;
+	mes "[馬勒西斯神父]";
+	mes "......";
+	mes "你似乎有一點迷惘.....莫非是忘記任務的對像了嗎？";
+	if (JOB_ACO_Q == 1) mes "^000077請你去普隆德拉東北方的教區，^000000找正在修行中的^000077魯巴卡帕拉^000000神父。";
+	if (JOB_ACO_Q == 2) mes "^000077請你去普隆德拉西南方的夢羅克，^000000找正在修行中的^000077麻蒂達^000000修女。";
+	if (JOB_ACO_Q == 3) mes "^000077請你去普隆德拉西北方的橋墩，^000000找正在修行中的^000077優之介^000000 神父。";
+	next;
+	mes "[馬勒西斯神父]";
+	mes "神父正等待著為了成為服事而虔心修行的人，請你去告訴他你的意愿吧！";
+	close;
+
+SUCCESS:
+	mes "[馬勒西斯神父]";
+	mes "嗯，你的基本技能等級足夠。修練完成名單上也已經有你的名字，我就接受你的請求，讓你轉職成為服事。";
+	next;
+	setoption 0;
+	callfunc "Job_Change",Job_Acolyte;
+	mes "[馬勒西斯神父]";
+	mes "要時常懷著感謝的心侍奉憐愛我們的神，今后不管面臨什么困難與磨練，也要以更虔誠的信仰來侍奉我們的神。";
+	next;
+	mes "[馬勒西斯神父]";
+	mes "最后，恭喜你能堅持到最后，克服困難與磨練，完成這一連串的修行。";
+	close;
+
+START_1:
+	mes "[馬勒西斯神父]";
+	mes "請問有什么事情嗎？";
+	next;
+	menu "轉職成為服事。",L_MENU_1,"詢問有關轉職成為服事的條件。",L_MENU_2,"放棄。",-;
+
+	mes "[馬勒西斯神父]";
+	mes "愿天主保佑你。";
+	close;
+
+HighAoc:
+	mes "嗯，你的基本技能等級足夠。轉生名單上也有你的名字，我就接受你的請求，讓你轉職成為上位服事。";
+	next;
+	setoption 0;
+	callfunc "Job_Change",Job_Acolyte;
+	skill 156,1,0;
+	mes "[馬勒西斯神父]";
+	mes "要時常懷著感謝的心侍奉憐愛我們的神，今后不管面臨什么困難與磨練，也要以更虔誠的信仰來侍奉我們的神。";
+	next;
+	mes "[馬勒西斯神父]";
+	mes "最后，恭喜你能堅持到最后，克服困難與磨練，完成這一連串的修行。";
+	close;
+
+L_MENU_1:
+	mes "[馬勒西斯神父]";
+	if (BaseJob == Job_Acolyte) goto OUT_1;
+	if (BaseJob != Job_Novice) goto OUT_2;
+	if ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Priest) && (ReBirth != Job_Monk)) goto OUT_2;		// 判斷轉生過但原職業非服事系
+	if (JobLevel < 10) goto OUT_3;
+	if (SkillPoint != 0) goto OUT_4;
+	if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Priest) || (ReBirth == Job_Monk))) goto HighAoc;		// 判斷轉生過且原職業為服事系
+
+	mes "你是真心想成為神的隨從嗎？";
+	next;
+	menu "申請轉職成為服事。",L_MENU_1_1,"放棄。",-;
+
+	mes "[馬勒西斯神父]";
+	mes "那么，你是來開玩笑的?。不管怎么樣，愿天主保佑你。";
+	close;
+
+	L_MENU_1_1:
+			mes "[馬勒西斯神父]";
+			if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Priest) || (ReBirth == Job_Monk))) goto HighAoc;
+			mes "很好。" + strcharinfo(0) + "我接受你的轉職申請書。";
+			mes "那么，你應該知道要成為神的隨從必須要經過一連串嚴格的修練吧？";
+			next;
+			mes "[馬勒西斯神父]";
+			mes "你的任務是－－";
+			set @TEMP,rand(1,2);
+			if (@TEMP == 1) goto MISSION_1;
+			if (@TEMP == 2) goto MISSION_2;
+			goto MISSION_3;
+
+		MISSION_1:
+			set JOB_ACO_Q,1;
+			mes "^000077請你去普隆德拉東北方的教區，^000000找正在修行中的^000077魯巴卡帕拉^000000神父。";
+			goto L_GO;
+
+		MISSION_2:
+			set JOB_ACO_Q,2;
+			mes "^000077請你去普隆德拉西南方的夢羅克，^000000找正在修行中的^000077麻蒂達^000000修女。";
+			goto L_GO;
+
+		MISSION_3:
+			set JOB_ACO_Q,3;
+			mes "^000077請你去普隆德拉西北方的橋墩，^000000找正在修行中的^000077優之介^000000 神父。";
+			goto L_GO;
+
+		L_GO:
+			mes "神父正等待著為了成為服事而虔心修行的人，請你去告訴他你的意愿吧！";
+			close;
+L_MENU_2:
+		mes "[馬勒西斯神父]";
+		mes "你想要轉職成為服事嗎？";
+		mes "那么，你必須要通過以下這幾項修練才行。";
+		next;
+		mes "[馬勒西斯神父]";
+		mes "第一，初學者的基本技能等級要到達9級以上。";
+		mes "這是要在這世界上生存下去的最基本修行，請你好好的修練。";
+		next;
+		mes "[馬勒西斯神父]";
+		mes "第二，必須要克服所有的考驗再回到這來。";
+		next;
+		mes "[馬勒西斯神父]";
+		mes "當你完成這兩項修練后請再回到這個地方來，那么你就能夠成為服事這個神圣職業了。";
+		close;
+
+OUT_1:
+	mes "你已經是服事了。";
+	close;
+
+OUT_2:
+	mes "抱歉，你已經轉職成別的職業了。";	
+	close;
+
+OUT_3:
+	mes "....你的等級不足。";
+	mes "想要轉職至少得是十級的初心者才行。";
+	close;
+
+OUT_4:
+	mes "嗯......你是不是還有剩余的技能點數忘了點？想要留著送給教會嗎？呵呵。";
+	close;
+}
+
+// MISSION 1 -- 魯巴卡帕拉神父 -- 普隆德拉東北
+
+prt_fild03.gat,365,255,2	script	修行中的神父	89,{
+	if ((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 0)) goto NONAME;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 1)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q == 1))) goto IsRight;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q != 1)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q != 1))) goto NOT_HERE;
+	goto OUT;
+
+	IsRight:
+		mes "[魯巴卡帕拉神父]";
+		if((BaseJob == Job_Novice) && (Upper == 0)) mes "你就是那位想成為服事的人嗎？";
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) mes "你就是那位想成為祭司的人嗎？";
+		mes "我已經接到圣堂那邊有關你的消息了。";
+		mes "你的名字是" + strcharinfo(0) + "對！就是你，你能平安的到達這里實在是太好了。";
+		next;
+		mes "[魯巴卡帕拉神父]";
+		if((BaseJob == Job_Novice) && (Upper == 0)) mes "你應該已經從馬勒西斯神父那";
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) mes "你應該已經從湯瑪斯主教那";
+		mes "了解有關服事的事情了吧！我就不再多說了";
+		next;
+		mes "[魯巴卡帕拉神父]";
+		mes "如果想要完成修練的話，請你一定要記得：神會在你身旁";
+		mes "不管怎樣，我會寄出你來過這的確認書，你可以往普隆德拉出發了。";
+		next;
+		mes "[魯巴卡帕拉神父]";
+		mes "請千萬要小心。";
+		savepoint "prt_fild03.gat",361,255;
+		if((BaseJob == Job_Novice) && (Upper == 0)) set JOB_ACO_Q, 4;
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) set JOB_PRIEST_Q, 2;
+		close;
+
+	NONAME:
+		mes "[魯巴卡帕拉神父]";
+		mes "看你的樣子應該是一位初心者，如果你有興趣從事神職的話，不妨考慮去普隆德找馬勒西斯神問問看。";
+		close;
+
+	NOT_HERE:
+		mes "[魯巴卡帕拉神父]";
+		if ((BaseJob == Job_Novice) && (Upper == 0)) mes "你應該是想要轉職成為服事的修行者吧。辛苦了～";
+		if ((BaseJob == Job_Acolyte) && (Upper == 0)) mes "你應該是想要轉職成為祭司的修行者吧。辛苦了～";
+		mes "不過，我并不是你要尋找的對象喔，請你再確認一次吧。";
+		close;
+
+OUT:
+	mes "[魯巴卡帕拉神父]";
+	mes "你怎么會找上這來？我不知道你是服事修行者還是旅行者，不過我想我對你并沒有什么幫助。";
+	close;
+}
+
+// MISSION 2 -- 修行中的修女 -- 夢羅克東北
+
+moc_fild07.gat,41,355,4	script	修行中的修女	95,{
+	if ((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 0)) goto NONAME;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 2)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q == 2))) goto IsRight;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q != 2)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q != 2))) goto NOT_HERE;
+	goto OUT;
+
+	IsRight:
+		mes "[麻蒂達修女]";
+		if((BaseJob == Job_Novice) && (Upper == 0)) mes "你是服事修行者啊！很高興你能平安的到達這里。";
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) mes "你是祭司修行者啊！很高興你能平安的到達這里。";
+		mes "你的名字是" + strcharinfo(0) + "。";
+		next;
+		mes "[麻蒂達修女]";
+		mes "我會派信鴿將確認書寄出去，你快要到達圣堂的時候，負責的神父應該已經收到通知了。";
+		mes "請你回圣堂去跟負責的神父確認一下吧！";
+		mes "你走上成為服事的路，神會為你祈禱的。";
+		savepoint "moc_fild07.gat",35,355;
+		if((BaseJob == Job_Novice) && (Upper == 0)) set JOB_ACO_Q, 4;
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) set JOB_PRIEST_Q, 3;
+		close;
+
+	NONAME:
+		mes "[麻蒂達修女]";
+		mes "或許你聽說過我是負責服事修行的人員之一。......不過，如果你沒有事先向馬勒西斯神父提出申請的話，我也幫不了你的。";
+		close;
+
+	NOT_HERE:
+		mes "[麻蒂達修女]";
+		mes "遠道而來的修行者啊，這一路上辛苦你了。";
+		mes "但很可惜的是，我并不是你所尋找的對象，或許你再確認一下比較好。";
+		mes "加油吧～～";
+		close;
+
+OUT:
+	mes "[麻蒂達修女]";
+	mes "...........";
+	close;
+}
+
+// MISSION 3 -- 修行中的神父 -- 吉芬東部
+
+prt_fild00.gat,208,218,6	script	修行中的神父	98,{
+	if ((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 0)) goto NONAME;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q == 3)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q == 3))) goto IsRight;
+	if (((BaseJob == Job_Novice) && (Upper == 0) && (JOB_ACO_Q != 3)) || ((BaseJob == Job_Acolyte) && (Upper == 0) && (JOB_PRIEST_Q != 3))) goto NOT_HERE;
+	goto OUT;
+
+	IsRight:
+		mes "[優之介神父]";
+		if(class == 0) mes "你是服事修行者？";
+		if(class == 4) mes "你是祭司修行者？";
+		next;
+		mes "[優之介神父]";
+		mes "很高興你能平安的到達這里。";
+		mes "你的名字是" + strcharinfo(0) + "。";
+		next;
+		mes "[優之介神父]";
+		mes "很好。 " + strcharinfo(0) + "我會將你已經來過這里的確認書寄出";
+		mes "請回圣堂去跟神父確認一下吧！";
+		savepoint "prt_fild00.gat",206,230;
+		if((BaseJob == Job_Novice) && (Upper == 0)) set JOB_ACO_Q, 4;
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) set JOB_PRIEST_Q, 4;
+		close;
+
+	NONAME:
+		mes "[優之介神父]";
+		mes "你是不是找錯地方了？";
+		close;
+
+	NOT_HERE:
+		mes "[優之介神父]";
+		if((BaseJob == Job_Novice) && (Upper == 0)) mes "唷～～看你的樣子應該正在進行服事轉職任務吧？";
+		if((BaseJob == Job_Acolyte) && (Upper == 0)) mes "唷～～看你的樣子應該正在進行祭司轉職任務吧？";
+		mes "不過......我這里的名單上沒有你的名字呢。你是不是應該去找別人？";
+		close;
+
+OUT:
+	mes "[優之介神父]";
+	mes "你有話想要對我說嗎？";
+    	close;
+}
