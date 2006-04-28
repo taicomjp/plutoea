@@ -31,9 +31,10 @@
 //===========================================================================
 yuno_in01.gat,103,158,4	script	發仁	98,{
 	set @name$, "[發仁]";
-	if(bainbajin_q == 1) goto L_Check;
+	
 OnStart:
 	mes @name$;
+	if(bros_q == 1) goto L_Check;
 	mes "我們要發明一種可以與人交談對話的娃娃! 呃... 至少...那是我們想要做的....";
 	mes "這個點子是來自一個古老的傳說，傳說中的娃娃可以像真人一樣的活動.";
 	next;
@@ -63,10 +64,8 @@ OnStart:
 
 L_Check:
 	mes @name$;
-	if((countitem(974) < 1) || (countitem(612) < 5) || (countitem(7068) < 5) || (countitem(1003) < 5) || (countitem(7043) < 5) || 
-	(countitem(757) < 3) || (countitem(756) < 3) || (Zeny < 2000)) goto L_NotEnuf;
-	mes "真是太感謝你了! 你找到了我所需要的全部東西. 沒有你的協助我們真不知道該怎麼繼續這個計劃.";
-	next;
+	if(countitem(974) < 1 || countitem(612) < 5 || countitem(7068) < 5 || countitem(1003) < 5 || countitem(7043) < 5 || 
+		countitem(757) < 3 || countitem(756) < 3 || Zeny < 2000) goto L_NotEnuf;
 	delitem 974,1;
 	delitem 612,5;
 	delitem 7068,5;
@@ -75,6 +74,8 @@ L_Check:
 	delitem 757,3;
 	delitem 756,3;
 	set Zeny, Zeny-2000;
+	mes "真是太感謝你了! 你找到了我所需要的全部東西. 沒有你的協助我們真不知道該怎麼繼續這個計劃.";
+	next;
 	mes @name$;
 	set bainbajin_q, 0;
 	if(ALCH_Q == 6) goto L_Alchemist;

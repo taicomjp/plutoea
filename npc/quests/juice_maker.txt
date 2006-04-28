@@ -17,7 +17,7 @@
 //===== By: ==================================================
 //= kobra_k88
 //===== Current Version: =====================================
-//= 1.3a
+//= 1.6
 //===== Compatible With: =====================================
 //= eAthena 7.15 +
 //===== Description: =========================================
@@ -29,6 +29,8 @@
 //= 1.3 added a loopless menu 'as many as possible' [Lupus]
 //= 1.3a Turned the juice making part of the Juicer npc into a
 //= subfunc.  Changed fruit amount needed to 1.[kobra_k88]
+//= Fixed exploits [Lupus]
+//= 1.6 fixed typo (where did @ipnut came from?) [Lance]
 //============================================================
 
 
@@ -40,7 +42,7 @@ prt_in.gat,47,173,2	script	莫尼森	97,{
 
 	mes "哇...哇...我..我不要";
 	mes "我再也... 不要吃... 任何愚蠢的 ^0000ff水果^000000 了!!";
-	emotion 28;
+	emotion e_sob;
 	next;
 	menu "交談",M_Talk,"取消",M_End;
 
@@ -51,7 +53,7 @@ prt_in.gat,47,173,2	script	莫尼森	97,{
 		mes "啊啊啊啊啊!! 我受夠了!!! 我再也不要吃任何 ^0000ff水果^000000 了!";
 		mes "那麼酸..... 而且既要剝皮又要吐子的.....真是麻煩透頂的食物......";
 		mes "而且還黏黏滑滑的, 真是令人厭惡!!!!";
-		emotion 16;
+		emotion e_wah;
 		next;
 		mes "[小莫尼森]";
 		mes "我恨水果! 而且吃水果根本吃不飽.(~嘆息~)";
@@ -61,28 +63,29 @@ prt_in.gat,47,173,2	script	莫尼森	97,{
 		L_Meat:
 		mes "[小莫尼森]";
 		mes "...(望)....(瞧)(看).... 噢! 那是 ^ff0000肉^000000 嗎???";
-		emotion 5;
+		emotion e_ic;
 		next;
 		mes "[小莫尼森]";
 		mes "你有沒有肉 ^ff0000肉^000000?!!!~(咽口水)~";
 		mes "唔... 好餓啊... 好香的味道啊... 那香味讓我又餓了起來!!!";
-		emotion 37;
+		emotion e_rice;
 		next;
 		mes "[小莫尼森]";
 		mes "... 唔... 請問..... 你能把那些肉給我嗎?";
-		emotion 28;
+		emotion e_sob;
 		next;
 		menu "那好吧",sM_Give,"不理他",sM_Ignore;
 		
 		sM_Give:
+			if(countitem(517) == 0) goto L_GoAway; //Meat
+			delitem 517,1;	//Meat
 			set MORRISON,1;
 			set MEAT,MEAT + 1;
-			delitem 517,1;	//Meat
 			mes "[小莫尼森]";
 			mes "哇~!!! 真的是肉耶! 肉!";
 			mes "咕嚕! 我口水都流下來了.";
 			mes "真是太感謝你了. 我現在覺得快樂多了. 哈哈...";
-			emotion 38;
+			emotion e_awsm;
 			close;
 
 		sM_Ignore:
@@ -90,19 +93,19 @@ prt_in.gat,47,173,2	script	莫尼森	97,{
 			mes "[小莫尼森]";
 			mes "哼...";
 			mes "哼... 好... 很好, 非常好~!!! 自私的家伙!";
-			emotion 36;
+			emotion e_bzz;
 			close;
 	M_End:
 		mes "[小莫尼森]";
 		mes "啊啊啊啊!!! 無論我怎麼努力嘗試, 我就是沒辦法吃蔬菜或 ^0000ff水果^000000!";
 		mes "那實在是太惡心了!!";
-		emotion 28;
+		emotion e_sob;
 		close;
 
 L_GoAway:
 	mes "哼... 滾開! 別管我!";
 	mes "我會因為這些愚蠢的蔬菜水果而死, 你快滾一邊去吧!";
-	emotion 32;
+	emotion e_pif;
 	close;
 
 L_Candy:
@@ -130,7 +133,7 @@ prt_in.gat,49,172,2	script	瑪麗安妮	53,{
 
 	mes "莫尼森!! 拜托你吃點水果好嗎? 吃水果~!";
 	mes "*敲*~!! 像你爸爸一樣...";
-	emotion 28;
+	emotion e_sob;
 	next;
 	menu "交談",M_Talk,"取消",M_Cancel;
 	close;	
@@ -140,7 +143,7 @@ prt_in.gat,49,172,2	script	瑪麗安妮	53,{
 		mes "(~嘆氣~)...這是莫尼森... 我唯一的孩子";
 		mes "看看他的臉, 氣色糟透了,";
 		mes "盡管如此他還是拒絕吃任何的 ^0000ff水果^000000 或是蔬菜.";
-		emotion 40;
+		emotion e_shy;
 		next;
 		mes "[家庭主婦 瑪麗安妮]";
 		mes "噢! 你看看他的表情! 只要聽到 ^0000ff水果^000000 兩個字他就滿臉不高興...";
@@ -153,20 +156,20 @@ prt_in.gat,49,172,2	script	瑪麗安妮	53,{
 	M_Cancel:
 		mes "[家庭主婦 瑪麗安妮]";
 		mes "莫尼森!! 你在這樣下去我會非常生氣的!";
-		emotion 36;
+		emotion e_bzz;
 		close;
 	
 L_GaveMeat:
 	set MORRISON,0;
 	mes "噢! 我的天啊!!... 噢! 上帝啊...";
-	emotion 23;
+	emotion e_omg;
 	next;
 	mes "[家庭主婦 瑪麗安妮]";
 	mes "瞧你干了什麼好事!! 你竟敢拿東西給我兒子吃!! 而且什麼不好給, 偏偏給他 ^ff0000肉^000000 !!!";
 	next;
 	mes "[家庭主婦 瑪麗安妮]";
 	mes "走~~!! 馬上給我滾出去!!!!!!";
-	emotion 32;
+	emotion e_pif;
 	close;
 
 L_Juice:
@@ -179,16 +182,16 @@ L_Juice:
 	mes "[家庭主婦 瑪麗安妮]";
 	mes "要是我能把 ^0000ff水果^000000 弄成 ^0000ff果汁^000000...";
 	mes "比如說...柳橙汁... 我的孩子會喜歡嗎?";
-	emotion 20;
+	emotion e_hmm;
 	next;
 	mes "[家庭主婦 瑪麗安妮]";
 	mes "呃! 我想起來了..";
 	mes "有個城市里有人能幫人把 ^0000ff水果^000000 做成 ^0000ff果汁^000000.";
-	emotion 5;
+	emotion e_ic;
 	next;
 	mes "[家庭主婦 瑪麗安妮]";
 	mes "... 那是在哪兒呢...^ff0000裴楊^000000...還是 ^ff0000夢羅克^000000...?";
-	emotion 20;
+	emotion e_hmm;
 	next;
 	close;
 
@@ -200,9 +203,8 @@ payon_in03.gat,188,146,5	script	馬雷克漢森	86,{
 	if(MARIANNE == 1) goto L_Juice;
 	mes "歡迎光臨我的商店, 什麼風把你吹來的啊?";
 	next;
-	menu "對話",M_0a,"我只是參觀一下",M_0b;
+	menu "對話",-,"我只是參觀一下",M_End;
 		
-	M_0a:
 		mes "[馬雷克漢森]";
 		mes "在人類發展史的最初期, 水果是人類的主食, 它讓人類得以維持最基本的溫飽.";
 		mes "水果是讓人類活下去的基本食物之一, 如果沒有水果的話, 人類將會很快地死亡.";
@@ -217,7 +219,7 @@ payon_in03.gat,188,146,5	script	馬雷克漢森	86,{
 		mes "正因如此, 我想盡辦法找到一條路能讓這些年輕人能夠了解攝取水果營養的重要性.";
 		mes "我發現將水果做成果汁的話, 它的便利與口未能讓年輕人接受.";
 		close;
-	M_0b:
+	M_End:
 		mes "[馬雷克漢森]";
 		mes "那麼, 這裡當自己家吧.";
 		close;
@@ -270,13 +272,13 @@ sF_Make:
 
 		set @amount,1000;		//max possible amount of Juice
 		//calc max possible # juices
-		if(Zeny/3 < @amount) set @ipnut, Zeny/3;
+		if(Zeny/3 < @amount) set @amount, Zeny/3;
 		if(countitem(getarg(0)) < @amount) set @amount, countitem(getarg(0));
 		if(countitem(713) < @amount) set @amount, countitem(713);
 		if(@amount > 0) goto L_Make;
 		mes "[馬雷克漢森]";
 		mes "噢...您的材料不夠呢!";
-		emotion 0;
+		emotion e_gasp;
 		close;
 
 	M_Tell:

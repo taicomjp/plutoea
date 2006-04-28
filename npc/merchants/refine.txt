@@ -13,11 +13,9 @@
 //===== eAthena Script =======================================
 //= Refining NPCs
 //===== By: ==================================================
-//= Syrus22 (1.1)
-//= dafide18 (1.4)
-//= Skotlex (1.5)
+//= Syrus22 (1.1) dafide18 (1.4) Skotlex (1.5)
 //===== Current Version: =====================================
-//= 1.6
+//= 2.0
 //===== Compatible With: =====================================
 //= Any Athena Version
 //===== Description: =========================================
@@ -44,6 +42,13 @@
 //=       exploit ruining the safe refine loop. [Skotlex]
 //= 1.5b - Fixed Spelling mistakes. [Nexon] 
 //= 1.6	- Replaced all breaks for ends as per the new script engine [Skotlex]
+//= 1.7 - Added Einbroch Refiners (Custom names ^^;) and a duplicated BS Shop. [Poki#3]
+//= 1.8 - Added Lighthalzen Refiners (Custom names again ^^;) [Poki#3]
+//= 1.8a - Fixed wrong indication thanks to NeoSaro [Lupus]
+//= 1.9 - Rewrote repairman, removed the Steel from repair cost [DracoRPG]
+//= 2.0 - Fixed missed equppment presence check. Thx2 Coltaro [Lupus]
+//= 2.0a - Added weight checks thanks to Neouni [Playtester]
+//= 2.0b - Fixed the names of Lighthalzen and Einbroch refiners thanks to Maud_Dib [Kargha]
 //============================================================
 
 
@@ -66,25 +71,28 @@ geffen_in.gat,110,172,2	script	克理斯多福	63,{
 
 		sM_Anvil:
 			if(Zeny < 30000) goto L_NoZeny;
-			mes "[克理斯多福]";
-			mes "你選擇的這一種是比較便宜的一種。";
+			if(checkweight(986,1) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - 30000;
 			getitem 986,1;
+			mes "[克理斯多福]";
+			mes "你選擇的這一種是比較便宜的一種。";
 			next;
 			goto L_Thanks;
 		sM_OriAnvil:
 			if(Zeny < 120000) goto L_NoZeny;
-			mes "[克理斯多福]";
-			mes "噢！看來你是個行家。這一定是一個適合鐵匠的鐵砧，你說是嗎？";
+			if(checkweight(987,1) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - 120000;
 			getitem 987,1;
+			mes "[克理斯多福]";
+			mes "噢！看來你是個行家。這一定是一個適合鐵匠的鐵砧，你說是嗎？";
 			next;
 			goto L_Thanks;
 		sM_GolAnvil:
 			if(Zeny < 300000) goto L_NoZeny;
+			if(checkweight(988,1) == 0 ) goto L_OverWeight;
+			set Zeny, Zeny - 300000;
 			mes "[克理斯多福]";
 			mes "這一個是工作室之中的最好的一種，用這種鐵砧，你絕對可以稱霸鐵匠界。";
-			set Zeny, Zeny - 300000;
 			getitem 988,1;
 			next;
 			goto L_Thanks;
@@ -112,21 +120,25 @@ geffen_in.gat,110,172,2	script	克理斯多福	63,{
 			if(@input < 1 ) goto sM_Menu1;
 			if(@input > 1000 ) goto sM_Max;
 			if(Zeny < 150 * @input) goto L_NoZeny;
+			if(checkweight(612,@input) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - (150 * @input);
 			getitem 612, @input;
 			goto L_Thanks;
 		sM_IrHam:
 			if(Zeny < 1000) goto L_NoZeny;
+			if(checkweight(613,1) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - 1000;
 			getitem 613,1;
 			goto L_Thanks;
 		sM_GldHam:
 			if(Zeny < 3000) goto L_NoZeny;
+			if(checkweight(614,1) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - 3000;
 			getitem 614,1;
 			goto L_Thanks;
 		sM_OriHam:
 			if(Zeny < 5000) goto L_NoZeny;
+			if(checkweight(615,1) == 0 ) goto L_OverWeight;
 			set Zeny, Zeny - 5000;
 			getitem 615,1;
 			goto L_Thanks;
@@ -158,6 +170,11 @@ geffen_in.gat,110,172,2	script	克理斯多福	63,{
 		emotion 4;
 		close;
 
+	L_OverWeight:
+		mes "[克理斯多福]";
+		mes "You don't seem to have enough strength to carry this.";
+		close;
+
 	L_Thanks:
 		mes "[克理斯多福]";
 		mes "感謝您的光臨，歡迎下次光臨！";
@@ -165,7 +182,7 @@ geffen_in.gat,110,172,2	script	克理斯多福	63,{
 		close;
 }
 
-
+ein_in01,38,29,6	duplicate(Chris)	克理斯多福#2	63
 
 //=====================================================================================
 // Weapon/Armor Refiners
@@ -192,6 +209,16 @@ alberta_in.gat,28,58,4	script	弗雷德利	85,{
 }
 yuno_in01.gat,164,26,6	script	尤思特	88,{
 	set @name$,"尤思特";
+	callfunc "refinemain";
+	end;
+}
+ein_in01.gat,24,87,6	script	Manthasman	826,{
+	set @name$,"Manthasman Pruhag";
+	callfunc "refinemain";
+	end;
+}
+lhz_in02.gat,282,20,7	script	Fulerr	869,{
+	set @name$,"Fulerr";
 	callfunc "refinemain";
 	end;
 }
@@ -379,8 +406,8 @@ L_refinenormal:
 
 		L_Sub:
 			if ((countitem(@material) < 1) || (Zeny < @price)) goto Lcancel2;
-			delitem @material,1;
 			set Zeny,Zeny-@price;
+			delitem @material,1;
 
 Lrefine:
 	if (getequipisequiped(@part) == 0) goto LNoItem; // hacker has removed the item (not changed, why?)
@@ -458,8 +485,8 @@ Lsafe:
 	next;
 	menu "繼續",-,"取消",Lcancel;
 	if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
-	delitem @material,@refinecnt;
 	set Zeny,Zeny - @fullprice;
+	delitem @material,@refinecnt;
 	goto L_refinesafe;
 
 Lnosafe:
@@ -477,8 +504,8 @@ Lnosafe:
 	menu "繼續",-,"取消",Lcancel;
 		if(@refinecheck > @safe) goto Lwarn;
 		if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
-		delitem @material,@refinecnt;
 		set Zeny,Zeny - @fullprice;
+		delitem @material,@refinecnt;
 		goto L_refinenumber;
 		end;
 
@@ -489,8 +516,8 @@ Lnosafe:
 			next;
 			menu "繼續",-,"取消",Lcancel1;
 				if((countitem(@material) < @refinecnt) || (Zeny < @fullprice)) goto Lcancel2;
-				delitem @material,@refinecnt;
 				set Zeny,Zeny - @fullprice;
+				delitem @material,@refinecnt;
 				goto L_refinenumber;
 
 Lcancel3:
@@ -575,6 +602,16 @@ yuno_in01.gat,171,26,6	script	艾爾來特	88,{
 	callfunc "phramain";
 	end;
 }
+ein_in01.gat,15,87,7	script	Tirehaus	86,{
+	set @name$,"Tirehaus";
+	callfunc "phramain";
+	end;
+}
+lhz_in02.gat,278,24,3	script	Krugg	86,{
+	set @name$,"Krugg";
+	callfunc "phramain";
+	end;
+}
 
 //============================================================
 //= Material Salesmen Functions
@@ -608,8 +645,8 @@ CONTINUE:
 	if (@ammount > 999) goto L_ABOVE;
 	if (zeny < @value * @ammount) goto L_NOZENY;
 	if (checkweight(@itemid,@ammount) == 0) goto L_WEIGHT;
-	getitem @itemid,@ammount;
 	set Zeny,Zeny-@value*@ammount;
+	getitem @itemid,@ammount;
 	mes "[" + @name$ + "]";
 	mes "好了，這是你要的強化武器用金屬，請收好。";
 	close;
@@ -657,6 +694,16 @@ yuno_in01.gat,171,22,6	script	湯馬思	88,{
 	set @name$,"湯馬思";
 	callfunc "orimain";
 end;
+}
+ein_in01.gat,18,82,6	script	Matestein	84,{
+	set @name$,"Matestein";
+	callfunc "orimain";
+	end;
+}
+lhz_in02.gat,281,24,5	script	Fruel	84,{
+	set @name$,"Fruel";
+	callfunc "orimain";
+	end;
 }
 
 //============================================================
@@ -729,6 +776,11 @@ payon.gat,149,182,2	script	瑞休利斯	88,{
 
 morocc_in.gat,71,40,2	script	艾爾發	99,{
 	set @name$,"艾爾發";
+	callfunc "repairmain";
+	end;
+}
+lhz_in02.gat,284,14,3	script	Repairman	86,{
+	set @name$,"Repairman";
 	callfunc "repairmain";
 	end;
 }

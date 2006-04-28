@@ -17,7 +17,7 @@
 //===== By: ================================================== 
 //= Darkchild
 //===== Current Version: ===================================== 
-//= 1.3
+//= 1.8a
 //===== Compatible With: ===================================== 
 //= Any eAthena
 //===== Description: ========================================= 
@@ -26,16 +26,20 @@
 //= Some Other Useless Super Novice Npc
 //===== Additional Comments: ================================= 
 //= Dialogs From Some Other Scripts (Most Of It)
-//= 1.3 Added Baby class support (and to the Kafta SN Cart
+//= 1.3-1.5 Added Baby class support (and to the Kafta SN Cart
 //= renter, too) [Lupus]
+//= 1.6 Added a fix which prevent High Novices passing
+//= this Job Quests again. [Lupus]
+//= 1.7 Fixed Baby Class Support. [Lupus]
+//= 1.8 Now a Baby can become a Super Baby [Lupus]
 //============================================================ 
 
 
 // -- Jobchanger --
 aldeba_in.gat,223,167,3	script	杰特雷諾	709,{
-	if(job_snovice == 1) goto L_Start2;
-	if(BaseJob == 23) goto L_Twice;
-	if((BaseJob != 0) || (Upper != 0) || (ReBirth > 0)) goto L_Otherjob;
+	if(SUPNOV_Q == 1) goto L_Start2;
+	if(BaseJob == Job_SuperNovice) goto L_Twice;
+	if(BaseJob != 0 || Upper==1) goto L_Otherjob;
 	mes "[杰特雷諾]";
 	mes "哈?! 初心者!";
 	mes "你為你身為一名初心者而快樂嗎? 寧願當個普通人?";
@@ -49,8 +53,8 @@ aldeba_in.gat,223,167,3	script	杰特雷諾	709,{
 	mes "聽起還不錯吧?";
 	next;
 	menu "我接受!",-,"超級初心者就是超級笨蛋",L_Stupid,"請告訴我更多相關資料",L_Well;
-        if(JobLevel < 10) goto L_LowSkill;
-        if(BaseLevel < 45) goto L_LowLevel;
+	if(JobLevel < 10) goto L_LowSkill;
+	if(BaseLevel < 45) goto L_LowLevel;
 	if(SkillPoint != 0) goto L_StillSk; 
 	mes "[杰特雷諾]";
 	mes "好極了!";
@@ -71,7 +75,7 @@ aldeba_in.gat,223,167,3	script	杰特雷諾	709,{
    	next;
 	mes "[杰特雷諾]";
 	mes "等你搜集到了這些一般數量的普通物品，就可以回來找我這個普通公會里的一般人.";
-	set job_snovice,1;
+	set SUPNOV_Q,1;
 	close;
 
 L_Stupid:
@@ -105,6 +109,8 @@ L_Well:
 L_Start2:
 	if(countitem(938) < 30) goto L_ItemError;
 	if(countitem(907) < 30) goto L_ItemError;
+	delitem 938,30;
+	delitem 907,30;
 	mes "[杰特雷諾]";
 	mes "哦... 你的表現看起來很...呃...普通...但那對我們來說已經足夠了!";
 	mes "歡迎加入初心者公會!";
@@ -117,10 +123,11 @@ L_Start2:
 	mes "- 杰特雷諾突然不尋常的舉動讓你錯愕 -";
 	mes "- 你突然不知道要說什麼好! -";
 	next;
-	callfunc "Job_Change",Job_SuperNovice;
-	delitem 938,30;
-	delitem 907,30;
+	next;
+	if (Upper==0) jobchange Job_SuperNovice;
+	if (Upper==2) jobchange Job_Super_Baby;
 	getitem 2339,1;
+	callfunc "F_ClearJobVar";
 	mes "[杰特雷諾]";
 	mes "哈哈哈! 你很驚訝嗎?!";
 	mes "我們是普通的人并不表示我們不能做錯任何事!";
@@ -136,7 +143,7 @@ L_Start2:
 L_LowSkill:
 	mes "[杰特雷諾]";
 	mes "唔...你的等級看來有一點太普通了.";
-	mes "你的技能等級必須達到 ^0000FF 10^000000 才能加入我們.";
+	mes "你的技能等級必須達到 ^0000FF 9^000000 才能加入我們.";
 	close;
 
 L_LowLevel:
@@ -188,8 +195,8 @@ L_Otherjob:
 
 // -- Totaly Useless :) --
 aldeba_in.gat,216,169,5	script	瑟雷	86,{
-	if(BaseJob == 23) goto L_Supernovice;
-	if((BaseJob != 0) || (Upper != 0) || (ReBirth > 0)) goto L_Otherjob;
+	if(BaseJob == Job_SuperNovice) goto L_Supernovice;
+	if(BaseJob != 0) goto L_Otherjob;
 	mes "[瑟雷]";
 	mes "你長得真是普通.";
 	mes "一個普通的人應該過得很快樂.";
@@ -225,7 +232,7 @@ L_Otherjob:
 
 // -- Car Rental --
 aldebaran.gat,54,238,5	script	卡普拉服務人員	117,{
-	if(BaseJob != 23) goto L_Otherjob;
+	if(BaseJob != Job_SuperNovice) goto L_Otherjob;
 	if(checkcart(0) == 1) goto L_GotCart;
 	mes "[卡普拉服務人員]";
 	mes "噢! 超級初心者!";
@@ -253,9 +260,9 @@ aldebaran.gat,54,238,5	script	卡普拉服務人員	117,{
 	mes "那麼你不但拿不到手推車，租金我也不能還你.";
 	next;
 	menu "我已經知道了",-,"啊...等一下...",L_End;
-	if(Zeny < 1900) goto L_Error;
-	   set Zeny,Zeny-1900;
 	if(getskilllv(39)==0) goto L_End;
+	if(Zeny < 1900) goto L_Error;
+	set Zeny,Zeny-1900;
 	setcart;
 	mes "[卡普拉服務人員]";
 	mes "謝謝你使用卡普拉服務，即使我們是秘密交易.";
