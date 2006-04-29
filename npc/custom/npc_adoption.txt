@@ -56,7 +56,7 @@ prt_church.gat,166,176,3	script	收養登記人員	61,{
 //GM Menu: Start
 //If u're a GM you can always reset current Adoption process
 	if(getgmlevel(99)<90) goto L_SKIP;
-	mes "[GM 功能表]";
+	mes "[GM 菜單]";
 	mes "你是否想重置當前的收養狀態?";
 	next;
 	menu "是",-,"否",L_SKIP;	
@@ -147,7 +147,7 @@ prt_church.gat,172,177,3	script	收養工作人員	103,{
 	next;
 	menu "是的, 我已經超過70級了",A_lvl,"還沒, 麻煩你了...",-;
 	mes "[收養工作人員]";
-	mes "噢, 很抱歉, 當你達到條件以后再回來找我吧";
+	mes "噢, 很抱歉, 當你達到條件以後再回來找我吧";
 	callfunc "AdoptReset","父/母親沒有達到所需等級";
 	close;
 A_SeeFriend:
@@ -244,7 +244,7 @@ A_agree:
 A_lvltwo:
 	if ( countitem(2634)>0 || countitem(2635)>0 ) goto A_Wedringtwo;
 	mes "[收養工作人員]";
-	mes "對不起，你并沒有結婚戒指做你們婚姻的證明";
+	mes "對不起，你並沒有結婚戒指做你們婚姻的證明";
 	callfunc "AdoptReset","父/母親沒有帶結婚戒指以證明他們的婚姻";
 	close;
 A_Wedringtwo:
@@ -288,7 +288,7 @@ A_FinalTest:
 	if(sex==0) set $@GenderBaby$,"女孩";
 
 	mes "[收養工作人員]";
-	mes "你能當一個好 "+$@GenderBaby$+" ，并且跟這兩個好人一起生活嗎?";
+	mes "你能當一個好 "+$@GenderBaby$+" ，並且跟這兩個好人一起生活嗎?";
 	next;
 	menu "恩, 偶很高興",A_BabyYes,"不~要！！！！！",-;
 	mes "[收養工作人員]";
@@ -307,7 +307,7 @@ A_BabyYes:
 	if (BaseLevel == 1 && JobLevel == 1) goto A_Ready;
 	mes "[收養工作人員]";
 	mes "對不起，你已經超過1級了, 只有基礎1級和職業等級都是1級才能證明你是一個純粹的初學者";
-	callfunc "AdoptReset","將被領養的人等級高于1級";
+	callfunc "AdoptReset","將被領養的人等級高於1級";
 	close;
 A_Ready:
 	mes "[收養工作人員]";
@@ -315,7 +315,7 @@ A_Ready:
 	next;
 	mes "[收養工作人員]";
 	mes "我不反對別人收養你";
-	mes "在你被領養錢我需要最后一次看看你的父母和你";
+	mes "在你被領養錢我需要最後一次看看你的父母和你";
 	set $@FinalQuestion,1;
 	areaannounce "prt_church.gat",0,0,350,350,"請參加這次收養的人都過來一下",0;
 	deltimer "timeadopt";
@@ -336,7 +336,7 @@ A_ParentOneEnd:
 	if ($@ParentOne$==$@ParentTwo$) goto A_SameFail;
 	mes "[收養工作人員]";
 	mes "很高興再次見到你 "+$@ParentOne$;
-	mes "這是最后的反悔機會了";
+	mes "這是最後的反悔機會了";
 	next;
 	mes "[收養工作人員]";
 	mes "你只能領養一次，因此一旦你領養了 "+$@Baby$+", 你就不能再領養別人了"; 
@@ -358,7 +358,7 @@ A_Failend:
 A_FinalYesP:
 	mes "[收養工作人員]";
 	mes "好了，領養工作已經準備好了";
-	mes "結束以后我會發公告通知所有人";
+	mes "結束以後我會發公告通知所有人";
 	set @regged,1;
 	set $@checkall,$@checkall+1;
 	if ($@checkall==3) goto THEEND;
@@ -367,7 +367,7 @@ A_ParentTwoEnd:
 	if (@regged>1) goto AlreadyReged;
 	mes "[收養工作人員]";
 	mes "很高興再次見到你 "+$@ParentTwo$;
-	mes "這是最后的反悔機會了";
+	mes "這是最後的反悔機會了";
 	next;
 	mes "[收養工作人員]";
 	mes "你只能領養一次，因此一旦你領養了 "+$@Baby$+", 你就不能再領養別人了"; 
@@ -389,7 +389,7 @@ A_BabyEnd:
 	if (@regged>1) goto AlreadyReged;
 	mes "[收養工作人員]";
 	mes "很高興再次見到你 "+$@Baby$;
-	mes "這是要反悔的最后機會了";
+	mes "這是要反悔的最後機會了";
 	next;
 	mes "[收養工作人員]";
 	mes "你只能被領養一次, 所以一旦你被 "+$@ParentOne$+" 和 "+$@ParentTwo$+" 收養, 你就不能再被別人收養了"; 
@@ -406,7 +406,7 @@ A_BabyEnd:
 A_FinalYesB:
 	mes "[收養工作人員]";
 	mes "好了，領養工作已經準備好了";
-	mes "結束以后我會發公告通知所有人";
+	mes "結束以後我會發公告通知所有人";
 	set @regged,1;
 	set $@checkall,$@checkall+1;
 	if ($@checkall==3) goto THEEND;
@@ -414,7 +414,7 @@ A_FinalYesB:
 A_SameFail:
 	mes "[收養工作人員]";
 	mes "對不起, 看起來你同時了擔任父母雙方, 這是不允許的";
-	callfunc "AdoptReset","收養設定的父母是不能是同一個人";
+	callfunc "AdoptReset","收養設置的父母是不能是同一個人";
 	close;
 
 A_GetSkill:

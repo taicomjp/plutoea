@@ -1,15 +1,10 @@
-// 公會聘雇之卡普拉設定函式
-//
-// 中文化及修正 by xuwujun
-//============================================================
-
 //===== eAthena Script =======================================
 //= War of Emperium Kafras Function
 //===== By: ==================================================
 //= jAthena - kalen (1.0)
 //= 1.1 by Akaru, ho|yAnge|X, and Valaris
 //===== Current Version: =====================================
-//= 1.2
+//= 1.2a
 //===== Compatible With: =====================================
 //= eAthena 0.1+; RO Episode 4+
 //===== Description: =========================================
@@ -22,12 +17,13 @@
 //=   arg(3): y1 coordinate for warp
 //===== Additional Comments: =================================
 //= v1.2: All Guild kafra scripts use this function. [kobra_k88]
+//= 1.2a Added extra check for Contract with Kafra Guild Skill [Lupus]
 //============================================================
 
 function	script	F_GKafra	{
 	cutin "kafra_01",2;
 	set @GID, GetCastleData(getarg(0)+".gat",1);
-	if (getcharid(2) == @GID) goto L_StartG;
+	if (getcharid(2) == @GID && getgdskilllv(@GID,10001)) goto L_StartG;
 
 	mes "[卡普拉服務人員]";
 	mes "我已簽訂契約專為 ^5533FF" + GetGuildName(@GID) + "^000000 工會的成員們服務! 請使用其它的卡普拉服務吧，謝謝!";
@@ -36,7 +32,7 @@ function	script	F_GKafra	{
 L_StartG:
 	set @wrpP[0], 0;
 	set @wrpD$[0], getarg(1);
-	setarray @wrpC$[0], @wrpD$[0], "取消", "", "", "", "", "";
+	setarray @wrpC$[0], @wrpD$[0], "取消", "", "", "","";
 	callfunc "F_Kafra",2;
 	end;
 }

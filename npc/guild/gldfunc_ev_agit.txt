@@ -1,21 +1,10 @@
-// 攻城戰怪物及華麗金屬設定函式
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041217.0.1	攻城戰啟動時將城堡管理與卡普拉服務人員移除
-//					攻城戰結束時將城堡管理與卡普拉服務人員啟動 (若該城堡有聘雇卡普拉服務人員)
-//					增加 F_AgitEnd 函式於攻城戰結束時應用
-//			20050302.0.1	更新至 eAthena 版本 1.2a
-//
-//============================================================
-
 //===== eAthena Script =======================================
 //= War of Emperium Guild Event AgitStart/AgitBreak Functions
 //===== By: ==================================================
 //= jAthena - kalen (1.0)
 //= 1.1 by Akaru, ho|yAnge|X, and Valaris
 //===== Current Version: =====================================
-//= 1.2a
+//= 1.3
 //===== Compatible With: =====================================
 //= eAthena 0.1+; RO Episode 4+
 //===== Description: =========================================
@@ -35,15 +24,12 @@
 //===== Additional Comments: =================================
 //= v1.2: All OnAgitStart and OnAgitBreak calls will use these functions.[kobra_k88]
 //= v1.2a: Added OnAgitEnd function.[kobra_k88]
+//= 1.3 Added code for abandoning captured castles on /breakguild [Lupus]
 //============================================================
-
 
 
 // Function for OnAgitStart =========================================
 function	script	F_AgitStart	{
-
-	disablenpc "卡普拉服務人員#"+getarg(1);
-	disablenpc getarg(4)+"#"+getarg(1);
 
 	MapRespawnGuildID getarg(0)+".gat",GetCastleData(getarg(0)+".gat",1),2;
 	Monster getarg(0)+".gat",getarg(2),getarg(3),"華麗金屬",1288,1,"Agit_"+getarg(1)+"::OnAgitBreak";
@@ -125,13 +111,22 @@ L_PrtgCas:
 	return;
 }
 
+// Function for OnGuildBreak ======================================
+function	script	F_GuildBreak	{
+	killmonsterall getarg(0)+".gat";
+
+	Announce "秘密基地 [" + GetCastleName(getarg(0)+".gat") + "] 被人放棄了.",0;
+	disablenpc "卡普拉服務人員#"+getarg(1);
+
+	SetCastleData getarg(0)+".gat",0,0;
+	return;
+}
 
 // Function for OnAgitBreak ======================================
 function	script	F_AgitBreak	{
 	//killmonsterall getarg(0)+".gat";
 	set @GID,getcharid(2);
 	if (@GID <= 0) return;
-	setcastledata getarg(0) + ".gat", 1, @GID;
 	set @Economy,GetCastleData(getarg(0)+".gat",2);
 	SetCastleData getarg(0)+".gat",2, @Economy-5;
 	if (GetCastleData(getarg(0)+".gat",2) < 0) SetCastleData getarg(0)+".gat",2,0;
@@ -139,8 +134,8 @@ function	script	F_AgitBreak	{
 	SetCastleData getarg(0)+".gat",3, @Defence-5;
 	if (GetCastleData(getarg(0)+".gat",3) < 0) SetCastleData getarg(0)+".gat",3,0;
 	SetCastleData getarg(0)+".gat",1, @GID;
-	MapAnnounce getarg(0)+".gat","華麗金屬被破壞了",17;
-	Announce "秘密基地 [" + GetCastleName(getarg(0)+".gat") + "] 被 [" + GetGuildName(@GID) + "] 公會占領了",0;
+	MapAnnounce getarg(0)+".gat","華麗金屬被破壞了.",17;
+	Announce "秘密基地 [" + GetCastleName(getarg(0)+".gat") + "] 被 [" + GetGuildName(@GID) + "] 工會佔領了.",0;
 	GetCastleData getarg(0)+".gat",0,"::OnRecvCastle"+getarg(1);
 
 	disablenpc "卡普拉服務人員#"+getarg(1);
@@ -156,14 +151,9 @@ function	script	F_AgitBreak	{
 
 // Function for OnAgitEnd ======================================
 function	script	F_AgitEnd	{
-
-	if (GetCastleData(getarg(0)+".gat",9) > 0) enablenpc "卡普拉服務人員#"+getarg(1);
-	enablenpc getarg(2)+"#"+getarg(1);
-
 	GvgOff getarg(0)+".gat";
 //	if (GetCastleData(getarg(0)+".gat",1) == 0) return;	//enable this line to allow take over of non captured castles after woe ends
 	MapRespawnGuildID getarg(0)+".gat",GetCastleData(getarg(0)+".gat",1),4;
 	KillMonster getarg(0)+".gat","Agit_"+getarg(1)+"::OnAgitBreak";
-	flagemblem getcastledata(getarg(0) + ".gat", 1);
 	end;
 }

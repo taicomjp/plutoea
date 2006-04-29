@@ -1,24 +1,10 @@
-// 公會管理員函式
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041217.0.2
-//
-// 修改內容:		20041217.0.2	加入判斷異常空置城堡的函式
-//					if (getguildmaster(@GID) == "null") callfunc "F_CheckCastle",getarg(4),"CheckNull";
-//					以及釋放城堡敘述修改為 callfunc "F_CheckCastle",getarg(4),"ReleaseMG";
-//			20050324.0.1	與 eAthena 1.3 對應
-//			20050325.0.1	與 eAthena 1.31 對應
-//
-//============================================================
-
 //===== eAthena Script =======================================
 //= War of Emperium Guild Manager Function
 //===== By: ==================================================
 //= jAthena - kalen (1.0)
 //= 1.1 by Akaru, ho|yAnge|X, and Valaris
 //===== Current Version: =====================================
-//= 1.31
+//= 1.41
 //===== Compatible With: =====================================
 //= eAthena 0.1+; RO Episode 4+
 //===== Description: =========================================
@@ -42,7 +28,9 @@
 //= v1.2b U can't surrender the base during WOE [Lupus]
 //= v1.2c Fixed issue of guardians hp not increasing upon defense
 //= investment.[kobra_k88]
-//= 1.3 Now you can't install Guardians during WOE [Lupus]
+//= v1.3 Now you can't install Guardians during WOE [Lupus]
+//= v1.4 Remove surrender abbility (Was 100% custom as far as I can tell) [Kayla]
+//= v1.41 Fixed possible Economy investment overflow with Emsolute Develop learnt [Lupus]
 //============================================================
 
 
@@ -52,13 +40,8 @@ function	script	F_GldManager	{
 
 	set @GID, GetCastleData(getarg(1)+".gat",1);
 	if (strcharinfo(0) == getguildmaster(@GID)) goto L_Start;
-	if (getguildmaster(@GID) == "null") goto L_CheckNull;
 	if (@GID == 0) goto L_NotOwn;
 	if (getcharid(2) == @GID) goto L_Mem;
-
-L_CheckNull:
-	callfunc "F_CheckCastle",getarg(4),"CheckNullMG";
-	goto L_NotOwn;
 
 L_NotMem:
 	mes "[ "+getarg(0)+" ]";
@@ -73,15 +56,15 @@ L_NotOwn:
 
 L_Mem:
 	mes "[ "+getarg(0)+" ]";
-	mes "你不是 ^5533FF" + getguildmaster(@GID) + "^000000! 我只遵從 ^5533FF" + getguildmaster(@GID) + "^000000 主人的指令!";
+	mes "你不是 ^5533FF" + getguildmaster(@GID) + "^000000! 我只遵從 ^5533FF" + getguildmaster(@GID) + "^000000 主人的命令!";
 	return 0;
 
 L_Start:
 	mes "[ "+getarg(0)+" ]";
 	mes "你好! 我的主人 ^5533FF" + getguildmaster(@GID) + "^000000 ! 有什麼我能為您效勞的地方嗎?";
 	next;
-	menu 	"給我做個簡報吧",M_Base, "投資商業發展",M_Comrc, "投資城堡防御",M_Def, "設定守衛",M_Gaurd, 
-		"雇用/解雇 卡普拉服務人員",M_Kaf, "進入珍寶庫房",M_Treas, "讓出公會城堡",M_Sur, "改天再來視察",M_End;
+	menu 	"給我做個簡報吧",M_Base, "投資商業發展",M_Comrc, "投資城堡防禦",M_Def, "設置守衛",M_Gaurd, 
+		"僱用/解雇 卡普拉服務人員",M_Kaf, "進入珍寶庫房",M_Treas, "取消",M_End;
 
 	//========================
 	M_Base:
@@ -93,8 +76,7 @@ L_Start:
 		mes "^0000ff - 您在過去一天之內投資了 " + GetCastleData(getarg(1)+".gat",4) + " 次^000000";
 		next;
 		mes "[ "+getarg(0)+" ]";
-		mes " ";
-		mes "目前的城堡防御程度: ^FF3322" + GetCastleData(getarg(1)+".gat",3)  + "^000000";
+		mes "目前的城堡防禦程度: ^FF3322" + GetCastleData(getarg(1)+".gat",3)  + "^000000";
 		mes "^0000ff- 您在過去一天之內投資了 " +  GetCastleData(getarg(1)+".gat",5)  + " 次^000000";
 		mes " ";
 		mes "報告完畢!";
@@ -136,9 +118,8 @@ L_Start:
 			if(Zeny < @eco_invest) goto sL_NoZenyC;
 			set Zeny,Zeny-@eco_invest;
 			SetCastleData getarg(1)+".gat",4,@TriggerE+1;
-			SetCastleData getarg(1)+".gat",2,@Economy+1;
-			// if we learnt Emsolute Develop there's a chance to get +1 investment again
-			if (getgdskilllv(@GID,10014) > 0 && rand(100)>50) set @Economy, @Economy + 1;
+			// if we learnt Emsolute Develop there's 50% chance to get +1 investment again
+			SetCastleData getarg(1)+".gat",2,@Economy + 1 + (getgdskilllv(@GID,10014)>0 && rand(100)>50 && @Economy<99);
 			mes "[ "+getarg(0)+" ]";
 			mes "順利地完成投資了!";
 			return 0;
@@ -175,7 +156,7 @@ L_Start:
 		mes "[ "+getarg(0)+" ]";
 		if(@TriggerD == 2) goto L_MaxTimesD;
 		if(@Defence >= 100) goto L_MaxInvestD;
-		mes "提高城堡防御程度的話，雇用的守衛以及城堡的華麗金屬生命值將會增加!";
+		mes "提高城堡防禦程度的話，僱用的守衛以及城堡的華麗金屬生命值將會增加!";
 		mes "所以為了城堡的安全著想的話，這是一定要投資的啊!";
 		next;
 		mes "[ "+getarg(0)+" ]";
@@ -187,7 +168,7 @@ L_Start:
 		mes "[ "+getarg(0)+" ]";
 		mes "請問你要投資嗎?";
 		next;
-		menu "投資城堡防御",-, "放棄",M_End;
+		menu "投資城堡防禦",-, "放棄",M_End;
 
 			if(Zeny < @def_invest) goto sL_NoZenyD;
 			set Zeny,Zeny-@def_invest;
@@ -195,8 +176,6 @@ L_Start:
 			SetCastleData getarg(1)+".gat",3,@Defence+1;
 			// set new hp values for guardians
 			set @Defence, @Defence + 1;
-			// if we learnt Emsolute Develop there's a chance to get +1 investment again
-			if (getgdskilllv(@GID,10014) > 0 && rand(100)>50) set @Defence, @Defence + 1;
 			set @AGuardian, 28634 + (@Defence*2000);
 			set @KGuardian, 30214 + (@Defence*2000);
 			set @SGuardian, 15670 + (@Defence*2000);
@@ -218,13 +197,13 @@ L_Start:
 
 			sL_NoZenyD:
 				mes "[ "+getarg(0)+" ]";
-				mes "主人! 您沒有足夠的金額可以投資城堡防御!";
+				mes "主人! 您沒有足夠的金額可以投資城堡防禦!";
 				return 0;
 		L_MaxTimesD:
 			mes "^ff0000主人! 您今日投資次數已達上限! ^000000 我真希望快點看到我們的公會成長茁壯，越來越強大!";
  			return 0;
 		L_MaxInvestD:
-			mes "^ff0000目前此城堡的城堡防御程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
+			mes "^ff0000目前此城堡的城堡防禦程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
 	 		return 0;
 
 	//=========================
@@ -249,7 +228,7 @@ L_Start:
 
 		mes "[ "+getarg(0)+" ]";
 		if(agitcheck(0) != 0) goto L_CantGuard;
-		mes "設定守衛的話，這些守衛可以協助抵御外來的入侵者";
+		mes "設置守衛的話，這些守衛可以協助抵禦外來的入侵者";
 		mes "請選擇守衛種類";
 		next;
 	
@@ -283,19 +262,19 @@ L_Start:
 		L4_4:
 			if (GetCastleData(getarg(1)+".gat",13) == 1) goto L_GotGuard;
 			set @GDnum,13;
-			set @GDnum2,21;			
+			set @GDnum2,21;
 			set @GuardianHP,@AGuardian;
 			goto L4_9;
 		L4_5:
 			if (GetCastleData(getarg(1)+".gat",14) == 1) goto L_GotGuard;
 			set @GDnum,14;
-			set @GDnum2,22;			
-			set @GuardianHP,@AGuardian;			
+			set @GDnum2,22;
+			set @GuardianHP,@AGuardian;
 			goto L4_9;
 		L4_6:
 			if (GetCastleData(getarg(1)+".gat",15) == 1) goto L_GotGuard;
 			set @GDnum,15;
-			set @GDnum2,23;		
+			set @GDnum2,23;
 			set @GuardianHP,@KGuardian;
 			goto L4_9;
 		L4_7:
@@ -307,13 +286,13 @@ L_Start:
 		L4_8:
 			if (GetCastleData(getarg(1)+".gat",17) == 1) goto L_GotGuard;
 			set @GDnum,17;
-			set @GDnum2,25;			
+			set @GDnum2,25;
 			set @GuardianHP,@KGuardian;
 		L4_9:
 			mes "[ "+getarg(0)+" ]";
-			mes "請問您確定要設定守衛嗎? 每設定一個守衛需要 ^5533FF10,000 zeny^000000";
+			mes "請問您確定要設置守衛嗎? 每設置一個守衛需要 ^5533FF10,000 zeny^000000";
 			next;
-			menu "設定守衛",-, "放棄",M_End;
+			menu "設置守衛",-, "放棄",M_End;
 
 				if (Zeny < 10000) goto sL_NoZenyG;
 				set Zeny,Zeny-10000;
@@ -323,19 +302,20 @@ L_Start:
 
 				sL_NoZenyG:
 					mes "[ "+getarg(0)+" ]";
-					mes "主人! 您沒有足夠的金額可以設定守衛!";
+					mes "主人! 您沒有足夠的金額可以設置守衛!";
 					return 0;
 		L_NoSkGuard:
 			mes "[ "+getarg(0)+" ]";
-			mes "主人! 很抱歉您目前沒有辦法設定任何一個守衛! 您的公會必須具備 ^5533FF研究監護人^000000 技能才能設定守衛";
+			mes "主人! 很抱歉您目前沒有辦法設置任何一個守衛! 您的公會必須具備 ^5533FF研究監護人^000000 技能才能設置守衛";
+			mes "設置守衛已經被取消.";
 			return 0;
 		L_GotGuard:
 			mes "[ "+getarg(0)+" ]";
-			mes "抱歉! 主人! 那個位置的守衛已經設定過了.....";
+			mes "抱歉! 主人! 那個位置的守衛已經設置過了.....";
 			emotion 4;
 			return 0;
 		L_CantGuard:
-			mes "主人,您不知道在公會戰的時候不能設定守衛嗎!!";
+			mes "主人,您不知道在公會戰的時候不能設置守衛嗎!!";
 			emotion 4;
 			return 0;
 
@@ -347,16 +327,16 @@ L_Start:
 		if (getgdskilllv(@GID,10001) == 0) goto L_NoSkKaf;
 
 		L_Hire:
-			mes "請問您想雇用一個公會專屬的卡普拉服務人員嗎? 這將需要 ^5533FF10,000 Zeny^000000 ";
+			mes "請問您想僱用一個公會專屬的卡普拉服務人員嗎? 這將需要 ^5533FF10,000 Zeny^000000 ";
 			next;
-			menu "雇用卡普拉服務人員",-,"放棄",sM_KafEnd;
+			menu "僱用卡普拉服務人員",-,"放棄",sM_KafEnd;
 
 				mes "[ "+getarg(0)+" ]";
 				if (Zeny < 10000) goto sL_NoZenyK;
 				set Zeny,Zeny-10000;
 				enablenpc "卡普拉服務人員#"+getarg(4);
 				SetCastleData getarg(1)+".gat",9,1;
-				mes "成功的和卡普拉總公司簽訂契約了，您雇用了一位卡普拉服務人員!";
+				mes "成功的和卡普拉總公司簽訂契約了，您僱用了一位卡普拉服務人員!";
 				next;
 				cutin "kafra_01",2;
 				mes "[卡普拉服務人員]";
@@ -364,16 +344,16 @@ L_Start:
 				next;
 				cutin "kafra_01",255;
 				mes "[ "+getarg(0)+" ]";
-				mes "雇用的卡普拉服務人員將有 ^5533FF1 個月的時間^000000 在此服務，時間到了之後必須重新簽訂契約!";
+				//mes "僱用的卡普拉服務人員將有 ^5533FF1 個月的時間^000000 在此服務，時間到了之後必須重新簽訂契約!";
 				mes "我想這位卡普拉服務人員一定能嘉惠公會會員們的!";
 				return 0;
 
 				sL_NoZenyK:
-					mes "主人! 您沒有足夠的金額可以雇用卡普拉服務人員!";
+					mes "主人! 您沒有足夠的金額可以僱用卡普拉服務人員!";
 					return 0;
 			sM_KafEnd:
 				mes "[ "+getarg(0)+" ]";
-				mes "好吧，不過我建議您盡快雇用一位卡普拉服務人員!";
+				mes "好吧，不過我建議您盡快僱用一位卡普拉服務人員!";
 				return 0;
 
 		L_Dismiss:
@@ -407,8 +387,8 @@ L_Start:
 				return 0;
 
 		L_NoSkKaf:
-			mes "主人! 您并沒有與卡普拉總公司簽訂契約!";
-			mes "如果要雇用卡普拉服務人員的話，您的公會必須具備 ^5533FF和卡普拉訂契約^000000 技能才能雇用卡普拉服務人員";
+			mes "主人! 您並沒有與卡普拉總公司簽訂契約!";
+			mes "如果要僱用卡普拉服務人員的話，您的公會必須具備 ^5533FF和卡普拉訂契約^000000 技能才能僱用卡普拉服務人員";
 			return 0;
 
 	//=========================
@@ -431,42 +411,11 @@ L_Start:
 			mes "當您有空的時候請記得盡快前往取出產品，否則他們將會自動消失!";
 			return 0;
 
-	//==========================
-	M_Sur:
-	//=======
-		mes "[ "+getarg(0)+" ]";
-		emotion 19;
-		if(agitcheck(0) != 0) goto sL_CantSur;
-		mes "主人.... 你是說真的要放棄我們用鮮血換來的公會城堡嗎?! 假如真的要結束的話，在這些日子以來，我們所流的血，到底有什麼意義呢! 這麼做不值得啊!! 請再做考慮考慮吧! 主人!!";
-		next;
-		menu "讓出公會城堡",-, "取消",sM_SurEnd;
-
-			mes "[ "+getarg(0)+" ]";
-			mes "主人!! 請三思而后行啊!! 主人!!...!! 這期間所流的血!! 想到那些犧牲你不能這樣做啊!!";
-			emotion 16;
-			next;
-			menu "讓出公會城堡",-, "取消",sM_SurEnd;
-
-				mes "[ "+getarg(0)+" ]";
-				mes "主人!!.....";
-				mes "唉...好吧....";
-				next;
-				callfunc "F_CheckCastle",getarg(4),"ReleaseMG";
-				return 0;
-		sM_SurEnd:
-			mes "[ "+getarg(0)+" ]";
-			mes "我就知道你是開玩笑的的!! 主人!! 拜托您了...即使是開玩笑，也一點都不好笑...真是嚇壞我了...請您不要再開這種玩笑了......";
-			emotion 33;
-			return 0;
-
-		sL_CantSur:
-			mes "主人.... 攻城戰期間是不能讓出公會城堡的......!!";
-			close;
 
 	//==========================
 	M_End:
 	//=======
 		mes "[ "+getarg(0)+" ]";
-		mes "我將隨時聽后您的差遣! 主人!";
+		mes "我將隨時聽後您的差遣! 主人!";
 		return 0;
 }
