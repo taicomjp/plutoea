@@ -33,7 +33,7 @@
 //= eAthena Dev Team
 //= Darlskies, Darkchild, Syrus22, Lupus, kobra_k88 (2.0)
 //===== Current Version: ===================================== 
-//= 5.0
+//= 5.1
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: ===============================================
@@ -60,6 +60,7 @@
 //=	Note: You can change '1337' value to another to raise password protection
 //= 5.0 Fixed the close2;....close; end; lines. Who let them slip away? =/ [erKURITA]
 //=	  Also, the kafra upon warp was giving back the zeny. Removed. [erKURITA]
+//= 5.1 Optimized a little, added no tele/save arg's [Evera]
 //============================================================ 
 
 
@@ -94,82 +95,144 @@ close;
 function	script	F_Kafra	{
 	set @kafPass, 0;
 	callfunc "KAFURALOGIN";
-	mes "[Kafra]";
-	if(getarg(0)==0) mes "歡迎使用卡普拉公司的服務,無論您在哪裡,我們都伴隨著您.";
-	//Niflheim
-	if(getarg(0)==1) mes "歡迎....卡普拉服務...到死我們都和你在一起.....";
-	//Guilds Castles
-	if(getarg(0)==2) mes "歡迎, ^5533FF" + GetGuildName(@GID) + "^000000 成員.  我們將和你一起工作";
-	//Amatsu
-	if(getarg(0)==3) mes "你是來學習我們的文化還是僅僅來觀光的呢?";
-	if(getarg(0)==3) mes "無論是為什麼而來,我們都歡迎你?";
-	if(getarg(0)==3) mes "The air is eternally heavy with the";
-	if(getarg(0)==3) mes "scent of pleasant wildflowers.";
-	//Louyang, Ayothaya
-	if(getarg(0)==4) mes "有我們的卡普拉服務員在";
-	if(getarg(0)==4) mes "無論你在哪裡就會感覺在家裡一樣";
+	mes "[卡普拉服務人員]";
+	switch(getarg(0)){
+		default:
+		case 0:
+			mes "歡迎使用卡普拉公司的服務,無論您在哪裡,我們都伴隨著您.";
+			break;
+		//Niflheim
+		case 1:
+			mes "歡迎....卡普拉服務...到死我們都和你在一起.....";
+			break;
+		//Guilds Castles
+		case 2:
+			mes "歡迎, ^5533FF" + GetGuildName(@GID) + "^000000 成員.  我們將和你一起工作";
+			break;
+		//Amatsu
+		case 3:
+			mes "你是來學習我們的文化還是僅僅來觀光的呢?";
+			mes "無論是為什麼而來,我們都歡迎你?";
+			mes "The air is eternally heavy with the";
+			mes "scent of pleasant wildflowers.";
+			break;
+		//Louyang, Ayothaya
+		case 4:
+			mes "有我們的卡普拉服務員在";
+			mes "無論你在哪裡就會感覺在";
+			mes "家裡一樣";
+			break;
+	}
 	next;
 
 	M_Menu:
-//Guilds Kafra
-	if(getarg(0)==2) menu "-倉庫服務",M_FStorage, "-工會倉庫服務",M_GStorage, "-租用手推車",M_Cart, "-傳送服務",M_Teleport, "-取消",M_End;
-//only Save & Storage
-	if(getarg(1)==1) menu "-儲存位置",M_Save,"-倉庫服務",M_Storage, "-取消",M_End;
-//only Storage
-	if(getarg(1)==2) menu "-倉庫服務",M_Storage, "-取消",M_End;
-//Common w/o teleport
-	if(getarg(1)==3) menu	"-儲存位置",M_Save, "-倉庫服務",M_Storage, "-租用手推車",M_Cart, "-卡普拉使用卷",M_Pass, 
-		"-其他資訊",M_Info, "-取消",M_End;
-//Common Kafra (with Teleport Notice in Einbroch)
-	if(getarg(1)==4) menu	"-儲存位置",M_Save, "-倉庫服務",M_Storage, "-傳送服務",M_NoTeleport, "-租用手推車",M_Cart, "-卡普拉使用卷",M_Pass, 
-		"-其他資訊",M_Info, "-取消",M_End;
-//Common Kafra
-	menu	"-儲存服務",M_Save, "-倉庫服務",M_Storage, "-傳送服務",M_Teleport, "-手推車服務",M_Cart, "-卡普拉銀行",M_KafraBank, "-使用卡普拉使用券",M_Pass, 
-		"其他資訊",M_Info, "結束",M_End;
+	//Guilds Kafra
+		cleararray @K_Menu0$[0],"",7;
+	if(getarg(0)==2) {
+		setarray @K_Menu0$[0],"-倉庫服務","-工會倉庫服務","-租用手推車","-傳送服務","-取消";
+	}
+	switch(getarg(1)){
+		//only Save & Storage
+		case 1:
+			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-取消";
+			break;
+		//only Storage
+		case 2:
+			setarray @K_Menu0$[0],"-倉庫服務","-取消";
+			break;
+		//Common w/o teleport
+		case 3: 
+			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-租用手推車","-卡普拉使用卷","-其他資訊","-取消";
+			break;
+		//Case 4 is Einbroch no tele message.
+		//Common w/o save and teleport
+		case 5:
+			setarray @K_Menu0$[0],"-倉庫服務","-租用手推車","-卡普拉使用卷","-其他資訊","-取消";
+			break;
+		//Only storage and other info check
+		case 6:
+			setarray @K_Menu0$[0],"-倉庫服務","-其他資訊","-取消";
+		//Common Kafra
+		default:
+			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-傳送服務","-租用手推車","-卡普拉銀行","-卡普拉使用卷","-其他資訊","-取消";
+			break;
+	}
+	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
+		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
+		@K_Menu0$[6],K_Menu6,@K_Menu0$[7],K_Menu7;
+	K_Menu0:
+		set @num,0;
+		goto K_Menuf;
+	K_Menu1:
+		set @num,1;
+		goto K_Menuf;
+	K_Menu2:
+		set @num,2;
+		goto K_Menuf;
+	K_Menu3:
+		set @num,3;
+		goto K_Menuf;
+	K_Menu4:
+		set @num,4;
+		goto K_Menuf;
+	K_Menu5:
+		set @num,5;
+		goto K_Menuf;
+	K_Menu6:
+		set @num,6;
+		goto K_Menuf;
+	K_Menu7:
+		set @num,7;
+	K_Menuf:
+		if (@K_Menu0$[@num] == "-儲存位置") return;
+		if (@K_Menu0$[@num] == "-倉庫服務"){
+			//Don't charge for a common Kafra Storage in your Castle
+			if(getarg(0) == 2) callfunc "F_KafStor",2;
+			else callfunc "F_KafStor",0;
+			next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-傳送服務"){
+			if(getarg(1) == 4){				//Check for Einbroch Tele notice
+				mes "[卡普拉服務人員]";
+				mes "由於^FF0000傳送限制協議^000000, 卡普拉公司不能提供到這個地方的傳送服務...";
+				next;
+				mes "[卡普拉服務人員]";
+				mes "我們建議你使用飛機服務";
+				mes "非常抱歉,再見!";
+				next;
+				goto M_Menu;
+			}
+			callfunc "F_KafTele",getarg(0);
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-租用手推車"){
+			if(callfunc("F_KafCart",getarg(0)) == 1) next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-卡普拉使用卷"){
+			if(callfunc("F_KafPass") == 1) next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-其他資訊"){
+			callfunc "F_KafInfo",getarg(2);
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-取消"){
+			callfunc "F_KafEnd",getarg(0),0;
+			end;
+		}
+		if (@K_Menu0$[@num] == "-工會倉庫服務"){
+			callfunc "F_KafStor",1;
+			next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "-卡普拉銀行"){
+			callfunc "F_KafraBank";
+			next;
+			goto M_Menu;
+		}
 
-	M_Save:
-		return;
-	M_Storage:
-		callfunc "F_KafStor",0;
-		next;
-		goto M_Menu;
-	M_GStorage:
-		callfunc "F_KafStor",1;
-		next;
-		goto M_Menu;
-	//Don't charge for a common Kafra Storage in your Castle
-	M_FStorage:
-		callfunc "F_KafStor",2;
-		next;
-		goto M_Menu;
-	M_Teleport:
-		callfunc "F_KafTele",getarg(0);
-		goto M_Menu;
-	M_Cart:
-		if(callfunc("F_KafCart",getarg(0)) == 1) next;
-		goto M_Menu;
-	M_KafraBank:
-		callfunc "F_KafraBank";
-		next;
-		goto M_Menu;
-	M_Pass:
-		if(callfunc("F_KafPass") == 1) next;
-		goto M_Menu;
-	M_Info:
-		callfunc "F_KafInfo",getarg(2);
-		goto M_Menu;
-	M_End:
-		callfunc "F_KafEnd",getarg(0),0;
-		end;
-	M_NoTeleport:
-		mes "[Kafra]";
-		mes "由於^FF0000傳送限制協議^000000, 卡普拉公司不能提供到這個地方的傳送服務...";
-		next;
-		mes "[Kafra]";
-		mes "我們建議你使用飛機服務";
-		mes "非常抱歉,再見!";
-		next;
-		goto M_Menu;
 }
 
 
@@ -293,13 +356,15 @@ function	script	F_KafCart	{
 	if(getarg(0) == 2) goto L_Guild;
 	mes "[卡普拉服務人員]";
 	if(@kafPass==0) mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
-	if(@kafPass==1) mes "既然您有卡普拉使用券，那麼就免費租給你手推車吧!";
+	else mes "既然您有卡普拉使用券，那麼就免費租給你手推車吧!";
 	next;
 	menu "租用手推車",-, "取消",M_End;
 
 		if(Zeny<800 && kafPass==0) goto sL_CartFee;
-		if(@kafPass==0) set Zeny,Zeny-800;
-		if(@kafPass==0) set RESRVPTS, RESRVPTS + 48;
+		if(@kafPass==0) {
+			set Zeny,Zeny-800;
+			if(@kafPass==0) set RESRVPTS, RESRVPTS + 48;
+		}
 	L_Guild:
 		setcart;
 		mes "[卡普拉服務人員]";
