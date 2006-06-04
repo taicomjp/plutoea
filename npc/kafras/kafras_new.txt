@@ -20,7 +20,7 @@
 //===== By: =========================
 //= eAthena Dev Team
 //===== Current Version: ===================
-//= 2.6
+//= 2.8
 //===== Compatible With: =====================
 //= eAthena 1.0
 //===== Description: ============================================
@@ -41,6 +41,9 @@
 //= 2.5 Added 2 Einbroch Kafras. [Lupus]
 //= 2.6 Added the Einbech Kafra [MasterOfMuppets]
 //= 2.7 Added the Lighthalzen Kafras [MasterOfMuppets]
+//= 2.7b Chanced the Sprite of the Einbech Kafra. [Poki#3]
+//= 2.7c Added missing kafra in Lighthalzen, thanks to Muad_Dib [Vicious]
+//= 2.8 Removed warps from Umbala and Gonryun, thanks Drakee [Evera]
 //==========================================================================
 
 // Amatsu ------------------------------------------------------------------
@@ -66,7 +69,7 @@ ayothaya.gat,212,169,5	script	卡普拉服務人員	116,{
 // Einbech -----------------------------------------------------------------
 
 einbech.gat,181,131,5	script	卡普拉服務人員	115,{
-	cutin "kafra_03",2;
+	cutin "kafra_08",2;
 	callfunc "F_Kafra",0,4,1;
 
 	M_Save:
@@ -97,8 +100,7 @@ einbroch.gat,59,203,4	script	卡普拉服務人員	117,{
 // Gonryun -----------------------------------------------------------------
 gonryun.gat,159,122,4	script	卡普拉服務人員	116,{
 	cutin "kafra_02",2;
-	callfunc "F_KafSetYun";
-	callfunc "F_Kafra",0,0,1;
+	callfunc "F_Kafra",0,3,1;
 
 	M_Save:
 		savepoint "gonryun.gat",160,62;
@@ -110,6 +112,16 @@ gonryun.gat,159,122,4	script	卡普拉服務人員	116,{
 //Outside the hotel
 lighthalzen.gat,164,100,3	script	卡普拉服務人員	860,{
 	cutin "kafra_08",2;
+	callfunc "F_Kafra",0,4,1;
+
+	M_Save:
+		savepoint "lighthalzen.gat",162,82;
+		callfunc "F_KafEnd",0,1;
+}
+
+// Entrance
+lighthalzen.gat,191,320,4	script	卡普拉服務人員	861,{
+	cutin "kafra_09",2;
 	callfunc "F_Kafra",0,4,1;
 
 	M_Save:
@@ -140,9 +152,11 @@ louyang.gat,210,104,5	script	卡普拉服務人員	117,{
 // Umbala Kafra ------------------------------------------------------------
 umbala.gat,128,133,4	script	卡普拉服務人員	115,{
 	cutin "kafra_03",2;
-	callfunc "F_KafSetYun";
+	setarray @wrpD$[0], "海邊之都 克魔島";
+	setarray @wrpP[0], 1800;
+	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
+	set @wrpC$[1], "取消";
 	callfunc "F_Kafra",0,0,1;
-
 	M_Save:
 		savepoint "umbala.gat",126,131;
 		callfunc "F_KafEnd",0,1;

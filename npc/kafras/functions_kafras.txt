@@ -36,7 +36,7 @@
 //= 5.1
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
-//===== Description: ===============================================
+//===== Description: =========================================
 //= These functions  handle save, storage, cart rental, teleport,
 //= and Kafra pass options for all Kafra NPCs.
 //===== Additional Comments: ================================= 
@@ -61,6 +61,7 @@
 //= 5.0 Fixed the close2;....close; end; lines. Who let them slip away? =/ [erKURITA]
 //=	  Also, the kafra upon warp was giving back the zeny. Removed. [erKURITA]
 //= 5.1 Optimized a little, added no tele/save arg's [Evera]
+//= 5.1a Temporary? Added F_ClearGarbage to clear unused/outdated variables [Lupus]
 //============================================================ 
 
 
@@ -69,32 +70,11 @@
 //=   arg(1): Used to determine which menu to display.
 //=   arg(2): Used to determine if the info menu is shown in F_KafInfo.
 //==========================================================================
-
-function	script	KAFURALOGIN	{
-     L_RELOGIN:
-           if (@err > 2) goto L_GETOUT;
-           set @temp1,rand(100,909);
-           mes "[卡普拉服務人員]";
-           mes "為降低外掛對伺服器的侵擾，我們需要驗證才能服務";
-           mes "請輸入驗證碼"+@temp1+"，正確後即可使用卡普拉服務";
-           mes "您還有"+(3 - @err)+"次嘗試的機會。";
-next;
-           input @temp2;
-           if (@temp2 != @temp1) goto L_ERR;
-           return;
-     L_ERR:
-           set @err,@err + 1;
-           goto L_RELOGIN;
-     L_GETOUT:
-           mes "[卡普拉服務人員]";
-           mes "你連續3次輸入錯誤，禁止使用卡普拉服務。";
-close;
-}
-
-
 function	script	F_Kafra	{
 	set @kafPass, 0;
 	callfunc "KAFURALOGIN";
+	callfunc "F_ClearGarbage"; //Clear outdated, unused variables
+
 	mes "[卡普拉服務人員]";
 	switch(getarg(0)){
 		default:
@@ -126,11 +106,7 @@ function	script	F_Kafra	{
 	next;
 
 	M_Menu:
-	//Guilds Kafra
 		cleararray @K_Menu0$[0],"",7;
-	if(getarg(0)==2) {
-		setarray @K_Menu0$[0],"-倉庫服務","-工會倉庫服務","-租用手推車","-傳送服務","-取消";
-	}
 	switch(getarg(1)){
 		//only Save & Storage
 		case 1:
@@ -156,6 +132,11 @@ function	script	F_Kafra	{
 		default:
 			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-傳送服務","-租用手推車","-卡普拉銀行","-卡普拉使用卷","-其他資訊","-取消";
 			break;
+	}
+	if(getarg(0)==2) {
+	//Guilds Kafra
+		cleararray @K_Menu0$[0],"",7;
+		setarray @K_Menu0$[0],"-倉庫服務","-工會倉庫服務","-租用手推車","-傳送服務","-取消";
 	}
 	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
 		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
@@ -239,10 +220,10 @@ function	script	F_Kafra	{
 // Storage Function =======================================================
 function	script	F_KafStor	{
 	if(getarg(0) == 1) goto L_Guild;
-	if((BaseJob ==Job_Novice) && (JobLevel<6)) goto sL_JbLvl;
+	if(basicskillcheck(0) > 0 && getskilllv(1) < 6) goto sL_JbLvl;
 	if(BaseJob == Job_Novice) set @fee, 30;
 	if(BaseJob != Job_Novice) set @fee, 60;
-	if(@kafPass==1 || getarg(0)==2) set @fee, 0;
+	if(@kafPass==1 || getarg(0) == 2) set @fee, 0;
 	if(Zeny<@fee) goto sL_Zeny;
 	set Zeny, Zeny-@fee;
 	set RESRVPTS, RESRVPTS + (@fee/5);
@@ -267,11 +248,8 @@ function	script	F_KafStor	{
 		mes "很抱歉，您的金錢不足! 這至少需要 "+@fee+" Zeny.";
 		return;
 L_Guild:
-
 	if(guildopenstorage(0) == 1) goto L_InUse;
 	cutin "", 255;
-	emotion 15;
-//	callfunc "F_KafEnd",0,0;
 	close;
 
 	L_InUse:
@@ -293,7 +271,7 @@ function	script	F_KafTele	{
 	next;
 
 	menu 	@wrpC$[0],M_Wrp0, @wrpC$[1],M_Wrp1, @wrpC$[2],M_Wrp2, @wrpC$[3],M_Wrp3, 
-		@wrpC$[4],M_Wrp4, @wrpC$[5],M_Wrp5, @wrpC$[6],M_Wrp6, @wrpC$[7],M_Wrp7;
+		@wrpC$[4],M_Wrp4, @wrpC$[5],M_Wrp5, @wrpC$[6],M_Wrp6;
 
 	M_Wrp0:
 		set @num, 0;
@@ -406,8 +384,8 @@ function	script	F_KafPass	{
 		set @kafPass,1;
 		set usedKafPass, usedKafPass + 1;
 		if(usedKafPass>=3) goto sL_PassExpire;
-		delitem 1084,1;
 		if(usedKafPass > 1) goto L_Cont; //fixed Lupus
+		delitem 1084,1;
 		mes "(翻過來倒過去...)";
 		next;
 		mes "[卡普拉服務人員]";
@@ -468,6 +446,7 @@ function	script	F_KafPass	{
 function	script	F_KafInfo	{
 
 	sM_Menu:
+//Uncomment next line to block Kafra Storage Protection
 //	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-卡普拉服務人員位置分部",sM_KafLoc, "-Cancel",sM_End;
 	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-卡普拉密碼保護服務",sM_KafPassword, "-卡普拉服務人員位置分部",sM_KafLoc, "-取消",sM_End;
 
@@ -508,12 +487,12 @@ function	script	F_KafInfo	{
 
 // End Function =====================================================
 //  arg(0): used to determine what message to display.
-//  arg(1): used to determine if save message is diplayed.
+//  arg(1): used to determine if save message is displayed.
 //===================================================================
 function	script	F_KafEnd	{
 	mes "[卡普拉服務人員]";
 	if(getarg(1)==1) mes "已經儲存好了, 謝謝您的使用!";		// only shown when a player uses save
-	if(getarg(0)==0) mes "謝謝您使用卡普拉公司所提供的服務，希望很快能再見到您!";
+	if(getarg(0)!=1) mes "謝謝您使用卡普拉公司所提供的服務，希望很快能再見到您!";
 	if(getarg(0)==1) mes "以服務和管理業務為目標，我們卡普拉的服務會更加完善，請安心使用，往後的日子裡會盡力幫助玩家，卡普拉公司謝謝您的使用!";
 	close2;
 	cutin "", 255;
@@ -759,4 +738,25 @@ function	script	F_KafraBank	{
 
 	sM_End:
 		return;
+}
+
+function	script	KAFURALOGIN	{
+     L_RELOGIN:
+           if (@err > 2) goto L_GETOUT;
+           set @temp1,rand(100,909);
+           mes "[卡普拉服務人員]";
+           mes "為降低外掛對伺服器的侵擾，我們需要驗證才能服務";
+           mes "請輸入驗證碼"+@temp1+"，正確後即可使用卡普拉服務";
+           mes "您還有"+(3 - @err)+"次嘗試的機會。";
+next;
+           input @temp2;
+           if (@temp2 != @temp1) goto L_ERR;
+           return;
+     L_ERR:
+           set @err,@err + 1;
+           goto L_RELOGIN;
+     L_GETOUT:
+           mes "[卡普拉服務人員]";
+           mes "你連續3次輸入錯誤，禁止使用卡普拉服務。";
+close;
 }

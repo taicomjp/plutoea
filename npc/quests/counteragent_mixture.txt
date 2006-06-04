@@ -59,7 +59,7 @@ M_Menu2:
 		close;
 
 	M_Solut:
-		set MORGEN,1;
+		if((MISC_QUEST & 4)==0 && MORGEN==0)set MORGEN,1;
 		mes "[商人 雷賜]";
 		mes "顯然那個科學家用這種新溶液作為某種媒介或混和溶劑.";
 		mes "你可以去找吉分的^0000dd阿歐魯的朋^000000，他好像知道更多.";
@@ -78,12 +78,12 @@ M_Menu2:
 geffen.gat,181,114,4	script	阿歐魯的朋	55,{
 	mes "[吉芬住民 阿歐魯的朋]";
 	mes "時間是不等人的!! 就算是偉大的魔法力量也不能讓時間倒流! 即使我們正在對話，我也能感覺到時間從我眼前流逝!!....";
-	emotion 0;
+	emotion e_gasp;
 	next;
 	mes "[吉芬住民 阿歐魯的朋]";
 	mes "所以...你找我作什麼??";
-	emotion 20;
-	if(MORGEN == 1) goto M_Menu2;
+	emotion e_hmm;
+	if((MISC_QUEST & 4) || MORGEN) goto M_Menu2;
 M_Menu:
 	next;
 	menu "對話",M_Talk,"取消",M_Cancel;
@@ -100,7 +100,7 @@ M_Menu2:
 		next;
 		mes "[吉芬住民 阿歐魯的朋]";
 		mes "為了達到那個目標你能放棄所有在你生命中任何其他的東西嗎? 甚至會令自己神經錯亂??";
-		if(MORGEN == 1) goto M_Menu2;
+		if((MISC_QUEST & 4) || MORGEN) goto M_Menu2;
 		close;
 
 	M_Morgen:
@@ -121,13 +121,13 @@ M_Menu2:
 
 // Chemist Morgenstein -----------------------------------------------------------
 geffen_in.gat,141,140,2	script	莫基斯坦	121,{
-	if(MORGEN == 2) goto L_0;
-	if(MORGEN == 3) goto L_1;
+	if(MORGEN >= 2) goto L_0;
+	if(MISC_QUEST & 4) goto L_1;
 
 	mes "[化學家 莫基斯坦]";
 	mes "呵呵呵呵... (嗅) (聞)... 我聞到了好吃的味道.";
 	mes "人：是人嘛。算是個活人…嘻嘻嘻嘻嘻嘻！";
-	emotion 38;
+	emotion e_awsm;
 	close;
 
 L_0:
@@ -141,7 +141,7 @@ M_Menu:
 		mes "[化學家 莫基斯坦]";
 		mes "呵呵呵呵... 你可能已經聽說過我在作什麼了...";
 		mes "好吧.. 我會告訴你所有的事情... 反正沒有什麼需要隱瞞的.... 呵呵呵呵...";
-		emotion 29;
+		emotion e_gg;
 		next;
 		mes "[化學家 莫基斯坦]";
 		mes "事實上，我做的實驗也已經完成了.....";
@@ -149,7 +149,7 @@ M_Menu:
 		next;
 		mes "[化學家 莫基斯坦]";
 		mes "你知道我的意思..... 時間?.... 呵呵呵呵....";
-		emotion 29;
+		emotion e_gg;
 		next;
 		mes "[化學家 莫基斯坦]";
 		mes "啊?.... 你說你想知道我的研究內容?... 噢! 那其實非常簡單.... 我只是想試著找出方法結合不同的物質...";
@@ -160,7 +160,7 @@ M_Menu:
 		next;
 		mes "[化學家 莫基斯坦]";
 		mes "~~~~ !! 嘿嘿!!!...呵呵呵呵!!!...(拍手) (手舞足蹈)!!!..呵呵呵呵!!!!";
-		emotion 43;
+		emotion e_slur;
 		next;
 		mes "[化學家 莫基斯坦]";
 		mes "啊!~咳~咳~ 嗯哼.... 雖然還沒有完全成功，不過我有發現一些不可思議的東西.";
@@ -169,8 +169,8 @@ M_Menu:
 		mes "[化學家 莫基斯坦]";
 		mes "如果你想要，我可以現在就做給你?? 嗯... 聊我的實驗與研究讓我非常地.... '興奮'.......";
 		mes "如果你想要，你也可以感受到我的 '興奮感' 吧..... 啊啊啊啊.... 我可以讓你感受到...";
-		set MORGEN,3;
-		if(ALCH_Q == 4) set al_morgen,1;
+		set MISC_QUEST,MISC_QUEST | 4;
+		set MORGEN,0;
 		close;
 
 L_1:
@@ -184,7 +184,7 @@ M_Menu2:
 		mes "[化學家 莫基斯坦]";
 		mes "呵呵呵呵.... 我發現你對我創造的東西很有興趣哦?..... 當然，誰會沒興趣呢?.... 呵呵呵呵!!!";
 		mes "那麼你想要做哪一種?? 啊? 呵呵呵呵.............";
-		emotion 29;
+		emotion e_gg;
 		next;
 		menu "中和劑",sM_Counter, "混合劑",sM_Mixture, "算了",M_End;
 		
