@@ -14,20 +14,22 @@
 //= kobra_k88
 //= added some dialogs for Morgenstein by Komurka
 //===== Current Version: ===================================== 
-//= 1.4
+//= 2.1
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
-//= Counteragent and mixtures for making dyes
+//= Counteragent and Mixtures for making dyes & Alchemist Job Quest
 //===== Additional Comments: ================================= 
 //= Fully working
 //= Update for Alchemist Quest.
 //= 1.2 added check for Empty Bottle [Lupus]
 //= Fixed some lil thingys [Darkchild]
 //= More li'l thing, added comments for items IDs [Lupus]
+//= 1.5 Fixed Spelling mistakes. [Nexon]
+//= 1.6 Fixed some bugs, also related to Alch Job quest [Lupus]
+//= 1,7 Fixed exploit 1.8 Got rid of 'al_morgen' var [Lupus]
+//= 2.1 now uses (MISC_QUEST & 4) bit instead of al_morgen [Lupus]
 //============================================================ 
-
-
 
 
 // Merchant 雷賜 -----------------------------------------------------------
@@ -55,8 +57,9 @@ M_Menu2:
 		next;
 		mes "[商人 雷賜]";
 		mes "起先我一點概念都沒有，後來才聽說這是與水不同的新溶液.";
-		if(countitem(970) > 0 && countitem(971) > 0 && countitem(972) > 0) goto M_Menu2;//Items: Alcohol, Detrimindexta, Karvodailnirol,
-		close;
+		if(countitem(970) && countitem(971) && countitem(972)) goto M_Menu2;//Items: Alcohol, Detrimindexta, Karvodailnirol,
+		emotion e_slur;
+		goto M_Menu;
 
 	M_Solut:
 		if((MISC_QUEST & 4)==0 && MORGEN==0)set MORGEN,1;
@@ -66,7 +69,7 @@ M_Menu2:
 		next;
 		mes "[商人 雷賜]";
 		mes "你可以在 ^0000dd吉分的東邊^000000 找到他. 問他有關 ^0000dd莫基斯坦^000000 的事.  那是那個瘋狂化學家的名字.";
-		close;
+		goto M_Menu2;
 
 	M_Cancel:
 		mes "[商人 雷賜]";
@@ -101,17 +104,17 @@ M_Menu2:
 		mes "[吉芬住民 阿歐魯的朋]";
 		mes "為了達到那個目標你能放棄所有在你生命中任何其他的東西嗎? 甚至會令自己神經錯亂??";
 		if((MISC_QUEST & 4) || MORGEN) goto M_Menu2;
-		close;
+		goto M_Menu;
 
 	M_Morgen:
-		set MORGEN,2;
+		if(MORGEN==1) set MORGEN,2;
 		mes "[吉芬住民 阿歐魯的朋]";
 		mes "莫基斯坦? 那個傢伙好像掉了一些工具，他一直都待在 ^0000dd鐵匠公會^000000 製造一些瘋狂的藥劑";
 		mes "他稱那些藥劑為 ^ff0000混和劑^000000 和 ^ff0000中和劑^000000. 我不太清楚那是作什麼用的.";
 		next;
 		mes "[吉芬住民 阿歐魯的朋]";
 		mes "你如果好奇的話就自己去找他吧.";
-		close;
+		goto M_Menu2;
 
 	M_Cancel:
 		mes "[吉芬住民 阿歐魯的朋]";
@@ -178,17 +181,15 @@ L_1:
 	mes "你有什麼事?";
 M_Menu2:
 	next;
-	menu "詢問他有關他的研究",M_Rsrch,"讓他做新的物品",M_Make, "沒事",M_End;
+	menu "詢問他有關他的研究",M_Rsrch,"讓他做新的物品",-, "沒事",M_End;
 	
-	M_Make:
 		mes "[化學家 莫基斯坦]";
 		mes "呵呵呵呵.... 我發現你對我創造的東西很有興趣哦?..... 當然，誰會沒興趣呢?.... 呵呵呵呵!!!";
 		mes "那麼你想要做哪一種?? 啊? 呵呵呵呵.............";
 		emotion e_gg;
 		next;
-		menu "中和劑",sM_Counter, "混合劑",sM_Mixture, "算了",M_End;
+		menu "中和劑",-, "混合劑",sM_Mixture, "算了",M_End;
 		
-		sM_Counter:
 			mes "[化學家 莫基斯坦]";
 			mes "噢... 你是說中和劑嗎?... 呵呵呵呵... 我看看.... 我需要一些材料.......";
 			mes "... 讓我檢查看看... 噢... 噢...... 嗯..... 啊.....";
@@ -209,24 +210,27 @@ M_Menu2:
 			menu "開始製作",-,"取消",M_End;
 
 				mes "[化學家 莫基斯坦]";
-				if(countitem(970)>0 && countitem(971)>0 && countitem(713)>0 && Zeny>=3000) goto sl_GetCounter;//Items: Alcohol, Detrimindexta, Empty Bottle,
-				mes "你的東西不足，我需要酒精、帝特立米藥水、空瓶以及 3000 Zeny 才能製作一個中和劑，準備齊全了再來找我！";
-				close;
+				if(countitem(970) && countitem(971) && countitem(713) && Zeny>=3000) goto sl_GetCounter;//Items: Alcohol, Detrimindexta, Empty Bottle,
+					mes "你的東西不足，我需要酒精、帝特立米藥水、空瓶以及 3000 Zeny 才能製作一個中和劑，準備齊全了再來找我！";
+					emotion e_sry;
+					close;
 	
 				sl_GetCounter:
-					mes "噢噢噢噢...... 呵呵呵呵...... 好極了... 就是這樣..... 很好... 繼續...  再來........ 哼哼哼哼";
-					mes ".... 嗯嗯嗯.... ..... 呼呼.... 噢噢!..... 噢噢噢噢!!!...!!!!!!";
-					next;
-					getitem 973,1;//Items: Counteragent,
 					delitem 970,1;//Items: Alcohol,
 					delitem 713,1;//Items: Empty Bottle,
 					delitem 971,1;//Items: Detrimindexta,
 					set Zeny, Zeny-3000;
+					mes "噢噢噢噢...... 呵呵呵呵...... 好極了... 就是這樣..... 很好... 繼續...  再來........ 哼哼哼哼";
+					mes ".... 嗯嗯嗯.... ..... 呼呼.... 噢噢!..... 噢噢噢噢!!!...!!!!!!";
+					next;
+					getitem 973,1;//Items: Counteragent,
 					mes "[化學家 莫基斯坦]";
 					mes ".... 嗯......";
+					emotion e_hmm;
 					close;
 
 		sM_Mixture:
+			mes "[化學家 莫基斯坦]";
 			mes "噢... 你是說混和劑嗎?... 呵呵呵呵... 我看看.... 我需要一些材料.......";
 			mes "... 讓我檢查看看... 噢... 噢...... 嗯..... 啊.....";
 			next;
@@ -245,29 +249,29 @@ M_Menu2:
 			next;
 			menu "開始製作",-,"取消",M_End;
 
-				if(countitem(970)>0 && countitem(972)>0 && countitem(713)>0 && Zeny>=4000) goto sl_GetMix;//Items: Alcohol, Karvodailnirol, Empty Bottle,
-				mes "你的東西不足，我需要酒精、卡勒波迪藥水、空瓶以及 3000 Zeny 才能製作一個中和劑，準備齊全了再來找我！";
-				close;
+				mes "[化學家 莫基斯坦]";
+				if(countitem(970) && countitem(972) && countitem(713) && Zeny>=4000) goto sl_GetMix;//Items: Alcohol, Karvodailnirol, Empty Bottle,
+					mes "你的東西不足，我需要酒精、卡勒波迪藥水、空瓶以及 3000 Zeny 才能製作一個中和劑，準備齊全了再來找我！";
+					emotion e_sry;
+					close;
 			
 				sl_GetMix:
-					mes "[化學家 莫基斯坦]";
-					mes "噢噢噢噢...... 呵呵呵呵...... 好極了... 就是這樣..... 很好... 繼續...  再來........ 哼哼哼哼";
-					mes ".... 嗯嗯嗯.... ..... 呼呼.... 噢噢!..... 噢噢噢噢!!!...!!!!!!";
-					next;
-					getitem 974,1;//Items: Mixture,
 					delitem 970,1;//Items: Alcohol,
 					delitem 713,1;//Items: Empty Bottle,
 					delitem 972,1;//Items: Karvodailnirol,
 					set Zeny, Zeny-4000;
+					mes "噢噢噢噢...... 呵呵呵呵...... 好極了... 就是這樣..... 很好... 繼續...  再來........ 哼哼哼哼";
+					mes ".... 嗯嗯嗯.... ..... 呼呼.... 噢噢!..... 噢噢噢噢!!!...!!!!!!";
+					next;
+					getitem 974,1;//Items: Mixture,
 					mes "[化學家 莫基斯坦]";
 					mes ".... 嗯......";
+					emotion e_hmm;
 					close;
 
 	M_End:
 		mes "[化學家 莫基斯坦]";
 		mes "... 呵呵呵呵....";
+		emotion e_heh;
 		close;
-
-
 }
-

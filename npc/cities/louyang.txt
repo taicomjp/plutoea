@@ -26,110 +26,216 @@
 //= Originally made for Vidar
 //============================================================
 
-louyang.gat,260,96,2	script	春花	770,{
-	mes "[^000080春花^000000]";
-	mes "嗨! 旅行的人! 你一定又餓又渴吧?";
-	mes "請進來吧! 這裡有很多食物喔!";
-	next;
-	mes "[^000080春花^000000]";
-	mes "別怕吃不夠, 這裡的東西足夠你吃上一輩子呢!";
-	close;
-}
-
-// Modify by Dino9021
-lou_fild01.gat,190,100,1	script	姑娘	815,{
-	mes "[姑娘]";
-	mes "那麼要回去了呀？";
-	next;
-	menu "回到艾爾貝塔",L_Return,"取消",L_Cancle;
-
-	L_Return:
-		mes "[姑娘]";
-		mes "下次再來呀～";
-		mes "出發～～";
-		next;
-		warp "alberta.gat",235,45;
-		close;
-
-	L_Cancle:
-		mes "[姑娘]";
-		mes "可以的話就留下來呀，";
-		mes "有美食又有漂亮美眉呀";
-		close;
-}
-
-// Modify by Dino9021
 alberta.gat,245,45,4	script	姑娘	815,{
 	mes "[姑娘]";
 	mes "那那～ 那那那那～ 今天的心情";
 	mes "真好呢～ 好想要";
 	mes "出去玩喔～";
 	next;
-	menu "有關龍之城．．．",L_AboutLouyang,"去龍之城",L_GoToLouyang,"取消",L_Cancle;
+	menu "有關龍之城．．．",-,"去龍之城",M_GOTO,"取消",M_CANCEL;
 
-	L_AboutLouyang:
-		mes "[姑娘]";
-		mes "您想去龍之城嗎？";
-		mes "那兒真的是個很棒的地方呀，";
-		mes "擁有數千年神秘之都市呀，";
-		mes "都市也很漂亮，原野也很漂亮呀";
-		next;
-		mes "[姑娘]";
-		mes "尤其這裡也會發生與";
-		mes "神秘魔物之間不可";
-		mes "預測的事情呀，還可以";
-		mes "找到稀少且可醫治百病的藥呀";
-		next;
-		mes "[姑娘]";
-		mes "也有很多會拳法的人，";
-		mes "姑娘每天早上也是在那裡";
-		mes "努力的修練拳法的呀，";
-		mes "姑娘很堅強的呀．．．！";
-		next;
-		mes "[姑娘]";
-		mes "想去的話隨時跟我說呀，";
-		mes "我會收一點錢，然後";
-		mes "把您踢到龍之城去呀．．．";
-		mes "哈哈-哈，不要當真呀！";
-		close;
+	mes "[姑娘]";
+	mes "您想去龍之城嗎？";
+	mes "那兒真的是個很棒的地方呀，";
+	mes "擁有數千年神秘之都市呀，";
+	mes "都市也很漂亮，原野也很漂亮呀";
+	next;
+	mes "[姑娘]";
+	mes "尤其這裡也會發生與";
+	mes "神秘魔物之間不可";
+	mes "預測的事情呀，還可以";
+	mes "找到稀少且可醫治百病的藥呀";
+	next;
+	mes "[姑娘]";
+	mes "也有很多會拳法的人，";
+	mes "姑娘每天早上也是在那裡";
+	mes "努力的修練拳法的呀，";
+	mes "姑娘很堅強的呀．．．！";
+	next;
+	mes "[姑娘]";
+	mes "想去的話隨時跟我說呀，";
+	mes "我會收一點錢，然後";
+	mes "把您踢到龍之城去呀．．．";
+	mes "哈哈-哈，不要當真呀！";
+	close;
 
-	L_GoToLouyang:
-		mes "[姑娘]";
-		mes "馬上出發呀，";
-		mes "給我 10,000 金幣就幫您送過去呀，";
-		mes "去玩的愉快一點呀";
-		next;
-		mes "[姑娘]";
-		mes "好，可以出發了呀？";
-		next;
-		menu "出發！",L_KickToLouyang,"取消",L_Cancle;
+M_GOTO:
+	mes "[姑娘]";
+	mes "馬上出發呀，";
+	mes "給我 10,000 金幣就幫您送過去呀，";
+	mes "去玩的愉快一點呀";
+	next;
+	mes "[姑娘]";
+	mes "好，可以出發了呀？";
+	next;
+	menu "出發！",-,"取消",M_CANCEL2;
 
-	L_KickToLouyang:
-		if(Zeny < 10000) goto L_NoZeny;
-		mes "[姑娘]";
-		mes "咿～　哈啊～～";
-		mes "出發了呀～～～";
-		next;
-		set Zeny,Zeny-10000;
-		warp "lou_fild01.gat",190,101;
-		close;
+	if(Zeny < 10000) goto L_NoZeny;
+	mes "[姑娘]";
+	mes "咿～　哈啊～～";
+	mes "出發了呀～～～";
+	close2;
+	set Zeny,Zeny-10000;
+	warp "lou_fild01.gat",190,101;
+	end;
 
-	L_NoZeny:
-		mes "[姑娘]";
-		mes "沒錢呀～";
-		mes "需要 10,000 金幣呀～";
-		mes "沒有的話絕對不行呀！";
-		close;
+L_NOZENY:
+	mes "[姑娘]";
+	mes "沒錢呀～";
+	mes "需要 10,000 金幣呀～";
+	mes "沒有的話絕對不行呀！";
+	close;
 
-	L_Cancle:
-		mes "[姑娘]";
-		mes "哼！ 失望呀，回家";
-		mes "去包餃子吃呀！！";
-		close;
+M_CANCEL:
+	mes "[姑娘]";
+	mes "哼！ 失望呀，回家";
+	mes "去包餃子吃呀！！";
+	close;
+
+M_CANCEL2:
+	mes "[Girl]";
+	mes "Oh...";
+	mes "It's so disappointing to hear you say that.";
+	mes "Well, have a good day!";
+	close;
 }
 
-//巴
-louyang.gat,213,213,3	script	士兵	825,{
+lou_fild01.gat,190,100,1	script	姑娘	815,{
+	mes "[姑娘]";
+	mes "那麼要回去了呀？";
+	next;
+	menu "回到艾爾貝塔",-,"取消",M_CANCEL;
+
+	mes "[姑娘]";
+	mes "下次再來呀～";
+	mes "出發～～";
+	close2;
+	warp "alberta.gat",235,45;
+	end;
+
+M_CANCEL:
+	mes "[姑娘]";
+	mes "可以的話就留下來呀，";
+	mes "有美食又有漂亮美眉呀";
+	close;
+}
+
+louyang.gat,224,104,3	script	宣傳使節	818,{
+
+		mes "[宣傳使節]";
+		mes "歡迎來到擁有悠久歷史氣息的";
+		mes "洛陽，";
+		mes "這次為了與國外的積極交流，";
+		mes "開拓新的航路，";
+		mes "以便這樣從外地來的人";
+		mes "可以安心的進出";
+		next;
+		mes "[宣傳使節]";
+		mes "我們洛陽擁有悠久的歷史";
+		mes "及各式各樣的東西，";
+		mes "由於到目前為止";
+		mes "從來沒有交流， ";
+		mes "因此也許會有在其他地方";
+		mes "難以見到的東西， ";
+		mes "請你慢慢觀賞！";
+		next;
+		menu "詢問村落的地圖",L_sukeCase1,"刪除地圖上的所有標誌",L_sukeCase2,"取消",L_sukeCase3;
+
+				L_sukeCase1:
+					set @COMPASS_CHECK,rand(0,1);
+					mes "[宣傳使節]";
+					mes "要我介紹哪裡呢?";
+					next;
+					menu "城",L_sukeInCase1,"醫院",L_sukeInCase2,"官廳",L_sukeInCase3,"武器店",L_sukeInCase4,"道具店",L_sukeInCase5,"酒店",L_sukeInCase6,"取消",L_sukeInCase7;
+
+							L_sukeInCase1:
+								mes "[宣傳使節]";
+								mes "城位於^FF3355+^000000，";
+								mes "城裡是城主";
+								mes "及一些高官所居住的地方，";
+								mes "來到了陌生的地方，";
+								mes "向城主打個招呼是基本禮儀吧?";
+								if (@COMPASS_CHECK == 1)viewpoint 1,218,255,2,0xFF3355;
+								viewpoint 0,218,255,2,0xFF3355;
+								close;
+					
+							L_sukeInCase2:
+								mes "[宣傳使節]";
+								mes "在我們洛陽裡有一座著名醫院";
+								mes "位於^CE6300+^000000，";
+								mes "根據傳說";
+								mes "沒有什麼病是治不好的， ";
+								mes "不過，不知道是不是事實";
+								if (@COMPASS_CHECK == 1)viewpoint 1,263,94,3,0xCE6300;
+								viewpoint 0,263,94,3,0xCE6300;
+								close;
+						
+							L_sukeInCase3:
+								mes "[宣傳使節]";
+								mes "這洛陽裡";
+								mes "在^A5BAAD+^000000會有官廳，";
+								mes "如果發生問題或有什麼情況時，";
+								mes "先去官廳看看吧！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,309,80,4,0x00FF00;
+								viewpoint 0,309,80,4,0x00FF00;
+								close;
+
+							L_sukeInCase4:
+								mes "[宣傳使節]";
+								mes "武器店位於^55FF33+^000000，";
+								mes "你將會看到經過長時間冶煉";
+								mes "所鑄造的優秀武器";
+								if (@COMPASS_CHECK == 1)viewpoint 1,145,174,5,0x55FF33;
+								viewpoint 0,145,174,5,0x55FF33;
+								close;
+
+							L_sukeInCase5:
+								mes "[宣傳使節]";
+								mes "道具店位於 ^3355FF+^000000，";
+								mes "知彼知己，百戰百勝!";
+								mes "就是要準備的徹底，";
+								mes "...不要在意成語啦，嘿嘿！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,135,98,6,0x3355FF;
+								viewpoint 0,135,98,6,0x3355FF;
+								close;
+	
+							L_sukeInCase6:
+								mes "[宣傳使節]";
+								mes "旅途中累了就去酒店坐坐吧！";
+								mes "酒店位於^00FF00+^000000，";
+								mes "誰知道會從別的旅客中，得知什麼好消息呢！";
+								if (@COMPASS_CHECK == 1)viewpoint 1,280,167,7,0x00FF00;
+								viewpoint 0,280,167,7,0x00FF00;
+								close;
+
+							L_sukeInCase7:
+								mes "[宣傳使節]";
+								mes "想要刪除位置標誌的話，";
+								mes "請選擇：";
+								mes "'刪除地圖上的所有標誌'";
+								close;
+
+				
+				L_sukeCase2:
+					viewpoint 2,218,255,2,0x00FF00;
+					viewpoint 2,263,94,3,0x00FF00;
+					viewpoint 2,309,80,4,0x00FF00;
+					viewpoint 2,145,174,5,0x00FF00;
+					viewpoint 2,135,98,6,0x00FF00;
+					viewpoint 2,280,167,7,0x00FF00;
+					set @COMPASS_CHECK,0;
+					mes "[宣傳使節]";
+					mes "已刪除地圖上的所有標誌，";
+					mes "想要重新在地圖上做標誌的話隨時再問我吧！";
+					close;
+
+				L_sukeCase3:
+					mes "[宣傳使節]";
+					mes "親自邊逛邊熟悉環境也是蠻有趣的，那麼祝你一路順風！";
+					close;
+}
+
+louyang.gat,213,214,3	script	士兵	825,{
 
 		mes "[士兵]";
 		mes "歡迎來到擁有悠久歷史氣息的";
@@ -241,6 +347,16 @@ louyang.gat,213,213,3	script	士兵	825,{
 					mes "[士兵]";
 					mes "親自邊逛邊熟悉環境也是蠻有趣的，那麼祝你一路順風！";
 					close;
+}
+
+louyang.gat,260,96,2	script	春花	770,{
+	mes "[^000080春花^000000]";
+	mes "嗨! 旅行的人! 你一定又餓又渴吧?";
+	mes "請進來吧! 這裡有很多食物喔!";
+	next;
+	mes "[^000080春花^000000]";
+	mes "別怕吃不夠, 這裡的東西足夠你吃上一輩子呢!";
+	close;
 }
 
 //碑
@@ -355,122 +471,6 @@ louyang.gat,160,175,3	script	士兵	825,{
 
 				L_lousolbeCase3:
 					mes "[士兵]";
-					mes "親自邊逛邊熟悉環境也是蠻有趣的，那麼祝你一路順風！";
-					close;
-}
-
-//服務 NPC
-louyang.gat,224,104,3	script	宣傳使節	818,{
-
-		mes "[宣傳使節]";
-		mes "歡迎來到擁有悠久歷史氣息的";
-		mes "洛陽，";
-		mes "這次為了與國外的積極交流，";
-		mes "開拓新的航路，";
-		mes "以便這樣從外地來的人";
-		mes "可以安心的進出";
-		next;
-		mes "[宣傳使節]";
-		mes "我們洛陽擁有悠久的歷史";
-		mes "及各式各樣的東西，";
-		mes "由於到目前為止";
-		mes "從來沒有交流， ";
-		mes "因此也許會有在其他地方";
-		mes "難以見到的東西， ";
-		mes "請你慢慢觀賞！";
-		next;
-		menu "詢問村落的地圖",L_sukeCase1,"刪除地圖上的所有標誌",L_sukeCase2,"取消",L_sukeCase3;
-
-				L_sukeCase1:
-					set @COMPASS_CHECK,rand(0,1);
-					mes "[宣傳使節]";
-					mes "要我介紹哪裡呢?";
-					next;
-					menu "城",L_sukeInCase1,"醫院",L_sukeInCase2,"官廳",L_sukeInCase3,"武器店",L_sukeInCase4,"道具店",L_sukeInCase5,"酒店",L_sukeInCase6,"取消",L_sukeInCase7;
-
-							L_sukeInCase1:
-								mes "[宣傳使節]";
-								mes "城位於^FF3355+^000000，";
-								mes "城裡是城主";
-								mes "及一些高官所居住的地方，";
-								mes "來到了陌生的地方，";
-								mes "向城主打個招呼是基本禮儀吧?";
-								if (@COMPASS_CHECK == 1)viewpoint 1,218,255,2,0xFF3355;
-								viewpoint 0,218,255,2,0xFF3355;
-								close;
-					
-							L_sukeInCase2:
-								mes "[宣傳使節]";
-								mes "在我們洛陽裡有一座著名醫院";
-								mes "位於^CE6300+^000000，";
-								mes "根據傳說";
-								mes "沒有什麼病是治不好的， ";
-								mes "不過，不知道是不是事實";
-								if (@COMPASS_CHECK == 1)viewpoint 1,263,94,3,0xCE6300;
-								viewpoint 0,263,94,3,0xCE6300;
-								close;
-						
-							L_sukeInCase3:
-								mes "[宣傳使節]";
-								mes "這洛陽裡";
-								mes "在^A5BAAD+^000000會有官廳，";
-								mes "如果發生問題或有什麼情況時，";
-								mes "先去官廳看看吧！";
-								if (@COMPASS_CHECK == 1)viewpoint 1,309,80,4,0x00FF00;
-								viewpoint 0,309,80,4,0x00FF00;
-								close;
-
-							L_sukeInCase4:
-								mes "[宣傳使節]";
-								mes "武器店位於^55FF33+^000000，";
-								mes "你將會看到經過長時間冶煉";
-								mes "所鑄造的優秀武器";
-								if (@COMPASS_CHECK == 1)viewpoint 1,145,174,5,0x55FF33;
-								viewpoint 0,145,174,5,0x55FF33;
-								close;
-
-							L_sukeInCase5:
-								mes "[宣傳使節]";
-								mes "道具店位於 ^3355FF+^000000，";
-								mes "知彼知己，百戰百勝!";
-								mes "就是要準備的徹底，";
-								mes "...不要在意成語啦，嘿嘿！";
-								if (@COMPASS_CHECK == 1)viewpoint 1,135,98,6,0x3355FF;
-								viewpoint 0,135,98,6,0x3355FF;
-								close;
-	
-							L_sukeInCase6:
-								mes "[宣傳使節]";
-								mes "旅途中累了就去酒店坐坐吧！";
-								mes "酒店位於^00FF00+^000000，";
-								mes "誰知道會從別的旅客中，得知什麼好消息呢！";
-								if (@COMPASS_CHECK == 1)viewpoint 1,280,167,7,0x00FF00;
-								viewpoint 0,280,167,7,0x00FF00;
-								close;
-
-							L_sukeInCase7:
-								mes "[宣傳使節]";
-								mes "想要刪除位置標誌的話，";
-								mes "請選擇：";
-								mes "'刪除地圖上的所有標誌'";
-								close;
-
-				
-				L_sukeCase2:
-					viewpoint 2,218,255,2,0x00FF00;
-					viewpoint 2,263,94,3,0x00FF00;
-					viewpoint 2,309,80,4,0x00FF00;
-					viewpoint 2,145,174,5,0x00FF00;
-					viewpoint 2,135,98,6,0x00FF00;
-					viewpoint 2,280,167,7,0x00FF00;
-					set @COMPASS_CHECK,0;
-					mes "[宣傳使節]";
-					mes "已刪除地圖上的所有標誌，";
-					mes "想要重新在地圖上做標誌的話隨時再問我吧！";
-					close;
-
-				L_sukeCase3:
-					mes "[宣傳使節]";
 					mes "親自邊逛邊熟悉環境也是蠻有趣的，那麼祝你一路順風！";
 					close;
 }
@@ -1559,4 +1559,152 @@ louyang.gat,174,150,5	script	古嘉玲	815,{
 		mes "唉呦！真是的~~";
 		mes "這傢伙一旦回來的話，一定要揍他一頓!!";
 		close;
+}
+
+lou_fild01.gat,224,348,7	script	Lady	817,{
+
+	emotion 30;
+	mes "[Lady]";
+	mes "You're at the entrance of Louyang.";
+	next;
+	mes "[Lady]";
+	mes "Louyang is well known";
+	mes "for its various firecrackers.";
+	mes "Would you like to see one?";
+	next;
+	menu "Sure!",s_Firework,"No thanks~",-;
+
+	mes "[Lady]";
+	mes "Hmpf...!";
+	emotion 9;
+	close;
+
+s_Firework:
+	mes "[Lady]";
+	mes "Alright, there you go!";
+	close2;
+	donpcevent "LouFireWrk::OnExplosion";
+	end;
+
+}
+
+lou_fild01.gat,225,349,1	script	LouFireWrk	139,{
+
+OnExplosion:
+	misceffect 183;
+	end;
+
+}
+
+lou_in01.gat,99,158,4	script	Lord	821,{
+	mes "[Lord Bai Long]";
+	mes "Hahahaha!";
+	mes "Welcome to Louyang!";
+	next;
+	mes "[Lord Bai Long]";
+	mes "Louyang is such a great city.";
+	mes "We're protected this land for forty";
+	mes "years from the invasions of evil";
+	mes "creatures!";
+	next;
+	mes "[Lord Bai Long]";
+	mes "I hope you enjoy";
+	mes "your stay here,";
+	mes "Rune-Midgardian!";
+	next;
+	mes "[Lord Bai Long]";
+	mes "How could I have lost my friend";
+	mes "from our glory days? Hmm...?";
+	mes "Oh, I didn't realize you were still";
+	mes "there...Listening to me.";
+	next;
+	mes "[Lord Bai Long]";
+	mes "I'm sorry, I was just talking to";
+	mes "myself. I hope you have a good time";
+	mes "while you stay here in Louyang.";
+	close;
+}
+
+lou_in01.gat,111,151,4	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "*Yawn* It's so boring here";
+	mes "nowadays. Although, I hear that";
+	mes "a long time ago, things were";
+	mes "much different.";
+	next;
+	mes "[Soldier]";
+	mes "Supposedly, monsters used to";
+	mes "intrude Louyang all the time! Heh,";
+	mes "but that's just rumor. Still,";
+	mes "there are a bunch of rumors going";
+	mes "around that I'm curious about...";
+	close;
+}
+
+lou_in01.gat,91,151,4	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "....z..Z..z...";
+	next;
+	menu "Hey, wake up!",-;
+	mes "[Soldier]";
+	mes "Yeeeesss...Sir!";
+	mes "I was not dozing off~";
+	mes "Seerious...ly...";
+	next;
+	mes "[Soldier]";
+	mes "...";
+	next;
+	mes "[Soldier]";
+	mes "...";
+	mes "......";
+	next;
+	mes "[Soldier]";
+	mes "...";
+	mes "......";
+	mes "....z..Z..z...";
+	close;
+}
+
+lou_in01.gat,82,139,6	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "There is nothing much, but if you";
+	mes "wish to look around this room,";
+	mes "please be my guest.";
+	close;
+}
+
+lou_in01.gat,45,138,4	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "It's strange to see outsiders in";
+	mes "this kind of place. We don't have";
+	mes "any business with you,";
+	mes "so move along.";
+	close;
+}
+
+lou_in01.gat,102,144,4	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "People have been";
+	mes "saying that there's";
+	mes "a scammer at the entrance of town...";
+	next;
+	menu "...?",-;
+	mes "[Soldier]";
+	mes "But I went there and I didn't";
+	mes "find anyone suspicious. I swear,";
+	mes "everything seemed completely";
+	mes "normal!";
+	close;
+}
+
+lou_in01.gat,99,144,4	script	Soldier	825,{
+	mes "[Soldier]";
+	mes "Ah, don't bother";
+	mes "to listen to this";
+	mes "guy beside of me.";
+	next;
+	mes "[Soldier]";
+	mes "I hope you have a good time while";
+	mes "you're staying in Louyang!";
+	close;
 }
