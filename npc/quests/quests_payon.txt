@@ -19,7 +19,7 @@
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.2
+//= 1.4
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
@@ -28,8 +28,9 @@
 //= Fully working
 //= 1.1 Helm of Angel bug fixed [Lupus]
 //= 1.2 Fixed skirt of virgin [Lupus]
+//= 1.3 Fixed exploits [Lupus]
+//= 1.4 Removed Duplicates [Silent]
 //============================================================ 
-
 
 
 
@@ -52,7 +53,7 @@ payon.gat,154,170,4	script	老太太	78,{
 	mes "[老太太]";
 	mes "我剛剛說了什麼了? 噢! 對了! 我需要一些特別的布料來幫我的家人製作一些特別的衣服.";
 	mes "如果你在旅行途中碰巧有見到 ^5555FF'韓服'^000000 的話, 請務必讓我知道.";
-	emotion 20;
+	emotion e_hmm;
 	next;
 	mes "[老太太]";
 	mes "我需要 ^5555FF'四件韓服'^000000 的布料量來製作衣服. 如果你能幫我帶來的話我會很感激你的.";
@@ -66,7 +67,7 @@ L_Get:
 		if(countitem(1049) < 4) goto M_No;
 		mes "[老太太]";
 		mes "感謝你的好心腸，現在我可以幫我的家人製作特別的衣服了. 為了感謝你的慷慨，讓我送你一點東西吧.";
-		emotion 14;
+		emotion e_lv2;
 		next;
 		getitem 2293,1;
 		delitem 1049,4;
@@ -81,7 +82,7 @@ L_Get:
 	M_No:
 		mes "[老太太]";
 		mes "你才是老芋頭!!! 現在的年輕人一點都不尊重長者了!";
-		emotion 32;
+		emotion e_pif;
 		close;
 
 }
@@ -102,17 +103,14 @@ payon_in01.gat,18,10,4	script	神秘的姑娘	75,{
 	mes "耳罩是我們家世待流傳的手制名品。請帶 ^FF3355' 受詛咒的紅寶石'^000000 與 ^3311AA' 耳機 '^000000 各一個來給我..";
 	mes "另外還要準備 ^3355FF' 柔毛 200 根 '^000000 以及 ^DDDD00' 5000 金幣 '^000000 ，我就幫你做。";
 	next;
-	menu "好的，麻煩你了",-,"謝謝，不用了",L_MENU_1;
-		if (countitem(724)<1) goto L_SUB_1;
-		if (countitem(949)<200) goto L_SUB_1;
-		if (countitem(5001)<1) goto L_SUB_1;
-		if (Zeny < 5000) goto L_SUB_1;
+	menu "好的，麻煩你了",-,"謝謝，不用了",M_End;
+		if(countitem(724)<1 || countitem(5001)<1 || countitem(949)<200 || zeny<5000) goto sL_NotEnuf;
+		delitem 724,1;
+		delitem 5001,1;
+		delitem 949,200;
+		set Zeny, Zeny-5000;
 		mes "[神秘的姑娘]";
 		mes ". . . . .";
-		delitem 724,1;
-		delitem 949,200;
-		delitem 5001,1;
-		set Zeny,Zeny-5000;
 		mes "感謝您。這是做好的耳罩，請您收下。";
 		getitem 2283,1;
 		next;
@@ -120,13 +118,13 @@ payon_in01.gat,18,10,4	script	神秘的姑娘	75,{
 		mes ". . . . .";
 		mes "感謝您購買我們家所製造的物品，您一定會滿意它的品質的..";
 		close;
-	L_SUB_1:
+	sL_NotEnuf:
 		mes "[神秘的姑娘]";
 		mes ". . . . .";
 		mes ". . . . . 顧客.. 你所準備的材料不足喔..";
 		mes "我也想給你低廉的價格和合理的條件，但是.. 我們也有困難..";
 		close;
-	L_MENU_1:
+	M_End:
 		mes "[神秘的姑娘]";
 		mes ". . . . .";
 		mes "如果有緣的話，將來一定還有機會碰面的..";
@@ -139,7 +137,7 @@ payon_in01.gat,18,10,4	script	神秘的姑娘	75,{
 //========================================================================================//
 //					Oxygen Mask Quest
 //========================================================================================//
-payon_in02.gat,25,71,4	script	青年	86,{
+payon_in02.gat,25,71,4	script	青年#11	86,{
 	if (countitem(701)<5) goto L_SUB_1;
 		mes "[青年]";
 		mes "你說什麼！ 啊..不行，怎麼說都不行...";

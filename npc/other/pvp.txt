@@ -11,22 +11,57 @@
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.1
+//= 1.2a
 //===== Compatible With: ===================================== 
 //= eAthena 0.5.2 +
 //===== Description: ========================================= 
 //=
 //===== Additional Comments: ================================= 
-//= v1.1 Fixed arena names for Nightmare mode.  Added room limit check.
+//= v1.1 Fixed arena names for Nightmare mode.  Added room limit
+//= check.[kobra_k88]
+//= v1.2 Fixed the bug that you aways savepoint in geffen.[shadowlady]
+//= v1.2a Added PvP Narrator function. Using args for Fight
+//= Square Helpers. [kobra_k88]
 //============================================================ 
 
 
-//***********************************************************************************************************************************************************//
-//					PvP Narrator and Gate Keeper Scripts					//
-//***********************************************************************************************************************************************************//
+//==========================================================================
+//			PvP Narrators
+//==========================================================================
 
-// Alberta =========================================================>\\
-// PvP解說員 ------------------------------------------------------
+// Alberta -----------------------------------------
+alberta_in.gat,22,146,4	script	PvP解說員#1	84,{
+	callfunc "F_PvPNarr", "alberta_in.gat", 24, 143;
+	end;
+}
+// Payon -------------------------------------
+payon_in01.gat,173,109,3	script	PvP解說員#2	84,{
+	callfunc "F_PvPNarr", "payon_in01.gat", 169, 108;
+	end;
+}
+// Prontera -------------------------------------
+prt_in.gat,56,140,4	script	PvP解說員#3	84,{
+	callfunc "F_PvPNarr", "prt_in.gat", 54, 137;
+	end;
+}
+// Morocc --------------------------------------
+morocc_in.gat,144,138,4	script	PvP解說員#4	84,{
+	callfunc "F_PvPNarr", "morocc_in.gat", 141, 140;
+	end;
+}
+// Geffen --------------------------------------
+geffen_in.gat, 67,63,4	script	PvP解說員#5	84,{
+	callfunc "F_PvPNarr", "geffen_in.gat", 64, 60;
+	end;
+}
+
+//******************************************************//
+//	Function: PvP Narrator
+//******************************************************//
+// arg(0): mapname
+// arg(1): savepoint x cord.
+// arg(2): savepoint y cord.
+//=============================
 function	script	F_PvPNarr	{
 	mes "[PvP解說員]";
 	mes "哈囉! 歡迎光臨! 我是負責解釋 PvP 模式的解說員!";
@@ -116,12 +151,17 @@ function	script	F_PvPNarr	{
 		close;
 }
 
-// Gate Keeper ---------------------------------------------------------------
-function	script	F_GateKeep	{
-		mes "[PvP守門人]";
-		mes "我是為您開啟PvP打鬥場之門的PvP守門人。";
-		mes "有關PvP模式的說明請你去向旁邊那位解說員詢問。";
-		next;
+
+//==========================================================================
+//			Gate Keepers
+//==========================================================================
+
+// Alberta -----------------------------------
+alberta_in.gat, 26,146,4	script	PvP守門人#1::GateKeep	83,{
+	mes "[PvP守門人]";
+	mes "我是為您開啟PvP打鬥場之門的PvP守門人。";
+	mes "有關PvP模式的說明請你去向旁邊那位解說員詢問。";
+	next;
 	menu	"^5533FF'PvP 溜溜猴模式'^000000 打鬥場",M_0, 
 		"^FF5533'PvP 夢魘模式'^000000 打鬥場",M_1, 
 		"^5533FF'PvP 決鬥 (作戰) 模式'^000000 格鬥場",M_2, "結束對話",M_End;
@@ -164,8 +204,8 @@ function	script	F_GateKeep	{
 			end;
 
 		sM_1:
-				mes "[PvP守門人]";
-				mes "呃? 你沒有? 那抱歉啦! 只有攜帶參觀券我才能讓你進去!";
+			mes "[PvP守門人]";
+			mes "呃? 你沒有? 那抱歉啦! 只有攜帶參觀券我才能讓你進去!";
 			close;
 	M_End:
 		mes "[PvP守門人]";
@@ -199,251 +239,196 @@ sF_Move:
 			close;
 }
 
-// Alberta ===================================================>\\
-alberta_in.gat,22,146,4		script	PvP解說員	84,{callfunc "F_PvPNarr","alberta_in.gat",61,143;}
-alberta_in.gat, 26,146,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
-// Geffen ===================================================>\\
-geffen_in.gat, 67,63,4	script	PvP解說員	84,{callfunc "F_PvPNarr","geffen_in.gat",69,59;}
-geffen_in.gat, 63,63,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+// Geffen --------------------------------------------
+geffen_in.gat, 63,63,4	duplicate(GateKeep)	PvP守門人#2	83
+// Morroc----------------------------------------------
+morocc_in.gat, 144,142,4	duplicate(GateKeep)	PvP守門人#3	83
+// Payon ----------------------------------------------
+payon_in01.gat,175,106,3	duplicate(GateKeep)	PvP守門人#4	83
+// Prontera -------------------------------------------
+prt_in.gat,52,140,4	duplicate(GateKeep)	PvP守門人#5	83
 
-// Morroc ===================================================>\\
-morocc_in.gat,144,138,4	script	PvP解說員	84,{callfunc "F_PvPNarr","morocc_in.gat",142,140;}
-morocc_in.gat, 144,142,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
 
-// Payon ===================================================>\\ 
-payon_in01.gat,6,55,4	script	PvP解說員	84,{callfunc "F_PvPNarr","payon_in01.gat",166,107;}
-payon_in01.gat,10,54,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
 
-// Prontera =================================================>\\
-prt_in.gat,56,140,4	script	PvP解說員	84,{callfunc "F_PvPNarr","prt_in.gat",54,136;}
-prt_in.gat,52,140,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
+//==========================================================================//
+// 		PvP Yoyo Mode Fight Square Helpers
+//==========================================================================//
 
-prontera.gat,155,123,4	script	PvP解說員	84,{callfunc "F_PvPNarr","prt_in.gat",54,136;}
-prontera.gat,156,123,4	script	PvP守門人	83,{callfunc "F_GateKeep";}
-
-//***********************************************************************************************************************************************//
-// 				PvP Yoyo Mode Fight Square  Helpers					//
-//***********************************************************************************************************************************************//
-
-// LV31 ~ 40 ------------------------------------------------------------------------------
+// LV31 ~ 40 ---------------------------------
 pvp_y_room.gat,30,85,4	script	打鬥場接待員::YHelper1	105,{
-	set @map$, "y_1";
-	set @lvl2, 40;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_1", 31, 40;
 OnInit:
 	waitingroom "LV31 ~ LV40",0;
 	end;
 }
 
-// LV41 ~ 50 ------------------------------------------------------------------------------
+// LV41 ~ 50 --------------------------------
 pvp_y_room.gat,38,85,4	script	打鬥場接待員::YHelper2	105,{
-	set @map$, "y_2";
-	set @lvl1, 41;
-	set @lvl2, 50;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_2", 41, 50;
 OnInit:
 	waitingroom "LV41 ~ LV50",0;
 	end;
 }
 
-// LV51 ~ 60 ------------------------------------------------------------------------------
+// LV51 ~ 60 ---------------------------------
 pvp_y_room.gat,46,85,4	script	打鬥場接待員::YHelper3	105,{
-	set @map$, "y_3";
-	set @lvl1, 51;
-	set @lvl2, 60;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_3", 51, 60;
 OnInit:
 	waitingroom "LV51 ~ LV60", 0;
 	end;
 }
 
-// LV61 ~ 70 ------------------------------------------------------------------------------
+// LV61 ~ 70 ------------------------------------
 pvp_y_room.gat,54,85,4	script	打鬥場接待員::YHelper4	105,{
-	set @map$, "y_4";
-	set @lvl1, 61;
-	set @lvl2, 70;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_4", 61, 70;
 OnInit:
 	waitingroom "LV61 ~ LV70", 0;
 	end;
 }
 
-// LV71 ~ 80 ------------------------------------------------------------------------------
+// LV71 ~ 80 ------------------------------------
 pvp_y_room.gat,62,85,4	script	打鬥場接待員::YHelper5	105,{
-	set @map$, "y_5";
-	set @lvl1, 71;
-	set @lvl2, 80;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_5", 71, 80;
 OnInit:
 	waitingroom "LV71 ~ LV80", 0;
 	end;
 }
 
-// LV81 ~ 90 ------------------------------------------------------------------------------
+// LV81 ~ 90 --------------------------------------
 pvp_y_room.gat,70,85,4	script	打鬥場接待員::YHelper6	105,{
-	set @map$, "y_6";
-	set @lvl1, 81;
-	set @lvl2, 90;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_6", 81, 90;
 OnInit:
 	waitingroom "LV81 ~ LV90", 0;
 	end;
 }
 
-// LV91 ~  ------------------------------------------------------------------------------
+// LV91 ~  --------------------------------------------
 pvp_y_room.gat,78,85,4	script	打鬥場接待員::YHelper7	105,{
-	set @map$, "y_7";
-	set @lvl1, 91;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_7", 91, 255;
 OnInit:
 	waitingroom "LV91 ~ ", 0;
 	end;
 }
 
-// No Limit  ------------------------------------------------------------------------------
+// No Limit  -----------------------------------------
 pvp_y_room.gat,86,85,4	script	打鬥場接待員::YHelper8	105,{
-	set @map$, "y_8";
-	set @lvl1, 0;
-	set @lvl2, 255;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "y_8", 0, 255;
 OnInit:
 	waitingroom "無等級限制", 0;
 	end;
 }
 
 
-
-//***********************************************************************************************************************************************//
-// 				PvP Nightmare Mode 打鬥場接待員s				//
-//***********************************************************************************************************************************************//
-// LV31 ~ 40 ------------------------------------------------------------------------------
+//==========================================================================//
+// 		PvP Nightmare Mode Fight Square Helpers
+//==========================================================================//
+// LV31 ~ 40 -------------------------------------
 pvp_n_room.gat,30,85,4	script	打鬥場接待員#N1	105,{
-	set @map$, "n_1";
-	set @lvl2, 40;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_1", 31, 40;
 OnInit:
 	waitingroom "LV31 ~ LV40",0;
 	end;
 }
 
-// LV41 ~ 50 ------------------------------------------------------------------------------
+// LV41 ~ 50 --------------------------------------
 pvp_n_room.gat,38,85,4	script	打鬥場接待員#N2	105,{
-	set @map$, "n_2";
-	set @lvl1, 41;
-	set @lvl2, 50;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_2", 41, 50;
 OnInit:
 	waitingroom "LV41 ~ LV50",0;
 	end;
 }
 
-// LV51 ~ 60 ------------------------------------------------------------------------------
+// LV51 ~ 60 -------------------------------------
 pvp_n_room.gat,46,85,4	script	打鬥場接待員#N3	105,{
-	set @map$, "n_3";
-	set @lvl1, 51;
-	set @lvl2, 60;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_3", 51, 60;
 OnInit:
 	waitingroom "LV51 ~ LV60", 0;
 	end;
 }
 
-// LV61 ~ 70 ------------------------------------------------------------------------------
+// LV61 ~ 70 ------------------------------------
 pvp_n_room.gat,54,85,4	script	打鬥場接待員#N4	105,{
-	set @map$, "n_4";
-	set @lvl1, 61;
-	set @lvl2, 70;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_4", 61, 70;
 OnInit:
 	waitingroom "LV61 ~ LV70", 0;
 	end;
 }
 
-// LV71 ~ 80 ------------------------------------------------------------------------------
+// LV71 ~ 80 -----------------------------------
 pvp_n_room.gat,62,85,4	script	打鬥場接待員#N5	105,{
-	set @map$, "n_5";
-	set @lvl1, 71;
-	set @lvl2, 80;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_5", 71, 80;
 OnInit:
 	waitingroom "LV71 ~ LV80", 0;
 	end;
 }
 
-// LV81 ~ 90 ------------------------------------------------------------------------------
+// LV81 ~ 90 ------------------------------------
 pvp_n_room.gat,70,85,4	script	打鬥場接待員#N6	105,{
-	set @map$, "n_6";
-	set @lvl1, 81;
-	set @lvl2, 90;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_6", 81, 90;
 OnInit:
 	waitingroom "LV81 ~ LV90", 0;
 	end;
 }
 
-// LV91 ~  ------------------------------------------------------------------------------
+// LV91 ~  ---------------------------------------
 pvp_n_room.gat,78,85,4	script	打鬥場接待員#N7	105,{
-	set @map$, "n_7";
-	set @lvl1, 91;
-	set @lvl2, 255;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_7", 91, 255;
 OnInit:
 	waitingroom "LV91 ~ ", 0;
 	end;
 }
 
-// No Limit  ------------------------------------------------------------------------------
+// No Limit  ----------------------------------
 pvp_n_room.gat,86,85,4	script	打鬥場接待員#N8	105,{
-	set @map$, "n_8";
-	set @lvl1, 0;
-	set @lvl2, 255;
-	callfunc "F_PvPRoom";
+	callfunc "F_PvPRoom", "n_8", 0, 255;
 OnInit:
-	waitingroom "No Limit", 0;
+	waitingroom "無等級限制", 0;
 	end;
 }
 
 
-
-//***********************************************************************************************************************************************************//
-//					Function: PvP Fight Square Helper					//
-//***********************************************************************************************************************************************************//
+//***************************************************************//
+//	Function: PvP Fight Square Helper
+//***************************************************************//
+// arg(0): pvp room name
+// arg(1): minimum base lvl to enter arena
+// arg(2): maximum base lvl allowed to enter arena
+//===============================================
 function	script	F_PvPRoom	{
 
 	mes "[打鬥場接待員]";
-	if(BaseLevel < @lvl1) goto L_LowLvl;
-	if(BaseLevel > @lvl2) goto L_HiLvl;
+	if(BaseLevel < getarg(1)) goto L_LowLvl;
+	if(BaseLevel > getarg(2)) goto L_HiLvl;
 	mes "Please choose an arena to fight in...";
 	M_Menu:
 	next;
-	menu 	@room1$ + " [" + getmapusers("pvp_"+@map$ + "-1.gat") + "/" +@players1+ "]",M_Rm1, 
-		@room2$ + " [" + getmapusers("pvp_"+@map$ + "-2.gat") + "/" +@players2+ "]",M_Rm2, 
-		@room3$ + " [" + getmapusers("pvp_"+@map$ + "-3.gat") + "/" +@players2+ "]",M_Rm3, 
-		@room4$ + " [" + getmapusers("pvp_"+@map$ + "-4.gat") + "/" +@players2+ "]",M_Rm4, 
-		@room5$ + " [" + getmapusers("pvp_"+@map$ + "-5.gat") + "/" +@players2+ "]",M_Rm5, "Cancel",M_End;
+	menu 	@room1$ + " [" + getmapusers("pvp_" + getarg(0) + "-1.gat") + "/" +@players1+ "]",M_Rm1, 
+		@room2$ + " [" + getmapusers("pvp_" + getarg(0) + "-2.gat") + "/" +@players2+ "]",M_Rm2, 
+		@room3$ + " [" + getmapusers("pvp_" + getarg(0) + "-3.gat") + "/" +@players2+ "]",M_Rm3, 
+		@room4$ + " [" + getmapusers("pvp_" + getarg(0) + "-4.gat") + "/" +@players2+ "]",M_Rm4, 
+		@room5$ + " [" + getmapusers("pvp_" + getarg(0) + "-5.gat") + "/" +@players2+ "]",M_Rm5, "取消",M_End;
 	M_Rm1:
-		if (getmapusers("pvp_"+@map$+"-1.gat") == @players1) goto L_Full;
-		warp "pvp_"+@map$+"-1.gat",0,0;
+		if (getmapusers("pvp_" + getarg(0) + "-1.gat") == @players1) goto L_Full;
+		warp "pvp_" + getarg(0) + "-1.gat",0,0;
 		end;
 	M_Rm2:
-		if (getmapusers("pvp_"+@map$+"-2.gat") == @players2) goto L_Full;
-		warp "pvp_"+@map$+"-2.gat",0,0;
+		if (getmapusers("pvp_" + getarg(0) + "-2.gat") == @players2) goto L_Full;
+		warp "pvp_" + getarg(0) + "-2.gat",0,0;
 		end;
 	M_Rm3:
-		if (getmapusers("pvp_"+@map$+"-3.gat") == @players2) goto L_Full;
-		warp "pvp_"+@map$+"-3.gat",0,0;
+		if (getmapusers("pvp_" + getarg(0) + "-3.gat") == @players2) goto L_Full;
+		warp "pvp_" + getarg(0) + "-3.gat",0,0;
 		end;
 	M_Rm4:
-		if (getmapusers("pvp_"+@map$+"-4.gat") == @players2) goto L_Full;
-		warp "pvp_"+@map$+"-4.gat",0,0;
+		if (getmapusers("pvp_" + getarg(0) + "-4.gat") == @players2) goto L_Full;
+		warp "pvp_" + getarg(0) + "-4.gat",0,0;
 		end;
 	M_Rm5:
-		if (getmapusers("pvp_"+@map$+"-5.gat") == @players2) goto L_Full;
-		warp "pvp_"+@map$+"-5.gat",0,0;
+		if (getmapusers("pvp_" + getarg(0) + "-5.gat") == @players2) goto L_Full;
+		warp "pvp_" + getarg(0) + "-5.gat",0,0;
 		end;
 	M_End:
 		close;
-
 
 	L_LowLvl:
 		mes "抱歉, 要進入本打鬥場您的 Lv 必須高於 " + @lvl1 + " 才行, 請選擇一個等級比較低的打鬥場吧!";

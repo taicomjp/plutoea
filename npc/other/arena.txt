@@ -25,10 +25,10 @@ force_1-1.gat	mapflag	noteleport	dummy
 force_1-1.gat	mapflag	nosave	prontera.gat,156,191
 
 // An entrance is placed in Prontera.
-prontera.gat,160,185,3	script	Arena Entrance	116,{
-	mes "Want to go to the arena?";
+prontera.gat,160,185,3	script	競技場入口	116,{
+	mes "想進去嗎?";
 	next;
-	menu "Let's go!",L_GOARENA,"Nah..",L_YAME;
+	menu "是的!",L_GOARENA,"不要..",L_YAME;
 L_GOARENA:
 	warp "prt_are_in.gat",31,82;
 	close;
@@ -37,12 +37,12 @@ L_YAME:
 }
 
 // Teleport from waiting room to ready room
-prt_are_in.gat,29,79,0	script	Time Attack	116,{
+prt_are_in.gat,29,79,0	script	限時挑戰員	116,{
 	if( getmapusers("force_1-1.gat")>0 ) goto L_WAIT;
 
-	mes "This is the Time Attack selection.";
-	mes "Please choose your challenge.";
-	menu "Level 1 - 5 Porings, 30 secs!",L_GOLV1,"Level 2 - 7 Roda Frogs, 60 secs!",L_GOLV2,"Level 3 - 9 PecoPecos, 100 secs!",L_GOLV3,"Never mind.",L_YAME;
+	mes "這是限時挑戰賽.";
+	mes "請選擇你要的挑戰.";
+	menu "Level 1 - 5 波利, 30 秒!",L_GOLV1,"Level 2 - 7 羅達蛙, 60 秒!",L_GOLV2,"Level 3 - 9 大嘴鳥, 100 秒!",L_GOLV3,"不了",L_YAME;
 L_GOLV1:
 	if( getmapusers("force_1-1.gat")>0 ) goto L_WAIT;
 	disablenpc "fc103-1";
@@ -68,8 +68,8 @@ L_GOLV3:
 	warp "force_1-1.gat",99,12;
 	end;	
 L_WAIT:
-	mes "Since the arena is in use,";
-	mes "please wait for a while.";
+	mes "競技場使用中,";
+	mes "請稍等一會.";
 L_YAME:
 	close;
 }
@@ -77,15 +77,15 @@ L_YAME:
 
 // Ready room (10-second preparation)
 force_1-1.gat,99,12,0	script	arenalv1st	-1,{
-	announce "It will begin in 10 seconds!",3;
+	announce "10秒後開始!",3;
 	addtimer 10000,"arenalv1fgt";
 }
 force_1-1.gat,99,12,0	script	arenalv2st	-1,{
-	announce "It will begin in 10 seconds!",3;
+	announce "10秒後開始!",3;
 	addtimer 10000,"arenalv2fgt";
 }
 force_1-1.gat,99,12,0	script	arenalv3st	-1,{
-	announce "It will begin in 10 seconds!",3;
+	announce "10秒後開始!",3;
 	addtimer 10000,"arenalv3fgt";
 }
 
@@ -96,11 +96,11 @@ force_1-1.gat,99,12,0	script	arenalv1fgt	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	monster "force_1-1.gat",25,25,"Arena Enemy",1002,1,"arenalv1mon";
-	monster "force_1-1.gat",20,25,"Arena Enemy",1002,1,"arenalv1mon";
-	monster "force_1-1.gat",25,20,"Arena Enemy",1002,1,"arenalv1mon";
-	monster "force_1-1.gat",30,25,"Arena Enemy",1002,1,"arenalv1mon";
-	monster "force_1-1.gat",25,30,"Arena Enemy",1002,1,"arenalv1mon";
+	monster "force_1-1.gat",25,25,"競技場敵人",1002,1,"arenalv1mon";
+	monster "force_1-1.gat",20,25,"競技場敵人",1002,1,"arenalv1mon";
+	monster "force_1-1.gat",25,20,"競技場敵人",1002,1,"arenalv1mon";
+	monster "force_1-1.gat",30,25,"競技場敵人",1002,1,"arenalv1mon";
+	monster "force_1-1.gat",25,30,"競技場敵人",1002,1,"arenalv1mon";
 	set $arena00,5;
 	disablenpc "fc101";
 	disablenpc "fc103";
@@ -108,7 +108,7 @@ force_1-1.gat,99,12,0	script	arenalv1fgt	-1,{
 	enablenpc "fc103-1";
 	enablenpc "fc105";
 	enablenpc "fc107";
-	announce "Do it within 30 seconds!",19;
+	announce "30秒內解決它們!",19;
 	addtimer 30000,"arenalv1fail";
 	addtimer 20000,"tensecsleft";
 }
@@ -118,14 +118,14 @@ force_1-1.gat,99,12,0	script	arenalv2fgt	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	monster "force_1-1.gat",20,20,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",20,25,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",20,30,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",30,20,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",30,25,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",30,30,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",25,30,"Arena Enemy",1012,1,"arenalv2mon";
-	monster "force_1-1.gat",25,20,"Arena Enemy",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",20,20,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",20,25,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",20,30,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",30,20,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",30,25,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",30,30,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",25,30,"競技場敵人",1012,1,"arenalv2mon";
+	monster "force_1-1.gat",25,20,"競技場敵人",1012,1,"arenalv2mon";
 	set $arena00,7;
 	disablenpc "fc101";
 	disablenpc "fc103";
@@ -133,7 +133,7 @@ force_1-1.gat,99,12,0	script	arenalv2fgt	-1,{
 	enablenpc "fc103-1";
 	enablenpc "fc105";
 	enablenpc "fc107";
-	announce "You have 60 seconds to destroy all seven!",19;
+	announce "你有60秒的時間去摧毀它們7個!",19;
 	addtimer 60000,"arenalv2fail";
 	addtimer 50000,"tensecsleft";
 }
@@ -143,16 +143,16 @@ force_1-1.gat,99,12,0	script	arenalv3fgt	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	monster "force_1-1.gat",20,20,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",20,25,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",20,30,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",30,20,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",30,25,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",30,30,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",25,30,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",25,25,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",25,20,"Arena Enemy",1019,1,"arenalv3mon";
-	monster "force_1-1.gat",20,35,"Arena Enemy",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",20,20,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",20,25,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",20,30,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",30,20,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",30,25,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",30,30,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",25,30,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",25,25,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",25,20,"競技場敵人",1019,1,"arenalv3mon";
+	monster "force_1-1.gat",20,35,"競技場敵人",1019,1,"arenalv3mon";
 	set $arena00,9;
 	disablenpc "fc101";
 	disablenpc "fc103";
@@ -160,7 +160,7 @@ force_1-1.gat,99,12,0	script	arenalv3fgt	-1,{
 	enablenpc "fc103-1";
 	enablenpc "fc105";
 	enablenpc "fc107";
-	announce "You have 90 seconds to destroy all nine!",19;
+	announce "你有90秒的時間去摧毀它們9個!",19;
 	addtimer 90000,"arenalv3fail";
 	addtimer 80000,"tensecsleft";
 }
@@ -175,59 +175,59 @@ force_1-1.gat,25,26,0	script	arenalv1mon	-1,{
 	enablenpc "fc101";
 	enablenpc "fc103";
 	areaannounce "force_1-1.gat",0,0,350,350,
-		"You cleared Time Attack Level 1.",0;
+		"你完成了限時挑戰 等級 1.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
 		strcharinfo(0) + " cleared Time Attack Level 1.",0;
 	areaannounce "prontera.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "morocc.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "geffen.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payon.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "alberta.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "izlude.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "aldebaran.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "xmas.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "comodo.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prt_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prtg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prtg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prtg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prtg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "prtg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "pay_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "payg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "yuno.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "amatsu.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	areaannounce "gonryun.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 1.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 1.",0;
 	addtimer 5000,"arenareturn";
 L_CONT:
 	end;
@@ -241,59 +241,59 @@ force_1-1.gat,25,26,0 	script	arenalv2mon	-1,{
 	enablenpc "fc101";
 	enablenpc "fc103";
 	areaannounce "force_1-1.gat",0,0,350,350,
-		"You cleared Time Attack Level 2.",0;
+		"你完成了限時挑戰 等級 2.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prontera.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "morocc.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "geffen.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payon.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "alberta.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "izlude.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "aldebaran.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "xmas.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "comodo.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prt_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prtg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prtg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prtg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prtg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "prtg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "pay_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "payg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "yuno.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "amatsu.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	areaannounce "gonryun.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 2.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 2.",0;
 	addtimer 5000,"arenareturn";
 L_CONT:
 	end;
@@ -308,59 +308,59 @@ force_1-1.gat,25,26,0 	script	arenalv3mon	-1,{
 	enablenpc "fc101";
 	enablenpc "fc103";
 	areaannounce "force_1-1.gat",0,0,350,350,
-		"You cleared Time Attack Level 3.",0;
+		"你完成了限時挑戰 等級 3.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prontera.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "morocc.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "geffen.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payon.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "alberta.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "izlude.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "aldebaran.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "xmas.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "comodo.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prt_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prtg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prtg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prtg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prtg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "prtg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "pay_gld.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payg_cas01.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payg_cas02.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payg_cas03.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payg_cas04.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "payg_cas05.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "yuno.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "amatsu.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	areaannounce "gonryun.gat",0,0,350,350,
-		strcharinfo(0) + " cleared Time Attack Level 3.",0;
+		strcharinfo(0) + " 完成了限時挑戰 等級 3.",0;
 	addtimer 5000,"arenareturn";
 L_CONT:
 	end;
@@ -372,7 +372,7 @@ force_1-1.gat,25,26,0	script	arenalv1fail	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	announce "Time Over!!",3;
+	announce "時間到!!",3;
 	areaannounce "force_1-1.gat",0,0,350,350,
 		"You failed Time Attack Level 1.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
@@ -435,7 +435,7 @@ force_1-1.gat,25,26,0	script	arenalv2fail	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	announce "Time Over!!",3;
+	announce "時間到!!",3;
 	areaannounce "force_1-1.gat",0,0,350,350,
 		"You failed Time Attack Level 2.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
@@ -498,7 +498,7 @@ force_1-1.gat,25,26,0	script	arenalv3fail	-1,{
 	killmonster "force_1-1.gat","arenalv1mon";
 	killmonster "force_1-1.gat","arenalv2mon";
 	killmonster "force_1-1.gat","arenalv3mon";
-	announce "Time Over!!",3;
+	announce "時間到!!",3;
 	areaannounce "force_1-1.gat",0,0,350,350,
 		"You failed Time Attack Level 2.",0;
 	areaannounce "prt_are_in.gat",0,0,350,350,
@@ -558,7 +558,7 @@ force_1-1.gat,25,26,0	script	arenalv3fail	-1,{
 
 // Reminding the player of time constraints.
 force_1-1.gat,25,26,0	script 	tensecsleft	-1,{
-	announce "Ten seconds remaining!",3;
+	announce "還有10秒!",3;
 }
 
 

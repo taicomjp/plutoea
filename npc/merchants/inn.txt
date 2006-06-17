@@ -14,8 +14,9 @@
 //= Inn Npcs
 //===== By: ================================================== 
 //= Darkchild (1.1)
+//= Playtester (1.2)
 //===== Current Version: ===================================== 
-//= 1.1a
+//= 1.3
 //===== Compatible With: ===================================== 
 //= eAthena 1.0+
 //===== Description: ========================================= 
@@ -32,6 +33,8 @@
 //= I added it to all of them though [Darkchild]
 //= 1.1a Minor bug fixes and optimizations. Switched from @variables 
 //= to arguments.[kobra_k88]
+//= 1.2 Rewrote inn script [Playtester]
+//= 1.3 Removed Duplicates [Silent]
 //============================================================ 
 
 
@@ -40,25 +43,13 @@
 prt_in.gat,244,135,2	script	旅館 侍女::Sammy	53,{
 
 	callfunc "F_InnMaid","[珊珊]","西方旅館","prt_in.gat",238,130;
-	addtimer 3900, "Sammy::OnTimerWarp";
-	close;
-
-OnTimerWarp:
 	warp "prt_in.gat",237,102;
-	sc_end SC_BLIND;
-	end;
 }
 // East Side Inn ------------------
-prt_in.gat,61,141,2	script	旅館 侍女::Ahlma	53,{
+prt_in.gat,61,141,2	script	旅館 侍女::Ahlma#01	53,{
 
 	callfunc "F_InnMaid","[艾瑪]","東方旅館","prt_in.gat",64,136;
-	addtimer 3900, "Ahlma::OnTimerWarp";
-	close;
-
-OnTimerWarp:
-	warp "prt_in.gat",60,174;
-	sc_end SC_BLIND;
-	end;
+	warp "prt_in.gat",49,173;
 }
 
 //======================== Alberta ====================================
@@ -66,51 +57,27 @@ OnTimerWarp:
 alberta_in.gat,32,142,5	script	旅館 侍女::Moira	53,{
 
 	callfunc "F_InnMaid","[莫拉]","北方旅館","alberta_in.gat",26,138;
-	addtimer 3900, "Moira::OnTimerWarp";
-	close;
-
-OnTimerWarp:
 	warp "alberta_in.gat",18,188;
-	sc_end SC_BLIND;
-	end;
 }
 // South -----------------------------
 alberta_in.gat,55,142,8	script	旅館 侍女::Tina	53,{
 
 	callfunc "F_InnMaid","[汀娜]","南方旅館","alberta_in.gat",60,140;
-	addtimer 3900, "Tina::OnTimerWarp";
-	close;
-
-OnTimerWarp:
 	warp "alberta_in.gat",68,188;
-	sc_end SC_BLIND;
-	end;
 }
 
 //====================== Geffen ======================================
 geffen_in.gat,70,64,5	script	旅館 侍女::Betty	53,{
 
-	callfunc "F_InnMaid","[貝蒂]","旅館","geffen_in.gat",74,60;
-	addtimer 3900, "Betty::OnTimerWarp";
-	close;
-
-OnTimerWarp:
+	callfunc "F_InnMaid","[貝蒂]","吉芬旅館","geffen_in.gat",74,60;
 	warp "geffen_in.gat",106,106;
-	sc_end SC_BLIND;
-	end;
 }
 
 //======================= Payon ======================================
 payon_in01.gat,131,62,5	script	旅館 侍女::SunHee	53,{
 
-	callfunc "F_InnMaid","[珊琪]","旅館","payon_in01.gat",132,56;
-	addtimer 3900, "SunHee::OnTimerWarp";
-	close;
-
-OnTimerWarp:
+	callfunc "F_InnMaid","[珊琪]","斐揚旅館","payon_in01.gat",132,56;
 	warp "payon_in01.gat",140,15;
-	sc_end SC_BLIND;
-	close;
 }
 
 //======================== Morocc ====================================
@@ -118,25 +85,13 @@ OnTimerWarp:
 morocc_in.gat,147,138,5	script	旅館 侍女::Suzie	53,{
 
 	callfunc "F_InnMaid","[蘇西]","東北方旅館","morocc_in.gat",142,140;
-	addtimer 3900, "Suzie::OnTimerWarp";
-	close;
-
-OnTimerWarp:
 	warp "morocc_in.gat",174,144;
-	sc_end SC_BLIND;
-	end;
 }
 // South --------------------------------
 morocc_in.gat,80,100,5	script	旅館 侍女::Shala	53,{
 
 	callfunc "F_InnMaid","[夏拉]","南方旅館","morocc_in.gat",78,95;
-	addtimer 3900, "Shala::OnTimerWarp";
-	close;
-
-OnTimerWarp:
 	warp "morocc_in.gat",74,128;
-	sc_end SC_BLIND;
-	end;
 }
 
 //======================= Inn Function ==============================
@@ -144,7 +99,7 @@ function	script	F_InnMaid	{
 	mes getarg(0);
 	mes "歡迎光臨 " + getarg(1) + ". 有什麼能為您服務的嗎?";
 	next;
-	menu "儲存服務",Msave, "租房間",Mrent, "沒有",Mend;
+	menu "儲存服務",Msave, "租房間 -> 5000 zeny",Mrent, "沒有",Mend;
 
 	Msave:
 		mes getarg(0);
@@ -153,24 +108,12 @@ function	script	F_InnMaid	{
 		savepoint getarg(2),getarg(3),getarg(4);
 		close;
 	Mrent:
-		set @cost,50;
-		if(BaseLevel > 15) set @cost,1000;
-		if(BaseLevel > 30) set @cost,2000;
-		if(BaseLevel > 50) set @cost,3000;
-		if(BaseLevel > 75) set @cost,4000;
-		if(BaseLevel > 90) set @cost,5000;
-		mes getarg(0);
-		mes "租一個房間住一晚需要 " + @cost + " Zeny";
-		mes "隔天早上您的 HP 與 SP 將會恢復";
-		next;
-		menu "讓我睡吧",-,"精神好得很",Mend;
-		
+		if(Zeny < 5000) goto NoZeny;
 		mes getarg(0);
 		mes "謝謝惠顧，祝您有個美夢!";
-		emotion 15;
-		if(Zeny < @cost) goto NoZeny;
-		set Zeny,Zeny - @cost;
-		sc_start SC_BLIND,500000,1;
+		close2;
+
+		set Zeny,Zeny - 5000;
 		percentheal 100,100;
 		return;
 

@@ -13,7 +13,7 @@
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.2
+//= 1.3
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
@@ -21,87 +21,85 @@
 //===== Additional Comments: ================================= 
 //= Fixed flower name Dreamy -> Illusion
 //= 1.2 Fixed exploit [Lupus]
+//= 1.3 Removed Duplicates [Silent]
 //============================================================ 
 
 
 // Ph.D Hat Quest-------------------------------------------------------
 prt_in.gat,38,108,4	script	教授	53,{
-	if (countitem(710)<1) goto L_SUB_1;
-	if (countitem(703)<1) goto L_SUB_1;
-	if (countitem(704)<1) goto L_SUB_1;
-	if (countitem(708)<1) goto L_SUB_1;
+	if(countitem(710) >= 1 && countitem(703) >= 1 && countitem(704) >= 1 && countitem(708) >= 1) goto L_Start;//Items: Illusion Flower, Hinalle, Aloe, Ment,
+	mes "[教授]";
+	mes "這花... 很美。對吧?";
+	next;
+	menu "繼續對話",-,"取消",M_End;
+
+		mes "[教授]";
+		mes "年輕的時候我很少和同伴一起出去玩，幾乎都埋頭苦讀。";
+		mes "雖然有點可惜，但是...我並不後悔。托那時候的福我才能完成那麼高等的教育，要不然我也不會有今日的成就。";
+		next;
+		mes "[教授]";
+		mes "不過說實話... 沒什麼朋友還是令我感到相當的悲傷。";
+		mes "讀書讀到厭煩的時候.. 連個可以聽我說話跟我談心的朋友都沒有。";
+		mes "值得慶幸的是，後來我終於找到我這輩子最真心的朋友了。";
+		next;
+		mes "[教授]";
+		mes "當我走進花園裡，看到那一朵朵盛開的美麗花朵的那一瞬間...";
+		mes "我突然感受到自己與花朵有著相同的命運，於是我將花朵當作我的摯友。";
+		next;
+		mes "[教授]";
+		mes "對其他人來說花朵可能就只是花朵而已..但是對我來說，它給了我相當大的力量。";
+		mes "我能夠有今天的成就..可以說都是因為有它的陪伴。";
+		next;
+		mes "[教授]";
+		mes "所以.. 我最近.. 很想報答那些贈與我花的朋友。";
+		mes "我們村莊做了很多有關花的研究..甚至還想佈置出一個充滿花的地方，朝世界邁進。";
+		next;
+		mes "[教授]";
+		mes "所以.. 我們需要很多很多的花...";
+		mes "因為我不太常出門.. 所以要找尋是相當的困難的。";
+		mes "如果你可以為我找到^3355FF幻想花^000000 與 ^3355FF西納雷花^000000 還有 ^3355FF蘆薈^000000 跟 ^3355FF曼特花^000000... 這些花的話，我就把我最重視的東西給你...";
+		close;
+
+	M_End:
+		mes "[教授]";
+		mes "總有一天我一定會用很多很多的花朵來佈置一個美麗無比的地方。";
+		close;
+
+L_Start:
 	mes "[教授]";
 	mes "我的天啊.. 手上拿著的花是..";
+	M_Menu:
 	next;
-	menu "給他看花",-,"給他花",L_MENU_1,"取消",L_MENU_2;
+	menu "給他看花",-,"給他花",M_Give,"取消",M_End;
 		mes "[教授]";
 		mes "那.. 那是 .. 我尋尋覓覓的四種花沒錯..";
 		mes "你可以把花給我嗎?...";
 		next;
 		mes "[教授]";
 		mes "如果你願意給我的話...我...我就把我最重視的東西給你。";
-		close;end;
-	L_MENU_1:
-		if (!(checkweight(5012,1))) goto L_START_1;
-		if (countitem(710)<1) goto L_SUB_2;
-		if (countitem(703)<1) goto L_SUB_2;
-		if (countitem(704)<1) goto L_SUB_2;
-		if (countitem(708)<1) goto L_SUB_2;
-		delitem 710,1;
-		delitem 703,1;
-		delitem 704,1;
-		delitem 708,1;
-		getitem 5012,1;
+		goto M_Menu;
+
+	M_Give:
+		if(countitem(710) < 1 || countitem(703) < 1 || countitem(704) < 1 || countitem(708) < 1) goto L_Cheater;//Items: Illusion Flower, Hinalle, Aloe, Ment,
+		delitem 710,1;//Items: Illusion Flower,
+		delitem 703,1;//Items: Hinalle,
+		delitem 704,1;//Items: Aloe,
+		delitem 708,1;//Items: Ment,
 		mes "[教授]";
 		mes "真是太感謝你了，從小到大這是我第一次感到人情的溫暖。";
+		emotion e_thx;
+		next;
+		mes "[教授]";
 		mes "我就照約定把我最重視的東西給你。";
 		mes "這是我畢業的時候所戴過的帽子，裡面載滿了我求學時期的回憶。";
 		mes "請你收下..希望你也跟我一樣珍惜它。";
-		close;end;
-	L_SUB_2:
+		getitem 5012,1;//Items: Ph.D Hat,
+		close;
+
+	L_Cheater:
 		mes "[教授]";
 		mes "... 仔細一看這並不是我所要尋找的花...";
 		mes "哈哈... 都怪我眼睛昏花，沒看清楚...";
-		close;end;
-	L_MENU_2:
-		close;end;
-	L_SUB_1:
-		mes "[教授]";
-		mes "這花... 很美。對吧?";
-		next;
-		menu "繼續對話",-,"取消",L_MENU_3;
-			mes "[教授]";
-			mes "年輕的時候我很少和同伴一起出去玩，幾乎都埋頭苦讀。";
-			mes "雖然有點可惜，但是...我並不後悔。托那時候的福我才能完成那麼高等的教育，要不然我也不會有今日的成就。";
-			next;
-			mes "[教授]";
-			mes "不過說實話... 沒什麼朋友還是令我感到相當的悲傷。";
-			mes "讀書讀到厭煩的時候.. 連個可以聽我說話跟我談心的朋友都沒有。";
-			mes "值得慶幸的是，後來我終於找到我這輩子最真心的朋友了。";
-			next;
-			mes "[教授]";
-			mes "當我走進花園裡，看到那一朵朵盛開的美麗花朵的那一瞬間...";
-			mes "我突然感受到自己與花朵有著相同的命運，於是我將花朵當作我的摯友。";
-			next;
-			mes "[教授]";
-			mes "對其他人來說花朵可能就只是花朵而已..但是對我來說，它給了我相當大的力量。";
-			mes "我能夠有今天的成就..可以說都是因為有它的陪伴。";
-			next;
-			mes "[教授]";
-			mes "所以.. 我最近.. 很想報答那些贈與我花的朋友。";
-			mes "我們村莊做了很多有關花的研究..甚至還想佈置出一個充滿花的地方，朝世界邁進。";
-			next;
-			mes "[教授]";
-			mes "所以.. 我們需要很多很多的花...";
-			mes "因為我不太常出門.. 所以要找尋是相當的困難的。";
-			mes "如果你可以為我找到^3355FF幻想花^000000 與 ^3355FF西納雷花^000000 還有 ^3355FF蘆薈^000000 跟 ^3355FF曼特花^000000... 這些花的話，我就把我最重視的東西給你...";
-			close;end;
-	L_MENU_3:
-			mes "[教授]";
-			mes "總有一天我一定會用很多很多的花朵來佈置一個美麗無比的地方。";
-			close;end;
-	L_START_1:
-		mes "[教授]";
-		mes "不好意思您負重囉!!";
-		close;end;
+		emotion e_bzz;
+		close;
 }

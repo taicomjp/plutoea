@@ -11,21 +11,25 @@
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.2
+//= 1.5
 //===== Compatible With: ===================================== 
 //= eAthena  0.5.2 +
 //===== Description: ========================================= 
 //=
 //===== Additional Comments: ================================= 
 //= Fully working
-//= v1.1 Now using duplicate command.
-//= New Payon Locations [Darkchild]
+//= v1.1 Now using duplicate command.New Payon Locations [Darkchild]
+//= 1.2 Optimized, updated common guide names [Lupus]
+//= 1.3 Updated the guide according to how it is on iRO, thanks [MasterOfMuppets]
+//=     to Muad_Dib
+//= 1.3a Fixed some problems with duplicated text, thanks to muad_dib [MasterOfMuppets]
+//= 1.4 Fitted the many lines into 1 or 2, and corrected some typos [erKURITA]
+//= 1.4a Tixed Archer Village Guide [Lupus] 
+//= 1.5 Removed Duplicates [Silent]
 //============================================================
 
 
-
-
-payon.gat,148,213,4	script	導遊	708,{
+payon.gat,148,213,4	script	導遊#pay1	708,{
 	cutin "pay_soldier",2;
 	mes "[裴楊 導遊]";
 	mes "歡迎光臨 山嶽之都 裴楊!";
@@ -35,89 +39,85 @@ payon.gat,148,213,4	script	導遊	708,{
 	mes "第一次來到這裡的旅客建議先聽取注意事項, 瞭解必須注意的事情.";
 M_Menu:
 	next;
-	menu "開始由導遊說明城市",M_1, "聽取注意事項",M_2, "取消",M_End;
+	menu "開始由導遊說明城市",-, "聽取注意事項",L_NOTICE, "取消",L_END;
 
-	M_1:
-		mes "[裴楊 導遊]";
-		mes "請問您需要要在微型地圖上留下記號嗎?";
-		next;
-		menu "不需要",sM_1a,"需要, 謝謝",sM_1b;
-		
-		sM_1a:
-			set @COMPASS_CHECK,0;
-			goto L_Cont;
-
-		sM_1b:
-			set @COMPASS_CHECK,1;
-
-		L_Cont:
-		mes "[裴楊 導遊]";
-		mes "請您選擇想知道的建築物";
-		next;
+	mes "[裴楊 導遊]";
+	mes "請問您需要要在微型地圖上留下記號嗎?";
+	next;
+	menu "需要, 謝謝",L_YES,"不需要",L_NO;
+L_NO:
+	set @COMPASS_CHECK,0;
+	goto L_Cont;
+L_YES:
+	set @COMPASS_CHECK,1;
+L_Cont:
+	mes "[裴楊 導遊]";
+	mes "請您選擇想知道的建築物";
+	next;
 	sM_Menu:
 		menu 	"^FF0000弓箭手公會^000000",M_1_1, "裝備商店",M_1_2, "道具商店",M_1_3, "旅館",M_1_4, "中央皇宮",M_1_5,
 			"刪除微型地圖上全部的記號",M_1_6, "取消",M_End;
 
-	M_1_1:	mes "[裴楊 導遊]";
-		mes "'弓箭手公會' 位在弓箭手村, 如果你想成為弓箭手的話就一定要去那兒.";
-		viewpoint 1,227,323,1,0xFF0000;
-		goto sL_Wipe;
-	M_1_2:
-		mes "[裴楊 導遊]";
-		mes "'裝備商店' 位在本城中央稍微靠西邊一點的位置.";
-		viewpoint 1,138,158,2,0xFF00FF;
-		goto sL_Wipe;
-	M_1_3:
-		mes "[裴楊 導遊]";
-		mes "'道具商店' 位在本城南方";
-		viewpoint 1,161,95,3,0xFF00FF;
-		goto sL_Wipe;
-	M_1_4:
-		mes "[裴楊 導遊]";
-		mes "'旅館' 位在本城東南方.";
-		viewpoint 1,219,117,4,0xFF00FF;
-		goto sL_Wipe;
-	M_1_5:
-		mes "[裴楊 導遊]";
-		mes "'中央皇宮' 是裴楊皇族的家. 去到那邊別忘了注意自己的禮儀.";
-		viewpoint 1,156,243,5,0x00FF00;
-		goto sL_Wipe;
-	M_1_6:
-		set @COMPASS_CHECK, 2;
-		sL_Wipe:
-		if(@COMPASS_CHECK != 2) next;		// avoids a double 'next' when 'wipe indications' is chosen
-		if(@COMPASS_CHECK == 1) goto sM_Menu;
-		viewpoint 2,227,323,1,0xFF0000;
-		viewpoint 2,138,158,2,0xFF00FF;
-		viewpoint 2,161,95,3,0xFF00FF;
-		viewpoint 2,219,117,4,0xFF00FF;
-		viewpoint 2,156,243,5,0x00FF00;
-		if (@COMPASS_CHECK == 0) goto sM_Menu;
-		mes "[裴楊 導遊]";
-		mes "所有的記號已經刪除";
-		cutin "pay_soldier",255;
-		close;
+M_1_1:	mes "[裴楊 導遊]";
+	mes "'弓箭手公會' 位在弓箭手村, 如果你想成為弓箭手的話就一定要去那兒.";
+	viewpoint 1,227,323,1,0xFF0000;
+	goto sL_Wipe;
+M_1_2:
+	mes "[裴楊 導遊]";
+	mes "'裝備商店' 位在本城中央稍微靠西邊一點的位置.";
+	viewpoint 1,138,158,2,0xFF00FF;
+	goto sL_Wipe;
+M_1_3:
+	mes "[裴楊 導遊]";
+	mes "'道具商店' 位在本城南方";
+	viewpoint 1,161,95,3,0xFF00FF;
+	goto sL_Wipe;
+M_1_4:
+	mes "[裴楊 導遊]";
+	mes "'旅館' 位在本城東南方.";
+	viewpoint 1,219,117,4,0xFF00FF;
+	goto sL_Wipe;
+M_1_5:
+	mes "[裴楊 導遊]";
+	mes "'中央皇宮' 是裴楊皇族的家. 去到那邊別忘了注意自己的禮儀.";
+	viewpoint 1,156,243,5,0x00FF00;
+	goto sL_Wipe;
+M_1_6:
+	set @COMPASS_CHECK, 2;
+	sL_Wipe:
+	if(@COMPASS_CHECK != 2) next;		// avoids a double 'next' when 'wipe indications' is chosen
+	if(@COMPASS_CHECK == 1) goto sM_Menu;
+	viewpoint 2,227,323,1,0xFF0000;
+	viewpoint 2,138,158,2,0xFF00FF;
+	viewpoint 2,161,95,3,0xFF00FF;
+	viewpoint 2,219,117,4,0xFF00FF;
+	viewpoint 2,156,243,5,0x00FF00;
+	if (@COMPASS_CHECK == 0) goto sM_Menu;
+	mes "[裴楊 導遊]";
+	mes "所有的記號已經刪除";
+	cutin "pay_soldier",255;
+	close;
 
-	M_2:
-		mes "[裴楊 導遊]";
-		mes "我們採用了最現代化的數位指引方式, 無論您在哪裡都可以借由微型地圖知道您的位置.";
-		mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合後的廣網域測位系統的功能.";
-		next;
-		mes "[裴楊 導遊]";
-		mes "別忘了參考右上方的微型地圖";
-		mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
-		mes "微型地圖出現之後 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
-		goto M_Menu;
+L_NOTICE:
+	mes "[裴楊 導遊]";
+	mes "我們採用了最現代化的數位指引方式, 無論您在哪裡都可以借由微型地圖知道您的位置.";
+	mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合後的廣網域測位系統的功能.";
+	next;
+	mes "[裴楊 導遊]";
+	mes "別忘了參考右上方的微型地圖";
+	mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
+	mes "微型地圖出現之後 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
+	goto M_Menu;
 
-	M_End:
-		mes "[裴楊 導遊]";
-		mes "旅途愉快, 旅行者!";
-		cutin "pay_soldier",255;
-		close;
+L_END:
+	mes "[裴楊 導遊]";
+	mes "旅途愉快, 旅行者!";
+	cutin "pay_soldier",255;
+	close;
 }
 
 // Archer Village ----------------------------------------------------------------
-pay_arche.gat,85,30,2	script	導遊	708,{
+pay_arche.gat,85,30,2	script	導遊#pay2	708,{
 	cutin "pay_soldier",2;
 	mes "[裴楊 導遊]";
 	mes "歡迎光臨 山嶽之都 裴楊!";
@@ -127,73 +127,68 @@ pay_arche.gat,85,30,2	script	導遊	708,{
 	mes "第一次來到這裡的旅客建議先聽取注意事項, 瞭解必須注意的事情.";
 M_Menu:
 	next;
-	menu "開始由導遊說明城市",M_1, "聽取注意事項",M_2, "取消",M_End;
+	menu "開始由導遊說明城市",-, "聽取注意事項",L_NOTICE, "取消",L_END;
 
-	M_1:
-		mes "[裴楊 導遊]";
-		mes "請問您需要要在微型地圖上留下記號嗎?";
-		next;
-		menu "不需要",sM_1a,"需要, 謝謝",sM_1b;
-		
-		sM_1a:
-			set @COMPASS_CHECK,0;
-			goto L_Cont;
+	mes "[裴楊 導遊]";
+	mes "請問您需要要在微型地圖上留下記號嗎?";
+	next;
+	menu "需要, 謝謝",L_YES,"不需要",L_NO;
+L_NO:
+	set @COMPASS_CHECK,0;
+	goto L_Cont;
+L_YES:
+	set @COMPASS_CHECK,1;
+L_Cont:
+	mes "[裴楊 導遊]";
+	mes "請您選擇想知道的建築物";
+	next;
+sM_Menu:
+	menu 	"^FF0000弓箭手公會^000000",M_1_1, "道具商店",M_1_2, "^0000FF裴楊 洞穴^000000",M_1_3,
+		"刪除微型地圖上全部的記號",M_1_4, "取消",M_End;
 
-		sM_1b:
-			set @COMPASS_CHECK,1;
+M_1_1:
+	mes "[裴楊 導遊]";
+	mes "'弓箭手公會' 位於弓箭手村的東北方. 那兒可以讓你轉職成弓箭手";
+	viewpoint 1,144,164,1,0xFF0000;
+	goto sL_Wipe;
+M_1_2:
+	mes "[裴楊 導遊]";
+	mes "'道具商店' 位在弓箭手村的西北方角落.";
+	viewpoint 1,71,156,2,0xFF00FF;
+	goto sL_Wipe;
+M_1_3:
+	mes "[裴楊 導遊]";
+	mes "'裴楊 對血' 充滿著腐屍與其他魔物, 如果你要去那裡, 請萬事小心.";
+	viewpoint 1,34,132,3,0x0000FF;
+	goto sL_Wipe;
+M_1_4:
+	set @COMPASS_CHECK, 2;
+	sL_Wipe:
+	if(@COMPASS_CHECK != 2) next;	// avoids a double 'next' when 'wipe indications' is chosen
+	if(@COMPASS_CHECK == 1) goto sM_Menu;
+	viewpoint 2,144,164,1,0xFF0000;
+	viewpoint 2,71,156,2,0xFF00FF;
+	viewpoint 2,34,132,3,0x0000FF;
+	if (@COMPASS_CHECK == 0) goto sM_Menu;
+	mes "[裴楊 導遊]";
+	mes "所有的記號已經刪除";
+	cutin "pay_soldier",255;
+	goto M_Menu;
 
-		L_Cont:
-		mes "[裴楊 導遊]";
-		mes "請您選擇想知道的建築物";
-		next;
-	sM_Menu:
-		menu 	"^FF0000弓箭手公會^000000",M_1_1, "道具商店",M_1_2, "^0000FF裴楊 洞穴^000000",M_1_3,
-			"刪除微型地圖上全部的記號",M_1_4, "取消",M_End;
+L_NOTICE:
+	mes "[裴楊 導遊]";
+	mes "我們採用了最現代化的數位指引方式, 無論您在哪裡都可以借由微型地圖知道您的位置.";
+	mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合後的廣網域測位系統的功能.";
+	next;
+	mes "[裴楊 導遊]";
+	mes "別忘了參考右上方的微型地圖";
+	mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
+	mes "微型地圖出現之後 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
+	goto M_Menu;
 
-		M_1_1:
-			mes "[裴楊 導遊]";
-			mes "'弓箭手公會' 位於弓箭手村的東北方. 那兒可以讓你轉職成弓箭手";
-			viewpoint 1,144,164,1,0xFF0000;
-			goto sL_Wipe;
-		M_1_2:
-			mes "[裴楊 導遊]";
-			mes "'道具商店' 位在弓箭手村的西北方角落.";
-			viewpoint 1,71,156,2,0xFF00FF;
-			goto sL_Wipe;
-		M_1_3:
-			mes "[裴楊 導遊]";
-			mes "'裴楊 對血' 充滿著腐屍與其他魔物, 如果你要去那裡, 請萬事小心.";
-			viewpoint 1,34,132,3,0x0000FF;
-			goto sL_Wipe;
-		M_1_4:
-			set @COMPASS_CHECK, 2;
-
-		sL_Wipe:
-			if(@COMPASS_CHECK != 2) next;	// avoids a double 'next' when 'wipe indications' is chosen
-			if(@COMPASS_CHECK == 1) goto sM_Menu;
-			viewpoint 2,144,164,1,0xFF0000;
-			viewpoint 2,71,156,2,0xFF00FF;
-			viewpoint 2,34,132,3,0x0000FF;
-			if (@COMPASS_CHECK == 0) goto sM_Menu;
-			mes "[裴楊 導遊]";
-			mes "所有的記號已經刪除";
-			cutin "pay_soldier",255;
-			goto M_Menu;
-
-	M_2:
-		mes "[裴楊 導遊]";
-		mes "我們採用了最現代化的數位指引方式, 無論您在哪裡都可以借由微型地圖知道您的位置.";
-		mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合後的廣網域測位系統的功能.";
-		next;
-		mes "[裴楊 導遊]";
-		mes "別忘了參考右上方的微型地圖";
-		mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
-		mes "微型地圖出現之後 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
-		goto M_Menu;
-
-	M_End:
-		mes "[裴楊 導遊]";
-		mes "旅途愉快, 旅行者!";
-		cutin "pay_soldier",255;
-		close;
+L_END:
+	mes "[裴楊 導遊]";
+	mes "旅途愉快, 旅行者!";
+	cutin "pay_soldier",255;
+	close;
 }

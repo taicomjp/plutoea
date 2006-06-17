@@ -9,11 +9,11 @@
 //============================================================
 
 //===== eAthena Script ======================================= 
-//= Item Quest NPCs located in Aldebaran
+//= Item Quest NPCs located in Aldebaran 
 //===== By: ================================================== 
 //=
 //===== Current Version: ===================================== 
-//= 1.1
+//= 1.2
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
@@ -21,14 +21,14 @@
 //===== Additional Comments: ================================= 
 //= Fully working
 //= 1.1 Fixed Doctor Band items [Lupus]
+//= 1.2 Removed Duplicates [Silent]
 //============================================================ 
 
 
 //=======================================================================================================//
 //			'Doctor Band', 'Feather Bonnet', 'Opera Masque', 'Sakkat Hat' Quest
 //=======================================================================================================//
-
-aldeba_in.gat,152,166,4	script	猜謎商人	86,{
+aldeba_in.gat,152,166,4	script	猜謎商人#01	86,{
 	mes "[猜謎商人]";
 	mes "哈哈哈！ 我就是傳說中那個有名的猜謎商！";
 	mes "我的行跡不滿整個塵世大陸！";
@@ -39,75 +39,54 @@ aldeba_in.gat,152,166,4	script	猜謎商人	86,{
 	mes "(3) . ^3355FF話劇面具^000000 : 鋼鐵 20 塊 + 哀唱草 1 株 + 5000 金幣";
 	mes "(4) . ^3355FF草帽^000000 : 瑪哪樹枝120 個 + 10000 金幣";
 	next;
-	menu "醫師髮箍",L_MENU_1,"羽毛帽",L_MENU_2,"話劇面具",L_MENU_3,"草帽",L_MENU_4;
-	L_MENU_1:
-		if (countitem(2275)<1) goto L_SUB_1;
-		if (countitem(998)<50) goto L_SUB_1;
-		if (countitem(733)<1) goto L_SUB_1;
-		if (Zeny < 3500) goto L_SUB_1;
-		delitem 2275,1;
-		delitem 998,50;
-		delitem 733,1;
-		set Zeny,Zeny-3500;
+	menu "醫師髮箍",-,"羽毛帽",M_1,"話劇面具",M_2,"草帽",M_3;
+
+		if(countitem(2275) == 0 || countitem(998) < 50 || countitem(733) == 0 || Zeny < 3500) goto L_CantMake;
+		delitem 2275,1;//Items: Red Bandana,
+		delitem 998,50;//Items: Iron,
+		delitem 733,1;//Items: Cracked deamond
+		set Zeny,Zeny - 3500;
 		mes "[猜謎商人]";
 		mes "嗯嗯 ！ 你 .. 有醫師執照嗎 ?！ 不過呢，如果你擁有像怪醫黑捷克那樣的醫術的話，沒有執照應該也無所謂啦..";
 		mes "嗯，應該沒什麼太大的問題。那，拿去，這個給你。";
-		getitem 2273,1;
-		close;end;
-	L_SUB_1:
-		mes "[猜謎商人]";
-		mes "你看你看，我不是要你再重新確認一下自己需要的物品嘛。";
-		mes "年輕人你的頭腦好像不太靈光喔.. 要清醒一點，知道嗎?";
-		close;end;
-	L_MENU_2:
-		if (countitem(2247)<1) goto L_SUB_2;
-		if (countitem(916)<300) goto L_SUB_2;
-		if (Zeny < 500) goto L_SUB_2;
-		delitem 2247,1;
-		delitem 916,300;
-		set Zeny,Zeny-500;
+		getitem 2273,1;//Items: Doctor Band,
+		close;
+	M_1:
+		if(countitem(2247) == 0 || countitem(916) < 300 || Zeny < 500) goto L_CantMake;//Items: Romantic Gent, Feather of Birds,
+		delitem 2247,1;//Items: Romantic Gent,
+		delitem 916,300;//Items: Feather of Birds,
+		set Zeny,Zeny - 500;
 		mes "[猜謎商人]";
 		mes "嘿黑，你的眼光不賴嘛。";
 		mes "雖然這些材料得來不易，但是光看這做出來的工你應該還滿意吧?　那，拿去吧..";
-		getitem 5018,1;
-		close;end;
-	L_SUB_2:
-		mes "[猜謎商人]";
-		mes "你看你看，我不是要你再重新確認一下自己需要的物品嘛。";
-		mes "年輕人你的頭腦好像不太靈光喔.. 要清醒一點，知道嗎?";
-		close;end;
-	L_MENU_3:
-		if (countitem(999)<20) goto L_SUB_3;
-		if (countitem(707)<1) goto L_SUB_3;
-		if (Zeny < 5000) goto L_SUB_3;
-		delitem 999,20;
-		delitem 707,1;
-		set Zeny,Zeny-5000;
+		emotion e_heh;
+		getitem 5018,1;//Items: Feather Bonnet,
+		close;
+	M_2:
+		if(countitem(998) < 20 || countitem(707) == 0 || Zeny < 5000) goto L_CantMake;//Items: Iron, Singing Plant,
+		delitem 998,20;//Items: Iron,
+		delitem 707,1;//Items: Singing Plant,
+		set Zeny,Zeny - 5000;
 		mes "[猜謎商人]";
 		mes "這個應該還可以吧..";
 		mes "雖然外觀看起來有點令人毛骨悚然，不過..倒也蠻有它獨特的風味的，你覺得如何呢?";
 		mes ".. 看起來你還挺喜歡的嘛.. 那，拿走吧！";
-		getitem 2281,1;
-		close;end;
-	L_SUB_3:
-		mes "[猜謎商人]";
-		mes "你看你看，我不是要你再重新確認一下自己需要的物品嘛。";
-		mes "年輕人你的頭腦好像不太靈光喔.. 要清醒一點，知道嗎?";
-		close;end;
-	L_MENU_4:
-		if (countitem(1019)<120) goto L_SUB_4;
-		if (Zeny < 10000) goto L_SUB_4;
-		delitem 1019,120;
-		set Zeny,Zeny-10000;
+		getitem 2281,1;//Items: Opera Masque,
+		close;
+	M_3:
+		if(countitem(1019) < 120 || Zeny < 10000) goto L_CantMake;//Items: Trunk,
+		delitem 1019,120;//Items: Trunk,
+		set Zeny,Zeny - 10000;
 		mes "[猜謎商人]";
 		mes "聽說在裴揚的村落有一位製作草帽的好手..";
 		mes "出自那位好手的草帽可是只有在我這裡才有的喔！";
 		mes "那 ！ 拿走吧 ！";
-		getitem 2280,1;
-		close;end;
-	L_SUB_4:
+		getitem 2280,1;//Items: Sakkat,
+		close;
+
+	L_CantMake:
 		mes "[猜謎商人]";
 		mes "你看你看，我不是要你再重新確認一下自己需要的物品嘛。";
 		mes "年輕人你的頭腦好像不太靈光喔.. 要清醒一點，知道嗎?";
-		close;end;
+		close;
 }
