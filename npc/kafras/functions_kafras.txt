@@ -505,11 +505,11 @@ function	script	F_KafEnd	{
 // Check Storage Password Function ====================
 function	script	F_CheckKafCode	{
 	if(#kafra_code==0) return;
-	mes "Enter your storage password:";
+	mes "請輸入你的倉庫密碼:";
 	set @code_,0;
 	input @code_;
 	if(@code_ != #kafra_code-getcharid(3)-1337) {
-		dispbottom "Wrong storage password.";
+		dispbottom "密碼錯誤.";
 		close2;
 		cutin "",255;
 		end;
@@ -523,16 +523,16 @@ function	script	F_CheckKafCode	{
 function	script	F_SetKafCode	115,{
 	mes "[卡普拉服務人員]";
 	if(#kafra_code) {
-		mes "Your storage is protected with a password. What would you do now?";
+		mes "你的倉庫目前有密碼保護，你現在要做什麼?";
 		next;
-		menu "Change old password -> 5000z",-,
-		"Remove storage password -> 1000z",M_CLEAR,
-		"Cancel",M_END;
+		menu "改變密碼 -> 5000z",-,
+		"移除密碼 -> 1000z",M_CLEAR,
+		"取消",M_END;
 	} else {
 		mes "Kafra Services proudly presents you a new service:";
 		mes "Additional storage protection with a password.";
 		next;
-		menu "Set new password -> 5000z",M_SET,
+		menu "設置新密碼 -> 5000z",M_SET,
 		"Cancel",M_END;
 	}
 
@@ -540,7 +540,7 @@ function	script	F_SetKafCode	115,{
 	mes "At first, please enter your ^0000FFold password^000000.";
 	set @code,callfunc("F_EntKafCode");
 	if(@code==0 || @code != #kafra_code-getcharid(3)-1337) {
-		mes "Wrong password. You can't set a new password.";
+		mes "密碼錯誤，你不能設置新密碼.";
 		emotion e_hmm;
 		goto M_END;
 	}
@@ -594,7 +594,7 @@ M_CLEAR:
 	goto M_END;	
 
 L_ZENY:
-	mes "You don't have enough zeny.";
+	mes "你沒有足夠的 zeny.";
 	emotion e_cash;
 M_END:
 	close2;
@@ -604,7 +604,7 @@ M_END:
 
 // Basic Password Validation Function ====================
 function	script	F_EntKafCode	{
-	mes "Enter a number 1000~10000000:";
+	mes "輸入數字範圍 1000~10000000:";
 	set @code_,0;
 	set @kafcode_try,@kafcode_try+1;
 	if(@kafcode_try>10) {
@@ -613,11 +613,11 @@ function	script	F_EntKafCode	{
 	}
 	input @code_;
 	if(@code_<1000) {
-		mes "You shouldn't use such short password.";
+		mes "密碼太短.";
 		return 0;
 	}
 	if(@code_>10000000) {
-		mes "You can't use such big password.";
+		mes "密碼太長.";
 		return 0;
 	}
 	return @code_;
