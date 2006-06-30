@@ -11,7 +11,7 @@
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.1
+//= 1.2a
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
@@ -19,68 +19,58 @@
 //===== Additional Comments: ================================= 
 //= Fully working
 //= 1.1 Negative input bug fixed [Lupus]
-//============================================================ 
-
-
+//= 1.2 Raised the price to close zeny exploit [Lupus]
+//= 1.2a Switched to Lupus's "loopless" technique.[kobra_k88]
+//============================================================
 
 
 // 牛奶商人 -------------------------------------------------------------
 prontera.gat,71,131,7	script	牛奶商人	86,{
 	mes "[牛奶商人]";
-	mes "只要你有一個空瓶子和15個金幣，就可以到我這裡來換取一瓶牛奶，怎麼樣，想換嗎？";
+	mes "只要你有一個空瓶子和20個金幣，就可以到我這裡來換取一瓶牛奶，怎麼樣，想換嗎？";
 	next;
-	menu	"幫我把所有空瓶都換成牛奶",M0,
-		"我要換取一定數量的牛奶",M1,
-		"不了，謝謝",MEnd;
-	M0:
-		set @l0,countitem(713);
-		if(@l0 < 1)
-			goto NoBottle;
-		if(Zeny < @l0 * 15)
-			goto NoZeny;
-		delitem 713,@l0;
-		set Zeny,zeny-@l0 * 15;
-		getitem 519,@l0;
+	menu "幫我把所有空瓶都換成牛奶",M_0,"我要換取一定數量的牛奶",M_1,"不了，謝謝",M_End;
+
+	M_0:
+		set @amount, 1000;
+		if(zeny/20 < @amount) set @amount, zeny/20;
+		if(countitem(713) < @amount) set @amount, countitem(713);
+		if(@amount > 0) goto L_Milk;
 		mes "[牛奶商人]";
-		mes "已經把空瓶子都裝滿了牛奶了，謝謝您的光臨！";
-		close;end;
-		end;
-	M1:
+		mes "不要騙我。";
+		close;
+
+	M_1:
 		mes "[牛奶商人]";
 		mes "那好吧，請在提示訊框內輸入數量。";
 		next;
-		input @number;
-		if(@number < 1 || @number > 100)
-			goto Failnum;
-		if(countitem(713) < @number)
-			goto NoBottle;
-		if(Zeny < @number * 15)
-			goto NoZeny;
-		delitem 713,@number;
-		set Zeny,Zeny - @number * 15;
-		getitem 519,@number;
+		input @amount;
+		if(@amount < 1 || @amount > 1000) goto L_Failnum;
+		if(countitem(713) < @amount) goto L_NoBottle;
+		if(zeny < (@amount*20)) goto L_NoZeny;
+
+	L_Milk:
+		set zeny, zeny - (@amount*20);
+		delitem 713, @amount;
+		getitem 519, @amount;
+
+	M_End:
 		mes "[牛奶商人]";
-		mes "OK！已經把空瓶子都裝滿了牛奶了，謝謝您的光臨！";
-		close;end;
-		end;
-	NoBottle:
+		mes "歡迎下次再來。";
+		close;
+
+	L_NoBottle:
 		mes "[牛奶商人]";
 		mes "對不起，你沒有足夠的空瓶子。";
-		close;end;
-		end;
-	NoZeny:
+		close;
+
+	L_NoZeny:
 		mes "[牛奶商人]";
-		mes "換取一瓶牛奶需要15個金幣，你沒有那麼多的金幣！";
-		close;end;
-		end;
-	Failnum:
+		mes "換取一瓶牛奶需要20個金幣，你沒有那麼多的金幣！";
+		close;
+
+	L_Failnum:
 		mes "[牛奶商人]";
-		mes "對不起，每次兌換的數量不得少於1瓶，不得多於100瓶。";
-		close;end;
-		end;
-	MEnd:
-		mes "[牛奶商人]";
-		mes "那好吧，再見！";
-		close;end;
-		end;
+		mes "對不起，每次兌換的數量不得少於1瓶，不得多於1000瓶。";
+		close;
 }
