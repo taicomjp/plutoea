@@ -10,17 +10,24 @@
 //============================================================
 
 //===== eAthena Script ======================================= 
-//= Izlude Town				
+//= Izlude Town
 //===== By: ================================================== 
 //= kobra_k88
 //===== Current Version: ===================================== 
-//= 1.0
+//= 1.6
 //===== Compatible With: ===================================== 
 //= eAthena 7.15 +
 //===== Description: ========================================= 
 //=
 //===== Additional Comments: ================================= 
 //= Fully working
+//= 1.1 fixed 2 zeny bugs/checks [Lupus]
+//= 1.2 Fixed a lot of typos [Nexon]
+//= 1.3 Removed callfunc Is_####_Class in favor of baseClass [Silentdragon]
+//= 1.4 Added a Jawaii related npc. 1.4a Fixed a small bug to
+//=	the Jawaii warper, thanks to reddozen and Silent [MasterOfMuppets]
+//= 1.5 Replaced iz_move_alberta with MISC_QUEST & 16 [Lupus]
+//= 1.6 Removed Duplicates [Silent]
 //============================================================
 
 
@@ -61,34 +68,33 @@ izlude.gat,55,74,2	script	俄特	90,{
 //Cuskoal-------------------------------------------------------------------------------------
 izlude.gat,119,121,1	script	庫斯可爾	124,{
 	set @TEMP,rand(2);
-	if(@TEMP !=0) goto msg;
 	mes "[庫斯可爾]";
+	if(@TEMP != 0) goto L_R0;
 	mes "競技場是米德加爾特王國，為了讓全國有能力的人，想試驗自己的能力的地方！，按照等層級會出現魔物和你決鬥，看你能通過什麼樣的等級，就能判定你的能力！";
 	next;
 	mes "[庫斯可爾]";
 	mes "怎麼樣，你要不要也挑戰一下？";
 	close;
-	end;
-	msg:
+
+	L_R0:
 		mes "[庫斯可爾]";
 		mes "普隆德拉的酒館總是擠滿了外地人，非常熱鬧，從酒館的人那裡可以打聽到很多的傳言和訊息。";
 		mes "如果你仔細聽他們的話，運氣好的話可以獲得一些非常有價值的訊息。";
 		close;
-		end;
 }
 
 //Charfri-------------------------------------------------------------------------------------
 izlude.gat,135,78,2	script	夏普立	91,{
 	set @TEMP,rand(2);
-	if(@TEMP !=0) goto Other;
 	mes "[夏普立]";
+	if(@TEMP != 0) goto L_R0;
 	mes "有人看不起我們是普隆德拉的衛星都市，不過伊斯魯得島靠近海洋有一座美麗的島。";
 	next;
 	mes "[夏普立]";
 	mes "想去的話，在港口搭船即可，島上有很多危險的洞口，不要隨便進出。";
 	close;
-	end;
-	Other:
+
+	L_R0:
 		mes "[夏普立]";
 		mes "那裡雖然非常美麗，但是也非常的危險，因為島上佈滿了密密麻麻的洞穴！";
 		next;
@@ -100,29 +106,129 @@ izlude.gat,135,78,2	script	夏普立	91,{
 		mes "啊~~看見在水裡的人都說確實很奇妙，以致於他們至今還夢想到它。";
 		mes "可惜的是烏龜島的魔物讓普通的平民百姓深受侵害，我希望能夠在有生之年到島上去一趟，不過那只有只有只是夢想而已！";
 		close;
-		end;
 }
 
 //Dega-------------------------------------------------------------------------------------
 izlude.gat,150,118,2	script	竇加	84,{
+	set @TEMP,rand(3);
 	mes "[竇加]";
+	if(@TEMP != 0) goto L_R0;
 	mes "普隆德拉北方有一座山脈，具說危險很不好翻越，整座山非常險峻，我想你也因該知道，那邊有非常非常可怕的昆蟲存活著。";
 	next;
 	mes "[竇加]";
 	mes "說真的我只想乖乖的不動，結果經過那裡，他們反而先攻擊我，真的要翻越山脈，要去別的地方的話，除非真的有自信，否則請回吧！";
 	close;
-	end;
+	L_R1:
+		mes "There's a very delightful place";
+		mes "where you can find every";
+		mes "type of Poring.";
+		next;
+		mes "[Dega]";
+		mes "It's somewhere near the bridge";
+		mes "connecting the forest and the";
+		mes "desert, on the way to the city of";
+		mes "Payon which is Southeast from";
+		mes "here.";
+		next;
+		mes "[Dega]";
+		mes "There are not only pink Porings but";
+		mes "also Drops, which can be found at";
+		mes "the desert, and the green";
+		mes "Poporing.";
+		next;
+		mes "[Dega]";
+		mes "But be careful, before you realize";
+		mes "it, you may come face to face with";
+		mes "Ghostring, a deadly Poring that";
+		mes "floats around the air like a";
+		mes "ghost.";
+		next;
+		mes "[Dega]";
+		mes "Well, of course, they are all very";
+		mes "cute, but Ghostring is an";
+		mes "EXCEPTION. It is very very";
+		mes "dangerous.";
+		next;
+		mes "[Dega]";
+		mes "If you are lucky enough, you might";
+		mes "even bump into Angeling, the";
+		mes "Poring with Angel wings.";
+		next;
+		menu "Ghostring?",-,"Angeling?",M1,"End Conversation.",MEnd;
+
+			mes "[Dega]";
+			mes "Ghostring is a grayish Poring that";
+			mes "floats around in the air like a";
+			mes "ghost. Just like other ghosts,";
+			mes "physical attacks can't do any";
+			mes "damage to it.";
+			next;
+			mes "[Dega]";
+			mes "Those whose main attack methods are";
+			mes "physical like Swordman and Archer";
+			mes "might have to run for their lives";
+			mes "when facing Ghostrings.";
+			next;
+			mes "[Dega]";
+			mes "But don't leave just yet~! There is";
+			mes "great news for people with those";
+			mes "jobs. Making a weapon of some";
+			mes "elemental property is the key.";
+			next;
+			mes "[Dega]";
+			mes "This way, even a Swordman or an";
+			mes "Archer can inflict damage, the way";
+			mes "Magic does, on Ghostrings.";
+			close;
+		M1:
+			mes "[Dega]";
+			mes "Angelings are immune to Magic";
+			mes "attacks. If people who can only";
+			mes "attack with Magic face an";
+			mes "Angeling, then it's time for";
+			mes "them to run.";
+			next;
+			mes "[Dega]";
+			mes "If you've got an extra knife or";
+			mes "sword, you could give it a shot.";
+			mes "But it will be very difficult";
+			mes "alone, don't you think?";
+			close;
+		MEnd:
+			mes "[Dega]";
+			mes "Good Luck~";
+			close;
 }
 
 //Kylick-------------------------------------------------------------------------------------
 izlude.gat,150,143,2	script	齊黎	97,{
+	set @TEMP,rand(2);
 	mes "[齊黎]";
+	if (@TEMP != 0) goto L_R0;
+
 	mes "用望遠鏡左右觀望，實在是太神氣了！我們依斯魯得島，不只負責路地上的安全，也負責寬廣海洋的安全。";
 	next;
 	mes "[齊黎]";
 	mes "所以架設大望遠鏡，可以看到遠海，可提前做準備，所有的事情提早做準備，是一定要的啦！";
 	close;
-	end;
+
+	L_R0:
+		mes "I was thinking, even though the";
+		mes "people of Izlude live so close to";
+		mes "the ocean...";
+		next;
+		mes "[Kylick]";
+		mes "There are other cultures that have";
+		mes "completely developed by living off";
+		mes "of the sea. Of course, I'm talking";
+		mes "about Amatsu.";
+		next;
+		mes "[Kylick]";
+		mes "I hear the cuisine there is really";
+		mes "good! Although the idea of eating";
+		mes "raw fish is new to me, I would love";
+		mes "to go there, and try it just once!";
+		close;
 }
 
 // Soldier ------------------------------------------------------------------------------
@@ -130,48 +236,48 @@ izlude.gat,124,178,4	script	柯利	105,{
 	mes "[柯利]";
 	mes "嘿嘿嘿……嗯？ 什麼事讓我這麼高興？告訴你吧？";
 	next;
-	menu "告訴我！為什麼？",Case1,"不用了！",Case2;
-	Case1:
+	menu "告訴我！為什麼？",-,"不用了！",M_1;
+	
 		mes "[柯利]";
 		mes "啊啊，最近沒有工作，我想你也知道吧，抓住怪物從他們身上所取寶物後，部份商人會花錢來買的……";
 		next;
-		menu "當然！",Case11,"哦？真的啊？",Case12; 
-			Case11:
-				mes "[柯利]";
-				mes "你懂這個原則就好，可是這種賺錢方式最近很多人在做。";
-				next;
-				mes "[柯利]";
-				mes "每天連續熬夜加班賺錢，嗚嗚嗚……所以說政府用了卑鄙的手法，要有販賣證才能到賞金兌換所換取現金。";
-				next;
-				mes "[柯利]";
-				mes "販賣證對許多人有極大的吸引力，但必須在指定的場所，才能營業。";
-				next;
-				mes "[柯利]";
-				mes "所以說，現在找我們的人變的很少！當人碰到艱苦的環境之後，才知道惜福啊……哈哈哈！";
-				close;
-				end;
-			Case12:
-				mes "[柯利]";
-				mes "你不知道嗎？！嗯...這... 這...抓住怪物從他們身上所取寶物後，把這寶物賣給商人，是個可觀的收入吧！";
-				next;
-				mes "[柯利]";
-				mes "每天連續熬夜加班賺錢，嗚嗚嗚……所以說政府用了卑鄙的手法，要有販賣證才能到賞金兌換所換取現金。";
-				next;
-				mes "[柯利]";
-				mes "販賣證對許多人有極大的吸引力，但必須在指定的場所，才能營業。";
-				next;
-				mes "[柯利]";
-				mes "所以現在找我們的人變的很少！所以說啊，當人碰到艱苦的環境之後，才知道惜福啊……哈哈哈！";
-				close;
-				end;
-	Case2:
+		menu "當然！",sM_0,"哦？真的啊？",sM_1; 
+
+		sM_0:
+			mes "[柯利]";
+			mes "你懂這個原則就好，可是這種賺錢方式最近很多人在做。";
+			next;
+			mes "[柯利]";
+			mes "每天連續熬夜加班賺錢，嗚嗚嗚……所以說政府用了卑鄙的手法，要有販賣證才能到賞金兌換所換取現金。";
+			next;
+			mes "[柯利]";
+			mes "販賣證對許多人有極大的吸引力，但必須在指定的場所，才能營業。";
+			next;
+			mes "[柯利]";
+			mes "所以說，現在找我們的人變的很少！當人碰到艱苦的環境之後，才知道惜福啊……哈哈哈！";
+			close;
+
+		sM_1:
+			mes "[柯利]";
+			mes "你不知道嗎？！嗯...這... 這...抓住怪物從他們身上所取寶物後，把這寶物賣給商人，是個可觀的收入吧！";
+			next;
+			mes "[柯利]";
+			mes "每天連續熬夜加班賺錢，嗚嗚嗚……所以說政府用了卑鄙的手法，要有販賣證才能到賞金兌換所換取現金。";
+			next;
+			mes "[柯利]";
+			mes "販賣證對許多人有極大的吸引力，但必須在指定的場所，才能營業。";
+			next;
+			mes "[柯利]";
+			mes "所以現在找我們的人變的很少！所以說啊，當人碰到艱苦的環境之後，才知道惜福啊……哈哈哈！";
+			close;
+
+	M_1:
 		mes "[柯利]";
 		mes "好！再見！";
 		close;
-		end;
 }
 //Red-------------------------------------------------------------------------------------
-izlude.gat,58,126,2	script	瑞德	98,{
+izlude.gat,58,126,1	script	瑞德	98,{
 	mes "[瑞德]";
 	mes "劍士不需要別的技能，只要會狂擊就好，你說對不對！";
 	next;
@@ -190,21 +296,60 @@ izlude.gat,58,126,2	script	瑞德	98,{
 	mes "[瑞德]";
 	mes "喂...那邊在聽我講話的人... 對！就是你，你認為怎麼樣？是狂擊好？還是怒爆好？哪一個比較好？";
 	next;
-	menu "狂擊比較好",Case1,"怒爆比較好",Case2;
-	Case1:
+	menu "狂擊比較好",-,"怒爆比較好",L1;
+
 		mes "[瑞德]";
+		if( baseClass == Job_Swordman ) goto L00;
 		mes "哈哈哈！！就是說嘛，劍士還是用狂擊比較好，麻煩你教一下那位白癡。";
 		close;
-		end;
-	Case2:
+
+		L00:
+			mes "Hahahaha!!! I knew you'd see things";
+			mes "my way! you ARE a great guy!!";
+			mes "Undoubtedly, only ^FF0000Bash^000000 suits a";
+			mes "Swordman. Please tell that to this";
+			mes "BONEHAD over here~ Hahaha!";
+			next;
+			mes "[Red]";
+			mes "Hmm, let me give you a bit of";
+			mes "advice. After you achieve level 5";
+			mes "'Bash', the amount of SP consumed";
+			mes "by the skill increased greatly, so";
+			mes "watch out for your SP.";
+			close;
+	L1:
 		mes "[西發利司]";
+		if( baseClass == Job_Swordman ) goto L01;
 		mes "對！怒爆是最棒的，你比較有概念喔！那白癡為什麼這麼倔強，我真不瞭解！";
 		close;
-		end;
+
+		L01:
+			mes "Alright!! ^FF0000Magnum Break^000000 is the";
+			mes "BEST!! Now you're talking~!! You";
+			mes "know the stuff~HaHaHa!";
+			next;
+			mes "[Cebalis]";
+			mes "You wanna know some useful";
+			mes "information? Okay, lemme tell";
+			mes "ya! Magnum Break has Fire";
+			mes "Property.";
+			next;
+			mes "[Cebalis]";
+			mes "So it won't be too effective";
+			mes "against monsters with the Water";
+			mes "property, but this is THE skill to";
+			mes "use against Undead and Earth";
+			mes "property monsters!";
+			next;
+			mes "[Cebalis]";
+			mes "And most importantly, look around";
+			mes "before you use it. Otherwise you'll";
+			mes "be in BIG trouble~";
+			close;
 }
 
 //Cebalis-------------------------------------------------------------------------------------
-izlude.gat,56,126,7	script	西發利司	98,{
+izlude.gat,56,126,7	script	西發利司	85,{
 	mes "[瑞德]";
 	mes "劍士不需要別的技能，只要會狂擊就好，你說對不對！";
 	next;
@@ -223,17 +368,56 @@ izlude.gat,56,126,7	script	西發利司	98,{
 	mes "喂...那邊在聽我講話的人... 對！就是你，你認為怎麼樣？ 是狂擊好？還是怒爆好？";
 	mes "那一個比較好？";
 	next;
-	menu "狂擊比較好",Case1,"怒爆比較好",Case2;
-	Case1:
+	menu "狂擊比較好",-,"怒爆比較好",L1;
+
 		mes "[瑞德]";
+		if( baseClass == Job_Swordman ) goto L00;
 		mes "哈哈哈！！就是說嘛，劍士還是用狂擊比較好，麻煩你教一下那位白癡！";
 		close;
-		end;
-	Case2:
+
+		L00:
+			mes "Hahahaha!!! I knew you'd see things";
+			mes "my way! you ARE a great guy!!";
+			mes "Undoubtedly, only ^FF0000Bash^000000 suits a";
+			mes "Swordman. Please tell that to this";
+			mes "BONEHAD over here~ Hahaha!";
+			next;
+			mes "[Red]";
+			mes "Hmm, let me give you a bit of";
+			mes "advice. After you achieve level 5";
+			mes "'Bash', the amount of SP consumed";
+			mes "by the skill increased greatly, so";
+			mes "watch out for your SP.";
+			close;
+	L1:
 		mes "[西發利司]";
+		if( baseClass == Job_Swordman ) goto L01;
 		mes "對！怒爆是最棒的，你比較有概念喔！那白癡為什麼這麼倔強，我真不瞭解！";
 		close;
-		end;
+
+		L01:
+			mes "Alright!! ^FF0000Magnum Break^000000 is the";
+			mes "BEST!! Now you're talking~!! You";
+			mes "know the stuff~HaHaHa!";
+			next;
+			mes "[Cebalis]";
+			mes "You wanna know some useful";
+			mes "information? Okay, lemme tell";
+			mes "ya! Magnum Break has Fire";
+			mes "Property.";
+			next;
+			mes "[Cebalis]";
+			mes "So it won't be too effective";
+			mes "against monsters with the Water";
+			mes "property, but this is THE skill to";
+			mes "use against Undead and Earth";
+			mes "property monsters!";
+			next;
+			mes "[Cebalis]";
+			mes "And most importantly, look around";
+			mes "before you use it. Otherwise you'll";
+			mes "be in BIG trouble~";
+			close;
 }
 
 //Aaron-------------------------------------------------------------------------------------
@@ -254,9 +438,8 @@ izlude_in.gat,125,164,5	script	亞倫	65,{
 	mes "[亞倫]";
 	mes "嗯....有興趣嗎？我繼續說？";
 	next;
-	menu "繼續",L0,"算了吧",LEnd;
+	menu "繼續",-,"算了吧",LEnd;
 	
-	L0:
 		mes "[亞倫]";
 		mes "嗯，那麼我再簡單的和你說說其它的屬性。為了更快的攻擊和躲避，你必須注意你的AGI。";
 		next;
@@ -264,59 +447,83 @@ izlude_in.gat,125,164,5	script	亞倫	65,{
 		mes "為突發的提高你的爆擊率，有一個好主意就是在LUK中增強訓練。";
 		mes "INT增強你的最大SP，是使用各種不同技能的基礎....這就要根據你的喜好了！";
 		close;
-		end;
 	LEnd:
 		mes "[亞倫]";
 		mes "好，那好好訓練吧~~";
 		close;
-		end;
 }
 
 //Edgar-------------------------------------------------------------------------------------
+izlude.gat,182,186,2	script	愛德嘉	709,{
 
-izlude.gat,182,186,2	script	愛德嘉	49,{
 	mes "[愛德嘉]";
 	mes "我們依斯魯得島和艾爾貝塔港口之間有通船，我常常兩地往返，我在那認識一個傢伙，那傢伙特別小器，想要坑他是不可能的。";
 	next;
 	mes "[愛德嘉]";
 	mes "可是他本性善良，喜歡幫助別人，你去艾爾貝塔搞不好會遇到他的。";
+M_Menu:
 	next;
-	menu "你可以告訴我怎樣去艾爾貝塔嗎？",Case1,"結束對話！",Case2;
-	Case1:
+	menu "你可以告訴我怎樣去艾爾貝塔嗎？",-,"結束對話！",M_End;
+	
 		mes "[愛德嘉]";
 		mes "嗯？用腳走也能走到艾爾貝塔，不過有錢的話，在那裡搭船就馬上到了";
     		next;
-		menu "好吧！我用走的！",Case11,"我不想用走的但我也沒錢搭船！",Case12;
-    		Case11:
+		menu "好吧！我用走的！",-,"我不想用走的但我也沒錢搭船！",sM_1;
+		
 			mes "[愛德嘉]";
 			mes "好吧，小心點走吧";
     			close;
-    			end;
-		Case12:
+
+		sM_1:
+			if (MISC_QUEST & 16) goto sM_2;
     			mes "[愛德嘉]";
     			mes "什麼？！沒有那麼多錢，又不想用走的，我是一位船長，我特別只跟你收250金幣，把你帶到艾爾貝塔。";
     			next;
-    			menu "我去艾爾貝塔！",Case121,"不了！我不想去艾爾貝塔！",Case122;
-  			Case121:
-	    			if(Zeny>250) goto Case121OK;
-				mes "[愛德嘉]";
-				mes "小子你不夠錢喔！去多賺點吧！";
-    				close;    						
-			Case121OK:
-	    			set Zeny,Zeny-250;
-    				warp "alberta.gat",195,164;
-				close;
-				end;
-			Case122:
+    			menu "我去艾爾貝塔！",-,"不了！我不想去艾爾貝塔！",sm_1b;
+ 
+				set MISC_QUEST,MISC_QUEST | 16;
+				if(Zeny < 250) goto sl_NoZeny;
+				set Zeny, Zeny - 250;
+				warp "alberta.gat",195,164;
+
+			sm_1b:
     				mes "[愛德嘉]";
 				mes "這人好像很笨！";
     				close;
-				end;
-	Case2:
+
+			sM_2:
+				mes "[Edgar]";
+				mes "So are you heading to Alberta";
+				mes "again? Let me give you the same";
+				mes "discount and only charge 250 Zeny,";
+				mes "just like the last time.";
+				mes "How's that sound?";
+				next;
+				menu "Alrighty~!",-,"Why are you being so nice to me?!",sM_2b;
+
+				if(Zeny < 250) goto sl_NoZeny;
+				set Zeny, Zeny - 250;
+				warp "alberta.gat",195,164;
+
+			sM_2b:
+				mes "[Edgar]";
+				mes "It's just the way I am. That, and";
+				mes "your devilish smile reminds me of";
+				mes "my beloved blond haired son who";
+				mes "left home years ago to become a";
+				mes "Sailor on his own ship. Bless his";
+				mes "soul, wherever he is.";
+				close;
+
+				sl_NoZeny:
+					mes "[愛德嘉]";
+					mes "小子你不夠錢喔！去多賺點吧！";
+					close;
+
+	M_End:
 		mes "[愛德嘉]";
 		mes "好吧！再見！";
 		close;
-		end;
 }
 
 //Sailor-------------------------------------------------------------------------------------
@@ -324,31 +531,26 @@ izlude.gat,201,181,2	script	船員#06	100,{
 	mes "[船員]";
 	mes "有艘以超高速航行的船早已準備好隨時出發，不過它不能保障大家的安全就是了！來吧！我們走！";
 	next;
-	menu "骷髏島 > 150z.",Case1,"艾爾貝塔 港口 > 500z",Case2,"取消",Case3;
-	Case1:
-		if (Zeny>150) goto Case1OK;
+	menu "骷髏島 > 150z.",-,"艾爾貝塔 港口 > 500z",L1,"取消",LEnd;
+
+		if(Zeny < 150) goto sl_NoZenyBya;
+		set Zeny, Zeny - 150;
+		warp "izlu2dun.gat",107,50;
+		close;
+	L1:
+		if(Zeny < 500) goto sl_NoZenyMar;
+		set Zeny, Zeny - 500;
+		warp "alberta.gat",188,169;
+	LEnd:
+		close;
+	sl_NoZenyBya:
 		mes "[船員]";
 		mes "150 Zeny！只要150 Zeny我就送你去！";
 		close;
-		Case1OK:
-			set Zeny,Zeny-150;
-			warp "izlu2dun.gat",107,50;
-		close;
-		end;
-	Case2:
-		if (Zeny>500) goto Case2OK;
-		mes "[[船員]";
+	sl_NoZenyMar:
+		mes "[船員]";
 		mes "500 Zeny！只要 500 Zeny我就送你去！";
 		close;
-		end;
-	Case2OK:
-		set Zeny,Zeny-500;
-		warp "alberta.gat",188,169;
-		close;
-		end;
-	Case3:
-		close;
-		end;
 }
 
 //Sailor-------------------------------------------------------------------------------------
@@ -361,4 +563,64 @@ izlu2dun.gat,108,27,4	script	船員#07	100,{
 		warp "izlude.gat",176,182;
 	L1:
 		close;
+}
+
+izlude.gat,171,185,3	script	Honeymoon Helper#Izlude I	71,{
+
+	mes "[Marry Happy]";
+	mes "Newly weds and already weds...";
+	mes "You can go to the imaginary recreational area anytime.";
+	mes "Welcome to Jawaii!";
+	next;
+	menu "'Jawaii'?",-,"Let's go to 'Jawaii'~",s_Go,"Cancel",s_Cancel;
+
+			mes "[Marry Happy]";
+			mes "A distant island from the continent of Rune Midgard... ";
+			mes "there is a peaceful and charming recreational area,";
+			mes "that can't be easily reached by people.";
+			mes "Since it is a famous spot for honeymoon,";
+			mes "only married couples are allowed to go there.";
+			next;
+			mes "[Marry Happy]";
+			mes "Since it's a special journey,";
+			mes "the payment will be a bit expensive than normal. It will cost you 100,000z !!";
+			mes "And that's what lets you enjoy";
+			mes "a peaceful and fascinating";
+			mes "honey moon trip...?";
+			close;
+
+s_Go:
+			if(getpartnerid() == 0)
+{
+				mes "[Marry Happy]";
+				mes "UhOh, I'm sorry.";
+				mes "You can't go there if you're not married...";
+				mes "Why don't you go to the Prontera Inn,";
+				mes "and cheer yourself up?";
+				close;
+}
+			else if(Zeny < 100000)
+{
+					mes "[Marry Happy]";
+					mes "I've explained about the trip to 'Jawaii'.";
+					mes "You'll need 100,000 z.";
+					mes "If you do not have enough zeny,";
+					mes "why don't you seek help from your partner...?";
+					close;
+}
+				set Zeny,Zeny - 100000;
+				mes "[Marry Happy]";
+				mes "Enjoy your trip...!!";
+				mes "Let's go to 'Jawaii'...!!";
+				close2;
+				warp "jawaii.gat",241,115;
+				end;
+
+s_Cancel:
+			mes "[Marry Happy]";
+			mes "There's nothing that is as exciting as";
+			mes "travelling together, especially when";
+			mes "you're travelling with your loved ones.";
+			mes "You must be very happy, isn't it?";
+			close;
 }
