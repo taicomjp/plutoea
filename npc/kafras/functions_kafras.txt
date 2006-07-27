@@ -298,6 +298,10 @@ function	script	F_KafTele	{
 	L_Warp:
 		if (@wrpC$[@num] == "取消") return;
 		if (@kafPass==1) set @wrpP[@num], 0;
+		if (countitem(7060)) {
+		set @wrpP[@num], 0;
+		delitem 7060,1;
+		}
 		if (Zeny<@wrpP[@num]) goto sL_CantTele;
 		set Zeny, Zeny-@wrpP[@num];
 		if (@kafPass==0) set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
@@ -339,11 +343,12 @@ function	script	F_KafCart	{
 	next;
 	menu "租用手推車",-, "取消",M_End;
 
-		if(Zeny<800 && kafPass==0) goto sL_CartFee;
-		if(@kafPass==0) {
+		if(Zeny<800 && kafPass==0 && countitem(7061)<1) goto sL_CartFee;
+		if(@kafPass==0 && countitem(7061)<1) {
 			set Zeny,Zeny-800;
 			if(@kafPass==0) set RESRVPTS, RESRVPTS + 48;
 		}
+		if (countitem(7061)) delitem 7061,1;
 	L_Guild:
 		setcart;
 		mes "[卡普拉服務人員]";
@@ -594,7 +599,7 @@ M_CLEAR:
 	goto M_END;	
 
 L_ZENY:
-	mes "你沒有足夠的 zeny.";
+	mes "你沒有足夠的金錢.";
 	emotion e_cash;
 M_END:
 	close2;

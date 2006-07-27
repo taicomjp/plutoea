@@ -20,7 +20,7 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 	mes "^ff0000[快速轉職輔助人員]^000000";
 	if(Upper == 1 && Class >= Job_Lord_Knight) goto L_noReq;
 	if(SkillPoint != 0){
-		mes "I'm sorry, please use up all your skill points before changing jobs";
+		mes "抱歉，轉職前請先將技能點數用完";
 		mes "歡迎再次光臨!";
 		close;
 	}
@@ -31,7 +31,7 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 		case Job_Novice:
 			skill 142,1,0;
 			skill 143,1,0;
-			mes "Welcome, please select the job you wish to change into";
+			mes "歡迎光臨，請選擇你要轉職的職業";
 			if(lastJob != 0 && Class == Job_Novice_High){
 				switch(lastJob){
 					case Job_Knight:
@@ -61,8 +61,8 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 						break;
 							}
 			} else {
-				switch(select("Swordsman","Mage","Archer","Acolyte","Merchant","Thief",
-					"Super Novice","Taekwon","Gunslinger","Ninja")){
+				switch(select("劍士","魔法師","弓箭手","服事","商人","盜賊",
+					"超級初心者","跆拳","槍手","忍者")){
 						case 7:
 							if(Class == Job_Novice_High) goto L_noReq;
 							if($@JC_SupNovM > BaseLevel) goto L_BvError;
@@ -84,8 +84,8 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 							break;
 					}
 			}
-			mes "Are you sure you want to change to " + callfunc("getJobName",@target_job) + "?";
-			if(select("No","Yes") == 2){
+			mes "你想要轉職為 " + callfunc("getJobName",@target_job) + "?";
+			if(select("不是","是的") == 2){
 				callfunc "Job_Change", @target_job;
 				if(@target_job == Job_Gunsliger || @target_job == Job_Ninja || @target_job == Job_Taekwon) {
 					callfunc "F_ClearJobVar";
@@ -147,12 +147,12 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 							set @job_opt[1], Job_Soul_Linker;
 							break;
 					}
-					mes "Welcome, please select the job you wish to change into";
+					mes "歡迎光臨，請選擇你要轉職的職業";
 					set @target_job, @job_opt[select(callfunc("getJobName",@job_opt[0]), callfunc("getJobName",@job_opt[1]))-1];
 					if(Class > Job_Novice_High && Class < Job_Lord_Knight) set @target_job, @target_job + 4001;
 				}
-				mes "Are you sure you want to change to " + callfunc("getJobName",@target_job) + "?";
-				if(select("No","Yes")==2){
+				mes "你確定你要轉職為 " + callfunc("getJobName",@target_job) + "?";
+				if(select("不是","是的")==2){
 					callfunc "Job_Change", @target_job;
 					if(@target_job == Job_Star_Gladiator || @target_job == Job_Soul_Linker) {
 						callfunc "F_ClearJobVar";
@@ -164,8 +164,8 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 			}
 			if(checkfalcon(0) || checkcart(0) || checkriding(0)) goto L_remove;
 			if((Class >=Job_Knight) && (Class <=Job_Crusader2)){
-				mes "Do you want to reborn?";
-				if(select("Yes","No")==1){
+				mes "你想轉生?";
+				if(select("是的","不想")==1){
 					if(BaseLevel < 99 || JobLevel < 50) goto L_cantCh;
 					set lastJob, Class;
 					if(Class == Job_Knight2){
@@ -183,7 +183,7 @@ prontera.gat,153,193,6	script	快速轉職輔助人員	123,{
 				close;
 			}
 	}
-	mes "Looks like something has gone wrong. Please report to the eAthena Development Team about this error.";
+	mes "似乎有點錯誤. 請回報神之實習有關此錯誤的訊息.";
 	close;
 
 L_GivePlat:

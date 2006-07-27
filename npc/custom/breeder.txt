@@ -12,24 +12,26 @@
 //FIXED checkriding/cart/falcon funcs [Lupus]
 //Added Rebirth/Advanced Class support [Mass Zero]
 //Simplified the checks of job [Silentdragon]
+//漢化 by coolfishfish 05/18/2005
 //============================================================ 
 
 
-prontera.gat,122,200,1	script	Universal Rental Npc	726,{
-	mes "[Universal Rental Npc]";
-	mes "Hi, here you can rent Carts, Falcons or Pecopecos.";
+prontera.gat,122,200,1	script	動物飼養員	726,{
+	mes "[動物飼養員]";
+	mes "喲，早啊！在我這你可以租用手推車，獵鷹和大嘴鳥。";
 	next;
 
 L_Menu:
-	menu "Rent a Cart",L_Cart,"Rent a Falcon",L_Falcon,"Rent a Pecopeco",L_Peco,"Quit",L_Quit;
+	menu "租手推車",L_Cart,"租獵鷹",L_Falcon,"租大嘴鳥",L_Peco,"離開",L_Quit;
+//	menu "租手推車",L_Cart,"租獵鷹",L_Falcon,"租大嘴鳥",L_Peco,"獲得人工智能體胚胎",L_Homo,"更換人工智能體胚胎",L_HomoC,"退出",L_Quit;
 	close;
 
 L_Cart:
 	if((BaseClass == Job_Merchant || BaseJob == Job_SuperNovice) && checkcart(0) == 0) goto L_Cart_Ok;
 	if(getskilllv(39)<1) goto L_Need_Skill;
 
-	mes "[Universal Rental Npc]";
-	mes "Sorry " + strcharinfo(0) + ", but I only rent carts to people with the Merchant job root, who have enough skills to handle a cart.";
+	mes "[動物飼養員]";
+	mes "對不起 " + strcharinfo(0) + " 我只能把手推車租給商人系列以及超級初學者並且學習了手推車使用技能的人。";
 	close;
 
 L_Cart_Ok:
@@ -37,16 +39,16 @@ L_Cart_Ok:
 	goto L_Quit2;
 
 L_Need_Skill:
-	mes "[Universal Rental Npc]";
-	mes "Sorry you don't have the required skill to rent a cart.";
+	mes "[動物飼養員]";
+	mes "對不起，你還沒學會操縱手推車的技能。";
 	close;
 
 L_Falcon:
 	if(BaseJob != Job_Archer && BaseClass == Job_Archer && checkfalcon(0) == 0) goto L_Falc;
 	if(getskilllv(127)<1) goto L_Need_Skill2;
 
-	mes "[Universal Rental Npc]";
-	mes "Sorry " + strcharinfo(0) + ", but I only rent falcons to Hunters and Snipers who the ability to handle 'em.";
+	mes "[動物飼養員]";
+	mes "對不起 " + strcharinfo(0) + " 我只能把獵鷹租給學習了馴鷹術獵人和神射手。";
 	close;
 
 L_Falc:
@@ -54,16 +56,16 @@ L_Falc:
 	goto L_Quit2;
 
 L_Need_Skill2:
-	mes "[Universal Rental Npc]";
-	mes "Sorry you don't have the required skill to own a Falcon.";
+	mes "[動物飼養員]";
+	mes "對不起，你還沒學會馴鷹術的技能。";
 	close;
 
 L_Peco:
 	if (BaseJob != Job_Swordman && BaseClass == Job_Swordman && checkriding(0) == 0) goto L_Peco_Ok;
 	if(getskilllv(63)<1) goto L_Need_Skill3;
 
-	mes "[Universal Rental Npc]";
-	mes "Sorry " + strcharinfo(0) + ", but I only rent Pecopecos to Knights and Crusaders who have the ability to handle 'em.";
+	mes "[動物飼養員]";
+	mes "對不起" + strcharinfo(0) + "我只能把大嘴鳥租給學過騎大嘴鳥的騎士和十字軍。";
 	close;
 
 L_Peco_Ok:
@@ -71,17 +73,107 @@ L_Peco_Ok:
 	goto L_Quit2;
 
 L_Need_Skill3:
-	mes "[Universal Rental Npc]";
-	mes "Sorry you don't have the required skill to ride a Peco Peco.";
+	mes "[動物飼養員]";
+	mes "對不起，你還沒學會騎大嘴鳥。";
 	close;
 
 L_Quit:
-	mes "[Universal Rental Npc]";
-	mes strcharinfo(0) + ", please come back when you are ready to rent something.";
+	mes "[動物飼養員]";
+	mes strcharinfo(0) + ", 下次想租什麼的話就來這找我吧。";
 	close;
 
 L_Quit2:
-	mes "[Universal Rental Npc]";
-	mes strcharinfo(0) + ", please come again when you want another...";
+	mes "[動物飼養員]";
+	mes strcharinfo(0) + ", 歡迎下次光臨...";
+	close;
+
+L_Homo:
+	if(BaseJob == 18 || BaseJob == 42) goto L_Homo_Ok;
+	mes "[動物飼養員]";
+	mes "對不起 " + strcharinfo(0) + " 我只能把人工生命胚胎交給煉金術士和創造者。";
+	close;
+L_Homo_Ok:
+	if(getskilllv(243)<1) goto L_Need_Skill4;
+	if(firstpet == 1) goto L_AlreadyGot;
+	mes "[動物飼養員]";
+	mes "我會根據你的人工生命技能等級、職業等級以及基礎等級給你相應等級的胚胎";
+	mes "這是你的胚胎";
+	mes "請千萬保管好你的艾普裡歐，否則後果自負！";
+	if((BaseLevel>=99) && (JobLevel>=70) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=10) && (getskilllv(245)>=10) && (getskilllv(247)>=10) && (getskilllv(392)>=1)) goto L_Homo10;
+	if((BaseLevel>=95) && (JobLevel>=65) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=10) && (getskilllv(245)>=10) && (getskilllv(247)>=10)) goto L_Homo9;
+	if((BaseLevel>=90) && (JobLevel>=60) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=10) && (getskilllv(245)>=10)) goto L_Homo8;
+	if((BaseLevel>=85) && (JobLevel>=55) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=10)) goto L_Homo7;
+	if((BaseLevel>=80) && (JobLevel>=50) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=5)) goto L_Homo6;
+	if((BaseLevel>=75) && (JobLevel>=45) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5) && (getskilllv(246)>=5)) goto L_Homo5;
+	if((BaseLevel>=70) && (JobLevel>=40) && (getskilllv(240)>=5) && (getskilllv(241)>=5) && (getskilllv(242)>=5)) goto L_Homo4;
+	if((BaseLevel>=65) && (JobLevel>=35) && (getskilllv(240)>=5) && (getskilllv(242)>=5)) goto L_Homo3;
+	if((BaseLevel>=60) && (JobLevel>=30) && (getskilllv(240)>=5)) goto L_Homo2;
+	makepet 1550;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo2:
+	makepet 1551;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo3:
+	makepet 1552;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo4:
+	makepet 1553;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo5:
+	makepet 1554;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo6:
+	makepet 1555;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo7:
+	makepet 1556;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo8:
+	makepet 1557;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo9:
+	makepet 1558;
+	set firstpet,1;
+	goto L_Quit2;
+L_Homo10:
+	makepet 1559;
+	set firstpet,1;
+	goto L_Quit2;
+
+L_Need_Skill4:
+	mes "[動物飼養員]";
+	mes "對不起，你還沒學會製造人工生命的技能。";
+	close;
+L_HomoC:
+	if((countitem(9030)==1)||(countitem(9031)==1)||(countitem(9032)==1)||(countitem(9033)==1)||(countitem(9034)==1)||(countitem(9035)==1)||(countitem(9036)==1)||(countitem(9037)==1)||(countitem(9038)==1)||(countitem(9039)==1)) goto L_HomoC2;
+	mes "[動物飼養員]";
+	mes "你要先把艾普裡歐帶來才行啊！"; 
+	close;
+L_HomoC2:
+	if(countitem(9030)==1) delitem 9030,1;
+	if(countitem(9031)==1) delitem 9031,1;
+	if(countitem(9032)==1) delitem 9032,1;
+	if(countitem(9033)==1) delitem 9033,1;
+	if(countitem(9034)==1) delitem 9034,1;
+	if(countitem(9035)==1) delitem 9035,1;
+	if(countitem(9036)==1) delitem 9036,1;
+	if(countitem(9037)==1) delitem 9037,1;
+	if(countitem(9038)==1) delitem 9038,1;
+	if(countitem(9039)==1) delitem 9039,1;
+	set firstpet,0;
+	mes "[動物飼養員]";
+	mes "我會把它還給煉金術士工會，放心吧";
+	close;
+L_AlreadyGot:
+	mes "[動物飼養員]";
+	mes "你已經擁有胚胎了。";
 	close;
 }
