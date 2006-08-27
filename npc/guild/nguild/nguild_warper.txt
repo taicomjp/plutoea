@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= Lupus
 //===== Current Version: =====================================
-//= 1.4
+//= 1.5
 //===== Compatible With: =====================================
 //= eAthena 1+; RO Episode 4+
 //===== Description: =========================================
@@ -21,6 +21,8 @@
 //= 1.3 Restricted TK,High classes >=90 BaseLevel,
 //= 	updated list of unallowed buffs [Lupus]
 //= 1.4 Restricted it to 80 Base Level [Lupus]
+//= 1.5 According to official info: 1 Treasure Chest per Castle
+//=		TODO: The official entrance is in Izlude.
 //============================================================
 
 
@@ -28,16 +30,15 @@ prontera.gat,146,163,6	script	初心者城堡	729,{
 	mes "[西塔]";
 	mes "嗨! 我是新的初心者城堡接待員";
 	next;
-	if( (Class>=Job_Novice && Class<=Job_Thief)
-		|| (Class==Job_Taekwon && BaseLevel<80) || Class==Job_SuperNovice || Class==Job_Super_Baby
-		|| (Class>=Job_Baby && Class<=Job_Baby_Thief)
-		|| (Class>=Job_Novice_High && Class<=Job_Thief_High && BaseLevel<80)
+	if( BaseJob == Job_SuperNovice || BaseJob == Job_Novice 
+			|| (Class==Job_Taekwon && BaseLevel<60)
+			|| (Class==Job_Gunslinger && BaseLevel<60)
+			|| (BaseJob>=Job_Novice && BaseJob<=Job_Thief && BaseLevel<60) )
 	) menu "傳送到初心者城堡",M_WARP,"取消",-;
 
 	mes "[西塔]";
-	mes "所有二轉職業無法進入初心者城堡";
-	mes "基本等級超過80的跆拳少年/少女或進階職業也不行";
-	emotion 0;
+	mes "很抱歉，你無法進入初心者工會";
+	emotion e_sry;
 	close;
 
 M_WARP:
