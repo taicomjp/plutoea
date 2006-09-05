@@ -1,28 +1,463 @@
-//===== cAthena Script ======================================= 
+//===== eAthena Script =======================================
 //= Doomed Swords Quest
-//===== By: ================================================== 
+//===== By: ==================================================
 //= kobra_k88
-//===== Translate: ===========================================
-//= ganlianter  
-//===== Test: ================================================
-//
-//===== Rights: ==============================================
-//= cAthena開發小組
-//===== Current Version: ===================================== 
-//= 1.0 
-//===== Description: ========================================= 
-//= 魔短劍任務 
-//===== Additional Comments: ================================= 
+//===== Current Version: =====================================
+//= 1.3
+//===== Compatible With: =====================================
+//= eAthena 7.15 +
+//===== Description: =========================================
+//= Quest for Doomed Swords, Grimtooth, Mysteltain, Executioner.
+//= Based off mRO version. Part 1 and 2 of the quest can be
+//= found in cities\comodo.txt.  Message text for Part 6 and 7
+//= is made up.
+//===== Additional Comments: =================================
 //=95% done
-//============================================================ 
+//= 1.1 Fixed items count check. For all 3 swords... [Lupus]
+//= 1.3 Fixed exploit [Lupus]
+//============================================================
 
 
+//=============================================================================
+//			Doomed Swords Part 3
+//=============================================================================
+// Moet Leng Good: Tablet Of Power
+aldebaran.gat,44,53,4	script	Wizard in Training	64,{
+	if(dmdswrd_Q == 15) goto L_1;
+	if(dmdswrd_Q == 16) goto L_2;
+	if(dmdswrd_Q == 17) goto L_3;
+	if(dmdswrd_Q == 18) goto L_4;
+	mes "[Moet Leng Good]";
+	mes "Did you know that some people signed contract in shadows with the Dark Lord with the";
+	mes "^3355FF`Tablet of Power'^000000?!";
+	next;
+	mes "[Moet Leng Good]";
+	mes "As a result of their greed for power, it brought disasters for the entire world.";
+	mes "So please, be happy with what you already have and do not give in to the dark side.";
+	close;
+
+L_1:
+	mes "[Moet Leng Good]";
+	mes "I guess you are the possessor of the 'Stone of Awakening' and also the one seeking for the 'Tablet of Power'.";
+	next;
+	mes "[Moet Leng Good]";
+	mes "Very well then, I will help you to make a 'Tablet of Power'.";
+	mes "However, it is not a simple task, I will need a number of materials in order to succeed.";
+	next;
+	mes "[Moet Leng Good]";
+	mes "I will need one of these stones, gems, and ores.";
+	mes "^3355FF`Blue Gemstone'^000000";
+	mes "^3355FF`Sapphire'^000000";
+	mes "^3355FF`Aquarmarine'^000000";
+	mes "^3355FF`Shining Stone'^000000";
+	mes "and ^3355FF`Rough Elunium'^000000";
+	next;
+	mes "[Moet Leng Good]";
+	mes "In other words, the 'Tablet of Power' is very valuable, and might take you a while to gather the resources for it.";
+	set dmdswrd_Q,16;
+	close;
+L_2:
+	if((countitem(717) < 1) || (countitem(726) < 1) || (countitem(720) < 1) || (countitem(640) < 1) || (countitem(757) < 1)) goto L_1; 
+	mes "[Moet Leng Good]";
+	mes ". . . . . ! !";
+	mes "I can hardly believe that you actually gathered all the resources for the 'Tablet of Power'";
+	mes "Because you have worked so hard, let me make the tablet for you now.";
+	next;
+	delitem 717,1;
+	delitem 726,1;
+	delitem 720,1;
+	delitem 640,1;
+	delitem 757,1;
+	mes "^3355FF- Gives him all the stones -^000000";
+	set dmdswrd_Q,17;
+	next;
+	mes "[Moet Leng Good]";
+	mes "Now, I'll just need you to gather a few ingredients for the fininshing touch of the tablet.";
+	next;
+	mes "[Moet Leng Good]";
+	mes "I will need just one ^3355FF`Cobweb'^000000";
+	mes "You could easily obtain them through argos in Mt. Mjolnir";
+	next;
+	mes "^3355FF- Moet Leng Good's-^000000";
+	mes "^3355FF- working hard on the tablet -^000000";
+	close;
+L_3:
+	if(countitem(1025) > 0) goto sL_3;
+	mes "[Moet Leng Good]";
+	mes "The tablet will be done when I finish!";
+	mes "Please do not bother me for now, I need to concentrate";
+	next;
+	mes "[Moet Leng Good]";
+	mes "Meanwhile, please go find a cobweb so I could use it to provide some finishing touches to the tablet, thanks.";
+	close;
+
+	sL_3:
+		mes "[Moet Leng Good]";
+		mes "Ah, very good, you got a cobweb, please just leave it over there.";
+		next;
+		mes "^3355FF- Gives cobweb to him-^000000";
+		delitem 1025,1;
+		next;
+		mes "[Moet Leng Good]";
+		mes "Alright, here we go !!";
+		next;
+		mes "^3355FF- Clang ! Clang ! Clunk ! -^000000";
+		mes "^3355FF- Boom ! ! -^000000";
+		next;
+		mes "^3355FF- `Tablet of Power'-^000000";
+		mes "^3355FF- is forged -^000000";
+		next;
+		mes "^3355FF- Received 'Tablet of Power'-^000000";
+		set dmdswrd_Q,18;
+		next;
+		mes "[Moet Leng Good]";
+		mes "Even though you possess the 'Tablet of Power' now, the tablet would not be effective without";
+		mes "the ^3355FF` Book of the Tiresome Sheep'^000000??";
+		next;
+		mes "[Moet Leng Good]";
+		mes "^3355FF`Book of the Tiresome Sheep'^000000";
+		mes "was originally crafted by demons located in the desert and now the crafting skill have been passed down to a few wanderers near Morroc.";
+		next;
+		mes "[Moet Leng Good]";
+		mes "So if you wish to obatin the 'Book of the Tiresome Sheep', Morroc would be a smart place to look";
+		close;
+L_4:
+	mes "[Moet Leng Good]";
+	mes "Head to Morroc then! There's someone there that will tell you about";
+	mes "the 'Book of the Tiresome Sheep'.  I do not remember his name, but";
+	mes "now that you have the 'Tablet of Power', I'm sure you'll find him.";
+	close;
+}
 
 
+//=============================================================================
+//			Doomed Swords Part 4
+//=============================================================================
+// Zaka: Book of Tiresome Sheep
+morocc.gat,202,33,4	script	ZAKA	99,{
+	if(dmdswrd_Q == 18) goto L_1;
+	if(dmdswrd_Q == 19) goto L_2;
+	if(dmdswrd_Q == 20) goto L_3;
+	if(dmdswrd_Q == 21) goto L_4;
+	if(dmdswrd_Q == 22) goto L_5;
+	if(dmdswrd_Q == 23) goto L_6;
 
-// Executioner --------------------------------------------------------------------
+	mes "[ZAKA]";
+	mes "...... The sun sets over another day.  The moon rises to take it's nightly place.";
+	mes "As darkness creeps across the desert, the people of Morroc huddle together.";
+	mes "The never ending well is the life blood of the wandering nomads..... This is Morroc....";
+	next;
+	mes "[ZAKA]";
+	mes "Eh hem.... Say... Have you ever heard of the ^FF4444Doomed Swords^000000, or ^5555FFSwords of Power^000000?";
+	mes "It is believed that these swords are so powerful that whoever weilds them could rule the world!";
+	next;
+	mes "[ZAKA]";
+	mes "The three swords I speak of are the ^5555FFMysteltainn, Ogre Tooth, and Executioner^000000.";
+	next;
+	mes "[ZAKA]";
+	mes "These swords are hidden somewhere in this world.... have you seen any?";
+	close;
+
+L_1:
+	mes "[ZAKA]";
+	mes ". . . . .";
+	next;
+	mes "[ZAKA]";
+	mes "! ! ! ! ! ! !";
+	next;
+	mes "[ZAKA]";
+	mes "Isn't that ?! That tablet?!";
+	mes "^3355FF`Tablet of Power'^000000";
+	mes "Right?! Wha ! !";
+	next;
+	mes "[ZAKA]";
+	mes "Who are you? Why do you possess the 'Tablet of Power'?";
+	mes "Bah, nevermind, it doesn't matter who you are.";
+	mes "Whoever possesses the 'Tablet of Power' is a natural-born leader.";
+	next;
+	mes "[ZAKA]";
+	mes "Well, we are one of the wanderers of Morroc.";
+	mes "It is tradition and duty to make the possessor of^3355FF` Tablet of Power '^000000";
+	mes "a ^3355FF`Book of the Tiresome Sheep'^000000";
+	next;
+	mes "[ZAKA]";
+	mes "I will craft you a 'Book of the Tiresome Sheep', only for your personal use.";
+	mes "As you might have expected, I will need various ingredients to make you the book.";
+	next;
+	mes "[ZAKA]";
+	mes "The first thing will need are two ^3355FF`Snake Scale'^000000 , please bring them to me.";
+	set dmdswrd_Q,19;
+	close;
+L_2:
+	if(countitem(926) > 1) goto sL_2;
+	mes "[ZAKA]";
+	mes "If you want the 'Book of the Tiresome Sheep', I will need^3355FF 2 'Snake Scales'^000000.";
+	close;
+
+	sL_2:		
+		mes "Gives Zaka two^3355FF'Snake Scales'^000000";
+		delitem 926,2;
+		set dmdswrd_Q,20;
+		next;
+		mes "[ZAKA]";
+		mes "Now I can construct the basic layout of the book witht the snake scales, but I now need 1 piece of";
+		mes "^3355FF'Scale Shell'^000000 in order to block only negative energies from the book.";
+		close;
+L_3:
+	if(countitem(936) > 0) goto sL_3;
+	mes "[ZAKA]";
+	mes "Please bring me the next ingredient needed for the 'Book of the Tiresome Sheep', I will need one";
+	mes "^3355FF'Scale Shell'^000000 ??";
+	mes ". . . . .";
+	close;
+
+	sL_3:
+		mes "Gives^3355FF'Scale Shell^000000";
+		mes "to Zaka";
+		delitem 936,1;
+		set dmdswrd_Q,21;
+		next;
+		mes "[ZAKA]";
+		mes "Alright, good.";
+		mes "Next, I will need one piece of ^3355FF'Shining Scale'^000000 in order to distribute the magical power equally throughout the book.";
+		next;
+		mes "[ZAKA]";
+		mes "While you are getting the scale, I will continue to the next phase of crafting, good luck.";
+		close;
+L_4:
+	if(countitem(954) > 0) goto sL_4;
+	mes "[ZAKA]";
+	mes "In order to finish crafting the 'Book of the Tiresome Sheep', I will need you to gather me one piece of ^3355FF'Shining Scale'^000000, okay?";
+	close;
+
+	sL_4:
+		mes "Gives^3355FF'Shining Scale'^000000";
+		mes "to Zaka";
+		delitem 954,1;
+		set dmdswrd_Q,22;
+		next;
+		mes "[ZAKA]";
+		mes "Great job!";
+		mes "Finally, the last ingredient I need is one ^3355FF'Stinky Scale'^000000 to complete the book, please bring it to me";
+		close;
+L_5:
+	if(countitem(959) > 0) goto sL_5;
+	mes "[ZAKA]";
+	mes "All I need to craft the 'Book of the Tiresome Sheep' is one piece of ^3355FF'Stinky Scale'^000000 now, please bring one to me.";
+	close;
+
+	sL_5:
+		mes "Gives^3355FF'Stinky Scale'^000000";
+		mes "to Zaka";
+		delitem 959,1;
+		next;
+		mes "[ZAKA]";
+		mes "Ooo. this is all I need to finish up the book, thank you.";
+		next;
+		mes "^3355FF-Zaka is working hard in-^000000";
+		mes "^3355FF-finalizing the book-^000000";
+		next;
+		mes "^3355FF- You receive the Book of-^000000";
+		mes "^3355FF- the Tiresome Sheep from Zaka-^000000";
+		set dmdswrd_Q,23;
+		next;
+		mes "[ZAKA]";
+		mes "There, that's for you..";
+		mes "I guess you have the required items to summon and use the Doomed Swords.";
+		mes "But if you are really going to use the Doomed Swords please go talk to ^5533FFWon^000000, a wandering swordsman, he might have some important advice.";
+		next;
+		mes "[ZAKA]";
+		mes "Legend has it that Won's sword fighting skills is already at god-like level, and he is also one of the ten most influential people in the world.";
+		next;
+		mes "[Zaka]";
+		mes "Right now, he might be training inside Comodo Town, so you might be able to find him there.";
+		close;
+L_6:
+	mes "[ZAKA]";
+	mes "The wandering swordsman ^3355FF`Won'^000000";
+	mes "should be training somwhere in Comodo, look for him very carefully.";
+	close;
+}
+
+
+//=============================================================================
+//			Doomed Swords Part 5
+//=============================================================================
+// Won: Voucher of Power
+comodo.gat,232,87,4	script	Wandering Swordsman WON	106,{
+	if(dmdswrd_Q == 23) goto L_1;
+	if(dmdswrd_Q == 24) goto L_2;
+	if(dmdswrd_Q == 25) goto L_3;
+
+	mes "[WON]";
+	mes "My name is ^3355FF'Won'^000000.  I have searched far and wide, across the oceans and the mountains, to find one who is worthy.......";
+	next;
+	mes "[WON]";
+	mes "It has been many years since the Evil Witch was defeated in that legendary battle..... It is now a story of the past.......";
+	mes "Still, the quest must continue!  This is what the heavens desire of me.....";
+	next;
+	mes "[Won]";
+	mes "I must stay here in Comodo..... It is my fate.... I must stay here and wait.........";
+	mes ". . . . . . . . . . . . . . . . . . . .";
+	mes ". . . . . . . . . . . . . . .";
+	mes ". . . . . . . . . .";
+	mes ". . . . .";
+	close;
+		
+L_1:
+	mes "^3355FF- The swordsman examines you -^000000";
+	mes "^3355FF- for a few seconds -^000000";
+	next;
+	mes "[Swordsman]";
+	mes "Heh, you're just a normal fella.";
+	mes "I am a wandering swordsman,";
+	mes "^3355FF`WON'^000000";
+	next;
+	mes "[WON]";
+	mes "What? You say you are gonna summon the Doomed Swords?";
+	mes "Psh, I don't care what you say, I will be the judge on whether or not you are worthy.";
+	mes "Let me explain...";
+	next;
+	mes "[WON]";
+	mes "Even though you do have all the required materials to summon the Doomed Swords but that does not mean that you could withstand the energy drained during one summoning.";
+	next;
+	mes "[WON]";
+	mes "Without careful control of energy transfer from the normal world to the Dark World, many disasters could arise upon the world or even unforeseen consequences.";
+	next;
+	mes "[WON]";
+	mes "I am sure that you have heard that the three different Doomed Swords are:";
+	mes "^3355FF` Mysteltain '^000000";
+	mes "^3355FF` Grimtooth '^000000";
+	mes "and ^3355FF` Executioner '^000000.";
+	mes "Each of them with very distinct specialties.";
+	next;
+	mes "[WON]";
+	mes "Now that you understand these, let us start the summoning then.";
+	next;
+	mes "- `Won'-";
+	mes "- draws his sword -";
+	mes "- and starts to swing it around -";
+	next;
+	mes "- You notice something -";
+	mes "- a blue light descending -";
+	mes "- from the sky -";
+	next;
+	mes "^3355FF-You got-^000000";
+	mes "^3355FF-Voucher of Power-^000000";
+	set dmdswrd_Q,24;
+	next;
+	mes "[WON]";
+	mes ". . . . .";
+	next;
+L_2:
+	mes "[WON]";
+	mes "Hmm, it seems like the Dark World is not ready to give you the Doomed Sword just yet...even though you have what it takes to be the master of the swords.";
+	next;
+	mes "[WON]";
+	mes "However, when the day is as long as the night, when the sunlight is as bright as solar sword.";
+	mes "Only during that time, you will have the opportunity to receive the Doomed Swords.";
+	next;
+	mes "[WON]";
+	mes "Head to Morocc and look for a man by the name of ^5533FFCetsu^000000.  He has information about one of the swords.";
+//	mes "When that time comes, visit the East for a quiet city name Payon, and you shall find yourself in a new journey for the Doomed Swords.";
+	close;
+L_3:
+	mes "123456789101112131415";
+	close;
+}
+
+
+//==============================================================================
+//			Doomed Swords Part 6
+//==============================================================================
+
+// Cetsu --------------------------------------------
+morocc.gat,281,178,8	script	凱夙	97,{
+	if(dmdswrd_Q == 25) goto M_Yes;
+	if(dmdswrd_Q > 25) goto L_1;
+
+	mes "[凱夙]";
+	mes "傳言說曾經有一柄用食人魔的牙齒打造的短劍. 這使得這把短劍比一般鐵製短劍要更具殺傷力.";
+	mes "那就是傳說中的 ^ff0000魔短劍 闇噬^000000. 真正使得魔短劍 闇噬與眾不同的是短劍本身具有魔法能力.";
+	next;
+	mes "[凱夙]";
+	mes "很多人想要重新打造魔短劍 闇噬但都沒成功. 只有一個曾住在普隆德拉的鐵匠, 知道如何能辦到這事情.";
+	next;
+	mes "[凱夙]";
+	mes "很遺憾的是他很早之前就離開了普隆德拉從此鳥無音訊...";
+	if(dmdswrd_Q == 24) goto L_0;
+	close;
+
+L_0:
+	next;
+	mes"[凱夙]";
+	mes "老實說吧,.... 你感興趣麼?";
+	next;
+	menu "是的",M_Yes,"沒興趣",M_No;
+	
+	M_Yes:
+		mes "[凱夙]";
+		mes "那你該去找找看 ^0000bb羅布托^000000. 他好像知道更多關於 ^00aa00傳奇鐵匠^000000 的事.";
+		mes "你可以在酒吧裡找到他. 有了他的幫助你或許能找到那神奇鐵匠的下落. 祝你好運吧.";
+		set dmdswrd_Q, 25;
+		close;
+	
+	M_No:
+		mes "[凱夙]";
+		mes "Oh, 我知道了.";
+		close;
+
+L_1:
+	mes "[凱夙]";
+	mes "Wow! 你打算重造這把詛咒短劍? 好自為之吧, 那可是一把威力巨大的傢伙.";
+	close;
+}
+
+// Veeyop --------------------------------------------------
+prontera.gat,197,188,4	script	維尤	50,{
+	if(dmdswrd_Q == 26) goto M_Yes;
+	if(dmdswrd_Q > 26) goto L_1;
+
+	mes "[維尤]";
+	mes "你聽說過那把詛咒之劍, ^ff0000妖劍 弒光^000000? 它是根據用來殺死光之神的 ^0000bb一根神奇的小樹枝^000000 來命名的...";
+	mes "據傳聞說, 那是一根又小又軟的樹枝. 除此以外我就沒什麼好介紹這把劍的了.";
+	next;
+	mes "[維尤]";
+	mes "不管傳聞怎麼講, 人們說有一種辦法可以重鑄這把傳說中的劍.";
+	mes "我聽說過擁有這種能力的鐵匠曾在普隆德拉生活過.";
+	mes "很遺憾的是他已經從這城裡消失了. 他到底是誰沒人知道.";
+	if(dmdswrd_Q == 25) goto L_0;
+	close;
+
+L_0:
+	next;
+	mes"[維尤]";
+	mes "老實說,.... 你真的對這個感興趣?";
+	next;
+	menu "是的",M_Yes,"沒興趣",M_No;
+	
+	M_Yes:
+		mes "[維尤]";
+		mes "那你該去找找看 ^0000bb羅布托^000000. 他好像知道更多關於 ^00aa00傳奇鐵匠^000000 的事.";
+		mes "你可以在酒吧裡找到他. 有了他的幫助你或許能找到那神奇鐵匠的下落. 祝你好運吧.";
+		set dmdswrd_Q, 26;
+		close;
+	
+	M_No:
+		mes "[維尤]";
+		mes "Oh, 我清楚你的意思.";
+		close;
+
+L_1:
+	mes "[維尤]";
+	mes "Wow! 你打算讓這把詛咒之劍重見天日? 好自為之吧, 那可是一把威力巨大的傢伙.";
+	close;
+}
+
+// Nain  -------------------------------------------------------------
 izlude_in.gat,173,88,2	script	內恩	102,{
-	if(DOOMED_SWORD == 1 ) goto L_1;
+	if(dmdswrd_Q == 27) goto M_Yes;
+	if(dmdswrd_Q > 27) goto L_1;
 
 	mes "[內恩]";
 	mes "我曾聽說過關於一把專用來執行死刑的劍的傳說.";
@@ -46,7 +481,7 @@ izlude_in.gat,173,88,2	script	內恩	102,{
 	mes "光是想到這個我就不寒而慄.";
 	mes "無論這把劍有多麼大的威力, 想想看這玩意兒被成千上萬的惡靈所佔據著...";
 	mes "我寧願這被詛咒的劍永遠的消失在歷史當中.";
-	if(DOOMED_SWORD == 0 ) goto L_0;
+	if(dmdswrd_Q == 26) goto L_0;
 	close;
 
 L_0:
@@ -57,10 +492,10 @@ L_0:
 	menu "是的",M_Yes,"當然不是",M_No;
 	
 	M_Yes:
-		set DOOMED_SWORD,1;
 		mes "[內恩]";
 		mes "那你該去找 ^0000bb羅布托^000000. 他好像至到更多關於那個 ^00aa00傳奇鐵匠^000000 的事.";
 		mes "你可以在酒吧裡找到他. 有了他的幫助你或許能找到那神奇鐵匠的下落. 祝你好運吧.";
+		set dmdswrd_Q, 27;
 		close;
 	
 	M_No:
@@ -74,90 +509,9 @@ L_1:
 	close;
 }
 
-// Grimtooth ------------------------------------------------------------------------
-morocc.gat,281,178,8	script	凱夙	97,{
-	if(DOOMED_SWORD ==2 ) goto L_1;
-
-	mes "[凱夙]";
-	mes "傳言說曾經有一柄用食人魔的牙齒打造的短劍. 這使得這把短劍比一般鐵製短劍要更具殺傷力.";
-	mes "那就是傳說中的 ^ff0000魔短劍 闇噬^000000. 真正使得魔短劍 闇噬與眾不同的是短劍本身具有魔法能力.";
-	next;
-	mes "[凱夙]";
-	mes "很多人想要重新打造魔短劍 闇噬但都沒成功. 只有一個曾住在普隆德拉的鐵匠, 知道如何能辦到這事情.";
-	next;
-	mes "[凱夙]";
-	mes "很遺憾的是他很早之前就離開了普隆德拉從此鳥無音訊...";
-	if(DOOMED_SWORD ==0 ) goto L_0;
-	close;
-
-L_0:
-	next;
-	mes"[凱夙]";
-	mes "老實說吧,.... 你感興趣麼?";
-	next;
-	menu "是的",M_Yes,"沒興趣",M_No;
-	
-	M_Yes:
-		set DOOMED_SWORD,2;
-		mes "[凱夙]";
-		mes "那你該去找找看 ^0000bb羅布托^000000. 他好像知道更多關於 ^00aa00傳奇鐵匠^000000 的事.";
-		mes "你可以在酒吧裡找到他. 有了他的幫助你或許能找到那神奇鐵匠的下落. 祝你好運吧.";
-		close;
-	
-	M_No:
-		mes "[凱夙]";
-		mes "Oh, 我知道了.";
-		close;
-
-L_1:
-	mes "[凱夙]";
-	mes "Wow! 你打算重造這把詛咒短劍? 好自為之吧, 那可是一把威力巨大的傢伙.";
-	close;
-}
-
-// Mysteltain ----------------------------------------------------------------
-prontera.gat,197,188,4	script	維尤	50,{
-	if(DOOMED_SWORD ==3 ) goto L_1;
-
-	mes "[維尤]";
-	mes "你聽說過那把詛咒之劍, ^ff0000妖劍 弒光^000000? 它是根據用來殺死光之神的 ^0000bb一根神奇的小樹枝^000000 來命名的...";
-	mes "據傳聞說, 那是一根又小又軟的樹枝. 除此以外我就沒什麼好介紹這把劍的了.";
-	next;
-	mes "[維尤]";
-	mes "不管傳聞怎麼講, 人們說有一種辦法可以重鑄這把傳說中的劍.";
-	mes "我聽說過擁有這種能力的鐵匠曾在普隆德拉生活過.";
-	mes "很遺憾的是他已經從這城裡消失了. 他到底是誰沒人知道.";
-	if(DOOMED_SWORD ==0 ) goto L_0;
-	close;
-
-L_0:
-	next;
-	mes"[維尤]";
-	mes "老實說,.... 你真的對這個感興趣?";
-	next;
-	menu "是的",M_Yes,"沒興趣",M_No;
-	
-	M_Yes:
-		set DOOMED_SWORD,3;
-		mes "[維尤]";
-		mes "那你該去找找看 ^0000bb羅布托^000000. 他好像知道更多關於 ^00aa00傳奇鐵匠^000000 的事.";
-		mes "你可以在酒吧裡找到他. 有了他的幫助你或許能找到那神奇鐵匠的下落. 祝你好運吧.";
-		close;
-	
-	M_No:
-		mes "[維尤]";
-		mes "Oh, 我清楚你的意思.";
-		close;
-
-L_1:
-	mes "[維尤]";
-	mes "Wow! 你打算讓這把詛咒之劍重見天日? 好自為之吧, 那可是一把威力巨大的傢伙.";
-	close;
-}
-
 // 羅布托 ---------------------------------------------------------
-prt_in,169,16,3	script	羅布托	86,{
-	if(DOOMED_SWORD > 0) goto L_1;
+prt_in.gat,169,16,3	script	羅布托	86,{
+	if(dmdswrd_Q == 27) goto L_0;
 	mes "[羅布托]";
 	mes "Hello.";
 	close;
@@ -169,127 +523,147 @@ L_0:
 	close;
 }
 
+
+//=============================================================================
+//		Doomed Swords Final Part
+//=============================================================================
+
 // 傳奇的鐵匠 ----------------------------------------------
 pay_fild08.gat,217,273,4	script	傳奇的鐵匠	63,{
 
-if(DOOMED_SWORD == 1) goto L_Executioner;
-if(DOOMED_SWORD == 2) goto L_Grimtooth;
-if(DOOMED_SWORD == 3) goto L_Mysteltain;
-
-mes "[傳奇的鐵匠]";
-mes "我想知道 ^ff0000普隆德拉^000000 怎麼樣了? 我已經很久沒關心過那地方了.";
-close;
-
-L_Executioner:	//1169
-	if(countitem(7017)==2 && countitem(7024)==10 && countitem(1008)==3 && countitem(609)==50 && countitem(714)==1) goto L_GetExec;
+	if(dmdswrd_Q == 27) goto L_Start;
+	if(dmdswrd_Q == 28) goto L_Forge;
 	mes "[傳奇的鐵匠]";
-	mes "你想要製作傳說中的死神之劍 heh?.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "我已經很久沒打造過武器了,... 但是做這把劍可是對我自己的一種特別挑戰啊.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "好的這個要求我接受! 我會重新打造死神之劍! 不過我得提醒你, 這是把很有威力而且相當危險的劍. 要小心使用哦.";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "在重新鑄造前先得做好以下準備:";
-	mes "- ^0000ff2 只行刑者手套^000000";		//7017
-	mes "- ^0000ff10 把血染之刀^000000";		//7024
-	mes "- ^0000ff3 顆泯滅之心^000000";		//1008
-	mes "- ^0000ff50 張返魂符^000000";		//609
-	mes "- ^0000ff1 個華麗金屬^000000";		//714
+	mes "我想知道 ^ff0000普隆德拉^000000 怎麼樣了? 我已經很久沒關心過那地方了.";
 	close;
 
-	L_GetExec:
+L_Start:
+	mes "[傳奇的鐵匠]";
+	mes "Hmm... what's this about Doomed Swords?? I have no idea what you're";
+	mes "talking about.....";
+	next;
+	mes "[傳奇的鐵匠]";
+	mes "..... I see... so you've spoken to everyone who was involved with in";
+	mes "the war with the witch... you've also gathered all of the items of";
+	mes "power......";
+	next;
+	mes "[傳奇的鐵匠]";
+	mes "I never thought the day would come when I would make one of these";
+	mes "dreadfull swords again... but you have proven yourself so I can not";
+	mes "turn you down.";
+	next;
+	L_Forge:
+	mes "[傳奇的鐵匠]";
+	mes "What sword do you want me to forge?";
+	set dmdswrd_Q, 28;
+	next;
+	menu "死神之劍",M_Exec, "魔短劍 闇噬",M_Grim, "妖劍 弒光",M_Myst;
+
+	M_Exec:	//1169
+		if(countitem(7017)>=2 && countitem(7024)>=10 && countitem(1008)>=3 && countitem(609)>=50 && countitem(714)>=1) goto L_GetExec;
 		mes "[傳奇的鐵匠]";
-		mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造死神之劍.";
-		next;
-		mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
+		mes "你想要製作傳說中的死神之劍 heh?.....";
 		next;
 		mes "[傳奇的鐵匠]";
-		mes "Phew! 有時一把絕世好劍哦! Hahaha! 這是你的我的朋友.";
-		getitem 1169,1;
-		set DOOMED_SWORD,0;
-		delitem 7017,2;
-		delitem 7024,10;
-		delitem 1008,3;
-		delitem 609,50;
-		delitem 714,1;
+		mes "我已經很久沒打造過武器了,... 但是做這把劍可是對我自己的一種特別挑戰啊.....";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "好的這個要求我接受! 我會重新打造死神之劍! 不過我得提醒你, 這是把很有威力而且相當危險的劍. 要小心使用哦.";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "在重新鑄造前先得做好以下準備:";
+		mes "- ^0000ff2 只行刑者手套^000000";		//7017
+		mes "- ^0000ff10 把血染之刀^000000";		//7024
+		mes "- ^0000ff3 顆泯滅之心^000000";		//1008
+		mes "- ^0000ff50 張返魂符^000000";		//609
+		mes "- ^0000ff1 個華麗金屬^000000";		//714
 		close;
 
+		L_GetExec:
+			delitem 7017,2;
+			delitem 7024,10;
+			delitem 1008,3;
+			delitem 609,50;
+			delitem 714,1;
+			mes "[傳奇的鐵匠]";
+			mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造死神之劍.";
+			next;
+			mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
+			next;
+			mes "[傳奇的鐵匠]";
+			mes "Phew! 有時一把絕世好劍哦! Hahaha! 這是你的我的朋友.";
+			getitem 1169,1;
+			close;
 
-L_Grimtooth:	//1237
-	if(countitem(7023)==10 && countitem(724)==5 && countitem(7002)==100 && countitem(7022)==1 && countitem(714)==1) goto L_GetGrim;
-	mes "[傳奇的鐵匠]";
-	mes "這麼說你對魔短劍 闇噬頗感興趣 heh?.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "我已經很久沒打造過武器了,... 但是做這把短劍可是對我自己的一種特別挑戰啊.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "好的這個要求我接受! 我會重新打造魔短劍 闇噬! 不過我得提醒你, 這是把很有威力而且相當危險的短劍. 要小心使用哦.";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "在重鑄魔短劍 闇噬之前得做好以下準備:";
-	mes "- ^0000ff10 把斷柄之刀^000000";		//7023
-	mes "- ^0000ff5 顆詛咒紅寶石^000000";			//724
-	mes "- ^0000ff100 顆獸人之牙^000000";			//7002
-	mes "- ^0000ff1 個老舊劍柄^000000";				//7022
-	mes "- ^0000ff1 個華麗金屬^000000";
-	close;
-
-	L_GetGrim:
+	M_Grim:	//1237
+		if(countitem(7023)>=10 && countitem(724)>=5 && countitem(7002)>=100 && countitem(7022)>=1 && countitem(714)>=1) goto L_GetGrim;
 		mes "[傳奇的鐵匠]";
-		mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造魔短劍 闇噬.";
-		next;
-		mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
+		mes "這麼說你對魔短劍 闇噬頗感興趣 heh?.....";
 		next;
 		mes "[傳奇的鐵匠]";
-		mes "Phew! 又是一把完美的短劍! Hahaha! 它是你的了我的朋友.";
-		getitem 1237,1;
-		set DOOMED_SWORD,0;
-		delitem 7023,10;
-		delitem 724,5;
-		delitem 7002,100;
-		delitem 7022,1;
-		delitem 714,1;
+		mes "我已經很久沒打造過武器了,... 但是做這把短劍可是對我自己的一種特別挑戰啊.....";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "好的這個要求我接受! 我會重新打造魔短劍 闇噬! 不過我得提醒你, 這是把很有威力而且相當危險的短劍. 要小心使用哦.";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "在重鑄魔短劍 闇噬之前得做好以下準備:";
+		mes "- ^0000ff10 把斷柄之刀^000000";		//7023
+		mes "- ^0000ff5 顆詛咒紅寶石^000000";			//724
+		mes "- ^0000ff100 顆獸人之牙^000000";			//7002
+		mes "- ^0000ff1 個老舊劍柄^000000";				//7022
+		mes "- ^0000ff1 個華麗金屬^000000";
 		close;
 
-L_Mysteltain:	//1138
-	if(countitem(7021)==1 && countitem(7019)==1 && countitem(7020)==1 && countitem(7018)==1 && countitem(714)==1) goto L_GetMyst;
-	mes "[傳奇的鐵匠]";
-	mes "這麼說你對妖劍 弒光頗感興趣 heh?.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "我已經很久沒打造過武器了,... 但是做這把劍可是對我自己的一種特別挑戰啊.....";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "好的這個要求我接受! 我會重新打造妖劍 弒光! 不過我得提醒你, 這是把很有威力而且相當危險的劍. 要小心使用哦.";
-	next;
-	mes "[傳奇的鐵匠]";
-	mes "在重鑄妖劍 弒光之前得做好以下準備:";
-	mes "- ^0000ff1 個盲人之證^000000";		//7021
-	mes "- ^0000ff1 個傲慢之像^000000";			//7019
-	mes "- ^0000ff1 顆惡夢之石^000000";			//7020
-	mes "- ^0000ff1 根小樹枝^000000";			//7018
-	mes "- ^0000ff1 個華麗金屬^000000";
-	close;
+		L_GetGrim:
+			delitem 7023,10;
+			delitem 724,5;
+			delitem 7002,100;
+			delitem 7022,1;
+			delitem 714,1;
+			mes "[傳奇的鐵匠]";
+			mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造魔短劍 闇噬.";
+			next;
+			mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
+			next;
+			mes "[傳奇的鐵匠]";
+			mes "Phew! 又是一把完美的短劍! Hahaha! 它是你的了我的朋友.";
+			getitem 1237,1;
+			close;
+
+	M_Myst:	//1138
+		if(countitem(7021)>=1 && countitem(7019)>=1 && countitem(7020)>=1 && countitem(7018)>=1 && countitem(714)>=1) goto L_GetMyst;
+		mes "[傳奇的鐵匠]";
+		mes "這麼說你對妖劍 弒光頗感興趣 heh?.....";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "我已經很久沒打造過武器了,... 但是做這把劍可是對我自己的一種特別挑戰啊.....";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "好的這個要求我接受! 我會重新打造妖劍 弒光! 不過我得提醒你, 這是把很有威力而且相當危險的劍. 要小心使用哦.";
+		next;
+		mes "[傳奇的鐵匠]";
+		mes "在重鑄妖劍 弒光之前得做好以下準備:";
+		mes "- ^0000ff1 個盲人之證^000000";		//7021
+		mes "- ^0000ff1 個傲慢之像^000000";			//7019
+		mes "- ^0000ff1 顆惡夢之石^000000";			//7020
+		mes "- ^0000ff1 根小樹枝^000000";			//7018
+		mes "- ^0000ff1 個華麗金屬^000000";
+		close;
 	
-	L_GetMyst:
-		mes "[傳奇的鐵匠]";
-		mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造妖劍 弒光.";
-		next;
-		mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
-		next;
-		mes "[傳奇的鐵匠]";
-		mes "Phew! 又是一把絕世好劍啊! Hahaha! 它是你的了我的朋友.";
-		getitem 1138,1;
-		set DOOMED_SWORD,0;
-		delitem 7021,1;
-		delitem 7019,1;
-		delitem 7020,1;
-		delitem 7018,1;
-		delitem 714,1;
-		close;
-
+		L_GetMyst:
+			delitem 7021,1;
+			delitem 7019,1;
+			delitem 7020,1;
+			delitem 7018,1;
+			delitem 714,1;
+			mes "[傳奇的鐵匠]";
+			mes "好吧! 我們的必需物品都到位了. 我立馬開始鍛造妖劍 弒光.";
+			next;
+			mes "(cling-clang!~ klonk!~ klank!~ cling-clang!)";
+			next;
+			mes "[傳奇的鐵匠]";
+			mes "Phew! 又是一把絕世好劍啊! Hahaha! 它是你的了我的朋友.";
+			getitem 1138,1;
+			close;
 }
