@@ -411,6 +411,138 @@ prt_in.gat,177,20,2	script	譚修	97,{
 	close;
 }
 
+//----------------------------------------------- Library -----------------------------------------------------\\
+
+// Library Girl Ellen ----------------------------------------------------
+prt_in.gat,175,50,0	script	工讀生	71,{
+	mes "[工讀生 艾倫]";
+	mes "歡迎光臨，這座圖書館裡的資料是依照魔物屬性作為分類的依據，你可以在這裡閱讀相關的書籍。另外，這裡也有部分商人與制鐵工技能說明的相關書籍。";
+	next;
+	mes "[工讀生 艾倫]";
+	mes "啊！旁邊那間圖書館裡也有很多值得一看的好書籍，你可以去三觀一下。";
+	close;
+}
+
+// Gurator Guiss -------------------------------------------------------
+prt_in.gat,178,92,0	script	圖書館管理員	57,{
+	mes "[管理員 奇司]";
+	mes "我們圖書館的資料是依照在盧恩 米德加爾特王國各個密穴裡的魔物來分類的，讓你可以一目瞭然，輕鬆的獲得你所想要的資料。";
+	next;
+	mes "[管理員 奇司]";
+	mes "這同時也是冒險家們必讀的書籍，建議你看一看再離開。";
+	next;
+	mes "[管理員 奇司]";
+	mes "旁邊那間圖書館則是以魔物屬性作為分類的依據，如果有需要你可以到那裡去看看。";
+	close;
+}
+
+// Drunken man in the inn -----------------------------------------------
+prt_in.gat,173,13,4	script	Customer#Hans Solo	86,{
+
+	set @number_drink,0;
+	set @number_place,0;
+	mes "[Hans Solo]";
+	mes "UhOh... I'm drunk. hiccups!";
+	mes "Hey, you. You look lonely!";
+	next;
+	mes "[Hans Solo]";
+	mes "You must be angry seeing others busy getting marry too? You're upset, aren't you?";
+	next;
+	mes "[Hans Solo]";
+	mes "You must be upset with the couples who ignore everyone and drown themselves in happiness,";
+	mes "aren't you?";
+	next;
+	mes "[Hans Solo]";
+	mes "I wonder since when everybody starts praising only themselves?";
+	mes "It used to be peaceful before that...";
+	next;
+	mes "[Hans Solo]";
+	mes "Anyway, it's ok even if you're not married, friend!!";
+	mes "Come, I'll buy you a drink.";
+	next;
+	mes "- How do I become his friend all of a sudden?! -";
+	mes "- Anyway, a free drink won't do any harm.... -";
+	next;
+	mes "- Gulu Gulu GuLu -";
+	percentheal -10,0;
+	next;
+	mes "[Hans Solo]";
+	mes "It's good, isn't it? I know a great place to hang out.";
+	mes "Do you want to tag along?";
+	next;
+	Loopback:
+		menu "...Give me another drink",-,"........What place is that?",s_What;
+
+			mes "[Hans Solo]";
+			mes "Well then, another drink it is.";
+			mes "Hey,BaZooKa...let's have a drink!";
+			next;
+			mes "[Hans Solo]";
+			mes "Cheers to the dateless adventurers!";
+			next;
+			mes "- Gulu Gulu GuLu -";
+			percentheal -10,0;
+			next;
+			set @number_drink,@number_drink + 1;
+			if (@number_drink == 5)goto s_Five;
+			goto s_While;
+s_What:
+			mes "[Hans Solo]";
+			mes "Eat and drink as much as you like!";
+			mes "Still don't have enough!";
+			mes "Come, have more!";
+			next;
+			mes "[Hans Solo]";
+			mes "Cheers for the dateless adventurers!";
+			next;
+			mes "- Gulu Gulu GuLu -";
+			percentheal -10,0;
+			next;
+			set @number_place,@number_place + 1;
+			goto s_While;
+
+s_Five:
+			mes "[Hans Solo]";
+			mes "UhOh... Are you alright?";
+			mes "Come, sign your name here.";
+			mes "I'll take you to a wonderful place!";
+			next;
+			menu "Sign it",-,"Don't sign it",s_Dont;
+
+				mes "[Hans Solo]";
+				mes "Good! Let me send you to that place now...Hehe..";
+				percentheal 100,0;
+				close2;
+				warp "jawaii_in.gat",44,124;
+				end;
+
+s_Dont:
+				mes "[Hans Solo]";
+				mes "....Hey!";
+				close;
+s_While:
+		if (@number_drink >= 4 && @number_place >= 1 || @number_place >= 4)
+{
+			mes "[Hans Solo]";
+			mes "Hiccups... So you finally decide to go there?";
+			mes "Come... Sign your name here,";
+			mes "I'll take you to a great place!";
+			next;
+			menu "Sign it",-,"Don't sign it",s_Dont2; 
+			mes "[Hans Solo]";
+				mes "Good! I'll send you there now...Hehe..";
+				mes "Grumble about your pityful life while you can...Hehe...";
+				percentheal 100,0;
+				warp "jawaii_in.gat",44,124;
+				close;
+s_Dont2:
+				mes "[Hans Solo]";
+				mes "....Hey!";
+				close;
+}
+goto Loopback;
+}
+
 prt_in.gat,77,87,0	script	大叔	65,{
 	mes "[大叔]";
 	mes "攻擊和...防禦... 無法同時兼顧這兩者吧！雙手如果都拿著武器就無法拿盾牌，所以防禦會有疏失... 需要可以克服這缺點的武器。";
@@ -509,27 +641,4 @@ prontera.gat,216,70,2	script	斯特拉依普	48,{
 				close;
 				end;
 
-}
-//------------------------------------------------------------------------------------------------- Library ----------------------------------------------------------------------------------------\\
-// Library Girl Ellen ----------------------------------------------------
-prt_in.gat,175,50,0	script	工讀生	71,{
-	mes "[工讀生 艾倫]";
-	mes "歡迎光臨，這座圖書館裡的資料是依照魔物屬性作為分類的依據，你可以在這裡閱讀相關的書籍。另外，這裡也有部分商人與制鐵工技能說明的相關書籍。";
-	next;
-	mes "[工讀生 艾倫]";
-	mes "啊！旁邊那間圖書館裡也有很多值得一看的好書籍，你可以去三觀一下。";
-	close;
-}
-
-// Gurator Guiss -------------------------------------------------------
-prt_in.gat,178,92,0	script	圖書館管理員	57,{
-	mes "[管理員 奇司]";
-	mes "我們圖書館的資料是依照在盧恩 米德加爾特王國各個密穴裡的魔物來分類的，讓你可以一目瞭然，輕鬆的獲得你所想要的資料。";
-	next;
-	mes "[管理員 奇司]";
-	mes "這同時也是冒險家們必讀的書籍，建議你看一看再離開。";
-	next;
-	mes "[管理員 奇司]";
-	mes "旁邊那間圖書館則是以魔物屬性作為分類的依據，如果有需要你可以到那裡去看看。";
-	close;
 }
