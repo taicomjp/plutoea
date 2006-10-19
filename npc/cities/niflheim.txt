@@ -19,7 +19,7 @@
 //= Fyrien, Dizzy, PKGINGO
 //= Official NPCs translated and re-edited by Celest
 //===== Current Version: ===================================== 
-//= 1.2
+//= 1.3a
 //===== Compatible With: ===================================== 
 //= Any eAthena Version; Niflheim Required
 //===== Description: ========================================= 
@@ -36,6 +36,7 @@
 //=     Also removed TODO, as they are already done. [Vicious_Pucca]
 //= 1.1 Replaced nif_q_done with MISC_QUEST & 32. nif_t -> @nif_t [Lupus]
 //= 1.2 Removed Duplicates [Silent]
+//= 1.3 Moved Book of Devil and Piano quest to quests/quests_niflheim.txt [Evera]
 //============================================================
 
 // From eAthena
@@ -317,7 +318,7 @@ L_end:
 
 //npc "niflheim" "被詛咒的 靈魂" 4_NFWISP 350 258 5 5 5
 niflheim.gat,350,258,5	script	被詛咒的 靈魂	802,{
-	killmonster "niflheim.gat","mymob";	//resetmymob
+	killmonster "niflheim.gat","OnNFMob";
 	mes "[艾書 布路斯]";
 	mes "在你身上感受到強烈的詛咒啊啊啊，";
 	mes "我拒絕你的存在啊啊啊啊，";
@@ -331,7 +332,7 @@ L_book1:
 	mes "不要隨便動我的書啊啊!!";
 	mes "喀哈啊啊! 詛咒你被咬被撕被抓傷!!";
 	mes "永遠被埋在束縛的詛咒裡!!";
-	monster "niflheim.gat",350,258,"飛行魔書",1478,1,"mymob";
+	monster "niflheim.gat",350,258,"Rideword",1478,1,"OnNFMob";
 	close;
 
 L_book2:
@@ -344,83 +345,43 @@ L_book2:
 
 L_book3:
 	set nif_t,0;
-	set @nif_random1,rand(10);
 	mes "[艾書 布路斯]";
 	mes "喀哈哈啊啊.... 相當有膽量";
 	mes "的傢伙啊啊...!! 來...";
 	mes "開始唸咒文吧啊啊啊...!!";
 	next;
-L_MENU1:
-	menu "克羅柏(Clover).",L_MENU1_1,"克拉圖(Klaatu).",L_MENU1_2,"克雷易托思(Kleitos).",L_MENU1_3;
+	if(select("Clover.:Klaatu.:Kleitos.")==2)
+		set @nif_t,@nif_t + 10;
 
-	L_MENU1_1:
-	goto L_MENU2;
+	if(select("Verit.:Veritas.:Verata.")==3)
+		set @nif_t,@nif_t + 10;
 
-	L_MENU1_2:
-	set nif_t,nif_t + 10;
-	goto L_MENU2;
+	if(select("Necktie.:Necklace.:Nero.:^FFFFFFNictu.^000000")==4)
+		set @nif_t,@nif_t + 10;
 
-	L_MENU1_3: 
-	goto L_MENU2;
-
-L_MENU2:
-	menu "北利特(Verit).",L_MENU2_1,"北利塔司(Veritas).",L_MENU2_2,"北拉塔 (Verata).",L_MENU2_3;
-	
-	L_MENU2_1:
-	goto L_MENU3;
-
-	L_MENU2_2: 
-	goto L_MENU3;
-
-	L_MENU2_3:
-	set nif_t,nif_t + 10;
-	goto L_MENU3;
-
-L_MENU3:
-	menu "內塔易(Necktie).",L_MENU3_1,"內克利司(Necklace).",L_MENU3_2,"內羅(Nero).",L_MENU3_3,"^FFFFFF尼圖(Nictu).^000000",L_MENU3_4;
-
-	L_MENU3_1: 
-	goto L_score;
-
-	L_MENU3_2: 
-	goto L_score;
-
-	L_MENU3_3:
-	goto L_score;
-
-	L_MENU3_4:
-	set nif_t,nif_t + 10;
-	goto L_score;
-
-
-L_score:
-	if (nif_t == 30) goto L_sucess1;
 	mes "[艾書 布路斯]";
+	if(@nif_t == 30){
+		if(rand(9)){
+			mes "咒文對了啊啊啊啊啊啊.....";
+			mes "不過詛咒沒有解開啊啊啊...";
+			mes "喀哈哈啊啊.....!!!";
+			close;
+		}
+	       mes "哈哈哈啊啊啊!!! 詛咒解開了啊啊!";
+	       mes "喀哈哈啊啊.....!!!";
+	       close;
+	}
 	mes "哈哈哈啊啊啊!!! 咒文錯了!";
 	mes "你即將要面臨死亡了喔喔喔，";
 	mes "願你一輩子都受到詛咒吧啊啊啊...!!";
-	monster "niflheim.gat",349,256,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",347,258,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",347,254,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",350,252,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",344,255,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",348,252,"邪骸獸人",1462,1,"mymob";
-	monster "niflheim.gat",347,259,"邪骸獸人",1462,1,"mymob";
+	monster "niflheim.gat",349,256,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",347,258,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",347,254,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",350,252,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",344,255,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",348,252,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",347,259,"邪骸獸人",1462,1,"OnNFMob";
 	close;
-
-L_sucess1:
-	if (@nif_random1 == 10) goto L_sucess2;
-	mes "[艾書 布路斯]";
-	mes "咒文對了啊啊啊啊啊啊.....";
-	mes "不過詛咒沒有解開啊啊啊...";
-	mes "喀哈哈啊啊.....!!!";
-	close;
-
-L_sucess2:
-       mes "[艾書 布路斯]";
-       mes "哈哈哈啊啊啊!!! 詛咒解開了啊啊!";
-       mes "喀哈哈啊啊.....!!!";
-       close;
 
 L_back:
 	mes "[艾書 布路斯]";

@@ -14,7 +14,7 @@
 //===== By: ================================================== 
 //= eAthena dev team
 //===== Current Version: ===================================== 
-//= 1.8
+//= 1.9a
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: ========================================= 
@@ -30,9 +30,9 @@
 //=  with official prizes (80% official, 4-5 entries are made up)
 //=  also changed typo Orange Potions -> Red Potions [Lupus]
 //= 1.6 Fixed bug (missing label), optimized all menus [Lupus]
-//= 1.7 Fixed exploits [Lupus]
-//= 1.8 Removed Duplicates [Silent]
+//= 1.7 Fixed exploits [Lupus] 1.8 Removed Duplicates [Silent]
 //= 1.9 Fixed a bunch of typos with information from Crono/Hollengrhen [Evera]
+//= 1.9a Now Pavianne doesn't sell Kafra Passes. She refunds them [Lupus]
 //============================================================
 
 
@@ -1079,7 +1079,7 @@ aldeba_in.gat,24,245,4	script	卡普拉服務中心	115,{
 		mes "嘻嘻嘻，客人.. 這是在作秀..";
 		mes "是的.. 我們.. 這是我們這裡卡普拉服務中心為客人.. 表演的~";
 		mes "夢幻秀! ( .. 不過一次只有一個人表演喔)";
-		cutin "kafra_03",255;
+		cutin "",255;
 		close;
 	M_1:
 		mes "[卡普拉繡靈]";
@@ -1089,7 +1089,7 @@ aldeba_in.gat,24,245,4	script	卡普拉服務中心	115,{
 		mes "我的專長是攻擊!!";
 		mes "..可是我決心過寧靜且優雅的日子..";
 		mes "顧客 .. 請你不要刺激我..";
-		cutin "kafra_03",255;
+		cutin "",255;
 		close;
 	M_2:
 		mes "[卡普拉繡靈]";
@@ -1099,7 +1099,7 @@ aldeba_in.gat,24,245,4	script	卡普拉服務中心	115,{
 		mes ". . . . . . . . . .";
 		next;
 		mes "騙你的啦！ 嘿嘿！";
-		cutin "kafra_03",255;
+		cutin "",255;
 		close;
 }
 
@@ -1292,7 +1292,7 @@ M_Menu:
 		mes "[卡普拉服務人員]";
 		mes "顧客~ 下次也儲蓄好多~ 好多~ 點數來~";
 		mes "感謝你使用卡普拉服務~~";
-		cutin "kafra_03",255;
+		cutin "",255;
 		close;
 }
 
@@ -1342,14 +1342,14 @@ aldeba_in.gat,88,161,3	script	卡普拉服務中心#05	115,{
 				mes "對不起~ 顧客~";
 				mes "顧客你所選擇的機會，因累計點數不夠所以不能參與~";
 				mes "請顧客再確認一次累計點數之後，再做選擇~";
-				cutin "kafra_03",255;
+				cutin "",255;
 				close;
 	M_End:
 		mes "[卡普拉  職員]";
 		mes "好~ 就這樣了~ 顧客";
 		mes "下一次請累計更多~ 更多的~ 累計點數~";
 		mes "非常感謝每次使用我們卡普拉(有限公司) 的服務~~";
-		cutin "kafra_03",255;
+		cutin "",255;
 		close;
 }
 
@@ -1385,8 +1385,10 @@ function	script	F_Lottery	{
 		if(@Lotto == 1) getitem 2328,1;//Items: Wooden_Mail,
 		if(@Lotto == 2) getitem 2307,1;//Items: Mantle,
 		if(@Lotto == 3) getitem 657,10;//Items: Berserk_Potion,
-		if(@Lotto == 4) getitem 607,2;//Items: Yggdrasilberry,
-		if(@Lotto == 4) getitem 608,1;//Items: Yggdrasil_Seed,
+		if(@Lotto == 4) {
+			getitem 607,2;//Items: Yggdrasilberry,
+			getitem 608,1;//Items: Yggdrasil_Seed,
+		}
 		if(@Lotto == 5) getitem 607,3;//Items: Yggdrasilberry,
 		return;
 	sL_Prize2:
@@ -1396,8 +1398,10 @@ function	script	F_Lottery	{
 		if(@Lotto == 2) getitem 2226,1;//Items: Cap,
 		if(@Lotto == 3) getitem 2201,1;//Items: Sunglasses,
 		if(@Lotto == 4) getitem 526,3;//Items: Royal_Jelly,
-		if(@Lotto == 5) getitem 608,1;//Items: Yggdrasil_Seed,
-		if(@Lotto == 5) getitem 526,10;//Items: Royal_Jelly,
+		if(@Lotto == 5) {
+			getitem 608,1;//Items: Yggdrasil_Seed,
+			getitem 526,10;//Items: Royal_Jelly,
+		}
 		return;
 	sL_Prize3:
 		mes "[卡普拉服務中心]";
@@ -1442,7 +1446,7 @@ sF_Spin:
 
 
 // Kafra Pavianne -----------------------------
-aldeba_in.gat,84,166,4	script	卡普拉服務中心	117,{
+aldeba_in.gat,81,166,4	script	卡普拉服務中心	117,{
 	cutin "kafra_01",2;
 	mes "[卡普拉狄波蘿太]";
 	mes "歡迎光臨！";
@@ -1516,6 +1520,15 @@ aldeba_in.gat,84,166,4	script	卡普拉服務中心	117,{
 		cutin "kafra_01",255;
 		close;
 
+	M_BYE:
+		mes "[卡普拉狄波蘿太]";
+		mes "Thank you,";
+		mes "have a good day.";
+		emotion e_thx;
+		close2;
+		cutin "",255;
+		end;
+
 }
 
 // Kafra Blossom -----------------------------------
@@ -1544,7 +1557,7 @@ aldeba_in.gat,83,244,4	script	卡普拉服務中心	116,{
 		mes "沒用的，";
 		mes "我已經在你心底做了記號了。";
 		emotion e_ok;
-		cutin "kafra_02",255;
+		cutin "",255;
 		close;
 	M_1:
 		mes "[卡普拉泰依琳]";
@@ -1553,7 +1566,7 @@ aldeba_in.gat,83,244,4	script	卡普拉服務中心	116,{
 		mes "就只會說這些台詞啊？";
 		mes "你未免太無聊了吧..";
 		emotion e_what;
-		cutin "kafra_02",255;
+		cutin "",255;
 		close;
 }
 
@@ -1574,7 +1587,7 @@ aldeba_in.gat,91,244,4	script	卡普拉服務中心	112,{
 		mes "不要把人家當小孩子看嘛!!";
 		emotion e_sob;
 		next;
-		cutin "kafra_06",255;
+		cutin "",255;
 		close;
 	M_End:
 		mes "[卡普拉德帛硫]";
@@ -1583,7 +1596,7 @@ aldeba_in.gat,91,244,4	script	卡普拉服務中心	112,{
 		mes "的完善服務。";
 		mes "很感謝您的使用。";
 		next;
-		cutin "kafra_06",255;
+		cutin "",255;
 		close;
 }
 
@@ -1626,7 +1639,7 @@ aldeba_in.gat,148,244,4	script	卡普拉服務中心	114,{
 	mes "把剛才聽到的對話內容";
 	mes "請.. 請你把它忘掉。嘿嘿";
 	emotion e_swt;
-	cutin "kafra_04",255;
+	cutin "",255;
 	close;
 }
 

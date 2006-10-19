@@ -29,16 +29,15 @@
 //===== eAthena Script ======================================= 
 //= Kafra Functions
 //===== By: ================================================== 
-//= Lotsa People (1.0)
 //= eAthena Dev Team
 //= Darlskies, Darkchild, Syrus22, Lupus, kobra_k88 (2.0)
 //===== Current Version: ===================================== 
-//= 5.3
+//= 5.4b
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: =========================================
-//= These functions  handle save, storage, cart rental, teleport,
-//= and Kafra pass options for all Kafra NPCs.
+//= These functions handle save, storage, cart rental, teleport,
+//= and Free Teleport/Warp/Rent Cart options for all Kafra NPCs.
 //===== Additional Comments: ================================= 
 //= v1.1 Now using functions v2.1 Added Cart Rent for Classes: Whitesmith, Professor.
 //= Replaced checkoption(x) into checkcart(0) [Lupus] v2.1b Added Fix Kafra Pass Func [Kobra_k88]
@@ -64,6 +63,10 @@
 //= 5.1a Temporary? Added F_ClearGarbage to clear unused/outdated variables [Lupus]
 //= 5.2 By default commented out custom Guilds Kafra's "Guild Storage". [Lupus]
 //= 5.3 uncommented Guild Storage. Confirmed kRO feature. [Lupus]
+//= 5.4 added -Guide option (Kafra shows you nearest Guide) Work in progress. 
+//=	Need all coords for all guides.. and somehow pass their coords to kafra.
+//=	Removed universal Kafra Pass, added 3 new Kafra Tickets [Lupus]
+//= 5.4b temporary moved "-Guide" from the 1st menu punct [Lupus]
 //============================================================ 
 
 
@@ -73,7 +76,6 @@
 //=   arg(2): Used to determine if the info menu is shown in F_KafInfo.
 //==========================================================================
 function	script	F_Kafra	{
-	set @kafPass, 0;
 	callfunc "KAFURALOGIN";
 	callfunc "F_ClearGarbage"; //Clear outdated, unused variables
 
@@ -120,24 +122,24 @@ function	script	F_Kafra	{
 			break;
 		//Common w/o teleport
 		case 3: 
-			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-租用手推車","-卡普拉使用卷","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-租用手推車","-指引","-其他資訊","-取消";
 			break;
 		//Case 4 is Einbroch no tele message.
 		//Common w/o save and teleport
 		case 5:
-			setarray @K_Menu0$[0],"-倉庫服務","-租用手推車","-卡普拉使用卷","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"-倉庫服務","-租用手推車","-其他資訊","-指引","-取消";
 			break;
 		//Only storage and other info check
 		case 6:
-			setarray @K_Menu0$[0],"-倉庫服務","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"-倉庫服務","-指引","-其他資訊","-取消";
 			break;
 		//Common Kafra
 		default:
-			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-傳送服務","-租用手推車","-卡普拉銀行","-卡普拉使用卷","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-傳送服務","-租用手推車","-卡普拉銀行","-指引","-其他資訊","-取消";
 			break;
 	}
 	if(getarg(0)==2) {
-	//Guilds Kafra
+	//Guilds Kafra (free Teleport, free Storage, Free Cart)
 		cleararray @K_Menu0$[0],"",7;
 		setarray @K_Menu0$[0],"-倉庫服務","-工會倉庫服務","-租用手推車","-傳送服務","-取消";
 	}
@@ -194,6 +196,11 @@ function	script	F_Kafra	{
 			if(callfunc("F_KafCart",getarg(0)) == 1) next;
 			goto M_Menu;
 		}
+		if (@K_Menu0$[@num] == "-指引"){
+			callfunc "F_KafGuide";
+			next;
+			goto M_Menu;
+		}
 		if (@K_Menu0$[@num] == "-卡普拉使用卷"){
 			if(callfunc("F_KafPass") == 1) next;
 			goto M_Menu;
@@ -222,15 +229,38 @@ function	script	F_Kafra	{
 
 // Storage Function =======================================================
 function	script	F_KafStor	{
-	if(getarg(0) == 1) goto L_Guild;
-	if(basicskillcheck(0) > 0 && getskilllv(1) < 6) goto sL_JbLvl;
-	if(BaseJob == Job_Novice) set @fee, 30;
-	if(BaseJob != Job_Novice) set @fee, 60;
-	if(@kafPass==1 || getarg(0) == 2) set @fee, 0;
-	if(Zeny<@fee) goto sL_Zeny;
-	set Zeny, Zeny-@fee;
-	set RESRVPTS, RESRVPTS + (@fee/5);
-
+	if(getarg(0) == 1){
+		if(guildopenstorage(0) == 1){
+			mes "[卡普拉服務人員]";
+			mes "對不起，公會倉庫已經被某公會成員開啟，";
+			mes "同時只能有一人進行存取。";
+			close2;
+			cutin "", 255;
+			end;
+		}
+		cutin "", 255;
+		close;
+	}
+	if(basicskillcheck(0) && getskilllv(1) < 6){
+		mes "[卡普拉服務人員]";
+		mes "很抱歉，您無法使用倉庫服務，這至少需要職業等級6以上。";
+		return;
+	}
+	//don't charge for common storage in Castle
+	if(getarg(0) != 2){
+		//we'll use Free Ticket for Kafra Storage if available
+		if(countitem(7059)){
+			delitem 7059,1;
+		} else {
+			if(Zeny<40){
+				mes "[卡普拉服務人員]";
+				mes "很抱歉，您的金錢不足! 這至少需要 40 Zeny.";
+				return;
+			}
+			set Zeny, Zeny-40;
+			set RESRVPTS, RESRVPTS + (40/5);
+		}
+	}
 	mes "[卡普拉服務人員]";
 	mes "倉庫在您關閉此窗口後將會打開";
 	mes "謝謝您使用本公司所提供的服務";
@@ -241,35 +271,12 @@ function	script	F_KafStor	{
 	openstorage;
 	cutin "", 255;
 	end;
-
-	sL_JbLvl:
-		mes "[卡普拉服務人員]";
-		mes "很抱歉，您無法使用倉庫服務，這至少需要職業等級6以上。";
-		return;
-	sL_Zeny:
-		mes "[卡普拉服務人員]";
-		mes "很抱歉，您的金錢不足! 這至少需要 "+@fee+" Zeny.";
-		return;
-L_Guild:
-	if(guildopenstorage(0) == 1) goto L_InUse;
-	cutin "", 255;
-	close;
-
-	L_InUse:
-		mes "[卡普拉服務人員]";
-		mes "對不起，公會倉庫已經被某公會成員開啟，";
-		mes "同時只能有一人進行存取。";
-		close2;
-		cutin "", 255;
-		end;
-
 }
 
 
 // Teleport Function ==================================================
 function	script	F_KafTele	{
 	mes "[卡普拉服務人員]";
-	if (@kafPass==1) mes "既然您有卡普拉使用券，那麼就免費幫你傳送吧!";
 	mes "請選擇您想要去的地方.";
 	next;
 
@@ -299,15 +306,21 @@ function	script	F_KafTele	{
 
 	L_Warp:
 		if (@wrpC$[@num] == "取消") return;
-		if (@kafPass==1) set @wrpP[@num], 0;
-		if (countitem(7060)) {
-		set @wrpP[@num], 0;
-		delitem 7060,1;
+		// we'll use Free Ticket for Kafra Transportation if available
+		if(countitem(7060)){
+			delitem 7060,1;
+		} else {
+			if (Zeny<@wrpP[@num]){
+				mes "[卡普拉服務人員]";
+				mes "很抱歉,您的金錢不足. 請確認您身上的現金.";
+				emotion e_cash;
+				close2;
+				cutin "", 255;
+				end;
+			}
+			set Zeny, Zeny-@wrpP[@num];
+			set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
 		}
-		if (Zeny<@wrpP[@num]) goto sL_CantTele;
-		set Zeny, Zeny-@wrpP[@num];
-		if (@kafPass==0) set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
-
 		if (@wrpD$[@num] == "港口之都 艾爾貝塔") warp "alberta.gat", 117, 56;
 		if (@wrpD$[@num] == "運河之都 艾爾帕蘭") warp "aldebaran.gat",143,110;
 		if (@wrpD$[@num] == "海邊之都 克魔島") warp "comodo.gat", 207, 144;
@@ -323,56 +336,51 @@ function	script	F_KafTele	{
 		if (@wrpD$[@num] == "修發茲 共和國 首都 朱諾") warp "yuno.gat", 157, 123;
 		cutin "", 255;
 		end;
-
-		sL_CantTele:
-			mes "[卡普拉服務人員]";
-			mes "很抱歉,您的金錢不足. 請確認您身上的現金.";
-			close2;
-			cutin "", 255;
-			end;
 }
 
 
 // Cart Function ========================================================
 function	script	F_KafCart	{
-	if(baseClass != Job_Merchant) goto sL_CantRent;
-	if(getskilllv(39)==0) goto sL_NeedSkill;
-	if(checkcart(0) == 1) goto sL_GotCart;
-	if(getarg(0) == 2) goto L_Guild;
-	mes "[卡普拉服務人員]";
-	if(@kafPass==0) mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
-	else mes "既然您有卡普拉使用券，那麼就免費租給你手推車吧!";
-	next;
-	menu "租用手推車",-, "取消",M_End;
-
-		if(Zeny<800 && kafPass==0 && countitem(7061)<1) goto sL_CartFee;
-		if(@kafPass==0 && countitem(7061)<1) {
-			set Zeny,Zeny-800;
-			if(@kafPass==0) set RESRVPTS, RESRVPTS + 48;
-		}
-		if (countitem(7061)) delitem 7061,1;
-	L_Guild:
-		setcart;
-		mes "[卡普拉服務人員]";
-		mes "那麼，這台手推車就交給你了.";
-		return 1;
-
-	sL_CantRent:
+	if(baseClass != Job_Merchant){
 		mes "[卡普拉服務人員]";
 		mes "抱歉! 手推車是商人、鐵匠及鍊金術士和超級初心者專用的服務";
 		return 1;
-	sL_NeedSkill:
+	}
+	if(getskilllv(39)==0){
 		mes "[卡普拉服務人員]";
 		mes "抱歉! 您必須先學會 ^0000FF'手推車使用'^000000 技能才可以租用手推車.";
 		return 1;
-	sL_GotCart:
+	}
+	if(checkcart(0) == 1){
 		mes "[卡普拉服務人員]";
 		mes "唔... 瞧瞧你的屁股後面，那不正是手推車嗎....";
-		emotion 4;
+		emotion e_swt;
 		return 1;
-	sL_CartFee:
+	}
+	//get Cart in Guild for free
+	if(getarg(0) == 2) goto L_FreeCart;
+	//use Free Ticket for the Cart Service if available
+	if(countitem(7061)){
+		delitem 7061,1;
+		goto L_FreeCart;
+	}
+	mes "[卡普拉服務人員]";
+	mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
+	next;
+	menu "-租用手推車",-, "-取消.",M_End;
+
+		if(Zeny<800){
+			mes "[卡普拉服務人員]";
+			mes "很抱歉，您的金錢不足. 這至少需要 800 Zeny";
+			emotion e_cash;
+			return 1;
+		}
+		set Zeny,Zeny-800;
+		set RESRVPTS, RESRVPTS + 48;
+	L_FreeCart:
+		setcart;
 		mes "[卡普拉服務人員]";
-		mes "很抱歉，您的金錢不足. 這至少需要 800 Zeny";
+		mes "那麼，這台手推車就交給你了.";
 		return 1;
 	M_End:
 		return 0;
@@ -380,74 +388,11 @@ function	script	F_KafCart	{
 
 
 // Pass Function ===============================================================
-function	script	F_KafPass	{
+function	script	F_KafGuide	{
 
-	sM_Menu:
-	menu "使用卡普拉使用券",-, "什麼是卡普拉使用券?",sM_PassInfo, "取消",sM_End;
-
-		mes "[卡普拉服務人員]";
-		mes "好的，讓我檢查一下.....";
-		next;
-		if(usedKafPass==0 && countitem(1084)<1) goto sL_NeedPass;
-		set @kafPass,1;
-		set usedKafPass, usedKafPass + 1;
-		if(usedKafPass>=3) goto sL_PassExpire;
-		if(usedKafPass > 1) goto L_Cont; //fixed Lupus
-		delitem 1084,1;
-		mes "(翻過來倒過去...)";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "好極了! 看起來一點問題也沒有，從現在開始你就是卡普拉公司的 VIP 會員了! 您可以有三次免費租用手推車或免費使用傳送服務的機會.";
-		mes "您的 VIP 號碼已經登記在卡普拉公司的會員登記簿中，在會員資格過期之前都不需要再檢查卡普拉使用券了!";
-		next;
-
-		L_Cont:
-		mes "[卡普拉服務人員]";
-		mes "您還有 ^5533FF"+(3 - usedKafPass)+"^000000 次機會免費租用手推車或免費使用傳送服務.";
-		return 1;
-
-		sL_NeedPass:
-			mes "[卡普拉服務人員]";
-			mes "抱歉! 您並沒有卡普拉使用券....";
-			next;
-			goto sM_Menu;
-		sL_PassExpire:
-			mes "[卡普拉服務人員]";
-			mes "這是您第三次、同時也是最後一次使用 VIP 的免費功能了，之後您的 VIP 將過期.";
-			next;
-			set usedKafPass,0;
-			mes "[卡普拉服務人員]";
-			mes "您現在可以免費租用手推車或免費使用傳送服務.";
-			return 1;
-	sM_PassInfo:
-		mes "[卡普拉服務人員]";
-		mes "^5533FF卡普拉使用券^000000 是卡普拉公司發行的 VIP 會員卡，有了它，你可以免費地使用卡普拉職員所提供的服務!";
-		mes "免費服務的項目有 ^FF3355傳送服務^000000 及 ^FF3355租用手推車^000000 服務.";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "卡普拉使用券可以在卡普拉總公司買到. 卡普拉總公司位在艾爾帕蘭.";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "要擁有卡普拉公司的 VIP 專屬功能只需要在與像我一樣的卡普拉職員對話時選擇 '使用卡普拉使用券' 即可.";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "您的 VIP 會員編號將會登記在卡普拉公司的會員登記簿中，之後就可以免費地使用卡普拉職員所提供的傳送服務或租用手推車服務.";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "當您選用了您想要的服務並與卡普拉職員結束對話後, 您尚可使用的免費次數將減少一次";
-		mes "您每使用卡普拉使用券註冊一次卡普拉 VIP 會員就可以擁有 ^5533FF 3 次 '免費服務' 的機會^000000";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "要再次享有 '免費服務' 的次數只需要攜帶新的卡普拉使用券並在與卡普拉職員對話時選擇 '使用卡普拉使用券' 選項重新註冊為 VIP 會員即可.";
-		next;
-		mes "[卡普拉服務人員]";
-		mes "相信我! 卡普拉使用券實在是一個超棒的東西!!";
-		mes "我們希望透過卡普拉使用券來吸引玩家們盡量使用我們所提供的服務.";
-		next;
-		goto sM_Menu;
-
-	sM_End:
-		return 0;
+	mes "[卡普拉服務人員]";
+	mes "WIP...";
+	return;
 }
 
 // Special Reserve Points Function ===========================================
@@ -456,7 +401,7 @@ function	script	F_KafInfo	{
 	sM_Menu:
 //Uncomment next line to block Kafra Storage Protection
 //	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-卡普拉服務人員位置分部",sM_KafLoc, "-Cancel",sM_End;
-	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-卡普拉密碼保護服務",sM_KafPassword, "-卡普拉服務人員位置分部",sM_KafLoc, "-取消",sM_End;
+	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-倉庫密碼服務",sM_KafCode, "-卡普拉服務人員位置分部",sM_KafLoc, "-取消",sM_End;
 
 	sM_ResChk:
 		mes "[卡普拉服務人員]";
@@ -485,7 +430,7 @@ function	script	F_KafInfo	{
 		viewpoint 2,@viewpX[3],@viewpY[3],4,0xFF00FF;
 		goto sM_Menu;
 
-	sM_KafPassword:
+	sM_KafCode:
 		callfunc("F_SetKafCode");
 
 	sM_End:
