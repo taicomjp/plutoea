@@ -16,8 +16,9 @@
 //= Added Duel Room
 //= ---------------------------------------------------------
 //= Script is messy! Be careful!
-//= 1.1.3 Removed Duplicate Names [Silent]
 //= 1.1.2 Changed all gmcommand to atcommand as Poki#3 suggested. [Vicious]
+//= 1.1.3 Removed Duplicate Names [Silent]
+//= 1.1.4 Fixed SummonPad syntax. [KarLaeda]
 //= ---------------------------------------------------------
 //= 腳本中文化
 //= 守護永恆 2006/02/08
@@ -71,7 +72,7 @@ goto L_Menu;
 }
 
 // Monster Summon Function //
-function	script	monstersummon	-1,{
+function	script	monstersummon	{
 // 1. ---Change to Add Monsters--- //
 if (#monster == 10) summon strcharinfo(0) + "的波利",1002, "OnporingKilled";
 if (#monster == 20) summon strcharinfo(0) + "的綠棉蟲",1007, "OnFaberKilled";
@@ -712,7 +713,7 @@ close;
 	callfunc "duelkill";
 	}
 
-function	script	duelkill	-1,{
+function	script	duelkill	{
 if (strcharinfo(0) == $@duelist1$ || strcharinfo(0) == $@duelist2$) goto L_Heal;
 end;
 	L_Heal:
@@ -723,7 +724,7 @@ end;
 	end;
 }
 	
-function	script	illegalkill	-1,{
+function	script	illegalkill	{
 announce "檢測到 " + strcharinfo(0) + " 非法獲勝",1;
 percentheal -100,-100;
 end;
@@ -751,13 +752,12 @@ end;
 }
 
 // Warps players //
--	script	SummonPad	111,2,2,{
+gon_test.gat,57,86,5	script	Summon Pad 1::SummonPad	111,2,2,{
 end;
 OnTouch:
 set @marena,1;
 warp "gon_test.gat",57,99;
 }
-gon_test.gat,57,86,5	duplicate(SummonPad)	Summon Pad 1	111,2,2
 gon_test.gat,43,87,5	duplicate(SummonPad)	Summon Pad 2	111,2,2
 gon_test.gat,72,87,5	duplicate(SummonPad)	Summon Pad 3	111,2,2
 
