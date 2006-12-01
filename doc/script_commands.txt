@@ -675,10 +675,10 @@ This label will be executed if a trigger area is defined for the NPC object it's
 in. If it isn't present, the execution will start from the beginning of the NPC 
 code. The RID of the triggering character object will be attached.
 
-PCDieEvent:
-PCKillEvent:
-PCLogoutEvent:
-PCLoginEvent:
+OnPCDieEvent:
+OnPCKillEvent:
+OnPCLogoutEvent:
+OnPCLoginEvent:
 
 These four special labels will be invoked if you have set 'event_script_type' 
 value in your 'script_athena.conf' to 1, and you can change their names by 
@@ -2846,7 +2846,7 @@ unsigned int which loops every ~50 days.
 
 Just in case you don't know, UNIX epoch time is the number of seconds elapsed 
 since 1st of January 1970, and is useful to see, for example, for how long the 
-character has been online with PCLoginEvent and PCLogoutEvent, which could allow 
+character has been online with OnPCLoginEvent and OnPCLogoutEvent, which could allow 
 you to make an 'online time counted for conviction only' jail script.
 
 ---------------------------------------
@@ -4456,23 +4456,16 @@ everything not equippable by the new job class anyway.
 
 ---------------------------------------
 
-*atcommand "<character name>:<command line>";
+*atcommand "<command line>";
 
 This command will run the given command line exactly as if it was typed in from 
 the keyboard by the player connected to the invoking character, and that 
 character belonged to an account which had GM level 99.
 
-Even though the character name and the ':' are not used for anything whatsoever, 
-it is required to give them in this command because it is processed exactly as 
-if typed from the keyboard, and that is how it will arrive into the processing 
-function if it is typed from the keyboard. The character name given must be the 
-same length as the name of the invoking character object, although nothing else 
-is required of it.
-
     // This will ask the invoker for a character name and then use the '@nuke'
     // GM command on them, killing them mercilessly.
     input @player$;
-    gmcommand strcharinfo(0)+":@nuke "+@player$
+    gmcommand "@nuke "+@player$
 
 This command has a lot of good uses, I am sure you can have some fun with this 
 one.
