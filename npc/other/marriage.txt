@@ -17,7 +17,7 @@
 // 			2005-05-21 增加 離婚服務人員	by xuwujun
 //
 //==================================================================
-	
+
 //==================================================================
 //			結婚腳本流程說明
 //
@@ -27,14 +27,11 @@
 //	2. 當男方和女方都登記後,男方先和國王對話.然後女方對話
 //	3. 對話都完成後,退後一步,取得戒指.完成婚禮
 //	4. 每個婚禮固定限制時間5分鐘.超出則無法完成婚禮並且無法再次結婚
-//	
-//	
+//
+//
 //
 //		2004-06-18 修正 BY 索克
 //		(參照 EVENT_MARRIAGE v1.1 BY Kingbo)
- 
- 
- 
 // $@marriage_party_id
 // $@tmp_party_id
 // $@marry_male
@@ -43,45 +40,44 @@
 // $@marry_female_name$
 // $@EVENT_MARRIAGE
 // EVENT_MARRIAGE_APPLY
-//==================================================================	
-//
+//==================================================================
 
 prt_church.gat,99,124,4	script	國王陛下	108,{
-	
+
 	if ( EVENT_MARRIAGE_APPLY == 0 ) goto L_SINGLE;
 	if ( EVENT_MARRIAGE_APPLY == 1 ) goto L_CHECK;
 	if ( EVENT_MARRIAGE_APPLY == 2 ) goto L_COME_HERE;
-	
+
 	mes "[國王陛下]";
 	mes "結婚的感覺怎樣";
 	mes "是不是很美妙呢！";
 	mes "祝你們幸福美滿";
 	close;
-	
+
 L_SINGLE:
 	mes "[國王陛下]";
 	mes "我的孩子";
 	mes "你還是孤身一人嗎？";
 	mes "祝願你早日找到自己的另一半！";
 	close;
-	
+
 L_COME_HERE:
 	mes "[國王陛下]";
 	mes "來！我的孩子！";
 	mes "^FF0000走到我的身邊來！^000000";
-	close;	
+	close;
 
 L_CHECK:
 	if ( Sex == 1 ) goto L_MALE_MARRIAGE;
 	goto L_FEMALE_MARRIAGE;
 	close;
-	
+
 L_MALE_MARRIAGE:
 	// 檢查隊伍ID、申請人ID來判斷是否是正確的登記人
 	if ( getcharid(1) == 0 || getcharid(1) != $@tmp_party_id || getcharid(0) != $@marry_male ) goto L_NOPARTY2;
 	// 檢查男女是否都登記完畢
 	if ( $@marry_female == 0 ) goto L_NOT_APPLY;
-	
+
 	mes "[國王陛下]";
 	mes "我親愛的孩子，你做好結婚的準備了嗎？";
 	next;
@@ -139,7 +135,7 @@ L_MALE_MARRIAGE:
 	announce "我宣誓：我——["+ strcharinfo(0) + "]願意承受接納 "+ $@marry_female_name$ + " 做我的妻子，誠實遵照上帝的旨命，和他生活在一起。無論在什麼環境，都願意終生養她、愛惜她、安慰她、尊重她、保護她，以至奉召歸主。",15;
 	next;
 	announce "[國王陛下]：現在應該換問女方了",15;
-	
+
 	// 男方完成宣誓，等待女方宣誓！
 	set $@EVENT_MARRIAGE, 1;
 	set EVENT_MARRIAGE_APPLY, 2;
@@ -201,12 +197,12 @@ L_FEMALE_MARRIAGE:
 	announce "我宣誓：我——["+ strcharinfo(0) + "]願意承受接納 "+ $@marry_male_name$ + " 做我的丈夫，誠實遵照上帝的旨命，和他生活在一起。無論在什麼環境，都願意終生養他、愛惜他、安慰他、尊重他、保護他，以至奉召歸主。",15;
 	next;
 	announce "[國王陛下]：到我身邊來，我的孩子！讓所有人來見證你們的幸福！",15;
-	
+
 	// 女方同意並完成對話啟動戒指管理員
 	set EVENT_MARRIAGE_APPLY, 2;
 	enablenpc "marriage_ring";
 	close;
-	
+
 L_MENU_2:
 	mes "[國王陛下]";
 	mes "好好想想吧，畢竟這是你的選擇……";
@@ -894,14 +890,14 @@ L_NO_TEAM:
 	mes "不行哦！";
 	mes "必須先和你的愛人^FF0000組隊^000000！";
 	close;
-	
+
 L_MUST_WAIT:
 	mes "[離婚 服務人員]";
 	mes "嗯，好像已經有人申請了";
 	mes "看樣子，你不得不等一會";
 	mes "不好意思啊！";
 	close;
-	
+
 L_LOSTD:
 	mes "[離婚 服務人員]";
 	mes "你好像忘記帶，";
@@ -909,7 +905,7 @@ L_LOSTD:
 	mes "是不是放在別的地方了呢？";
 	mes "仔細的找找之後，再來找我吧";
 	close;
-	
+
 L_LOSTM:
 	next;
 	mes "[離婚 服務人員]";
@@ -920,9 +916,9 @@ L_L1:
 	mes "你還沒結婚哦";
 	close;
 L_L2:
-       mes "[離婚 服務人員]";
-       mes "申請過了就不要申請了.";
-       close;
+	mes "[離婚 服務人員]";
+	mes "申請過了就不要申請了.";
+	close;
 L_NOdivorce:
 	mes "[離婚 服務人員]";
 	mes "祝你有一個開心的一天…！";
@@ -952,19 +948,19 @@ L_FEMALE:
 	// 檢查是否婚典進行
 	if ( $@EVENT_DIVORCE == 1 ) goto L_FEMALE_FIRST;
 	
-        // 女方後移動
-        if ( $@GOOD != 1 ) goto Fall;
+	// 女方後移動
+	if ( $@GOOD != 1 ) goto Fall;
 	mes "[離婚 服務人員]";
 	mes "聽我的宣佈吧！";
 	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚完成了！",15;
 	set EVENT_DIVORCE_APPLY, 2;
-        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
+	set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
 	set $@li_party_id,0;
-        set $@divorce_male,0;
-        set $@divorce_female,0;
+	set $@divorce_male,0;
+	set $@divorce_female,0;
 	set $@divorce_male_name$,0;
 	set $@divorce_female_name$,0;
-        set $@GOOD, 0;
+	set $@GOOD, 0;
 	stopnpctimer "TimerDivorce";
 	disablenpc "divorce_ring";
 	close;
@@ -972,11 +968,11 @@ L_FEMALE:
 L_FEMALE_FIRST:
 	set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
 	set $@EVENT_DIVORCE, 0;
-        set EVENT_DIVORCE_APPLY, 2;
+	set EVENT_DIVORCE_APPLY, 2;
 	// 完成離婚
 	set Result, divorce($@divorce_male_name$);
-        if (Result>0) goto L_DivorceOK;
-        if (Result==0) goto L_DivorceFail;
+	if (Result>0) goto L_DivorceOK;
+	if (Result==0) goto L_DivorceFail;
 	close;
 L_MALE:
 	// 檢查人物ID
@@ -985,47 +981,47 @@ L_MALE:
 	if ( EVENT_DIVORCE_APPLY != 1 ) end;
 	// 檢查是否是婚典進行
 	if ( $@EVENT_DIVORCE == 1 ) goto L_MALE_FIRST;
-	
+
 	// 男方後移動
-        if ( $@GOOD != 1 ) goto Fall;
+	if ( $@GOOD != 1 ) goto Fall;
 	mes "[離婚 服務人員]";
 	mes "聽我的宣佈吧！";
 	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚完成了！",15;
 	set EVENT_DIVORCE_APPLY, 2;
-        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
+	set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
 	set $@li_party_id,0;
-        set $@divorce_male,0;
-        set $@divorce_female,0;
+	set $@divorce_male,0;
+	set $@divorce_female,0;
 	set $@divorce_male_name$,0;
 	set $@divorce_female_name$,0;
-        set $@GOOD, 0;
+	set $@GOOD, 0;
 	stopnpctimer "TimerDivorce";
 	disablenpc "divorce_ring";
 	close;
 
 	// 男方先移動
 L_MALE_FIRST:
-        set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
+	set EVENT_MARRIAGE_APPLY, 0;//把結婚的標誌設為0
 	set $@EVENT_DIVORCE, 0;
-        set EVENT_DIVORCE_APPLY, 2;
+	set EVENT_DIVORCE_APPLY, 2;
 	// 完成離婚
 	set Result, divorce($@divorce_female_name$);
-        if (Result>0) goto L_DivorceOK;
-        if (Result==0) goto L_DivorceFail;
+	if (Result>0) goto L_DivorceOK;
+	if (Result==0) goto L_DivorceFail;
 	close;
 L_DivorceOK:
-        mes "[離婚 服務人員]";
+	mes "[離婚 服務人員]";
 	mes "成功~";
-        set $@GOOD, 1;
-        close;
+	set $@GOOD, 1;
+	close;
 L_DivorceFail:
-        mes "[離婚 服務人員]";
+	mes "[離婚 服務人員]";
 	mes "失敗~";
-        close;
+	close;
 Fall:   
-        mes "[離婚 服務人員]";
+	mes "[離婚 服務人員]";
 	mes "離婚失敗~";
-        close;	
+	close;
 OnInit:
 	disablenpc "divorce_ring";
 	end;
@@ -1036,8 +1032,8 @@ prt_church.gat,97,99,0	script	TimerDivorce	-1,{
 OnTimer120000:
 	announce $@divorce_male_name$ + "和" + $@divorce_female_name$ + "的離婚終止了！",15;
 	set $@li_party_id,0;
-        set $@divorce_male,0;
-        set $@divorce_female,0;
+	set $@divorce_male,0;
+	set $@divorce_female,0;
 	set $@divorce_male_name$,0;
 	set $@divorce_female_name$,0;
 	stopnpctimer;

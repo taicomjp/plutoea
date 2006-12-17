@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= acky - god@acky.com
 //===== Current Version: =====================================
-//= 1.1.3
+//= 1.1.5
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
@@ -19,6 +19,7 @@
 //= 1.1.2 Changed all gmcommand to atcommand as Poki#3 suggested. [Vicious]
 //= 1.1.3 Removed Duplicate Names [Silent]
 //= 1.1.4 Fixed SummonPad syntax. [KarLaeda]
+//= 1.1.5 Some cleanup & optimization [KarLaeda]
 //= ---------------------------------------------------------
 //= 腳本中文化
 //= 守護永恆 2006/02/08
@@ -223,41 +224,44 @@ menu "等級4-7",L_4to6,"^FF0000高位全等級",L_High;
 close;
 
 L_High:
+close2;
 savepoint "gon_test.gat",56,99;
 set @battle,1;
-warp "gon_test.gat",72,87;
 atcommand strcharinfo(0) + "@option 64 0 64";
-close;
+warp "gon_test.gat",72,87;
+end;
 
 L_4to6:
+close2;
 savepoint "gon_test.gat",56,99;
 set @battle,1;
-warp "gon_test.gat",57,86;
 atcommand strcharinfo(0) + "@option 64 0 64";
-close;
+warp "gon_test.gat",57,86;
+end;
 
 L_1to3:
+close2;
 savepoint "gon_test.gat",56,99;
 set @battle,1;
-warp "gon_test.gat",43,87;
 atcommand strcharinfo(0) + "@option 64 0 64";
-close;
-
+warp "gon_test.gat",43,87;
+end;
 
 L_Exit:
+close2;
 savepoint "prontera.gat",149,186;
 set @battle,0;
 atcommand strcharinfo(0) + "@option 0 0 0";
 warp "prontera.gat",149,186;
 end;
-close;
 
 L_Spec:
-atcommand strcharinfo(0) + "@option 0 0 0";
+close2;
 savepoint "gon_test.gat",56,99;
 set @battle,0;
+atcommand strcharinfo(0) + "@option 0 0 0";
 warp "gon_test.gat",57,99;
-close;
+end;
 
 L_NoMon:
 mes "[阿瑟]";
@@ -376,162 +380,162 @@ close;
 	set #monpoints,#monpoints-10;
 	mes "升級到綠棉蟲!";
 	close;
-	
+
 	L_Up2:
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "瘋兔",U_Lunatic,"土波利",U_Drops,"小雞",U_Picky;
-	
+
 		U_Drops:
 		set #monster,31;
 		set #monpoints,#monpoints-20;
 		mes "[魔物訓練師]";
 		mes "升級到土波利!";
 		close;
-		
+
 		U_Picky:
 		set #monster,32;
 		set #monpoints,#monpoints-20;
 		mes "[魔物訓練師]";
 		mes "升級到小雞!";
 		close;
-	
+
 		U_Lunatic:
 		set #monster,30;
 		set #monpoints,#monpoints-20;
 		mes "[魔物訓練師]";
 		mes "升級到瘋兔!";
 		close;
-	
+
 	L_Up3:
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "蒼蠅",U_ChonChon,"蛋殼小雞",U_SPicky,"樹精",U_Willow;
-	
+
 		U_ChonChon:
 		set #monster,40;
 		set #monpoints,#monpoints-40;
 		mes "[魔物訓練師]";
 		mes "升級到蒼蠅!";
 		close;
-		
+
 		U_SPicky:
 		set #monster,41;
 		set #monpoints,#monpoints-40;
 		mes "[魔物訓練師]";
 		mes "升級到蛋殼小雞!";
 		close;
-		
+
 		U_Willow:
 		set #monster,42;
 		set #monpoints,#monpoints-40;
 		mes "[魔物訓練師]";
 		mes "升級到樹精!";
 		close;
-	
+
 	L_Up4:
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "禿鷹",U_Condor,"羅達蛙",U_Roda;
-	
+
 		U_Condor:
 		set #monster,51;
 		set #monpoints,#monpoints-80;
 		mes "[魔物訓練師]";
 		mes "升級到禿鷹!";
 		close;
-	
+
 		U_Roda:
 		set #monster,50;
 		set #monpoints,#monpoints-80;
 		mes "[魔物訓練師]";
 		mes "升級到羅達蛙!";
 		close;
-	
+
 	L_Up5:
 	set #monster,60;
 	set #monpoints,#monpoints-160;
 	mes "升級到盜蟲!";
 	close;
-	
+
 	L_Up6:
 	set #monster,70;
 	set #monpoints,#monpoints-320;
 	mes "升級到小野豬!";
 	close;
-	
+
 	L_Up7:
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "吸血蝙蝠",U_Familiar,"蜂兵",U_Hornet;
-	
+
 		U_Hornet:
 		set #monster,81;
 		set #monpoints,#monpoints-640;
 		mes "[魔物訓練師]";
 		mes "升級到蜂兵!";
 		close;
-	
+
 		U_Familiar:
 		set #monster,80;
 		set #monpoints,#monpoints-640;
 		mes "[魔物訓練師]";
 		mes "升級到吸血蝙蝠!";
 		close;
-	
+
 	L_Up8:
 	mes "[魔物訓練師]";
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "沙漠幼狼",U_Puppy,"毒蠍",U_Spore,"搖滾蝗蟲",U_Rocker;
-	
+
 		U_Spore:
 		set #monster,91;
 		set #monpoints,#monpoints-1280;
 		mes "[魔物訓練師]";
 		mes "升級到毒蠍!";
 		close;
-	
+
 		U_Rocker:
 		set #monster,92;
 		set #monpoints,#monpoints-1280;
 		mes "[魔物訓練師]";
 		mes "升級到搖滾蝗蟲!";
 		close;
-	
+
 		U_Puppy:
 		set #monster,90;
 		set #monpoints,#monpoints-1280;
 		mes "[魔物訓練師]";
 		mes "升級到沙漠幼狼!";
 		close;
-	
+
 	L_Up9:
 	mes "你想升級成哪種魔物?";
 	next;
 	menu "邪骸戰士",U_Skeleton,"邪惡老公公",U_Antonio,"漂浮蟲",U_Plankton,"浮勒盜蟲",U_ThiefFemale;
-	
+
 		U_Plankton:
 		set #monster,101;
 		set #monpoints,#monpoints-2560;
 		mes "[魔物訓練師]";
 		mes "升級到漂浮蟲!";
 		close;
-	
+
 		U_Antonio:
 		set #monster,102;
 		set #monpoints,#monpoints-2560;
 		mes "[魔物訓練師]";
 		mes "升級到邪惡老公公!";
 		close;
-		
+
 		U_ThiefFemale:
 		set #monster,103;
 		set #monpoints,#monpoints-2560;
 		mes "[魔物訓練師]";
 		mes "升級到浮勒盜蟲!";
 		close;
-	
+
 		U_Skeleton:
 		set #monster,100;
 		set #monpoints,#monpoints-2560;
@@ -559,159 +563,159 @@ close;
 
 // Kill Trigger //
 // 6/Final. ---Change to Add Monsters--- //
-	gon_test.gat,56,91,6	script	OnPoringKilled	-1,{
+gon_test.gat,56,91,6	script	OnPoringKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+1;
 	announce "你殺死了1個 波利 - 得到 1 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnFaberKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnFaberKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+2;
 	announce "你殺死了1個 綠棉蟲 - 得到 2 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnLunaticKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnLunaticKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+4;
 	announce "你殺死了1個 瘋兔 - 得到 4 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnDropsKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnDropsKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+4;
 	announce "你殺死了1個 土波利 - 得到 4 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnPickyKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnPickyKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+4;
 	announce "你殺死了1個 小雞 - 得到 4 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnChonChonKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnChonChonKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+8;
 	announce "你殺死了1個 蒼蠅 - 得到 8 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnSPickyKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnSPickyKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+8;
 	announce "你殺死了1個 蛋殼小雞 - 得到 8 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnWillowKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnWillowKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+8;
 	announce "你殺死了1個 樹精 - 得到 8 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnRodaKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnRodaKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+16;
 	announce "你殺死了1個 羅達蛙 - 得到 16 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnCondorKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnCondorKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+16;
 	announce "你殺死了1個 禿鷹 - 得到 16 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnThiefKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnThiefKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+32;
 	announce "你殺死了1個 盜蟲 - 得到 32 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnSavageKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnSavageKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+64;
 	announce "你殺死了1個 小野豬 - 得到 64 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnFamiliarKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnFamiliarKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+128;
 	announce "你殺死了1個 吸血蝙蝠 - 得到 128 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnHornetKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnHornetKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+128;
 	announce "你殺死了1個 蜂兵 - 得到 128 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnPuppyKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnPuppyKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+256;
 	announce "你殺死了1個 沙漠幼狼 - 得到 256 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnRockerKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnRockerKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+256;
 	announce "你殺死了1個 搖滾蝗蟲 - 得到 256 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnSporeKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnSporeKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+256;
 	announce "你殺死了1個 毒蠍 - 得到 256 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnSkeletonKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnSkeletonKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+512;
 	announce "你殺死了1個 邪骸戰士 - 得到 512 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnPlanktonKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnPlanktonKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+512;
 	announce "你殺死了1個 漂浮蟲 - 得到 512 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnAntonioKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnAntonioKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+512;
 	announce "你殺死了1個 邪惡老公公 - 得到 512 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnThiefFemaleKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnThiefFemaleKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+512;
 	announce "你殺死了1個 浮勒盜蟲 - 得到 512 經驗",19;
 	callfunc "duelkill";
-	}
-	
-	gon_test.gat,56,91,6	script	OnSpecialKilled	-1,{
+}
+
+gon_test.gat,56,91,6	script	OnSpecialKilled	-1,{
 	if (@marena == 0) callfunc "illegalkill";
 	set #monpoints,#monpoints+512;
 	announce "你殺死了1個 特殊魔物 - 得到 1024 經驗",19;
 	callfunc "duelkill";
-	}
+}
 
 function	script	duelkill	{
 if (strcharinfo(0) == $@duelist1$ || strcharinfo(0) == $@duelist2$) goto L_Heal;
@@ -723,7 +727,7 @@ end;
 	set @healing,0;
 	end;
 }
-	
+
 function	script	illegalkill	{
 announce "檢測到 " + strcharinfo(0) + " 非法獲勝",1;
 percentheal -100,-100;
@@ -845,17 +849,17 @@ close;
 	atcommand strcharinfo(0) + "@option 64 0 64";
 	warp "gon_test.gat",49,5;
 	close;
-	
+
 	L_Exit:
 	mes "[決鬥大師]";
 	mes "再見.";
 	close;
-	
+
 	L_NoMon:
 	mes "[決鬥大師]";
 	mes "你沒有魔物,你不能參加.";
 	close;
-	
+
 	L_NeedHeal:
 	mes "[決鬥大師]";
 	mes "你必須治療你的魔物.";
@@ -873,20 +877,20 @@ close;
 	L_Leave:
 	if ($@duelist1$ == strcharinfo(0)) goto L_Leave1;
 	if ($@duelist2$ == strcharinfo(0)) goto L_Leave2;
-	
+
 		L_Leave3:
 		atcommand strcharinfo(0) + "@option 0 0 0";
 		set @battle,0;
 		warp "gon_test.gat",57,99;
 		close;
-		
+
 		L_Leave1:
 		set $@duelist1$,$@duelist2$;
 		set $@monster1,$@monster2;
 		set $@duel,$@duel-1;
 		announce strcharinfo(0) + " 停止決鬥",1;
 		goto L_Leave3;
-		
+
 		L_Leave2:
 		set $@duelist2$,"";
 		set $@monster2,0;
@@ -894,6 +898,6 @@ close;
 		announce strcharinfo(0) + " 停止決鬥",1;
 		goto L_Leave3;
 }
-	
+
 gon_test.gat,49,5,5	duplicate(SummonPad)	Summon Pad 4	111,2,2
 gon_test.gat,55,8,6	duplicate(monsterreferee)	Referee#02	61
