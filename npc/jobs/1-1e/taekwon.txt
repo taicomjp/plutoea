@@ -1,163 +1,468 @@
-//===== eAthena Script ======================================= 
+//===== Freya Script ======================================= 
 //= Taekwon Job Quest
 //===== By: ================================================== 
-//= Celestria
+//= Tsuyuki
 //===== Current Version: ===================================== 
-//= 1.0
+//= 1.0a
 //===== Compatible With: ===================================== 
-//= eAthena 1.0 +
+//= Freya
 //===== Description: ========================================= 
-//= 
+//= Official iRO TaeKwon Job Change Quest
 //===== Additional Comments: ================================= 
-//= A temp Taekwon Job Changer based on the kRO quest.
-//= Quest info from RagnaInfo. Sprites from kRO screenshots
-//= 1.0 Optimized, updated [Lupus]
+//= 1.0 Replaced previous TK Job Quest with this one [Tsuyuki]
 //============================================================ 
 
 
-payon.gat,157,141,5	script	鳳凰#tktest	753,{
-	if(Class==Job_Novice && TAEK_Q) goto L_Continue;
-	if(Class==Job_Taekwon || Class==Job_Star_Gladiator) {
-		mes "[鳳凰]";
-		mes "修練還順利嗎，";
-		mes "希望你再進步，請你不要忘記";
-		mes "要有更上一層樓的心";
-		close;
-	}
+payon.gat,157,141,5	script	鳳凰#TKJobChange	753,{
+
+	if (Class == Job_Taekwon || Class == Job_Star_Gladiator || Class == Job_Soul_Linker)goto L_Complete;
+	if (TK_Q == 1)goto L_Activated2;
+	if (TK_Q == 2)goto L_JobChange;
+	if (TAEK_Q > 0)goto L_Activated1;
+
 	mes "[鳳凰]";
-	mes "All my life I've been punching and punching things.";
-	mes "As such I've developed quite a lot of muscles in my arms.";
+	mes "我名叫鳳凰，從惡勢力被汙染的這世界，";
+	mes "為了淨化它從我自已先淨身，";
+	mes "做鍛鍊的修練者，";
+	mes "真正的名字是我從修練開始後就丟掉了，";
+	mes "目前在使用鳳凰這個名字，";
+	mes "你就隨便的叫我鳳凰吧";
 	next;
 	mes "[鳳凰]";
-	mes "However in my travels I have also walked a lot, and have";
-	mes "developed strong muscles in my legs.";
+	mes "你說要怎樣淨化這個世界呀?";
+	mes "不錯的問題，能聽到這樣機會也不多啊，";
+	mes "請你聽好";
 	next;
-	if(Class==Job_Novice && JobLevel==10) {
-		mes "[鳳凰]";
-		mes "Hmmm... You seem to be the kind to walk around a lot.";
-		mes "Perhaps you would be interested in helping me with an experiment?";
-		next;
-		menu "What sort of experiment?",-,"Umm... no.",L_No;
-
-		mes "[鳳凰]";
-		mes "Well you see, I've thought that since one is always";
-		mes "strengthening their legs by walking, if one were to";
-		mes "fight by kicking they would be even stronger than punching.";
-		next;
-		mes "[鳳凰]";
-		mes "I've already practiced a little myself, but I need";
-		mes "someone young to teach, who can further improve these skills.";
-		next;
-		mes "[鳳凰]";
-		mes "I was hoping that maybe you could help me test this theory.";
-		next;
-		menu "Sure, I'd love to.",-,"Sorry, but no.",L_No;
-
-		set TAEK_Q,BaseLevel;
-		mes "[鳳凰]";
-		mes "Great!";
-		mes "Now, before I teach what moves I've learnt, I need to ask you";
-		mes "to prove that you actually do walk around a lot.";
-		next;
-		mes "[鳳凰]";
-		mes "So go get ^0000FFone more base level^000000 and then I will teach you what I know.";
-		close;
-	}
 	mes "[鳳凰]";
-	mes "Hmmm... I wonder...";
+	mes "我認為這世界從惡勢力被汙染的理由是，";
+	mes "沒有擁有健全精神的人變多了所導致的，";
+	mes "現在這個世界已經是過的很辛苦了，";
+	mes "人和人之間的關係";
+	mes "就已經是夠累了，";
+	mes "連魔物們也再氾濫啊";
+	next;
+	mes "[鳳凰]";
+	mes "在這麼困難的世界上，";
+	mes "活著這麼脆弱的人類，";
+	mes "沒有擁有健全的精神，";
+	mes "也不是不可能的";
+	next;
+	mes "[鳳凰]";
+	mes "就算能理解這樣狀況也是，";
+	mes "看著這世界被惡勢力遭受污染，";
+	mes "總不能就這樣袖手旁觀吧，";
+	mes "為了這個世界";
+	mes "我是清醒的!";
+	next;
+	mes "[鳳凰]";
+	mes "可是... 我也只不過是人類而已，";
+	mes "這樣的我又怎麼能改變這個世界呢，";
+	mes "這也就是我，為什麼連把名字都丟了，";
+	mes "要變成修練者的理由，";
+	mes "為了要改變這世界";
+	mes "從我自身開始先要強壯起來";
+	next;
+	mes "[鳳凰]";
+	mes "剛才...健全的精神來至於健康的身體，";
+	mes "當然有些擁有著健康的身體";
+	mes "卻做一些惡行的人類也有，";
+	mes "那是因為確實沒有瞭解";
+	mes "真正意義的健康身體";
+	mes "所至";
+	next;
+	mes "[鳳凰]";
+	mes "並且只為了追求健康的身體，";
+	mes "對精神方面的修練缺乏，";
+	mes "也許會造成這方面的可能行的，";
+	mes "不管是那一方面";
+	mes "這是不正確的現象，";
+	mes "這是肯定的";
+	next;
+	mes "[鳳凰]";
+	mes "我是透過我自已正確的修練，";
+	mes "擁有健全的精神同時，";
+	mes "在我修練時領悟到的";
+	mes "健全的精神，以宣揚這條路做為決心，";
+	mes "也許這就是我能做的";
+	mes "最整的事情也不一定";
+	next;
+	mes "[鳳凰]";
+	mes "就在這個意義上，";
+	mes "若你還沒有決定你自已的出路的話，";
+	mes "透過本人一起參與艱難的修練之後，";
+	mes "要不要一起參與淨化世界的戰爭呢?";
+	mes "我想那一定會是一個";
+	mes "有意義的戰鬥";
+	next;
+	mes "[鳳凰]";
+	mes "來 就交給你來選擇了，";
+	mes "請你仔細的思考後，";
+	mes "做出一個明智之舉吧";
+	next;
+	menu "我要參與",L_Join,"我不要參與",L_NoThx;
+
+L_Join:
+	if (Class != Job_Novice || JobLevel < 9) goto L_Failed1;
+	mes "[鳳凰]";
+	mes "好 若你也這樣想的話，";
+	mes "就不要拖時間現在就開始吧，";
+	mes "雖然健全的精神對很重要，";
+	mes "首先要有某種程度的健康身體是必須的，";
+	mes "所以就因為這個理由，";
+	mes "先優先的試驗你的身體";
+	next;
+	mes "[鳳凰]";
+	mes "現在再怎麼的看你，";
+	mes "還不能說你是很強壯的，";
+	mes "雖然是會透過修練會變強壯的，";
+	mes "不過以你目前的狀況";
+	mes "什麼事情都不能做的";
+	next;
+	mes "[鳳凰]";
+	mes "所以就因為這個理由，請把^FF0000基本等級";
+	mes "再升一格之後再來吧^000000";
+	next;
+	mes "[鳳凰]";
+	mes "在初者學的狀態時和魔物打仗戰勝後，";
+	mes "反覆這個動作繼續升等級，";
+	mes "是相當累又很痛苦的事情，";
+	mes "這是為了要測試身體的可能性和";
+	mes "意志所至，";
+	mes "這還算是簡單的耶";
+	next;
+	mes "[鳳凰]";
+	mes "那麼請你先回去後再來吧，";
+	mes "沒什麼可讓你擔心的，";
+	mes "只要是你有所盡心期盼的話，";
+	mes "這世界就會逝你這邊的，";
+	mes "假這這個世界沒有逝你這邊的話，";
+	mes "依你的意志我絕對相信你是可以完成的";
+	set TAEK_Q,BaseLevel;
 	close;
 
-L_No:
+L_NoThx:
 	mes "[鳳凰]";
-	mes "I see...";
-	mes "Well, If you change your mind, I'll still be here.";
+	mes "是這樣嘛，身為人類活著，";
+	mes "可以選擇的路還真是無限的多啊，";
+	mes "活著的時候沒有辦法走所有的路，";
+	mes "所以拒絕不是自已的路也是明智之舉啊，";
+	mes "所以對你自已的選擇要有自信心，";
+	mes "是比較好的";
+	next;
+	mes "[鳳凰]";
+	mes "不管你是走那一條路，";
+	mes "想信自已的信念願你努力的去做吧，";
+	mes "也許堅信自已的信念，";
+	mes "也是能讓世界淨化的";
+	mes "一種方法也是不一定吧";
 	close;
 
-L_Continue:
-	if(TAEK_Q==BaseLevel) goto L_Nolvl;
-	if(SkillPoint){
-		mes "[鳳凰]";
-		mes "You definately seem to have walked enough, but you still have skill points left over.";
-		next;
-		mes "[鳳凰]";
-		mes "Use them all up, then you can come talk to me again.";
-		close;
-	}
+L_Failed1:
+	if (Class != Job_Novice)goto L_Failed2;
 	mes "[鳳凰]";
-	mes "I see that you have walked far.";
+	mes "How unfortunate!";
+	mes "You're not yet ready to";
+	mes "begin training under my";
+	mes "tutelege with your current";
+	mes "Job Level. Please return when you";
+	mes "reach Job Level 9 or higher.";
+	close;
+
+L_Failed2: // CUSTOM MESSAGE
+	mes "[鳳凰]";
+	mes "It seems that you have already";
+	mes "chosen a path of life..";
+	close;
+
+L_Activated1:
+	if(TAEK_Q < BaseLevel) goto L_Finish;
+	mes "[鳳凰]";
+	mes "You must gain ^ff00001 more";
+	mes "Base Level^000000 to prove that";
+	mes "you can endure the hardship";
+	mes "that entails this job. Never";
+	mes "neglect your training.";
+	close;
+
+L_Finish:
+	if (SkillPoint > 0) goto L_Failed1;
+	mes "[鳳凰]";
+	mes "Good I sense that you";
+	mes "are more in tune with your";
+	mes "inner strength. That is the";
+	mes "natural result of leveling up.";
+	mes "We're ready to proceed with";
+	mes "the next portion of training.";
+	set TK_Q,1;
+	close;
+
+L_Activated2:
+	mes "[鳳凰]";
+	mes "For your spiritual training,";
+	mes "I will ask you a series of";
+	mes "questions to test your spirit.";
+	mes "Relax. Answer as honestly";
+	mes "as you can. Your will and";
+	mes "convictions will be tested.";
 	next;
 	mes "[鳳凰]";
-	mes "Very well, I shall teach you all that I know.";
+	mes "As a practitioner of my";
+	mes "art, the ability to quickly";
+	mes "make the best decision will";
+	mes "be necessary in battle. Now,";
+	mes "we will begin te questioning.";
 	next;
-	mes "You and the 鳳凰 spend several hours practicing various kicks.";
-	mes "It soon becomes apparant why he needed you to help him.";
+	mes "[鳳凰]";
+	mes "When you encounter";
+	mes "great difficulty, how do";
+	mes "you generally respond?";
 	next;
-	mes "Wow. You're really good.";
-	mes "I hope you continue to go on fighting with your feet,";
-	mes "I'd really like to see how well that works for you.";
-	if(BaseLevel>TAEK_Q+1) { //u get bonus if leveled up more than a level
-		//in jRO you get a Guard[0]... have to prove it later
-		getitem 2101,1;	//Guard[0]
-	}
-	jobchange Job_Taekwon;
+	menu "I face it head on.",L_TKQST1,"Avoid it somehow.",L_TKQST2,"Regroup and analyze the problem.",L_TKQST3;
+
+L_TKQST1:
+	mes "[鳳凰]";
+	mes "Yes, that is the answer";
+	mes "I wanted. Even if you cannot";
+	mes "handle a problem at first, we";
+	mes "can only benefit from such";
+	mes "strong determination. Don't";
+	mes "let any obstacle stop you.";
+	next;
+	mes "[鳳凰]";
+	mes "Even if you fail, you";
+	mes "can only learn from the";
+	mes "experience when you give";
+	mes "your all. Half-hearted";
+	mes "attempts rarely yield";
+	mes "fruitful results.";
+	next;
+	mes "[鳳凰]";
+	mes "Seeing as you already";
+	mes "understance the importance";
+	mes "of one's will, we'll proceed";
+	mes "to the next question.";
+	next;
+	mes "[鳳凰]";
+	mes "On your travels, you will";
+	mes "encounter many people with";
+	mes "differing backgrounds and";
+	mes "viewpoints. Inevitably, you";
+	mes "will encounter someone whose";
+	mes "way of life you cannot fathom.";
+	next;
+	mes "[鳳凰]";
+	mes "Likewise, this person will";
+	mes "not understand your way of";
+	mes "life. When your two viewpoints";
+	mes "clash, causing heated conflict,";
+	mes "how would you respond?";
+	next;
+	menu "Insist that I'm right, regardless",L_TKQST4,"Disregard conflicting viewpoint",L_TKQST5,"Accept differences and learn from them",L_TKQST6;
+
+L_TKQST4:
+	mes "[鳳凰]";
+	mes "It's important to have your";
+	mes "own opinion. However, you";
+	mes "must recognize that you may";
+	mes "be wrong, and an opposing";
+	mes "view may have some merit.";
+	next;
+	mes "[鳳凰]";
+	mes "There is no one right";
+	mes "answer and the light of";
+	mes "truth can take many shades.";
+	mes "Such is the way of nature.";
+	mes "To force ideas on others is";
+	mes "an oppressive practice.";
+	next;
+	mes "[鳳凰]";
+	mes "Do not limit yourself";
+	mes "to a single view, and do";
+	mes "not stifle your growth by";
+	mes "adhering to a single truth.";
+	mes "Contemplate on this, and";
+	mes "then speak with me again.";
+	close;
+
+L_TKQST5:
+	mes "[鳳凰]";
+	mes "It is important to get";
+	mes "along with others, but";
+	mes "you  will bring no value";
+	mes "to this world without your";
+	mes "own unique contributions,";
+	mes "thoughts and opinions.";
+	next;
+	mes "[鳳凰]";
+	mes "A conflict of ideals, when";
+	mes "conducted with respect for";
+	mes "yourself and others, is a";
+	mes "great opportunity to broaden";
+	mes "your understanding of the";
+	mes "world as it is to others.";
+	next;
+	mes "[鳳凰]";
+	mes "Reflect on this idea of";
+	mes "establishing harmony with";
+	mes "the self, and harmony with";
+	mes "others. Then, return to me.";
+	close;
+
+L_TKQST6:
+	mes "[鳳凰]";
+	mes "Good. You must see";
+	mes "differences for what they";
+	mes "truly are. You must also";
+	mes "take criticism to your own";
+	mes "views with grace and";
+	mes "sincere consideration.";
+	next;
+	mes "[鳳凰]";
+	mes "It is impossible to know";
+	mes "everything in this world.";
+	mes "It is impossible to understand";
+	mes "every view. But that does not";
+	mes "mean that views you do not";
+	mes "understand are meritless.";
+	next;
+	mes "[鳳凰]";
+	mes "The one with whom you";
+	mes "disagree may have the";
+	mes "answer you do not know.";	
+	mes "In your time of weakness,";
+	mes "this person may be your";
+	mes "greatest help. Remember that.";
+	next;
+	mes "I am satisfied by the";
+	mes "answers you have given";
+	mes "me. Please reflect on what";
+	mes "we have discussed for a little";
+	mes "while. When your mind is calm,";
+	mes "come and speak to me.";
+	set TK_Q,2;
+	close;
+
+L_TKQST2:
+	mes "[鳳凰]";
+	mes "Fool! How do you expect";
+	mes "to mature if you run away";
+	mes "from challenges? Fear can";
+	mes "be a healthy reaction that";
+	mes "can save your life, but true";
+	mes "cowardice is despicable.";
+	next;
+	mes "[鳳凰]";
+	mes "It disappoints me to";
+	mes "hear you say that. Never";
+	mes "say such a thing to me again.";
+	mes "Hm. Contemplate the meanings";
+	mes "of courage and cowardice, and";
+	mes "then speak to me once again.";
+	close;
+
+L_TKQST3:
+	mes "[鳳凰]";
+	mes "Regroup? It is good to do that";
+	mes "after you have been defeated.";
+	mes "But it is best to face problems";
+	mes "once you encounter them.";
+	mes "You will not always have";
+	mes "the luxury of regrouping.";
+	next;
+	mes "[鳳凰]";
+	mes "Problems can be predicted";
+	mes "and analyzed, but I think";
+	mes "immediate retreat is unwise.";
+	mes "Contemplate on your fears,";
+	mes "as well as what you define as";
+	mes "failure. Then, you return to me.";
+	close;
+
+L_JobChange:
+	mes "[鳳凰]";
+	mes "Are you feeling calm";
+	mes "and at peace? I will ask";
+	mes "you a very important question.";
+	mes "Give me your honest answer.";	
+	next;
+	mes "[鳳凰]";
+	mes "^ff0000Are you ready to dedicate";
+	mes "yourself to the special art";
+	mes "I will teach you, and uphold";
+	mes "the dignity of its philosophy?^000000";
+	next;
+	menu "Yes.",L_JobChangeA,"No.",L_JobChangeB;
+
+L_JobChangeA:
+	mes "[鳳凰]";
+	mes "Very well. You are no";
+	mes "longer just a student.";
+	mes "You are now entrusted with";
+	mes "the powers and responsibilities";
+	mes "of a disciple of ^ff0000Taekwon Do^000000.";
+	next;
+	mes "[鳳凰]";
+	mes "\"Taekwon\" has the meaning";
+	mes "of \"punching and kicking\",";
+	mes "and \"Do\" has the meaning";
+	mes "of \"art.\" This martial art is";
+	mes "focused on skills using";
+	mes "the fists and the feet.";
+	next;
+	mes "[鳳凰]";
+	mes "Please use this discipline";
+	mes "to hone your body and mind";
+	mes "and learn the skills that are";
+	mes "best suited to you. Never";
+	mes "shirk your training, or bring";
+	mes "shame to Taekwon Do.";
+	next;
+	mes "[鳳凰]";
+	mes "You are still young, so";
+	mes "I assume you'll want a job";
+	mes "title. Mm. In that case, you";
+	mes "are now a ^ff0000Taekwon Boy^000000.";
+	mes "Yes, that sounds good.";
+	callfunc "Job_Change",Job_Taekwon;
 	callfunc "F_ClearJobVar";
+	getitem 2101,1; // Guard[0]
 	next;
-	mes "Well, you should go practice some more now.";
-	mes "Take care.";
-	close;
-
-L_Nolvl:
 	mes "[鳳凰]";
-	mes "Hmm...";
-	mes "I don't think you have walked far enough yet.";
-	mes "Go train some more.";
-	close;
-}
-
-//===== eAthena Script ======================================= 
-//= 跆拳道選手 Job Quest
-//===== By: ================================================== 
-//= Lupus
-//===== Current Version: ===================================== 
-//= 0.2
-//===== Compatible With: ===================================== 
-//= eAthena 1.0 +
-//===== Description: ========================================= 
-//= 
-//===== Additional Comments: ================================= 
-//= 0.1 Now it's just a questless temp NPC 
-//= We use CLASS instead of BASEJOB to protect from Advanced/Baby Classes
-//= 0.2 Used baseClass == Job_Taekwon instead of Is_Taekwon_Class Function [Silentdragon]
-//============================================================ 
-//暫無轉職任務資料
-
-
-payon_in01.gat,6,49,4	script	跆拳道選手	764,{
-	mes "[跆拳道選手]";
-	if(Class==Job_Novice) goto L_Check;
-	if(baseClass == Job_Taekwon) mes "你好,我的朋友!";
-	mes "你在找什麼呢?";
-	emotion 1;
-	close;
-
-L_Check:
-	mes "你好,初學者!";
-	mes "你在找什麼呢?";
+	mes "Please, take this training";
+	mes "uniform and guard set: make";
+	mes "good use of these gifts. As";
+	mes "you travel and train, enlighten";
+	mes "others about our art and learn";
+	mes "what you can from them in return.";
 	next;
-	menu "我想成為跆拳道選手",-,"沒事.",M_NOTHING;
-
-	mes "[跆拳道選手]";
-	if(JobLevel<10 || SkillPoint) mes "對不起,你沒有達到了職業等級10,並且學會所有的基本技能,我不能幫你轉職.";
-	if(JobLevel<10 || SkillPoint) close;
-
-	jobchange Job_Taekwon;
-	callfunc "F_ClearJobVar";
-	mes "祝賀你成為了跆拳道選手!";
+	mes "[鳳凰]";
+	mes "It is now time for you to";
+	mes "embark on your own journey";
+	mes "to find new challenges to";
+	mes "develop your strength.";
+	mes "Carry yourself with pride";
+	mes "as a Taekwon Do practitioner...";
+	next;
+	mes "[鳳凰]";
+	mes "Very well. I wish you luck.";
+	mes "I hope to see you again";
+	mes "sometime, "+strcharinfo(0)+".";
 	close;
 
-M_NOTHING:
-	mes "[跆拳道選手]";
-	mes "那再見了.";
-	close;	
+L_JobChangeB:
+	mes "[鳳凰]";
+	mes "Hm, perhaps you are not";
+	mes "quite ready to progress from";
+	mes "your status as a student to";
+	mes "a full fledged disciple.";
+	mes "When you feel prepared,";
+	mes "come and speak to me.";
+	close;
 
+L_Complete:
+	mes "[鳳凰]";
+	mes "修練還順利嗎，";
+	mes "希望你再進步，請你不要忘記";
+	mes "要有更上一層樓的心";
+	close;
 }
