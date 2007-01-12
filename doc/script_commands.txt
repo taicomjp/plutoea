@@ -9,7 +9,7 @@
 //= Maeki Rika - A section on general concepts and lots of
 //=              other updates and additions.
 //===== Version ===========================================
-//= 2.9
+//= 2.11.20070109
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
@@ -33,11 +33,16 @@
 //= 2.7a - delitem2, countitems2 commands [Lupus]
 //= 2.7b - clone command [Skotlex]
 //= 2.7c - disguise / undisguise, query_sql commands [Lupus]
-
-//= 2.8 - Deleted a copy of the nude command. Added axtoi command (needing a clearer
-//=	  explanation of atoi.Gave a better explanation of OnLabels and modified
-//=	  monster explanation due that L_Label isn't working with monster.
-//= 2.9.20061230 - Updated getitem and guardian  [FlavioJS]
+//= 2.8 - Deleted a copy of the nude command. Added axtoi command (needing a
+//=       clearer explanation of atoi.Gave a better explanation of OnLabels
+//=       and modified monster explanation due that L_Label isn't working with
+//=       monster.
+//= 2.9.20061230 - Updated getitem and guardian. [FlavioJS]
+//= 2.10.20070101 - added sleep,sleep2,awake and updated the variables section.
+//=       [FlavioJS]
+//= 2.11.20070109 - removed the unused flag argument in guildskill, added an 
+//=       optional argument to setcart,setfalcon,setriding and other cleanups 
+//=       [FlavioJS]
 //===== Compatible With ===================================
 //= LOL, can be used by anyone hopefully
 //===== Description =======================================
@@ -60,6 +65,9 @@ switch to Lua scripting language, which will rid us of most of the problems
 mentioned herein and make a new manual necessary. But while we have this one, we 
 should make the most of it, and it might be helpful in making sure the new Lua 
 engine can actually do everything useful that the old engine could.
+Note: The change to lua isn't going to happen because we are switching to eApp.
+      eApp has it's own scripting language and a converter to convert scripts
+      from the current script language.
 
 This is not a place to teach you basic programming. This document will not teach 
 you basic programming by itself. It's more of a reference for those who have at 
@@ -422,51 +430,88 @@ to 'mes 0x10' it will print '16'.
 
 This is not used much, but it pays to know about it.
 
-Variables and scope
--------------------
+Variables
+---------
 
 The meat of every programming language is variables - places where you store 
 data. 
 
-Variables are divided into global (not attached to any specific RID, and 
-independent of whoever triggered the object) and local (attached to a specific 
-character object or a specific account object). They are further divided into 
-permanent (they come back when the server resets) and temporary (they only 
-persist until the server dies). This is what's called variable scope. :)
+Variables are divided into and uniquely identified by the combination of:
+prefix  - determines the scope and extent (or lifetime) of the variable
+name    - an identifier consisting of '_' and alfanumeric characters
+postfix - determines the type of the variable: integer or string
 
-Unlike in more advanced languages, all temporary variables are essentially 
-'global', but not in the sense described above - if one NPC sets a temporary 
-variable, even if it is character based, if that character triggers another NPC 
-object, the variable will still be there, so you should be careful and set the 
-variables you mean to be temporary to something sensible before using them. It 
-also pays to keep variable names descriptive and reasonably long.
+Scope can be:
+global    - global to all servers
+local     - local to the server
+account   - attached to the account of the character identified by RID
+character - attached to the character identified by RID
+npc       - attached to the NPC
 
-Variable scope is defined by a prefix before the variable name:
+Extent can be:
+permanent - Permanent NPC variables exist while the server is running.
+            Others still exist when the server resets.
+temporary - Temporary NPC variables exist while the script instance is running.
+            Others cease to exist when the server resets.
 
-" "  - Thats right, nothing before a variable, this a permanent variable 
-       attached to the character object.
-"@"  - A temporary version of a character-based variable.
-       SVN versions before 2094 revision and RC5 version will also treat 'l' as 
-       a temporary variable prefix, so bevare of having variable names starting 
-       with 'l', they will also be considered temporary, even if you didn't mean 
-       them to be!
-"$"  - A global permanent variable.
-       They are stored in "save\mapreg.txt" file and are the only kind of 
-       variables stored in a text file in the SQL version.
-"$@" - A global temporary variable.
-       This is important for scripts which are called with no RID attached, that 
-       is, not triggered by a specific character object.
-"#"  - A permanent account-based variable.
-       They are stored with all the account data in "save\accreg.txt" in TXT 
-       versions and in the SQL versions in the 'global_reg_value' table using
-		 type 2.
-"##" -	A permanent account-based variable stored by the login server.
-	They are stored in "save\account.txt" and in the SQL versions in the
-	'global_reg_value' table, using type 1. The only difference you will
-	note from normal # variables is when you have multiple char-servers
-	connected to the same login server. The # variables are unique to each
-	char-server, while the ## variables are shared by all these
-	char-servers.
+Prefix: scope and extent
+nothing  - A permanent variable attached to the character, the default 
+           variable type.
+"@"      - A temporary variable attached to the character.
+           SVN versions before 2094 revision and RC5 version will also treat
+           'l' as a temporary variable prefix, so beware of having variable
+           names starting with 'l' if you want full backward compatibility.
+"$"      - A global permanent variable.
+           They are stored in "save\mapreg.txt" file and are the only kind of
+           variables stored in a text file in the SQL version.
+"$@"     - A global temporary variable.
+           This is important for scripts which are called with no RID
+           attached, that is, not triggered by a specific character object.
+"."      - A variable that exists on the NPC as long as the server is running.
+           They are only accessible from inside the NPC or by calling 
+           'getvariableofnpc'.
+".@"     - A temporary variable that exists until the script instance ends.
+           They are only accessible in that NPC instance.
+"#"      - A permanent local account variable.
+           They are stored with all the account data in "save\accreg.txt" in
+           TXT versions and in the SQL versions in the 'global_reg_value'
+           table using type 2.
+"##"     - A permanent global account variable stored by the login server.
+           They are stored in "save\account.txt" and in the SQL versions in the
+           'global_reg_value' table, using type 1. The only difference you will
+           note from normal # variables is when you have multiple char-servers
+           connected to the same login server. The # variables are unique to
+           each char-server, while the ## variables are shared by all these
+           char-servers.
+
+Postfix: integer or string
+nothing - integer variable, can store positive and negative numbers, but only 
+          whole numbers (so don't expect to do any fractional math)
+'$'     - string variable, can store text
+
+Examples:
+  name  - permanent character integer variable
+  name$ - permanent character string variable
+ @name  - temporary character integer variable
+ @name$ - temporary character string variable
+ $name  - permanent global integer variable
+ $name$ - permanent global string variable
+$@name  - temporary global integer variable
+$@name$ - temporary global string variable
+ .name  - permanent npc integer variable
+ .name$ - permanent npc string variable
+.@name  - temporary npc integer variable
+.@name$ - temporary npc string variable
+ #name  - permanent local account integer variable
+ #name$ - permanent local account string variable
+##name  - permanent global account integer variable
+##name$ - permanent global account string variable
+
+If a variable was never set, it is considered to equal zero for integer 
+variables or an empty string ("", nothing between the quotes) for string 
+variables. Once you set it to that, the variable is as good as forgotten 
+forever, and no trace remains of it even if it was stored with character or 
+account data.
 
 Some variables are special, that is, they are already defined for you by the 
 scripting engine. You can see the full list somewhere in 'db/const.txt', which 
@@ -508,21 +553,7 @@ or a function to set something, it's usually preferable to use that instead. The
 notable exception is Zeny, which you can and often will address directly -
 setting it will make the character own this number of zeny.
 
-All of the above variables store numbers. They can store positive and negative 
-numbers, but only whole numbers (so don't expect to do any fractional math). You 
-can also store a string in a variable, but this means naming it specially to 
-denote it contains text rather than a number:
 
-@variable$ is a temporary string variable.
-$@variable$ is a global temporary string variable.
-
-Etc, etc.
-
-If a variable was never set, it is considered to equal zero (for number 
-variables) or an empty string ("", nothing between the quotes) for string 
-variables. Once you set it to that, the variable is as good as forgotten 
-forever, and no trace remains of it even if it was stored with character or 
-account data.
 
 Arrays
 ------
@@ -2550,10 +2581,10 @@ specified amount permanently. The amount can be negative. See 'statusup'.
 
 ---------------------------------------
 
-*bonus <bonus type>,<amount>;
-*bonus2 <bonus type>,<amount>;
-*bonus3 <bonus type>,<amount>;
-*bonus4 <bonus type>,<amount>;
+*bonus <bonus type>,<val1>;
+*bonus2 <bonus type>,<val1>,<val2>;
+*bonus3 <bonus type>,<val1>,<val2>,<val3>;
+*bonus4 <bonus type>,<val1>,<val2>,<val3>,<val4>;
 
 These commands are meant to be used in item scripts. They will probably work 
 outside item scripts, but the bonus will not persist for long. They, as 
@@ -2590,7 +2621,7 @@ previously, they will now at 0+the level given.
 
 ---------------------------------------
 
-*guildskill <skill id>,<level>{,<flag>}
+*guildskill <skill id>,<level>
 
 This command will bump up the specified guild skill by the specified number of 
 levels. This refers to the invoking character and will only work if the invoking 
@@ -2652,8 +2683,10 @@ Example 2:
 
 *getgdskilllv(<guild id>,<skill id>)
 
-This function retirns the guild skills for the guild with a specified ID exactly 
-as 'getskilllv' does.
+This function returns the level of the skill <skill id> of the guild <guild id>.
+If the guild does not have that skill, 0 is returned.
+If the guild does not exist, -1 is returned.
+Refer to 'db/skill_db.txt' for the full list of skills. (GD_* are guild skills)
 
 ---------------------------------------
 
@@ -2684,7 +2717,6 @@ specially when talked to by GMs.
 ---------------------------------------
 
 *end;
-*break;
 
 This command will stop the execution for this particular script. The two 
 versions are prefectly equivalent. It is the normal way to end a script which 
@@ -2714,16 +2746,12 @@ Without the use if 'end' it would travel through the labels until the end of the
 script. If you were lvl 10 or less, you would see all the speech lines, the use 
 of 'end' stops this, and ends the script.
 
-Note: Break won't work anymore, it has been commented out in src/map/script.c:
-
-//	{buildin_end,"break",""}, this might confuse advanced scripting support [Eoe]
-
 ---------------------------------------
 
 *checkoption(<option number>)
 *checkoption1(<option number>)
 *checkoption2(<option number>)
-*setoption <option number>{,type};
+*setoption <option number>{,<flag>};
 
 The 'setoption' series of functions check for a so-called option that is set on 
 the invoking character. 'Options' are used to store status conditions and a lot 
@@ -2734,37 +2762,40 @@ return 1 if the option is set and 0 if the option is not set.
 
 Option numbers valid for the first (option) version of this command are:
 
-0x1    - Sight in effect.
-0x2    - Hide in effect.
-0x4    - Cloaking in effect.
-0x8    - Cart number 1 present.
-0x10   - Falcon present.
-0x20   - Peco Peco present.
-0x40   - GM Perfect Hide in effect.
-0x80   - Cart number 2 present.
-0x100  - Cart number 3 present.
-0x200  - Cart number 4 present.
-0x400  - Cart number 5 present.
-0x800  - Orc head present.
-0x1000 - The character is wearing a wedding sprite.
-0x2000 - Ruwach is in effect.
-0x4000 - Chasewalk in effect.
+0x1     - Sight in effect.
+0x2     - Hide in effect.
+0x4     - Cloaking in effect.
+0x8     - Cart number 1 present.
+0x10    - Falcon present.
+0x20    - Peco Peco present.
+0x40    - GM Perfect Hide in effect.
+0x80    - Cart number 2 present.
+0x100   - Cart number 3 present.
+0x200   - Cart number 4 present.
+0x400   - Cart number 5 present.
+0x800   - Orc head present.
+0x1000  - The character is wearing a wedding sprite.
+0x2000  - Ruwach is in effect.
+0x4000  - Chasewalk in effect.
+0x8000  - Flying or Xmas suit.
+0x10000 - Sighttrasher.
 
 Option numbers valid for the second version (opt1) of this command are:
 
-1  - Petrified.
-2  - Frozen.
-3  - Stunned.
-4  - Sleeping.
-6	- Petrifying (the state where you can still walk)
+1 - Petrified.
+2 - Frozen.
+3 - Stunned.
+4 - Sleeping.
+6 - Petrifying (the state where you can still walk)
 
 Option numbers valid for the third version (opt2) of this command are:
 
-1 - Poisoned.
-2 - Cursed.
-4 - Silenced.
-8 - Signum Crucis (plays a howl-like sound effect, but otherwise no visible effects are displayed)
-16 - Blinded.
+0x1  - Poisoned.
+0x2  - Cursed.
+0x4  - Silenced.
+0x8  - Signum Crucis (plays a howl-like sound effect, but otherwise no visible effects are displayed)
+0x10 - Blinded.
+0x80 - Deadly poisoned.
 
 Option numbers (except for opt1) are bitmasks - you can add them up to check
  for several states, but the functions will return true if at least one of them
@@ -2780,12 +2811,14 @@ core developer (or read the source: src/map/status.h) for the full list.
 
 ---------------------------------------
 
-*setcart;
+*setcart {<type>};
 *checkcart()
 
-This command will give the invoking character a cart. The cart given will be 
-cart number 1 and will work regardless of whether the character is a merchant 
-class or not.
+If <type> is 0 this command will remove the cart from the character.
+Otherwise it gives the invoking character a cart. The cart given will be 
+cart number <type> and will work regardless of whether the character is a 
+merchant class or not.
+Note: the character needs to have the skill MC_PUSHCART to gain a cart
 
 The accompanying function will return 1 if the invoking character has a cart 
 (any kind of cart) and 0 if they don't.
@@ -2794,12 +2827,14 @@ The accompanying function will return 1 if the invoking character has a cart
 
 ---------------------------------------
 
-*setfalcon;
+*setfalcon {<flag>};
 *checkfalcon()
 
-This command will give the invoking character a falcon. The falcon will be there 
+If <flag> is 0 this command will remove the falcon from the character.
+Otherwise it gives the invoking character a falcon. The falcon will be there 
 regardless of whether the character is a hunter or not. It will (probably) not 
 have any useful effects for non-hunters though.
+Note: the character needs to have the skill HT_FALCON to gain a falcon
 
 The accompanying function will return 1 if the invoking character has a falcon 
 and 0 if they don't.
@@ -2808,14 +2843,15 @@ and 0 if they don't.
 
 ---------------------------------------
 
-*setriding;
+*setriding {<flag>};
 *checkriding()
 
-This command will give the invoking character a PecoPeco (if they are a Knight 
+If <flag> is 0 this command will remove the mount from the character.
+Otherwise it give the invoking character a PecoPeco (if they are a Knight 
 series class) or a GrandPeco (if they are a Crusader seriesclass). Unlike 
 'setfalcon' and 'setcart' this will not work at all if they aren't of a class 
-which can ride. This will work if the character doesn't have the riding skill, 
-however.
+which can ride.
+Note: the character needs to have the skill KN_RIDING to gain a mount
 
 The accompanying function will return 1 if the invoking character is riding a 
 bird and 0 if they don't.
@@ -2827,8 +2863,8 @@ bird and 0 if they don't.
 *savepoint "<map name>",<x>,<y>;
 *save "<map name>",<x>,<y>;
 
-This command saves a point that the invoking character will return to upon 
-'return to save point' if dead or in some other cases. The two versions are 
+This command saves where the invoking character will return to upon 
+'return to save point', if dead or in some other cases. The two versions are 
 equivalent. Map name, X coordinate and Y coordinate should be perfectly obvious. 
 This ignores any and all map flags, and can make a character respawn where no 
 teleportation is otherwise possible.
@@ -3306,6 +3342,21 @@ Example 4:
     // Notice the 'close2'. If there were a 'next' there the timer would be 
     // changed only after the player pressed the 'next' button.
     end;
+ 
+---------------------------------------
+ 
+*sleep {<milliseconds>};
+*sleep2 {<milliseconds>};
+*awake "<NPC name>";
+
+Sleep Timers:
+'sleep' and 'sleep2' pauses the execution of the script.
+'sleep' detaches the player from the script and 'sleep2' doesn't.
+'awake' forces all sleep queues on an NPC to execute.
+
+    sleep 10000; // Sleep for 10 seconds, without player attached.
+    sleep2 5000; // Sleep for 5 seconds, with player attached.
+    awake "npc_name"; // Awakes the NPC.
 
 ---------------------------------------
 
@@ -3896,22 +3947,16 @@ These two commands will start and end War of Emperium.
 
 This is a bit more complex than it sounds, since the commands themselves won't 
 actually do anything interesting, except causing all 'OnAgitStart:' and 
-'OnAgitEnd:' events to run everywhere, respectively, and setting a so-called 
-'agit_flag' which also doesn't do much interesting itself. They are used as 
+'OnAgitEnd:' events to run everywhere, respectively. They are used as 
 simple triggers to run a lot of complex scripts all across the server, and they, 
 in turn, are triggered by clock with an 'OnClock<time>:' time-triggering label.
 
 ---------------------------------------
 
-*agitcheck(0)
-*agitcheck 1;
+*agitcheck()
 
-These function and command will let you check whether the server is currently in 
-the War of Emperium mode. (that is, if 'agit_flag' is set. Even if it is set, 
-doesn't mean that there's even one map in GVG mode somewhere) Calling 
-'agitcheck' as a function (the argument must be zero) will return 1 if WoE is on 
-and 0 if it isn't. Running 'agitcheck' as a command will instead set a local 
-variable @agit_flag to 1 if the server is in WoE mode and 0 if it isn't.
+This function will let you check whether the server is currently in WoE mode.
+It will return 1 if the War of Emperium is on and 0 if it isn't.
 
 ---------------------------------------
 
