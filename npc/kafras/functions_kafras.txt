@@ -76,18 +76,19 @@
 //=   arg(2): Used to determine if the info menu is shown in F_KafInfo.
 //==========================================================================
 function	script	F_Kafra	{
-	callfunc "KAFURALOGIN";
 	callfunc "F_ClearGarbage"; //Clear outdated, unused variables
 
 	mes "[卡普拉服務人員]";
 	switch(getarg(0)){
 		default:
 		case 0:
-			mes "歡迎使用卡普拉公司的服務,無論您在哪裡,我們都伴隨著您.";
+			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
 			break;
 		//Niflheim
 		case 1:
-			mes "歡迎....卡普拉服務...到死我們都和你在一起.....";
+			mes "歡迎... 來到... ";
+			mes "卡普拉公司...";
+			mes "我們... 到死... 都會繼續為您服務..."; 
 			break;
 		//Guilds Castles
 		case 2:
@@ -95,10 +96,17 @@ function	script	F_Kafra	{
 			break;
 		//Amatsu
 		case 3:
-			mes "你是來學習我們的文化還是僅僅來觀光的呢?";
-			mes "無論是為什麼而來,我們都歡迎你?";
-			mes "The air is eternally heavy with the";
-			mes "scent of pleasant wildflowers.";
+			mes "你重遠方來到此地";
+			mes "學習這裡的文化嗎";
+			mes "或者你是來觀光的 ?";
+			mes "無論是什麼，為什麼不多留一會?";
+			mes "這裡的空氣充滿著";
+			mes "野花的原始氣息.";
+			next;
+			mes "[卡普拉服務人員]";
+			mes "別擔心. 就算是在國外";
+			mes "卡普拉公司也是";
+			mes "需要什麼服務嗎?";
 			break;
 		//Louyang, Ayothaya
 		case 4:
@@ -114,34 +122,34 @@ function	script	F_Kafra	{
 	switch(getarg(1)){
 		//only Save & Storage
 		case 1:
-			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-取消";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","總結";
 			break;
 		//only Storage
 		case 2:
-			setarray @K_Menu0$[0],"-倉庫服務","-取消";
+			setarray @K_Menu0$[0],"倉庫服務","總結";
 			break;
 		//Common w/o teleport
 		case 3: 
-			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-租用手推車","-指引","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","-指引","-其他資訊","總結";
 			break;
 		//Case 4 is Einbroch no tele message.
 		//Common w/o save and teleport
 		case 5:
-			setarray @K_Menu0$[0],"-倉庫服務","-租用手推車","-其他資訊","-指引","-取消";
+			setarray @K_Menu0$[0],"倉庫服務","手推車服務","-其他資訊","-指引","總結";
 			break;
 		//Only storage and other info check
 		case 6:
-			setarray @K_Menu0$[0],"-倉庫服務","-指引","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"倉庫服務","-指引","-其他資訊","總結";
 			break;
 		//Common Kafra
 		default:
-			setarray @K_Menu0$[0],"-儲存位置","-倉庫服務","-傳送服務","-租用手推車","-卡普拉銀行","-指引","-其他資訊","-取消";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務","-卡普拉銀行","-指引","-其他資訊","總結";
 			break;
 	}
 	if(getarg(0)==2) {
 	//Guilds Kafra (free Teleport, free Storage, Free Cart)
 		cleararray @K_Menu0$[0],"",7;
-		setarray @K_Menu0$[0],"-倉庫服務","-工會倉庫服務","-租用手推車","-傳送服務","-取消";
+		setarray @K_Menu0$[0],"倉庫服務","-工會倉庫服務","手推車服務","傳送服務","總結";
 	}
 	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
 		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
@@ -170,29 +178,34 @@ function	script	F_Kafra	{
 	K_Menu7:
 		set @num,7;
 	K_Menuf:
-		if (@K_Menu0$[@num] == "-儲存位置") return;
-		if (@K_Menu0$[@num] == "-倉庫服務"){
+		if (@K_Menu0$[@num] == "儲存服務") return;
+		if (@K_Menu0$[@num] == "倉庫服務"){
 			//Don't charge for a common Kafra Storage in your Castle
 			if(getarg(0) == 2) callfunc "F_KafStor",2;
 			else callfunc "F_KafStor",0;
 			next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-傳送服務"){
+		if (@K_Menu0$[@num] == "傳送服務"){
 			if(getarg(1) == 4){				//Check for Einbroch Tele notice
 				mes "[卡普拉服務人員]";
-				mes "由於^FF0000傳送限制協議^000000, 卡普拉公司不能提供到這個地方的傳送服務...";
+				mes "我們卡普拉服務在秀發茲發德總公司，";
+				mes "因為和秀發茲發德 共和國";
+				mes "的協定，";
+				mes "'^ff0000在秀發茲發德內限制傳送服務^000000'";
+				mes "的關係，";
+				mes "目前不做任何傳送服務的";
 				next;
 				mes "[卡普拉服務人員]";
-				mes "我們建議你使用飛機服務";
-				mes "非常抱歉,再見!";
+				mes "想要移動到其它區域時，";
+				mes "請使用飛空艇吧";
 				next;
 				goto M_Menu;
 			}
 			callfunc "F_KafTele",getarg(0);
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-租用手推車"){
+		if (@K_Menu0$[@num] == "手推車服務"){
 			if(callfunc("F_KafCart",getarg(0)) == 1) next;
 			goto M_Menu;
 		}
@@ -209,7 +222,7 @@ function	script	F_Kafra	{
 			callfunc "F_KafInfo",getarg(2);
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-取消"){
+		if (@K_Menu0$[@num] == "總結"){
 			callfunc "F_KafEnd",getarg(0),0;
 			end;
 		}
@@ -321,19 +334,19 @@ function	script	F_KafTele	{
 			set Zeny, Zeny-@wrpP[@num];
 			set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
 		}
-		if (@wrpD$[@num] == "港口之都 艾爾貝塔") warp "alberta.gat", 117, 56;
-		if (@wrpD$[@num] == "運河之都 艾爾帕蘭") warp "aldebaran.gat",143,110;
-		if (@wrpD$[@num] == "海邊之都 克魔島") warp "comodo.gat", 207, 144;
-		if (@wrpD$[@num] == "衛星都市 依斯魯得島") warp "izlude.gat", 91, 105;
-		if (@wrpD$[@num] == "魔幻之都 吉芬") warp "geffen.gat", 120, 39;
-		if (@wrpD$[@num] == "邊境之都 夢羅克") warp "morocc.gat", 156, 46;
-		if (@wrpD$[@num] == "山岳之都 斐揚") warp "payon.gat", 168, 103;
-		if (@wrpD$[@num] == "盧恩 米德加爾特王國 首都 普隆德拉") warp "prontera.gat", 116, 72;
+		if (@wrpD$[@num] == "艾爾貝塔") warp "alberta.gat", 117, 56;
+		if (@wrpD$[@num] == "艾爾帕蘭") warp "aldebaran.gat",143,110;
+		if (@wrpD$[@num] == "克魔島") warp "comodo.gat", 207, 144;
+		if (@wrpD$[@num] == "依斯魯得島") warp "izlude.gat", 91, 105;
+		if (@wrpD$[@num] == "吉芬") warp "geffen.gat", 120, 39;
+		if (@wrpD$[@num] == "夢羅克") warp "morocc.gat", 156, 46;
+		if (@wrpD$[@num] == "斐揚") warp "payon.gat", 168, 103;
+		if (@wrpD$[@num] == "普隆德拉") warp "prontera.gat", 116, 72;
 		if (@wrpD$[@num] == "妙勒尼 廢棄礦場") warp "mjolnir_02.gat", 82, 347;
 		if (@wrpD$[@num] == "發樂斯 燈塔島") warp "cmd_fild07.gat", 127, 134;
 		if (@wrpD$[@num] == "東邊 獸人村落") warp "gef_fild10.gat", 52, 326;
-		if (@wrpD$[@num] == "雨檀族村落 汶巴拉") warp "umbala.gat", 130, 130;
-		if (@wrpD$[@num] == "修發茲 共和國 首都 朱諾") warp "yuno.gat", 157, 123;
+		if (@wrpD$[@num] == "汶巴拉") warp "umbala.gat", 130, 130;
+		if (@wrpD$[@num] == "朱諾") warp "yuno.gat", 157, 123;
 		cutin "", 255;
 		end;
 }
@@ -367,7 +380,7 @@ function	script	F_KafCart	{
 	mes "[卡普拉服務人員]";
 	mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
 	next;
-	menu "-租用手推車",-, "-取消.",M_End;
+	menu "手推車服務",-, "總結.",M_End;
 
 		if(Zeny<800){
 			mes "[卡普拉服務人員]";
@@ -400,8 +413,8 @@ function	script	F_KafInfo	{
 
 	sM_Menu:
 //Uncomment next line to block Kafra Storage Protection
-//	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-卡普拉服務人員位置分部",sM_KafLoc, "-Cancel",sM_End;
-	if(getarg(0) == 0) menu "-點數累積確認",sM_ResChk, "-倉庫密碼服務",sM_KafCode, "-卡普拉服務人員位置分部",sM_KafLoc, "-取消",sM_End;
+//	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分佈",sM_KafLoc, "-Cancel",sM_End;
+	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "-倉庫密碼服務",sM_KafCode, "卡普拉服務人員位置分佈",sM_KafLoc, "總結",sM_End;
 
 	sM_ResChk:
 		mes "[卡普拉服務人員]";

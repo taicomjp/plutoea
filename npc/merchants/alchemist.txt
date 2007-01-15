@@ -1,12 +1,3 @@
-// 鍊金術士職業相關物品販賣員
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041215.0.1
-//			20050210.0.1	重新從鍊金術士轉職腳本中分離出來並以 eAthena 腳本重新翻譯
-//
-//============================================================
-
 //===== eAthena Script ======================================= 
 //= Alchemist Shop
 //===== By: ================================================== 
@@ -25,34 +16,34 @@
 //============================================================ 
 
 
-alde_alche.gat,24,188,3	script	葛伯 阿 紗普	740,{
-	mes "[葛伯 阿 紗普]";
+alde_alche.gat,24,188,3	script	葛伯 紗普	740,{
+	mes "[葛伯 紗普]";
 	mes "歡迎來到鍊金術師組織，";
 	mes "需要什麼服務嗎?";
 	next;
-	menu "購買制藥物品",M_Material, "購買製作說明書",M_Manual, "取消", M_Bye;
+	menu "購買製藥物品",M_Material, "購買製作說明書",M_Manual, "取消", M_Bye;
 
 	M_Material:
-		mes "[葛伯 阿 紗普]";
-		mes "請問你需要什麼物品?";
+		mes "[葛伯 紗普]";
+		mes "請問需要什麼物品";
 		next;
 		menu "藥缽 - 8z",-,"停止交易",M_Bye;
 
-			mes "[葛伯 阿 紗普]";
-			mes "你想買多少個啊?";	
-			mes "如果不想買的話請輸入 0 吧!";
+			mes "[葛伯 紗普]";
+			mes "請問需要幾個?";
+			mes "如想要停止交易請寫 '0' ";
 			next;
 			input @num;
 			if((@num < 1) || (@num > 1000)) goto M_Bye;
 			set @price,@num * 8;
-			mes "[葛伯 阿 紗普]";
+			mes "[葛伯 紗普]";
 			if(Zeny < @price) goto sL_NoZeny;
 			if (checkweight(7134,@num) == 0) goto sL_OverW;
 			set Zeny,Zeny-@price;
 			getitem 7134,@num;//Items: Medicine_Bowl,
 			goto L_Bye;
 	M_Manual:
-		mes "[葛伯 阿 紗普]";
+		mes "[葛伯 紗普]";
 		mes "請問需要哪些物品?";
 		mes "除了比較特殊的幾種製作說明書除外，";
 		mes "一般的製作說明書是 100,000 金幣";
@@ -113,7 +104,7 @@ alde_alche.gat,24,188,3	script	葛伯 阿 紗普	740,{
 //			goto L_Choice;
 
 	L_Choice:
-		mes "[葛伯 阿 紗普]";
+		mes "[葛伯 紗普]";
 		mes "你要 " + @itemname$ + "製作說明書??";
 		mes "這玩意兒一本 "+@price/1000+",000 zeny.";
 		next;
@@ -125,12 +116,12 @@ alde_alche.gat,24,188,3	script	葛伯 阿 紗普	740,{
 			set Zeny,Zeny-@price;
 			getitem @itemid,1;			
 		L_Bye:
-			mes "Thank you for buying!";
-			mes "Come again.";
+			mes "那，下次再說吧";
 			close;
 
 			sL_NoZeny:
-				mes "你的錢不夠喔!!";
+				mes "金額不足噢";
+				mes "請確認一下所攜帶的金額";
 				close;
 			sL_OverW:
 				mes "唔...你好像沒有手拿了...先清清你的負重吧!";
@@ -138,7 +129,8 @@ alde_alche.gat,24,188,3	script	葛伯 阿 紗普	740,{
 
 
 	M_Bye:
-		mes "[葛伯 阿 紗普]";
-		mes "歡迎再度光臨~";
+		mes "[葛伯 紗普]";
+		mes "感謝你的購買，";
+		mes "願你做出實用的藥";
 		close;
 }
