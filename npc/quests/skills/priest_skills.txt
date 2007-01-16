@@ -1,9 +1,9 @@
 //===== eAthena Script ======================================= 
-//= Wizard Skills Quests
+//= Priest Skills Quests
 //===== By: ================================================== 
 //= Lupus, Reddozen
 //===== Current Version: ===================================== 
-//= 1.3c
+//= 1.3a
 //===== Compatible With: ===================================== 
 //= eAthena Revision 3800+
 //===== Description: ========================================= 
@@ -18,53 +18,65 @@
 //= 1.3 Fixed bugs and minor typos. Optimized [Lupus]
 //= 1.3a fixed an item ID typo, thx 2Spiritual Kid
 //= 1.3b Splitted into different files [DracoRPG]
-//= 1.3c Removed duplicates [Toms]
 //============================================================
 
 
 //============================================================
-// 巫師 - 火狩芽
+// 牧師 - 捨身取義
 //============================================================
-gef_tower.gat,116,37,1	script	Enoz#2	748,{
-	mes "[Nyao]";
-	if(BaseJob!=Job_Wizard) goto L_nowiz;
-	if(getskilllv(1006)) goto L_alreadyhave;
+prt_church.gat,111,112,3	script	Nun Linus	79,{
+	mes "[Nun Linus]";
+	if(BaseJob!=Job_Priest) goto L_nopriest;
+	if(getskilllv(1014)) goto L_alreadyhave;
+	if(getskilllv(54)<1) goto L_norez;
 
-	mes "給我這點東西我將教你個新技能:";
-	mes "10 火靈礦石";
-	mes "10 水靈礦石";
-	mes "10 風靈礦石";
-	mes "10 地靈礦石";
+	mes "給我這點東西我將教你個新技能";
+	mes "1 藍色魔力礦石";
+	mes "1 聖水";
 	next;
 	
-	mes "[Enoz]";
+	mes "[Nun Linus]";
 	mes "我來檢查下你的東西哦~";
 	next;
 	
-	if(countitem(990)<10 || countitem(991)<10 || countitem(992)<10 || countitem(993)<10) goto L_noitems;//Items: Red_Blood, Crystal_Blue, Wind_of_Verdure, Green_Live,
-	delitem 990, 10;//Items: Red_Blood,
-	delitem 991, 10;//Items: Crystal_Blue,
-	delitem 992, 10;//Items: Wind_of_Verdure,
-	delitem 993, 10;//Items: Green_Live,
+	if(countitem(717)<1 || countitem(523)<1) goto L_noitems;//Items: Blue_Gemstone, Holy_Water,
+	delitem 717, 1;//Items: Blue_Gemstone,
+	delitem 523, 1;//Items: Holy_Water,
 	
-	mes "[Enoz]";
-	mes "你帶來了足夠的東西~";
-	mes "現在我開始教你新技能~.";
-	skill 1006,1,0;
+	mes "[Nun Linus]";
+	mes "你把東西都帶來了~,";
+	mes "現在看看上帝肯不肯讓我教你";
+	next;
+	if(rand(100)<JobLevel+25) goto L_bless;
+	mes "[Nun Linus]";
+	mes "不好意思~上帝沒看見你哦~";
+	mes "再試一次！給他看吧";
+	mes "證明你是個很強的牧師！";
+	close;
+	
+L_bless:
+	mes "[Nun Linus]";
+	mes "上帝同意咯~~";
+	skill 1014,1,0;
 	close;
 	
 L_noitems:
-	mes "[Enoz]";
+	mes "[Nun Linus]";
 	mes "你還沒帶足道具.";
 	mes "等你收集完了再來找我吧";
 	close;
-	
-L_nowiz:
-	mes "你一定要有魔力才行啊~呵呵.";
+		
+L_nopriest:
+	mes "對不起，你應該相信上帝才對.";
 	emotion e_gasp;
 	close;
 
 L_alreadyhave:
 	mes "我已經教過你啦~！";
+	close;
+
+L_norez:
+	mes "等你成為一名為上帝代言的牧師";
+	mes "再來吧~";
 	close;
 }
