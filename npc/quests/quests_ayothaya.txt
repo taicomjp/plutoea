@@ -1,13 +1,14 @@
 //===== Athena Script =======================================
-//= Ayothaya Quests
+//= Quest NPCs related to Ayothaya
 //===== By ================================================
 //= Fredzilla
 //===== Version ===========================================
-//= 1.5
+//= 1.6
 //===== Compatible With ===================================
 //= eAthena 1.0
 //===== Description =======================================
-//= 1 Quests with 2 parts for Ayothaya
+//= Ayothaya Clue Quest, Ayothaya Shrimp Quest, Ayothaya
+//= Dungeon Quest, Tom Yum Goong Quest,
 //===== Comments ==========================================
 //= List or Variables used
 //= @fishing - 	Checks for if you have caught a fish or not, 
@@ -25,112 +26,100 @@
 //= 1.4 Updated, more close to the official. Thanks to birkiczd
 //=	Also optimized it again, remove unused global variable [Lupus]
 //= 1.5 Removed Duplicates [Silent]
+//= 1.6 Moved quests from cities/ to here:
+//= Shrimp, Dungeon, Tom Yum Goong [Evera]
 //=========================================================
 
+//============================================================
+//============================================== Ayothaya Clue
+//====================================================== Quest
 ayo_dun02.gat,277,178,1	script	神秘箱子	139,4,4,{
-	if (AyoOBB==1 || weddingring!=3) goto L_Cancel;
+	if(AyoOBB==1 || weddingring!=3) end;
 	mes "["+strcharinfo(0)+"]";
 	mes "這是什麼?, 沒有腳印, 這是一個破破的藍色箱子";
 	next;
 	set AyoOBB,1;
 	getitem 603,1;
+	logmes "Q_AYOTH1: got OBB";
 	mes "["+strcharinfo(0)+"]";
 	mes "還是留著好了";
 	close;
-L_Cancel:
-	end;
 }
 //Dungeon 1 foot prints x 5
 ayo_dun01.gat,30,149,1	script	線索#01	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "這裡有些腳印, 好像往東邊去了.";
 	set @footprints1,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun01.gat,70,149,1	script	線索#02	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "那裡又有一些腳印, 好像也是去東邊了!";
 	set @footprints2,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun01.gat,100,149,1	script	線索#03	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "又是一些去東邊的腳印, 它們到底是誰的?";
 	set @footprints3,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun01.gat,190,149,1	script	線索#04	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "又有腳印了, 但是這次是去北邊了.";
 	set @footprints4,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun01.gat,261,263,1	script	線索#05	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "又是腳印, 這次好像是進了那個洞.";
 	set @footprints5,1;
 	close;
-L_Cancel:
-	end;
 }
 
 //Dungeon 2 foot prints x 4 + 1 fake
 ayo_dun02.gat,222,204,1	script	線索#06	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "更多的腳印, 有去南邊的也有去西邊的.";
 	set @footprints6,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun02.gat,169,212,1	script	線索#07	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "看起來這些腳印是去西邊的.";
 	set @footprints7,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun02.gat,129,212,1	script	線索#08	139,5,5,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "這次又有些去了北邊，有些去了西邊.";
 	set @footprints8,1;
 	close;
-L_Cancel:
-	end;
 }
 ayo_dun02.gat,79,212,1	script	線索#09	139,7,7,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "這些腳印非常新, 他們去北邊了.";
 	set @footprints9,1;
 	close;
-L_Cancel:
-	end;
 }
 //FAKE
 ayo_dun02.gat,245,166,1	script	線索#10	139,7,7,{
-	if (weddingring!=3) goto L_Cancel;
+	if(weddingring!=3) end;
 	npctalk "看起來有東西從這邊來, 去了東邊.";
 	close;
-L_Cancel:
-	end;
 }
 
-ayothaya.gat,233,105,7	script	淑達	818,{
+ayothaya.gat,233,105,7	script	淑達	838,{
 	mes "[淑達]";
-	if (weddingring==2) goto L_Quest2;
-	if (weddingring==3) goto L_OnQ2;
-	if (weddingring==4) goto L_QuestComplete;
-	if (weddingring==5) goto L_QuestOver;
-	if (countitem(7288)==1) goto L_RingFound;
+	if(BaseLevel<50) {
+		mes "Where is my ring!?!";
+		close;
+	}
+	if(weddingring==2) goto L_Quest2;
+	if(weddingring==3) goto L_OnQ2;
+	if(weddingring==4) goto L_QuestComplete;
+	if(weddingring==5) goto L_QuestOver;
+	if(countitem(7288)>=1) goto L_RingFound;
 	mes "請幫幫我好嗎， 我愛人失蹤了，如果我能找到我的 ^FF0000結婚戒指^000000 , 也許有什麼辦法能把他從海裡 ^0000FF釣^000000 出來.";
 	set weddingring,1;
 	close;
@@ -147,6 +136,11 @@ L_RingFound:
 	mes "管他呢.";
 	close;
 N_Yes:
+	mes "[淑達]";
+	if(countitem(7288)<1) {
+		mes "Go away, cheater!";
+		close;
+	}
 	delitem 7288,1;
 	mes "[淑達]";
 	mes "非常感謝，現在我拿回了它，我的愛人應該也會回來了.";
@@ -208,7 +202,7 @@ ayothaya.gat,253,99,3	script	漁夫#01	843,{
 	mes "你覺得呢?";
 	next;
 	menu "好的",-,"不要",L_No;
-	if (countitem(528) < 1 || zeny < 50) goto L_Fail;
+	if(countitem(528) < 1 || zeny < 50) goto L_Fail;
 	delitem 528,1;
 	set zeny,zeny-50;
 	mes "[漁夫]";
@@ -217,9 +211,9 @@ ayothaya.gat,253,99,3	script	漁夫#01	843,{
 	next;
 	set @fishing, rand(1,10);
 	mes "[漁夫]";
-	if (@fishing<5) goto L_Nothing;
-	if (@fishing<10) goto L_Fish;
-	if (@fishing==10) goto L_RingCheck;
+	if(@fishing<5) goto L_Nothing;
+	if(@fishing<10) goto L_Fish;
+	if(@fishing==10) goto L_RingCheck;
 L_No:
 	mes "[漁夫]";
 	mes "下次再來哦.";
@@ -237,7 +231,7 @@ L_Fish:
 	mes "看啊，你釣到一條魚, 幹得不錯.";
 	close;
 L_RingCheck:
-	if (weddingring!=1 || recoveredring==1) goto L_Fish;
+	if(weddingring!=1 || recoveredring==1) goto L_Fish;
 	mes "這是什麼, 好像是某種戒指!!!";
 	mes "我想既然是你釣到的，那就你拿著吧";
 	next;
@@ -248,9 +242,10 @@ L_RingCheck:
 	set recoveredring,1;
 	close;
 }
+
 ayothaya.gat,192,171,4	script	老人#10	824,{
 	mes "[老人]";
-	if (weddingring==3) goto L_OnQ2;
+	if(weddingring==3) goto L_OnQ2;
 	mes "多好的一天啊, 你說呢?";
 	close;
 L_OnQ2:
@@ -270,11 +265,23 @@ L_OnQ2:
 }
 
 ayo_dun02.gat,91,264,4	script	阿弄	822,{
-	if (weddingring==4) goto L_QuestComplete;
-	if (weddingring==5) goto L_Talkedshuda;
-	if (@footprints1==1 && @footprints2==1 && @footprints3==1 && @footprints4==1 && @footprints5==1 && @footprints6==1 && @footprints7==1 && @footprints8==1 && @footprints9==1) goto L_Groom;
-end;
+	if(weddingring==4) goto L_QuestComplete;
+	if(weddingring==5) goto L_TalkedShuda;
+	if(weddingring==3 && @footprints1==1 && @footprints2==1 && @footprints3==1 && @footprints4==1 && @footprints5==1 && @footprints6==1 && @footprints7==1 && @footprints8==1 && @footprints9==1) goto L_Groom;
+	mes "[Guy]";
+	mes "She won't find me here,she won't...";
+	close;
 L_Groom:
+	
+	mes "[阿弄]";
+	mes "Help me please...";
+	next;
+	mes "["+strcharinfo(0)+"]";
+	mes "^He seems to be injured very bad...";
+	next;
+	menu "Treat his wounds",-,"Leave him alone",L_Go;
+	if(countitem(504) < 1) goto L_Need;
+	delitem 504,1;
 	mes "[阿弄]";
 	mes "有人叫你來找我?";
 	next;
@@ -301,16 +308,27 @@ L_Groom:
 	mes "[阿弄]";
 	mes "好了, 請回去把我說的告訴淑達, 盡量不要讓她哭好嗎";
 	close;
+L_Need:
+	mes "["+strcharinfo(0)+"]";
+	mes "I need a White potion to be able to cure him.";
+	close;
+L_Go:
+	mes "["+strcharinfo(0)+"]";
+	mes "Someone else will probably find him.I have other things to do.";
+	close;
 L_QuestComplete:
 	mes "[阿弄]";
 	mes "你還沒見淑達?";
 	close;
-L_Talkedshuda:
+L_TalkedShuda:
 	mes "[阿弄]";
 	mes "她明白了嗎?";
 	close;
 }
 
+//============================================================
+//============================================ Ayothaya Shrimp
+//====================================================== Quest
 ayothaya.gat,203,169,3	script	Noi	839,{
 	mes "[Noi]";
 	mes "Welcome to Ayothaya.";
@@ -486,6 +504,9 @@ s_Shrimp2:
 	close;
 }
 
+//============================================================
+//=========================================== Ayothaya Dungeon
+//====================================================== Quest
 ayothaya.gat,83,132,7	script	Dusit	843,{
 	if(ayodunquest == 1 || ayodunquest == 2 || ayodunquest == 3)goto s_Dun;
 	mes "[Dusit]";
@@ -931,7 +952,6 @@ s_LoseThreads:
 	mes "Come back anytime!";
 	close;
 }
-
 ayo_fild01.gat,129,197,7	script	Puraim	842,{
 	if(countitem(7285) > 0)goto s_Dungeon; //Holy Threads
 	mes "[Puraim]";
@@ -995,6 +1015,182 @@ s_SetHp:
 	heal -@hpcheck2,0;
 	goto s_Warp;
 }
+	
+ayo_dun01.gat,260,42,4	script	LocationActivator	139,4,0,{
+	if(ayodot > 5)end;
+	if(countitem(7285) > 0)goto s_Dots;
+	end;
+s_Dots:
+	mes "- Holy threads in your pocket";
+	mes "suddenly started glowing. You felt";
+	mes "something is near you.-";
+	if(ayodot == 0)goto s_0;
+	if(ayodot == 1)goto s_1;
+	if(ayodot == 2)goto s_2;
+	if(ayodot == 3)goto s_3;
+	if(ayodot == 4)goto s_4;
+	if(ayodot == 5)goto s_5;
+	end;
+
+s_0:
+	viewpoint 1,198,164,1,0xFF0000;
+	viewpoint 1,87,16,2,0xFF0000;
+	viewpoint 1,268,215,3,0xFF0000;
+	viewpoint 1,147,274,4,0xFF0000;
+	viewpoint 1,99,118,5,0xFF0000;
+	viewpoint 1,16,188,6,0xFF0000;
+	stopnpctimer;
+	close;
+s_1:
+	viewpoint 1,87,16,2,0xFF0000;
+	viewpoint 1,268,215,3,0xFF0000;
+	viewpoint 1,147,274,4,0xFF0000;
+	viewpoint 1,99,118,5,0xFF0000;
+	viewpoint 1,16,188,6,0xFF0000;
+	close;
+s_2:
+	viewpoint 1,268,215,3,0xFF0000;
+	viewpoint 1,147,274,4,0xFF0000;
+	viewpoint 1,99,118,5,0xFF0000;
+	viewpoint 1,16,188,6,0xFF0000;
+	close;
+s_3:
+	viewpoint 1,147,274,4,0xFF0000;
+	viewpoint 1,99,118,5,0xFF0000;
+	viewpoint 1,16,188,6,0xFF0000;
+	close;
+s_4:
+	viewpoint 1,99,118,5,0xFF0000;
+	viewpoint 1,16,188,6,0xFF0000;
+	close;	
+s_5:
+	viewpoint 1,16,188,6,0xFF0000;
+	close;
+}
+
+ayo_dun01.gat,198,164,4	script	#invayo1	111,{
+
+	if(countitem(7285) < 1)end;
+	if(ayodot == 0)goto s_First;
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 1st part of the slate.";
+	close;
+
+s_First:
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 1st part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FFDo not enter the 2nd underground level.^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,1;
+	close;
+
+}
+
+ayo_dun01.gat,87,16,4	script	#invayo2	111,{
+
+	if(countitem(7285) < 1)end;
+	if(ayodot == 1)goto s_First;
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 2nd part of the slate.";
+	close;
+
+s_First:
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 2nd part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FF...is danger... You wil....^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,2;
+	close;
+
+}
+
+ayo_dun01.gat,268,215,4	script	#invayo3	111,{
+
+	if(countitem(7285) < 1)end;
+	if(ayodot == 2)goto s_First;
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 3rd part of the slate.";
+	close;
+
+s_First:
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 3rd part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FF...encounter...tiger....^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,3;
+	close;
+
+}
+
+ayo_dun01.gat,147,274,4	script	#invayo4	111,{
+
+	if(countitem(7285) < 1)end;
+	if(ayodot == 3)goto s_First;
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 4th part of the slate.";
+	close;
+
+s_First:
+
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 4th part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FFYou must kill... In order to do... MUST ... How to go... the 2nd underground level...^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,4;
+	close;
+
+}
+
+ayo_dun01.gat,99,118,4	script	#invayo5	111,{
+	if(countitem(7285) < 1)end;
+	if(ayodot == 4)goto s_First;
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 5th part of the slate.";
+	close;
+s_First:
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 5th part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FFYou need more... Holy power... in order to...^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,5;
+	close;
+
+}
+	
+ayo_dun01.gat,16,188,4	script	#invayo6	111,{
+	if(countitem(7285) < 1)end;
+	if(ayodot == 5)goto s_First;
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the last part of the slate.";
+	close;
+s_First:
+	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the last part of the slate.";
+	next;
+	mes "^3C2EE6It reads '^0000FFOtherwise, it's impossible...^3C2EE6' You are unable to read the rest of the message.";
+	set ayodot,6;
+	close;
+}
+
+ayo_dun01.gat,24,283,4	script	#ayowarp	111,{
+	if(countitem(7287) < 1)goto s_NoEntry;
+	mes "^3C2EE6The holy threads emanate a powerful sense of safety and security. With the protection of holiness, you begin your descent into the 2nd level..";
+	close2;
+	set @ayodunwarp,rand(1,2);
+	if(@ayodunwarp == 2)goto s_2;
+	warp "ayo_dun02.gat",275,26;
+	end;
+s_2:
+	warp "ayo_dun02.gat",24,26;
+	end;	
+s_NoEntry:
+	mes "^3C2EE6You find what seems to be the entrance to the 2nd level. However, you are filled with an overwhelming sense of dread. Somehow, you can't bring yourself to go down...";
+	close;
+}
+
+ayo_dun01.gat,23,283,4	duplicate(#ayowarp)	#ayodupe1	111
+ayo_dun01.gat,25,283,4	duplicate(#ayowarp)	#ayodupe2	111
+ayo_dun01.gat,26,283,4	duplicate(#ayowarp)	#ayodupe3	111
+
+//============================================================
+//============================================== Tom Yum Goong
+//====================================================== Quest
+
 
 ayothaya.gat,196,265,3	script	Einon	842,{
 	if(tomyumgoong == 5)goto s_Done;
@@ -1635,174 +1831,3 @@ s_Win2:
 	mes "for human beings.";
 	close;
 }
-
-ayo_dun01.gat,260,42,4	script	LocationActivator	139,4,0,{
-	if(ayodot > 5)end;
-	if(countitem(7285) > 0)goto s_Dots;
-	end;
-s_Dots:
-	mes "- Holy threads in your pocket";
-	mes "suddenly started glowing. You felt";
-	mes "something is near you.-";
-	if(ayodot == 0)goto s_0;
-	if(ayodot == 1)goto s_1;
-	if(ayodot == 2)goto s_2;
-	if(ayodot == 3)goto s_3;
-	if(ayodot == 4)goto s_4;
-	if(ayodot == 5)goto s_5;
-	end;
-
-s_0:
-	viewpoint 1,198,164,1,0xFF0000;
-	viewpoint 1,87,16,2,0xFF0000;
-	viewpoint 1,268,215,3,0xFF0000;
-	viewpoint 1,147,274,4,0xFF0000;
-	viewpoint 1,99,118,5,0xFF0000;
-	viewpoint 1,16,188,6,0xFF0000;
-	stopnpctimer;
-	close;
-s_1:
-	viewpoint 1,87,16,2,0xFF0000;
-	viewpoint 1,268,215,3,0xFF0000;
-	viewpoint 1,147,274,4,0xFF0000;
-	viewpoint 1,99,118,5,0xFF0000;
-	viewpoint 1,16,188,6,0xFF0000;
-	close;
-s_2:
-	viewpoint 1,268,215,3,0xFF0000;
-	viewpoint 1,147,274,4,0xFF0000;
-	viewpoint 1,99,118,5,0xFF0000;
-	viewpoint 1,16,188,6,0xFF0000;
-	close;
-s_3:
-	viewpoint 1,147,274,4,0xFF0000;
-	viewpoint 1,99,118,5,0xFF0000;
-	viewpoint 1,16,188,6,0xFF0000;
-	close;
-s_4:
-	viewpoint 1,99,118,5,0xFF0000;
-	viewpoint 1,16,188,6,0xFF0000;
-	close;	
-s_5:
-	viewpoint 1,16,188,6,0xFF0000;
-	close;
-}
-
-ayo_dun01.gat,198,164,4	script	#invayo1	111,{
-
-	if(countitem(7285) < 1)end;
-	if(ayodot == 0)goto s_First;
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 1st part of the slate.";
-	close;
-
-s_First:
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 1st part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FFDo not enter the 2nd underground level.^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,1;
-	close;
-
-}
-
-ayo_dun01.gat,87,16,4	script	#invayo2	111,{
-
-	if(countitem(7285) < 1)end;
-	if(ayodot == 1)goto s_First;
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 2nd part of the slate.";
-	close;
-
-s_First:
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 2nd part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FF...is danger... You wil....^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,2;
-	close;
-
-}
-
-ayo_dun01.gat,268,215,4	script	#invayo3	111,{
-
-	if(countitem(7285) < 1)end;
-	if(ayodot == 2)goto s_First;
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 3rd part of the slate.";
-	close;
-
-s_First:
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 3rd part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FF...encounter...tiger....^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,3;
-	close;
-
-}
-
-ayo_dun01.gat,147,274,4	script	#invayo4	111,{
-
-	if(countitem(7285) < 1)end;
-	if(ayodot == 3)goto s_First;
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 4th part of the slate.";
-	close;
-
-s_First:
-
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 4th part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FFYou must kill... In order to do... MUST ... How to go... the 2nd underground level...^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,4;
-	close;
-
-}
-
-ayo_dun01.gat,99,118,4	script	#invayo5	111,{
-	if(countitem(7285) < 1)end;
-	if(ayodot == 4)goto s_First;
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 5th part of the slate.";
-	close;
-s_First:
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the 5th part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FFYou need more... Holy power... in order to...^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,5;
-	close;
-
-}
-	
-ayo_dun01.gat,16,188,4	script	#invayo6	111,{
-	if(countitem(7285) < 1)end;
-	if(ayodot == 5)goto s_First;
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the last part of the slate.";
-	close;
-s_First:
-	mes "^3C2EE6You find a piece of a stone slate with letters etched on it. It seems to be the last part of the slate.";
-	next;
-	mes "^3C2EE6It reads '^0000FFOtherwise, it's impossible...^3C2EE6' You are unable to read the rest of the message.";
-	set ayodot,6;
-	close;
-}
-
-ayo_dun01.gat,24,283,4	script	#ayowarp	111,{
-	if(countitem(7287) < 1)goto s_NoEntry;
-	mes "^3C2EE6The holy threads emanate a powerful sense of safety and security. With the protection of holiness, you begin your descent into the 2nd level..";
-	close2;
-	set @ayodunwarp,rand(1,2);
-	if(@ayodunwarp == 2)goto s_2;
-	warp "ayo_dun02.gat",275,26;
-	end;
-s_2:
-	warp "ayo_dun02.gat",24,26;
-	end;	
-s_NoEntry:
-	mes "^3C2EE6You find what seems to be the entrance to the 2nd level. However, you are filled with an overwhelming sense of dread. Somehow, you can't bring yourself to go down...";
-	close;
-}
-
-ayo_dun01.gat,23,283,4	duplicate(#ayowarp)	#ayodupe1	111
-ayo_dun01.gat,25,283,4	duplicate(#ayowarp)	#ayodupe2	111
-ayo_dun01.gat,26,283,4	duplicate(#ayowarp)	#ayodupe3	111
