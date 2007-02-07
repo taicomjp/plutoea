@@ -1,22 +1,33 @@
 //id,range,hit,inf,pl,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count
 // 01 技能ID
-// 02 射程 (複合技能使用時不會判斷射程) 如果是 0 且技能不是 inf = 4, 則使用基本的武器射程)
+// 02 射程 (複合技能使用時不會判斷射程,
+//           如果射程 < 5, 則使用基本的武器射程)
 // 03 命中 (8- 多重命中, 6- 單次命中)
 // 04 技能發動方式 (0- 被動, 1- 敵人, 2- 地面, 4- 自己, 16- 友方, 32- 陷阱)
-// 05 技能屬性 (0- 無屬性, 1- 水屬性, 2- 地屬性, 3- 火屬性, 4- 風屬性, 5- 毒屬性, 6- 聖屬性, 7- 暗屬性, 8- 念屬性, 9- 不死屬性)
-// 06 技能類型 (0- 普通, 1-無傷害, 2-擴散傷害, 3-無傷害區, 4-擴散和分化傷害)
+// 05 技能屬性 (0- 無屬性, 1- 水屬性, 2- 地屬性, 3- 火屬性, 4- 風屬性,
+//    5- 毒屬性, 6- 聖屬性, 7- 暗屬性, 8- 念屬性, 9- 不死屬性)
+// 06 技能類型 (0- 普通, 1-無傷害, 2-擴散傷害,
+//    3-無傷害區, 4-擴散和分化傷害)
 // 07 擴散/效果射程 (設置-1為全螢幕)
 // 08 最高等級
 // 09 連擊次數 (正數時傷害隨連擊增加
 //    負數時只會顯示連擊次數而不會增加總傷害)
 // 10 詠唱取消 (設置為1可以取消. 設置為0無法取消)
 // 11 詠唱防禦減少率
-// 12 技能發動方式2 (技能信息2) (1- 任務技能,  2- npc技能, 4- 結婚技能,
-//    8- 氣力球(需要蓄氣的)技能, 16- 公會技能, 32- 歌舞技能, 64- 合體技能,
-//    128- 陷阱(能夠被發現), 256- 自用技能,
-//    512- 不能對自己使用的技能(假如技能發動方式 = 4, 自動選擇目標技能)
-//    1024- 僅組隊可用技能, 2048- 僅公會可用技能
-//    4096- allow usage on enemies too (use with 1024/2048))
+// 12 技能發動方式 (技能信息 2):
+//    0x0001- 任務技能
+//    0x0002- npc 技能
+//    0x0004- 結婚技能
+//    0x0008- 氣力球(需要蓄氣的)技能
+//    0x0010- 公會技能
+//    0x0020- 歌舞技能
+//    0x0040- 合體技能
+//    0x0080- 陷阱(能夠被發現)
+//    0x0100- 自用技能
+//    0x0200- 不能對自己使用的技能(假如技能發動方式 = 4, 自動選擇目標技能)
+//    0x0400- 僅組隊可用技能
+//    0x0800- 僅公會可用技能
+//    0x1000- allow usage on enemies too (use with 0x0400/0x0800)
 // 13 最大施放數量: 在(玩家允許施放數量)player_land_skill_limit/(魔物允許施放數量)monster_land_skill_limit
 //    在battle_athena.conf中啟動時,限制發動個數
 // 14 技能類型 (none無, weapon武器, magic魔法, misc其他)
@@ -87,9 +98,9 @@
 64,0,0,0,0,0,0,5,0,no,0,0,0,weapon,0	//KN_CAVALIERMASTERY#騎兵修練#
 65,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//PR_MACEMASTERY#權杖使用熟練度#
 66,9,6,16,0,1,0,5,1,yes,0,0,0,magic,0	//PR_IMPOSITIO#神威祈福#	
-67,9,6,16,0,1,0,3,1,yes,0,512,0,magic,0	//PR_SUFFRAGIUM#犧牲祈福#
+67,9,6,16,0,1,0,3,1,yes,0,0x200,0,magic,0	//PR_SUFFRAGIUM#犧牲祈福#
 68,9,6,16,6,1,0,5,1,yes,0,0,0,magic,0	//PR_ASPERSIO#撒水祈福#
-69,9,6,2,0,3,1,5,1,yes,0,64,0,magic,0	//PR_BENEDICTIO#聖之祈福#
+69,9,6,2,0,3,1,5,1,yes,0,0x40,0,magic,0	//PR_BENEDICTIO#聖之祈福#
 70,9,6,2,6,1,0,10,1,yes,0,0,0,magic,1	//PR_SANCTUARY#光耀之堂#
 71,9,6,16,0,1,0,4,1,yes,0,0,0,magic,0	//PR_SLOWPOISON#緩毒術#
 72,9,6,16,0,1,0,1,1,yes,0,0,0,magic,0	//PR_STRECOVERY#痊癒術#
@@ -103,7 +114,7 @@
 80,9,8,2,3,0,1:1:1:1:1:2:2:2:2:2:2,10,3:4:5:6:7:8:9:10:11:12:12,yes,0,0,5,magic,0	//WZ_FIREPILLAR#火柱攻擊#
 81,0,6,4,3,0,3,10,1,yes,0,0,0,magic,5	//WZ_SIGHTRASHER#火之獵殺#
 //82,9,6,2,3,0,0,10,1,yes,0,0,0,magic,0	//WZ_FIREIVY#Fire Ivy#
-83,9,8,2,3,0,3:3:3:3:3:3:3:3:3:3:14,10,1:1:2:2:3:3:4:4:5:5:15,yes,0,0,0,magic,0	//WZ_METEOR#>隕石術#
+83,9,8,2,3,0,3:3:3:3:3:3:3:3:3:3:14,10,1:1:2:2:3:3:4:4:5:5:15,yes,0,0,0,magic,0	//WZ_METEOR#隕石術#
 84,9,8,1,4,0,0,10,3:4:5:6:7:8:9:10:11:12,yes,0,0,0,magic,2:3:3:4:4:5:5:6:6:7	//WZ_JUPITEL#雷鳴術#
 85,9,8,2,4,0,0,10,-10,yes,0,0,0,magic,0	//WZ_VERMILION#怒雷強擊#
 86,9,8,1,1,0,0,5,1,yes,0,0,0,magic,0	//WZ_WATERBALL#水球術#
@@ -135,15 +146,15 @@
 112,0,6,4,0,3,-1,5,1,no,0,0,0,weapon,0	//BS_WEAPONPERFECT#無視體型攻擊#
 113,0,6,4,0,3,-1,5,1,no,0,0,0,weapon,0	//BS_OVERTHRUST#凶砍#
 114,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//BS_MAXIMIZE#武器值最大化#
-115,3,6,2,0,1,0,5,1,no,0,128,0,misc,6:7:8:9:10	//HT_SKIDTRAP#滑動陷阱#
-116,3,6,2,2,0,0,5,1,no,0,128,0,misc,0	//HT_LANDMINE#地雷陷阱#
-117,3,6,2,0,1,0,5,1,no,0,128,0,misc,0	//HT_ANKLESNARE#定位陷阱#
-118,3,6,2,0,2,1,5,1,no,0,128,0,misc,0	//HT_SHOCKWAVE#魔耗陷阱#
-119,3,6,2,0,3,2,5,1,no,0,128,0,misc,0	//HT_SANDMAN#睡魔陷阱#
-120,3,6,2,0,3,1,5,1,no,0,128,0,misc,0	//HT_FLASHER#強光陷阱#
-121,3,6,2,1,2,1,5,1,no,0,128,0,misc,0	//HT_FREEZINGTRAP#霜凍陷阱#
-122,3,6,2,4,2,1,5,1,no,0,128,0,misc,0	//HT_BLASTMINE#定時爆炸陷阱#
-123,3,6,2,3,2,2,5,1,no,0,128,0,misc,0	//HT_CLAYMORETRAP#爆散陷阱#
+115,3,6,2,0,1,0,5,1,no,0,0x80,0,misc,6:7:8:9:10	//HT_SKIDTRAP#滑動陷阱#
+116,3,6,2,2,0,0,5,1,no,0,0x80,0,misc,0	//HT_LANDMINE#地雷陷阱#
+117,3,6,2,0,1,0,5,1,no,0,0x80,0,misc,0	//HT_ANKLESNARE#定位陷阱#
+118,3,6,2,0,2,1,5,1,no,0,0x80,0,misc,0	//HT_SHOCKWAVE#魔耗陷阱#
+119,3,6,2,0,3,2,5,1,no,0,0x80,0,misc,0	//HT_SANDMAN#睡魔陷阱#
+120,3,6,2,0,3,1,5,1,no,0,0x80,0,misc,0	//HT_FLASHER#強光陷阱#
+121,3,6,2,1,2,1,5,1,no,0,0x80,0,misc,0	//HT_FREEZINGTRAP#霜凍陷阱#
+122,3,6,2,4,2,1,5,1,no,0,0x80,0,misc,0	//HT_BLASTMINE#定時爆炸陷阱#
+123,3,6,2,3,2,2,5,1,no,0,0x80,0,misc,0	//HT_CLAYMORETRAP#爆散陷阱#
 124,2,6,32,0,1,0,1,1,no,0,0,0,misc,0	//HT_REMOVETRAP#陷阱移除#
 125,3,6,2,0,1,0,1,1,no,0,0,0,misc,0	//HT_TALKIEBOX#陷阱探查#
 126,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//HT_BEASTBANE#動物殺手#
@@ -158,78 +169,78 @@
 135,0,6,4,0,1,0,10,1,no,0,0,0,weapon,0	//AS_CLOAKING#偽裝#
 136,-1,8,1,-1,0,0,10,8,no,0,0,0,weapon,0	//AS_SONICBLOW#音速投擲#
 137,3:4:5:6:7,6,1,-1,2,1,5,1,no,0,0,0,weapon,0	//AS_GRIMTOOTH#無影之牙#
-138,1,6,16,5,1,0,10,1,no,0,1024,0,weapon,0	//AS_ENCHANTPOISON#塗毒#
+138,1,6,16,5,1,0,10,1,no,0,0x400,weapon,0	//AS_ENCHANTPOISON#塗毒#
 139,0,6,4,0,0,0,10,1,no,0,0,0,weapon,0	//AS_POISONREACT#毒性反彈#
 140,2,6,2,5,1,0,10,1,no,0,0,0,weapon,0	//AS_VENOMDUST#病毒散撥#
-141,1,6,1,-1,1,2,10,1,yes,0,0,0,weapon,0	//AS_SPLASHER#毒性感染#
-142,0,6,4,0,1,0,1,1,no,0,1,0,none,0	//NV_FIRSTAID#緊急治療#
-143,0,6,4,0,1,0,1,1,no,0,1,0,none,0	//NV_TRICKDEAD#裝死#
-144,0,0,0,0,0,0,1,0,no,0,1,0,none,0	//SM_MOVINGRECOVERY#移動時恢復HP#
-145,0,0,0,0,0,0,1,0,no,0,1,0,weapon,0	//SM_FATALBLOW#攻擊弱點#
-146,0,6,4,0,1,0,1,1,no,0,1,0,weapon,0	//SM_AUTOBERSERK#狂暴狀態#
-147,0,0,4,0,1,0,1,0,no,0,1,0,weapon,0	//AC_MAKINGARROW#製作箭#
-148,-9,6,1,-1,2,0,1,1,no,0,1,0,weapon,6	//AC_CHARGEARROW#衝鋒箭#
-149,1,6,1,2,0,0,1,1,no,0,1,0,weapon,0	//TF_SPRINKLESAND#噴砂#
-150,0,6,4,0,1,0,1,1,no,0,1,0,weapon,5	//TF_BACKSLIDING#後退迴避#
-151,0,6,4,0,1,0,1,1,no,0,1,0,none,0	//TF_PICKSTONE#撿石頭#
-152,7,6,1,0,0,0,1,1,no,0,1,0,misc,0	//TF_THROWSTONE#投擲石頭#
-153,1,6,1,-1,2,1,1,1,no,0,1,0,weapon,2	//MC_CARTREVOLUTION#手推車攻擊#
-154,0,6,4,0,1,0,1,1,no,0,1,0,none,0	//MC_CHANGECART#改裝手推車#
-155,0,6,4,0,1,0,1,1,no,0,1,0,weapon,0	//MC_LOUD#大聲吶喊#
-156,9,6,1,6,0,0,1,1,yes,0,1,0,magic,0	//AL_HOLYLIGHT#神聖之光#
-157,0,6,4,0,1,0,1,1,yes,0,1,0,magic,0	//MG_ENERGYCOAT#能量外套#
-158,3,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_PIERCINGATT#Thrusting attack#
-159,-1,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_MENTALBREAKER#Spirit Destruction#
-160,9,6,1,0,0,0,10,1,no,0,2,0,weapon,0	//NPC_RANGEATTACK#Stand off attack#
-161,0,0,4,0,1,0,1,1,no,0,2,0,magic,0	//NPC_ATTRICHANGE#Run Attribute Change#
-162,0,0,4,1,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEWATER#Water Attribute Change#
-163,0,0,4,2,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEGROUND#Earth Attribute Change#
-164,0,0,4,3,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEFIRE#Fire Attribute Change#
-165,0,0,4,4,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEWIND#Wind Attribute Change#
-166,0,0,4,5,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEPOISON#Poison Attribute Change#
-167,0,0,4,6,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEHOLY#Holy Attribute Change#
-168,0,0,4,7,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGEDARKNESS#Shadow Attribute Change#
-169,0,0,4,8,1,0,1,1,no,0,2,0,magic,0	//NPC_CHANGETELEKINESIS#Sense Attribute Change#
-170,-1,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_CRITICALSLASH#Defense disregard attack#
-171,-1,8,1,-1,0,0,10,2:3:4:5:6:7:8:9:10:11,no,0,2,0,weapon,0	//NPC_COMBOATTACK#Multi-stage Attack#
-172,-1,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_GUIDEATTACK#On-target Impact Attack#
-173,1,6,4,3,2,5,10,1,no,0,2,0,misc,3	//NPC_SELFDESTRUCTION#Suicide bombing#
-174,-1,6,1,-1,2,3,1,1,no,0,2,0,weapon,0	//NPC_SPLASHATTACK#Splash attack#
-175,0,0,4,0,1,0,10,1,no,0,2,0,misc,0	//NPC_SUICIDE#Suicide#
-176,-1,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_POISON#Poison Attack#
-177,7,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_BLINDATTACK#Darkness Attack#
-178,-1,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_SILENCEATTACK#Silence Attack#
-179,-1,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_STUNATTACK#Stun Attack#
-180,7,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_PETRIFYATTACK#Petrify Attack#
-181,7,6,1,7,0,0,5,1,no,0,2,0,weapon,0	//NPC_CURSEATTACK#Cursing Attack #
-182,-1,6,1,-1,0,0,5,1,no,0,2,0,weapon,0	//NPC_SLEEPATTACK#Sleep attack#
-183,-1,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_RANDOMATTACK#Random Attack #
-184,-1,6,1,1,0,0,10,1,no,0,2,0,weapon,0	//NPC_WATERATTACK#Water Attribute Attack#
-185,-1,6,1,2,0,0,10,1,no,0,2,0,weapon,0	//NPC_GROUNDATTACK#Earth Attribute Attack#
-186,-1,6,1,3,0,0,10,1,no,0,2,0,weapon,0	//NPC_FIREATTACK#Fire Attribute Attack#
-187,-1,6,1,4,0,0,10,1,no,0,2,0,weapon,0	//NPC_WINDATTACK#Wind Attribute Attack#
-188,-1,6,1,5,0,0,10,1,no,0,2,0,weapon,0	//NPC_POISONATTACK#Poison Attribute Attack#
-189,-1,6,1,6,0,0,10,1,no,0,2,0,weapon,0	//NPC_HOLYATTACK#Holy Attribute Attack#
-190,-1,6,1,7,0,0,10,1,no,0,2,0,weapon,0	//NPC_DARKNESSATTACK#Shadow Attribute Attack#
-191,-1,6,1,8,0,0,10,1,no,0,2,0,weapon,0	//NPC_TELEKINESISATTACK#Sense Attribute Attack#
-192,-1,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_MAGICALATTACK#Demon Shock Attack#
-193,0,0,4,0,1,0,10,1,no,0,2,0,none,0	//NPC_METAMORPHOSIS#Metamorphosis#
-194,0,0,4,0,1,0,10,1,no,0,2,0,none,0	//NPC_PROVOCATION#Provocation#
-195,0,6,4,0,0,0,10,1,no,0,2,0,misc,0	//NPC_SMOKING#Smoking#
-196,0,0,4,0,1,0,10,1,no,0,2,0,magic,0	//NPC_SUMMONSLAVE#Follower Summons#
-197,0,0,4,0,1,0,10,1,no,0,2,0,none,0	//NPC_EMOTION#Emotion#
-198,0,0,4,0,1,0,10,1,no,0,2,0,magic,0	//NPC_TRANSFORMATION#Transformation#
-199,9,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_BLOODDRAIN#Sucking Blood#
-200,9,6,1,7,0,0,10,1,no,0,2,0,magic,0	//NPC_ENERGYDRAIN#Energy Drain#
-201,0,0,4,0,1,0,10,1,no,0,2,0,weapon,0	//NPC_KEEPING#Keeping#
-202,2,6,1,7,0,0,5,1,no,0,2,0,misc,0	//NPC_DARKBREATH#Dark Breath#
-203,9,6,1,7,1,0,10,1,no,0,2,0,magic,0	//NPC_DARKBLESSING#Dark Blessing#
-204,0,0,4,0,1,0,10,1,no,0,2,0,magic,0	//NPC_BARRIER#Barrier#
-205,0,0,4,0,1,0,10,1,no,0,2,0,weapon,0	//NPC_DEFENDER#Defender#
-206,1,6,1,-1,1,0,10,1,no,0,2,0,weapon,0	//NPC_LICK#Lick#
-207,9,0,1,0,1,0,10,1,no,0,2,0,magic,0	//NPC_HALLUCINATION#Hallucination#
-208,0,0,4,0,1,0,1,1,no,0,2,0,magic,0	//NPC_REBIRTH#Rebirth#
-209,0,0,4,0,1,0,10,1,no,0,2,0,magic,0	//NPC_SUMMONMONSTER#Monster Summons#
+141,1,6,1,5,1,2,10,1,yes,0,0,0,weapon,0	//AS_SPLASHER#毒性感染#
+142,0,6,4,0,1,0,1,1,no,0,0x1,0,none,0	//NV_FIRSTAID#緊急治療#
+143,0,6,4,0,1,0,1,1,no,0,0x1,0,none,0	//NV_TRICKDEAD#裝死#
+144,0,0,0,0,0,0,1,0,no,0,0x1,0,none,0	//SM_MOVINGRECOVERY#移動時恢復HP#
+145,0,0,0,0,0,0,1,0,no,0,0x1,0,weapon,0	//SM_FATALBLOW#攻擊弱點#
+146,0,6,4,0,1,0,1,1,no,0,0x1,0,weapon,0	//SM_AUTOBERSERK#狂暴狀態#
+147,0,0,4,0,1,0,1,0,no,0,0x1,0,weapon,0	//AC_MAKINGARROW#製作箭#
+148,-9,6,1,-1,2,0,1,1,no,0,0x1,0,weapon,6	//AC_CHARGEARROW#衝鋒箭#
+149,1,6,1,2,0,0,1,1,no,0,0x1,0,weapon,0	//TF_SPRINKLESAND#噴砂#
+150,0,6,4,0,1,0,1,1,no,0,0x1,0,weapon,5	//TF_BACKSLIDING#後退迴避#
+151,0,6,4,0,1,0,1,1,no,0,0x1,0,none,0	//TF_PICKSTONE#撿石頭#
+152,7,6,1,0,0,0,1,1,no,0,0x1,0,misc,0	//TF_THROWSTONE#投擲石頭#
+153,1,6,1,-1,2,1,1,1,no,0,0x1,0,weapon,2	//MC_CARTREVOLUTION#手推車攻擊#
+154,0,6,4,0,1,0,1,1,no,0,0x1,0,none,0	//MC_CHANGECART#改裝手推車#
+155,0,6,4,0,1,0,1,1,no,0,0x1,0,weapon,0	//MC_LOUD#大聲吶喊#
+156,9,6,1,6,0,0,1,1,yes,0,0x1,0,magic,0	//AL_HOLYLIGHT#神聖之光#
+157,0,6,4,0,1,0,1,1,yes,0,0x1,0,magic,0	//MG_ENERGYCOAT#能量外套#
+158,3,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_PIERCINGATT#單體攻擊#
+159,-1,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_MENTALBREAKER#SP減少攻擊#
+160,9,6,1,0,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_RANGEATTACK#遠距離攻擊#
+161,0,0,4,0,1,0,1,1,no,0,0x2,0,magic,0	//NPC_ATTRICHANGE#隨機屬性變化#
+162,0,0,4,1,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEWATER#水屬性變化#
+163,0,0,4,2,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEGROUND#地屬性變化#
+164,0,0,4,3,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEFIRE#火屬性變化#
+165,0,0,4,4,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEWIND#風屬性變化#
+166,0,0,4,5,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEPOISON#毒屬性變化#
+167,0,0,4,6,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEHOLY#聖屬性變化#
+168,0,0,4,7,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGEDARKNESS#暗屬性變化#
+169,0,0,4,8,1,0,1,1,no,0,0x2,0,magic,0	//NPC_CHANGETELEKINESIS#念屬性變化#
+170,-1,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_CRITICALSLASH#防禦無視攻擊#
+171,-1,8,1,-1,0,0,10,2:3:4:5:6:7:8:9:10:11,no,0,0x2,0,weapon,0	//NPC_COMBOATTACK#多段攻擊#
+172,-1,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_GUIDEATTACK#必中攻擊#
+173,1,6,4,3,2,5,10,1,no,0,0x2,0,misc,3	//NPC_SELFDESTRUCTION#自爆#
+174,-1,6,1,-1,2,3,1,1,no,0,0x2,0,weapon,0	//NPC_SPLASHATTACK#範圍攻擊#
+175,0,0,4,0,1,0,10,1,no,0,0x2,0,misc,0	//NPC_SUICIDE#自殺#
+176,-1,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_POISON#毒攻擊#
+177,7,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_BLINDATTACK#暗黑攻擊#
+178,-1,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_SILENCEATTACK#沉默攻擊#
+179,-1,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_STUNATTACK#無視體型攻擊#
+180,7,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_PETRIFYATTACK#石化攻擊#
+181,7,6,1,7,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_CURSEATTACK#詛咒攻擊#
+182,-1,6,1,-1,0,0,5,1,no,0,0x2,0,weapon,0	//NPC_SLEEPATTACK#睡眠攻擊#
+183,-1,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_RANDOMATTACK#隨機攻擊#
+184,-1,6,1,1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_WATERATTACK#水屬性攻擊#
+185,-1,6,1,2,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_GROUNDATTACK#地屬性攻擊#
+186,-1,6,1,3,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_FIREATTACK#火屬性攻擊#
+187,-1,6,1,4,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_WINDATTACK#風屬性攻擊#
+188,-1,6,1,5,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_POISONATTACK#毒屬性攻擊#
+189,-1,6,1,6,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_HOLYATTACK#聖屬性攻擊#
+190,-1,6,1,7,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_DARKNESSATTACK#暗屬性攻擊#
+191,-1,6,1,8,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_TELEKINESISATTACK#念屬性攻擊#
+192,-1,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_MAGICALATTACK#魔法攻擊#
+193,0,0,4,0,1,0,10,1,no,0,0x2,0,none,0	//NPC_METAMORPHOSIS#進化#
+194,0,0,4,0,1,0,10,1,no,0,0x2,0,none,0	//NPC_PROVOCATION#挑釁#
+195,0,6,4,0,0,0,10,1,no,0,0x2,0,misc,0	//NPC_SMOKING#吸煙#
+196,0,0,4,0,1,0,10,1,no,0,0x2,0,magic,0	//NPC_SUMMONSLAVE#召喚奴隸#
+197,0,0,4,0,1,0,10,1,no,0,0x2,0,none,0	//NPC_EMOTION#表情符號#
+198,0,0,4,0,1,0,10,1,no,0,0x2,0,magic,0	//NPC_TRANSFORMATION#轉移#
+199,7,6,1,7,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_BLOODDRAIN#HP吸收#
+200,7,6,1,7,0,0,10,1,no,0,0x2,0,magic,0	//NPC_ENERGYDRAIN#SP吸收#
+201,0,0,4,0,1,0,10,1,no,0,0x2,0,weapon,0	//NPC_KEEPING#一定時間、非移動非反擊(DEF100)#
+202,2,6,1,7,0,0,5,1,no,0,0x2,0,misc,0	//NPC_DARKBREATH#暗之賜福#
+203,9,6,1,7,1,0,10,1,no,0,0x2,0,magic,0	//NPC_DARKBLESSING#暗之天使賜福#
+204,0,0,4,0,1,0,10,1,no,0,0x2,0,magic,0	//NPC_BARRIER#一定時間、非移動非反擊(MDEF100)#
+205,0,0,4,0,1,0,10,1,no,0,0x2,0,weapon,0	//NPC_DEFENDER#光之盾#
+206,1,6,1,-1,1,0,10,1,no,0,0x2,0,weapon,0	//NPC_LICK#SP減少攻擊（追加無視體型？）#
+207,9,0,1,0,1,0,10,1,no,0,0x2,0,magic,0	//NPC_HALLUCINATION#幻視#
+208,0,0,4,0,1,0,1,1,no,0,0x2,0,magic,0	//NPC_REBIRTH#回復#
+209,0,0,4,0,1,0,10,1,no,0,0x2,0,magic,0	//NPC_SUMMONMONSTER#召喚魔物#
 210,0,0,0,-1,0,0,10,0,no,0,0,0,weapon,0	//RG_SNATCHER#強奪#
 211,1,6,1,0,1,0,10,1,no,0,0,0,weapon,0	//RG_STEALCOIN#偷錢#
 212,-1,6,1,-1,0,0,10,1,no,0,0,0,weapon,0	//RG_BACKSTAP#背刺#
@@ -251,14 +262,14 @@
 228,0,6,4,0,1,0,10,0,no,0,0,0,none,0	//AM_PHARMACY#配藥#
 229,9,6,2,3,1,0,5,1,yes,0,0,0,weapon,0	//AM_DEMONSTRATION#火煙瓶投擲#
 230,9,6,1,0,0,0,5,1,yes,0,0,0,weapon,0	//AM_ACIDTERROR#強酸攻擊#
-231,9,6,16,0,1,0,5,1,yes,0,3072,0,none,0	//AM_POTIONPITCHER#藥水投擲#
+231,9,6,16,0,1,0,5,1,yes,0,0xC00,0,none,0	//AM_POTIONPITCHER#藥水投擲#
 232,4,6,2,0,1,0,5,1,no,0,0,5,none,0	//AM_CANNIBALIZE#生物調撥#
 233,1,6,2,0,1,0,5,1,no,0,0,3,none,0	//AM_SPHEREMINE#氣泡蟲召喚#
 234,1,6,16,0,1,0,5,1,yes,0,0,0,weapon,0	//AM_CP_WEAPON#化學武器保護#
 235,1,6,16,0,1,0,5,1,yes,0,0,0,weapon,0	//AM_CP_SHIELD#化學盾牌保護#
 236,1,6,16,0,1,0,5,1,yes,0,0,0,weapon,0	//AM_CP_ARMOR#化學鎧甲保護#
 237,1,6,16,0,1,0,5,1,yes,0,0,0,weapon,0	//AM_CP_HELM#化學頭盔保護#
-238,0,0,0,0,0,0,1,0,no,0,1,0,none,0	//AM_BIOETHICS#生命倫理#
+238,0,0,0,0,0,0,1,0,no,0,0x1,0,none,0	//AM_BIOETHICS#生命倫理#
 //239,0,0,0,0,0,0,10,0,no,0,0,0,none,0	//AM_BIOTECHNOLOGY#Biotechnology#
 //240,0,0,0,0,0,0,5,0,no,0,0,0,none,0	//AM_CREATECREATURE#Life Creation#
 //241,0,0,0,0,0,0,5,0,no,0,0,0,none,0	//AM_CULTIVATION#Cultivation#
@@ -274,9 +285,9 @@
 251,3:5:7:9:11,6,1,0,0,0,5,1,no,0,0,0,weapon,0	//CR_SHIELDBOOMERANG#迴旋盾擊#
 252,0,6,4,0,0,0,10,1,no,0,0,0,weapon,0	//CR_REFLECTSHIELD#反射盾#
 253,-2,8,1,6,0,0,10,-2,no,0,0,0,weapon,0	//CR_HOLYCROSS#聖十字攻擊#
-254,0,6,4,6,0,0,10,1,no,33,256,0,magic,0	//CR_GRANDCROSS#聖十字審判#
-255,7:8:9:10:11,6,16,0,1,0,5,1,yes,0,1536,0,none,0	//CR_DEVOTION#犧牲#
-256,9,6,16,0,1,0,5,1,yes,0,512,0,none,0	//CR_PROVIDENCE#神祐之光#
+254,5,6,4,6,0,0,10,1,no,33,0x100,0,magic,0	//CR_GRANDCROSS#聖十字審判#
+255,7:8:9:10:11,6,16,0,1,0,5,1,yes,0,0x600,0,none,0	//CR_DEVOTION#犧牲#
+256,9,6,16,0,1,0,5,1,yes,0,0x200,0,none,0	//CR_PROVIDENCE#神祐之光#
 257,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//CR_DEFENDER#光之盾#
 258,0,6,4,0,1,0,10,1,no,0,0,0,weapon,0	//CR_SPEARQUICKEN#長矛加速術#
 259,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//MO_IRONHAND#鐵沙掌#
@@ -291,90 +302,90 @@
 268,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//MO_STEELBODY#金剛不壞#
 269,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//MO_BLADESTOP#真劍百破道#
 270,0,6,4,0,1,0,5,0,no,0,0,0,weapon,0	//MO_EXPLOSIONSPIRITS#爆氣#
-271,-2,6,4,0,0,0,5,1,yes,0,512,0,weapon,0	//MO_EXTREMITYFIST#阿修羅霸凰拳#
-272,-2,8,4,-1,0,0,5,-4,no,0,512,0,weapon,0	//MO_CHAINCOMBO#連環全身掌#
-273,-2,6,4,-1,2,2,5,1,no,0,512,0,weapon,0	//MO_COMBOFINISH#猛龍誇強#
+271,-2,6,4,0,0,0,5,1,yes,0,0x200,0,weapon,0	//MO_EXTREMITYFIST#阿修羅霸凰拳#
+272,-2,8,4,-1,0,0,5,-4,no,0,0x200,0,weapon,0	//MO_CHAINCOMBO#連環全身掌#
+273,-2,6,4,-1,2,2,5,1,no,0,0x200,0,weapon,0	//MO_COMBOFINISH#猛龍誇強#
 274,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//SA_ADVANCEDBOOK#進化之書#
 275,0,6,4,0,1,0,5,1,no,0,0,0,magic,0	//SA_CASTCANCEL#取消施法#
 276,0,6,4,0,1,0,5,1,yes,0,0,0,magic,0	//SA_MAGICROD#魔法懲罰#
 277,9,6,1,0,1,0,5,1,yes,0,0,0,magic,0	//SA_SPELLBREAKER#念咒拆除#
 278,0,0,0,0,0,0,10,0,no,0,0,0,magic,0	//SA_FREECAST#自由施法#
 279,0,6,4,0,1,0,10,1,yes,0,0,0,magic,0	//SA_AUTOSPELL#自動念咒#
-280,9,6,16,0,1,0,5,1,yes,0,3072,0,magic,0	//SA_FLAMELAUNCHER#火焰屬性附加#
-281,9,6,16,0,1,0,5,1,yes,0,3072,0,magic,0	//SA_FROSTWEAPON#水屬性附加#
-282,9,6,16,0,1,0,5,1,yes,0,3072,0,magic,0	//SA_LIGHTNINGLOADER#風屬性附加#
-283,9,6,16,0,1,0,5,1,yes,0,3072,0,magic,0	//SA_SEISMICWEAPON#地屬性附加#
+280,9,6,16,0,1,0,5,1,yes,0,0xC00,0,magic,0	//SA_FLAMELAUNCHER#火焰屬性附加#
+281,9,6,16,0,1,0,5,1,yes,0,0xC00,0,magic,0	//SA_FROSTWEAPON#水屬性附加#
+282,9,6,16,0,1,0,5,1,yes,0,0xC00,0,magic,0	//SA_LIGHTNINGLOADER#風屬性附加#
+283,9,6,16,0,1,0,5,1,yes,0,0xC00,0,magic,0	//SA_SEISMICWEAPON#地屬性附加#
 284,0,0,0,0,0,0,5,0,no,0,0,0,weapon,0	//SA_DRAGONOLOGY#龍知識#
 285,2,6,2,0,1,0,5,1,yes,0,0,0,magic,0	//SA_VOLCANO#火元素領域#
 286,2,6,2,0,1,0,5,1,yes,0,0,0,magic,0	//SA_DELUGE#水元素領域#
 287,2,6,2,0,1,0,5,1,yes,0,0,0,magic,0	//SA_VIOLENTGALE#風元素領域#
 288,3,6,2,0,1,0,5,1,yes,0,0,0,magic,0	//SA_LANDPROTECTOR#地元素領域#
-289,9,6,1,0,1,0,5,1,yes,0,7680,0,magic,0	//SA_DISPELL#魔法效果解除#
+289,9,6,1,0,1,0,5,1,yes,0,0x1E00,0,magic,0	//SA_DISPELL#魔法效果解除#
 290,0,6,4,0,1,0,10,1,yes,0,0,0,magic,0	//SA_ABRACADABRA#隨機技能#
-291,9,6,1,0,1,0,1,1,yes,0,2,0,magic,0	//SA_MONOCELL#變換成波利#
-292,9,6,1,0,1,0,1,1,yes,0,2,0,magic,0	//SA_CLASSCHANGE#變換成Boss級魔物#
-293,0,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_SUMMONMONSTER#召喚魔物#
-294,9,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_REVERSEORCISH#變成獸人面孔#
-295,9,6,1,0,1,0,1,1,yes,0,2,0,magic,0	//SA_DEATH#死身#
-296,9,6,1,0,1,0,1,1,yes,0,2,0,magic,0	//SA_FORTUNE#宿命#
-297,9,6,1,0,1,0,1,1,yes,0,2,0,magic,0	//SA_TAMINGMONSTER#認養寵物#
-298,9,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_QUESTION#問號#
-299,9,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_GRAVITY#Gravity#
-300,9,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_LEVELUP#升級#
-301,9,6,4,0,0,0,1,1,yes,0,2,0,magic,0	//SA_INSTANTDEATH#當場死亡#
-302,9,6,4,0,1,0,1,1,yes,0,2,0,magic,0	//SA_FULLRECOVERY#完全恢復#
-303,9,6,4,0,0,0,1,1,yes,0,2,0,magic,0	//SA_COMA#頻死之術#
+291,9,6,1,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_MONOCELL#變換成波利#
+292,9,6,1,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_CLASSCHANGE#變換成Boss級魔物#
+293,0,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_SUMMONMONSTER#召喚魔物#
+294,9,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_REVERSEORCISH#變成獸人面孔#
+295,9,6,1,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_DEATH#死身#
+296,9,6,1,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_FORTUNE#宿命#
+297,9,6,1,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_TAMINGMONSTER#認養寵物#
+298,9,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_QUESTION#問號#
+299,9,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_GRAVITY#Gravity#
+300,9,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_LEVELUP#升級#
+301,9,6,4,0,0,0,1,1,yes,0,0x2,0,magic,0	//SA_INSTANTDEATH#當場死亡#
+302,9,6,4,0,1,0,1,1,yes,0,0x2,0,magic,0	//SA_FULLRECOVERY#完全恢復#
+303,9,6,4,0,0,0,1,1,yes,0,0x2,0,magic,0	//SA_COMA#頻死之術#
 304,0,6,4,0,1,0,1,1,no,0,0,0,none,0	//BD_ADAPTATION#臨機應變#
 305,0,6,4,0,1,0,1,1,no,0,0,0,none,0	//BD_ENCORE#安可#
-306,0,6,4,0,1,0,1,1,no,0,64,0,misc,0	//BD_LULLABY#搖籃曲#
-307,0,6,4,0,1,0,5,1,no,0,64,0,misc,0	//BD_RICHMANKIM#經驗值倍增#
-308,0,6,4,0,1,0,1,1,no,0,64,0,misc,0	//BD_ETERNALCHAOS#永遠的混沌#
-309,0,6,4,0,1,0,5,1,no,0,64,0,misc,0	//BD_DRUMBATTLEFIELD#戰鼓震天#
-310,0,6,4,0,1,0,5,1,no,0,64,0,misc,0	//BD_RINGNIBELUNGEN#尼貝隆根之戒指#
-311,0,6,4,0,1,0,1,1,no,0,64,0,misc,0	//BD_ROKISWEIL#洛奇的悲鳴#
-312,0,6,4,0,1,0,1,1,no,0,64,0,misc,0	//BD_INTOABYSS#觸媒之所#
-313,0,6,4,0,1,0,5,1,no,0,64,0,misc,0	//BD_SIEGFRIED#不死神齊格弗里德#
-//314,0,0,0,0,0,0,1,1,no,0,64,0,misc,0	//BD_RAGNAROK#Ragnarok#
+306,0,6,4,0,1,0,1,1,no,0,0x40,0,misc,0	//BD_LULLABY#搖籃曲#
+307,0,6,4,0,1,0,5,1,no,0,0x40,0,misc,0	//BD_RICHMANKIM#經驗值倍增#
+308,0,6,4,0,1,0,1,1,no,0,0x40,0,misc,0	//BD_ETERNALCHAOS#永遠的混沌#
+309,0,6,4,0,1,0,5,1,no,0,0x40,0,misc,0	//BD_DRUMBATTLEFIELD#戰鼓震天#
+310,0,6,4,0,1,0,5,1,no,0,0x40,0,misc,0	//BD_RINGNIBELUNGEN#尼貝隆根之戒指#
+311,0,6,4,0,1,0,1,1,no,0,0x40,0,misc,0	//BD_ROKISWEIL#洛奇的悲鳴#
+312,0,6,4,0,1,0,1,1,no,0,0x40,0,misc,0	//BD_INTOABYSS#觸媒之所#
+313,0,6,4,0,1,0,5,1,no,0,0x40,0,misc,0	//BD_SIEGFRIED#不死神齊格弗里德#
+//314,0,0,0,0,0,0,1,1,no,0,0x40,0,misc,0	//BD_RAGNAROK#Ragnarok#
 315,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//BA_MUSICALLESSON#操控樂器#
 316,9,6,1,-1,0,0,5,1,no,0,0,0,weapon,0	//BA_MUSICALSTRIKE#樂器攻擊#
-317,0,8,4,0,1,0,5,1,no,0,32,0,misc,0	//BA_DISSONANCE#不諧和音#
+317,0,8,4,0,1,0,5,1,no,0,0x20,0,misc,0	//BA_DISSONANCE#不諧和音#
 318,0,6,4,0,3,-1,5,1,no,0,0,0,misc,0	//BA_FROSTJOKE#冷笑話#
-319,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//BA_WHISTLE#吹口哨#
-320,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//BA_ASSASSINCROSS#刺客的黃昏#
-321,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//BA_POEMBRAGI#布萊奇之詩#
-322,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//BA_APPLEIDUN#伊登的蘋果#
+319,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//BA_WHISTLE#吹口哨#
+320,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//BA_ASSASSINCROSS#刺客的黃昏#
+321,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//BA_POEMBRAGI#布萊奇之詩#
+322,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//BA_APPLEIDUN#伊登的蘋果#
 323,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0	//DC_DANCINGLESSON#練習舞蹈#
 324,9,6,1,-1,0,0,5,1,no,0,0,0,weapon,0	//DC_THROWARROW#纏箭投擲#
-325,0,8,4,0,1,0,5,1,no,0,32,0,misc,0	//DC_UGLYDANCE#醜陋之舞#
+325,0,8,4,0,1,0,5,1,no,0,0x2032,0,misc,0	//DC_UGLYDANCE#醜陋之舞#
 326,0,6,4,0,3,-1,5,1,no,0,0,0,misc,0	//DC_SCREAM#驚聲尖叫#
-327,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//DC_HUMMING#哼唱之音#
-328,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//DC_DONTFORGETME#勿忘我#
-329,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//DC_FORTUNEKISS#女神之吻#
-330,0,6,4,0,1,0,10,1,no,0,32,0,misc,0	//DC_SERVICEFORYOU#為您服務#
-331,0,6,4,0,1,0,10,0,no,0,2,0,none,0	//NPC_RANDOMMOVE
-332,0,6,4,0,1,0,10,0,no,0,2,0,none,0	//NPC_SPEEDUP
-333,0,6,4,0,1,0,1,0,no,0,2,0,none,0	//NPC_REVENGE
-334,9,6,4,0,1,0,1,1,yes,0,4,0,none,0	//WE_MALE#只呵護妳#
-335,9,6,4,0,1,0,1,1,yes,0,4,0,none,0	//WE_FEMALE#只為你犧牲#
-336,9,6,4,0,1,3,1,1,yes,0,4,1,none,0	//WE_CALLPARTNER#想念你#
-337,9,6,1,-1,0,0,1,1,no,0,2,0,weapon,0	//ITM_TOMAHAWK#投擲風靈之斧#
-338,-1,8,1,7,0,0,0,-2,no,0,2,0,weapon,0	//NPC_DARKCROSS#Cross of Darkness#
-339,0,6,4,7,0,0,10,1,no,33,258,0,magic,0		//NPC_GRANDDARKNESS#Grand cross of Darkness#
-340,9,8,1,7,0,0,10,1:1:2:2:3:3:4:4:5:5,yes,0,2,0,magic,0	//NPC_DARKSTRIKE#Soul Strike of Darkness#
-341,9,8,1,7,0,0,10,3:4:5:6:7:8:9:10:11:12,yes,0,2,0,magic,2:3:3:4:4:5:5:6:6:7	//NPC_DARKTHUNDER#Darkness Jupiter#
-342,9,6,1,0,1,0,1,0,no,0,2,0,none,0	//NPC_STOP
-343,9,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_BREAKWEAPON#Break weapon#
-344,9,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_BREAKARMOR#Break armor#
-345,9,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_BREAKHELM#Break helm#
-346,9,6,1,-1,0,0,10,1,no,0,2,0,weapon,0	//NPC_BREAKSHIELD#Break shield#
-347,-1,6,1,9,0,0,10,1,no,0,2,0,weapon,0	//NPC_UNDEADATTACK
-348,0,0,4,9,1,0,10,1,no,0,2,0,magic,0	//NPC_CHANGEUNDEAD
-349,0,6,4,0,1,0,10,0,no,0,2,0,weapon,0	//NPC_POWERUP
-350,0,6,4,0,1,0,10,0,no,0,2,0,none,0	//NPC_AGIUP
-351,0,0,0,0,1,0,0,0,no,0,2,0,none,0	//NPC_SIEGEMODE
-352,2,0,4,0,1,0,1,0,no,0,2,0,none,0	//NPC_CALLSLAVE
-353,0,0,0,0,1,0,0,0,no,0,2,0,none,0	//NPC_INVISIBLE
-354,2,6,4,0,1,0,20,0,no,0,2,0,misc,0	//NPC_RUN
+327,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//DC_HUMMING#哼唱之音#
+328,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//DC_DONTFORGETME#勿忘我#
+329,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//DC_FORTUNEKISS#女神之吻#
+330,0,6,4,0,1,0,10,1,no,0,0x20,0,misc,0	//DC_SERVICEFORYOU#為您服務#
+331,0,6,4,0,1,0,10,0,no,0,0x2,0,none,0	//NPC_RANDOMMOVE
+,變換成Boss級魔物332,0,6,4,0,1,0,10,0,no,0,0x2,0,none,0	//NPC_SPEEDUP
+,召喚魔物333,0,6,4,0,1,0,1,0,no,0,0x2,0,none,0	//NPC_REVENGE
+,變成獸人面孔334,9,6,4,0,1,0,1,1,yes,0,0x4,0,none,0	//WE_MALE#只呵護妳#
+335,9,6,4,0,1,0,1,1,yes,0,0x4,0,none,0	//WE_FEMALE#只為你犧牲#
+336,9,6,4,0,1,3,1,1,yes,0,0x4,1,none,0	//WE_CALLPARTNER#想念你#
+337,9,6,1,-1,0,0,1,1,no,0,0x2,0,weapon,0	//ITM_TOMAHAWK#投擲風靈之斧#
+338,-1,8,1,7,0,0,0,-2,no,0,0x2,0,weapon,0	//NPC_DARKCROSS#暗十字攻擊#
+339,5,6,4,7,0,0,10,1,no,33,0x102,0,magic,0		//NPC_GRANDDARKNESS#暗聖十字審判#
+340,9,8,1,7,0,0,10,1:1:2:2:3:3:4:4:5:5,yes,0,0x2,0,magic,0	//NPC_DARKSTRIKE#暗聖靈召喚#
+341,9,8,1,7,0,0,10,3:4:5:6:7:8:9:10:11:12,yes,0,0x2,0,magic,2:3:3:4:4:5:5:6:6:7	//NPC_DARKTHUNDER#暗雷鳴術#
+342,9,6,1,0,1,0,1,0,no,0,0x2,0,none,0	//NPC_STOP
+343,9,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_BREAKWEAPON#破壞武器#
+344,9,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_BREAKARMOR#破壞鎧甲#
+345,9,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_BREAKHELM#破壞頭盔#
+346,9,6,1,-1,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_BREAKSHIELD#破壞盾牌#
+347,-1,6,1,9,0,0,10,1,no,0,0x2,0,weapon,0	//NPC_UNDEADATTACK
+,不死屬性攻擊348,9,0,1,9,1,0,10,1,no,0,0x2,0,magic,0	//NPC_CHANGEUNDEAD
+349,0,6,4,0,1,0,10,0,no,0,0x2,0,weapon,0	//NPC_POWERUP
+,NPC爆氣350,0,6,4,0,1,0,10,0,no,0,0x2,0,none,0	//NPC_AGIUP
+351,0,0,0,0,1,0,0,0,no,0,0x2,0,none,0	//NPC_SIEGEMODE
+,不死屬性附與352,2,0,4,0,1,0,1,0,no,0,0x2,0,none,0	//NPC_CALLSLAVE
+,透明化353,0,0,0,0,1,0,0,0,no,0,0x2,0,none,0	//NPC_INVISIBLE
+354,2,6,4,0,1,0,20,0,no,0,0x2,0,misc,0	//NPC_RUN
 355,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//LK_AURABLADE#靈氣劍#
 356,0,6,4,0,1,0,10,1,no,0,0,0,weapon,0	//LK_PARRYING#雙劍挌擋#
 357,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//LK_CONCENTRATION#集中攻擊#
@@ -389,16 +400,16 @@
 366,0,6,4,0,1,0,10,1,no,0,0,0,magic,0	//HW_MAGICPOWER#魔力增幅#
 367,9,8,1,0,0,0,5,1,no,0,0,0,misc,0	//PA_PRESSURE#神之威壓#
 368,0,6,4,0,1,0,5,1,yes,0,0,0,weapon,0	//PA_SACRIFICE#捨命攻擊#
-369,0,6,4,0,1,0,10,1,yes,0,0,0,misc,0	//PA_GOSPEL#聖音#
+369,5,6,4,0,1,0,10,1,yes,0,0,0,misc,0	//PA_GOSPEL#聖音#
 370,-2,6,1,-1,0,0,5,1,yes,0,0,0,weapon,3	//CH_PALMSTRIKE#猛虎硬爬山#
-371,-2,8,4,-1,0,0,5,1,no,0,512,0,weapon,0	//CH_TIGERFIST#伏虎拳#
-372,-2,8,4,-1,0,0,10,-1:-1:-2:-2:-3:-3:-4:-4:-5:-5,no,0,512,0,weapon,0	//CH_CHAINCRUSH#氣絕崩擊#
+371,-2,8,4,-1,0,0,5,1,no,0,0x200,0,weapon,0	//CH_TIGERFIST#伏虎拳#
+372,-2,8,4,-1,0,0,10,-1:-1:-2:-2:-3:-3:-4:-4:-5:-5,no,0,0x200,0,weapon,0	//CH_CHAINCRUSH#氣絕崩擊#
 373,0,6,4,0,1,0,5,1,no,0,0,0,magic,0	//PF_HPCONVERSION#HP轉換#
-374,9,6,16,0,1,0,1,1,yes,0,7168,0,none,0	//PF_SOULCHANGE#心神互換#
+374,9,6,16,0,1,0,1,1,yes,0,0x1E00,0,none,0	//PF_SOULCHANGE#心神互換#
 375,9,6,1,0,0,0,5,1,yes,0,0,0,magic,0	//PF_SOULBURN#精神耗弱術#
 376,0,0,0,0,1,0,5,1,no,0,0,0,weapon,0	//ASC_KATAR#高階拳刃修練#
 //377,0,0,4,0,1,0,10,1,no,0,0,0,misc,0	//ASC_HALLUCINATION#Hallucination Walk#
-378,0,6,4,5,1,0,5,1,no,0,1024,0,weapon,0	//ASC_EDP#致命塗毒#
+378,0,6,4,5,1,0,5,1,no,0,0,0,weapon,0	//ASC_EDP#致命塗毒#
 379,9,6,1,-1,0,0,10,1,yes,0,0,0,weapon,0	//ASC_BREAKER#心靈震波#
 380,0,6,4,0,1,0,10,1,no,0,0,0,weapon,0	//SN_SIGHT#狙殺瞄準#
 381,5,8,1,0,0,0,5,1,yes,0,0,0,misc,0	//SN_FALCONASSAULT#獵鷹突擊#
@@ -415,8 +426,8 @@
 392,0,0,4,0,1,0,1,1,yes,0,0,0,none,0	//CR_ALCHEMY#融合試驗#
 393,0,0,4,0,1,0,1,1,yes,0,0,0,none,0	//CR_SYNTHESISPOTION#藥劑試驗#
 394,9,8,1,-1,0,0,10,-9,yes,0,0,0,weapon,0	//CG_ARROWVULCAN#奧義箭亂舞#
-395,0,0,4,0,1,3,1,1,yes,0,64,0,misc,2	//CG_MOONLIT#落花伴著月光下的水車小屋#
-396,-1,6,16,0,1,0,1,1,yes,0,1536,0,none,0	//CG_MARIONETTE#傀儡師的把戲#
+395,0,0,4,0,1,3,1,1,yes,0,0x40,0,misc,2	//CG_MOONLIT#落花伴著月光下的水車小屋#
+396,-1,6,16,0,1,0,1,1,yes,0,0x600,0,none,0	//CG_MARIONETTE#傀儡師的把戲#
 397,5,8,1,-1,0,0,5,5,no,0,0,0,weapon,0	//LK_SPIRALPIERCE#螺旋擊刺#
 398,4,6,1,-1,0,0,5,1,no,0,0,0,weapon,0	//LK_HEADCRUSH#傷害增壓#
 399,4,6,1,-1,0,0,10,1,no,0,0,0,weapon,0	//LK_JOINTBEAT#巧打#
@@ -424,24 +435,24 @@
 401,0,6,4,0,1,0,1,1,yes,0,0,0,none,0	//CH_SOULCOLLECT#狂蓄氣#
 402,9,6,1,0,1,0,5,1,no,0,0,0,none,0	//PF_MINDBREAKER#精神撼動#
 403,0,0,4,0,1,0,1,1,yes,0,0,0,magic,0	//PF_MEMORIZE#速讀術#
-404,9,6,2,2,1,0,5,1,yes,0,256,2,magic,0	//PF_FOGWALL#薄霧牆#
+404,9,6,2,2,1,0,5,1,yes,0,0x100,2,magic,0	//PF_FOGWALL#薄霧牆#
 405,7,6,1,0,1,0,1,1,no,0,0,3,magic,0	//PF_SPIDERWEB#易燃之網#
 406,0,6,4,-1,2,2,10,1,no,33,0,0,weapon,0	//ASC_METEORASSAULT#黑暗瞬間#
 407,0,6,4,0,1,0,1,0,no,0,0,0,none,0	//ASC_CDP#毒液製作#
-408,9,6,4,0,1,0,1,1,yes,0,4,0,none,0	//WE_BABY#爸媽我愛您#
-409,9,6,4,0,1,3,1,1,yes,0,4,1,none,0	//WE_CALLPARENT#爸媽我想念您#
-410,9,6,4,0,1,3,1,1,yes,0,4,1,none,0	//WE_CALLBABY#寶貝請來這裡#
+408,9,6,4,0,1,0,1,1,yes,0,0x4,0,none,0	//WE_BABY#爸媽我愛您#
+409,9,6,4,0,1,3,1,1,yes,0,0x4,1,none,0	//WE_CALLPARENT#爸媽我想念您#
+410,9,6,4,0,1,3,1,1,yes,0,0x4,1,none,0	//WE_CALLBABY#寶貝請來這裡#
 411,0,6,4,0,1,0,10,1,yes,0,0,0,misc,4	//TK_RUN#跑步#
 412,0,6,4,0,1,0,1,1,no,0,0,0,weapon,0	//TK_READYSTORM#迴旋準備#
-413,-2,8,4,-1,2,2,7,-3,no,0,512,0,weapon,0	//TK_STORMKICK#迴旋踢#
+413,-2,8,4,-1,2,2,7,-3,no,0,0x200,0,weapon,0	//TK_STORMKICK#迴旋踢#
 414,0,6,4,0,1,0,1,1,no,0,0,0,weapon,0	//TK_READYDOWN#砸踢準備#
-415,-2,8,4,-1,0,0,7,-3,no,0,512,0,weapon,0	//TK_DOWNKICK#砸踢#
+415,-2,8,4,-1,0,0,7,-3,no,0,0x200,0,weapon,0	//TK_DOWNKICK#砸踢#
 416,0,6,4,0,1,0,1,1,no,0,0,0,weapon,0	//TK_READYTURN#踢準備#
-417,-2,8,4,-1,2,1,7,-3,no,0,512,0,weapon,2	//TK_TURNKICK#轉身踢#
+417,-2,8,4,-1,2,1,7,-3,no,0,0x200,0,weapon,2	//TK_TURNKICK#轉身踢#
 418,0,6,4,0,1,0,1,1,no,0,0,0,weapon,0	//TK_READYCOUNTER#還擊準備#
-419,-2,8,4,-1,0,0,7,-3,no,0,512,0,weapon,0	//TK_COUNTER#還擊踢#
+419,-2,8,4,-1,0,0,7,-3,no,0,0x200,0,weapon,0	//TK_COUNTER#還擊踢#
 420,0,6,4,0,1,0,1,1,no,0,0,0,weapon,0	//TK_DODGE#落法#
-421,9,8,4,-1,0,0,7,-3,no,0,512,0,weapon,0	//TK_JUMPKICK#飛腳踢#
+421,9,8,4,-1,0,0,7,-3,no,0,0x200,0,weapon,0	//TK_JUMPKICK#飛腳踢#
 422,0,0,0,0,0,1,10,0,no,0,0,0,none,0	//TK_HPTIME#平安的休息#
 423,0,0,0,0,0,1,10,0,no,0,0,0,none,0	//TK_SPTIME#快樂的休息#
 424,0,0,0,0,0,0,5,0,no,0,0,0,weapon,0	//TK_POWER#加油#
@@ -465,23 +476,23 @@
 442,0,0,0,0,0,0,3,0,no,0,0,0,none,0	//SG_FRIEND#太陽和月亮和星星的朋友#
 443,0,0,0,0,0,0,10,0,no,0,0,0,none,0	//SG_KNOWLEDGE#太陽和月亮和星星的知識#
 444,0,6,4,0,1,0,1,1,no,0,0,0,misc,0	//SG_FUSION#太陽和月亮和星星的融合#
-445,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_ALCHEMIST#煉金術師的靈魂#
-446,9,6,16,0,1,0,1,1,yes,0,3080,0,none,0	//AM_BERSERKPITCHER#菠色克投擲#
-447,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_MONK#武道家的靈魂#
-448,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_STAR#拳聖的靈魂#
-449,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_SAGE#賢者的靈魂#
-450,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_CRUSADER#十字軍的靈魂#
-451,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_SUPERNOVICE#超級初學者的靈魂#
-452,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_KNIGHT#騎士的靈魂#
-453,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_WIZARD#巫師的靈魂#
-454,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_PRIEST#祭司的靈魂#
-455,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_BARDDANCER#吟遊詩人和舞孃的靈魂#
-456,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_ROGUE#刺客的靈魂#
-457,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_ASSASIN#刺客的靈魂#
-458,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_BLACKSMITH#鐵匠的靈魂#
-459,0,6,4,0,3,-1,1,1,no,0,8,0,weapon,0 //BS_ADRENALINE2#所有速度激發#
-460,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_HUNTER#獵人的靈魂#
-461,9,6,16,0,1,0,5,1,yes,0,512,0,magic,0	//SL_SOULLINKER#悟靈士的靈魂#
+445,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_ALCHEMIST#鍊金術師的靈魂#
+446,9,6,16,0,1,0,1,1,yes,0,0xC08,0,none,0	//AM_BERSERKPITCHER#菠色克投擲#
+447,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_MONK#武道家的靈魂#
+448,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_STAR#拳聖的靈魂#
+449,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_SAGE#賢者的靈魂#
+450,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_CRUSADER#十字軍的靈魂#
+451,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_SUPERNOVICE#超級初學者的靈魂#
+452,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_KNIGHT#騎士的靈魂#
+453,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_WIZARD#巫師的靈魂#
+454,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_PRIEST#祭司的靈魂#
+455,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_BARDDANCER#吟遊詩人和舞孃的靈魂#
+456,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_ROGUE#流氓的靈魂#
+457,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_ASSASIN#刺客的靈魂#
+458,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_BLACKSMITH#鐵匠的靈魂#
+459,0,6,4,0,3,-1,1,1,no,0,0x8,0,weapon,0 //BS_ADRENALINE2#所有速度激發#
+460,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_HUNTER#獵人的靈魂#
+461,9,6,16,0,1,0,5,1,yes,0,0x200,0,magic,0	//SL_SOULLINKER#悟靈士的靈魂#
 462,9,6,16,0,1,0,7,1,yes,0,0,0,magic,0 //SL_KAIZEL#凱易哲#
 463,9,6,16,0,1,0,7,1,yes,0,0,0,magic,0 //SL_KAAHI#凱阿希#
 464,9,6,16,0,1,0,3,1,yes,0,0,0,magic,0 //SL_KAUPE#凱誣僕#
@@ -494,7 +505,7 @@
 471,9,6,1,0,1,0,3,1,no,0,0,0,magic,0 //SL_SKE#艾斯克#
 472,9,6,1,0,1,0,3,1,no,0,0,0,magic,0 //SL_SKA#艾斯卡#
 473,0,0,0,0,0,0,0,0,no,0,0,0,none,0	//SM_SELFPROVOKE##
-474,0,0,4,0,1,0,10,1,no,0,2,0,none,0	//NPC_EMOTION_ON##
+474,0,0,4,0,1,0,10,1,no,0,0x2,0,none,0	//NPC_EMOTION_ON##
 475,0,0,4,0,1,0,1,1,yes,0,0,0,none,0	//ST_PRESERVE#自由保護#
 476,1,6,1,0,1,0,5,1,yes,0,0,0,weapon,0	//ST_FULLSTRIP#所有卸除#
 477,0,6,4,0,1,0,10,1,no,0,0,0,weapon,0	//WS_WEAPONREFINE#武器精練#
@@ -508,19 +519,18 @@
 485,-2,6,1,-1,0,0,10,1,no,0,0,0,weapon,0	//WS_CARTTERMINATION#手推車終結技#
 486,0,6,4,0,1,0,5,1,no,0,0,0,weapon,0	//WS_OVERTHRUSTMAX#凶砍最大值#
 487,0,6,4,0,1,0,5,1,no,0,0,0,none,0	//CG_LONGINGFREEDOM#不要拘束我#
-488,0,6,4,0,1,1,5,1,no,0,64,0,misc,0	//CG_HERMODE#海羅默德的手杖#
+488,0,6,4,0,1,1,5,1,no,0,0x40,0,misc,0	//CG_HERMODE#海羅默德的手杖#
 489,9,6,1,0,1,0,5,1,no,0,0,0,misc,0	//CG_TAROTCARD#命運的塔羅牌#
 490,9,8,1,0,0,0,10,1:2:3:4:5:6:7:8:9:10,yes,0,0,0,misc,0	//CR_ACIDDEMONSTRATION#強酸火煙瓶投擲#
 491,1,6,2,0,1,0,2,1,no,0,0,0,none,0	//CR_CULTIVATION#植物栽培#
 
 493,0,6,4,0,1,0,1,1,no,0,0,0,none,0	//TK_MISSION#太拳任務#
 494,9,6,16,0,1,0,5,1,yes,0,0,0,magic,0	//SL_HIGH#一轉上等職業的靈魂#
-495,0,6,4,0,1,0,1,1,no,0,8,0,weapon,0	//KN_ONEHAND#單手劍攻擊速度增加#
-496,0,6,4,0,1,0,1,0,no,0,8,0,none,0	//AM_TWILIGHT1#寬廣配藥#
-497,0,6,4,0,1,0,1,0,no,0,8,0,none,0	//AM_TWILIGHT2#寬廣配藥#
-498,0,6,4,0,1,0,1,0,no,0,8,0,none,0	//AM_TWILIGHT3#寬廣配藥#
-499,-9,8,4,-1,0,0,1,2,no,0,520,0,weapon,0	//HT_POWER#動物猛擊#
-//Temp Plugs(using bash as base)
+495,0,6,4,0,1,0,1,1,no,0,0x8,0,weapon,0	//KN_ONEHAND#單手劍攻擊速度增加#
+496,0,6,4,0,1,0,1,0,no,0,0x8,0,none,0	//AM_TWILIGHT1#寬廣配藥#
+497,0,6,4,0,1,0,1,0,no,0,0x8,0,none,0	//AM_TWILIGHT2#寬廣配藥#
+498,0,6,4,0,1,0,1,0,no,0,0x8,0,none,0	//AM_TWILIGHT3#寬廣配藥#
+499,-9,8,4,-1,0,0,1,2,no,0,0x208,0,weapon,0	//HT_POWER#動物猛擊#
 500,0,6,4,0,0,0,5,1,no,0,0,0,misc,0	//GS_GLITTERING#裝滿硬幣#
 501,9,6,1,-1,0,0,1,1,no,0,0,0,misc,0	//GS_FLING#投擲硬幣#
 502,-9,8,1,-1,0,0,1,3,no,0,0,0,weapon,0	//GS_TRIPLEACTION#三連攻擊#
@@ -567,27 +577,26 @@
 543,0,6,4,0,1,0,5,1,yes,0,0,0,none,0	//NJ_NEN#念#
 544,-5,6,1,0,0,0,10,1,no,0,0,0,weapon,0	//NJ_ISSEN#一閃擊#
 
-1001,9,6,1,-1,0,0,1,1,no,0,1,0,weapon,0	//KN_CHARGEATK#衝鋒攻擊#
-1002,0,6,4,0,1,0,1,0,no,0,1,0,weapon,2	//CR_SHRINK#退縮#
-1003,0,0,0,0,0,0,1,0,no,0,1,0,weapon,0	//AS_SONICACCEL#超音速投擲#
-1004,9,8,1,0,0,0,1,1,no,0,1,0,weapon,0	//AS_VENOMKNIFE#毒刃#
-1005,1,6,1,0,1,0,1,1,no,0,1,0,weapon,0	//RG_CLOSECONFINE#緊密的約束#
-1006,0,6,4,3,0,2,1,1,yes,0,1,0,magic,3	//WZ_SIGHTBLASTER#火狩芽#
-1007,0,6,4,0,1,0,10,0,no,0,1,0,none,0	//SA_CREATECON#元素肯貝特 製作#
-1008,9,6,1,1,1,0,1,1,yes,0,1,0,magic,0	//SA_ELEMENTWATER#元素更換(水)#
-1009,-9,6,1,0,0,0,1,1,no,0,1,0,weapon,3	//HT_PHANTASMIC#幻影箭#
-1010,9,6,1,0,1,0,1,0,no,0,1,0,misc,0	//BA_PANGVOICE#陣痛之聲#
-1011,9,6,1,0,1,0,1,0,no,0,1,0,misc,0	//DC_WINKCHARM#眨眼之誘#
-1012,0,0,0,0,0,0,1,0,no,0,1,0,weapon,0	//BS_UNFAIRLYTRICK#詭計的商術#
-1013,0,6,4,0,3,2,1,0,no,0,1,0,weapon,0	//BS_GREED#貪婪#
-1014,0,6,4,6,3,14,1,0,yes,0,1,0,magic,0	//PR_REDEMPTIO#捨身取義#
-1015,9,6,16,0,1,0,1,1,no,0,1025,0,weapon,0	//MO_KITRANSLATION#振氣注入#
-1016,0,6,1,0,2,1,1,1,no,0,1,0,weapon,5	//MO_BALKYOUNG#發勁#
-1017,9,6,1,2,1,0,1,1,yes,0,1,0,magic,0	//SA_ELEMENTGROUND#元素更換(地)#
-1018,9,6,1,3,1,0,1,1,yes,0,1,0,magic,0	//SA_ELEMENTFIRE#元素更換(火)#
-1019,9,6,1,4,1,0,1,1,yes,0,1,0,magic,0	//SA_ELEMENTWIND#元素更換(風)#
+1001,9,6,1,-1,0,0,1,1,no,0,0x1,0,weapon,0	//KN_CHARGEATK#衝鋒攻擊#
+1002,0,6,4,0,1,0,1,0,no,0,0x1,0,weapon,2	//CR_SHRINK#退縮#
+1003,0,0,0,0,0,0,1,0,no,0,0x1,0,weapon,0	//AS_SONICACCEL#超音速投擲#
+1004,9,8,1,0,0,0,1,1,no,0,0x1,0,weapon,0	//AS_VENOMKNIFE#毒刃#
+1005,1,6,1,0,1,0,1,1,no,0,0x1,0,weapon,0	//RG_CLOSECONFINE#緊密的約束#
+1006,0,6,4,3,0,2,1,1,yes,0,0x1,0,magic,3	//WZ_SIGHTBLASTER#火狩芽#
+1007,0,6,4,0,1,0,10,0,no,0,0x1,0,none,0	//SA_CREATECON#元素肯貝特 製作#
+1008,9,6,1,1,1,0,1,1,yes,0,0x1,0,magic,0	//SA_ELEMENTWATER#元素更換(水)#
+1009,-9,6,1,0,0,0,1,1,no,0,0x1,0,weapon,3	//HT_PHANTASMIC#幻影箭#
+1010,9,6,1,0,1,0,1,0,no,0,0x1,0,misc,0	//BA_PANGVOICE#陣痛之聲#
+1011,9,6,1,0,1,0,1,0,no,0,0x1,0,misc,0	//DC_WINKCHARM#眨眼之誘#
+1012,0,0,0,0,0,0,1,0,no,0,0x1,0,weapon,0	//BS_UNFAIRLYTRICK#詭計的商術#
+1013,0,6,4,0,3,2,1,0,no,0,0x1,0,weapon,0	//BS_GREED#貪婪#
+1014,0,6,4,6,3,14,1,0,yes,0,0x1,0,magic,0	//PR_REDEMPTIO#捨身取義#
+1015,9,6,16,0,1,0,1,1,no,0,0x401,0,weapon,0	//MO_KITRANSLATION#振氣注入#
+1016,-1,6,1,-1,2,1,1,1,no,0,0x1,0,weapon,5	//MO_BALKYOUNG#發勁#
+1017,9,6,1,2,1,0,1,1,yes,0,0x1,0,magic,0	//SA_ELEMENTGROUND#元素更換(地)#
+1018,9,6,1,3,1,0,1,1,yes,0,0x1,0,magic,0	//SA_ELEMENTFIRE#元素更換(火)#
+1019,9,6,1,4,1,0,1,1,yes,0,0x1,0,magic,0	//SA_ELEMENTWIND#元素更換(風)#
 
-//homunculus
 8001,9,6,4,0,1,0,5,1,no,0,0,0,magic,0	//HLIF_HEAL#治癒之手#
 8002,0,6,4,0,3,-1,5,1,no,0,0,0,none,0	//HLIF_AVOID#輕捷移動#
 8003,0,0,0,0,0,1,5,0,no,0,0,0,none,0	//HLIF_BRAIN#腦手術#
@@ -605,19 +614,19 @@
 8015,0,0,0,0,1,0,5,0,no,0,0,0,none,0	//HVAN_INSTRUCT#變更指示#
 8016,0,6,4,-1,2,4,3,1,no,0,0,0,misc,0	//HVAN_EXPLOSION#生物爆炸#
 
-//id,range,hit,inf,pl,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count
-10000,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_APPROVAL#正式工會認證#
-10001,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_KAFRACONTRACT#和卡普拉訂契約#
-10002,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_GUARDRESEARCH#研究監護人#
-10003,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_GUARDUP#監護人魔物強化#
-10004,0,0,0,0,0,0,10,0,no,0,16,0,none,0	//GD_EXTENSION#擴充組合體制#
-10005,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_GLORYGUILD#工會的榮譽#
-10006,0,0,0,0,0,2,1,0,no,0,16,0,none,0	//GD_LEADERSHIP#偉大的指導力#
-10007,0,0,0,0,0,2,1,0,no,0,16,0,none,0	//GD_GLORYWOUNDS#光榮的傷口#
-10008,0,0,0,0,0,2,1,0,no,0,16,0,none,0	//GD_SOULCOLD#冷漠之心#
-10009,0,0,0,0,0,2,1,0,no,0,16,0,none,0	//GD_HAWKEYES#尖銳的視線#
-10010,0,0,4,0,3,15,1,0,yes,0,16,0,none,0	//GD_BATTLEORDER#下達戰鬥命令#
-10011,0,0,4,0,3,15,3,0,yes,0,16,0,none,0	//GD_REGENERATION#復興公會員體力#
-10012,0,0,4,0,3,15,1,0,yes,0,16,0,none,0	//GD_RESTORE#恢復公會員體力#
-10013,0,0,4,0,3,0,1,0,yes,0,16,0,none,0	//GD_EMERGENCYCALL#緊急呼叫#
-10014,0,0,0,0,0,0,1,0,no,0,16,0,none,0	//GD_DEVELOPMENT#永久的發展#
+10000,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_APPROVAL#正式工會認證#
+10001,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_KAFRACONTRACT#和卡普拉訂契約##
+10002,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_GUARDRESEARCH#研究監護人#
+10003,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_GUARDUP#監護人魔物強化#
+10004,0,0,0,0,0,0,10,0,no,0,0x10,0,none,0	//GD_EXTENSION#擴充組合體制#
+10005,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_GLORYGUILD#工會的榮譽#
+10006,0,0,0,0,0,2,1,0,no,0,0x10,0,none,0	//GD_LEADERSHIP#偉大的指導力#
+10007,0,0,0,0,0,2,1,0,no,0,0x10,0,none,0	//GD_GLORYWOUNDS#光榮的傷口#
+10008,0,0,0,0,0,2,1,0,no,0,0x10,0,none,0	//GD_SOULCOLD#冷漠之心#
+10009,0,0,0,0,0,2,1,0,no,0,0x10,0,none,0	//GD_HAWKEYES#尖銳的視線#
+10010,0,0,4,0,3,15,1,0,yes,0,0x10,0,none,0	//GD_BATTLEORDER#下達戰鬥命令#
+10011,0,0,4,0,3,15,3,0,yes,0,0x10,0,none,0	//GD_REGENERATION#復興公會員體力#
+10012,0,0,4,0,3,15,1,0,yes,0,0x10,0,none,0	//GD_RESTORE#恢復公會員體力#
+10013,0,0,4,0,3,0,1,0,yes,0,0x10,0,none,0	//GD_EMERGENCYCALL#緊急呼叫#
+10014,0,0,0,0,0,0,1,0,no,0,0x10,0,none,0	//GD_DEVELOPMENT#永久的發展#
+

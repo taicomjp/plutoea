@@ -24,70 +24,38 @@
 //= 1.5 Fixed WOE end messages on non-WOE days, by Avaj
 //= 1.5a missing tabs [KarLaeda]
 //============================================================
-// 翻譯修正 wack/蝸牛[DDT] 2006/04/08
-//============================================================
-// GVG開始與結束的時間控制
+//| To know how to set up WoE times, go to doc\woe_time_explanation.txt
+// WoE Start/Stop times
 //======================================
 -	script	Agit_Event	-1,{
-OnAgitInit:
-	if((gettime(4)==2)&&(gettime(3)>=20&&gettime(3)<22)) agitstart;
-	if((gettime(4)==4)&&(gettime(3)>=20&&gettime(3)<22)) agitstart;
-	if((gettime(4)==6)&&(gettime(3)>=20&&gettime(3)<22)) agitstart;
 	end;
-OnWeekTime021930:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有30分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime021950:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有最後10分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime022000:
-	Announce "[GvG公告]攻城開始了~~~~，勇士們請你舉起您的劍，捍衛自己的榮譽吧！！",8;
+
+OnClock2100:	//開始時間 星期二(2), 星期四(4)
+OnClock2300:	//結束時間 星期二(2), 星期四(4)
+OnClock1600:	//開始時間 星期六(6)
+OnClock1800:	//結束時間 星期六(6)
+
+OnAgitInit:
+// 判斷開始時間
+if((gettime(4)==2) && (gettime(3)>=21 && gettime(3)<23)) goto L_Start;
+if((gettime(4)==4) && (gettime(3)>=21 && gettime(3)<23)) goto L_Start;
+if((gettime(4)==6) && (gettime(3)>=16 && gettime(3)<18)) goto L_Start;
+
+// 判斷結束時間
+if((gettime(4)==2) && (gettime(3)==23)) goto L_End;
+if((gettime(4)==4) && (gettime(3)==23)) goto L_End;
+if((gettime(4)==6) && (gettime(3)==18)) goto L_End;
+   end;
+
+L_End:
+Announce "攻城戰已結束了!",8;
+AgitEnd;
+end;
+
+L_Start:
+	Announce "攻城戰已開始了!",8;
 	AgitStart;
-	End;
-OnWeekTime022130:
-	Announce "[GvG公告]勇士們提起士氣，攻城時間尚餘30分鐘~~~",8;
-	End;
-OnWeekTime022200:
-	Announce "[GvG公告]攻城戰已結束了，請大家下次再繼續努力哦~~~",8;
-	Announce "[GvG公告]下次攻城戰時間為二四六晚20:00-22:00",16;
-	AgitEnd;
-	End;
-OnWeekTime041930:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有30分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime041950:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有最後10分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime042000:
-	Announce "[GvG公告]攻城開始了~~~~，勇士們請你舉起您的劍，捍衛自己的榮譽吧！！",8;
-	AgitStart;
-	End;
-OnWeekTime042130:
-	Announce "[GvG公告]勇士們提起士氣，攻城時間尚餘30分鐘~~~",8;
-	End;
-OnWeekTime042200:
-	Announce "[GvG公告]攻城戰已結束了，請大家下次再繼續努力哦~~~",8;
-	Announce "[GvG公告]攻城戰時間為二四六晚20:00-22:00",16;
-	AgitEnd;
-	End;
-OnWeekTime061930:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有30分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime061950:
-	Announce "[GvG公告]請各工會會長注意,距離攻城戰開始還有最後10分鐘,請組織好會員！！",8;
-	End;
-OnWeekTime062000:
-	Announce "[GvG公告]攻城開始了~~~~，勇士們請你舉起您的劍，捍衛自己的榮譽吧！！",8;
-	AgitStart;
-	End;
-OnWeekTime062130:
-	Announce "[GvG公告]勇士們提起士氣，攻城時間尚餘30分鐘~~~",8;
-	End;
-OnWeekTime062200:
-	Announce "[GvG公告]攻城戰已結束了，請大家下次再繼續努力哦~~~",8;
-	Announce "[GvG公告]下次攻城戰時間為二四六晚20:00-22:00",16;
-	AgitEnd;
-	End;
+	end;
 }
 
 // 工會寶箱開啟時間控制

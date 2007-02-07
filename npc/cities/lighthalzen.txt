@@ -3,7 +3,7 @@
 //===== By: ================================================== 
 //=  erKURITA
 //===== Current Version: ===================================== 
-//= 1.0
+//= 1.0b
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: ========================================= 
@@ -19,6 +19,8 @@
 //= 0.8 Removed Duplicates [Silent]
 //= 0.9 Removed Duplicates [Toms]
 //= 1.0 Added a missing feature to the donation NPC [MasterOfMuppets]
+//= 1.0a added constants to emotions, minor optimization [Lupus]
+//= 1.0b npcid fix [KarLaeda]
 //=============================================================
 
 lighthalzen.gat,198,285,5	script	少女	862,{
@@ -37,7 +39,6 @@ lighthalzen.gat,198,285,5	script	少女	862,{
 	mes "叫做里希塔樂鎮的這個村落";
 	close;
 }
-
 
 
 lighthalzen.gat,220,244,3	script	奶奶	863,{
@@ -356,17 +357,17 @@ lighthalzen.gat,191,134,5	script	青年	869,{
 
 lighthalzen.gat,115,159,5	script	爺爺	866,{
 
-	 mes "[爺爺]"; 
-	 mes "雷根貝勒企業... 若是我兒子"; 
-	 mes "能進入那裡工作的話，該有"; 
-	 mes "多好呢... 呵呵，"; 
-	 mes "以穩定的職業而言，"; 
-	 mes "大企業當然是首屈一指囉!"; 
+	mes "[爺爺]"; 
+	mes "雷根貝勒企業... 若是我兒子"; 
+	mes "能進入那裡工作的話，該有"; 
+	mes "多好呢... 呵呵，"; 
+	mes "以穩定的職業而言，"; 
+	mes "大企業當然是首屈一指囉!"; 
 	next;
-	 mes "[爺爺]"; 
-	 mes "只是想要進入大企業"; 
-	 mes "很困難... 進入大企業的人，"; 
-	 mes "難道都是超人嗎?";
+	mes "[爺爺]"; 
+	mes "只是想要進入大企業"; 
+	mes "很困難... 進入大企業的人，"; 
+	mes "難道都是超人嗎?";
 	close;
 
 }
@@ -550,8 +551,8 @@ lighthalzen.gat,182,102,3	script	Lucius	866,{
 	next;
 	menu "Sure.",s_Sure,"No, thanks.",-;
 
-s_Cancel:
 	mes "[Lucius]";
+s_Cancel:
 	mes "I understand. Still,";
 	mes "keep in mind that when";
 	mes "you give from your heart,";
@@ -569,12 +570,25 @@ s_Sure:
 	mes "to cancel, please enter '0'.";
 	next;
 	input @zenydonate;
-		if(@zenydonate > 30000)goto s_Much;
-		if(!@zenydonate)goto s_Cancel;
-		if(Zeny < @zenydonate)goto s_NEnoughZ;
-		set Zeny,Zeny - @zenydonate;
-		set $donatedzeny,$donatedzeny + @zenydonate;
 	mes "[Lucius]";
+	if(!@zenydonate)goto s_Cancel;
+	if(@zenydonate > 30000){
+		mes "I'm sorry but you can't";
+		mes "donate more than 30,000";
+		mes "zeny. Please choose another";
+		mes "number.";
+		close;
+	}
+	if(Zeny < @zenydonate){
+		mes "I'm sorry but you do";
+		mes "not have as much zeny";
+		mes "as you wish to donate.";
+		mes "Please come back when you";
+		mes "do!";
+		close;
+	}
+	set Zeny,Zeny - @zenydonate;
+	set $donatedzeny,$donatedzeny + @zenydonate;
 	mes "Thank you so much";
 	mes "for your " + @zenydonate + " zeny donation.";
 	mes "I promise that your money";
@@ -587,37 +601,19 @@ s_Sure:
 	mes "donations. I'm glad to see";
 	mes "that there are still kinda and";
 	mes "generous people in the world.";
-	if($donatedzeny > 259999)
-	{
-	next;
-	mes "[Lucius]";
-	mes "This should be enough";
-	mes "to send to the Poor Relief";
-	mes "Organization. Please accpet";
-	mes "this small gift as a token of";
-	mes "my gratitude, adventurer. Bless";
-	mes "you, youngster and take care.";
-	getitem 603,1;
-	getitem 12016,1;
-	set $donatedzeny,0;
+	if($donatedzeny > 259999){
+		next;
+		mes "[Lucius]";
+		mes "This should be enough";
+		mes "to send to the Poor Relief";
+		mes "Organization. Please accpet";
+		mes "this small gift as a token of";
+		mes "my gratitude, adventurer. Bless";
+		mes "you, youngster and take care.";
+		getitem 603,1;
+		getitem 12016,1;
+		set $donatedzeny,0;
 	}
-	close;
-
-s_Much:
-	mes "[Lucius]";
-	mes "I'm sorry but you can't";
-	mes "donate more than 30,000";
-	mes "zeny. Please choose another";
-	mes "number.";
-	close;
-
-s_NEnoughZ:
-	mes "[Lucius]";
-	mes "I'm sorry but you do";
-	mes "not have as much zeny";
-	mes "as you wish to donate.";
-	mes "Please come back when you";
-	mes "do!";
 	close;
 
 }
@@ -977,7 +973,7 @@ lighthalzen.gat,296,239,3	script	Berru	706,{
 	mes "[Berru]";
 	mes "Daddy...! Waaaaah~!";
 	mes "I wanna see my daddy!";
-	emotion 28;
+	emotion e_sob;
 	next;
 	mes "[Pilia]";
 	mes "Berru, I don't";
@@ -991,7 +987,7 @@ lighthalzen.gat,296,239,3	script	Berru	706,{
 	mes "home! He said he'll";
 	mes "bring us candy tonight!";
 	mes "You go sleep first, Pilia!";
-	emotion 7;
+	emotion e_ag;
 	next;
 	mes "[Pilia]";
 	mes "*Sigh...*";
@@ -1012,18 +1008,22 @@ lighthalzen.gat,312,234,2	script	Beggar	777,{
 	mes "Would you give me";
 	mes "some money?";
 	next;
-	menu "Give him some money.",L_give,"Ignore him.",-;
-	mes "[" + strcharinfo(0) + "]";
-	mes "...";
-	mes "......";
-	close;
-
-L_give:
-	if(Zeny < 50)goto L_zeny;
+	if(select("Give him some money.:Ignore him.")==2){
+		mes "[" + strcharinfo(0) + "]";
+		mes "...";
+		mes "......";
+		close;
+	}
+	if(Zeny < 50){
+		mes "[Beggar]";
+		mes "You don't seem to have";
+		mes "enough zeny.";
+		close;
+	}
+	set Zeny,Zeny-50;
 	mes "[" + strcharinfo(0) + "]";
 	mes "Here you go,";
 	mes "take this.";
-	set Zeny,Zeny-50;
 	next;
 	mes "[Beggar]";
 	mes "Thank you so much.";
@@ -1032,7 +1032,7 @@ L_give:
 	mes "a story with you and impart";
 	mes "some of the wisdom I've";
 	mes "learned over the years.";
-	emotion 15;
+	emotion e_thx;
 	next;
 	mes "[Beggar]";
 	mes "Anger. People deal with";
@@ -1092,12 +1092,6 @@ L_give:
 	mes "to take in, I know.";
 	close;
 
-L_zeny:
-	mes "[Beggar]";
-	mes "You don't seem to have";
-	mes "enough zeny.";
-	close;
-
 }
 
 // ---------------------------------------------------------------------------
@@ -1116,7 +1110,7 @@ lighthalzen.gat,311,194,3	script	Reuben	870,{
 	mes "Did you just hear";
 	mes "me talk to myself?";
 	mes "Crud! Don't be so nosy!";
-	emotion 6;
+	emotion e_an;
 	close;
 }
 
@@ -1191,10 +1185,10 @@ lighthalzen.gat,337,296,3	script	雷根貝勒 職員	867,{
 	mes "您好!";
 	mes "我們雷根貝勒，對生活上比較困苦的人提供救援活動，也就是說提供工作機會的，";
 	next;
-	emotion 21;
 	mes "[雷根貝勒 職員]";
 	mes "可以待在家裡從事簡單的手工藝品開始，還有稍微有點知識的話也可以從事一些專業的工作!";
 	mes "也可以賺錢，也可以感覺到工作上的收穫!";
+	emotion e_no1;
 	close;
 }
 
@@ -1280,7 +1274,7 @@ lhz_in01.gat,125,40,2	script	特烏寶晤 劉#Dowbow_Ryuei	843,{
 	mes "請問你 '超級'和 '真實' 你比較喜歡哪一個單字-!!";
 	next;
 	menu "超級",-,"真實",L_reality;
-	emotion 21;
+	emotion e_no1;
 	mes "[特烏寶晤 劉]";
 	mes "噢噢噢噢噢!!! 看樣子你是懂點事情的人!!";
 	mes "我很欣賞你啊!";
@@ -1802,35 +1796,33 @@ lhz_in01.gat,73,188,4	script	服務員#03	862,{
 
 }
 
-lhz_in01.gat,34,226,4	script	Rekenber Guard#01	867,{
+lhz_in01.gat,34,226,4	script	雷根貝勒 衛兵#01	867,{
 
 	if(isequipped(2241) && isequipped(2243)) goto s_Staff;
-	mes "[Rekenber Guard]";
-	mes "This is a restricted";
-	mes "area! Please show";
-	mes "some ID immediately!";
+	mes "[雷根貝勒 衛兵]";
+	mes "這，這，這裡，";
+	mes "除，除了相關人員之外，";
+	mes "是，是不能進去的!!";
+	mes "假如你是相關人員的話，請顯示證，證，證明!!";
 	next;
-	menu "ID?",s_ID,"Cancel",-;
+	menu "證明?",s_ID,"結束對話",-;
 
-	mes "[Rekenber Guard]";
-	mes "Unless you have special";
-	mes "authorization, nobody is";
-	mes "allowed into the Underground";
-	mes "Laboratory for security reasons.";
+	mes "[雷根貝勒 衛兵]";
+	mes "樓，樓下是研，研究室啦不，不，不是任何人都可以進去的";
 	close;
 
 s_ID:
-	mes "[Rekenber Guard]";
-	mes "I don't know how you";
-	mes "adventurers do things in";
-	mes "Rune-Midgard, but over here";
-	mes "we have laws about trespassing!";
+	mes "[雷根貝勒 衛兵]";
+	mes "那，那，那，那，";
+	mes "那個不是有嘛，那個 !";
+	mes "不知道的話，就，就給我滾開 !!";
 	close;
 
 s_Staff:
-	mes "[Rekenber Guard]";
-	mes "^3131FF(Whoa, it's a member";
-	mes "of the staff)^000000 Good day!";
+	mes "[雷根貝勒 衛兵]";
+	mes "呵，呵呵，呵，呵，只能讓!";
+	mes "相關人員才能進去!!";
+	mes "勤，勤務中沒有任何問題!";
 	close2;
 	warp "lhz_in01.gat",37,225;
 	end;
@@ -1839,8 +1831,16 @@ s_Staff:
 
 lhz_in01.gat,19,129,0	script	LhzHiddenTrg1::LhzTrig	-1,1,1{
 OnTouch:
-	if(isequipped(2241) && isequipped(2243)) goto s_Staff;
 	mes "[Rekenber Guard]";
+	if(isequipped(2241) && isequipped(2243)){
+		mes "Keep your eyes open.";
+		mes "I've heard rumors that some";
+		mes "adventurers from Rune-Midgard";
+		mes "are trying to sneak into here!";
+		mes "I know the security here is";
+		mes "pretty much failsafe, but...";
+		close;
+	}
 	mes "This area is restricted";
 	mes "to the public! Who are you";
 	mes "and how did you get in here?!";
@@ -1848,59 +1848,47 @@ OnTouch:
 	close2;
 	warp "lhz_in01.gat",34,224;
 	end;
-
-s_Staff:
-	mes "[Rekenber Guard]";
-	mes "Keep your eyes open.";
-	mes "I've heard rumors that some";
-	mes "adventurers from Rune-Midgard";
-	mes "are trying to sneak into here!";
-	mes "I know the security here is";
-	mes "pretty much failsafe, but...";
-	close;
 
 }
 
-lhz_in01.gat,23,137,0	duplicate(LhzTrig)	LhzHiddenTrg2	-1,1,1
+lhz_in01.gat,23,137,0	duplicate(LhzTrig)	LhzHiddenTrg2	139,1,1
 
-lhz_in01.gat,24,131,2	duplicate(LhzTrig)	Rekenber Guard#02	867
+lhz_in01.gat,24,131,2	duplicate(LhzTrig)	雷根貝勒 衛兵#02	867
 
-lhz_in01.gat,25,141,4	script	Regenschirm Guard	868,{
+lhz_in01.gat,25,141,4	script	雷根貝勒 守衛	868,{
 
-	if(isequipped(2241) && isequipped(2243)) goto s_Staff;
-	mes "[Regenschirm Guard]";
-	mes "This area is restricted";
-	mes "to the public! Who are you";
-	mes "and how did you get in here?!";
-	mes "Hey, I need backup right away!";
+	mes "[雷根貝勒 守衛]";
+	if(isequipped(2241) && isequipped(2243)){
+		mes "我是負責前往地下";
+		mes "研究所出入系統的";
+		mes "守衛工作，";
+		mes "請問你要到地下嗎?";
+		next;
+		if(select("是的:不要")==1){
+			if(isequipped(2657)){
+				warp "lhz_dun01.gat",150,288;
+				end;
+			}
+			mes "[雷根貝勒 守衛]";
+			mes "I'm sorry but I can't let";
+			mes "staff without proper autorization";
+			mes "pass. Only staff members with";
+			mes "Laboratory Passports are allowed";
+			mes "to enter the underground.";
+			close;
+
+		}
+		mes "[雷根貝勒 守衛]";
+		mes "我知道了";
+		close;
+	}
+	mes "請問有事嗎，";
+	mes "從這裡開始唯有持有";
+	mes "出入許可證之人士才能進出，";
+	mes "請務必再次確認進出證後，";
+	mes "再來找我吧";
 	close2;
 	warp "lhz_in01.gat",34,224;
-	end;
-
-s_Staff:
-	mes "[Regenschirm Guard]";
-	mes "Do you wish to";
-	mes "go underground?";
-	next;
-	menu "Yes",s_Yes,"No",-;
-
-	mes "[Regenschirm Guard]";
-	mes "Thank you and";
-	mes "have a nice day.";
-	close;
-
-s_Yes:
-	if(isequipped(2657)) goto s_Auth;
-	mes "[Regenschirm Guard]";
-	mes "I'm sorry but I can't let";
-	mes "staff without proper autorization";
-	mes "pass. Only staff members with";
-	mes "Laboratory Passports are allowed";
-	mes "to enter the underground.";
-	close;
-
-s_Auth:
-	warp "lhz_dun01.gat",150,288;
 	end;
 
 }
