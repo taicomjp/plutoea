@@ -37,26 +37,9 @@
 //= 1.1 Replaced nif_q_done with MISC_QUEST & 32. nif_t -> @nif_t [Lupus]
 //= 1.2 Removed Duplicates [Silent]
 //= 1.3 Moved Book of Devil and Piano quest to quests/quests_niflheim.txt [Evera]
-//============================================================
+//============================================================ 
 
-// From eAthena
-// ---------------------------------------------------------------
-// 由中央城直接傳送去死城的 NPC
-//~prontera.gat,164,161,4	script	Traveler	68,{
-//~	mes "[Traveler]";
-//~	mes "I've come across some strange things in my time. Things you'd have to see to belive. Have you heard of Niffleheim, the City of the Dead?";
-//~	next;
-//~	menu "Show me, please...",M_show, "Sounds scarey...Nevermind...",-;
-//~
-//~	mes "[Traveler]";
-//~	mes "A wise choice by any means...";
-//~	close;
-//~M_show:
-//~	warp "niflheim.gat",202,171;
-//~	close;
-//~}
 
-//npc "niflheim" "柯資" 4_M_NFDEADSWDMAN 52 174 3 5 5
 niflheim.gat,52,174,3	script	柯資	796,{
 	mes "[柯資]";
 	mes "活著的人不准進來";
@@ -83,155 +66,13 @@ niflheim.gat,130,176,0	duplicate(spirits)	靈魂#7	802
 niflheim.gat,173,110,0	duplicate(spirits)	靈魂#8	802
 niflheim.gat,182,167,0	duplicate(spirits)	靈魂#9	802
 
-nif_fild01.gat,213,268,5	script	小男孩	797,{
-	mes "[馬猷斯]";
-	if(niflheimlost == 1) goto L_alreadydone;
-	if(lostgirl == 1) goto L_sure2;
-	mes "紗玲...你在哪裡?";
-	close;
-L_alreadydone:
-	mes "謝謝你協助我們!";
-	set niflheimlost,1;
-	close;
-L_sure2:
-	mes "你是誰?";
-	mes "...";
-	mes "你知道紗玲在哪裡?";
-	mes "他跑進城裡去了?";
-	next;
-	mes "[馬猷斯]";
-	mes "你可以轉告他我立刻動身去找她嗎?";
-	mes "我走路有點慢，但是請務必讓她知道我已經上路了，這很重要.";
-	menu "沒問題!",L_alreadydone, "那你就慢慢走吧!",-;
-	close;
-}
 
-// ---------------------------------------------------------------
-
-//npc "niflheim" "徘徊的人" 4_M_NFMAN 186 190 5 5 5
-niflheim.gat,186,190,5	script	徘徊的人	798,{
-	mes "[利卡爾]";
-	mes "怎麼會來到這麼恐怖的村落了呢，我看你也是迷路才走到這裡來";
-	mes "我被巨大的樹木所吸引來到這裡之後，待了很久都還沒逃出去";
-	next;
-	mes "[利卡爾]";
-	mes "可是為了找出口而徘徊了很久對村落的地理很熟悉，";
-	mes "記住村落的地理的話也許對逃生有幫助的";
-	next;
-	menu "詢問村落地理",-,"刪掉小地圖上的所有標誌",L_MENU_2,"取消",L_end;
-		mes "[利卡爾]";
-		mes "想要去哪裡呢?";
-		next;
-		menu "魔女之城",M_Magic,"道具店",M_item,"武器店",M_weapon,"酒店",M_hotel,"取消",L_cancel;
-
-		M_Magic:
-		viewpoint 2,255,194,1,0xFF3366;
-		mes "[利卡爾]";
-		mes "在尼芙菲姆裡住著一位可怕的魔女，";
-		mes "去^FF3366+^000000那邊的話有位魔女住的城，";
-		mes "進去之後太恐怖了就馬上跑出來了";
-		close;
-
-		M_item:  
-		viewpoint 3,219,198,1,0xCC6600;
-		mes "[利卡爾]";
-		mes "道具店在 ^CC6600+^000000那邊，";
-		mes "那邊有在賣外面世界買不到的物品，不妨去看";
-		close;
-
-		M_weapon:
-		viewpoint 4,219,170,1,0x66FF33;
-		mes "[利卡爾]";
-		mes "武器店在 ^66FF33+^000000那邊，";
-		mes "那邊有在賣別的地方看不到的物品，不妨去看";
-		close;
-
-		M_hotel:
-		viewpoint 5,189,210,1,0x3366FF;
-		mes "[利卡爾]";
-		mes "酒店在 ^3366FF+^000000那邊，";
-		mes "偶而會有死者在那裡舉行派對";
-		close;
-
-		L_cancel:
-		mes "[利卡爾]";
-		mes "想要刪掉位置標誌的話，";
-		mes "請點選，";
-		mes "刪掉小地圖上的所有標誌";
-		close;
-  
-	L_MENU_2:
-	viewpoint 2,255,194,2,0xFF3366;
-	viewpoint 3,219,198,2,0xCC6600;
-	viewpoint 4,219,170,2,0x66FF33;
-	viewpoint 5,189,210,2,0x3366FF;
-	mes "[利卡爾]";
-	mes "已刪掉小地圖上的所有標誌了，";
-	mes "想要在小地圖上重新做記號的話，隨時來找我吧";
-	close;
-
-	L_end: 
-	mes "[利卡爾]";
-	mes "親自去熟悉路況會很危險的...";
-	mes "那麼好好保重吧";
-	close;
-}
-
-
-
-//npc "niflheim" "卡普拉服務人員" 4_F_NFDEADKAFRA 202 180 3 5 5
-niflheim.gat,202,180,3	script	卡普拉服務人員	791,{
-	mes "[卡普拉服務人員]";
-	mes "歡迎...光臨. 卡普拉公司...";
-	mes "死了...也會...為您們...服務...";
-	mes "...需要...什麼服務嗎?";
-	next;
-	menu "倉庫服務.",-,"總結.",L_summary;  
-
-	if (getskilllv(1) >= 6) goto L_sub1;
-	mes "[卡普拉服務人員]";
-	mes "對不起…";
-	mes "要想使用…倉庫服務的話…";
-	mes "…初學者的基本技能…等級要到達";
-	mes "6級…以上";
-	close;
-
-	L_sub1:
-	if (Zeny >= 150) goto L_sub2;
-	mes "[卡普拉服務人員]";
-	mes "您的金額…不…足";
-	mes "倉庫使用費是…150金幣…";
-	mes "您的金額...不足的話...";
-	mes "把您的生命...分給我吧...";
-	percentheal -50,-50;
-	close;
-
-	L_sub2:
-	set Zeny,Zeny-150; 
-	openstorage;
-	mes "[卡普拉服務人員]";
-	mes "謝謝...您的...使用...";
-	mes "謝謝...您的...使用...";
-	mes "謝謝...您的...使用...";
-	mes "謝謝...您的...使用...";
-	mes "謝謝...您的...使用...";
-	close;
-
-	L_summary:
-	mes "[卡普拉服務人員]";
-	mes "卡普拉公司是...隨時...";
-	mes "為您們...服務...";
-	close;
-}
-
-//npc "niflheim" "其甘提阿" 4_M_NFDEADSWDMAN 195 211 5 5 5
 niflheim.gat,195,211,5	script	其甘提阿	796,{
 	mes "[其甘提阿]";
 	mes "死靈騎士總是看的一清二楚";
 	close;
 }
 
-//npc "niflheim" "妃依琳" 4_M_NFDEADMAN2 153 215 3 5 5
 niflheim.gat,153,215,3	script	妃依琳	794,{
 	mes "[妃依琳]";
 	mes "幹嘛要來到這麼危險的村落呢?";
@@ -239,7 +80,6 @@ niflheim.gat,153,215,3	script	妃依琳	794,{
 	close;
 }
 
-//npc "nif_in" "死雞" 4_NFCOCK 16 27 1 5 5
 nif_in.gat,16,27,1	script	死雞	800,{
 	mes "[瞎眼雞]";
 	mes "活著的時候被人們吃掉了，";
@@ -249,7 +89,6 @@ nif_in.gat,16,27,1	script	死雞	800,{
 	close;
 }
 
-//npc "nif_in" "死的 吸血蝙蝠" 4_NFBAT 16 30 4 5 5
 nif_in.gat,16,30,4	script	死的 吸血蝙蝠	799,{
 	mes "[帕豆曼]";
 	mes "不管活著或死了，人類的血";
@@ -260,9 +99,6 @@ nif_in.gat,16,30,4	script	死的 吸血蝙蝠	799,{
 	close;
 }
 
-//-------------詛咒任務-----------------//
-
-//npc "nif_in" "小孩" 4_F_NFLOSTGIRL 156 93 5 5 5
 nif_in.gat,156,93,5	script	小孩	793,{
 	mes "[阿拉克娜 安]";
 	mes "這裡，是哪裡呢...? 睡一覺起來，";
@@ -316,9 +152,8 @@ L_end:
 	close;
 }
 
-//npc "niflheim" "被詛咒的 靈魂" 4_NFWISP 350 258 5 5 5
-niflheim.gat,350,258,5	script	被詛咒的 靈魂	802,{
-	killmonster "niflheim.gat","OnNFMob";
+niflheim.gat,350,258,5	script	被詛咒的 靈魂::cursedsoul	802,{
+	killmonster "niflheim.gat","cursedsoul::OnNFMob";
 	mes "[艾書 布路斯]";
 	mes "在你身上感受到強烈的詛咒啊啊啊，";
 	mes "我拒絕你的存在啊啊啊啊，";
@@ -332,7 +167,7 @@ L_book1:
 	mes "不要隨便動我的書啊啊!!";
 	mes "喀哈啊啊! 詛咒你被咬被撕被抓傷!!";
 	mes "永遠被埋在束縛的詛咒裡!!";
-	monster "niflheim.gat",350,258,"Rideword",1478,1,"OnNFMob";
+	monster "niflheim.gat",350,258,"飛行魔書",1478,1,"cursedsoul::OnNFMob";
 	close;
 
 L_book2:
@@ -344,7 +179,7 @@ L_book2:
 	close;
 
 L_book3:
-	set nif_t,0;
+	set @nif_t,0;
 	mes "[艾書 布路斯]";
 	mes "喀哈哈啊啊.... 相當有膽量";
 	mes "的傢伙啊啊...!! 來...";
@@ -374,13 +209,13 @@ L_book3:
 	mes "哈哈哈啊啊啊!!! 咒文錯了!";
 	mes "你即將要面臨死亡了喔喔喔，";
 	mes "願你一輩子都受到詛咒吧啊啊啊...!!";
-	monster "niflheim.gat",349,256,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",347,258,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",347,254,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",350,252,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",344,255,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",348,252,"邪骸獸人",1462,1,"OnNFMob";
-	monster "niflheim.gat",347,259,"邪骸獸人",1462,1,"OnNFMob";
+	monster "niflheim.gat",349,256,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",347,258,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",347,254,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",350,252,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",344,255,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",348,252,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
+	monster "niflheim.gat",347,259,"邪骸獸人",1462,1,"cursedsoul::OnNFMob";
 	close;
 
 L_back:
@@ -388,4 +223,6 @@ L_back:
 	mes "喀哈啊啊! 想的不錯啊啊啊啊...";
 	mes "我會幫你祈禱活著回去啊啊啊....";
 	close;
+OnNFMob:
+	end;
 }

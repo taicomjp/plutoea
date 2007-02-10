@@ -24,39 +24,41 @@
 //= 1.7b Parenthesis fixes [KarLaeda]
 //= 1.8 Fixed the reward you can get [Playtester]
 //============================================================ 
+//2007-02-07  黑色小貓  中文化
+//============================================================ 
 
-que_ng.gat,152,167,3	script	米勒 大師	901,{
+que_ng.gat,152,167,3	script	米勒 教官	901,{
 
-	set @npcname$,"[Armsmith]";
+	set @npcname$,"[米勒教官]";
 	if (Class == Job_Novice) {
 		if (GUNS_Q >= 1) {
 			mes @npcname$;
-			mes "So, you've come back?";
+			mes "喔~ 你回來了?";
 			next;
 			if (GUNS_Q == 10005) {
 				if (SkillPoint > 0) {
 					mes @npcname$;
-					mes "Err, excuse me, but you still have Skill Points left. You have to use them all before I can turn you into a Gunslinger.";
+					mes "嗯~ 很抱歉，你仍有技能點數尚未用完! 你需要先將點數用完才能轉職成為槍手!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (JobLevel < 10) {
 					mes @npcname$;
-					mes "Err, excuse me, but your job level is not sufficient. You need to have a job level of 10 in order to change to a Gunslinger";
+					mes "嗯~ 很抱歉，你的職業等級不足! 你需要升級職業等級至10級才能轉職!";
 					close2;
 					set @npcname$,"";
 					end;
 				}
 				mes @npcname$;
-				mes "Glad to know you did what Mr. Tanieh asked you to do, makes me know you're worthy of being..";
+				mes "我很高興知道你完成了聰明的黃牛角的任務，讓我確定你配的上成為一名...";
 				next;
 				mes @npcname$;
-				mes "A Gunslinger!!";
+				mes "槍手!!";
 				callfunc "Job_Change",Job_Gunslinger;
 				callfunc "F_ClearJobVar";		//clears all job variables for the current player
 				next;
 				mes @npcname$;
-				mes "Oh, I forgot, here's a token of my appreciation";
+				mes "喔! 差點忘了，因為我很欣賞你，所以這送給你！";
 				if (rand(1,3) < 3) {
 					getitem 13100,1;
 				} else {
@@ -67,34 +69,34 @@ que_ng.gat,152,167,3	script	米勒 大師	901,{
 				end;
 			}
 			mes @npcname$;
-			mes "But you still haven't done what I told you, need me to repeat it?";
-			switch (select ("Yes, Please:No, Thanks")) {
+			mes "但是你還沒完成我告訴你的任務! 需要我在告訴你一次嗎?";
+			switch (select ("是的，請再告訴我一次!:不，謝了!")) {
 				case 1:
 					next;
 					mes @npcname$;
-					mes "You need to go to Payon. At the small wooden wall and in the south exit, Mr. Tanieh will be there waiting to ask you a few things. Go now...";
+					mes "你要先去斐揚，在南方出口的城牆邊找到聰明的黃牛角，他會委託你一些事情! 去吧!";
 					close2;
 					set @npcname$,"";
 					end;
 				case 2:
 					next;
 					mes @npcname$;
-					mes "Then GET GOING! You do want to become a Gunslinger, right?";
+					mes "快去吧! 你想要成為一名槍手的，不是嗎?";
 					close2;
 					set @npcname$,"";
 					end;
 			}
 		}
 		mes @npcname$;
-		mes "Hi ^0000CC"+strcharinfo(0)+"^000000,I need you to do something for me first, will you?";
-		switch (select ("Yes:No")) {
+		mes "嗨! ^0000CC"+strcharinfo(0)+"^000000，我要你幫我完成一件事，你願意嗎?";
+		switch (select ("好的!:不要!")) {
 			case 1:
 				next;
 				mes @npcname$;
-				mes "Good, I need you to go to Payon and do a few things from Mr. Tanieh.";
+				mes "很好，我要你去斐揚為聰明的黃牛角做一件事!";
 				next;
 				mes @npcname$;
-				mes "He'll be waiting for you next to the small wooden wall of the south exit. See you later then.";
+				mes "他將會在南方出口的城牆邊等你，到時見!";
 				close2;
 				set GUNS_Q,1;
 				set @npcname$,"";
@@ -102,7 +104,7 @@ que_ng.gat,152,167,3	script	米勒 大師	901,{
 			case 2:
 				next;
 				mes @npcname$;
-				mes "Too bad for you son. Come back when you are willing to do so.";
+				mes "這真是太糟糕了! 等你準備好再回來吧!";
 				close2;
 				set @npcname$,"";
 				end;
@@ -110,24 +112,24 @@ que_ng.gat,152,167,3	script	米勒 大師	901,{
 
 	}
 	mes @npcname$;
-	mes "Hi son, how's life treating you?";
+	mes "嗨，小子! 最近過的好嗎?";
 	set @npcname$,"";
 	close;
 }
 
 payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 
-	set @npcname$,"[Mr. Tanieh]";
+	set @npcname$,"[黃牛角]";
 	if (GUNS_Q == 1) {
 		mes @npcname$;
-		mes "Oh, you're ^0000CC"+strcharinfo(0)+"^000000, right? Einbroch's Armsmith told me you were going to help me with a few things.";
+		mes "喔! 你是 ^0000CC"+strcharinfo(0)+"^000000，是嗎? 艾音布羅克的米勒告訴我你會來幫我收集一些東西!";
 		next;
 		mes @npcname$;
-		mes "I need to make a special soup for my wife, but, as you can see, I am not in conditions to look for the items, she's sick you know?";
+		mes "我要煮一份特製的湯給我妻子，但是就如你所見，我沒有時間去收集材料，因為我的妻子生病了!";
 		next;
 		mes @npcname$;
-		mes "So, will you do it, please?";
-		switch (select ("Yes, I will:Sorry I can't now")) {
+		mes "所以，可以請你幫忙嗎? 拜託你?";
+		switch (select ("好的，可以!:抱歉! 現在不行!")) {
 			case 1:
 				set GUNS_Q,callfunc("F_RandMes",4,1019,1066,1067,1068);
 				goto L_LIST;
@@ -135,7 +137,7 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 			case 2:
 				next;
 				mes @npcname$;
-				mes "Oh, what am I going to do now...";
+				mes "喔~ 我該怎麼辦才好!";
 				close2;
 				set @npcname$,"";
 				end;
@@ -143,50 +145,50 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 
 	} else if (GUNS_Q > 1 && GUNS_Q < 10000) {
 		mes @npcname$;
-		mes "Oh, you've come back! Have you brought the items?";
+		mes "喔! 你回來了! 你找到所有材料了嗎?";
 		next;
-		switch (select("Yes I did:No I forgot which items I had to bring")) {
+		switch (select("是的，我找到了!:我忘記要找的東西了!")) {
 			case 1:
 				next;
 				if (countitem(949) < 3) {
 					mes @npcname$;
-					mes "Sorry, you're missing a few Feathers";
+					mes "抱歉，你缺少3個柔毛!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (countitem(912) < 3) {
 					mes @npcname$;
-					mes "Sorry, you're missing a few Zargons";
+					mes "抱歉，你缺少3個剎勒空結晶!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (countitem(1013) < 3) {
 					mes @npcname$;
-					mes "Sorry, you're missing a few Rainbow Shells";
+					mes "抱歉，你缺少3個彩色昆蟲外殼!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (countitem(GUNS_Q) < 1) {
 					mes @npcname$;
-					mes "Sorry, you don't have the exact Trunk";
+					mes "抱歉，你沒有智慧樹枝!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (countitem(511) < 3) {
 					mes @npcname$;
-					mes "Sorry, you're missing a few Green Herbs";
+					mes "抱歉，你缺少3個綠色藥草!";
 					close2;
 					set @npcname$,"";
 					end;
 				} else if (countitem(935) < 10) {
 					mes @npcname$;
-					mes "Sorry, you're missing a few Shells";
+					mes "抱歉，你缺少10個堅硬外殼!";
 					close2;
 					set @npcname$,"";
 					end;
 				}
 				mes @npcname$;
-				mes "GREAT! You brought them all! Thanks very much!";
+				mes "太好了! 你找到全部的材料了! 真是太感謝你了!";
 				delitem 949,3;
 				delitem 912,3;
 				delitem 1013,3;
@@ -195,7 +197,7 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 				delitem 511,3;
 				next;
 				mes @npcname$;
-				mes "Oh my, you've been of great help. I'll recommend you to the Einbroch Armory for your job change.";
+				mes "喔! 你真是幫了個大忙! 我將會向艾音布羅克的米勒推薦你的就職申請!";
 				close2;
 				set GUNS_Q,10003;
 				set @npcname$,"";
@@ -204,16 +206,16 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 			L_LIST:
 				next;
 				mes @npcname$;
-				mes "Ok, I'll tell you again, so please take note!:";
-				mes "^33CCFF 3 Feathers^000000";
-				mes "^009933 3 Zargons^000000";
-				mes "^660066 3 Rainbow Shells^000000";
-				mes "^009900 3 Green Herbs^000000";
+				mes "好的，我將會再告訴你一次! 請記住!";
+				mes "^33CCFF 3個柔毛^000000";
+				mes "^009933 3個剎勒空結晶^000000";
+				mes "^660066 3個彩色昆蟲外殼^000000";
+				mes "^009900 3個綠色藥草^000000";
 				mes "^663300 1 "+getitemname(GUNS_Q)+"^000000";
-				mes "^FF6600 10 Shells^000000";
+				mes "^FF6600 10個堅硬外殼^000000";
 				next;
 				mes @npcname$;
-				mes "Hurry please, I am not sure if my wife will last any longer... oh dear..";
+				mes "請快點! 我不知道我妻子還能活多久，喔~ 親愛的...";
 				close2;
 				set @npcname$,"";
 				end;
@@ -221,12 +223,12 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 	} else if (GUNS_Q == 10003 || GUNS_Q == 10004) {
 		if (countitem(519) >= 1 && GUNS_Q == 10004) {
 			mes @npcname$;
-			mes "THAT'S IT!! I was missing the Milk! Oh yes, thanks so much, will you give it to me?";
-			switch(select("Sure, take it:Sorry but I need it")) {
+			mes "就是它! 我忘記牛奶了! 太好了，非常謝謝你! 你的牛奶可以給我嗎?";
+			switch(select("當然! 拿去吧!:抱歉，不行!")) {
 				case 1:
 					next;
 					mes @npcname$;
-					mes "Thanks so much! Go talk again with the Einbroch Armsmith. He'll change you. Thanks again and see you.";
+					mes "太謝謝你了! 去找米勒吧! 他會答應你的就職! 再次謝謝你! 再見!";
 					delitem 519,1;
 					close2;
 					set GUNS_Q,10005;
@@ -235,27 +237,27 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 				case 2:
 					next;
 					mes @npcname$;
-					mes "Oh please, I need it so much, think about it please...";
+					mes "喔，拜託請你給我! 我真的非常需要它! 拜託!";
 					close2;
 					set @npcname$,"";
 					end;
 			}
 		}
 		mes @npcname$;
-		mes "*sigh* Now I have to wait again... Thanks for your help... but I believe there's something missing..";
+		mes "我還是要繼續等，我相信一定少了什麼東西，感謝你的幫忙!";
 		close2;
 		set @npcname$,"";
 		set GUNS_Q,10004;
 		end;
 	} else if (Class == Job_Gunslinger || GUNS_Q == 10005) {
 		mes @npcname$;
-		mes "Hi ^0000CC"+strcharinfo(0)+"^000000!, how have you been doing? My wife sends you regards and thanks for the ingredients...";
+		mes "嗨! ^0000CC"+strcharinfo(0)+"^000000! 你最近好嗎? 我妻子要我謝謝你的關心!";
 		close2;
 		set @npcname$,"";
 		end;
 	} 
 	mes @npcname$;
-	mes "Hi son, how's life treating you? Nice day, isn't it?";
+	mes "嗨! 你最近好嗎? 一定過的很好吧! 是吧!";
 	close2;
 	set @npcname$,"";
 	end;

@@ -1,27 +1,45 @@
-//========================EP8©x¤èª©¨Z¤Ú©ÔNPC Scripts========================
-// Aegis½s¼g¡@¡@¡@: Dizzy (Modified 8-29-2004 7:00)
-// AthenaÂ½Ä¶¤Î­×§ï: ¯[µæ @ Fantasy RO (http://fantasysky.no-ip.com/)
-// ·PÁÂ¡@¡@¡@¡@¡@¡@: OverZero¡AGravity¡AGameflier
-// ³Ì«á½s¿è¤é´Á¡@¡@: (Modified 06-09-2004)
-//===========================================================================
+//===== eAthena script =======================================
+//= Umbala Town script
+//===== By: ==================================================
+//= jAthena (1.0) Fusion Dev Team (1.1) Muad Dib (1.2) Darkchild (1.3)
+//===== Current Version: =====================================
+//= 1.9
+//===== Compatible With: =====================================
+//= Any eAthena Version; RO Episode XX
+//===== Description: =========================================
+//= Umbala Town Npcs
+//==================================================
+//===== Additional Comments: =================================
+//= 1.0 - Done By jAthena (dunno Who)
+//= 1.1 - Translated by Fusion Dev Team
+//= 1.2 - Fixed Something by Muad Dib
+//= 1.3 - Fixed up For eA by Darkchild
+//= 1.4 - Fixed some wrong item names [Lupus]
+//= 1.5 ?Spell Checked [massdriller]
+//= 1.6 - Fixed item names, added a chance to get to Niflheim via Jumping Bungy Area [Lupus]
+//= 1.7 - Fixed bugs and exploits [Lupus]
+//= 1.8 - Warps you to Niff with 1HP [Lance]
+//= 1.9 - Moved Umbala Event, Create Essence/Dismantle Stone, and Skeletal Gate to npc/quests/quests_umbala.txt [Evera]
+//= 2.0 - Removed duplicates, max NPC name length is 23, so Utan Tribe Young Adult#1, the 1 is skipped [Toms]
+//============================================================
 
 
-//§JÅ]®qªº¤p¥ô°È
-//-------------------- [ ²Â³J¤G¤H²Õ ] --------------------
-// 
-//npc "comodo" "©Ô¦ã¼w" 4_M_02 170 137 7 5 5
-comodo.gat,170,139,7	script	©Ô¦ã¼w	84,{}
-comodo.gat,170,139,7	script	ev_emotion#1	-1,{
-	emotion 29;
+//========================================================
+// == NPCs on the road to Umbala ==
+//========================================================
+//Note that On_Emotion is NOT an npc command but just an trigger for DoNpcEvent!!
+comodo.gat,170,137,7	script	©Ô¦ã¼w::Reid	84,{
+	close;
+On_Emotion20:
+	emotion e_hmm;
+	end;
+On_Emotion29:
+	emotion e_gg;
 	end;
 }
-comodo.gat,170,139,7	script	ev_emotion#2	-1,{
-	emotion 20;
-	end;
-}
 
-//npc "comodo" "¶Â¥ì¥q" 4_F_03 171 137 1 5 5
-comodo.gat,171,139,1	script	¶Â¥ì¥q	92,{
+//========================================================
+comodo.gat,171,137,1	script	¶Â¥ì¥q	92,{
 	mes "[©Ô¦ã¼w]";
 	mes "¤@©w¬OÂÃ¦³Åå¤HªºÄ_ª«°Ú!";
 	next;
@@ -31,35 +49,40 @@ comodo.gat,171,139,1	script	¶Â¥ì¥q	92,{
 	mes "[©Ô¦ã¼w]";
 	mes "§Ú­Ì¤]¨Ó¥h´M§äÄ_ª«§a!";
 	next;
-	emotion 29;
-	doevent "ev_emotion#1";
+	donpcevent "Reid::On_Emotion29";
+	emotion e_gg;
 	mes "[¶Â¥ì¥q]";
 	mes "¦n§a- !!";
 	next;
 	mes "[©Ô¦ã¼w]";
-	mes "................";
+	mes "............";
 	next;
-	emotion 20;
-	doevent "ev_emotion#2";
+	donpcevent "Reid::On_Emotion29";
+	emotion e_hmm;
 	mes "[©Ô¦ã¼w]";
 	mes "¤£¹L¥L·|»´©öªº¶}¤f¶Ü?";
 	next;
-	menu "¤°»ò¸Ü°Ú? Ä_ª«?",-;
+	menu "¤°»ò¸Ü°Ú? Ä_ª«?",Lwhat_1;
+
+	Lwhat_1:
 		mes "[©Ô¦ã¼w]";
 		mes "°Ú¡A§A±q¤°»ò®É­Ô¶}©lÅ¥ªº°Ú?!";
 		next;
-		emotion 29;
+		emotion e_gg;
 		mes "[¶Â¥ì¥q]";
 		mes "¨ş³á¡A§A¤]·Q­nÅ¥¦³ÃöÄ_ª«ªº¨Æ±¡°Ú?";
 		mes "·íµM§A¤]¬O«_ÀI®aªº¸Ü¡AÀ³¸Óª¾¹D¹ï­«­nªºªF¦è¡AÁ`¬O»İ­n§´·íªº¸ÉÀv§a?";
 		next;
-		emotion 29;
-		doevent "ev_emotion#1";
-		mes "[©Ô¦ã¼w ¡A¶Â¥ì¥q]";
+		mes "[©Ô¦ã¼wA¶Â¥ì¥q]";
+		donpcevent "Reid::On_Emotion29";
+		emotion e_gg;
 		mes "µ¹§Ú1000ª÷¹ôªº¸Ü¡A§Ú·|§i¶D§Aªº!";
 		next;
-		menu "¥I1000ª÷¹ôµ¹¥L",-,"¤£¥Iµ¹¥L",L_CANCEL;
-			set Zeny,Zeny - 1000;
+		menu "¥I1000ª÷¹ôµ¹¥L",Lzeny_1,"¤£¥Iµ¹¥L",Lzeny_2;
+
+		Lzeny_1:
+			if(Zeny < 1000) goto Lzeny_no;
+			set Zeny,Zeny-1000;
 			mes "[¶Â¥ì¥q]";
 			mes "©I©I ÆZÀ´¨Æªº³Ã¥ë¹À!";
 			next;
@@ -80,7 +103,7 @@ comodo.gat,171,139,1	script	¶Â¥ì¥q	92,{
 			mes "[©Ô¦ã¼w]";
 			mes "©Ò¥H»¡§Ú­Ì¤]­n¥h´M§äÄ_ª«-!!";
 			next;
-			emotion 20;
+			emotion e_hmm;
 			mes "[¶Â¥ì¥q]";
 			mes "¥i¬O°İÃD¬O¡A¥§º¸´µ¯uªº·|»´©öªº§i¶D§Ú­Ì¡AÄ_ª«ªº©Ò¦b¦aÂI¶Ü..";
 			next;
@@ -88,30 +111,53 @@ comodo.gat,171,139,1	script	¶Â¥ì¥q	92,{
 			mes "¥§º¸´µ¥­®É³£§â§Ú­Ì·í²Â³J¬İ«İ!!";
 			mes "­ó-!!";
 			next;
-			menu "¨º­Ó¥s¥§º¸´µªº¤H¦b­ş¸Ì©O?",-;
+			menu "¨º­Ó¥s¥§º¸´µªº¤H¦b­ş¸Ì©O?",Lwhere_1;
+
+			Lwhere_1:
 				mes "[©Ô¦ã¼w]";
 				mes "¥L©~¦í¦b§ø¸¨ªº¥_Ãä";
 				next;
 				mes "[¶Â¥ì¥q]";
 				mes "§Ú§i¶D§A¦³§Qªº±¡³ø¤F¡A¦pªG§A¤]±oª¾¤F¤°»ò±¡³ø¤]±o§i¶D§Ú¡A³o¤~¬O¤H¤§±`±¡°Ú!";
 				next;
-				mes "[©Ô¦ã¼w ¡A¶Â¥ì¥q]";
+				mes "[©Ô¦ã¼w¡B¶Â¥ì¥q]";
 				mes "¨º»ò¯¬§A¦n¹B¤F!";
 				close;
 
-		L_CANCEL:
-			emotion 20;
-			doevent "ev_emotion#2";
+			Lzeny_no:
+				mes "[©Ô¦ã¼w]";
+				mes "¶Ù¡A§A¨S¿ú°Ú";
+				close;
+
+		Lzeny_2:
+			donpcevent "Reid::On_Emotion20";
+			emotion e_hmm;
 			mes "[¶Â¥ì¥q]";
 			mes "­ó! ¤£­n´Nºâ¤F~";
 			close;
 }
 
-//-------------------- [ ¶Ì¥Ê«_ÀIªÌ ] --------------------
-//npc "cmd_in01" "¥§º¸´µ" 4_M_JOB_BLACKSMITH 164 115 3 5 5
-cmd_in01.gat,164,115,3	script	¥§º¸´µ	731,{
+//========================================================
+cmd_in01.gat,175,120,3	script	¥ì¥ß¨È	69,{
+	mes "[¥ì¥ß¨È]";
+	mes "¦ì¦b¨º¨¤¸¨®àªº¨º¦ì¬O¡A«_ÀI®a¥§º¸´µ¡A";
+	mes "¥L·|¨ì³B®È¹C¦Ó¥B·|Á¿¤@¨Ç¦³½ìªº¸Ü";
+	next;
+	mes "[¥ì¥ß¨È]";
+	mes "³o¦¸¨ì©³¥h­ş¦^¨Ó¤F©O¡A";
+	mes "¥L¥u¬O¨ş¨şªº¯ºµÛ»¡";
+	mes "- §ÚªGµM¤£¾A¦X·í¦Ñ®vªº¼Ë¤l -";
+	next;
+	mes "[¥ì¥ß¨È]";
+	mes "¤H­Ì¤S¤@ª½¨Ó§ä¥§º¸´µ..";
+	mes "¨ì©³¬O¥h­ş¸Ì¦^¨Ó¤F©O?";
+	close;
+}
+
+//========================================================
+cmd_in01.gat,164,115,1	script	¥§º¸´µ	731,{
 	mes "[¥§º¸´µ]";
-	mes "....¨ş¨ş? ¤°»ò";
+	mes "...¨ş¨ş? ¤°»ò";
 	mes "³á- §A¤]¬OÅ¥¨ìÁÁ¨¥¦Ó¶]¨Óªº²Â³J¶Ü?";
 	mes "¤]¤£¯à¤Ó«j±j§a. . .³Ø³Ø";
 	next;
@@ -139,12 +185,11 @@ cmd_in01.gat,164,115,3	script	¥§º¸´µ	731,{
 	mes "ª½¨ì¥Ø«eÁÙ¨S§ä¨ìªº¡A³q©¹'¨º¸Ì'ªº¸ô!";
 	next;
 	mes "[¥§º¸´µ]";
-	mes "................";
+	mes "............";
 	next;
 	mes "[¥§º¸´µ]";
-	mes ".......¤°»ò©O?";
+	mes "......¤°»ò©O?";
 	next;
-	Emotion	20;
 	mes "[¥§º¸´µ]";
 	mes "³o®É­ÔÀ³¸Ó­n¨ÓÂI '©N©N' ªº®ÄªG­µ¤£¬O¶Ü!";
 	mes "¨S·N«ä..";
@@ -168,341 +213,232 @@ cmd_in01.gat,164,115,3	script	¥§º¸´µ	731,{
 	close;
 }
 
-//npc "cmd_in01" "¥ì¥ß¨È" 1_F_04 175 120 3 5 5
-cmd_in01.gat,175,120,3	script	¥ì¥ß¨È	69,{
-	mes "[¥ì¥ß¨È]";
-	mes "¦ì¦b¨º¨¤¸¨®àªº¨º¦ì¬O¡A«_ÀI®a¥§º¸´µ¡A";
-	mes "¥L·|¨ì³B®È¹C¦Ó¥B·|Á¿¤@¨Ç¦³½ìªº¸Ü";
-	next;
-	mes "[¥ì¥ß¨È]";
-	mes "³o¦¸¨ì©³¥h­ş¦^¨Ó¤F©O¡A";
-	mes "¥L¥u¬O¨ş¨şªº¯ºµÛ»¡";
-	mes "- §ÚªGµM¤£¾A¦X·í¦Ñ®vªº¼Ë¤l -";
-	next;
-	mes "[¥ì¥ß¨È]";
-	mes "¤H­Ì¤S¤@ª½¨Ó§ä¥§º¸´µ..";
-	mes "¨ì©³¬O¥h­ş¸Ì¦^¨Ó¤F©O?";
-	close;
-}
 
-//====================================================================================================
-//¨Z¤Ú©Ôµó¤W
+//==================================================================
+//	Umbala NPCs and Quests
+//==================================================================
 
-//-------------------- [ °ªªÅ¼u¸õ¬ÛÃö ] ----------------------
-//npc "umbala" "«BÀÈ±Ú «C¦~#1" 4_M_UMDANCEKID2 140 157 5 5 5
-umbala.gat,140,157,5	script	«BÀÈ±Ú «C¦~::UtanTribeYougAdult1	785,{
-	if (um_quest1 == 3) goto event_3;
+//==================================================================
+//Trade money for meat
+umbala.gat,70,106,3	script	«BÀÈ±Ú ¤p«Ä#1	781,{
+if(event_umbala < 3) goto LumWord;
 	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú©I¤Ú¡A";
-	mes "¶ã¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¶ã©I¤Ú";
-	mes "¨Z¤Ú¤Ú¤Ú¨Z¤Ú¨Z¤Ú";
-	close;
-
-event_3:
-	mes "[¥B¼Ö©Z]";
-	mes "°ªªÅ¼u¸õ«D±`¦MÀI¡A";
-	mes "¦]¬°¬O«_µÛ¥Í©R¦MÀIªº¨Æ±¡¡A";
-	mes "©Ò¥H¦¨¥\ªº¤H¡A";
-	mes "·|³Q»{©w¬°¬O«BÀÈ±Ú¸Ì";
-	mes "ªº¤j¤H";
-	close;
-}
-
-//npc "umbala" "«BÀÈ±Ú «C¦~#2" 4_M_UMDANCEKID 146 157 3 5 5
-umbala.gat,146,157,3	script	«BÀÈ±Ú «C¦~#2	786,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¨Z¤Ú¤Ú";
-	mes "¨Z¤Ú¨Z¤Ú¤Ú¨Z¤Ú¤Ú¤Ú¨Z©I¤Ú¤Ú";
-	close;
-
-event_3:
-	mes "[ªüÃ¹©Z]";
-	mes "¶¶§Qªº§¹¦¨°ªªÅ¼u¸õ";
-	mes "¬O«D±`§xÃøªº¡A";
-	mes "©Ò¥H¬°¤F¼y¯¬¶¶§Q§¹¦¨ªº¤H¡A¦Ó»E¶°¦b³o¸ÌÁ|¦æ»ö¦¡ªº";
-	close;
-}
-
-//-------------------- [ ·Q·í¦~... ] ----------------------
-//npc "umbala" "«BÀÈ±Ú «C¦~#3" 4_M_UMSOLDIER 193 208 5 5 5
-umbala.gat,193,208,5	script	«BÀÈ±Ú «C¦~#3	789,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¡A";
-	mes "¨Z¤Ú¨Z¤Ú©I¤Ú¨Z¨Z¤Ú¤Ú¨Z¡A";
-	mes "¨Z¨Z¤Ú¤Ú¤Ú¨Z¤Ú©I";
-	close;
-
-event_3:
-	mes "[½÷©y©Z]";
-	mes "§Ú¦~»´®É¤]¸õ¹L°ªªÅ¼u¸õ¡A";
-	mes "ÁöµM®tÂI¨S©R¡A¤£¹L¦¨¥\«áªº¨ººØ¦¨´N·P¬OµLªk¨¥³ëªº¡A";
-	mes "¤]¦³¤HÄ±±o«Üª¼¥Ø¡A";
-	mes "¦ı§ÚÄ±±o¨º¬O¦~»´¤Hªº¶¯¤ß°Ú";
-	close;
-}
-
-//-------------------- [ ¤¶²Ğ°ªªÅ¼u¸õ ] ----------------------
-
-//npc "umbala" "«BÀÈ±Ú «C¦~#4" 4_M_UMDANCEKID2 139 205 3 5 5
-umbala.gat,139,205,3	script	«BÀÈ±Ú «C¦~::UtanTribeYougAdult5	785,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú!";
-	mes "¨Z¤Ú¨Z¤Ú¤Ú¤Ú¤Ú¨Z¨Z¤Ú¡A";
-	mes "¤Ú¤Ú¨Z¶ã©Z¨Z¤Ú¨Z¤Ú¤Ú¡A";
-	mes "¨Z¤Ú¤Ú¤Ú©I¡A";
-	mes "¨Z¨Z©I¤Ú¤Ú¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú";
-	next;
-	mes "[???]";
-	mes "¨Z¤Ú©I¹À¤Ú¤Ú¨Z¤Ú¡A";
-	mes "¨Z¤Ú¤Ú©Z¨Z¤Ú¨Z¤Ú¡A";
-	mes "¤Ú¡A¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¤Ú¨Z¡A";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú©I";
-	close;
-
-event_3:
-	mes "[¦¶©Z]";
-	mes "¦n¤[¤£¨£ªº¥~¦a¤H°Ú!";
-	mes "³o¸Ì¬O¤H­Ìª±°ªªÅ¼u¸õ";
-	mes "ªº¦a¤è¡A";
-	mes "«Ü¦h«BÀÈ±Úªº¦~»´¤H¡A";
-	mes "¬°¤FÃÒ©ú¦Û¤vªº«i®ğ¡A";
-	mes "¦Ó¦b³o¸õ¤U¥h";
-	next;
-	mes "[¦¶©Z]";
-	mes "¦A©¹«e­±¨«ªº¸Ü·|±¼¤U¥hªº¡A";
-	mes "³Ì¦n¬O¥ı°µ¦n¤ß²z·Ç³Æ³á";
-	next;
-	mes "[¦¶©Z]";
-	mes "±¼¤U¥h¤§«á¥i¥Hª¦Ã·¤l¤W¨Ó¡A¤£µM¦b¤ô¸Ì¥J²Ó§äªº¸Ü¡A";
-	mes "¦³­Ó¥i¥H³q¨ì¹ï­±ªº¤ô¤¤¬}¥Ş";
-	mes "¹ï¤F¡A°¸¦Ó¤]¦³¹B®ğ®tªº¤H·|ª½±µ±¼¤U¥h¦Ó¦º¤`ªº";
-	next;
-	mes "[¦¶©Z]";
-	mes "¨ä¤¤¤]¦³¥ú¬İ´NÀ~¦ºªº¤H¡A©Ò¥H­n¤p¤ßÂI¡A";
-	mes "¦b¤ô¸ÌÁÙ¦³¤£©úªº©Çª«¡A§A«İ¤[ªº¸Ü¤]·|¦º±¼ªº";
-	close;
-}
-
-//-------------------- [ ·Q¦Y¦×ªº¤p«Ä ] ----------------------
-
-//npc "umbala" "«BÀÈ±Ú ¤p«Ä#1" 4_M_UMKID 59 243 5 5 5
-umbala.gat,59,243,5	script	«BÀÈ±Ú ¤p«Ä#1	787,{
-	if (um_quest1 == 3) goto event_3;
-	emotion 11;
-	mes "[???]";
-	mes "............";
-	mes "........¨Z¤Ú";
-	mes "......¨Z¤Ú¤Ú";
-	mes "......©I¤Ú";
-	next;
-	menu "¨Z¤Ú",-,"¨Z¤Ú¤R",L_CANCEL1;
-		if (countitem(517) > 1) goto L_GiveMeat;
-		percentheal -10,-100;
-		emotion 11;
-		mes "[???]";
-		mes "¨Z¤Ú¨Z¨Z©I¤R¤Ú¤Ú¤Ú!";
-		mes "¨Z¤Ú¨Z¤Ú¤Ú¤Ú¨Z¤Ú¨Z¤Ú!";
-		close;
-
-		L_GiveMeat:
-			mes "[???]";
-			mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¤Ú¤Ú";
-			mes "¨Z¤Ú¤Ú¤Ú¤Ú¨Z";
-			delitem 517,1;
-			getitem 909,2;
-			getitem 914,2;
-			getitem 705,2;
-			close;
-
-	L_CANCEL1:
-		emotion 28;
-		mes "[???]";
-		mes "...........";
-		mes "......¨Z¤Ú";
-		mes "....¨Z¤Ú¤Ú¤Ú";
-		close;
-
-event_3:
-	emotion 11;
-	mes "[±F©Z]";
-	mes "............";
-	mes ".........¼H¼H";
-	mes ".....¦×¦n¦Y";
-	mes "....µ¹§Ú¦×";
-	next;
-	menu "µ¹¥L",-,"¤£µ¹¥L",L_CANCEL2;
-		if (countitem(517) > 1) goto GiveMeat;
-		percentheal -10,-100;
-		emotion 11;
-		mes "[±F©Z]";
-		mes "¤°»ò¹À¡A¨S¦³¦×¡A";
-		mes "ÁÙ¸Ë§@¦³!";
-		mes "«BÀÈ±Ú¬O«D±`";
-		mes "°Q¹½¶B´Ûªº!";
-		close;
-
-		GiveMeat:
-			mes "[±F©Z]";
-			mes "¯uªº­nµ¹§Ú¶Ü? ÁÂÁÂ¡I";
-			mes "³o¨S¤°»ò¬O§Úµ¹§AªºÁÂÂ§";
-			delitem 517,1;
-			getitem 909,2;
-			getitem 914,2;
-			getitem 705,2;
-			close;
-
-	L_CANCEL2:
-		emotion 28;
-		mes "[±F©Z]";
-		mes ".........";
-		mes ".....¨{¤l¾j";
-		mes ".....·Q¦Y¦×";
-		close;
-}
-
-//-------------------- [ ¤¶²Ğ°ªªÅ¼u¸õªº¤p«Ä ] ----------------------
-
-//npc "umbala" "«BÀÈ±Ú ¤p«Ä#2" 4_M_UMKID 194 104 3 5 5
-umbala.gat,194,104,3	script	«BÀÈ±Ú ¤p«Ä#2	787,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú¤Ú¤Ú¨Z©I¤Ú¡A";
-	mes "¨Z¤Ú¤Ú¨Z¨Z¤Ú¨Z¤Ú¨Z¤Ú?";
-	next;
-	menu "¶â",-,"¤£",L_NO1;
-		mes "[???]";
-		mes "¨Z¤Ú¡A¨Z¨Z¤Ú¨Z¤Ú¤Ú¡A";
-		mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¤Ú";
-		close;
-
-	L_NO1:
-		mes "[???]";
-		mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¡A";
-		mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¡A";
-		mes "¨Z¤Ú¨Z©I¤Ú¤Ú¨Z";
-		close;
-
-event_3:
-	mes "[¥¬¼Ö³Ø©Z]";
-	mes "­ü§r¡A¬O¥~¦a¤H°Ú?";
-	mes "§A¦³¸õ¹L°ªªÅ¼u¸õ¶Ü?";
-	next;
-	menu "¦³",-,"¨S¦³",L_NO2;
-		mes "[¥¬¼Ö³Ø©Z]";
-		mes "«z°Ú¡A¥~¦a¤H·|¸õ³o­Ó¯u¬O¤F¤£°_°Ú¡A";
-		mes "§Ú­ÌÆg³\§A¦³³o¼Ëªº«i®ğ¡A«BÀÈ±ÚÅwªï§A";
-		close;
-
-L_NO2:
-	mes "[¥¬¼Ö³Ø©Z]";
-	mes "ÁÙ¨S¸õ¹L°Ú...";
-	mes "·Q­n³Q»{©w¬°¤j¤Hªº¸Ü¡A";
-	mes "¤£ºŞ¬O½Ö³£­n¸g¾ú¹Lªº»ö¦¡°Ú¡A";
-	mes "µ¥§Úªø¤j¡A¤@©w­n¨Ó³o¸Ì¬D¾Ô¡AµM«á³Q¤j®a»{©w¬O¦³«i®ğªº¤H!";
-	close;
-}
-
-//-------------------- [ ¤¶²Ğ°ªªÅ¼u¸õªº¤p«Ä ] ----------------------
-
-//npc "umbala" "«BÀÈ±Ú ¤p«Ä#3" 4_F_UMGIRL 149 165 3 5 5
-umbala.gat,149,165,3	script	«BÀÈ±Ú ¤p«Ä#3	781,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¤Ú¡A";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¤Ú¨Z©I¤Ú¡A";
-	mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú©I¤Ú¡A";
-	close;
-
-event_3:
-	mes "[§JÅS°¨©Z]";
-	mes "±q¨º»ò°ªªº¦a¤è±¼¤U¨Ó";
-	mes "¯u¬O¤Ó¥i©È¤F¡A";
-	mes "¤£¹L©O¦b§Ú­Ì«BÀÈ±Ú¡A";
-	mes "­nªí²{¥X¨ººØ¼Ë¤l¡A";
-	mes "¤~·|³Q»{©w¬°¦³«i®ğªº¤H";
-	close;
-}
-
-//-------------------- [ ¤p¤k«Ä ] ----------------------
-
-//npc "umbala" "«BÀÈ±Ú ¤p«Ä#4" 4_F_UMGIRL 70 106 3 5 5
-umbala.gat,70,106,3	script	«BÀÈ±Ú ¤p«Ä#4	781,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[???]";
-	mes "¨Z¤Ú?";
-	mes "¨Z¤Ú©Ô ¨Z¤Ú¤Ú ¨Z¤Ú?";
-	next;
-	mes "[???]";
-	mes "¨Z¤Ú! ¨Z¤Ú¨Z¤Ú!";
-	mes "¨Z¤Ú¨Z¤Ú «¢©Z¤Ú¤Ú¡A";
-	close;
-
-event_3:
-	mes "[«¢©Z]";
-	mes "³á­ò?";
+	mes "«u§r?±z..";
 	mes "¤£¬O§Ú­Ì¨Z¤Ú©Ôªº¤H°Ú?";
 	next;
-	mes "[«¢©Z]";
-	mes "¨ş! Åwªï!";
+	mes "[???]";
+	mes "À~¤@¸õ!¦ı¬O«Ü°ª¿³»{ÃÑ§A";
 	mes "§Ú¥s«¢©Z";
+	emotion e_heh;
+	next;
+	mes "[«¢©Z]";
+	mes "....¦ı¬O¡A²{¦b«Ü¥i±¤ªº¬O";
+	mes "¤£¯à©M±z¤@°_ª±";
+	mes "³Ìªñ¡A¬ğµM¦b§Ú®a¦³¹p¸¨¤U«á";
+	mes "§â«Î³»§Ë¯}¤F....";
+	emotion e_sob;
+	next;
+	mes "[«¢©Z]";
+	mes "....!";
+	next;
+	mes "[«¢©Z]";
+	mes "¹ï¤F!½Ğµ¥¤@¤U¡A";
+	mes "¥i½Ğ¨D§A¶Ü?";
+	mes "§Aªº¤é¤l¦n¹³¹LªºÁÙ¤£¿ù¡A";
+	mes "¦³¦h¾lªº¿ú¥i¥H­É§Ú¶Ü?";
+	mes "«ô°U§A!";
+	emotion e_sob;
+	next;
+	menu "µ¹¥L",-,"¤£µ¹¥L",Lend2;
+
+		if(Zeny < 1000) goto LError2;
+		mes "[«¢©Z]";
+		mes "µ¹§Ú¶Ü!!";
+		mes "§A¯u¬O­Ó¦n¤H°Ú~";
+		mes "¤Ó¦n¤F!";
+		set Zeny,Zeny-1000;
+		getitem 517,1;//Items: Meat,
+		emotion e_swt2;
+		next;
+		mes "[«¢©Z]";
+		mes "³o¬O§Úªº¤@ÂI¤p·N«ä¡AÁÂÁÂ§A";
+		emotion e_heh;
+		close;
+
+		LError2:
+			mes "[«¢©Z]";
+			mes "¤°»ò!¨S¦³¿ú";
+			mes "«o¸Ë§@¦³¿ú....";
+			emotion e_pif;
+			close;
+	Lend2:
+		mes "[«¢©Z]";
+		mes "........³o¼Ë°Ú";
+		emotion e_sob;
+		close;
+
+LumWord:
+	mes "[???]";
+	mes "¨Z¤Ú¨Z¤Ú!!";
+	mes "¨Z~¤Ú¨Z¤Ú~¨Z~¤Ú¨Z¤Ú~";
+	mes "©Ô~¤Ú¨Z¤Ú~¨Z~¤Ú¨Z¤Ú©Ô~";
+	emotion e_heh;
+	next;
+	mes "[Hatan]";
+	mes "...Umba, Umbaumbaumba.";
+	mes "Umbaumbaumbababa.";
+	mes "Umbabawaumbaumbaba.";
+	mes "Umbaumba.";
+	mes "...Umbaumbamabababumba.";
+	emotion e_sob;
+	next;
+	mes "[Hatan]";
+	mes "...!";
+	next;
+	mes "[Hatan]";
+	mes "Umba!";
+	mes "Umbaumbaumbababa.";
+	mes "Umbababaumbawabaumba!";
+	mes "Umbaumbaumbababa.";
+	mes "wamfuba!  Umba!";
+	emotion e_sob;
+	next;
+	menu "Nod",-,"Shake Head",Lend;
+
+		if(Zeny < 1000) goto LError;
+		mes "[Hatan]";
+		mes "Umbaumba!!";
+		mes "Um!-babaumba-baumba-.";
+		mes "Umba-umba-Umbabawamamaba!";
+		set Zeny,Zeny-1000;
+		getitem 517,1;//Items: Meat,
+		emotion e_swt2;
+		next;
+		mes "[Hatan]";
+		mes "Umbaumba....";
+		emotion e_heh;
+		close;
+
+		LError:
+			mes "[Hatan]";
+			mes "Umba-Umbana!";
+			emotion e_pif;
+			close;
+	Lend:
+		mes "[Hatan]";
+		mes "....Umba....";
+		emotion e_sob;
+		close;
+}
+
+//==================================================================
+//Trade Meat for Clover, ???, and Soft Fur 
+umbala.gat,59,243,5	script	«BÀÈ±Ú ¤p«Ä#4	787,{
+if(event_umbala < 3) goto LumWord;
+	mes "[±F©Z]";
+	mes ".........";
+	mes ".......¼H¼H";
+	mes "....¦×¦n¦Y";
+	mes "...µ¹§Ú¦×";
+	next;
+	menu "µ¹¥L",-,"¤£µ¹¥L",L2;
+	if(countitem(517) < 1) goto LError;//Items: Meat,
+		delitem 517,1;//Items: Meat,
+		mes "[±F©Z]";
+		mes "¯uªº­nµ¹§Ú¶Ü? ÁÂÁÂ!";
+		mes "³o¨S¤°»ò¬O§Úµ¹§AªºÁÂÂ§";
+		emotion e_scissors;
+		getitem 909,2;//Items: Jellopy,
+		getitem 914,2;//Items: Fluff,
+		getitem 705,2;//Items: Clover,
+		close;
+	L2:
+		mes "[±F©Z]";
+		mes ".......";
+		mes "....¨{¤l¾j";
+		mes "....·Q¦Y¦×";
+		emotion e_sob;
+		close;
+LError:
+	mes "[±F©Z]";
+	mes "¤°»ò¹À¡A¨S¦³¦×¡A";
+	mes "ÁÙ¸Ë§@¦³!";
+	mes "«BÀÈ±Ú¬O«D±`";
+	mes "°Q¹½¶B´Ûªº!";
+	emotion e_an;
+	close;
+LumWord:
+	mes "[???]";
+	mes ".........";
+	mes "......¨Z¤Ú";
+	mes ".....¨Z¤Ú¤Ú";
+	mes ".....©I¤Ú";
+	emotion e_rock;
+	next;
+	menu "Umba",-,"Umbabu",Lu2;
+	if(countitem(517) < 1) goto LuError;//Items: Meat,
+		delitem 517,1;//Items: Meat,
+		mes "[???]";
+		mes "Umbaumbaumbababa.";
+		mes "Umbababauma.";
+		emotion e_scissors;
+		getitem 909,2;//Items: Jellopy,
+		getitem 914,2;//Items: Fluff,
+		getitem 705,2;//Items: Clover,
+		close;
+	Lu2:
+		mes "[???]";
+		mes "....";
+		mes "......Unguba!";
+		mes "....Umbababa.";
+		emotion e_sob;
+		close;
+LuError:
+	mes "[???]";
+	mes "Umbawamufumabababa!";
+	mes "Umbabababaumbaumbu!";
+	emotion e_an;
 	close;
 }
 
-//-------------------- [ ©ê«è¨Z©Y§J§Q¼Ú©Zªº¤k¤l ] ----------------------
 
-//npc "umbala" "«ê¤ñº¿©Z" 4_F_UMWOMAN 145 217 3 5 5
-umbala.gat,145,217,3	script	«ê¤ñº¿©Z	783,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[«ê¤ñº¿©Z]";
-	mes "¨Z¤Ú¤Ú~~~~~~~";
-	mes "¶ã¹Ç¶ã¹Ç ¨Z¤Ú ¨Z¤Ú ¶ã ¶ã ¶ã!";
-	mes "¶ã¹Ç¨Z¤Ú¶ã¹Ç¨Z¤Ú ¶ã¹Ç¶ã¹Ç¹Ç";
-	close;
-
-event_3:
-	mes "[«ê¤ñº¿©Z]";
-	mes "°Ú... ¨Z©Y§J§Q¼Ú©Z¹³¬O¦³¦Ñ±C¡A";
-	mes "¤£ª¾¹D¬°¤°»ò¨C¦¸";
-	mes "¬İ¨ì¤k¤H´N¦Ñ¬O";
-	mes "ÄñµÛ¤£©ñ©O¡A¤H¶¡±ÑÃş?";
+//=====================================================================
+umbala.gat,177,153,3	script	©¬´µ¦«	97,{
+	if (event_umbala>=3) emotion e_gasp;
+	mes "[©¬´µ¦«]";
+	mes "¶ã«z-! ¦³¤H­C!?";
+	mes "¨S·Q¨ì¦b³oºØ°¾»÷ªº¦a¤è·|µo²{¤H!";
+	mes "¤Ï¥¿«Ü°ª¿³¨£¨ì§A¡A§Ú¥s©¬´µ¦«";
+	next;
+	mes "[©¬´µ¦«]";
+	mes "³o¸Ì¬O¥s°µ¨Z¤Ú©Ôªº§ø¸¨¡A";
+	mes "¥i¯à¬O¦ì©ó³oºØ²`¤sÂOªL¸Ì¡A©Ò¥H»P¨ä¥L§ø¸¨§Î¦¨§¹¥ş¤£¦Pªº¤å¤Æ°é";
+	next;
+	mes "[©¬´µ¦«]";
+	mes "½§¦â¤]¤£¦P¡A»y¨¥¤]¬O¸ò§Ú­Ì¥Îªº»y¨¥§¹¥ş¤£¦P°Ú¡A";
+	mes "¨Ó¨ì³o¸Ì¤§«á³Ì¯î­ğªº´N¬O¡A ";
+	mes "¥L­Ìªí¹F·P±¡ªº¤è¦¡»P§Ú­Ì¤£¦P";
+	next;
+	mes "[©¬´µ¦«]";
+	mes "·íµM¤]¦³¬Û¦üªº¦a¤è¡A";
+	mes "¤£¹L¦³´X¶µ¨Æ±¡¨S¦³ª`·Nªº¸Ü¡A¥i¯à·|«ÜÃø³ô³á¡A";
+	mes "ÁÙ·|¦³¥]§tµÛ§¹¥ş¬Û¤Ïªº·N«ä";
+	next;
+	mes "[©¬´µ¦«]";
+	mes "¤£­n¥H¬°¥L­ÌªºÁy¦b¯º¡A ";
+	mes "´NÄ±±o¥L­Ìªº¤ß¸Ì¤]¦b¯º¡A";
+	mes "À´¤F¶Ü?";
+	next;
+	emotion e_sob;
+	mes "[©¬´µ¦«]";
+	mes "­Ë¤£¦p»y¨¥¬Û³qªº¸Ü...";
+	mes "¤£ª¾¹D¦³¨S¦³¤HÀ´±o§Ú­Ìªº»y¨¥©O..";
+	mes "­ü­ò ¯uÆ{´e°Ú - ! !";
 	close;
 }
 
-//-------------------- [ ³ßÅw¥©§J¤Oªº¨k¤l ] ----------------------
-
-//npc "umbala" "¨õ¼Ö©Z" 4_M_UMDANCEKID2 92 159 3 5 5
-umbala.gat,92,159,3	script	¨õ¼Ö©Z	785,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[????]";
-	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
-	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
-	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
-	next;
-	emotion 28;
-	mes "[????]";
-	mes "¨Z¤Ú ¨Z¤Ú¤Ú ®¦«¢";
-	close;
-
-event_3:
-	mes "[¨õ¼Ö©Z]";
-	mes "§Aª¾¹D¨Z¤Ú©Ô©~¥Áªº¥Ö½§¬°¤°»ò³£«Ü¶Â¶Ü?";
-	mes ". . . ¨º´N¬O¦]¬°";
-	next;
-	mes "[¨õ¼Ö©Z]";
-	mes "¨Z¤Ú©Ô¤H¦b¨C±ßºÎ«e³£·|¦Y¥©§J¤OªºÃö«Y!";
-	next;
-	emotion 28;
-	mes "[¨õ¼Ö©Z]";
-	mes "¦n³ßÅw¥©§J¤O ®¦«¢~";
-	close;
-}
-
-//-------------------- [ ´M§ä±jªÌªºªZ¹D®a ] ----------------------
-//npc "umbala" "ÀuªZ§J" 4_M_MONK 80 146 3 5 5
-umbala.gat,80,146,3	script	ÀuªZ§J	753,{
+//=====================================================================
+umbala.gat,80,146,4	script	ÀuªZ§J	753,{
 	mes "[ÀuªZ§J]";
 	mes "¤£¬O...¨Z¤Ú ¨Z¤Ú ¶ã¹Ç¶ã¡A";
 	mes "§A¤]¬O§O¦a¤èªº¤H°Ú?";
@@ -532,85 +468,26 @@ umbala.gat,80,146,3	script	ÀuªZ§J	753,{
 	close;
 }
 
-//-------------------- [ ¦]¤£À´»y¨¥¦ÓÆ{´eªº¨k¤l ] ----------------------
-//npc "umbala" "©¬´µ¦«" 4W_M_01 177 153 3 5 5
-umbala.gat,177,153,3	script	©¬´µ¦«	97,{
-	Emotion	0;
-	mes "[©¬´µ¦«]";
-	mes "¶ã«z-! ¦³¤H­C!?";
-	mes "¨S·Q¨ì¦b³oºØ°¾»÷ªº¦a¤è·|µo²{¤H!";
-	mes "¤Ï¥¿«Ü°ª¿³¨£¨ì§A¡A§Ú¥s©¬´µ¦«";
-	next;
-	mes "[©¬´µ¦«]";
-	mes "³o¸Ì¬O¥s°µ¨Z¤Ú©Ôªº§ø¸¨¡A";
-	mes "¥i¯à¬O¦ì©ó³oºØ²`¤sÂOªL¸Ì¡A©Ò¥H»P¨ä¥L§ø¸¨§Î¦¨§¹¥ş¤£¦Pªº¤å¤Æ°é";
-	next;
-	mes "[©¬´µ¦«]";
-	mes "½§¦â¤]¤£¦P¡A»y¨¥¤]¬O¸ò§Ú­Ì¥Îªº»y¨¥§¹¥ş¤£¦P°Ú¡A";
-	mes "¨Ó¨ì³o¸Ì¤§«á³Ì¯î­ğªº´N¬O¡A ";
-	mes "¥L­Ìªí¹F·P±¡ªº¤è¦¡»P§Ú­Ì¤£¦P";
-	next;
-	mes "[©¬´µ¦«]";
-	mes "·íµM¤]¦³¬Û¦üªº¦a¤è¡A";
-	mes "¤£¹L¦³´X¶µ¨Æ±¡¨S¦³ª`·Nªº¸Ü¡A¥i¯à·|«ÜÃø³ô³á¡A";
-	mes "ÁÙ·|¦³¥]§tµÛ§¹¥ş¬Û¤Ïªº·N«ä";
-	next;
-	mes "[©¬´µ¦«]";
-	mes "¤£­n¥H¬°¥L­ÌªºÁy¦b¯º¡A ";
-	mes "´NÄ±±o¥L­Ìªº¤ß¸Ì¤]¦b¯º¡A";
-	mes "À´¤F¶Ü?";
-	next;
-	Emotion	28;
-	mes "[©¬´µ¦«]";
-	mes "­Ë¤£¦p»y¨¥¬Û³qªº¸Ü...";
-	mes "¤£ª¾¹D¦³¨S¦³¤HÀ´±o§Ú­Ìªº»y¨¥©O..";
-	mes "­ü­ò ¯uÆ{´e°Ú - ! !";
-	close;
-}
-
-//====================================================================================================
-//¨Z¤Ú©Ô«Ç¤º
-
-
-//-------------------- [ ­·¬yªº¨Z©Y§J§Q¼Ú©Z ] ----------------------
-//¤£ª¾¹D«ç¼ËÄ²µo¦¹NPC...¦ı¬O¥LªÖ©w¦b³o­Ó¦ì¸m¤W!
-//npc "um_in" "¨Z©Y§J§Q¼Ú©Z" 4_M_UMSOLDIER 144 45 5 5 5
-um_in.gat,144,45,5	script	¨Z©Y§J§Q¼Ú©Z	789,{
-OnInit:
-	disablenpc "¨Z©Y§J§Q¼Ú©Z";
-	end;
-}
-
-//-------------------- [ ©ê«è¨Z©Y§J§Q¼Ú©Zªº¤k¤l2 ] ----------------------
-//npc "um_in" "Á¨®R©Z" 4_F_UMWOMAN 101 73 3 5 5
-um_in.gat,101,73,3	script	Á¨®R©Z	783,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[Á¨®R©Z]";
-	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú ¨Z¤Ú";
-	mes "¶ã¹Ç¶ã¹Ç ¶ã¹Ç¶ã¹Ç ¶ã¹Ç";
-	mes "¨Z¨Z¨Z¨Z ¨Z¨Z¨Z¨Z ¨Z¨Z";
-	close;
-
-event_3:
+//=====================================================================
+um_in.gat,101,73,3	script	Á¨®R©Z 	783,{
+	if(event_umbala < 3) goto LumWord;
 	mes "[Á¨®R©Z]";
 	mes "¨s³º©O...¤@¨ì±ß¤W´N¥X²{¡A";
 	mes "¦b¨­®Ç¬G·NÂZ¶Ã¡A";
 	mes "¯u¬O·Ğ¦º¤F ­ü! ";
 	mes "¯u¥O¤H°Q¹½ªº¨Z©Y§J§Q¼Ú©Z";
 	close;
+LumWord:
+	mes "[?????]";
+	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú ¨Z¤Ú";
+	mes "¶ã¹Ç¶ã¹Ç ¶ã¹Ç¶ã¹Ç ¶ã¹Ç";
+	mes "¨Z¨Z¨Z¨Z ¨Z¨Z¨Z¨Z ¨Z¨Z";
+	close;
 }
 
-//-------------------- [ ©ê«è¨Z©Y§J§Q¼Ú©Zªº¤k¤l3 ] ----------------------
-//npc "um_in" "¨©º¸·O©Z" 4_F_UMWOMAN 94 123 5 5 5
+//=====================================================================
 um_in.gat,94,123,5	script	¨©º¸·O©Z	783,{
-	if (um_quest1 == 3) goto event_3;
-	mes "[¨©º¸·O©Z]";
-	mes "¨Z¤Ú ¶ã¹Ç¨Z¤Ú¨Z¤Ú ¨Z!";
-	mes "¨Z~ ¶ã¹Ç¶ã¹Ç ¨Z¤Ú¨Z";
-	mes "¨Z¤Ú...¶ã¨Z";
-	close;
-
-event_3:
+	if(event_umbala < 3) goto LumWord;
 	mes "[¨©º¸·O©Z]";
 	mes "°Ú... ¨Z©Y¤°»òªºÅÜºA³Ã¥ë!";
 	mes "³£»¡¹L«Ü°Q¹½¤FÁÙ¤@ª½";
@@ -618,51 +495,187 @@ event_3:
 	mes "«ç»ò°µ¨Æ©O! ­üËç...¯u¬O";
 	mes "¦A¤]¤£·Q¬İ¨ì¥L";
 	close;
-}
-
-//-------------------- [ µLªk§Ô¨ü¤V¤Òªº¤k¤l ] ----------------------
-
-//npc "um_in" "´¶§Q¤º©Z" 4_F_UMWOMAN 139 48 5 5 5
-um_in.gat,139,48,5	script	´¶§Q¤º©Z	783,{
-	if (um_quest1 == 3) goto event_3;
-	emotion 16;
-	mes "[´¶§Q¤º©Z]";
-	mes "¨Z¤Ú¨Z¤Ú¶ã¹Ç¶ã¹Ç";
-	mes "¨Z¤Ú¨Z¤Ú¤Ú ¤Ú¤Ú¤Ú¤Ú!";
-	mes "¨Z¤Ú¨Z!";
-	next;
-	emotion 24;
-	mes "[´¶§Q¤º©Z]";
-	mes "¨Z¤Ú ¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
-	mes "¨Z¤Ú¤Ú¤Ú¤Ú¤Ú ¶ã¹Ç¶ã!";
-	mes "¶ã¹Ç¶ã¹Ç ¨Z¤Ú¤Ú¨Z¤Ú¨Z!";
-	next;
-	emotion 27;
-	close;
-
-event_3:
-	mes "[´¶§Q¤º©Z]";
-	mes "§Ú³Q³o¨k¤Hªº­·¬y¡A";
-	mes "§Ö¹GºÆ¤F©O... ¶ã©I!";
-	mes "¦A³Q§Ú§ì¨ì¤@¦¸ªº¸Ü¡A";
-	mes "§Ú¯uªº·|¥´¦º§A³o¡A";
-	mes "¹³­Ó¤³¤Hªº¤V¤Ò!";
+LumWord:
+	mes "[?????]";
+	mes "¨Z¤Ú ¶ã¹Ç¨Z¤Ú¨Z¤Ú ¨Z!";
+	mes "¨Z~ ¶ã¹Ç¶ã¹Ç ¨Z¤Ú¨Z";
+	mes "¨Z¤Ú...¶ã¨Z";
 	close;
 }
 
-//-------------------- [ ³ß·R¾ğ¤ìªº¤H ] ----------------------
+//=====================================================================
+umbala.gat,140,157,6	script	«BÀÈ±Ú «C¦~::UtanTribeYougAdult1	785,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[¥B¼Ö©Z]";
+	mes "°ªªÅ¼u¸õ«D±`¦MÀI¡A";
+	mes "¦]¬°¬O«_µÛ¥Í©R¦MÀIªº¨Æ±¡¡A";
+	mes "©Ò¥H¦¨¥\ªº¤H¡A";
+	mes "·|³Q»{©w¬°¬O«BÀÈ±Ú¸Ì";
+	mes "ªº¤j¤H";
+	close;
+LumWord:
+	mes "[?????]";
+	mes "¨Z¤Ú¨Z¤Ú©I¤Ú¡A";
+	mes "¶ã¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¶ã©I¤Ú";
+	mes "¨Z¤Ú¤Ú¤Ú¨Z¤Ú¨Z¤Ú";
+	close;
+}
 
-//npc "um_in" "«BÀÈ±Ú ©~¥Á" 4_M_UMKID 158 71 3 5 5
-um_in.gat,158,71,3	script	«BÀÈ±Ú ©~¥Á	787,{
-	if (um_quest1 == 3) goto event_3;
+//=====================================================================
+umbala.gat,146,157,4	script	«BÀÈ±Ú «C¦~#2	786,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[ªüÃ¹©Z]";
+	mes "¶¶§Qªº§¹¦¨°ªªÅ¼u¸õ";
+	mes "¬O«D±`§xÃøªº¡A";
+	mes "©Ò¥H¬°¤F¼y¯¬¶¶§Q§¹¦¨ªº¤H¡A¦Ó»E¶°¦b³o¸ÌÁ|¦æ»ö¦¡ªº";
+	close;
+LumWord:
+	mes "[????]";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¨Z¤Ú¤Ú";
+	mes "¨Z¤Ú¨Z¤Ú¤Ú¨Z¤Ú¤Ú¤Ú¨Z©I¤Ú¤Ú";
+	close;
+}
+
+//=====================================================================
+umbala.gat,149,165,4	script	«BÀÈ±Ú ¤p«Ä#3	781,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[§JÅS°¨©Z]";
+	mes "±q¨º»ò°ªªº¦a¤è±¼¤U¨Ó";
+	mes "¯u¬O¤Ó¥i©È¤F¡A";
+	mes "¤£¹L©O¦b§Ú­Ì«BÀÈ±Ú¡A";
+	mes "­nªí²{¥X¨ººØ¼Ë¤l¡A";
+	mes "¤~·|³Q»{©w¬°¦³«i®ğªº¤H";
+	close;
+LumWord:
 	mes "[??????]";
-	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¤Ú ¨Z«¢!";
-	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú¤Ú¤Ú ¨Z¤Ú";
-	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú";
-	mes "¨Z¤Ú¤Ú ¨Z¤Ú ¨Z¤Ú¤Ú";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¤Ú¡A";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¤Ú¨Z©I¤Ú¡A";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú©I¤Ú¡A";
 	close;
+}
 
-event_3:
+//=====================================================================
+umbala.gat,92,159,4	script	¨õ¼Ö©Z	785,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[¨õ¼Ö©Z]";
+	mes "§Aª¾¹D¨Z¤Ú©Ô©~¥Áªº¥Ö½§¬°¤°»ò³£«Ü¶Â¶Ü?";
+	mes ". . . ¨º´N¬O¦]¬°";
+	next;
+	mes "[¨õ¼Ö©Z]";
+	mes "¨Z¤Ú©Ô¤H¦b¨C±ßºÎ«e³£·|¦Y¥©§J¤OªºÃö«Y!";
+	next;
+	mes "[¨õ¼Ö©Z]";
+	mes "¦n³ßÅw¥©§J¤O ®¦«¢~";
+	close;
+LumWord:
+	mes "[????]";
+	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
+	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
+	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
+	next;
+	mes "[????]";
+	mes "¨Z¤Ú ¨Z¤Ú¤Ú ®¦«¢";
+	emotion e_sob;
+	close;
+}
+
+//=====================================================================
+umbala.gat,194,104,4	script	«BÀÈ±Ú ¤p«Ä#2	787,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[¥¬¼Ö³Ø©Z]";
+	mes "­ü§r¡A¬O¥~¦a¤H°Ú?";
+	mes "§A¦³¸õ¹L°ªªÅ¼u¸õ¶Ü?";
+	next;
+	menu "¦³",-,"¨S¦³",L2;
+		mes "[¥¬¼Ö³Ø©Z]";
+		mes "«z°Ú¡A¥~¦a¤H·|¸õ³o­Ó¯u¬O¤F¤£°_°Ú¡A";
+		mes "§Ú­ÌÆg³\§A¦³³o¼Ëªº«i®ğ¡A«BÀÈ±ÚÅwªï§A";
+		close;
+	L2:
+		mes "[¥¬¼Ö³Ø©Z]";
+		mes "ÁÙ¨S¸õ¹L°Ú...";
+		mes "·Q­n³Q»{©w¬°¤j¤Hªº¸Ü¡A";
+		mes "¤£ºŞ¬O½Ö³£­n¸g¾ú¹Lªº»ö¦¡°Ú¡A";
+		mes "µ¥§Úªø¤j¡A¤@©w­n¨Ó³o¸Ì¬D¾Ô¡AµM«á³Q¤j®a»{©w¬O¦³«i®ğªº¤H!";
+		close;
+LumWord:
+	mes "[???]";
+	mes "¨Z¤Ú¨Z¤Ú¤Ú¤Ú¨Z©I¤Ú¡A";
+	mes "¨Z¤Ú¤Ú¨Z¨Z¤Ú¨Z¤Ú¨Z¤Ú?";
+	next;
+	menu "Um...yes?",-,"Nope...",Lu2;
+		mes "[???]";
+		mes "Umbaumbaumbababa.";
+		mes "Umbaumbaumubaba.";
+		close;
+	Lu2:
+		mes "[???]";
+		mes "Umbaumbaumuam.";
+		mes "Umbaumbaumbaba.";
+		mes "Umbaumfumababaumu.";
+		close;
+}
+
+//=====================================================================
+umbala.gat,193,208,6	script	«BÀÈ±Ú «C¦~#3	789,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[½÷©y©Z]";
+	mes "§Ú¦~»´®É¤]¸õ¹L°ªªÅ¼u¸õ¡A";
+	mes "ÁöµM®tÂI¨S©R¡A¤£¹L¦¨¥\«áªº¨ººØ¦¨´N·P¬OµLªk¨¥³ëªº¡A";
+	mes "¤]¦³¤HÄ±±o«Üª¼¥Ø¡A";
+	mes "¦ı§ÚÄ±±o¨º¬O¦~»´¤Hªº¶¯¤ß°Ú";
+	close;
+LumWord:
+	mes "[????]";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú¡A";
+	mes "¨Z¤Ú¨Z¤Ú©I¤Ú¨Z¨Z¤Ú¤Ú¨Z¡A";
+	mes "¨Z¨Z¤Ú¤Ú¤Ú¨Z¤Ú©I";
+	close;
+}
+
+//=====================================================================
+umbala.gat,139,205,4	script	«BÀÈ±Ú «C¦~::UtanTribeYougAdult5	785,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[¦¶©Z]";
+	mes "¦n¤[¤£¨£ªº¥~¦a¤H°Ú!";
+	mes "³o¸Ì¬O¤H­Ìª±°ªªÅ¼u¸õ";
+	mes "ªº¦a¤è¡A";
+	mes "«Ü¦h«BÀÈ±Úªº¦~»´¤H¡A";
+	mes "¬°¤FÃÒ©ú¦Û¤vªº«i®ğ¡A";
+	mes "¦Ó¦b³o¸õ¤U¥h";
+	next;
+	mes "[¦¶©Z]";
+	mes "¦A©¹«e­±¨«ªº¸Ü·|±¼¤U¥hªº¡A";
+	mes "³Ì¦n¬O¥ı°µ¦n¤ß²z·Ç³Æ³á";
+	next;
+	mes "[¦¶©Z]";
+	mes "±¼¤U¥h¤§«á¥i¥Hª¦Ã·¤l¤W¨Ó¡A¤£µM¦b¤ô¸Ì¥J²Ó§äªº¸Ü¡A";
+	mes "¦³­Ó¥i¥H³q¨ì¹ï­±ªº¤ô¤¤¬}¥Ş";
+	mes "¹ï¤F¡A°¸¦Ó¤]¦³¹B®ğ®tªº¤H·|ª½±µ±¼¤U¥h¦Ó¦º¤`ªº";
+	next;
+	mes "[¦¶©Z]";
+	mes "¨ä¤¤¤]¦³¥ú¬İ´NÀ~¦ºªº¤H¡A©Ò¥H­n¤p¤ßÂI¡A";
+	mes "¦b¤ô¸ÌÁÙ¦³¤£©úªº©Çª«¡A§A«İ¤[ªº¸Ü¤]·|¦º±¼ªº";
+	close;
+LumWord:
+	mes "[????]";
+	mes "¨Z¤Ú¨Z¤Ú!";
+	mes "¨Z¤Ú¨Z¤Ú¤Ú¤Ú¤Ú¨Z¨Z¤Ú¡A";
+	mes "¤Ú¤Ú¨Z¶ã©Z¨Z¤Ú¨Z¤Ú¤Ú¡A";
+	mes "¨Z¤Ú¤Ú¤Ú©I¡A";
+	mes "¨Z¨Z©I¤Ú¤Ú¨Z¤Ú¨Z¤Ú¨Z¤Ú¤Ú";
+	next;
+	mes "[????]";
+	mes "¨Z¤Ú©I¹À¤Ú¤Ú¨Z¤Ú¡A";
+	mes "¨Z¤Ú¤Ú©Z¨Z¤Ú¨Z¤Ú¡A";
+	mes "¤Ú¡A¨Z¤Ú¨Z¤Ú¨Z¨Z¤Ú¤Ú¨Z¡A";
+	mes "¨Z¤Ú¨Z¤Ú¨Z¤Ú©I";
+	close;
+}
+
+//=====================================================================
+um_in.gat,158,71,3	script	«BÀÈ±Ú ©~¥Á	787,{
+	if(event_umbala < 3) goto LumWord;
 	mes "[ªª¶ğ®w©Z]";
 	mes "¨Z¤Ú©Ô¸Ì¦³«Ü¦h«Ü¦h¾ğ¤ì!";
 	mes "§Úªª¶ğ®w©Z¡A«D±`³ßÅw¾ğ¤ì¡A¼K¼K";
@@ -671,65 +684,124 @@ event_3:
 	mes "¨ä¤¤¦³­Ó¯S§O³ßÅwªº¾ğ¤ì! ¬O¦b¨Z¤Ú©Ô³Ì¤j- ³Ì¤[ªº¾ğ¤ì!";
 	mes "¤£¹ï¡AÀ³¸Ó¬O¥@¤W³Ì- ¤jªº!";
 	close;
+LumWord:
+	mes "[????]";
+	mes "¨Z¤Ú¨Z¤Ú ¨Z¤Ú¤Ú ¨Z«¢!";
+	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú¤Ú¤Ú ¨Z¤Ú";
+	mes "¨Z¤Ú ¨Z¤Ú ¨Z¤Ú";
+	mes "¨Z¤Ú¤Ú ¨Z¤Ú ¨Z¤Ú¤Ú";
+	close;
 }
 
-// ==========Edit : ¯[µæ & yuu=========== //
-// 
-// «BÀÈ±Ú§ø¸¨ ¨Z¤Ú©Ô -> ¥§ªÜµá©i¤º³¡°s©±2¼Ó
-umbala.gat,137,198,0	script	¦b°ªªÅ¼u¸õ¥x¤W	139,0,0,{
-	callfunc "umbala_jump";
+//=====================================================================
+umbala.gat,145,217,3	script	«ê¤ñº¿©Z	783,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[«ê¤ñº¿©Z]";
+	mes "°Ú... ¨Z©Y§J§Q¼Ú©Z¹³¬O¦³¦Ñ±C¡A";
+	mes "¤£ª¾¹D¬°¤°»ò¨C¦¸";
+	mes "¬İ¨ì¤k¤H´N¦Ñ¬O";
+	mes "ÄñµÛ¤£©ñ©O¡A¤H¶¡±ÑÃş?";
+	close;
+LumWord:
+	mes "[«ê¤ñº¿©Z]";
+	mes "¨Z¤Ú¤Ú~~~~~~~";
+	mes "¶ã¹Ç¶ã¹Ç ¨Z¤Ú ¨Z¤Ú ¶ã ¶ã ¶ã!";
+	mes "¶ã¹Ç¨Z¤Ú¶ã¹Ç¨Z¤Ú ¶ã¹Ç¶ã¹Ç¹Ç";
+	close;
 }
-umbala.gat,138,198,0	script	¦b°ªªÅ¼u¸õ¥x¤W	139,0,0,{
-	callfunc "umbala_jump";
+
+//=====================================================================
+um_in.gat,139,48,5	script	´¶§Q¤º©Z::Purenotan	783,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[´¶§Q¤º©Z]";
+	mes "§Ú³Q³o¨k¤Hªº­·¬y¡A";
+	mes "§Ö¹GºÆ¤F©O... ¶ã©I!";
+	mes "¦A³Q§Ú§ì¨ì¤@¦¸ªº¸Ü¡A";
+	mes "§Ú¯uªº·|¥´¦º§A³o¡A";
+	mes "¹³­Ó¤³¤Hªº¤V¤Ò!";
+	close;
+LumWord:
+	mes "[´¶§Q¤º©Z]";
+	mes "¨Z¤Ú¨Z¤Ú¶ã¹Ç¶ã¹Ç";
+	mes "¨Z¤Ú¨Z¤Ú¤Ú ¤Ú¤Ú¤Ú¤Ú!";
+	mes "¨Z¤Ú¨Z!";
+	emotion e_an;
+	next;
+	mes "[´¶§Q¤º©Z]";
+	mes "¨Z¤Ú ¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
+	mes "¨Z¤Ú¤Ú¤Ú¤Ú¤Ú ¶ã¹Ç¶ã!";
+	mes "¶ã¹Ç¶ã¹Ç ¨Z¤Ú¤Ú¨Z¤Ú¨Z!";
+	emotion e_oh;
+	next;
+	emotion e_go;
+	close;
+On_emo:
+emotion e_an;
+end;
 }
-umbala.gat,139,198,0	script	¦b°ªªÅ¼u¸õ¥x¤W	139,0,0,{
-	callfunc "umbala_jump";
+
+//=====================================================================
+um_in.gat,144,45,5	script	¨Z©Y§J§Q¼Ú©Z	789,{
+	if(event_umbala < 3) goto LumWord;
+	mes "[¨Z©Y§J§Q¼Ú©Z]";
+	mes "°Ú°Ú°Ú....¦nµh°Ú";
+	next;
+	mes "[¨Z©Y§J§Q¼Ú©Z]";
+	mes "Á¨®R©Z¡B¨©º¸·O©Z¡B";
+	mes "¦n¬ü°Ú!¦o­Ì¤j·§¤]¦b·Q§Ú§a!";
+	close;
+LumWord:
+	mes "[¨Z©Y§J§Q¼Ú©Z]";
+	mes "¨Z¤Ú ¨Z¤Ú¨Z¤Ú ¨Z¤Ú¨Z¤Ú";
+	mes "¨Z¤Ú¤Ú¤Ú¤Ú¤Ú ¶ã¹Ç¶ã!";
+	mes "¶ã¹Ç¶ã¹Ç ¨Z¤Ú¤Ú¨Z¤Ú¨Z!";
+	emotion e_heh;
+	next;
+	donpcevent "Purenotan::On_emo";
+	close;
 }
-function	script	umbala_jump	{
-	set @um_random,rand(5);
-	if(@um_random == 1) goto r1;
-	if(@um_random == 2) goto r2;
-	if(@um_random == 3) goto r3;
-	if(@um_random == 4) goto r4;
-	set um_ann,rand(2);
-	if(um_ann == 1)	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ¥x¤W : " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",3;
-	percentheal 1-Hp*99/MaxHp,0;
-	warp "nif_in.gat",115,165;
-	end;
-r1:
-	mapannounce "umbala.gat"," " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",3;
-	percentheal -50,0;
+
+
+//==============================================================================
+//Bungee jumping!
+//==============================================================================
+umbala.gat,140,197,0	script	#Shibonochikka	139,0,1,{
+	set @jumprand,rand(0,4);
+	if (@jumprand == 1) goto L1;
+	if (@jumprand == 2) goto L2;
+	if (@jumprand == 3) goto L3;
+	if (@jumprand == 4) goto L4;
+	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ»O¤W: " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",8;
 	end;
 
-r2:
-	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ¥x¤W : " + strcharinfo(0) + " : ¹Ç§r§r§r§r§r§r°Ú°Ú°Ú°Ú~~~~~~~",3;
+L1:
+//Dead
+	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ»O¤W: " + strcharinfo(0) + " : ¹Ç§r§r§r§r§r§r°Ú°Ú°Ú°Ú~~~~~~~",8;
 	percentheal -100,0;
 	end;
 
-r3:
-	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ¥x¤W : " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",3;
-	percentheal 1-Hp*66/MaxHp,0;
+L2:
+//HP50% Damage
+	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ»O¤W: " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",8;
+	percentheal -50,0;
 	end;
 
-r4:
-	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ¥x¤W : " + strcharinfo(0) + " : ©I¹Ç°Ú°Ú°Ú°Ú°Ú°Ú~~~~~~!",3;
-	percentheal 1-Hp*50/MaxHp,0;
+L3:
+//HP99% Damage
+	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ»O¤W: " + strcharinfo(0) + " : ¹Ç§r§r§r§r§r§r°Ú°Ú°Ú°Ú~~~~~~~",8;
+	percentheal -99,0;
+	end;
+
+L4:
+//1 HP left, warp to Niflheim
+	mapannounce "umbala.gat","¦b°ªªÅ¼u¸õ»O¤W: " + strcharinfo(0) + " : No-o!",8;
+	heal -HP+1,0;
+	warp "nif_in.gat",69,15;
 	end;
 }
 
-
-// «BÀÈ±Ú§ø¸¨ ¨Z¤Ú©Ô -> «BÀÈ±Ú§ø¸¨ ¨Z¤Ú©Ô
-umbala.gat,136,196,0	script	¦^¨ì©¤Ãä	139,0,0{
-	callfunc "uma";
-}
-umbala.gat,137,196,0	script	¦^¨ì©¤Ãä	139,0,0{
-	callfunc "uma";
-}
-umbala.gat,137,195,0	script	¦^¨ì©¤Ãä	139,0,0{
-	callfunc "uma";
-}
-
-function	script	uma	{
+//=====================================================================
+umbala.gat,136,195,0	script	#Warp Point	139,1,1,{
 	warp "umbala.gat",145,166;
-	close;
+	end;
 }
