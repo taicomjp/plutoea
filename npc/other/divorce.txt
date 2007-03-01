@@ -3,7 +3,7 @@
 //===== By: ================================================== 
 //= Perkka, Scriptor, LightFighter
 //===== Current Version: ===================================== 
-//= 1.0a
+//= 1.1
 //===== Compatible With: ===================================== 
 //= eAthena 1 +
 //===== Description: ========================================= 
@@ -11,20 +11,20 @@
 //===== Additional Comments: ================================= 
 //= Both players should be online to get divorced
 //= Fixed menu [Lupus]
+//= 1.1 Added check if the patner's online, added effects [Lupus]
 //= 繁體中文化 [笨冰]
 //============================================================ 
 
 
 nif_in.gat,190,112,5	script	小惡魔#divorce	1109,{
+	mes "[小惡魔]";
 	if (getpartnerid() == 0) {
-		mes "[小惡魔]";
 		mes "喀喀喀..人類到最後都是一個人的";
 		mes "寂寞的心情只是暫時而已，";
 		mes "寂寞的話養一隻寵物怎麼樣呢?";
 		mes "最近我小惡魔很受歡迎喔!";
 		close;
 	}
-	mes "[小惡魔]";
 	mes "看起來表情不太好喔";
 	mes "...有什麼後悔的事嗎?";
 	mes "要知道我一點都不想幫忙覺的幸福的人";
@@ -84,27 +84,31 @@ M_NewLife:
 	close;
 
 M_Divorce:
-	if (Zeny < 2500000) goto NoMoney;
-	set Zeny, Zeny - 2500000;
 	mes "[小惡魔]";
+	if (!isloggedin(getpartnerid())) {
+		mes "喀喀喀...人們總是那麼笨";
+		mes "你的伴侶不在線上...喀喀喀...";
+		emotion e_heh;
+		close;
+	}
+	if (Zeny < 2500000){
+		mes "我說過2,500,000Zeny了吧!";
+		mes "這是為了拜託主人而表示的誠意。連那些錢也沒有的話";
+		mes "就一輩子過著被約束的生活吧";
+		mes "喀喀喀...";
+		close;
+	}
+	set Zeny, Zeny - 2500000;
 	mes "在你改戀心意之前馬上幫你解除婚約!";
 	mes "好的好的! 請稍待一會兒";
 	next;
-	//ShowEffect "Deviruchi#Divorce" EF_MAGICROD   Dont know, what to do here >.>
-	//ShowEffect "" EF_DEVIL		       same
-	percentheal -100,-100;
+	specialeffect 244;	//EF_MAGICROD
+	specialeffect2 259;	//EF_DEVIL (now use a custom id)
 	divorce;
+	percentheal -100,-100;
 	mes "[小惡魔]";
 	mes "喀喀喀...你現在自由啦";
 	mes "感覺很放鬆吧!";
 	mes "這一切都應該感謝小惡魔.....!";
-	close;
-
-NoMoney:
-	mes "[小惡魔]";
-	mes "我說過2,500,000Zeny了吧!";
-	mes "這是為了拜託主人而表示的誠意。連那些錢也沒有的話";
-	mes "就一輩子過著被約束的生活吧";
-	mes "喀喀喀...";
 	close;
 }

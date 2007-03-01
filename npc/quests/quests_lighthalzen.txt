@@ -94,7 +94,7 @@ OnTimer10000:
 MakeMob:
 	if($@lhz_alert == 1) goto ChkEnd;
 	set $@mobcount, $@mob;
-	mapannounce "lighthalzen.gat","Maintenance Organization of the Public Order: Currently the security of the city has been compromized, We ask the citizens to be more careful. I repeat. We ask the citizens to be more careful.", 1;
+	mapannounce "lighthalzen.gat","治安維持局: 由於目前村落治安不佳的緣故，請各位居民們注意安全，再說一次，請各位居民們要特別注意安全", 1;
 	
 	for( set $@i, 0; $@i < $@mob; set $@i, $@i + 1 ) {
 		monster "lighthalzen.gat",0,0,"Gangster",1592,1,"AlertChk::OnMobKilled";
@@ -108,7 +108,7 @@ MakeMob:
 ClearMob:
 	if($@lhz_alert == 0) goto ChkEnd;
 	set $@mobcount, 0;
-	mapannounce "lighthalzen.gat","Maintenance organization of the Public Order: We were able to get rid of all the trouble makers in the city. You may relax now.", 1;	
+	mapannounce "lighthalzen.gat","治安維持局: 我們治安維持局經過一番努力後，終於把村落的異議份子都處決了，各位居民們可以放心了", 1;	
 	killmonster "lighthalzen.gat","AlertChk::OnMobKilled";
 	set $@lhz_alert, 0;
 	set $@sneakguard, 0;
@@ -126,7 +126,13 @@ ChkEnd:
 	end;	
 }
 
-lighthalzen.gat,267,200,3	script	Security Guard#01	868,{
+//============================================================
+//貧民區警衛
+//============================================================ 
+//2007-02-13  黑色小貓  中文化
+//============================================================ 
+
+lighthalzen.gat,267,200,3	script	警衛#01	868,{
 
 	if(countitem(7350)>0) goto Lhzpass1;
 	if($@lhz_alert == 1) goto Lhzstop;
@@ -136,16 +142,16 @@ lighthalzen.gat,267,200,3	script	Security Guard#01	868,{
 	if(@LhzTalk  < 2 ) goto LhzTalk1;
 
 LhzTalk:
-	mes "[Guard]";
-	mes "Hey! Where do you think you are going?";
-	mes "I can not send nobody to the slum district!";
-	mes "If we let suspecious people like you pass,";
-	mes "there is no point in peace keeping!";
+	mes "[警衛]";
+	mes "嘿! 你要去哪裡?!";
+	mes "我不能讓任何人進入貧民區!";
+	mes "如果我讓任何有嫌疑的人進入貧民區，";
+	mes "將會破壞和平協議!";
 	close;
 
 LhzTalk1:
-	mes "-Looks like the guard is doing something else";
-	mes "Now is a good time to sneak by.-";
+	mes "(警衛看起來好像在偷懶)";
+	mes "(現在是偷溜過去的好時機!)";
 	next;
 	warp "lighthalzen.gat",297,227;
 	set $@sneakguard, $@sneakguard + 1;
@@ -154,36 +160,34 @@ LhzTalk1:
 LhzTalk2:
 	set @LhzTalk,rand(1,10);
 	if(@LhzTalk  < 2 ) goto LhzTalk;
-	mes "[Guard]";
+	mes "[警衛]";
 	mes "zzZ... zzZ... zzZ...";
-	mes "hmm. hmm... zzZ...";
+	mes "zzZ... zzZ...";
 	next;
-	mes "-Looks like the guard is sleeping";
-	mes "Now is a good time to sneak by.-";
+	mes "(警衛...睡著了...!)";
+	mes "(趁現在趕快溜過去!)";
 	next;
 	warp "lighthalzen.gat",297,227;
 	close;
 
 Lhzpass1:
-	mes "[Guard]";
-	mes "Who are you! ...Hmm? You have a pass?";
-	mes "I'm sorry. You look like an adventurer,";
-	mes "but I guess you got the authority.";
-	mes "You may pass.";
+	mes "[警衛]";
+	mes "你是誰! 嗯? 你有通行證?";
+	mes "不好意思啊! 你看起來似乎是個冒險者?!";
+	mes "不過既然你有通行證，那麼你可以過去了!";
 	next; 
 	warp "lighthalzen.gat",297,227;
 	close;
 
 Lhzstop:
-	mes "[Guard]";
-	mes "Recently, there were too many people sneaking pass us,";
-	mes "so we raised the security level.";
-	mes "Who sneak past us anyway?";
-	mes "It's troublesome...";
+	mes "[警衛]";
+	mes "最近有很多人都想偷溜過去...";
+	mes "所以警察局提高了警戒階級!";
+	mes "老是有很多人想偷溜過去...真是麻煩啊!";
 	close;
 }
 
-lighthalzen.gat,294,223,7	script	Security Guard#02	868,{
+lighthalzen.gat,294,223,7	script	警衛#02	868,{
 
 	if(countitem(7350)>0) goto Lhzpass1;
 	if($@lhz_alert == 1) goto Lhzstop;
@@ -193,16 +197,16 @@ lighthalzen.gat,294,223,7	script	Security Guard#02	868,{
 	if(@LhzTalk  < 2 ) goto LhzTalk1;
 
 LhzTalk:
-	mes "[Guard]";
-	mes "Hey! Where do you think you are going?";
-	mes "I can not send nobody to the slum district!";
-	mes "If we let suspecious people like you pass,";
-	mes "there is no point in peace keeping!";
+	mes "[警衛]";
+	mes "嘿! 你要去哪裡?!";
+	mes "我不能讓任何人進入富裕區!";
+	mes "如果我讓任何有嫌疑的人進入富裕區，";
+	mes "將會破壞和平協議!";
 	close;
 
 LhzTalk1:
-	mes "-Looks like the guard is doing something else";
-	mes "Now is a good time to sneak by.-";
+	mes "(警衛看起來好像在偷懶)";
+	mes "(現在是偷溜過去的好時機!)";
 	next;
 	warp "lighthalzen.gat",264,200;
 	set $@sneakguard, $@sneakguard + 1;
@@ -211,32 +215,30 @@ LhzTalk1:
 LhzTalk2:
 	set @LhzTalk,rand(1,10);
 	if(@LhzTalk  < 2 ) goto LhzTalk;
-	mes "[Guard]";
+	mes "[警衛]";
 	mes "zzZ... zzZ... zzZ...";
-	mes "hmm. hmm... zzZ...";
+	mes "zzZ... zzZ...";
 	next;
-	mes "-Looks like the guard is sleeping";
-	mes "Now is a good time to sneak by.-";
+	mes "(警衛...睡著了...!)";
+	mes "(趁現在趕快溜過去!)";
 	next;
 	warp "lighthalzen.gat",264,200;
 	close;
 
 Lhzpass1:
-	mes "[Guard]";
-	mes "Who are you! ...Hmm? You have a pass?";
-	mes "I'm sorry. You look like an adventurer,";
-	mes "but I guess you got the authority.";
-	mes "You may pass.";
+	mes "[警衛]";
+	mes "你是誰! 嗯? 你有通行證?";
+	mes "不好意思啊! 你看起來似乎是個冒險者?!";
+	mes "不過既然你有通行證，那麼你可以過去了!";
 	next; 
 	warp "lighthalzen.gat",264,200;
 	close;
 
 Lhzstop:
-	mes "[Guard]";
-	mes "Recently, there were too many people sneaking pass us,";
-	mes "so we raised the security level.";
-	mes "Who sneak past us anyway?";
-	mes "It's troublesome...";
+	mes "[警衛]";
+	mes "最近有很多人都想偷溜過去...";
+	mes "所以警察局提高了警戒階級!";
+	mes "老是有很多人想偷溜過去...真是麻煩啊!";
 	close;
 }
 
@@ -630,7 +632,7 @@ L_DONE:
 	close;
 }
 
-//--------------------------桶--------------------------
+//--------------------------桶--------------------------修正input'斧頭'錯誤 by黑色小貓
 
 lhz_cube.gat,237,183,0	script	桶	111,{
 	if (MISC_QUEST&512 || cubekey&1) goto L_DONE;
@@ -640,8 +642,8 @@ lhz_cube.gat,237,183,0	script	桶	111,{
 	next;
 	input @axe$;
 
-	if (@axe == "斧頭") goto L_1;
-	mes "There is no change.";
+	if (@axe$ == "斧頭") goto L_1;
+	mes "沒發生任何事情!";
 	close;
 
 L_1:
@@ -701,8 +703,8 @@ lhz_cube.gat,242,201,0	script	抽屜	111,{
 	close;
 
 L_1:
-	input @key$;
-	if (@key$ == "紅色鑰匙") goto L_2;
+	input @redkey$;
+	if (@redkey$ == "紅色鑰匙") goto L_2;
 	mes "這個抽屜是鎖著的，你需要一些東西來開啟它";
 	close;
 
@@ -816,7 +818,7 @@ L_DONE:
 
 //--------------------------層板--------------------------
 
-lhz_cube.gat,233,206,0	script	層板	111,{
+lhz_cube.gat,231,202,0	script	層板	111,{
 	if (MISC_QUEST&512 || cubekey&8) goto L_DONE;
 	mes "有各式各樣裝滿試藥的瓶子";
 	mes "仔細一看，上面貼有不同的標籤";
@@ -918,7 +920,7 @@ L_2:
 
 //--------------------------圖畫--------------------------
 
-lhz_cube.gat,237,206,0	script	圖畫	111,{
+lhz_cube.gat,234,202,0	script	圖畫	111,{
 	if (MISC_QUEST&512 || num1 > 0) goto L_DONE;
 	mes "牆壁上掛著一幅圖畫";
 	next;
@@ -1031,7 +1033,7 @@ L_DONE:
 
 //--------------------------電燈--------------------------
 
-lhz_cube.gat,248,205,0	script	電燈	111,{
+lhz_cube.gat,244,201,0	script	電燈	111,{
 	if (MISC_QUEST&512 || cubekey&16) goto L_DONE;
 	if (cubekey&256) goto L_1;
 	mes "這裡有一個發光的電燈，";
@@ -1059,7 +1061,7 @@ L_DONE:
 	close;
 }
 
-//--------------------------箱子--------------------------
+//--------------------------箱子--------------------------修正input'正六面體 模型'及'多角型 模型'錯誤 by黑色小貓
 
 lhz_cube.gat,248,193,0	script	箱子#02	111,{
 	if (MISC_QUEST&512 || countitem(2657) || @gotLPkey) goto L_DONE;
@@ -1090,7 +1092,7 @@ L_2:
 	if (cubekey&262144) goto L2_2;
 	input @quadrangle$;
 
-	if (cubekey&131072 && (@quadrangle$ == "cube model" || @quadrangle$ == "Cube Model")) goto L2_1;
+	if (cubekey&131072 && (@quadrangle$ == "正六面體 模型")) goto L2_1;
 	mes "沒有事情發生";
 	close;
 
@@ -1108,7 +1110,7 @@ L_3:
 	if (cubekey&16384) goto L3_2;
 	input @polygon$;
 
-	if (cubekey&8192 && (@polygon$ == "polygon model" || @polygon$ == "Polygon Model")) goto L3_1;
+	if (cubekey&8192 && (@polygon$ == "多角形 模型")) goto L3_1;
 	mes "沒有事情發生";
 	close;
 
@@ -1141,6 +1143,19 @@ L_DONE:
 	mes "裡面沒有任何東西";
 	close;
 }
+
+//--------------------------門--------------------------
+
+lhz_cube.gat,250,184,0	script	門	111,{
+	mes "有通往外面的門";
+	next;
+	menu "我要出去",L_OUT,"我不要出去",-;
+	close;
+
+L_OUT:
+	warp "lighthalzen.gat",310,302;
+	end;
+	}
 
 //--------------------------實驗管--------------------------
 
@@ -1178,7 +1193,7 @@ L_3:
 	input @answer$;
 
 	if (@answer$ == "研究所進出卡片") goto L_4;
-	mes "Nothing happened.";
+	mes "沒有事情發生";
 	close;
 
 L_4:
@@ -1202,48 +1217,47 @@ L_DONE:
 }
 
 //============================================================
-// Lighthalzen Pickpocket Mini-Quest
+// 抓賊任務
 //============================================================
+//2007-02-13  黑色小貓  中文化
+//============================================================ 
 
-lighthalzen.gat,240,216,4	script	Man#Pickpocket1	870,2,2,{
+lighthalzen.gat,240,216,4	script	可疑的男子#Pickpocket1	870,2,2,{
 	end;
 OnTouch:
 	callfunc "F_LHZPick",33,1;
 	close;
 }
 
-lighthalzen.gat,220,169,4	script	Man#Pickpocket2	870,2,2,{
+lighthalzen.gat,220,169,4	script	可疑的男子#Pickpocket2	870,2,2,{
 	end;
 OnTouch:
 	callfunc "F_LHZPick",33,2;
 	close;
 }
 
-lighthalzen.gat,164,127,4	script	Man#Pickpocket3	870,2,2,{
+lighthalzen.gat,164,127,4	script	可疑的男子#Pickpocket3	870,2,2,{
 	end;
 OnTouch:
 	callfunc "F_LHZPick",20,3;
 	if(@caught!=1) close;
-	mes "[Strange Man]";
-	mes "Ayee! I'm trapped.";
-	mes "If you will forgive me,";
-	mes "I can give you something good.";
+	mes "[可疑的男子]";
+	mes "哎呀?! 我被抓到了...";
+	mes "如過你願意放過我，";
+	mes "我可以賣你一樣好東西唷~!";
 	mes "["+strcharinfo(0)+"]";
-	mes "You're forgiven, now what is this";
-	mes "good thing you mentioned?";
+	mes "好吧! 你自由了!";
+	mes "告訴我你剛剛說的好東西是什麼?";
 	next;
-	mes "[Strange Man]";
-	mes "The lower part of your body,";
-	mes "will produce a strong power";
-	mes "once you've taken the secret potion.";
-	mes "It's very useful";
-	mes "when you want to run quickly";
+	mes "[可疑的男子]";
+	mes "這個東西會暫時降低你的能力，";
+	mes "以提升你的移動速度!";
+	mes "這個秘密的道具可是非常好用唷~~!";
 	next;
-	mes "[Strange Man]";
-	mes "I will sell you them for a bargin";
-	mes "price of 15,000 zeny to a maximum";
-	mes "of three potions.";
-	mes "How many do you want?";
+	mes "[可疑的男子]";
+	mes "看在你放過我的份上，便宜賣你啦~~";
+	mes "算你一個 15,000 zeny 就好!";
+	mes "怎樣? 你要買幾個啊?";
 	next;
 	input @number;
 	if(@number>3) set @number,3;
@@ -1252,8 +1266,8 @@ OnTouch:
 	//please check that you add the script to it.
 	set Zeny,zeny-@cost;
 	getitem 12016,@number; //Speed Potion
-	mes "[Strange Man]";
-	mes "Thanks for your money.";
+	mes "[可疑的男子]";
+	mes "感謝你.....的錢啦!";
 	if(rand(1,2)==1) goto L_Reset;
 	disablenpc "Man#Pickpocket3";
 	enablenpc "Man#Pickpocket2";
@@ -1263,9 +1277,9 @@ L_Reset:
 	enablenpc "Man#Pickpocket1";
 	close;
 L_Zeny:
-	mes "[Strange Man]";
-	mes "Too bad.";
-	mes "No zeny makes you a poor man.";
+	mes "[可疑的男子]";
+	mes "太爛了!";
+	mes "你根本沒那麼多錢嘛~!";
 	close;
 OnInit:
 	disablenpc "Man#Pickpocket2";
@@ -1275,23 +1289,22 @@ OnInit:
 function	script	F_LHZPick	{
 	if(Zeny<100) set Zeny,0;
 	if(Zeny>=100) set Zeny,zeny-100;
-	mes "Pickpocket";
+	mes "可疑的男子";
 	next;
 	if(rand(0,100)<getarg(0)) goto L_Caught;
-	mes "Hehehehe....";
+	mes "嘿... 嘿... 嘿...";
 	return;
 L_Caught:
-	mes "(You notice the man put his";
-	mes "hand in your pocket!)";
+	mes "(你發現這個男子把手伸進你的背包裡!)";
 	mes "["+strcharinfo(0)+"]";
-	mes "Eh!? What are you doing!";
-	mes "You are!! Stealing my money?!";
-	mes "[Strange Man]";
-	mes "Ah! I'm caught!";
+	mes "喂! 你在做什麼?!";
+	mes "你居然偷我的錢!!";
+	mes "[可疑的男子]";
+	mes "噢...我被發現了...";
 	mes "["+strcharinfo(0)+"]";
-	mes "You're a pickpocket?!?";
+	mes "你是個小偷?!";
 	mes "[Strange Man]";
-	mes "Hehehehe....";
+	mes "嘿... 嘿... 嘿...";
 	next;
 	set @rand,rand(1,4);
 	if(getarg(1)==1 && @rand<4) goto L_MoveB;
@@ -1319,10 +1332,12 @@ L_MoveC2:
 }
 
 //==============================================================
-// Friendship
+// 好朋友任務
 //==============================================================
+//2007-02-13  黑色小貓  中文化
+//============================================================ 
 
-lhz_in02.gat,201,210,3	script	Digotz	869,{
+lhz_in02.gat,201,210,3	script	達伊戈次	869,{
 
 	if(friendship > 9)goto s_Dead;
 	if(friendship == 9)goto s_Wounded;
@@ -1332,504 +1347,398 @@ lhz_in02.gat,201,210,3	script	Digotz	869,{
 	if(friendship == 4 || friendship == 5)goto s_Cont4;
 	if(friendship == 3)goto s_Cont3;
 	if(friendship == 2)goto s_Cont2;
-	mes "[Digotz]";
-	mes "Oh, an adventurer?";
-	mes "Welcome to Uptown";
-	mes "Lighthalzen. However,";
-	mes "I'm afraid this area won't";
-	mes "have much to offer you";
-	mes "in the way of excitement.";
+	mes "[達伊戈次]";
+	mes "喔，冒險者?";
+	mes "觀迎來到里希塔樂鎮的富裕區!";
+	mes "不過這裡可能沒有什麼地方可以讓你覺得刺激!";
 	next;
 	if(friendship == 1)goto s_Cont;
-	mes "[Digotz]";
-	mes "Feel free to take";
-	mes "a look around if you";
-	mes "so wish. I'm actually";
-	mes "glad to see somebody";
-	mes "aside from the stuck up";
-	mes "rich people who live here.";
+	mes "[達伊戈次]";
+	mes "如果你想的話歡迎到處走走!";
+	mes "我真的很高興可以看到，";
+	mes "除了住在這裡的有錢人以外的人!";
 	close;
 
 s_Cont:
-	mes "[Digotz]";
-	mes "My name is Digotz,";
-	mes "just another citizen";
-	mes "of Upper Lighthalzen.";
-	mes "I hope that you enjoy";
-	mes "your stay in my hometown";
+	mes "[達伊戈次]";
+	mes "我是達伊戈次!";
+	mes "是富裕區的一個居民!";
+	mes "希望你會喜歡我的家鄉!";
 	next;
-	menu "Do you know someone named Maku?",-;
+	menu "你知道一個叫麻庫的人嗎?",-;
 
-	mes "[Digotz]";
-	mes "Maku? Maku. Yes, he's my";
-	mes "childhood friend. Or he was,";
-	mes "anyway. Now he's just a jerk.";
-	mes "In an case, we can't hang";
-	mes "out, even if we wanted to,";
-	mes "for several reasons.";
+	mes "[達伊戈次]";
+	mes "麻庫? 麻庫...喔! 我知道!";
+	mes "他是我小時後的一個朋友! 或者該說他曾經是!";
+	mes "無論如何，他現在只是一個古怪的人!";
+	mes "那個傢伙住在貧民區裡，但是由於某些因素，";
+	mes "即使有合理的原因，這裡的人民都不能隨意走過去!";
 	next;
-	mes "[Digotz]";
-	mes "Hey, why am I even";
-	mes "talking about this? It's";
-	mes "not like I'm bothered by";
-	mes "the fact that me and Maku aren't";
-	mes "pals anymore. You know what?";
-	mes "Just forget everything I said.";
+	mes "[達伊戈次]";
+	mes "嗯... 我為什麼要跟你說這些呢?";
+	mes "這並不是我跟麻庫再也不是朋友的原因!";
+	mes "總之! 請你不要在意我剛剛說的那些話!";
 	set friendship,2;
 	close;
 
 s_Cont2:
-	mes "[Digotz]";
-	mes "What are you still";
-	mes "doing hanging around";
-	mes "here? There's nothing";
-	mes "interesting in Uptown";
-	mes "for you to see, adventurer.";
+	mes "[達伊戈次]";
+	mes "你還在這裡做什麼呢?";
+	mes "就如你所見的! 這裡沒什麼有趣的事情!";
 	next;
-	mes "[Digotz]";
-	mes "Gosh...!";
-	mes "Just hearing about";
-	mes "Maku makes me so feel";
-	mes "so upset for some reason!";
+	mes "[達伊戈次]";
+	mes "唉...!";
+	mes "聽到麻庫的事情，";
+	mes "讓我覺得點不舒服了!";
 	close;
 
 s_Cont3:
-	mes "[Digotz]";
-	mes "I know that the";
-	mes "opulence of Uptown";
-	mes "seems rather attractive,";
-	mes "but trust me. This place";
-	mes "is colorless. Now, have";
-	mes "you visited the poor district?";
+	mes "[達伊戈次]";
+	mes "我知道富裕區的繁榮看起來真的蠻吸引人的!";
+	mes "但是，相信我!";
+	mes "其實這裡是很無聊的!";
+	mes "也許你會對貧民區比較有興趣!";
+	mes "你有去那邊參觀過嗎?";
 	next;
-	menu "Yes, I did already...",-;
+	menu "是的! 我有去過!",-;
 
 	mes "[" + strcharinfo(0) + "]";
-	mes "Yes, I did already...";
-	mes "And I met someone";
-	mes "named Maku there.";
+	mes "是的! 我去過了...";
+	mes "我還遇到一個叫麻庫的人!";
 	next;
-	mes "[Digotz]";
-	mes "Maku?! Oh, he must have";
-	mes "mentioned something about";
-	mes "me. But I don't care what he";
-	mes "says, unless it's an apology";
-	mes "for being a fully blown jerk.";
-	mes "Ever since we were kids...";
+	mes "[達伊戈次]";
+	mes "麻庫?! 那他一定有提到我的事吧?!";
+	mes "不過我不在意他說了什麼!";
+	mes "除非他為了小時候的事情跟我道歉!";
 	next;
-	mes "[Digotz]";
-	mes "Anyway, we used to be close,";
-	mes "but that guy was never a true";
-	mes "friend of mine! Like that one";
-	mes "time he cheated to beat me at";
-	mes "arm wrestling! Or when he never";
-	mes "thanked me for buying us lunch!";
+	mes "[達伊戈次]";
+	mes "無論如何! 我們以前的交情是很好的!";
+	mes "但是那個人從不是我真誠的朋友!";
+	mes "就像有一次他在摔角中他作弊獲勝!";
+	mes "還有他從來不會因為我幫他買午餐而跟我道謝!";
 	next;
-	mes "[Digotz]";
-	mes "Sure, he might have helped";
-	mes "me a little in meeting my first";
-	mes "girlfriend, but I'll never ever";
-	mes "forgive him for fixing me up";
-	mes "on the worst blind dates a";
-	mes "man can possible experience!";
+	mes "[達伊戈次]";
+	mes "不過，當然他也有幫我一些小忙!";
+	mes "例如他幫我安排和我第一個女朋友見面!";
+	mes "但是我絕不會原諒他!";
+	mes "因為他曾經讓我經歷了最糟糕的事情!";
+	mes "這件事糟糕到不是每個人都可能遇的到!";
 	next;
-	mes "[Digotz]";
-	mes "Maku doesn't know a damn";
-	mes "about friendship! Even if I did";
-	mes "want to see him, there are these";
-	mes "people who don't want the rich";
-	mes "to ever meet with the poor.";
+	mes "[達伊戈次]";
+	mes "麻庫不知道我的友誼已經完了!";
+	mes "即使我想去見他，";
+	mes "這裡也有些人不希望富裕區的人過去貧民區!";
 	next;
-	mes "If Maku's fine, that's";
-	mes "good enough to hear for";
-	mes "me! There's no need for me";
-	mes "to go all the way over there";
-	mes "and check up on him! I only";
-	mes "have one regret though...";
+	mes "[達伊戈次]";
+	mes "如果麻庫是個好人，";
+	mes "那我應該會聽到傳聞的!";
+	mes "不需要我老是去打聽他的消息!";
+	mes "只是我有一個遺憾...";
 	next;
-	mes "[Digotz]";
-	mes "I only wish I had one";
-	mes "last chance to see Maku...";
-	mes "So that I could kick his sorry";
-	mes "ass myself! Yeah, that's right!";
-	mes "Arrogant bastard! But still,";
-	mes "I'm not able to do that...";
+	mes "[達伊戈次]";
+	mes "我只希望我還能見到麻庫一次...";
+	mes "那我就可以狠狠的踹他一腳!";
+	mes "哈哈! 那該有多好!";
+	mes "那個傲慢的庶民!";
+	mes "不過很可惜我沒辦法做到...";
 	next;
-	mes "[Digotz]";
-	mes "The security guards here";
-	mes "will never allow the rich and";
-	mes "poor to meet, fearing that";
-	mes "the poor will disturb the peace";
-	mes "and order of the city. It's a dumb";
-	mes "rule made for dumb people.";
+	mes "[達伊戈次]";
+	mes "這個城市的警衛不准富裕區跟貧民區通行!";
+	mes "他們怕窮人會干擾富裕區的和平!";
+	mes "這對於一些笨蛋來說是個很有利的規章!";
 	next;
-	mes "[Digotz]";
-	mes "Still, it's pretty scary that";
-	mes "someone can get punished";
-	mes "for violating such a stupid";
-	mes "taboo, actually. Anyway, if";
-	mes "you see Maku again, tell";
-	mes "him this for me, got it?";
+	mes "[達伊戈次]";
+	mes "而這裡的人對於違反這條笨蛋法令，";
+	mes "是真的非常的害怕!";
+	mes "如果你再次遇到麻庫的話，";
+	mes "幫我傳個話好嗎?";
 	next;
-	mes "[Digotz]";
-	mes "^FF0000Hopeless bastard!";
-	mes "You're still a stubborn jerk!";
-	mes "You owe me at least 3 lunches!";
-	mes "Not to mention an apology!";
-	mes "But who cares what you think?!";
-	mes "I'm so goddamn happy without you!";
+	mes "[達伊戈次]";
+	mes "^FF0000你這冥頑不靈的窮小子啊，";
+	mes "你享你的清福吧!哼，";
+	mes "沒有你我過的更好!";
+	mes "你小時候做的壞事，";
+	mes "我仍記憶猶新，!";
+	mes "你這可悲的傢伙啊!";
 	set friendship,4;
 	close;
 
 s_Cont4:
-	mes "[Digotz]";
-	mes "Still checking out";
-	mes "Uptown Lighthalzen?";
-	mes "Not like I'd care, but if you";
-	mes "do happen to see Maku,";
-	mes "deliver this little message";
-	mes "for me, sentence by sentence.";
+	mes "[達伊戈次]";
+	mes "還想再逛逛富裕區嗎?";
+	mes "那麼，如果你真的又遇到了麻庫，";
+	mes "請幫我將這個訊息一句一句的確實傳達給他!";
 	next;
-	mes "[Digotz]";
-	mes "^FF0000Hopeless bastard!";
-	mes "You're still a stubborn jerk!";
-	mes "You owe me at least 3 lunches!";
-	mes "Not to mention an apology!";
-	mes "But who cares what you think?!";
-	mes "I'm so goddamn happy without you!";
+	mes "[達伊戈次]";
+	mes "^FF0000你這冥頑不靈的窮小子啊，";
+	mes "你享你的清福吧!哼，";
+	mes "沒有你我過的更好!";
+	mes "你小時候做的壞事，";
+	mes "我仍記憶猶新，!";
+	mes "你這可悲的傢伙啊!";
 	close;
 
 s_Cont5:
-	mes "[Digotz]";
-	mes "Oh, it's been a while.";
-	mes "What are you doing back";
-	mes "over here? And, um, did";
-	mes "you deliver that message";
-	mes "to Maku? Now when I think";
-	mes "about it, I was kind of--";
+	mes "[達伊戈次]";
+	mes "喔! 怎麼了?";
+	mes "你回來做什麼?";
+	mes "嗯? 你已經將訊息轉達給麻庫了?!";
+	mes "現在我一想到那些話，我就覺得.....";
 	next;
 	mes "[" + strcharinfo(0) + "]";
-	mes "I delivered your message";
-	mes "word for word, and Maku";
-	mes "got angry, called you names";
-	mes "and has been threatening to";
-	mes "beat you up pretty badly.";
+	mes "我確實將那些話轉達給麻庫了!";
+	mes "不過他非常的生氣!";
+	mes "他大喊著你的名字說一定要狠狠的打你一頓!";
 	next;
-	mes "[Digotz]";
-	mes "That no-good, dirty";
-	mes "lying rotten scoundrel!";
-	mes "If it weren't for those";
-	mes "guards, I'd head over to";
-	mes "the ghetto and beat Maku";
-	mes "up myself! That stupid guy!";
+	mes "[達伊戈次]";
+	mes "那個沒用的，骯髒的，腐爛的流氓!";
+	mes "如果沒有那些警衛的話，";
+	mes "我一定會在街頭上親自打他一頓!";
+	mes "那個笨蛋!";
 	next;
-	mes "[Digotz]";
-	mes "During times like this,";
-	mes "I really miss ^FF0000Benkaistein^000000";
-	mes "That guy would always have";
-	mes "an answer for this kind of";
-	mes "situation. Yeah, I think he's";
-	mes "in some far off town, studying.";
+	mes "[達伊戈次]";
+	mes "每當這個時候，";
+	mes "我就非常想念^FF0000班卡依史丁^000000";
+	mes "那個人總是很有辦法解決這樣的問題!";
+	mes "不過，我想他現在，";
+	mes "應該也是在一個非常遙遠的地方吧!";
 	next;
-	mes "[Digotz]";
-	mes "Supposedly he's in that";
-	mes "place, whatever it's called,";
-	mes "since there's a ton of books";
-	mes "there that he can use. But";
-	mes "yeah, Benkaistein would";
-	mes "always be the mediator...";
+	mes "[達伊戈次]";
+	mes "推測他所在的地方，不管叫什麼名字，";
+	mes "一定有很多很多的書籍，可以讓他閱讀!";
+	mes "不過，班卡依史丁一直都是個和事佬...";
 	next;
-	mes "[Digotz]";
-	mes "Even back then, when";
-	mes "me, him and Maku used to";
-	mes "hang out, Benkastein would";
-	mes "mediate if we got into some";
-	mes "argument. Still, he couldn't";
-	mes "do anything about Maku now...";
+	mes "[達伊戈次]";
+	mes "想當初，當我和麻庫有爭執的時候，";
+	mes "班卡依史丁總會從中協調!";
+	mes "即使他不能對麻庫作什麼...";
 	next;
-	mes "[Digotz]";
-	mes "I don't know why,";
-	mes "but I'm so angry!";
-	mes "Why am I stressing";
-	mes "out so much over this?!";
+	mes "[達伊戈次]";
+	mes "不知道為什麼? 但是我現在很生氣!";
+	mes "為什麼我老是要一再的強調這些事?!";
 	set friendship2,1;
 	close;
 
 s_Cont6:
-	mes "[Digotz]";
-	mes "Even if Benkaistein came";
-	mes "back from wherever he was";
-	mes "studying, I don't think he'd be";
-	mes "able to get Maku to apologize";
-	mes "to me. That guy is just way";
-	mes "too stubborn for his own good!";
+	mes "[達伊戈次]";
+	mes "即使班卡依史丁回來了，";
+	mes "我也不認為他能讓麻庫向我道歉!";
+	mes "那傢伙對於對他有利的事情總是非常的固執!";
 	if(friendship != 7)close;
 	next;
-	menu "Show Benkastein's Journal",s_Journal,"Don't show Benkastein's Journal.",-;
+	menu "給他看班卡依史丁的日記本!",s_Journal,"不給他看班卡依史丁的日記本!",-;
 
-	mes "[Digotz]";
-	mes "I don't understand";
-	mes "why I'm so angry!";
-	mes "I'm starting to act";
-	mes "more like Maku, though,";
-	mes "don't get me wrong, it's";
-	mes "not like I care about the guy.";
+	mes "[達伊戈次]";
+	mes "我真的不懂為什麼我這麼生氣!";
+	mes "我覺得我開始像麻庫了，";
+	mes "不過不要誤會!";
+	mes "這不代表我關心那個傢伙!";
 	close;
 
 s_Journal:
-	mes "[Digotz]";
-	mes "Why am I so ticked off?";
-	mes "^3131FF*Sigh*^000000 You have something";
-	mes "to show me? Huh? Benkastein";
-	mes "wanted me to read this diary";
-	mes "of his? Sure, why not? I do";
-	mes "owe him a lot over the years...";
+	mes "[達伊戈次]";
+	mes "嗯? 你有一些東西要給我看?";
+	mes "嗯? 班卡依史丁要我看看這本日記?";
+	mes "當然沒問題! 這些年來我已經虧欠他很多了...";
 	next;
-	mes "[Benkastein's Journal]";
-	mes "^AD9595Today, me, Digotz and";
-	mes "Maku played this crazy flying";
-	mes "game. Basically, we make";
-	mes "these wings out of wood and";
-	mes "paper, jump of these hills";
-	mes "and try to fly. Dumb, I know.";
+	mes "[班卡依史丁的日記]";
+	mes "^AD9595今天我和達伊戈次和麻庫";
+	mes "打算玩一場瘋狂的飛行遊戲!";
+	mes "基本上，就是利用我們用木頭跟紙做的翅膀，";
+	mes "從小山上跳下去試著飛行!";
 	next;
-	mes "^000000[Benkastein's Journal]";
-	mes "^AD9595Today it was my turn to";
-	mes "jump and flap my arms with";
-	mes "these fake, badly made wings.";
-	mes "It's not really a fun game when";
-	mes "I think about it. Boy, I hope";
-	mes "we don't do that again.";
+	mes "^000000[班卡依史丁的日記]";
+	mes "^AD9595該死的! 我知道今天輪到我了!";
+	mes "這真的不是一場有趣的遊戲!";
+	mes "希望以後我們不會再玩這個遊戲了!";
 	next;
-	mes "^000000[Digotz]";
-	mes "Oh yeah, I remember that!";
-	mes "Maky wore the wings most";
-	mes "of the time, but I still hold";
-	mes "the record for staying in the";
-	mes "air the longest! Yeah, I was";
-	mes "a regular Kid Pegasus~";
+	mes "^000000[達伊戈次]";
+	mes "喔! 我記得這件事!";
+	mes "製造這些翅膀要花很多時間!";
+	mes "不過我依然是飛行紀錄的保持人!";
+	mes "哈哈哈! 我是神話中的飛馬!!";
 	next;
-	mes "[Benkastein's Journal]";
-	mes "^AD9595Maku, Digotz and me went";
-	mes "outside of town. Of course,";
-	mes "we didn't tell anyone or else";
-	mes "we'd get in trouble. It was";
-	mes "a really exciting day. But";
-	mes "then, we ran into a monster!";
+	mes "[班卡依史丁的日記]";
+	mes "^AD9595麻庫，達伊戈次和我今天跑到了城外!";
+	mes "當然我們沒有告訴任何人!";
+	mes "這是令人興奮的一天!";
+	mes "不過我們卻遇到了一個魔物!";
 	next;
-	mes "^000000[Benkastein's Journal]";
-	mes "^AD9595I wanted to run away but Maku";
-	mes "and Digotz wanted to beat it so";
-	mes "that we could become heroes.";
-	mes "Of course, we got hurt pretty";
-	mes "bad and the monster got away.";
-	mes "Boy, mom was not happy...";
+	mes "^000000[班卡依史丁的日記]";
+	mes "^AD9595我想要逃走，";
+	mes "但是麻庫跟達伊戈次想要擊敗它!";
+	mes "他們說這樣我們就會變成英雄!";
+	mes "但是，果然我們都受了重傷，";
+	mes "那個魔物也跑掉了!";
+	mes "唉... 媽媽很生氣...!";
 	next;
-	mes "^000000[Digotz]";
-	mes "Huh. I don't remember";
-	mes "that so well. But I know that";
-	mes "Benkastein, me and Maku";
-	mes "weren't afraid of anything back";
-	mes "then. We must have been totally";
-	mes "nuts to fight a monster, though.";
+	mes "^000000[達伊戈次]";
+	mes "嗯... 我忘記這件事了...";
+	mes "但是我知道班卡依史丁，我和麻庫";
+	mes "都是不會害怕什麼的!";
+	mes "我們都是一定會跟怪物作戰的!";
 	next;
-	mes "[Benkastein's Journal]";
-	mes "^AD9595Digotz's been sick for three";
-	mes "days now. It's just a normal";
-	mes "cold and Maku keeps saying";
-	mes "it's Digotz's fault he got sick.";
-	mes "But he's always asking me to";
-	mes "go visit him and see if he's okay.";
+	mes "[班卡依史丁的日記]";
+	mes "^AD9595達伊戈次已經生病3天了!";
+	mes "雖然那只是一個很普通感冒，";
+	mes "麻庫也說他會生病是他自己的錯!";
+	mes "但是麻庫還是常常問我他好一點了嗎?";
+	mes "而且想去看看他!";
 	next;
-	mes "^000000[Digotz]";
-	mes "I think I remember being";
-	mes "pretty sick. Maku was worried?";
-	mes "I... I must have had a horrible";
-	mes "life threatening disease like,";
-	mes "um, Gonorrhitis. You know.";
-	mes "That might have been it.";
+	mes "^000000[達伊戈次]";
+	mes "我想我記得我那次生病的事...";
+	mes "麻庫擔心我?";
+	mes "我想我應該是感染了一個嚴重的疾病...";
+	mes "例如說...Gonorrhitis?!";
+	mes "嗯... 很有可能...!";
 	next;
-	mes "[Benkastein's Journal]";
-	mes "^AD9595Mom and dad keep telling";
-	mes "me not to hang out with Maku";
-	mes "anymore. Their reason is really";
-	mes "dumb, and I don't care if he is";
-	mes "poor. He's one of the best guys";
-	mes "that I'll ever know.";
+	mes "[班卡依史丁的日記]";
+	mes "^AD9595爸爸跟媽媽一直告訴我不要再接近麻庫!";
+	mes "他們說的原因真的都很蠢!";
+	mes "我才不管他們說什麼!";
+	mes "麻庫是我見過最好的一個人!";
 	next;
-	mes "^000000[Benkastein's Journal]";
-	mes "^AD9595Digotz's family is really";
-	mes "rich and they don't want him";
-	mes "to see Maku anymore either.";
-	mes "But Digotz doesn't care.";
-	mes "I know he likes Maku a lot.";
+	mes "^000000[班卡依史丁的日記]";
+	mes "^AD9595達伊戈次家真的很有錢!";
+	mes "他們家的人也不希望達伊戈次繼續跟麻庫見面!";
+	mes "但是達伊戈次也不管他們說什麼!";
+	mes "我知道他真的很喜歡麻庫!";
 	next;
-	mes "^000000[Digotz]";
-	mes "Well, we were a lot";
-	mes "younger and closer back";
-	mes "then, so... ^111111*Ahem!*^000000Why did";
-	mes "Benkastein even write that?!";
+	mes "^000000[達伊戈次]";
+	mes "嗯... 我們小時候真的是很好的朋友!";
+	mes "但是為什麼班卡依史丁要在日記裡寫這個呢?!";
 	next;
-	mes "[Benkastein's Journal]";
-	mes "^AD9595Today, the three of us";
-	mes "made an oath of brotherhood,";
-	mes "just like we read in the comic";
-	mes "book. We swore we'd always";
-	mes "be friends no matter what.";
-	mes "For always and for always.";
+	mes "[班卡依史丁的日記]";
+	mes "^AD9595今天! 我們三個決定要";
+	mes "結拜成為兄弟! 就像我們在書上看到的那樣!";
+	mes "我們約定好無論如何都要永遠做好朋友!";
 	next;
-	mes "^000000[Digotz]";
-	mes "I... I was forced to make";
-	mes "that oath! And people do";
-	mes "change, you know! I mean,";
-	mes "we were basically just kids,";
-	mes "it's not like that oath really";
-	mes "means anything now, does it?";
+	mes "^000000[達伊戈次]";
+	mes "我...當時我是被強迫的!";
+	mes "人總是會變的，你知道的!";
+	mes "當時我們都只是個小孩子，";
+	mes "那些約定對於現在來說並沒有任何意義!";
+	mes "是吧?!";
 	next;
-	mes "[Digotz]";
-	mes "That does it. I'm gonna";
-	mes "go see that Maku. I don't";
-	mes "miss him or anything, but";
-	mes "I gotta get him to cancel";
-	mes "that oath. And maybe I'll";
-	mes "beat up him a little bit.";
+	mes "[達伊戈次]";
+	mes "現在! 我必須去見麻庫一面!";
+	mes "但是不是因為我想念他或者什麼原因!";
+	mes "我只是要他取消當時的約定，";
+	mes "或者我可以順便打他一頓!";
 	set friendship,8;
 	close;
 
 s_Cont7:
-	mes "[Digotz]";
-	mes "Wh-whoa, I need to";
-	mes "get ready! That Maku's";
-	mes "gonna make fun of me if";
-	mes "I look too rich and pampered.";
-	mes "Damn! Where did I put all of";
-	mes "my fashionable street clothes?";
+	mes "[達伊戈次]";
+	mes "哼! 我一定要準備好!";
+	mes "如果我看起來太富有太嬌養，";
+	mes "麻庫一定會藉機取笑我!";
+	mes "該死的! 我把我那些平民的衣服放到哪裡去了?";
 	close;
 
 s_Wounded:
-	mes "^3131FFDigotz is seriously";
-	mes "injured from a wound";
-	mes "by a knife that is still";
-	mes "embedded in his belly.^000000";
+	mes "^3131FF達伊戈次受了重傷，";
+	mes "那把刀子還插在他的肚子上!^000000";
 	next;
 	mes "[" + strcharinfo(0) + "]";
-	mes "Digotz...?";
-	mes "Oh no, let me";
-	mes "get you some help!";
+	mes "達伊戈次...?";
+	mes "喔! 不好了!";
+	mes "讓我幫你吧!";
 	next;
-	mes "[Digotz]";
-	mes "H-het... It's the";
-	mes "adventurer... Man,";
-	mes "that Maku. He always";
-	mes "did bring me bad luck...";
-	mes "It's too late for me and";
-	mes "I don't have much time...";
+	mes "[達伊戈次]";
+	mes "喔... 嘿...";
+	mes "是你啊... 冒險者...";
+	mes "那個麻庫... 他老是帶給我霉運...";
+	mes "我沒剩下多少時間了... (吐血)";
 	next;
-	mes "[Digotz]";
-	mes "Those guards I told you";
-	mes "about... The ones who don't";
-	mes "want the poor and the rich to";
-	mes "mingle? I... Guess they found";
-	mes "out I was gonna meet my old";
-	mes "pal. I just wanted to see him...";
+	mes "[達伊戈次]";
+	mes "那曾經跟你提過的警衛...";
+	mes "有人不希望富裕區的人跟窮人接觸...";
+	mes "我... 我猜有人發現我想去找我的老朋友...";
+	mes "我只是想去見他...";
 	next;
-	mes "[Digotz]";
-	mes "This guy... In a black";
-	mes "suit... He just... He just";
-	mes "stabbed me! I... God. It's";
-	mes "been so long since I've talked";
-	mes "to him. We'll hang out and have";
-	mes "fun, just like the good old days.";
+	mes "[達伊戈次]";
+	mes "這個人... 穿著... 一身黑衣...";
+	mes "他... 刺殺了我!";
+	mes "就如我以前曾經跟他說過的...";
+	mes "我們將會快樂的聚在一起...";
+	mes "就像以前那些快樂的時光一樣...";
 	next;
-	mes "[Digotz]";
-	mes "I missed my buddies, but now...";
-	mes "Now I can hear them calling me.";
-	mes "Now we can all be together just";
-	mes "like we all promised. Yeah...";
-	mes "I was wrong. Life's too short";
-	mes "to be angry with your frie--";
+	mes "[達伊戈次]";
+	mes "我好想念我的朋友...";
+	mes "現在... 我可以聽到他們在呼喚我...";
+	mes "現在我們可以在一起了...";
+	mes "就像以前的約定那樣...";
+	mes "我錯了... 生命是如此的短暫...";
+	mes "沒有多餘的時間... 去生氣...";
 	next;
-	mes "[Digotz]";
+	mes "[達伊戈次]";
 	mes "..............";
 	next;
-	mes "[Digotz]";
+	mes "[達伊戈次]";
 	mes "..............";
 	mes ".......................";
 	next;
-	mes "[Digotz]";
+	mes "[達伊戈次]";
 	mes "..............";
 	mes ".......................";
 	mes "................................";
 	next;
-	mes "^3131FFDigotz stopped breating.";
-	mes "You remove the Knife from";
-	mes "his lifeless body as a final";
-	mes "courtesy to a man who";
-	mes "dearly loved his friends.";
+	mes "^3131FF達伊戈次停止了呼吸!";
+	mes "你拔出了他身上的刀子，";
+	mes "作為對一個非常愛他的朋友的人最後的禮貌!";
 	next;
 	set friendship,10;
 	getitem 1201,1;
 	close;
 
 s_Dead:
-	mes "^3131FFDigotz has passed";
-	mes "away, but the look on";
-	mes "his face seems very";
-	mes "peaceful and content.";
+	mes "^3131FF達伊戈次去世了!";
+	mes "但是他的臉上是很平靜和滿足的!";
 	close;
 
 }
 
-lighthalzen.gat,337,232,3	script	Maku	870,{
+lighthalzen.gat,337,232,3	script	麻庫	870,{
 
 	if(friendship > 1)goto Switches;
-	mes "[Maku]";
-	mes "Hey, you're on of";
-	mes "those adventurers, eh?";
-	mes "Welcome to the ghetto.";
-	mes "Nothing too adventurous";
-	mes "here, but hey, you can";
-	mes "explore all you want.";
+	mes "[麻庫]";
+	mes "嘿! 你是個冒險者嗎?";
+	mes "歡迎來到貧民區!";
+	mes "這裡沒有什麼刺激的!";
+	mes "不過你可以到處逛逛!";
 	next;
-	mes "[Maku]";
-	mes "I don't know if you know";
-	mes "but actually, the people who";
-	mes "live here ain't allowed to";
-	mes "explore this whole city. It's";
-	mes "kind of taboo to talk about,";
-	mes "but what do I care, right?";
+	mes "[麻庫]";
+	mes "嘿! 不曉得你知不知道?!";
+	mes "事實上，居住在這裡的人，";
+	mes "是不被允許到處亂逛的!";
+	mes "那是一個傳言中的禁忌!";
+	mes "但是我才不管呢! 是吧?!";
 	next;
-	mes "[Maku]";
-	mes "Yeah, basically the rich";
-	mes "people here are too afraid";
-	mes "of the poor people comin' to";
-	mes "see them, so the security in";
-	mes "this city is pretty tight! Those";
-	mes "upper class guys are trash...";
+	mes "[麻庫]";
+	mes "基本上，那些有錢人很害怕窮人跟他們接觸!";
+	mes "所以安全警戒在這個城市是很嚴格的!";
+	mes "那些高級官員之類的人都是些廢物...!";
 	next;
-	mes "[Maku]";
-	mes "I didn't use to think";
-	mes "this way. I actually used";
-	mes "to have a pretty rich friend";
-	mes "till I found out he's not all";
-	mes "I thought he was. That";
-	mes "moron! Why's he like that?!";
+	mes "[麻庫]";
+	mes "我以前並不這麼認為!";
+	mes "實際上我曾經有過一個很有錢的朋友，";
+	mes "直到我發現他並不是我所想像的那樣!";
+	mes "那個白痴!";
+	mes "為什麼他也是這樣的人?!";
 	next;
-	mes "[Maku]";
-	mes "Eh, forget about it.";
-	mes "Why am I even talking";
-	mes "about my personal life";
-	mes "to someone I just met";
-	mes "anyway? Sure, we all";
-	mes "do it, but still...";
+	mes "[麻庫]";
+	mes "唉... 不談這個了!";
+	mes "為什麼我要跟一個我才剛認識的人";
+	mes "談到我的私生活呢?";
+	mes "當然... 我們常常會這樣...";
+	mes "但是這還是太.....";
 	next;
-	mes "[Maku]";
-	mes "Well, when you get";
-	mes "bored of the ghetto,";
-	mes "you really oughta check";
-	mes "out the rich section of town.";
-	mes "I'm bitter, but I'll also admit";
-	mes "it's way nicer than this place.";
+	mes "[麻庫]";
+	mes "算了! 反正當你開始覺得貧民區很無聊的時候";
+	mes "你應該就會去富裕區閒逛了!";
+	mes "雖然我不能接受，但是我也必須承認";
+	mes "那裡比這邊好多了!";
 	set friendship,1;
 	close;
 
@@ -1839,659 +1748,535 @@ Switches:
 	{
 	
 	case 2:
-		mes "[Maku]";
-		mes "Hey, what are you";
-		mes "doing back over here?";
-		mes "I thought I recommended";
-		mes "going over to check out";
-		mes "Uptown Lighthalzen. This";
-		mes "place is pretty run-down...";
+		mes "[麻庫]";
+		mes "嘿! 你怎麼又跑回來了啊?";
+		mes "我想你應該去富裕區逛逛!";
+		mes "這個地方真的很貧困...";
 		next;
-		menu "I actually met Digotz and...",-;
+		menu "實際上我遇到了達伊戈次，還有...",-;
 
-		mes "[Maku]";
-		mes "You what...?!";
-		mes "You saw my old pal,";
-		mes "Digotz?! Er, I mean,";
-		mes "Mister Alexander Digotz,";
-		mes "who used to be my buddy,";
-		mes "but obviously not anymore.";
+		mes "[麻庫]";
+		mes "你說什麼?!";
+		mes "你遇到了我的老朋友達伊戈次?";
+		mes "呃... 我是說亞歷山大 達伊戈次先生!";
+		mes "他曾經是我的一個朋友，";
+		mes "但是很顯然的他現在已經不是我的朋友了!";
 		next;
-		mes "[Maku]";
-		mes "Sure, we were real close";
-		mes "at one time, but that was";
-		mes "too long ago. It's been a";
-		mes "long time since we hung";
-		mes "out and he probable hates";
-		mes "my penniless guts and...";
+		mes "[麻庫]";
+		mes "雖然我們以前是很親近的，";
+		mes "但是那也是很久以前的事了!";
+		mes "我們以前常常一起出去!";
+		mes "不過他現在應該很討厭我這麼的貧窮，";
+		mes "還有...骯髒!";
 		next;
-		mes "[Maku]";
-		mes "Crud, just listen to";
-		mes "me, I sound like a wuss.";
-		mes "I don't miss Digotz! In fact,";
-		mes "I hate the guy, one hundred";
-		mes "percent! The next time I see";
-		mes "him, I'll beat him to a pulp!";
+		mes "[麻庫]";
+		mes "聽我說，雖然我看似個軟弱的人!";
+		mes "但是我一點都不想念他! 事實上我非常的討厭他!";
+		mes "下次如果讓我見到他，我一定會狠狠的打他一頓!";
 		set friendship,3;
 		close;
 	break;
 
 	case 3:
-		mes "[Maku]";
-		mes "Man, I need to blow off some";
-		mes "steam! Sure, me and Digotz";
-		mes "were buds before and maybe";
-		mes "we might seem like friends now,";
-		mes "but not anymore, though we used";
-		mes "to be closer than this. Argh!";
+		mes "[麻庫]";
+		mes "告訴你! 不是我要自誇!";
+		mes "我跟達伊戈次以前可是很好的朋友!";
+		mes "雖然我們現在也還可以看起來像是朋友，";
+		mes "但是不可能像以前那麼親近了! 哈!";
 		next;
-		mes "[Maku]";
-		mes "Don't get me wrong, I don't";
-		mes "miss the guy or anything like";
-		mes "that and I don't feel sorry about";
-		mes "what happened. But if he ever";
-		mes "came to apologize to me, I'd";
-		mes "probably accept, you know.";
+		mes "[麻庫]";
+		mes "不要誤會! 我可不是想念那個傢伙，";
+		mes "我對於過去發生的事情並不感到抱歉!";
+		mes "不過，如果他來向我道歉的話，";
+		mes "或許我會接受!";
 		next;
-		mes "[Maku]";
-		mes "Well, after thinking";
-		mes "about it, of course.";
-		mes "I mean, I'm not the one";
-		mes "holding a grudge. It's all";
-		mes "that guy's fault! Sheeeesh!";
+		mes "[麻庫]";
+		mes "當然! 在我仔細考慮之後，";
+		mes "我是說我並不是一個會記恨的人!";
+		mes "但是一切都是那傢伙的錯! 哼!!";
 		close;
 	break;
 
 	case 4:
-		mes "[Maku]";
-		mes "What the hell are you";
-		mes "still doing around here?";
-		mes "You must have better things";
-		mes "to do than talk to a ruffian";
-		mes "like me or that snobby and";
-		mes "totally prickish Digotz.";
+		mes "[麻庫]";
+		mes "你該死的還在這裡做什麼??";
+		mes "你應該有比跟我這樣一個流氓";
+		mes "或者像達伊戈次那一自負的人聊天";
+		mes "更重要的事情可做吧?!";
 		next;
-		menu "Speaking of which...",-;
+		menu "繼續交談",-;
 		mes "[" + strcharinfo(0) + "]";
-		mes "Speaking of which...";
-		mes "I spoke to Digotz again.";
-		mes "He told me to give you a";
-		mes "message, but I'm not sure th--";
+		mes "說到哪了...";
+		mes "對了! 我跟達伊戈次談過，";
+		mes "他要我轉達幾句話!";
+		mes "不過我不確定你.....";
 		next;
-		mes "[Maku]";
-		mes "That no-good bastard";
-		mes "has a message for me?!";
-		mes "Oh, I'm soooo honored~";
-		mes "Tell me what that fink";
-		mes "has to say, line by line!";
+		mes "[麻庫]";
+		mes "那個沒用的私生子有話要告訴我?!";
+		mes "喔! 那真是讓我驚訝啊! 哼!";
+		mes "告訴我那個爛人想跟我說什麼吧!";
 		next;
 		input @digotzstr$;
-		if(@digotzstr$ != "Hopeless bastard!")goto failstr;
-		mes "[Maku]";
-		mes "\"Hopeless Bastard?!\"";
-		mes "Well, at least he had";
-		mes "the stomach to say that.";
-		mes "Through somebody else";
-		mes "anyway! What else'd he say?!";
+		if(@digotzstr$ != "你這冥頑不靈的窮小子啊，")goto failstr;
+		mes "[麻庫]";
+		mes "冥頑不靈?!";
+		mes "他居然這樣說我! 他是說他自己才對吧!";
+		mes "他還說了什麼?";
 		next;
 		input @digotzstr$;
-		if(@digotzstr$ != "You're still a stubborn jerk!")goto failstr;
-		mes "[Maku]";
-		mes "\"Stubborn Jerk?!\"";
-		mes "Takes no one to know one,";
-		mes "bastard! Why I oughta--";
-		mes "Grrr! What'd he say next?!";
+		if(@digotzstr$ != "你享你的清福吧!哼，")goto failstr;
+		mes "[麻庫]";
+		mes "那個該死的私生子!";
+		mes "他以為我過的很好嗎? 清福?!";
+		mes "哼! 他還說了什麼?";
 		next;
 		input @digotzstr$;
-		if(@digotzstr$ != "You owe me at least 3 lunches!")goto failstr;
-		mes "[Maku]";
-		mes "Three lunches?!";
-		mes "I treated that guy to";
-		mes "lunch like, fifteen times!";
-		mes "I tell you, the guy does not";
-		mes "know the meaning of friendship!";
-		mes "What else did that moron say?!";
+		if(@digotzstr$ != "沒有你我過的更好!")goto failstr;
+		mes "[麻庫]";
+		mes "沒有我他會更好?! 沒有他我才更好!";
+		mes "我還曾經請過他15次的午餐!";
+		mes "真是讓人火大的傢伙!";
+		mes "他根本不懂所謂友誼的真正意義!";
+		mes "那個白痴還說了什麼?!";
 		next;
 		input @digotzstr$;	
-		if(@digotzstr$ != "Not to mention an apology!")goto failstr;
-		mes "[Maku]";
-		mes "Me, apologize?!";
-		mes "He should be on his hands";
-		mes "and knees begging for my";
-		mes "frickin' forgiveness! That...";
-		mes "That selfish no-good stupid...";
-		mes "W-what else did he tell you?!";
+		if(@digotzstr$ != "你小時候做的壞事，")goto failstr;
+		mes "[麻庫]";
+		mes "壞事?!";
+		mes "到底是誰做了壞事還不知道呢?!";
+		mes "那個...那個自私無能的蠢蛋還說了什麼?!";
 		next;
 		input @digotzstr$;
-		if(@digotzstr$ != "But who cares what you think?!")goto failstr;
-		mes "[Maku]";
-		mes "Who cares what I think?!";
-		mes "GRRRAAH~!! Who cares";
-		mes "what he thinks!! ^111111*Pant Pant*^000000";
-		mes "I'm gonna murderlize that";
-		mes "dumb creep! He can't possibly";
-		mes "make me angrier than I am now!";
+		if(@digotzstr$ != "我仍記憶猶新，!")goto failstr;
+		mes "[麻庫]";
+		mes "(麻庫看起來非常的生氣)";
+		mes "哼! 他做過的事情我也都記得!";
+		mes "哼哼哼~~!";
+		mes "我真的很想過去宰了那個愚蠢的卑鄙小人!";
+		mes "他真的很會惹火我!!";
 		next;
 		input @digotzstr$;
-		if(@digotzstr$ != "I'm so goddamn happy without you!")goto failstr;
-		mes "[Maku]";
-		mes "That's it.";
-		mes "It's decided. The";
-		mes "next time I see Digotz,";
-		mes "I'm gonna plaster his";
-		mes "face all over the floor.";
+		if(@digotzstr$ != "你這可悲的傢伙啊!")goto failstr;
+		mes "[麻庫]";
+		mes "可悲?! 就是這個!";
+		mes "很明顯的! 下次我遇到他的時候，";
+		mes "我一定要把他的臉踩在地上!!";
 		set friendship,5;
 		close;
 	break;
 
 	case 5:
-		mes "[Maku]";
-		mes "RrrrRrrrr.....";
-		mes "RrrrrRRRrrRR.....";
-		mes "GGGGGRRRRR...";
+		mes "[麻庫]";
+		mes "啊阿阿~~ 啊阿阿~~!!";
+		mes "阿~~ 阿~~ 阿~~!!";
+		mes "嘰嘰嘰~~~ 啊啊啊~~~!!";
 		next;
-		mes "^3131FFUh oh...";
-		mes "It looks like Maku";
-		mes "is starting to rage";
-		mes "just a bit too much.^000000";
+		mes "^3131FF(不好了...)";
+		mes "(看起來麻庫好像氣瘋了!)^000000";
 		next;
-		mes "[Maku]";
+		mes "[麻庫]";
 		mes "...";
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Maku]";
-		mes "Gggrrrr...";
+		mes "[麻庫]";
+		mes "嘰嘰...";
 		next;
-		mes "[Maku]";
-		mes "GRAAAAAAAAH~!";
-		mes "Who the hell does he";
-		mes "think he is, telling me";
-		mes "all sorts of crap!? Digotz,";
-		mes "you're not getting away";
-		mes "with this! Gonna wreck you!!";
+		mes "[麻庫]";
+		mes "啊~~呀呀呀呀~~!!";
+		mes "那個該死的傢伙以為他是誰啊?!";
+		mes "在這裡跟我胡言亂語!";
+		mes "達伊戈次! 我跟你勢不兩立!";
+		mes "我要去殺了你!!";
 		next;
 		set Hp,MaxHp/2;
-		mes "^3131FFMaku's seething quickly";
-		mes "explodes into pure, violent";
-		mes "rage. You manage to calm";
-		mes "him down after a while, but";
-		mes "barely keep yourself from";
-		mes "getting killed in this outburst^000000";
+		mes "^3131FF(麻庫似乎快要氣到爆炸了!)";
+		mes "(你設法讓他可以平靜一點)";
+		mes "(但是因為他太激動了)";
+		mes "(導致你在安撫他的時候受了傷!)^000000";
 		next;
-		mes "[Maku]";
-		mes "^111111*Pant pant* *Whew~*^000000";
-		mes "D-don't worry, I've got";
-		mes "a grip on myself now.";
-		mes "Thanks for not letting me";
-		mes "get too crazy. Times like";
-		mes "this, I really miss ^FF0000Benkaistein^000000.";
+		mes "[麻庫]";
+		mes "^111111(看起來很喘的樣子)^000000";
+		mes "不...不用擔心，我現在平靜多了!";
+		mes "謝謝你還安撫我，不然我真的要瘋了!";
+		mes "每當這種時候，";
+		mes "我就好想念^FF0000班卡依史丁^000000!";
 		next;
-		mes "[Maku]";
-		mes "Benkastein would always";
-		mes "make sure that I'd stay out";
-		mes "of fights. I really miss that";
-		mes "guy. Still, he ain't around...";
+		mes "[麻庫]";
+		mes "他總是可以讓我在抓狂前平靜下來!";
+		mes "我真的很想念他...!";
+		mes "即使他現在依然不在這裡...";
 		next;
-		mes "[Maku]";
-		mes "Damn those guards!";
-		mes "If they weren't there,";
-		mes "I could just go over and";
-		mes "kick Digotz's ass! I swear,";
-		mes "if it weren't for them...!";		
+		mes "[麻庫]";
+		mes "那些該死的警衛!";
+		mes "如果他們不在那裡，";
+		mes "我就可以過去找到達伊戈次，";
+		mes "然後狠狠的踢他一腳!";
+		mes "如果沒有那些警衛我一定會做到!";		
 		set friendship,6;
 		close;
 	break;
 
 	case 6:
-		mes "[Maku]";
-		mes "Arrrrgh! Whenever I hear";
-		mes "about that Digotz, I get so";
-		mes "peeved! Is that guy giving";
-		mes "me the brushoff just because";
-		mes "I'm not a rich guy like he is?!";
+		mes "[麻庫]";
+		mes "啊啊啊!! 無論如何，";
+		mes "我聽到達伊戈次的消息就很生氣!";
+		mes "那個傢伙對我不理不睬就只因為我不是個有錢人嗎?!";
 		next;
-		mes "[Maku]";
-		mes "I can't...";
-		mes "I can't even beat him up";
-		mes "all properly because of";
-		mes "all those freakin' guards!";
-		mes "Arrrrrrrgh! Man, where's";
-		mes "Benkastein when I need him?";
+		mes "[麻庫]";
+		mes "我不能...";
+		mes "我不能痛打他一頓都是因為那些詭異的警衛!";
+		mes "啊啊啊!! 班卡依史丁到底在哪裡?";
+		mes "現在我真的需要他!";
 		close;
 	break;
 
 	case 7:
-		mes "[Maku]";
-		mes "Arrrrgh! Whenever I hear";
-		mes "about that Digotz, I get so";
-		mes "peeved! Is that guy giving";
-		mes "me the brushoff just because";
-		mes "I'm not a rich guy like he is?!";
+		mes "[麻庫]";
+		mes "啊啊啊!! 無論如何，";
+		mes "我聽到達伊戈次的消息就很生氣!";
+		mes "那個傢伙對我不理不睬就只因為我不是個有錢人嗎?!";
 		next;
-		mes "[Maku]";
-		mes "I can't...";
-		mes "I can't even beat him up";
-		mes "all properly because of";
-		mes "all those freakin' guards!";
-		mes "Arrrrrrrgh! Man, where's";
-		mes "Benkastein when I need him?";
+		mes "[麻庫]";
+		mes "我不能...";
+		mes "我不能痛打他一頓都是因為那些詭異的警衛!";
+		mes "啊啊啊!! 班卡依史丁到底在哪裡?";
+		mes "現在我真的需要他!";
 		close;
 	break;
 
 	case 8:
-		mes "[Maku]";
-		mes "Hey, what is that? You want";
-		mes "me to read this journal?";
-		mes "Er, okay, but I'm none too";
-		mes "comfortable going through";
-		mes "somebody's diary. It's just";
-		mes "kinda... creepy, you know?";
+		mes "[麻庫]";
+		mes "嘿! 這是什麼?";
+		mes "你要我看這本日記?";
+		mes "耶? 好吧，雖然我對於看別人的日記沒什麼興趣!";
+		mes "那有點...讓人不舒服! 你知道的!";
 		next;
-		mes "[Maku]";
-		mes "Hey, this think is";
-		mes "Benkastein's. I haven't";
-		mes "seen that guy in a long while.";
-		mes "Ah, so he gave it to you for me";
-		mes "to read? Alright, I owe him a";
-		mes "favor or two, so I oughta...";
+		mes "[麻庫]";
+		mes "嘿~! 這看起來像是班卡依史丁的日記!";
+		mes "我好久沒見到他了!";
+		mes "嗯，他要你拿這本日記給我看?";
+		mes "好吧! 我還欠他一些人情...";
+		mes "所以我應該.....";
 		next;
-		mes "[Benkastein's Journal]";
-		mes "^AD9595Today, me, Digotz and";
-		mes "Maku played this crazy flying";
-		mes "game. Basically, we make";
-		mes "these wings out of wood and";
-		mes "paper, jump of these hills";
-		mes "and try to fly. Dumb, I know.";
+		mes "[班卡依史丁的日記]";
+		mes "^AD9595今天我和達伊戈次和麻庫";
+		mes "打算玩一場瘋狂的飛行遊戲!";
+		mes "基本上，就是利用我們用木頭跟紙做的翅膀，";
+		mes "從小山上跳下去試著飛行!";
 		next;
-		mes "^000000[Benkastein's Journal]";
-		mes "^AD9595Today it was my turn to";
-		mes "jump and flap my arms with";
-		mes "these fake, badly made wings.";
-		mes "It's not really a fun game when";
-		mes "I think about it. Boy, I hope";
-		mes "we don't do that again.";
+		mes "^000000[班卡依史丁的日記]";
+		mes "^AD9595該死的! 我知道今天輪到我了!";
+		mes "這真的不是一場有趣的遊戲!";
+		mes "希望以後我們不會再玩這個遊戲了!";
 		next;
-		mes "^000000[Maku]";
-		mes "What is he talking about?!";
-		mes "That game was real fun!";
-		mes "Yeah, I usually wore the";
-		mes "wings and Digotz always";
-		mes "wanted to wear them too.";
+		mes "^000000[麻庫]";
+		mes "他在說什麼?!";
+		mes "那是個很有趣的遊戲!";
+		mes "哈哈! 我很喜歡玩那些翅膀!";
+		mes "達伊戈次也是!";
 		next;
-		mes "[Benkastein's Journal]";
-		mes "^AD9595Maku, Digotz and me went";
-		mes "outside of town. Of course,";
-		mes "we didn't tell anyone or else";
-		mes "we'd get in trouble. It was";
-		mes "a really exciting day. But";
-		mes "then, we ran into a monster!";
+		mes "[班卡依史丁的日記]";
+		mes "^AD9595麻庫，達伊戈次和我今天跑到了城外!";
+		mes "當然我們沒有告訴任何人!";
+		mes "這是令人興奮的一天!";
+		mes "不過我們卻遇到了一個魔物!";
 		next;
-		mes "^000000[Benkastein's Journal]";
-		mes "^AD9595I wanted to run away but Maku";
-		mes "and Digotz wanted to beat it so";
-		mes "that we could become heroes.";
-		mes "Of course, we got hurt pretty";
-		mes "bad and the monster got away.";
-		mes "Boy, mom was not happy...";
+		mes "^000000[班卡依史丁的日記]";
+		mes "^AD9595我想要逃走，";
+		mes "但是麻庫跟達伊戈次想要擊敗它!";
+		mes "他們說這樣我們就會變成英雄!";
+		mes "但是，果然我們都受了重傷，";
+		mes "那個魔物也跑掉了!";
+		mes "唉... 媽媽很生氣...!";
 		next;
-		mes "^000000[Maku]";
-		mes "That's right! Back then,";
-		mes "the three of us weren't";
-		mes "afraid of anything! Of course,";
-		mes "Digotz got beat up the most.";
-		mes "But I gotta say, he was also";
-		mes "the most fearless of us.";
+		mes "^000000[麻庫]";
+		mes "就是這個! 以前我們三個總是什麼都不怕!";
+		mes "雖然這件事對達伊戈次的打擊最大!";
+		mes "但是我敢說他依然是我們之中最大膽的!";
 		next;
-		mes "[Benkastein's Journal]";
-		mes "^AD9595Digotz's been sick for three";
-		mes "days now. It's just a normal";
-		mes "cold and Maku keeps saying";
-		mes "it's Digotz's fault he got sick.";
-		mes "But he's always asking me to";
-		mes "go visit him and see if he's okay.";
+		mes "[班卡依史丁的日記]";
+		mes "^AD9595達伊戈次已經生病3天了!";
+		mes "雖然那只是一個很普通感冒，";
+		mes "麻庫也說他會生病是他自己的錯!";
+		mes "但是麻庫還是常常問我他好一點了嗎?";
+		mes "而且想去看看他!";
 		next;
-		mes "^000000[Maku]";
-		mes "Wh-what?! No, I wasn't";
-		mes "worried at all! That must";
-		mes "have been the time Digotz";
-		mes "caught Clymonia. You know,";
-		mes "that, uh, horrible disease. No";
-		mes "one should have that one!";
+		mes "^000000[麻庫]";
+		mes "什...什麼?! 我才不會擔心那個傢伙!";
+		mes "那應該是達伊戈次感染Clymonia的那一次!";
+		mes "你知道的，那是一種可怕的疾病!";
+		mes "很少人會得到那種病!";
 		next;
-		mes "[Benkastein's Journal]";
-		mes "^AD9595Mom and dad keep telling";
-		mes "me not to hang out with Maku";
-		mes "anymore. Their reason is really";
-		mes "dumb, and I don't care if he is";
-		mes "poor. He's one of the best guys";
-		mes "that I'll ever know.";
+		mes "[班卡依史丁的日記]";
+		mes "^AD9595爸爸跟媽媽一直告訴我不要再接近麻庫!";
+		mes "他們說的原因真的都很蠢!";
+		mes "我才不管他們說什麼!";
+		mes "麻庫是我見過最好的一個人!";
 		next;
-		mes "^000000[Benkastein's Journal]";
-		mes "^AD9595Digotz's family is really";
-		mes "rich and they don't want him";
-		mes "to see Maku anymore either.";
-		mes "But Digotz doesn't care.";
-		mes "I know he likes Maku a lot.";
+		mes "^000000[班卡依史丁的日記]";
+		mes "^AD9595達伊戈次家真的很有錢!";
+		mes "他們家的人也不希望達伊戈次繼續跟麻庫見面!";
+		mes "但是達伊戈次也不管他們說什麼!";
+		mes "我知道他真的很喜歡麻庫!";
 		next;
-		mes "^000000[Maku]";
+		mes "^000000[麻庫]";
 		mes "...";
 		mes "......";
 		next;
-		mes "[Benkastein's Journal]";
-		mes "^AD9595Today, the three of us";
-		mes "made an oath of brotherhood,";
-		mes "just like we read in the comic";
-		mes "book. We swore we'd always";
-		mes "be friends no matter what.";
-		mes "For always and for always.";
+		mes "[班卡依史丁的日記]";
+		mes "^AD9595今天! 我們三個決定要";
+		mes "結拜成為兄弟! 就像我們在書上看到的那樣!";
+		mes "我們約定好無論如何都要永遠做好朋友!";
 		next;
-		mes "^000000[Maku]";
-		mes "Well, that's true,";
-		mes "I guess, but people";
-		mes "change! Besides, we got";
-		mes "that idea from a comic book!";
-		mes "Well, if he apologizes first,";
-		mes "I guess I better forgive him.";
+		mes "^000000[麻庫]";
+		mes "呃... 我想那件事是真的!";
+		mes "但是人都會變的!";
+		mes "而且這個主意是從一本喜劇的書來的!";
+		mes "總之! 如果他先來道歉的話，";
+		mes "我想我應該會原諒他的!";
 		next;
 		mes "[" + strcharinfo(0) + "]";
-		mes "Good...";
-		mes "Because Digotz said";
-		mes "that he'll be coming";
-		mes "by in a few days.";
+		mes "很好...";
+		mes "因為達伊戈次說他過幾天會來找你!";
 		next;
-		mes "[Maku]";
-		mes "What?! He's really coming";
-		mes "here? What for? It's too late";
-		mes "to patch things up! Still, I'd be";
-		mes "a real prick if I didn't see him";
-		mes "Alright, fine! I'll teach that guy";
-		mes "a lesson once he's here!";
+		mes "[麻庫]";
+		mes "什麼?! 他真的要來這裡?";
+		mes "他想彌補他的錯誤也太遲了!";
+		mes "看到他只會讓我覺得刺眼!";
+		mes "很好! 如果他真的來了，";
+		mes "我會好好教訓他一頓!";
 		next;
-		mes "[Maku]";
-		mes "And, um, gimme that";
-		mes "journal! I'm gonna read";
-		mes "more of it so I can make";
-		mes "fun of Digotz. Bwahahaha!";
-		mes "But yeah, um, thanks. Not";
-		mes "that I'm grateful or anything.";
+		mes "[麻庫]";
+		mes "還有，嗯，依照那本日記的內容...嘿嘿...";
+		mes "我要看完這本日記! 這樣我就可以取笑達伊戈次了!";
+		mes "哇哈哈哈哈哈~~!!";
+		mes "對了... 嗯... 總之謝謝你!";
 		next;
-		mes "[Maku]";
-		mes "So, uh, I guess";
-		mes "I'll see you later.";
-		mes "Um, now I gotta get";
-		mes "ready for something.";
-		mes "^111111(But not to see Digotz!)";
+		mes "[麻庫]";
+		mes "我想我應該還會再見到你!";
+		mes "不過現在我必須先準備一些東西了!";
+		mes "^111111(但是不是為了見達伊戈次!)";
 		if(countitem(7351))delitem 7351,1;
+		if(BaseLevel < 41)set BaseExp,BaseExp+49500;
+		if(BaseLevel > 40 && BaseLevel < 61)set BaseExp,BaseExp+99000;
+		if(BaseLevel > 60 && BaseLevel < 71)set BaseExp,BaseExp+198000;
+		if(BaseLevel > 70 && BaseLevel < 81)set BaseExp,BaseExp+396000;
+		if(BaseLevel > 80 && BaseLevel < 91)set BaseExp,BaseExp+594000;
+		if(BaseLevel > 90)set BaseExp,BaseExp+792000;
 		set friendship,9;
 		close;
 	break;
 
 	case 9:
-		mes "[Maku]";
-		mes "Why is Digotz";
-		mes "so late? This isn't";
-		mes "like him at all. Maybe";
-		mes "something's wrong?";
+		mes "[麻庫]";
+		mes "為什麼達伊戈次這麼慢?";
+		mes "這不像他...";
+		mes "難道是發生了什麼事嗎?";
 		close;
 	break;
 
 	case 10:
-		mes "[Maku]";
-		mes "Why is Digotz";
-		mes "so late? This isn't";
-		mes "like him at all. Maybe";
-		mes "something's wrong?";
+		mes "[麻庫]";
+		mes "為什麼達伊戈次這麼慢?";
+		mes "這不像他...";
+		mes "難道是發生了什麼事嗎?";
 		next;
-		mes "[Maku]";
-		mes "Eh, he might have";
-		mes "some kinda reason for";
-		mes "being late, but if he don't,";
-		mes "i've been saving a whole";
-		mes "six pack of kickass to open,";
-		mes "just for him. Heh heh heh~";
+		mes "[麻庫]";
+		mes "嗯... 也許他是因為一些原因所以慢了...";
+		mes "他最好趕快來...";
+		mes "我已經準備好一些好東在等著他了...";
+		mes "嘿~~ 嘿~~ 嘿~~";
 		close;
 	break;
 
 	case 11:
-		mes "[Maku]";
-		mes "Why is Digotz";
-		mes "so late? This isn't";
-		mes "like him at all. Maybe";
-		mes "something's wrong?";
+		mes "[麻庫]";
+		mes "為什麼達伊戈次這麼慢?";
+		mes "這一點都不像他...";
+		mes "難道是發生了什麼事嗎?";
 		next;
-		mes "[Maku]";
-		mes "Eh, he might have";
-		mes "some kinda reason for";
-		mes "being late, but if he don't,";
-		mes "i've been saving a whole";
-		mes "six pack of kickass to open,";
-		mes "just for him. Heh heh heh~";
+		mes "[麻庫]";
+		mes "嗯... 也許他是因為一些原因所以慢了...";
+		mes "他最好趕快來...";
+		mes "我已經準備好一些好東在等著他了...";
+		mes "嘿~~ 嘿~~ 嘿~~";
 		close;
 	break;
 	}
 
 failstr:
-	mes "[Maku]";
-	mes "Wha...? I dunno if Digotz";
-	mes "would say something like";
-	mes "that. You sure you heard";
-	mes "him carefully enough? It's";
-	mes "been a while, but I know";
-	mes "how Digotz talks, man.";
+	mes "[麻庫]";
+	mes "啥...? 我不認為達伊戈次會說這種話!";
+	mes "你確定他是這樣告訴你的嗎?";
+	mes "雖然我們很久不見了,";
+	mes "但是我知道他不會這樣說話的!";
 	close;
 }
 
-yuno_in04.gat,107,14,4	script	Student	754,{
+yuno_in04.gat,107,14,4	script	學生	754,{
 
-	mes "[Joey Choryee]";
-	mes "This is a study area where";
-	mes "you're not supposed to speak,";
-	mes "walk or even breathe loudly.";
-	mes "Still, students like Benkastein";
-	mes "can tune out the whole world";
-	mes "when they study hard enough...";
+	mes "[學生]";
+	mes "這裡是讀書的地方,";
+	mes "請你別用跑的,";
+	mes "說話也小聲一點!";
+	mes "請別妨礙用功讀書的學生們!";
 	if(friendship != 6)close;
 	next;
-	mes "[Joey Choryee]";
-	mes "Benkastein...?";
-	mes "He's in the north part.";
-	mes "of this room. He's a real";
-	mes "nice guy, but a little anal.";
-	mes "Well, he's too organized";
-	mes "and he labels everything!";
+	mes "[學生]";
+	mes "班卡依史丁...?";
+	mes "他在北邊的房間裡!";
+	mes "他真是一個不錯的傢伙! 只是詭異了一點...";
+	mes "他只是太過於拼命了,";
+	mes "老是在書上做滿了記號...!";
 	close;
 
 }
 
-yuno_in04.gat,96,106,4	script	Passionate Student	754,{
+yuno_in04.gat,96,106,4	script	熱血學生	754,{
 
 	if(friendship == 10)goto s_Ask;
 	if(friendship3 == 2 || friendship3 == 3)goto s_Cont2;
 	if(friendship3 == 1)goto s_Cont;
-	mes "[Passionate Student]";
-	mes "Let's see, now.";
-	mes "Wind Magic, Black Magic,";
-	mes "Porings, ah, there it is";
-	mes "Monster race properties.";
-	mes "Hopefully this contains";
-	mes "the information I need...";
+	mes "[熱血學生]";
+	mes "讓我瞧瞧...";
+	mes "富裕學, 喃喃自語著...";
+	mes "風魔法, 喃喃自語著...";
+	mes "黑魔島, 喃喃自語著...";
+	mes "他種族, 喃喃自語著...";
 	next;
 	if(friendship != 6)goto s_Dialog;
-	mes "Upon briefly glancing at";
-	mes "this student's belongings,";
-	mes "you notice that the name";
-	mes "\"Benkastein\" is printed";
-	mes "on them. This is the friend";
-	mes "mentioned by Maku and Digotz!";
+	mes "(你突然撇見在這個學生的名牌上,)";
+	mes "(寫著 班卡依史丁 這個名字...)";
+	mes "(這就是麻庫跟達伊戈次的那個朋友!)";
 	next;
-	menu "Excuse me...",-;
+	menu "不好意思...",-;
 	mes "[" + strcharinfo(0) + "]";
-	mes "Excuse me...";
-	mes "Benkastein?";
+	mes "不好意思...";
+	mes "班卡依史丁?";
 	next;
-	mes "[Passionate Student]";
-	mes "...The world of humans";
-	mes "and the world of demons,";
-	mes "yes, yes... No, what I'm";
-	mes "looking for is a reference";
-	mes "to the heavens of Asgard.";
-	mes "Hmm, this here might help...";
+	mes "[熱血學生]";
+	mes "...人類的世界, 和妖魔的世界,";
+	mes "嗯... 嗯...";
+	mes "但是我在找的是曾被提及到的神的天堂...";
+	mes "喔~! 也許這篇文章會有點幫助...";
 	next;
-	menu "Hey...",-;
+	menu "喂...",-;
 	mes "[" + strcharinfo(0) + "]";
-	mes "Hey...";
-	mes "Over here.";
-	mes "Benkastein!";
+	mes "喂...";
+	mes "看這裡!";
+	mes "班卡依史丁!";
 	next;
-	mes "[Passionate Student]";
-	mes "...Oh, now that's a very";
-	mes "interesting observation.";
-	mes "If I can incorporate that";
-	mes "into my thesis without too";
-	mes "much trouble, my standpoint";
-	mes "would look much more solid...";
+	mes "[熱血學生]";
+	mes "...喔, 這真是一篇有趣的報告!";
+	mes "如果我可以試著把他編進我的論文裡,";
+	mes "那我的論文就更完整了!";
 	next;
-	menu "HEY YOU...!",-;
+	menu "喂...!",-;
 	mes "[" + strcharinfo(0) + "]";
-	mes "HEY YOU...!";
-	mes "BENKASTEIN~!";
+	mes "喂!!!";
+	mes "班卡依史丁!!!";
 	next;
-	mes "[Passionate Student]";
-	mes "Oh, good heavens!";
-	mes "C-can't you keep";
-	mes "your voice down?";
-	mes "I-I'm trying to study!";
-	mes "No, wait. Have you been";
-	mes "calling me all this time?";
+	mes "[熱血學生]";
+	mes "嚇我一跳! 你這是做什麼?";
+	mes "你就不能小聲一點叫我嗎?";
+	mes "你真是沒禮貌...";
+	mes "總之, 你找我有什麼事呢?";
 	set friendship3,1;
 	close;
 
 s_Cont:
-	mes "[Passionate Student]";
-	mes "Oh, you startled me!";
-	mes "Still, I'm aware that it's";
-	mes "hard to get my attention";
-	mes "once I immerse myself";
-	mes "in a book. So, how can";
-	mes "I help you, adventurer?";
+	mes "[熱血學生]";
+	mes "喔! 你嚇到我了!";
+	mes "當我埋首於書本時, 你是很難引起我的注意的!";
+	mes "那麼, 有什麼我幫的上忙的嗎?";
 	next;
-	menu "Tell him about Maku and Digotz.",-;
-	mes "[Benkastein]";
-	mes "Oh, how are my friends";
-	mes "doing? Oh, what? They're";
-	mes "having a huge fight just";
-	mes "because one's rich and";
-	mes "the other one's poor?";
-	mes "That's pretty childish!";
+	menu "告訴他關於麻庫跟達伊戈次的事",-;
+	mes "[班卡依史丁]";
+	mes "喔! 我的朋友現在好嗎?";
+	mes "你說什麼? 他們之間有著強烈的爭執,";
+	mes "只因為一個是有錢人而另一個是窮人?";
+	mes "真是個孩子氣的原因!";
 	next;
-	mes "[Benkastein]";
-	mes "But then again, that's just";
-	mes "like them. ^111111*Sigh*^000000 I really want";
-	mes "to go back home and get those";
-	mes "two to make up, but I also need";
-	mes "to finish this thesis. Let's see...";
-	mes "What can I possibly do from here?";
+	mes "[班卡依史丁]";
+	mes "不過那很像他們會做的事!";
+	mes "嗯... 我真的很想回去安撫一下那兩個人!";
+	mes "但是我必須完成這篇論文!";
+	mes "讓我想想...";
+	mes "我能不能幫上什麼忙...?";
 	next;
-	mes "[Benkastein]";
-	mes "Oh, I know what I can do!";
-	mes "Wait, but where did I put it?";
-	mes "Oh, how cold I lose something";
-	mes "so important? Wait! Would you";
-	mes "please wait a second while";
-	mes "I look for something?";
+	mes "[班卡依史丁]";
+	mes "喔, 我知道我該怎麼做了!";
+	mes "等等... 可是我把那個東西放到哪去了?";
+	mes "喔... 我怎麼會把這麼重要的東西弄丟了?!";
+	mes "等等! 你可以稍等一下嗎?";
+	mes "等我先把那個東西找到...";
 	set friendship3,2;
 	close;
 
 s_Cont2:
-	mes "[Benkastein]";
-	mes "Aw nuts, this is";
-	mes "taking much longer";
-	mes "than I had expected.";
-	mes "Now where did I put";
-	mes "that thing? Hmmmm...";
+	mes "[班卡依史丁]";
+	mes "混蛋! 我花了比我預期還要多的時間!";
+	mes "我到底把東西放到哪去了...?";
+	mes "嗯嗯嗯......";
 	if(friendship3 == 3)goto s_Cont3;
 	next;
-	mes "^3131FFPerhaps it would";
-	mes "be best if you help";
-	mes "Benkastein to look for";
-	mes "what he's searching for.";
+	mes "^3131FF(還是幫忙班卡依史丁找找那個東西吧...)";
+	mes "(這樣會比較快...)";
 	close;
 
 s_Cont3:
 	next;
-	mes "[Benkastein]";
-	mes "Oh, is that it?";
-	mes "Did you find my";
-	mes "journal? Quick, let";
-	mes "me check. Yes, yes...";
-	mes "This is it! Thank you";
-	mes "for finding this for me!";
+	mes "[班卡依史丁]";
+	mes "喔! 你找到它了!";
+	mes "我的日記本!";
+	mes "快拿來讓我看看!";
+	mes "沒錯! 就是這本!";
+	mes "謝謝你幫我找到了它!";
 	next;
-	mes "[Benkastein]";
-	mes "Would you mind doing";
-	mes "a favor for me? It'd be";
-	mes "better if I talk to them";
-	mes "myself, but I'm too busy";
-	mes "working on this thesis...";
+	mes "[班卡依史丁]";
+	mes "你可以幫我一個忙嗎?";
+	mes "雖然我覺得我親自回去一趟會比較好...";
+	mes "但是我真的太忙了, 抽不出空檔可以回去!";
 	next;
-	mes "[Benkastein]";
-	mes "Would you please give this";
-	mes "journal to Digotz and Maku?";
-	mes "I wrote it in when we were";
-	mes "really young, so it should";
-	mes "remind them of all the good";
-	mes "times we used to share.";
+	mes "[班卡依史丁]";
+	mes "可以拜託你把這本日記拿給麻庫和達伊戈次看嗎?";
+	mes "這是我小時候寫的日記,";
+	mes "我想他們看過之後應該會想起小時候快樂的回憶!";
 	next;
-	mes "[Benkastein]";
-	mes "Anyway, this should at";
-	mes "least help them realize";
-	mes "how stupid they've been";
-	mes "acting. Thanks in advance,";
-	mes "and please take care of";
-	mes "Maku and Digotz for me.";
+	mes "[班卡依史丁]";
+	mes "無論如何, 這應該會讓他們發現,";
+	mes "他們現在的行為有多愚蠢!";
+	mes "先謝謝你的幫忙!";
+	mes "請幫我多照顧一下那兩個人!";
 	if(friendship == 6)set friendship,7;
 	close;
 
 s_Dialog:
-	mes "^3131FFThis student seems to";
-	mes "be dilligently conducting";
-	mes "intensive research on some";
-	mes "academic subject. For now,";
-	mes "it would be best to leave him";
-	mes "alone so that he can study.";
+	mes "^3131FF這個學生好像正在研究一些學術方面的東西,";
+	mes "現在最好不要打擾他!";
 	close;
 
 s_Ask:
-	mes "[Benkastein]";
-	mes "Were you able to bring";
-	mes "my journal to Digotz and";
-	mes "Maku? I'm pretty sure it'd";
-	mes "remind them of all the good";
-	mes "times we had. I know they";
-	mes "sure can be stubborn...";
+	mes "[班卡依史丁]";
+	mes "你拿我的日記給他們看過了嗎?";
+	mes "我相信這本日記可以讓他們想起以前快樂的時光!";
+	mes "雖然他們可能是有點頑固...";
+	mes "不願意承認自己錯誤...!";
 	next;
-	mes "[Benkastein]";
-	mes "Anyway, I really";
-	mes "appreciate all your";
-	mes "help. When I go back";
-	mes "home, I look forward to";
-	mes "seeing the two of them again.";
+	mes "[班卡依史丁]";
+	mes "無論如何! 我真的很感謝你的幫忙!";
+	mes "我很期待有機會可以回去見見他們兩個!";
 	next;
-	mes "[Benkastein]";
-	mes "Until then, I need to research,";
-	mes "finish my thesis and accomplish";
-	mes "my academic goals. Oh, please";
-	mes "take this pass which will let you";
-	mes "go back and forth between the";
-	mes "rich and poor areas as my thanks.";
+	mes "[班卡依史丁]";
+	mes "嗯... 不過現在我必須先完成我的論文!";
+	mes "請你收下這個通行證!";
+	mes "這可以讓你自由的通行富裕區跟貧民區!";
+	mes "就當作是我的謝禮吧!";
 	next;
-	mes "[Benkastein]";
-	mes "Anyway, I wish you";
-	mes "safety in your travels,";
-	mes "adventurer. When the three";
-	mes "of us get together, I'll be";
-	mes "sure to let you know~";
+	mes "[班卡依史丁]";
+	mes "總之! 祝你在你的旅行中可以平安順利!";
+	mes "當我們三個又見面的時候, 我會讓你知道的!";
 	if(BaseLevel < 41)set BaseExp,BaseExp+49500;
 	if(BaseLevel > 40 && BaseLevel < 61)set BaseExp,BaseExp+99000;
 	if(BaseLevel > 60 && BaseLevel < 71)set BaseExp,BaseExp+198000;
@@ -2505,81 +2290,68 @@ s_Ask:
 
 }
 
-yuno_in04.gat,168,117,1	script	Book	111,{
+yuno_in04.gat,168,117,1	script	書	111,{
 
 	if(friendship3 >= 3)goto Book2;
 	if(friendship3 == 2)goto Book;
-	mes "^3131FFThis book is labeled,";
-	mes "\"Benkastein's Journal";
-	mes "Vol. 6.\".";
+	mes "^3131FF這本書上的標籤寫著";
+	mes "班卡依史丁的日記 Vol.6";
 	close;
 Book:
-	mes "^3131FFThis book is labeled,";
-	mes "\"Benkastein's Journal";
-	mes "Vol. 6.\". This is probably";
-	mes "what Benkastein was trying";
-	mes "to find, so it might be best to";
-	mes "bring this and show it to him";
+	mes "^3131FF這本書上的標籤寫著";
+	mes "班卡依史丁的日記Vol.6";
+	mes "這可能是班卡依史丁在找的那本!";
+	mes "把這本書拿回去給班卡依史丁看看!";
 	set friendship3,3;
 	getitem 7351,1;
 	close;
 Book2:
-	mes "^3131FFThis is where you found";
-	mes "the book that Benkastein";
-	mes "was looking for.";
+	mes "^3131FF這是你找到班卡依史丁正在找的那本書的地方!";
 	close;
 
 }
 
-yuno_in04.gat,169,109,1	script	Ambitious Hollgrehenn	111,{
+yuno_in04.gat,169,109,1	script	野心勃勃的霍古漢	111,{
 
-	mes "*Hollgrehenn: The Ambition*";
-	mes "By Aragham Caul*";
+	mes "*野心勃勃的霍古漢*";
+	mes "作者 艾爾汗 卡爾";
 	mes "";
 	mes "";
 	mes "";
 	mes "";
-	mes "Publisher:";
-	mes "Muha Books, Co.";
+	mes "出版商 穆哈 出版公司";
 	next;
 	mes "...";
-	mes "He would stop at nothing";
-	mes "to have the greatest weapon";
-	mes "in the world in his possession.";
-	mes "He became a smith so that he";
-	mes "could discern which weapons";
-	mes "were the most powerful...";
+	mes "他不擇手段也要得到世界上最強大的武器...";
+	mes "...他成為一名鐵匠,";
+	mes "這樣他就可以分辨出,";
+	mes "哪樣武器是世界上最強大的...";
 	next;
 	mes "[" + strcharinfo(0) + "]";
-	mes "That's strange...";
-	mes "The next page";
-	mes "has been torn out.";
+	mes "這是本詭異的書...";
+	mes "下一頁被撕掉了...";
 	close;
 
 }
 
-yuno_in04.gat,171,117,1	script	List of Books	111,{
+yuno_in04.gat,171,117,1	script	書籍目錄	111,{
 
-	mes "^3131FFYou find a series";
-	mes "of paperback books";
-	mes "with titles, printed";
-	mes "on the binding in an";
-	mes "elegantly decorative";
-	mes "cursive style font.";
-	mes "The titles include...";
+	mes "^3131FF你發現了一份目錄,";
+	mes "記載了一系列的平裝書!";
+	mes "用優雅的字體印刷出來的!";
+	mes "目錄中有...";
 	next;
-	mes "*Volcanic Passion*";
-	mes "*Midnight Crescendo*";
-	mes "*A Paris Affair*";
-	mes "*Fever Pitch*";
-	mes "*The Cowyboy Next Door*";
-	mes "*Platonic Romance*";
-	mes "*How Lara Got Her Groove Back*";
+	mes "*火山激情*";
+	mes "*午夜高潮*";
+	mes "*巴黎韻事*";
+	mes "*狂熱的程度*";
+	mes "*隔壁的乳牛男孩*";
+	mes "*柏拉圖浪漫*";
+	mes "*怎麼贏回她的心*";
 	next;
 	mes "^000000[" + strcharinfo(0) + "]";
-	mes "What the...?!";
-	mes "This place even has";
-	mes "a romance novel section?";
+	mes "這是什麼...?!";
+	mes "這個地方居然還有浪漫小說的一部份??";
 	close;
 
 }

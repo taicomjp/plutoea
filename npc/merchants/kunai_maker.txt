@@ -14,76 +14,88 @@
 //=	  id of the 2 required items plus the amount. Can trade
 //= 	  up to 500 units (5,000 kunais) at once. [erKURITA]
 //============================================================
-que_ng.gat,72,29,3	script	Kunai Seller	83,{
-mes "[Jin]";
-mes "Hi, I sell elemental enchanted kunais. I'll trade you some elemental stones and one kind of shuriken for a determined elemental Kunai";
-next;
-mes "[Jin]";
-mes "What would you like to trade some? It's free";
-switch(select("10 Poison Kunais:10 Icycle Kunais:10 Rough Wind Kunais:10 Black Soil Kunai:10 Explosion Kunai:Nothing at the Moment")) {
-//Callfunc usage: callfunc "Kunai_Trade",itemreqid1,itemreqct1,itemreqid2,itemreqct2,itemidtrade;
-	case 1:
-		callfunc "Kunai_Trade",13250,20,7524,1,13259;
-		goto L_Bye;
-	case 2:
-		callfunc "Kunai_Trade",13251,8,7522,2,13255;
-		goto L_Bye;
-	case 3:
-		callfunc "Kunai_Trade",13252,4,7523,2,13257;
-		goto L_Bye;
-	case 4:
-		callfunc "Kunai_Trade",13253,2,7524,1,13256;
-		goto L_Bye;
-	case 5:
-		callfunc "Kunai_Trade",13254,1,7521,2,13258;
-		goto L_Bye;
-	case 6:
-		goto L_Bye;
-	}
-L_Bye:
+//============================================================
+//2007-02-09  黑色小貓  中文化
+//============================================================
+
+que_ng.gat,72,29,3	script	飛刀交換商人	83,{
+	set @npcname$,"[進]";
+
+	mes @npcname$;
+	mes "嗨! 我可以跟你交換有屬性的飛刀!";
+	mes "我將會收取你的屬性石和一種飛鏢數個，";
+	mes "以交換一種屬性飛刀!";
 	next;
-	mes "[Jin]";
-	mes "Good bye and hope to see you again then";
+	mes @npcname$;
+	mes "你想要交換飛刀嗎? 這項服務是免費的!";
+	
+	switch(select("10 個巨毒飛刀:10 個垂冰飛刀:10 個強風飛刀:10 個黑土飛刀:10 個火焰飛刀:暫時不用")) {
+		//Callfunc usage: callfunc "Kunai_Trade",itemreqid1,itemreqct1,itemreqid2,itemreqct2,itemidtrade;
+		case 1:
+			callfunc "Kunai_Trade",13250,20,7524,1,13259;
+			goto L_Bye;
+		case 2:
+			callfunc "Kunai_Trade",13251,8,7522,2,13255;
+			goto L_Bye;
+		case 3:
+			callfunc "Kunai_Trade",13252,4,7523,2,13257;
+			goto L_Bye;
+		case 4:
+			callfunc "Kunai_Trade",13253,2,7524,1,13256;
+			goto L_Bye;
+		case 5:
+			callfunc "Kunai_Trade",13254,1,7521,2,13258;
+			goto L_Bye;
+		case 6:
+			goto L_Bye;
+	}
+	L_Bye:
+		next;
+		mes @npcname$;
+		mes "慢走! 希望再次看到你!";
 	close;
 }
 
 function	script	Kunai_Trade	{
 	next;
-	mes "[Jin]";
+	mes @npcname$;
+	
 	if (MaxWeight*50/100 < Weight) {
 		if (MaxWeight*90/100 < Weight) {
-			mes "Sorry but you have more than 90% weight. Your kunais might drop. I can't give you anything.";
+			mes "很抱歉! 你的負重超過 90% ! 無法進行交換!";
 			return;
 		}
-		mes "You have 50% or more weight, do you still want to continue?";
-		menu "Yes",-,"No, thanks",L_Return;
+		mes "你的負重超過 50% !你要繼續進行交換嗎?";
+		menu "是的!",-,"先不用了!",L_Return;
 	}
 
-	mes "Would you like to trade my 10 "+getitemname(getarg(4))+" for your "+getarg(1)+" "+getitemname(getarg(0))+" and "+getarg(3)+" "+getitemname(getarg(2))+" ?";
-	switch(select("Yes:I'll think about it")) {
+	mes "你要跟我交換我的 10 個"+getitemname(getarg(4))+"用你的 "+getarg(1)+" 個"+getitemname(getarg(0))+" 和 "+getarg(3)+" 個"+getitemname(getarg(2))+"是嗎?";
+	
+	switch(select("是的!:我在考慮一下!")) {
 		case 1:
 			next; 
-			mes "[Jin]";
+			mes @npcname$;
 			if (countitem(getarg(0)) < getarg(1) || countitem(getarg(2)) < getarg(3)) {
-				mes "Sorry but you're missing one of the required items. Please get them";
+				mes "很抱歉! 你缺少交換需要的物品!";
+				mes "請帶齊再來!";
 				close;
 			} else
-			mes "How many do you want to trade? I can only trade you ^FF0000500^000000 units at once.";
-			mes "^00FF001 Unit^000000 ^FF0000=^000000 ^0000FF10 Kunais^000000 of your desire";
+			mes "請問你要交換多少隻? 一次最多可以交換^FF0000 500 ^000000隻飛刀!";
+			mes "^0000FF 1 組屬性石和飛鏢 ^000000 可以交換 ^0000FF 10 隻飛刀 ^000000給你!";
 			input @trade;
 			next;
-			mes "[Jin]";
+			mes @npcname$;
 			if (@trade > 500) {
-				mes "Sorry, but I told you I could only trade you 500 units at once. Try again";
+				mes "很抱歉! 但是一次最多能交換 500 隻飛刀! 請再試一次!";
 				close;
 			} else if (@trade < 1) {
-				mes "Sorry, but 1 unit is the minimun I can trade. Try again please.";
+				mes "很抱歉! 每次至少需交換一隻飛刀! 請再試一次!";
 				close;
 			} else if ((countitem(getarg(0)) < @trade*getarg(1)) || (countitem(getarg(2)) < @trade*getarg(3))) {
- 				mes "Sorry, but you don't have enough items to trade "+@trade+" unit(s). Get more please";
+ 				mes "很抱歉! 你沒有足夠的物品交換 "+@trade+" 隻飛刀! 請帶齊物品再來!";
 				close;
 			} else
-			mes "Here you go, enjoy them";
+			mes "這是你交換的飛刀! 謝謝光臨!";
 			delitem getarg(0),getarg(1)*@trade;
 			delitem getarg(2),getarg(3)*@trade;
 			getitem getarg(4),10*@trade;
@@ -91,7 +103,7 @@ function	script	Kunai_Trade	{
 			return;
 		case 2:
 			return;
-		}
+	}
 L_Return:
 	return;
 }

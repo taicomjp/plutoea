@@ -18,6 +18,7 @@
 //= 1.3 Fixed bugs and minor typos. Optimized [Lupus]
 //= 1.3a fixed an item ID typo, thx 2Spiritual Kid
 //= 1.3b Splitted into different files [DracoRPG]
+//= 1.3c Inverted the weight check for Greed [DracoRPG]
 //============================================================
 
 
@@ -25,11 +26,12 @@
 // 鐵匠技能 - 貪婪 + 詭計的商術
 //============================================================
 //== GOODDAY - GREED SKILL ===================================
-geffen.gat,172,53,7	script	Goodday	826,{
-	mes "[Goodday]";
+geffen.gat,172,53,7	script	你好先生	826,{
+	mes "[你好先生]";
 	if(BaseJob!=Job_Blacksmith) goto L_nosmith;
 	if(getskilllv(1013)) goto L_alreadyhave;
-	if(Weight < 5000 || (Weight > MaxWeight-MaxWeight/10)) goto L_notstrong;
+	if(Weight < MaxWeight-5000) goto L_notstrong; // You must carry so much that you cannot add 500 more (weight is x10!)
+
 
 	mes "你看起來非常強壯啊！";
 	mes "我想我能教你個技能~";
@@ -39,8 +41,7 @@ geffen.gat,172,53,7	script	Goodday	826,{
 
 L_notstrong:
 	mes "等你再強壯些回來找我吧";
-	mes "當你的負重超過5000";
-	mes "但不高與你90%的負重";
+	mes "當你的負重超過500";
 	close;
 
 L_nosmith:
@@ -48,7 +49,7 @@ L_nosmith:
 	mes "難道你不這樣認為嗎?";
 	next;
 	emotion e_omg;
-	mes "[Goodday]";
+	mes "[你好先生]";
 	mes "什麼？";
 	mes "你不這樣想？!";
 	close;
@@ -60,8 +61,8 @@ L_alreadyhave:
 }
 
 //== AKI - 詭計的商術 ==================================
-geffen.gat,178,72,7	script	Aki	726,{
-	mes "[Aki]";
+geffen.gat,178,72,7	script	阿奇	726,{
+	mes "[阿奇]";
 	if(BaseJob!=Job_Blacksmith) goto L_nosmith;
 	if(getskilllv(1012)) goto L_alreadyhave;
 	if(getskilllv(1013)<1) goto L_nogreed;
@@ -75,7 +76,7 @@ geffen.gat,178,72,7	script	Aki	726,{
 	mes "500 Zeny";
 	next;
 	
-	mes "[Aki]";
+	mes "[阿奇]";
 	mes "讓我檢查下你的物品.";
 	next;
 	
@@ -86,7 +87,7 @@ geffen.gat,178,72,7	script	Aki	726,{
 	delitem 971, 1;//Items: Detrimindexta,
 	set zeny, zeny-500;
 	
-	mes "[Aki]";
+	mes "[阿奇]";
 	mes "很好，你把東西都帶來了";
 	mes "我們開始學習吧~";
 	skill 1012,1,0;
@@ -98,7 +99,7 @@ geffen.gat,178,72,7	script	Aki	726,{
 	close;
 
 L_noitems:
-	mes "[Aki]";
+	mes "[阿奇]";
 	mes "你沒有足夠的東西哦.";
 	mes "等你有了再來找我吧";
 	close;

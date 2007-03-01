@@ -9,7 +9,7 @@
 //= Maeki Rika - A section on general concepts and lots of
 //=              other updates and additions.
 //===== Version ===========================================
-//= 3.02.20070209
+//= 3.03.20070226
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
@@ -59,6 +59,12 @@
 //= 3.02.20070209
 //=       Corrected/updated info on Xor/setd/getd/callfunc/callsub/return and 
 //=       updated some examples to use "better" code. [FlavioJS]
+//= 3.03.20070216
+//=       Expanded/clarified information on npc timers, added info about the
+//=       new attach flag for script commands startnpctimer/ stopnpctimer/ 
+//=       initnpctimer [Skotlex]
+//= 3.03.20070226
+//=       Updated makeitem and how to include " in strings [Lupus]
 //===== Compatible With ===================================
 //= LOL, can be used by anyone hopefully
 //===== Description =======================================
@@ -325,7 +331,7 @@ moment - if you need that, try it and tell us of the results.
 
 ** Define a 'floating' NPC object.
 
--%TAB%script%TAB%-1,{<code>}
+-%TAB%script%TAB%<NPC Name>%TAB%-1,{<code>}
 
 This will define an NPC object not triggerable by normal means. This would 
 normally mean it's pointless since it can't do anything, but there are 
@@ -573,6 +579,10 @@ or a function to set something, it's usually preferable to use that instead. The
 notable exception is Zeny, which you can and often will address directly -
 setting it will make the character own this number of zeny.
 
+Strings
+-------
+
+To include symbol '"' in a string you should use prefix '\"'
 
 
 Arrays
@@ -1991,7 +2001,7 @@ Possible types are:
 	   current level if leader leveled up recently).
 
 If retrieval fails (leader not found or party does not exist), this function
-returns "null" instead of the character name, and -1 is for the other types.
+returns "null" instead of the character name, and -1 for the other types.
 
 ---------------------------------------
 
@@ -2350,7 +2360,7 @@ when you want to check item cards or if it's signed. Useful for such quests as
 	
 --------------------------------------
 
-* getitemslots (<item id>);
+*getitemslots (<item id>);
 
 Returns the amount of slots the item has.
 
@@ -2838,9 +2848,9 @@ account ID.
 
 -------------------------
 
-*isloggedin(<character id>)
+*isloggedin(<account id>)
 
-This function returns 1 if the specified character is logged in and 0 if they 
+This function returns 1 if the specified account is logged in and 0 if they 
 aren't.
 
 ---------------------------------------
@@ -3700,7 +3710,7 @@ Example:
 	}
 
 ---------------------------------------
-
+!!!!!!!!!!!!!!!
 *makeitem <item id>,<amount>,<X>,<Y>,"<map name>";
 *makeitem "<item name>",<amount>,<X>,<Y>,"<map name>";
 
@@ -3716,6 +3726,7 @@ specified location.
 This item will still disappear just like any other dropped item. Like 'getitem', 
 it also accepts an 'english name' field from the database and creates apples if 
 the name isn't found.
+If the map name is given as "this", the map the invoking character is on will be used.
 
 ---------------------------------------
 
@@ -4815,9 +4826,12 @@ is.
 
 ---------------------------------------
 
-*initnpctimer{ "<NPC object name>"};
-*stopnpctimer{ "<NPC object name>"};
-*startnpctimer{ "<NPC object name>"};
+*initnpctimer{ "<NPC object name>" {, <Attach Flag>} } |
+             {"<NPC object name>" | <Attach Flag> };
+*stopnpctimer{ "<NPC object name>" {, <Detach Flag>}  } |
+             { "<NPC object name>" | <Detach Flag> };
+*startnpctimer{ "<NPC object name>" {, <Attach Flag>} } |
+              { "<NPC object name>" | <Attach Flag> };
 *setnpctimer <tick>{,"<NPC object name>"};
 *getnpctimer(<type of information>{,"<NPC object name>"});
 *attachnpctimer {"<character name>"};
@@ -4844,17 +4858,19 @@ To create the timer, use the 'initnpctimer', which will start it running.
 'stopnpctimer' will pause the timer, without clearing the current tick, while 
 'startnpctimer' will let the paused timer continue.
 
-It is not quite clear whether the new invocations will always have a RID. 
-Apparently, the RID that was in effect when the timer was initialised will still 
-be attached to these executions in some cases, but it's not quite clear -
-experiment with RID-dependent commands, like 'mes', and tell us what happens and 
-who gets the message, if anyone.
+By default timers do not have a RID attached, which lets the timers continue even
+if the player that started them logs off. To attach a RID to a timer, you can
+either use the "attach flag" optional value when using initnpctimer/startnpctimer, 
+likewise, the optional flag of stopnpctimer detaches any RID after stopping
+the timer. Once a player is attached to a timer, it stays attached to all
+timers from that script until detached manually. You can have multiple
+npctimers going on at the same time as long as each one has a different player
+attached (think of each RID being used as an independant timer).
 
-Even if they don't have a RID by default, 'attachnpctimer' will allow you to 
-explicitly attach a character's RID to the timer, which will make them the 
-target for all character-referencing commands and functions, not to mention 
-variables. 'detachnpctimer' will make the RID zero, making all character-
-referencing functions fail with an error.
+The other method to attach/detach a RID is through the script commands
+'attachnpctimer' and 'detachnpctimer'. Once attached, that will make the
+character the target for all character-referencing commands and functions,
+not to mention variables.
 
 'setnpctimer' will explicitly set the timer to a given tick. To make it useful, 
 you will need the 'getnpctimer' function, which the type of information argument 
