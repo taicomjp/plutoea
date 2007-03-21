@@ -404,7 +404,7 @@ function	script	F_KafCart	{
 function	script	F_KafGuide	{
 
 	mes "[卡普拉服務人員]";
-	mes "WIP...";
+	mes "咦...";
 	return;
 }
 
@@ -413,7 +413,7 @@ function	script	F_KafInfo	{
 
 	sM_Menu:
 //Uncomment next line to block Kafra Storage Protection
-//	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分佈",sM_KafLoc, "-Cancel",sM_End;
+//	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分佈",sM_KafLoc, "-取消",sM_End;
 	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "-倉庫密碼服務",sM_KafCode, "卡普拉服務人員位置分佈",sM_KafLoc, "總結",sM_End;
 
 	sM_ResChk:
@@ -494,15 +494,15 @@ function	script	F_SetKafCode	{
 		"移除密碼 -> 1000z",M_CLEAR,
 		"取消",M_END;
 	} else {
-		mes "Kafra Services proudly presents you a new service:";
-		mes "Additional storage protection with a password.";
+		mes "卡普拉服務很高興能提供您新服務:";
+		mes "額外的倉庫密碼保護功能";
 		next;
 		menu "設置新密碼 -> 5000z",M_SET,
-		"Cancel",M_END;
+		"取消",M_END;
 	}
 
 	mes "[卡普拉服務人員]";
-	mes "At first, please enter your ^0000FFold password^000000.";
+	mes "首先請輸入您的 ^0000FF舊密碼^000000.";
 	set @code,callfunc("F_EntKafCode");
 	if(@code==0 || @code != #kafra_code-getcharid(3)-1337) {
 		mes "密碼錯誤，你不能設置新密碼.";
@@ -513,10 +513,10 @@ function	script	F_SetKafCode	{
 
 M_SET:
 	mes "[卡普拉服務人員]";
-	mes "Now enter your ^FF0000new password^000000 to protect your storage from thieves.";
+	mes "現在請輸入您的 ^FF0000新密碼^000000 來保護您的倉庫";
 	set @code,callfunc("F_EntKafCode");
 	if(@code==0) {
-		mes "The password hasn't been changed.";
+		mes "密碼無法變更";
 		emotion e_hmm;
 		goto M_END;
 	}
@@ -527,17 +527,17 @@ M_SET:
 	set RESRVPTS, RESRVPTS + (5000/50);
 
 	set #kafra_code,@code+getcharid(3)+1337;
-	mes "You've protected your storage with a secret password.";
-	mes "Thank you for using Kafra Services.";
+	mes "您已經使用密碼保護您的倉庫";
+	mes "感謝您使用卡普拉服務";
 	emotion e_thx;
 	goto M_END;	
 
 M_CLEAR:
 	mes "[卡普拉服務人員]";
-	mes "Please, enter your password before its removal.";
+	mes "移除密碼前請請輸入你的密碼確認";
 	set @code,callfunc("F_EntKafCode");
 	if(@code==0) {
-		mes "The password hasn't been removed.";
+		mes "密碼無法移除";
 		emotion e_hmm;
 		goto M_END;
 	}
@@ -548,12 +548,12 @@ M_CLEAR:
 	set RESRVPTS, RESRVPTS + (1000/50);
 	if(@code == #kafra_code-getcharid(3)-1337) {
 		set #kafra_code,0;
-		mes "You've successfully cleared your storage password.";
-		mes "Thank you for using Kafra Services.";
+		mes "您已經成功移除您的倉庫密碼";
+		mes "感謝您使用卡普拉服務";
 		emotion e_thx;
 	} else {
-		mes "Wrong password. We won't return your 1000z.";
-		mes "Please, next time enter correct password.";
+		mes "錯誤的密碼。我們將不會歸還您 1000z.";
+		mes "請下次輸入您的正確密碼";
 		emotion e_sry;
 	}
 	goto M_END;	
