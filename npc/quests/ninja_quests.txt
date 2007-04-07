@@ -1,7 +1,7 @@
 //===== By: ==================================================
 //= Playtester
 //===== Current Version: =====================================
-//= 1.1
+//= 1.2
 //===== Compatible With: =====================================
 //= SVN eA
 //===== Description: =========================================
@@ -9,6 +9,11 @@
 //===== Additional Comments: =================================
 //= 1.0 Ninja Arm Guards only yet [Playtester]
 //= 1.1 Added Kaibara [Playtester]
+//= 1.2 Added Tetsu [Playtester]
+//  (original NPC Taitsu was made by Auron)
+//============================================================
+//============================================================
+//2007-02-09  黑色小貓  中文化
 //============================================================
 
 que_ng.gat,28,50,3	script	Boshuu	709,{
@@ -37,7 +42,7 @@ que_ng.gat,28,50,3	script	Boshuu	709,{
 		mes "Come back after you've grown a bit more.";
 		close;
 	}
-	if (countitem(2102) < 1){
+	if (countitem(2102) < 1 && !(MISC_QUEST & 2048)){
 		mes "[Boshuu]";
 		mes "I'm the best craftsman out of what people call the Three Craftsmen of Ninja Tools.";
 		mes "They call me Murata Boshuu.";
@@ -180,12 +185,14 @@ que_ng.gat,28,50,3	script	Boshuu	709,{
 			delitem 2102,1;
 			delitem 2117,1;
 			set Zeny,Zeny-10000;
-			set ninbo,3;
+			set ninbo,0;
+			set MISC_QUEST,MISC_QUEST | 2048;
 			getitem 2118,1;
 			close;
 		}
 	}
-	else if (ninbo == 3){
+	else if (MISC_QUEST & 2048){
+		set ninbo,0;
 		mes "[Boshuu]";
 		mes "Oh~ I see you've come back.";
 		mes "Is it because you need another slotted Arm Guard?";
@@ -246,13 +253,13 @@ que_ng.gat,28,50,3	script	Boshuu	709,{
 				delitem 2102,1;
 				delitem 2117,1;
 				set Zeny,Zeny-10000;
-				set ninbo,3;
 				getitem 2118,1;
 				close;
 			}
 		}
 	}
 	else{	
+		set ninbo,0;
 		mes "[Boshuu]";
 		mes "Oh~ You~!";
 		mes "Is what you have there the shield from overseas called a Guard? Let me take a look.";
@@ -293,7 +300,6 @@ que_ng.gat,28,50,3	script	Boshuu	709,{
 			mes "Hmm, is that so?";
 			mes "What a shame...";
 			mes "Well, if you change your mind later, come back and see me.";
-			set ninbo,3;
 			close;
 		}else{
 			if (countitem(2102) < 1 || countitem(2117) < 1){
@@ -349,7 +355,7 @@ que_ng.gat,28,50,3	script	Boshuu	709,{
 				delitem 2102,1;
 				delitem 2117,1;
 				set Zeny,Zeny-10000;
-				set ninbo,3;
+				set MISC_QUEST,MISC_QUEST | 2048;
 				getitem 2118,1;
 				close;					
 			}
@@ -382,7 +388,7 @@ que_ng.gat,28,45,3	script	Basshu	86,{
 		mes "Come back when you're stronger.";
 		close;
 	}
-	if (countitem(2107) < 1){
+	if (countitem(2107) < 1 && !(MISC_QUEST & 4096)){
 		mes "[Basshu]";
 		mes "I am one of the brothers of the three craftsmen in charge of crafting shields in the east named Murata Basshu";
 		next;
@@ -519,12 +525,14 @@ que_ng.gat,28,45,3	script	Basshu	86,{
 			delitem 2107,1;
 			delitem 2117,1;
 			set Zeny,Zeny-20000;
-			set ninbot,3;
+			set ninbot,0;
+			set MISC_QUEST,MISC_QUEST | 4096;
 			getitem 2119,1;
 			close;
 		}
 	}
-	else if (ninbot == 3){
+	else if (MISC_QUEST & 4096){
+		set ninbot,0;
 		mes "[Basshu]";
 		mes "Oh~ I see you've come back.";
 		mes "Are you here because you need an Improved Arm Guard?";
@@ -590,13 +598,13 @@ que_ng.gat,28,45,3	script	Basshu	86,{
 				delitem 2107,1;
 				delitem 2117,1;
 				set Zeny,Zeny-20000;
-				set ninbot,3;
 				getitem 2119,1;
 				close;
 			}
 		}
 	}
 	else{
+		set ninbot,0;
 		mes "[Basshu]";
 		mes "Why~ That's~!";
 		mes "Is what you have there that shield which is called a 'Mirror Shield' overseas?";
@@ -641,7 +649,6 @@ que_ng.gat,28,45,3	script	Basshu	86,{
 			mes "Hmm, is that so.";
 			mes "What a shame.";
 			mes "Come and find me if you change your mind.";
-			set ninbot,3;
 			close;
 		}else{
 			if(countitem(2107) < 1 || countitem(2117) < 1){
@@ -699,7 +706,7 @@ que_ng.gat,28,45,3	script	Basshu	86,{
 				delitem 2107,1;
 				delitem 2117,1;
 				set Zeny,Zeny-20000;
-				set ninbot,3;
+				set MISC_QUEST,MISC_QUEST | 4096;
 				getitem 2119,1;
 				close;
 			}
@@ -856,7 +863,7 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 	mes "You look like a Ninja.";
 	mes "If you're interested, take a look at my goods while you decide what you want.";
 	next;
-	switch(select("Gokurin:Jitte:Ashura[1]:Murasame:Hakujin:Cancel")){
+	switch(select("Gokurin:Jitte:Ashura[3]:Murasame:Hakujin:Cancel")){
 		case 1:
 			mes "[Kaibara]";
 			mes "Hmm~ I see you've picked the Gokurin.";
@@ -963,8 +970,8 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 			break;
 		case 3:
 			mes "[Kaibara]";
-			mes "Hmm~ You've chose the ^ff0000Ashura[1]^000000.";
-			mes "In order to create an Ashura[1], I require ";
+			mes "Hmm~ You've chose the ^ff0000Ashura[3]^000000.";
+			mes "In order to create an Ashura[3], I require ";
 			mes "25 Steel, 5 Worn-out Magic Scrolls";
 			mes "And 32,000 Zeny.";
 			mes "Do you want me to create this item for you?";
@@ -977,12 +984,12 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 			}else{
 				if(countitem(999) < 25 || countitem(7099) < 5){
 					mes "[Kaibara]";
-					mes "It looks like you don't have all the materials I need to create an Ashura[1] for you.";
+					mes "It looks like you don't have all the materials I need to create an Ashura[3] for you.";
 					next;
 					mes "[Kaibara]";
 					mes "I require ^ff000025 Steel,^000000";
 					mes "^ff0000Five Worn-out Magic Scrolls,^000000";
-					mes "and ^ff0000 32,000 Zeny^000000 in order to create an Ashura[1].";
+					mes "and ^ff0000 32,000 Zeny^000000 in order to create an Ashura[3].";
 					mes "Remember these needed materials, and come back after you're positive you have them all.";
 					close;
 				}
@@ -991,7 +998,7 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 					mes "Hmm.. You brought plenty of materials, but you're short on zeny.";
 					next;
 					mes "[Kaibara]";
-					mes "In order to create an Ashura[1], I require the following materials - ";
+					mes "In order to create an Ashura[3], I require the following materials - ";
 					mes "^ff000025 Steel,^000000";
 					mes "^ff00005 Worn-out Magic Scrolls^000000,";
 					mes "and ^ff0000 32,000 Zeny^000000";
@@ -1005,7 +1012,7 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 				mes "[Kaibara]";
 				mes "Hmm, very well.";
 				mes "I've checked your ingredients and fees.";
-				mes "Here is your completed Ashura[1].";
+				mes "Here is your completed Ashura[3].";
 				close;
 			}
 			break;
@@ -1116,4 +1123,147 @@ que_ng.gat,72,34,3	script	Craftsman Kaibara	847,{
 			close;
 			break;
 	}
+}
+
+que_ng.gat,22,62,3	script	太一	709,{
+	set @npcname$,"[太一]";
+
+	mes @npcname$;
+	if(Class!=Job_Ninja){
+		mes "很抱歉! 我的技能只為忍者服務!";
+		close;
+	}
+	mes "你好!";
+	mes "我是太一，是風魔忍者的鍛造師!";
+	next;
+	mes @npcname$;
+	mes "因為爆炸的關係，我的生活變的相當痛苦!";
+	mes "所以我決定要從新開始，但是我不製造武器已經有很長的一段時間了...";
+	next;
+	mes @npcname$;
+	mes "不管怎樣，目前製造風魔手裏劍的人，還沒有人做的比我更好!";
+	mes "讓你看看我的作品吧!";
+	next;
+	menu "風魔翼飛鏢",M_BENEKI,"風魔輪飛鏢[3]",M_DAIS,"風魔輪飛鏢[4]",M_DAIS4,"風魔熱火飛鏢",M_REKKA;
+
+//=====================BENEKI========================
+M_BENEKI:
+	mes @npcname$;
+	mes "製造^FF0000風魔翼飛鏢^000000";
+	mes "需要以下材料...";
+	mes "50 個鋼鐵，20 隻哈比的羽毛，5 個神之金屬，還要 90000 Zeny!";
+	mes "你要製造嗎?";
+	next;
+	menu "是的!",-,"不用了!",M_NOPE;
+
+	mes @npcname$;
+	mes "那麼讓我看看你的材料吧...";
+	set @z,90000;
+	if(Zeny < @z) goto L_NOZENY;
+	if(countitem(999)<50 || countitem(7115)<20 || countitem(984)<5) goto L_NOITEMS;
+	set Zeny,Zeny-@z;
+	delitem 999,50;
+	delitem 7115,20;
+	delitem 984,5;
+	next;
+	getitem 13300,1;
+	mes @npcname$;
+	mes "很好! 好好使用我的武器吧!";
+	close;
+
+//=====================DAISHARIN========================
+M_DAIS:
+	mes @npcname$;
+	mes "製造^FF0000風魔輪飛鏢[3]^000000";
+	mes "需要以下材料...";
+	mes "30 個鋼鐵，100 個紅色流蘇，2 個神之金屬，還要 40000 Zeny!";
+	mes "你要製造嗎?";
+	next;
+	menu "是的!",-,"不用了!",M_NOPE;
+
+	mes @npcname$;
+	mes "那麼讓我看看你的材料吧...";
+	set @z,40000;
+	if(Zeny < @z) goto L_NOZENY;
+	if(countitem(999)<30 || countitem(7301)<100 || countitem(984)<2) goto L_NOITEMS;
+	set Zeny,Zeny-@z;
+	delitem 999,30;
+	delitem 7301,100;
+	delitem 984,2;
+	next;
+	getitem 13301,1;
+	mes @npcname$;
+	mes "好了! 好好使用你的新武器吧!";
+	close;
+
+//=====================DAISHARIN4========================
+M_DAIS4:
+	mes @npcname$;
+	mes "製造^FF0000風魔輪飛鏢[4]^000000";
+	mes "需要以下材料...";
+	mes "20 個受損的鑽石，1 個風魔輪飛鏢[3]，3 個神之金屬，還要 40000 Zeny!";
+	mes "你要製造嗎?";
+	next;
+	menu "是的!",-,"不用了!",M_NOPE;
+
+	mes @npcname$;
+	mes "那麼讓我看看你的材料吧...";
+	set @z,40000;
+	if(Zeny < @z) goto L_NOZENY;
+	if(countitem(733)<20 || countitem(13301)<1 || countitem(984)<3) goto L_NOITEMS;
+	set Zeny,Zeny-@z;
+	delitem 733,20;
+	delitem 13301,1;
+	delitem 984,3;
+	next;
+	getitem 13302,1;
+	mes @npcname$;
+	mes "好了! 好好使用你的新武器吧!";
+	close;
+
+//=====================REKKA========================
+M_REKKA:
+	mes @npcname$;
+	mes "製造^FF0000風魔熱火飛鏢^000000";
+	mes "需要以下材料...";
+	mes "50 個鋼鐵，50 個熱火石，100 個燃燒的心臟，100 個火種，還要 78000 Zeny!";
+	mes "你要製造嗎?";
+	next;
+	menu "是的!",-,"不用了!",M_NOPE;
+
+	mes @npcname$;
+	mes "那麼讓我看看你的材料吧...";
+	set @z,78000;
+	if(Zeny < @z) goto L_NOZENY;
+	if(countitem(999)<50 || countitem(7098)<100 || countitem(7097)<100 || countitem(7521)<50) goto L_NOITEMS;
+	set Zeny,Zeny-@z;
+	delitem 999,50;
+	delitem 7098,100;
+	delitem 7097,100;
+	delitem 7521,50;
+	next;
+	getitem 13303,1;
+	mes @npcname$;
+	mes "好了! 好好使用你的新武器吧!";
+	close;
+
+//=====================I'M SORRY========================
+L_NOITEMS:
+	next;
+	mes @npcname$;
+	mes "很抱歉! 你沒有製造需要的所有材料!";
+	emotion e_sry;
+	close;
+
+L_NOZENY:
+	next;
+	mes @npcname$;
+	mes "很抱歉! 你需要有"+@z+"Zeny";
+	emotion e_cash;
+	close;
+
+M_NOPE:
+	mes @npcname$;
+	mes "好吧! 當你需要時再來吧!";
+	close;
 }
