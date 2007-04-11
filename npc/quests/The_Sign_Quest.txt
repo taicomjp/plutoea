@@ -49,8 +49,8 @@ OnInit:
 //============================================================
 
 alberta.gat,34,241,1	script	Sign::GeffeniaSigns	111,{
+    if (signquest < 1)set signquest,1;
     if ($signbmps) {
-        if (signquest < 1)set signquest,1;
         cutin "sign_01",4;
         mes "^3355FFNext";
         next;
@@ -69,7 +69,6 @@ alberta.gat,34,241,1	script	Sign::GeffeniaSigns	111,{
         cutin "",255;
         end;
     } else {
-        if (signquest < 1)set signquest,1;
         mes "^3355FFTo the talented and";
         mes "experienced adventurers who";
         mes "have dreams of achieving true";
@@ -104,9 +103,7 @@ alberta.gat,34,241,1	script	Sign::GeffeniaSigns	111,{
         mes "^000000-Metz Brayde";
         close;
     }
-
 }
-
 
 morocc.gat,168,264,1	duplicate(GeffeniaSigns)	Sign#2	111
 payon.gat,160,183,1	duplicate(GeffeniaSigns)	Sign#3	111
@@ -218,7 +215,7 @@ L_Situation:
 prt_in.gat,227,45,4	script	Archaeologist	804,{
     cutin "mets_alpha",2;
     if (sign_fail) goto L_Stop;
-    if (signquest > 0)goto s_Cont;
+    if (signquest)goto s_Cont;
     mes "[Metz]";
     mes "Although you need everlasting";
     mes "patience in an archaeological";
@@ -414,21 +411,18 @@ s_Sign:
         cutin "",255;
         end;
     } else if (signquest == 14) {
-        set @signartisan,rand(1,5);
-        if (@signartisan == 1) goto L_Artisan;
         mes "[Metz]";
-        mes "Although I've made";
-        mes "some progress, I still";
-        mes "haven't found an artisan";
-        mes "capable of restoring the";
-        mes "Sobbing Starlight. Please";
-        mes "give me a little more time.";
-        close2;
-        cutin "",255;
-        end;
-
-L_Artisan:
-        mes "[Metz]";
+        if (rand(5)){
+        	mes "Although I've made";
+        	mes "some progress, I still";
+        	mes "haven't found an artisan";
+        	mes "capable of restoring the";
+        	mes "Sobbing Starlight. Please";
+        	mes "give me a little more time.";
+        	close2;
+        	cutin "",255;
+        	end;
+		}
         mes "Ah, you've come just";
         mes "just in the nick of time!";
         mes "I just found someone who";
@@ -672,6 +666,8 @@ L_Where:
             mes "may be even other applications";
             mes "using the power of this item...";
             next;
+            getitem 2644,1;
+            set signquest,61;
             mes "[Metz]";
             mes "I can only think of";
             mes "one person who can";
@@ -679,8 +675,6 @@ L_Where:
             mes "this: Engel Howard,";
             mes "Rune-Midgard's best";
             mes "Blacksmith.";
-            getitem 2644,1;
-            set signquest,61;
             close2;
             cutin "",255;
             end;
@@ -707,6 +701,7 @@ L_Where:
         cutin "",255;
         end;
     } else if (signquest == 63) {
+        set signquest,64;
         mes "[Metz]";
         mes "Ah, you're finally";
         mes "here. I've been waiting";
@@ -728,7 +723,6 @@ L_Where:
         mes "again, and I hope you stop by and";
         mes "chat from time to time.";
         set BaseExp,BaseExp +1823951;
-        set signquest,64;
         close2;
         cutin "",255;
         end;
@@ -780,21 +774,18 @@ L_Stop:
         mes "May I please take one last";
         mes "look at it?";
         next;
+        getitem 617,1;
+        set BaseExp,BaseExp + 876543;
     }
+    set sign_fail,3;
     mes "[Metz]";
     mes "Thanks for your help. My dream";
     mes "might never come true but I've";
     mes "seen things that some people";
     mes "will never see in their whole lives.";
-    if (sign_fail < 3) {
-        getitem 617,1;
-        set BaseExp,BaseExp + 876543;
-    }
-    set sign_fail,3;
     close2;
     cutin "",255;
     end;
-
 }
 
 prt_in.gat,248,23,4	script	Maid#2	1275,{
@@ -912,9 +903,7 @@ s_5W:
         mes "know a nice and cool place";
         mes "where I can work?";
         close;
-
     }
-
 }
 
 
@@ -1826,13 +1815,13 @@ s_Last:
             mes "known as the Ghost of Al de Baran.";
             mes "Although he's always sick, he has";
             mes "great passion for his research.";
+            getitem 7177,1;
+            set signquest,6;
             next;
             mes "[Daewoon]";
             mes "Alright, then.";
             mes "Good luck in";
             mes "Al de Baran~!";
-            getitem 7177,1;
-            set signquest,6;
             close;
         } else {
             mes "[Daewoon]";
@@ -2308,18 +2297,18 @@ OnPotion:
 prt_maze02.gat,57,152,1	script	Girl#11	91,{
 
 	mes "^3355FFYou catch a glimpse";
-	mes "of a girl headin directly";
+	mes "of a girl heading directly";
 	mes "into a deep forest. You decide";
-	if(signquest != 7)goto s_No;
+	if(signquest != 7){
+		mes "to not follow her since you're";
+		mes "not interested where she's going.";
+		close;
+	}
 	mes "to follow her and see if you can";
 	mes "learn more.";
 	close2;
 	warp "prt_maze02",11,146;
 	end;
-s_No:
-	mes "to not follow her since you're";
-	mes "not interested where she's going.";
-	close;
 }
 
 function	script	Sign_Alch_Summon	{
@@ -2811,7 +2800,7 @@ L_quiztime:
     set @signquestions19$,"Choose the monster that is a different type than the others.";
     set @signquestions20$,"Choose the Job class that cannot equip Silk Robe.";
     set @signquestions21$,"Four thousand five hundred sixty divided by four, divided by two, plus three is equal too...";
-    set @signquestions22$,"Which monster would recieve the most damage from a Fire Property Dagger?";
+    set @signquestions22$,"Which monster would receive the most damage from a Fire Property Dagger?";
     set @signquestions23$,"Choose the skill related to the Priest's B.S. Sacramenti from the ones displayed in the list.";
 
     set @playerpoints,0;
@@ -3905,15 +3894,15 @@ L_Win:
     mes "back. Not all, but most of it.";
     mes "Isn't that reward enough?";
     next;
+    set Zeny, Zeny + 20000;
+    getitem 7177,1;
+    set signquest,12;
+    set $dance_fail,0;
     mes "[Dearles]";
     mes "Alright, take this chunk";
     mes "of Sobbing Starlight and";
     mes "go find someone named";
     mes "um, 'Bakerlan' in Alberta.";
-    set Zeny, Zeny + 20000;
-    getitem 7177,1;
-    set signquest,12;
-    set $dance_fail,0;
     next;
 
 L_Ever:
@@ -5440,10 +5429,8 @@ L_Family:
         mes "[Engel]";
         mes "Alright, then.";
         mes "Take care.";
-        close;
-    } else {
-        close;
     }
+    close;
 
 L_Help:
     mes "[Engel]";
@@ -7434,8 +7421,8 @@ L_Book1:
 	mes "How dare you touch my books";
 	mes "when I specifically said";
 	mes "'Don't touch my books!'";
-	killmonster "niflheim.gat","#signbruce::Onmymob";
-	monster "niflheim.gat",350,258,"Rideword",1478,1,"#signbruce::Onmymob";
+	killmonster "niflheim","#signbruce::Onmymob";
+	monster "niflheim",350,258,"Rideword",1478,1,"#signbruce::Onmymob";
 	close;
 
 L_Book2:
@@ -7444,7 +7431,7 @@ L_Book2:
 	mes "Get lost....";
 	mes "Don't disrupt my restingggaaahh!!";
 	close2;
-	warp "niflheim.gat",34,162;
+	warp "niflheim",34,162;
 	end;
 
 L_Book3:
@@ -8400,6 +8387,8 @@ L_Path:
 
 L_Success:
     if (countitem(7313) < 5 && Sign_Branch8A) goto L_Voucher;
+    delitem 7313,5;
+    set signquest,57;
     mes "[Kirkena]";
     mes "You've done well.";
     mes "Without her memories of her";
@@ -8420,9 +8409,7 @@ L_Success:
     mes "please visit our queen, Lady Hell.";
     mes "I believe she wants to see you for";
     mes "some reason...";
-    delitem 7313,5;
     set BaseExp,BaseExp +297000;
-    set signquest,57;
     close;
 
 L_Voucher:
@@ -8707,7 +8694,7 @@ L_Soul:
 
 //End of Seals
 
-que_sign01,46,55,1	script	Fountain	111,{
+que_sign01.gat,46,55,1	script	Fountain	111,{
 	if(signquest > 54) goto L_Bottle;
 	mes "^3355FFThe water in this";
 	mes "fountain looks clean";
@@ -9400,7 +9387,9 @@ L_Success:
     mes "are more precious to";
     mes "me than life itself.";
     next;
+    set signquest,56;
     if (countitem(2643)) {
+        delitem 2643,1;
         mes "[Serin]";
         mes "May I ask you one last";
         mes "favor? I see you kept my";
@@ -9408,16 +9397,12 @@ L_Success:
         mes "to me, could you kindly";
         mes "give it back please?";
         next;
+        set JobExp,JobExp + 393759;
     }
     mes "[Serin]";
     mes "Farewell, now.";
     mes "And good luck on";
     mes "your travels, my friend...";
-    if (countitem(2643)) {
-        delitem 2643,1;
-        set JobExp,JobExp + 393759;
-    }
-    set signquest,56;
     close;
 
 L_NoWord:
@@ -9464,7 +9449,7 @@ L_Party:
 	mes "be too much for just";
 	mes "one adventurer alone...";
 	close2;
-	warp "que_sign01.gat",195,189;
+	warp "que_sign01",195,189;
 	end;
 	
 
@@ -9482,7 +9467,7 @@ L_Path:
 	mes "be too much for just";
 	mes "one adventurer alone...";
 	close2;
-	warp "que_sign02.gat",135,313;
+	warp "que_sign02",135,313;
 	end;
 
 }
@@ -9495,14 +9480,14 @@ que_sign01.gat,178,169,0	script	#serinwarp	45,1,1,{
         if (getmapusers("que_sign02") > 0 || getareausers("que_sign01",229,227,166,162) > 0) end;
         donpcevent "#signserin::OnInit";
     }
-    warp "niflheim.gat",30,156;
+    warp "niflheim",30,156;
     end;
 }
 
 que_sign01.gat,178,19,0	script	#serinwarp2	45,1,1,{
 
 	set $signroom2full,0;
-	warp "niflheim.gat",30,156;
+	warp "niflheim",30,156;
 	end;
 }
 
@@ -9513,19 +9498,19 @@ geffen.gat,119,55,1	script	GeffeniaWarper	45,2,2,{
     switch ($GeffeniaWarp) {
 
     case 1:
-        warp "gefenia01.gat",58,169;
+        warp "gefenia01",58,169;
         break;
 
     case 2:
-        warp "gefenia02.gat",116,115;
+        warp "gefenia02",116,115;
         break;
 
     case 3:
-        warp "gefenia03.gat",130,206;
+        warp "gefenia03",130,206;
         break;
 
     case 4:
-        warp "gefenia04.gat",133,88;
+        warp "gefenia04",133,88;
         break;
 
     }
