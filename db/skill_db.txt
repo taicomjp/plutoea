@@ -32,9 +32,9 @@
 //    0x0080- 陷阱(能夠被發現)
 //    0x0100- 自用技能
 //    0x0200- 不能對自己使用的技能(假如技能發動方式 = 4, 自動選擇目標技能)
-//    0x0400- 僅組隊可用技能
-//    0x0800- 僅公會可用技能
-//    0x1000- allow usage on enemies too (use with 0x0400/0x0800)
+//    0x0400- 僅組隊可用技能 (and enemies if skill is offensive)
+//    0x0800- 僅公會可用技能 (and enemies if skill is offensive)
+//    0x1000- disable usage on enemies (for non-offensive skills).
 // 13 最大施放數量: 在(玩家允許施放數量)player_land_skill_limit/(魔物允許施放數量)monster_land_skill_limit
 //    在battle_athena.conf中啟動時,限制發動個數
 // 14 技能類型 (none無, weapon武器, magic魔法, misc其他)
@@ -111,7 +111,7 @@
 70,9,6,2,6,0x21,0,10,1,yes,0,0,0,magic,1	//PR_SANCTUARY#光耀之堂#
 71,9,6,16,0,0x1,0,4,1,yes,0,0,0,magic,0	//PR_SLOWPOISON#緩毒術#
 72,9,6,16,0,0x1,0,1,1,yes,0,0,0,magic,0	//PR_STRECOVERY#痊癒術#
-73,9,6,16,0,0x1,0,10,1,yes,0,0,0,magic,0	//PR_KYRIE#霸邪之陣#
+73,9,6,16,0,0x1,0,10,1,yes,0,0x1000,0,magic,0	//PR_KYRIE#霸邪之陣#
 74,0,6,4,0,0x3,-1,5,1,yes,0,0,0,magic,0	//PR_MAGNIFICAT#聖母之頌歌#
 75,0,6,4,0,0x3,-1,5,1,yes,0,0,0,magic,0	//PR_GLORIA#幸運之頌歌#
 76,5,6,1,0,0x1,0,10,0,yes,0,0,0,magic,0	//PR_LEXDIVINA#沉默之術#
@@ -327,7 +327,7 @@
 286,2,6,2,1,0x1,0,5,1,yes,0,0,0,magic,0	//SA_DELUGE#水元素領域#
 287,2,6,2,4,0x1,0,5,1,yes,0,0,0,magic,0	//SA_VIOLENTGALE#風元素領域#
 288,3,6,2,0,0x1,0,5,1,yes,0,0,0,magic,0	//SA_LANDPROTECTOR#地元素領域#
-289,9,6,1,0,0x1,0,5,1,yes,0,0x1E00,0,magic,0	//SA_DISPELL#魔法效果解除#
+289,9,6,1,0,0x1,0,5,1,yes,0,0xE00,0,magic,0	//SA_DISPELL#魔法效果解除#
 290,0,6,4,0,0x1,0,10,1,yes,0,0,0,magic,0	//SA_ABRACADABRA#隨機技能#
 291,9,6,1,0,0x1,0,1,1,yes,0,0x2,0,magic,0	//SA_MONOCELL#變換成波利#
 292,9,6,1,0,0x1,0,1,1,yes,0,0x2,0,magic,0	//SA_CLASSCHANGE#變換成Boss級魔物#
@@ -412,7 +412,7 @@
 371,-2,8,4,-1,0,0,5,1,no,0,0x200,0,weapon,0	//CH_TIGERFIST#伏虎拳#
 372,-2,8,4,-1,0,0,10,-1:-1:-2:-2:-3:-3:-4:-4:-5:-5,no,0,0x200,0,weapon,0	//CH_CHAINCRUSH#氣絕崩擊#
 373,0,6,4,0,0x1,0,5,1,no,0,0,0,magic,0	//PF_HPCONVERSION#HP轉換#
-374,9,6,16,0,0x1,0,1,1,yes,0,0x1E00,0,none,0	//PF_SOULCHANGE#心神互換#
+374,9,6,1,0,0x1,0,1,1,yes,0,0xE00,0,none,0	//PF_SOULCHANGE#心神互換#
 375,9,6,1,0,0x98,0,5,1,yes,0,0,0,magic,0	//PF_SOULBURN#精神耗弱術#
 376,0,0,0,0,0x1,0,5,1,no,0,0,0,weapon,0	//ASC_KATAR#高階拳刃修練#
 //377,0,0,4,0,0x1,0,10,1,no,0,0,0,misc,0	//ASC_HALLUCINATION#Hallucination Walk#
@@ -434,7 +434,7 @@
 393,0,0,4,0,0x1,0,1,1,yes,0,0,0,none,0	//CR_SYNTHESISPOTION#藥劑試驗#
 394,9,8,1,-1,0,0,10,-9,yes,0,0,0,weapon,0	//CG_ARROWVULCAN#奧義箭亂舞#
 395,0,0,4,0,0x1,3,1,1,yes,0,0x40,0,misc,2	//CG_MOONLIT#落花伴著月光下的水車小屋#
-396,-1,6,16,0,0x1,0,1,1,yes,0,0x600,0,none,0	//CG_MARIONETTE#傀儡師的把戲#
+396,1,6,16,0,0x1,0,1,1,yes,0,0x600,0,none,0	//CG_MARIONETTE#傀儡師的把戲#
 397,5,8,1,-1,0x20,0,5,5,no,0,0,0,weapon,0	//LK_SPIRALPIERCE#螺旋擊刺#
 398,4,6,1,-1,0,0,5,1,no,0,0,0,weapon,0	//LK_HEADCRUSH#傷害增壓#
 399,4,6,1,-1,0,0,10,1,no,0,0,0,weapon,0	//LK_JOINTBEAT#巧打#
@@ -521,7 +521,7 @@
 480,5,8,1,0,0,0,5,5,no,0,0,0,weapon,0	//PA_SHIELDCHAIN#連續盾擊#
 481,0,0,0,0,0,0,5,0,no,0,0,0,none,0	//HP_MANARECHARGE#瑪納莉攻擊#
 482,0,6,4,0,0x1,0,5,1,no,0,0,0,magic,0	//PF_DOUBLECASTING#雙倍投擲#
-483,9,6,2,0,0x1,1,1,1,no,0,0,0,none,0	//HW_GANBANTEIN#咖般塔音#
+483,9,6,2,0,0x1,1:2:3:4:5,1,1,no,0,0,0,none,0	//HW_GANBANTEIN#咖般塔音#
 484,9,6,2,2,0xB1,0,5,1,yes,0,0,0,magic,0	//HW_GRAVITATION#重力原野#
 485,-2,6,1,-1,0x8,0,10,1,no,0,0,0,weapon,0	//WS_CARTTERMINATION#手推車終結技#
 486,0,6,4,0,0x1,0,5,1,no,0,0,0,weapon,0	//WS_OVERTHRUSTMAX#凶砍最大值#
