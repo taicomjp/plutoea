@@ -1,53 +1,25 @@
-//艾爾貝塔城市腳本
-//漢化：☆軒泉幽☆[Dathena] 2005/12/17
-//參考腳本：eAthena-SVN-4525-TXT-W32
 //===== eAthena Script ======================================= 
 //= Alberta Town
 //===== By: ================================================== 
-//= kobra_k88
+//= DZeroX
 //===== Current Version: ===================================== 
-//= 2.0
+//= 1.0
 //===== Compatible With: ===================================== 
-//= eAthena SVN
+//= eAthena 1.0
 //===== Description: ========================================= 
-//=
+//= Town-specific Alberta NPCs
 //===== Additional Comments: ================================= 
-//= Fully working
-//= 1.1 Negative input bug fixed [Lupus]
-//= 1.2 Fixed typos in script [massdriller]
-//= 1.3 Ran through spellcheck system [massdriller]
-//= 1.4 Someone forget a .gat in an NPC header [Fredzilla]
-//= 1.5 Fixed typo in script. [massdriller]
-//= 1.6 Fixed some typos, optimized, added Gotanblue#2 to be able to return back to Alberta [Lupus]
-//= 1.7 Fixed Phelix bugs [Lupus]
-//= 1.8 Got rid of 2 useless variables, fixed Turtle Island Quest exploit [Lupus]
-//= 1.9 Added two NPCs shown at RO Magazine [Playtester]
-//= 2.0 Removed Duplicates [Silent]
-//= 2.1 Fixed many typos, using information from Crono/Hollengrhen [Evera]
-//============================================================ 
+//= 1.0 Converted from Aegis 10.4 [DZeroX]
+//============================================================
 
-//NewsPaper(?)
-alberta.gat,148,53,1	script	Newspaper Girl	831,{end;}
-//???
-alberta.gat,148,60,3	script	Man#03	833,{end;}
-
-// 青年 -----------------------
-alberta_in.gat,20,183,6	script	青年	49,{
-	mes "[青年]";
-	mes "傳說中有一種叫做剛尼爾長矛的武器，一旦鎖定目標，一定百發百中，彈無虛發…要是真的有這種武器的話…應該會很棒吧？？";
-	close;
-}
-
-// 商人 -----------------------
-alberta.gat,97,51,0	script	商人#01	84,{
+alberta.gat,97,51,0	script	商人	84,{
 	mes "[商人]";
 	mes "這世上流傳著許許多多的傳聞，其中有一個傳聞是這麼說的，據說有一種卡片可以用來封住怪物的力量。";
 	mes "如果使用那張卡片的話，還能夠擁有強大的力量…呼！不過那可能也只是傳說而已。";
 	close;
 }
 
-// 商人 -----------------------
-alberta.gat,53,39,0	script	商人#02	100,{
+alberta.gat,53,39,0	script	商人	100,{
 	mes "[商人]";
 	mes "呃？";
 	mes "呃？";
@@ -56,48 +28,142 @@ alberta.gat,53,39,0	script	商人#02	100,{
 	close;
 }
 
-// 馬傑 -----------------------
-alberta.gat,58,80,2	script	馬傑#03	99,{
-	mes "[馬傑]";
-	if(rand(2)) goto R_1;
+alberta.gat,20,183,0	script	青年	49,{
+	mes "[青年]";
+	mes "傳說中有一種叫做剛尼爾長矛的武器，一旦鎖定目標，一定百發百中，彈無虛發…要是真的有這種武器的話…應該會很棒吧？？";
+	close;
+}
+
+alberta.gat,189,151,5	script	船員	100,{
+	mes "[船員]";
+	mes "你要去哪個地方？";
+	switch(select("沉船附近的島嶼 -> 250 zeny.","依斯魯德島 -> 500 zeny.","離開")) {
+		case 1:
+			next;
+			if (Zeny < 250) {
+				mes "[船員]";
+				mes "對不起，你至少得有250Zeny，我才可以送你去。";
+				close;
+			}
+			set Zeny,Zeny - 250;
+			warp "alb2trea.gat",43,53;
+			end;
+		case 2:
+			next;
+			if (Zeny < 500) {
+				mes "[船員]";
+				mes "對不起，你至少得有500Zeny，我才可以送你去。";
+				close;
+			}
+			set Zeny,Zeny - 500;
+			warp "izlude.gat",176,182;
+			end;
+		case 3:
+			next;
+			mes "[Fisk]";
+			mes "Alright...";
+			mes "Landlubber.";
+			close;
+	}
+}
+
+alb2trea.gat,39,50,6	script	船員#a2t	100,{
+	mes "[船員]";
+	mes "你要回去了嗎？";
+	switch(select("是的，回愛爾貝塔","取消")) {
+	case 1:
+		warp "alberta.gat",192,169;
+	case 2:
+		close;
+	}
+}
+
+alberta.gat,131,139,2	script	Drunken Old Man	54,{
+	mes "[笨伯力]";
+	mes "...看...看什麼，給我走開！";
+	switch(select("不理他","走開點好了")) {
+		case 1:
+			next;
+			mes "[笨伯力]";
+			mes "喔喔喔，有骨氣的傢伙，嘿...我本來是高英海盜團的船員。";
+			switch(select("那是什麼？","哇！真帥！")) {
+				case 1:
+					next;
+					mes "[笨伯力]";
+					mes "啊！你不知道？你不知道鼎鼎大名的海盜團嗎";
+					next;
+					mes "[笨伯力]";
+					mes "啊... 好懷念啊... 當時沒有碰到那颱風的話，我現在就還在海上稱霸。";
+					next;
+					mes "[笨伯力]";
+					mes "我的船長...他手上拿的那把武器，竟然有著神秘的力量，很多人都喪命於那把武器。";
+					next;
+					mes "[笨伯力]";
+					mes "啊... 好想念他們啊... 嗯... 真心碎了... 你走開啊！";
+					close;
+				case 2:
+					next;
+					mes "[笨伯力]";
+					mes "我的船長...他手上拿的那把武器竟然有著神秘的力量，很多人都喪命於那把武器。";
+					next;
+					mes "[笨伯力]";
+					mes "啊... 好想念他們啊... 嗯... 真心碎了... 你走開啊！";
+					close;
+			}
+		case 2:
+			next;
+			mes "[笨伯力]";
+			mes "算你聰明! 快走開啊！";
+			close;
+	}
+}
+
+alberta.gat,58,80,2	script	馬傑	99,{
+	set .@random,rand(1,2);
+	if (.@random == 1) {
+		mes "[馬傑]";
 		mes "我們商人，可以開店做生意，用殺價技巧從其它店買進便宜貨，然後借手推車，放在手推車上面增加載貨量。";
 		next;
 		mes "[馬傑]";
 		mes "也不需要一個一個去交易，我們有著一個神秘的技能，可以自動販賣物品";
 		close;
-	R_1:
+	} else {
+		mes "[馬傑]";
 		mes "我們商人，也有一個高價賣出的特殊技能，可以把賣的東西價格拉到更高再賣出";
 		next;
 		mes "[馬傑]";
 		mes "我已經用高出24%的價錢賣給其它商店，不過這種技巧要不段的修煉！";
 		close;
+	}
 }
 
-// 畢力都 -----------------------
 alberta.gat,62,156,2	script	畢力都	102,{
-	set @TEMP,rand(3);
-	mes "[畢力都]";
-	if(@TEMP == 1) goto R_1;
-	if(@TEMP == 0) goto R_0;
+	set .@random,rand(1,3);
+	if (.@random == 1) {
+		mes "[畢力都]";
 		mes "通往艾爾貝塔，連接斐楊城的森林裡，有一群笨熊在那出現，身上圍繞著蒼蠅。";
 		next;
 		mes "[畢力都]";
 		mes "我抱著調皮的心情把樹枝丟過去，它突然衝過來，害我嚇一跳。";
 		mes "還好我逃的快，我想有的動物看起來很可愛，但是一生氣起來就會讓人喪命喔。";
 		close;
-	R_1:
+	}
+	if (.@random == 2) {
+		mes "[畢力都]";
 		mes "你知道嗎？狼其實是很團結的。";
 		mes "同胞遇難時會衝過來幫忙的，你要小心哦！";
 		close;
-	R_0:
+	}
+	if (.@random == 3) {
+		mes "[畢力都]";
    		mes "有一天走在森林裡，發現綠色直立的草，非常漂亮。因為太漂亮了，所以用手去摸， 那棵草卻突然輕輕的打我的手。";
 		next;
 		mes "[畢力都]";
    		mes "害我嚇一跳，往後退一步看，原來不是草是一個非常可愛的小動物。";
 		close;
+	}
 }
 
-// 瑪利祖母 -----------------------
 alberta.gat,93,174,2	script	瑪利祖母	103,{
 	mes "[瑪利祖母]";
 	mes "不久之前，有一艘快解體的船，飄到艾爾貝塔魚獲區裡，村落裡的年輕人為了查看是否有生存者";
@@ -113,42 +179,272 @@ alberta.gat,93,174,2	script	瑪利祖母	103,{
 	close;
 }
 
-// 醉漢笨伯力 -----------------------
-alberta.gat,131,139,2	script	醉漢	54,{
-	mes "[笨伯力]";
-	mes "...看...看什麼，給我走開！";
+alberta.gat,195,151,2	script	保羅	86,{
+	mes "[保羅]";
+	mes "你好，你想去遇難船探險嗎?";
 	next;
-	menu "不理他",Case1,"走開點好了",Case2;
-	Case1:
-		mes "[笨伯力]";
-		mes "喔喔喔，有骨氣的傢伙，嘿...我本來是高英海盜團的船員。";
-		next;
-		menu "那是什麼？",Case1a,"哇！真帥！",Case1b;
-		Case1a:
-			mes "[笨伯力]";
-			mes "啊！你不知道？你不知道鼎鼎大名的海盜團嗎";
+	mes "[保羅]";
+	mes "噢! 我先警告你喔! 那裡可不是一般人能存活的地方.";
+	next;
+	mes "[保羅]";
+	mes "你覺得如何? 只要給我 200 Zeny 我就帶你過去";
+	switch(select("帶我去吧","不用了")) {
+		case 1:
 			next;
-			mes "[笨伯力]";
-			mes "啊... 好懷念啊... 當時沒有碰到那颱風的話，我現在就還在海上稱霸。";
+			if (Zeny < 200) {
+				mes "[保羅]";
+				mes "對不起，你至少得有 200 Zeny，我才可以送你去";
+				close;
+			} else {
+				set Zeny,Zeny - 200;
+				warp "alb2trea.gat",62,69;
+				close;
+			}
+		case 2:
 			next;
-			mes "[笨伯力]";
-			mes "我的船長...他手上拿的那把武器，竟然有著神秘的力量，很多人都喪命於那把武器。";
-			next;
-			mes "[笨伯力]";
-			mes "啊... 好想念他們啊... 嗯... 真心碎了... 你走開啊！";
+			mes "[保羅]";
+			mes "如果你想去的話，隨時來找我!";
 			close;
-		Case1b:
-			mes "[笨伯力]";
-			mes "我的船長...他手上拿的那把武器竟然有著神秘的力量，很多人都喪命於那把武器。";
-			next;
-			mes "[笨伯力]";
-			mes "啊... 好想念他們啊... 嗯... 真心碎了... 你走開啊！";
-			close;
-			end;
-	Case2:
-		mes "[笨伯力]";
-		mes "算你聰明! 快走開啊！";
+	}
+}
+
+alberta.gat,190,173,4	script	Phelix	85,{
+	set .@weight,MaxWeight-Weight;
+	if ((.@weight) < 10000) {
+		mes "[Phelix]";
+		mes "Wait a moment!!";
+		mes "You have brought too many things!";
+		mes "You cannot accept any more items!";
+		mes "Please reduce the amount of items,";
+		mes "then come see me again";
 		close;
+	}
+	if (@event_zelopy == 0) {
+		mes "[Phelix]";
+		mes "The hell are you doing here?";
+		mes "There is nothing you can get for";
+		mes "free on this ship, if you want";
+		mes "somethin', work for it!!";
+		next;
+		mes "[Phelix]";
+		mes "Hmm, so why don't you bring me";
+		mes "10 jellopies and I will give 1";
+		mes "potion. How's that sound?";
+		mes "Or if that's too hard for your";
+		mes "pansy ass, 3 jellopies for 1";
+		mes "Carrot.";
+		next;
+		mes "[Phelix]";
+		mes "If you're interested in my offer,";
+		mes "get me the stuff I mentioned.";
+		set @event_zelopy,1;;
+		close;
+	} else {
+		mes "[Phelix]";
+		mes "Hmm... you want to exchange";
+		mes "jellopies for Red Potions or some";
+		mes "Carrots eh? Well... which one?";
+		switch(select("Red Potions please.","Carrots please.")) {
+			case 1:
+				next;
+				mes "[Phelix]";
+				mes "Alright...";
+				mes "Let's see";
+				mes "what'cha got...";
+				next;
+				if (countitem(909) < 10) {
+					mes "[Phelix]";
+					mes "Hey! Weren't you listening? I said";
+					mes "10 jellopies for 1 Red Potion.. are";
+					mes "ya deaf?";
+					close;
+				} else {
+					set .@max,countitem(909)/10;
+					mes "[Phelix]";
+					mes "Hmm, not bad...";
+					mes "How many potions";
+					mes "do you want to get?";
+					switch(select("As many as I can, please.","I want this many.","Never mind, I like my jellopy.")) {
+						case 1:
+							next;
+							delitem 909,.@max*10;
+							getitem 501,.@max;
+							mes "[Phelix]";
+							mes "There you go! As I promised. Don't";
+							mes "go suckin' them all down at once.";
+							close;
+						case 2:
+							next;
+							mes "[Phelix]";
+							mes "I'm not giving you more than 100";
+							mes "at a time so don't bother, OK? If";
+							mes "you don't want any, just say '0'.";
+							mes "Right now, the most you can get is";
+							mes ""+.@max+" but remember, 100 at most,";
+							mes "you want to break my back?";
+							input .@amount;
+								if (.@amount <= 0) {
+									mes "[Phelix]";
+									mes "Much obliged, come again anytime.";
+									close;
+								}
+								if (.@amount > 100) {
+									mes "[Phelix]";
+									mes "Hey, what'd I say? 100 at a time at";
+									mes "most, you're trying to kill me";
+									mes "aren't you!";
+									close;
+								}
+								if (countitem(909) < .@amount*10) {
+									mes "[Phelix]";
+									mes "Hmmm, it looks like you don't have";
+									mes "enough. Go get more jellopies if";
+									mes "you want anything else from me.";
+									close;
+								}
+							delitem 909,.@amount*10;
+							getitem 501,.@amount;
+							next;
+							mes "[Phelix]";
+							mes "There you go! As I promised. Don't";
+							mes "go suckin' them all down at once.";
+							close;
+						case 3:
+							next;
+							mes "[Phelix]";
+							mes "No problem,";
+							mes "see you next time.";
+							close;
+					}
+				}
+			case 2:
+				next;
+				mes "[Phelix]";
+				mes "Alright, let's see what ya got...";
+				next;
+				if (countitem(909) < 3) {
+					mes "[Phelix]";
+					mes "Hmm, look pansy ass, I said 3";
+					mes "jellopies for 1 Carrot.. got it?";
+					close;
+				} else {
+					set .@max,countitem(909)/3;
+					mes "[Phelix]";
+					mes "Not too bad pansy...";
+					mes "How many do you want?";
+					switch(select("As many as I can get, please","I want this many.","Never mind, I like my jellopy.")) {
+					case 1:
+						next;
+						delitem 909,.@max*3;
+						getitem 515,.@max;
+						mes "[Phelix]";
+						mes "There you go~! As I promised. Try";
+						mes "not to stuff yer face.";
+						close;
+					case 2:
+						next;
+						mes "[Phelix]";
+						mes "Right I'm not giving you more than";
+						mes "100 at a time so don't bother,";
+						mes "okay? If you don't want any, just";
+						mes "say '0'.";
+						input .@amount;
+						next;
+							if (.@amount == 0) {
+								mes "[Phelix]";
+								mes "Alright then, see you next time.";
+								close;
+							}
+							if (.@amount > 100) {
+								mes "[Phelix]";
+								mes "Hey pansy ass, I said 100 at most,";
+								mes "no more than that! I'm not going to";
+								mes "break my back for the likes of";
+								mes "you!";
+								close;
+							}
+							if (countitem(909) < .@amount*10) {
+								mes "[Phelix]";
+								mes "Seems you don't have enough. Go get";
+								mes "some more if you want anything";
+								mes "else.";
+								close;
+							}
+						delitem 909,.@amount*3;
+						getitem 515,.@amount;
+						next;
+						mes "[Phelix]";
+						mes "There you go~! As I promised. Try";
+						mes "not to stuff yer face.";
+						close;
+					case 3:
+						next;
+						mes "[Phelix]";
+						mes "Catch'ya later.";
+						close;
+					}
+				}
+		}
+	}
+}
+
+alberta.gat,43,49,5	script	Poor-looking Merchant	89,{
+	mes "[Machen]";
+	mes "Why...?";
+	mes "How did my";
+	mes "family's wealth";
+	mes "and prestige just";
+	mes "go down the drain?";
+	next;
+	mes "[Machen]";
+	mes "Ever since the";
+	mes "Alcheshs came to Alberta,";
+	mes "they quickly took our place";
+	mes "as the biggest business owners";
+	mes "here. It's our biggest shame...";
+	close;
+}
+
+alberta.gat,43,244,8	script	Tourist	99,{
+	mes "[Tourist]";
+	mes "Where am I...?";
+	mes "...Who am I?";
+	next;
+	mes "[Tourist]";
+	mes "..........";
+	next;
+	mes "[Tourist]";
+	mes ".....";
+	next;
+	mes "[Tourist]";
+	mes "........";
+	next;
+	mes "[Tourist]";
+	mes "Mahahahahahahaha!!";
+	next;
+	mes "[Tourist]";
+	mes "*Drools*...I love chocolate!";
+	next;
+	mes "[Tourist]";
+	mes "Wait...";
+	mes "I have a girlfriend...";
+	mes "and...and...";
+	mes "cookies...?";
+	mes "I feel sooo lost...";
+	next;
+	mes "[Tourist]";
+	mes "^3355FFWe don't talk to crazy people~^000000";
+	close;
+}
+
+alberta.gat,165,83,4	script	Fastidious Old Man	755,{
+	mes "[Frank]";
+	mes "My back~";
+	mes "It's so sore!";
+	mes "And my eyes are";
+	mes "hurting worse and worse.";
+	mes "*Sigh* I'm getting old...";
+	close;
 }
 
 // 不良食品青年 -----------------------
@@ -197,27 +493,6 @@ alberta.gat,90,71,4	script	不良食品青年	89,{
 	close;
 }
 
-
-//<================ 碼頭 （碼頭/港口）================>\\
-// 船員 -----------------------
-alberta.gat,189,151,5	script	船員	100,{
-	mes "[船員]";
-	mes "你要去哪個地方？";
-	next;
-	menu "依斯魯德島 -> 500 Zeny.",-,"離開",M_End;
-	
-		if(Zeny < 500) goto L_NoZeny;
-		set Zeny, Zeny - 500;
-		warp "izlude.gat",176,182;
-		close;
-
-		L_NoZeny:
-			mes "[船員]";
-			mes "對不起，你至少得有500Zeny，我才可以送你去。";
-			close;
-	M_End:
-		close;
-}
 
 // 菲歷斯 -----------------------
 alberta.gat,190,173,4	script	菲歷斯	92,{
@@ -284,50 +559,6 @@ alberta.gat,190,173,4	script	菲歷斯	92,{
 	Cancel:
 		mes "[菲歷斯]";
 		mes "那好吧，等你有需要的時候再來找我吧！再見！";
-		close;
-}
-
-
-//<================ 沉船 ================>\\
-// 保羅 -----------------------
-alberta.gat,195,151,3	script	保羅	86,{
-	mes "[保羅]";
-	mes "你好，你想去遇難船探險嗎?";
-	next;
-	mes "[保羅]";
-	mes "噢! 我先警告你喔! 那裡可不是一般人能存活的地方.";
-	emotion 0;
-	next;
-	mes "[保羅]";
-	mes "你覺得如何? 只要給我 200 Zeny 我就帶你過去";
-	next;
-	menu "帶我去吧",-,"不用了",M_End;
-
-		if(Zeny < 200) goto L_NoZeny;
-		set Zeny, Zeny - 200;
-		warp "alb2trea.gat",62,69;
-		close;
-	M_End:
-		mes "[保羅]";
-		mes "如果你想去的話，隨時來找我!";
-		close;
-
-		L_NoZeny:
-			mes "[保羅]";
-			mes "對不起，你至少得有 200 Zeny，我才可以送你去";
-			close;
-}
-
-// 船員 -----------------------
-alb2trea.gat,39,50,5	script	船員	100,{
-	mes "[船員]";
-	mes "你要回去了嗎？";
-	next;
-	menu "是的，回愛爾貝塔",-,"取消",MEnd;
-
-		warp "alberta.gat",192,169;
-		close;
-	MEnd:
 		close;
 }
 
@@ -507,6 +738,6 @@ LStart2:
 	getitem 716,1;
 	set kame_quest,6;
 	mes "^3355FF- 你獲得了 -^000000";
-	mes "^3355FF- 紅色魔力礦石-^000000";	
+	mes "^3355FF- 紅色魔力礦石-^000000";
 	close;
 }

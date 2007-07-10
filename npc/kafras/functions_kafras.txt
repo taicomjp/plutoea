@@ -31,13 +31,18 @@
 //===== By: ================================================== 
 //= eAthena Dev Team
 //= Darlskies, Darkchild, Syrus22, Lupus, kobra_k88 (2.0)
+//= L0ne_W0lf
 //===== Current Version: ===================================== 
-//= 5.4b
+//= 5.7
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: =========================================
 //= These functions handle save, storage, cart rental, teleport,
 //= and Free Teleport/Warp/Rent Cart options for all Kafra NPCs.
+//=
+//= Kafra's will need a lot of work. The Welcome Message argument
+//= may become obsolete, as most kafras have a slightly differing
+//= Welcome message.
 //===== Additional Comments: ================================= 
 //= v1.1 Now using functions v2.1 Added Cart Rent for Classes: Whitesmith, Professor.
 //= Replaced checkoption(x) into checkcart(0) [Lupus] v2.1b Added Fix Kafra Pass Func [Kobra_k88]
@@ -67,6 +72,14 @@
 //=	Need all coords for all guides.. and somehow pass their coords to kafra.
 //=	Removed universal Kafra Pass, added 3 new Kafra Tickets [Lupus]
 //= 5.4b temporary moved "-Guide" from the 1st menu punct [Lupus]
+//= 5.5 Added proper Niflheim welcome message.	[L0ne_W0lf]
+//=	Cleaned up the menus a bit. Got rid of the proceeding "-" prefix.
+//= 5.5b Missed a preceeding hyphen, which was screwing up teleporting. [L0ne_W0lf]
+//= 5.6 Further dialog updates, added  dynamic costs for cart and storage use. [L0ne_W0lf]
+//=	Updated some functions to handle Guild Kafras the way they should. 
+//= 5.6a Corrected a few wrong name sin the teleport function. [L0ne_W0lf]
+//= 5.7 Correced end message no longer displaying, and the duplicate names [L0ne_W0lf]
+//=	Thanks to Barron-Monster for pointing out the issues.
 //============================================================ 
 
 
@@ -74,28 +87,38 @@
 //=   arg(0): Used to determine which welcome message to show.
 //=   arg(1): Used to determine which menu to display.
 //=   arg(2): Used to determine if the info menu is shown in F_KafInfo.
+//=   arg(3): Cost to use Storage
+//=   arg(4): Cost to Rent a Pushcart
 //==========================================================================
 function	script	F_Kafra	{
 	callfunc "F_ClearGarbage"; //Clear outdated, unused variables
 
-	mes "[卡普拉服務人員]";
+	//Display Kafra Welcome Message
 	switch(getarg(0)){
+		//Default message (obsolete)
 		default:
 		case 0:
+			mes "[卡普拉服務人員]";
 			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
 			break;
-		//Niflheim
+
+		//Niflheim specific message
 		case 1:
+			mes "[卡普拉服務人員]";
 			mes "歡迎... 來到... ";
 			mes "卡普拉公司...";
 			mes "我們... 到死... 都會繼續為您服務..."; 
 			break;
-		//Guilds Castles
+
+		//Guild Castle Kafra message
 		case 2:
+			mes "[卡普拉服務人員]";
 			mes "歡迎, ^5533FF" + GetGuildName(@GID) + "^000000 成員.  我們將和你一起工作";
 			break;
-		//Amatsu
+
+		//Amatsu specific message (obsolete)
 		case 3:
+			mes "[卡普拉服務人員]";
 			mes "你重遠方來到此地";
 			mes "學習這裡的文化嗎";
 			mes "或者你是來觀光的 ?";
@@ -108,11 +131,17 @@ function	script	F_Kafra	{
 			mes "卡普拉公司也是";
 			mes "需要什麼服務嗎?";
 			break;
-		//Louyang, Ayothaya
+
+		//Louyang and Ayothaya specific message (obsolete)
 		case 4:
+			mes "[卡普拉服務人員]";
 			mes "有我們的卡普拉服務員在";
 			mes "無論你在哪裡就會感覺在";
 			mes "家裡一樣";
+			break;
+
+		//NPC has it's own welcome message. (Display nothing)
+		case 5:
 			break;
 	}
 	next;
@@ -120,36 +149,48 @@ function	script	F_Kafra	{
 	M_Menu:
 		cleararray @K_Menu0$[0],"",7;
 	switch(getarg(1)){
-		//only Save & Storage
+		// Save and Storage only
 		case 1:
 			setarray @K_Menu0$[0],"儲存服務","倉庫服務","總結";
 			break;
-		//only Storage
+
+		// Storage only
 		case 2:
 			setarray @K_Menu0$[0],"倉庫服務","總結";
 			break;
-		//Common w/o teleport
+
+		// No Teleport (Common)
 		case 3: 
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","-指引","-其他資訊","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","指引","其他資訊","總結";
 			break;
-		//Case 4 is Einbroch no tele message.
-		//Common w/o save and teleport
+
+		// Case 4 is Einbroch no tele message.
+
+		// No save, or teleport. (Common)
 		case 5:
-			setarray @K_Menu0$[0],"倉庫服務","手推車服務","-其他資訊","-指引","總結";
+			setarray @K_Menu0$[0],"倉庫服務","手推車服務","其他資訊","指引","總結";
 			break;
-		//Only storage and other info check
+
+		// Storage and Check Other Information only.
 		case 6:
-			setarray @K_Menu0$[0],"倉庫服務","-指引","-其他資訊","總結";
+			setarray @K_Menu0$[0],"倉庫服務","指引","其他資訊","總結";
 			break;
-		//Common Kafra
+
+		// Save, Storage, and Pushcart only (Kafra Warehouse)
+		case 7:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","總結";
+			break;
+
+		// Common Kafra Employee
 		default:
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務","-卡普拉銀行","-指引","-其他資訊","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務","卡普拉銀行","指引","其他資訊","總結";
 			break;
 	}
+
+	// Guild Kafra Menu override (free Teleport, free Storage, Free Cart)
 	if(getarg(0)==2) {
-	//Guilds Kafra (free Teleport, free Storage, Free Cart)
 		cleararray @K_Menu0$[0],"",7;
-		setarray @K_Menu0$[0],"倉庫服務","-工會倉庫服務","手推車服務","傳送服務","總結";
+		setarray @K_Menu0$[0],"倉庫服務","工會倉庫服務","手推車服務","傳送服務","總結";
 	}
 	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
 		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
@@ -180,14 +221,15 @@ function	script	F_Kafra	{
 	K_Menuf:
 		if (@K_Menu0$[@num] == "儲存服務") return;
 		if (@K_Menu0$[@num] == "倉庫服務"){
-			//Don't charge for a common Kafra Storage in your Castle
-			if(getarg(0) == 2) callfunc "F_KafStor",2;
-			else callfunc "F_KafStor",0;
+			// Do not charge for Guild Storage
+			if(getarg(0) == 2) callfunc "F_KafStor",2,0,0;
+			else callfunc "F_KafStor",0,getarg(3),getarg(0);
 			next;
 			goto M_Menu;
 		}
 		if (@K_Menu0$[@num] == "傳送服務"){
-			if(getarg(1) == 4){				//Check for Einbroch Tele notice
+			// Display Einbroch "No Teleport Service" notice.
+			if(getarg(1) == 4){
 				mes "[卡普拉服務人員]";
 				mes "我們卡普拉服務在秀發茲發德總公司，";
 				mes "因為和秀發茲發德 共和國";
@@ -206,19 +248,19 @@ function	script	F_Kafra	{
 			goto M_Menu;
 		}
 		if (@K_Menu0$[@num] == "手推車服務"){
-			if(callfunc("F_KafCart",getarg(0)) == 1) next;
+			if(callfunc("F_KafCart",getarg(0),getarg(4)) == 1) next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-指引"){
+		if (@K_Menu0$[@num] == "指引"){
 			callfunc "F_KafGuide";
 			next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-卡普拉使用卷"){
+		if (@K_Menu0$[@num] == "卡普拉使用卷"){
 			if(callfunc("F_KafPass") == 1) next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-其他資訊"){
+		if (@K_Menu0$[@num] == "其他資訊"){
 			callfunc "F_KafInfo",getarg(2);
 			goto M_Menu;
 		}
@@ -226,12 +268,12 @@ function	script	F_Kafra	{
 			callfunc "F_KafEnd",getarg(0),0;
 			end;
 		}
-		if (@K_Menu0$[@num] == "-工會倉庫服務"){
+		if (@K_Menu0$[@num] == "工會倉庫服務"){
 			callfunc "F_KafStor",1;
 			next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "-卡普拉銀行"){
+		if (@K_Menu0$[@num] == "卡普拉銀行"){
 			callfunc "F_KafraBank";
 			next;
 			goto M_Menu;
@@ -413,8 +455,8 @@ function	script	F_KafInfo	{
 
 	sM_Menu:
 //Uncomment next line to block Kafra Storage Protection
-//	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分佈",sM_KafLoc, "-取消",sM_End;
-	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "-倉庫密碼服務",sM_KafCode, "卡普拉服務人員位置分佈",sM_KafLoc, "總結",sM_End;
+//	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "卡普拉服務人員位置分佈",sM_KafLoc, "取消",sM_End;
+	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "倉庫密碼服務",sM_KafCode, "卡普拉服務人員位置分佈",sM_KafLoc, "總結",sM_End;
 
 	sM_ResChk:
 		mes "[卡普拉服務人員]";

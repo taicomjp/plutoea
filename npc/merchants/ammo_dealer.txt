@@ -1,96 +1,101 @@
 //===== eAthena Script =======================================
-//= Ammo Dealer
-//===== By: ==================================================
-//= Playtester
-//===== Current Version: =====================================
-//= 1.0
-//===== Compatible With: =====================================
-//= eAthena
-//===== Description: =========================================
-//= trades items for spheres
-//===== Additional Comments: =================================
-//= 1.0 first version [Playtester]
+//= Bullet Dealer Tony
+//===== By ===================================================
+//= Playtester, Paradox924X
+//===== Version ==============================================
+//= 1.3
+//===== Compatible With ======================================
+//= eAthena SVN with jAthena scripting engine and . variables
+//===== Description ==========================================
+//= Bullet trader.
+//===== Comments =============================================
+//= 1.0 First version [Playtester]
+//= 1.1 Converted from Aegis [Paradox924X]
+//= 1.2 More optimized conversion [Legionaire]
+//= 1.2a Removed .GATs [Lupus]
+//= 1.3 Fixed [Playtester] Optimized. Got rid of @vars [Lupus]
 //============================================================
-//============================================================ 
-//2007-02-09  黑色小貓  中文化
-//============================================================
 
-// Ammo Dealer Tony
-que_ng.gat,187,156,3	script	子彈商人 東尼	86,{
-	mes "[東尼]";
-	mes "你好! 我可以為你服務的項目是，";
-	mes "^FF0000榴彈槍^000000子彈的製作!";
-	next;
-	mes "[東尼]";
-	mes "製作 30 枚子彈需要的材料是，";
-	mes "^FF00001 個強化武器金屬一級^000000，";
-	mes "還有 ^FF00001 個強化武器金屬二級^000000!";
-	next;
-	mes "[東尼]";
-	mes "依照你要製作的子彈，";
-	mes "我還需要其他的材料!";
-	next;
-	mes "[東尼]";
-	mes "這是子彈的材料清單：";
-	mes "火焰子彈 - ^FF00002 個燃燒的心臟^000000";
-	mes "雷擊子彈 - ^FF00003 個賽依伐^000000";
-	mes "毒物子彈 - ^FF000010 個毒牙^000000";
-	mes "暗盲子彈 - ^FF00005 個墨汁^000000";
-	mes "冰凍子彈 - ^FF00002 個布裏刊^000000";
-	next;
-	mes "[東尼]";
-	mes "那麼，請問你要製造哪種子彈呢?";
-	next;
-	menu "火焰子彈",-,"雷擊子彈",S2,"毒物子彈",S3,"暗盲子彈",S4,"冰凍子彈",S5;
+que_ng,187,156,3	script	Bullet Dealer Tony	86,{
 
-	callsub sF_Make,13203,7097,2;
-S2:
-	callsub sF_Make,13204,7053,3;
-S3:
-	callsub sF_Make,13205,937,10;
-S4:
-	callsub sF_Make,13206,1024,5;
-S5:
-	callsub sF_Make,13207,7054,2;
-
-//Subfunction, getarg(0):created sphere, getarg(1):special material, getarg(2):number needed
-sF_Make:
-	if( (countitem(1010)<1) || (countitem(1011)<1) || (countitem(getarg(1))<getarg(2)) ) goto L_NoMat;
-	mes "[東尼]";
-	mes "好的! 那麼請問你需要多少數量呢? 一包 30 顆!";
+	mes "[Tony]";
+	if (BaseJob == Job_Gunslinger) {
+		mes "I'm Bullet-tooth Tony!";
+		mes "Whenever your out of bullets,";
+		mes "Visit me!!!";
+		next;
+		mes "[Tony]";
+		mes "Now~! Friend~Companion~ Buddy~";
+		mes "What do you need?!";
+		mes "Choose anything~!";
+		mes "And pay money~!";
+		next;
+		switch(select("Poison Sphere:Flare Sphere:Lighting Sphere:Blind Sphere:Freezing Sphere:Cancel")) {
+		case 1: callfunc "Bullet_Trade",937,10,13205; break;
+		case 2: callfunc "Bullet_Trade",7097,2,13203; break;
+		case 3: callfunc "Bullet_Trade",7053,3,13204; break;
+		case 4: callfunc "Bullet_Trade",1024,5,13206; break;
+		case 5: callfunc "Bullet_Trade",7054,2,13207; break;
+		default:
+			mes "[Tony]";
+			mes "Mmm~ Okay~";
+			mes "Please visit again~";
+			mes "I, Bullet-tooth Tony,";
+			mes "Will always be here~!!!";
+			close;
+		}
+	}
+	mes "I'm a trader who supplies";
+	mes "Gunslingers with trade items.";
+	mes "I am called Bullet-tooth Tony.";
 	next;
-	menu "換取最大可交易的數量",M_0, "讓我選擇我要的數量!",M_1, "取消",M_End;
+	mes "[Tony]";
+	mes "I don't think you are a Gunslinger";
+	mes "So just look around";
+	mes "and go.";
+	close;
+}
 
-	M_0:
-		set @amount, 500;
-		if(countitem(1010) < @amount) set @amount,countitem(1010);
-		if(countitem(1011) < @amount) set @amount,countitem(1011);
-		if(countitem(getarg(1))/getarg(2) < @amount) set @amount,countitem(getarg(1))/getarg(2);
-		if(@amount > 0) goto L_Make;
-		mes "[東尼]";
-		mes "你是在耍我嗎...?";
+function	script	Bullet_Trade	{
+	mes "[Tony]";
+	mes "Input the amount you wish to purchase.";
+	next;
+	mes "[Tony]";
+	mes "We trade 30 "+getitemname(getarg(2))+"s for";
+	mes "1 Phracon,";
+	mes "1 Emveretarcon,";
+	mes "and "+getarg(1)+" "+getitemname(getarg(0))+".";
+	next;
+	mes "[Tony]";
+	mes "The maximum number you can trade is 500.";
+	mes "If you want to cancel, input 0.";
+	next;
+	input .@amount;
+	mes "[Tony]";
+	if (.@amount < 1 || .@amount > 500) {
+		mes "Invalid Amount!";
+		mes "Enter again~!";
 		close;
-
-	M_1:
-		input @amount;
-		if(@amount < 1 || @amount > 500) goto M_End;
-		if(countitem(1010) < @amount) goto L_NoMat;
-		if(countitem(1011) < @amount) goto L_NoMat;
-		if(countitem(getarg(1))/getarg(2) < @amount) goto L_NoMat;
-
-	L_Make:
-		delitem 1010,@amount;
-		delitem 1011,@amount;
-		delitem getarg(1),@amount*getarg(2);
-		getitem getarg(0),@amount*30;
-
-	M_End:
-		mes "[東尼]";
-		mes "歡迎再次光臨!";
+	} else if (countitem(1010) >= .@amount && countitem(1011) >= .@amount && countitem(getarg(0)) >= (.@amount*getarg(1))) {
+		if (checkweight(getarg(2),.@amount * 30) == 0) {
+			mes "I cannot give it to you because your inventory is full. Come back after your inventory has more space.";
+			close;
+		} else {
+			mes "Oh~ Good!";
+			mes "Trade number checked!";
+			mes "I'll trade immediately.";
+			delitem 1010,.@amount;
+			delitem 1011,.@amount;
+			delitem getarg(0),.@amount * getarg(1);
+			getitem getarg(2),.@amount * 30;
+			close;
+		}
+	} else {
+		mes "Tsk Tsk~";
+		mes "You do not have";
+		mes "enough items for the";
+		mes "items you want to trade.";
+		mes "Prepare again and come back.";
 		close;
-
-	L_NoMat:
-		mes "[東尼]";
-		mes "很抱歉! 你沒有足夠的材料製作子彈!";
-		close;
+	}
 }
