@@ -33,7 +33,7 @@
 //= Darlskies, Darkchild, Syrus22, Lupus, kobra_k88 (2.0)
 //= L0ne_W0lf
 //===== Current Version: ===================================== 
-//= 5.7
+//= 5.8
 //===== Compatible With: ===================================== 
 //= eAthena 1.0
 //===== Description: =========================================
@@ -77,9 +77,10 @@
 //= 5.5b Missed a preceeding hyphen, which was screwing up teleporting. [L0ne_W0lf]
 //= 5.6 Further dialog updates, added  dynamic costs for cart and storage use. [L0ne_W0lf]
 //=	Updated some functions to handle Guild Kafras the way they should. 
-//= 5.6a Corrected a few wrong name sin the teleport function. [L0ne_W0lf]
+//= 5.6a Corrected a few wrong names in the teleport function. [L0ne_W0lf]
 //= 5.7 Correced end message no longer displaying, and the duplicate names [L0ne_W0lf]
 //=	Thanks to Barron-Monster for pointing out the issues.
+//= 5.8 Fixed another double name bing shown when "saving" [L0ne_W0lf]
 //============================================================ 
 
 
@@ -256,10 +257,6 @@ function	script	F_Kafra	{
 			next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "卡普拉使用卷"){
-			if(callfunc("F_KafPass") == 1) next;
-			goto M_Menu;
-		}
 		if (@K_Menu0$[@num] == "其他資訊"){
 			callfunc "F_KafInfo",getarg(2);
 			goto M_Menu;
@@ -269,7 +266,7 @@ function	script	F_Kafra	{
 			end;
 		}
 		if (@K_Menu0$[@num] == "工會倉庫服務"){
-			callfunc "F_KafStor",1;
+			callfunc "F_KafStor",1,0;
 			next;
 			goto M_Menu;
 		}
@@ -284,6 +281,7 @@ function	script	F_Kafra	{
 
 // Storage Function =======================================================
 function	script	F_KafStor	{
+	// Unable to access Guild Storage (Busy)
 	if(getarg(0) == 1){
 		if(guildopenstorage(0) == 1){
 			mes "[卡普拉服務人員]";
@@ -296,30 +294,71 @@ function	script	F_KafStor	{
 		cutin "", 255;
 		close;
 	}
+
+	// Unable to access Normal Storage (Insufficient Basic Skills)
 	if(basicskillcheck() && getskilllv(1) < 6){
 		mes "[卡普拉服務人員]";
+		// Niflheim Specific Message
+		if (getarg(2) == 1) {
+			mes "^666666S-s-ssoooorry,";
+			mes "y-you're a-a-aaaa";
+			mes "Nooviiice... N-neeeds";
+			mes "B-basic sssskill l-level 6...^000000";
+			return;
+		}
 		mes "很抱歉，您無法使用倉庫服務，這至少需要職業等級6以上。";
 		return;
 	}
-	//don't charge for common storage in Castle
+
+	// Accessing Normal Storage (Skipped if accessing Storage from Guild castle)
 	if(getarg(0) != 2){
-		//we'll use Free Ticket for Kafra Storage if available
-		if(countitem(7059)){
-			delitem 7059,1;
-		} else {
-			if(Zeny<40){
+		// Consume "Free Ticket for Kafra Storage" if available.
+		if(countitem(7059)) delitem 7059,1;
+		else {
+			if(Zeny<getarg(1)){
 				mes "[卡普拉服務人員]";
-				mes "很抱歉，您的金錢不足! 這至少需要 40 Zeny.";
+				// Niflheim Specific Message
+				if (getarg(2) == 1) {
+					percentheal -50,-50;
+					mes "^666666Zeeeeeny...";
+					mes "M-more z-zeny...!";
+					mes "N-neeed 150... zeny...";
+					mes "Ergh! T-taking bl-blood~!^000000";
+					return;
+				}
+				//Standard Message
+				mes "很抱歉，您的金錢不足! 這至少需要 "+getarg(1)+" Zeny.";
 				return;
 			}
-			set Zeny, Zeny-40;
-			set RESRVPTS, RESRVPTS + (40/5);
+			set Zeny, Zeny-getarg(1);
+			set RESRVPTS, RESRVPTS + (getarg(1)/5);
 		}
 	}
 	mes "[卡普拉服務人員]";
 	mes "倉庫在您關閉此窗口後將會打開";
 	mes "謝謝您使用本公司所提供的服務";
 
+	// Surpress the "End" message if in guild castle.
+	if (getarg(0) != 2) {
+		// Niflheim specific Message
+		if (getarg(2) == 1) {
+			percentheal 0,-10;
+			mes "[卡普拉服務人員]";
+			mes "^666666Thank you.. for... using...";
+			mes "Thank you.. for... using...";
+			mes "Thank you.. for... using...";
+			mes "Thank you.. for... using...";
+			mes "Thank you.. for... using...^000000";
+		}
+		// Normal message
+		else {
+			mes "[卡普拉服務人員]";
+			mes "Here, let me open";
+			mes "your Storage for you.";
+			mes "Thank you for using";
+			mes "the Kafra Service.";
+		}
+	}
 	callfunc("F_CheckKafCode");	//check your storage password, if set
 
 	close2;
@@ -360,11 +399,11 @@ function	script	F_KafTele	{
 		set @num, 6;
 
 	L_Warp:
-		if (@wrpC$[@num] == "取消") return;
-		// we'll use Free Ticket for Kafra Transportation if available
-		if(countitem(7060)){
-			delitem 7060,1;
-		} else {
+		if (@wrpC$[@num] == "Cancel") return;
+		// Consume "Free Ticket for Kafra Transportation" if available.
+		// Do not consume if in Guild castle
+		if(countitem(7060) > 0 && getarg(0) != 2) delitem 7060,1;
+		else {
 			if (Zeny<@wrpP[@num]){
 				mes "[卡普拉服務人員]";
 				mes "很抱歉,您的金錢不足. 請確認您身上的現金.";
@@ -396,6 +435,7 @@ function	script	F_KafTele	{
 
 // Cart Function ========================================================
 function	script	F_KafCart	{
+	// Ensure that the class wanting to rent a pushcart is a merchant
 	if(baseClass != Job_Merchant){
 		mes "[卡普拉服務人員]";
 		mes "抱歉! 手推車是商人、鐵匠及鍊金術士和超級初心者專用的服務";
@@ -406,45 +446,39 @@ function	script	F_KafCart	{
 		mes "抱歉! 您必須先學會 ^0000FF'手推車使用'^000000 技能才可以租用手推車.";
 		return 1;
 	}
-	if(checkcart() == 1){
+	// Make sure the invoking character does not have a cart already
+	else if(checkcart() == 1){
 		mes "[卡普拉服務人員]";
 		mes "唔... 瞧瞧你的屁股後面，那不正是手推車嗎....";
-		emotion e_swt;
 		return 1;
 	}
-	//get Cart in Guild for free
-	if(getarg(0) == 2) goto L_FreeCart;
-	//use Free Ticket for the Cart Service if available
-	if(countitem(7061)){
-		delitem 7061,1;
-		goto L_FreeCart;
-	}
-	mes "[卡普拉服務人員]";
-	mes "此服務需要 800 Zeny. 您想要租手推車嗎?";
-	next;
-	menu "手推車服務",-, "總結.",M_End;
 
-		if(Zeny<800){
-			mes "[卡普拉服務人員]";
-			mes "很抱歉，您的金錢不足. 這至少需要 800 Zeny";
-			emotion e_cash;
-			return 1;
-		}
-		set Zeny,Zeny-800;
-		set RESRVPTS, RESRVPTS + 48;
-	L_FreeCart:
-		setcart;
+	// Consume "Free Ticket for the Cart Service" if available.
+	// Do not consume if in Guild castle.
+	if(countitem(7061) > 0 && getarg(0) != 2) delitem 7061,1;
+	else {
 		mes "[卡普拉服務人員]";
-		mes "那麼，這台手推車就交給你了.";
-		return 1;
-	M_End:
-		return 0;
+		mes "此服務需要 "+getarg(1)+" Zeny. 您想要租手推車嗎?";
+		next;
+		menu "手推車服務",-, "總結",M_End;
+			if(Zeny<getarg(1)){
+				mes "[卡普拉服務人員]";
+				mes "很抱歉，您的金錢不足. 這至少需要 "+getarg(1)+" Zeny";
+				return 1;
+			}
+			set Zeny,Zeny-getarg(1);
+			set RESRVPTS, RESRVPTS + 48;
+	}
+	setcart;
+	return 1;
+
+M_End:
+	return 0;
 }
 
 
 // Pass Function ===============================================================
 function	script	F_KafGuide	{
-
 	mes "[卡普拉服務人員]";
 	mes "咦...";
 	return;
@@ -471,6 +505,7 @@ function	script	F_KafInfo	{
 		next;
 		if(getarg(0) == 1) return;
 		goto sM_Menu;
+
 	sM_KafLoc:
 		mes "[卡普拉服務人員]";
 		mes "在小地圖上閃爍的顯示位置是這個城市中所有卡普拉職員的所在位置";
@@ -496,16 +531,28 @@ function	script	F_KafInfo	{
 // End Function =====================================================
 //  arg(0): used to determine what message to display.
 //  arg(1): used to determine if save message is displayed.
+//  arg(2): used to display the name of the area you're saving in.
 //===================================================================
 function	script	F_KafEnd	{
 	mes "[卡普拉服務人員]";
-	if(getarg(1)==1) mes "已經儲存好了, 謝謝您的使用!";		// only shown when a player uses save
-	if(getarg(0)!=1) mes "謝謝您使用卡普拉公司所提供的服務，希望很快能再見到您!";
-	if(getarg(0)==1) mes "以服務和管理業務為目標，我們卡普拉的服務會更加完善，請安心使用，往後的日子裡會盡力幫助玩家，卡普拉公司謝謝您的使用!";
+	//Save
+	if(getarg(1)==1) {
+		mes "已經儲存好了, 謝謝您的使用!";
+	}
+
+	// Generic End
+	else if(getarg(0)==0 || getarg(0)==5) {
+		mes "謝謝您使用卡普拉公司所提供的服務，希望很快能再見到您!";
+	}
+
+	// Niflheim End
+	else if(getarg(0)==1) {
+		percentheal 0,- 25;
+		mes "以服務和管理業務為目標，我們卡普拉的服務會更加完善，請安心使用，往後的日子裡會盡力幫助玩家，卡普拉公司謝謝您的使用!";
+	}
+
 	close2;
 	cutin "", 255;
-	emotion 15;
-	close;
 	end;
 }
 

@@ -20,7 +20,7 @@
 //===== By: ============================
 //= eAthena Dev Team
 //===== Current Version: =======================
-//= 2.21
+//= 2.3
 //===== Compatible With: ============================
 //= eAthena 1.0
 //===== Description: ============================================
@@ -30,6 +30,8 @@
 //=  When set to 2 the Guild Kafra message is displayed. 
 //=  arg(1): Set to 1 to disable teleport menu option. Otherwise set to 0.
 //=  arg(2): Set to 1 to disable info menu.  Otherwise set to 0.
+//=  arg(3): Cost of Storage service
+//=  arg(4): Cost of Rent a Pushcart service
 //===== Additional Comments: ==========================================
 //= v1.1 Now using functions :)
 //= v2.1b Minor changes to function calls. Using arguments.
@@ -37,11 +39,13 @@
 //= Corrected savepoint for in town kafra.[kobra_k88]
 //= 2.2 New teleport destinations, prices [Lupus]
 //= 2.21 from Pharos, both warps are now 1200z [Evera]
+//= 2.3 Updated function calls with new arguments. [L0ne_W0lf]
+//=	Added unique Kafra Welcome message2.
 //=====================================================================
 
 
 // In Town ==============================================>\\
-comodo.gat,200,148,4	script	卡普拉服務人員::kaf_comodo	721,{
+comodo.gat,195,150,4	script	卡普拉服務人員::kaf_comodo	721,{
 	cutin "kafra_07",2;
 	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
 	setarray @wrpD$[0], "夢羅克", "發樂斯 燈塔島", "汶巴拉";
@@ -50,7 +54,7 @@ comodo.gat,200,148,4	script	卡普拉服務人員::kaf_comodo	721,{
 	set @wrpC$[1], @wrpD$[1]+" -> "+@wrpP[1];
 	set @wrpC$[2], @wrpD$[2]+" -> "+@wrpP[2];
 	set @wrpC$[3], "取消";
-	callfunc "F_Kafra",0,0,1;
+	callfunc "F_Kafra",5,0,1,80,1000;
 
 	M_Save:
 		savepoint "comodo.gat",204,143;
@@ -58,14 +62,15 @@ comodo.gat,200,148,4	script	卡普拉服務人員::kaf_comodo	721,{
 }
 
 // Comodo Pharos Lighthouse (Beacon Island) ===================>\\
-cmd_fild07.gat,135,134,4	script	卡普拉服務人員::kaf_cmd_fild07	721,{
+cmd_fild07.gat,136,134,4	script	卡普拉服務人員::kaf_cmd_fild07	721,{
 	cutin "kafra_07",2;
+	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
 	setarray @wrpD$[0], "克魔島", "夢羅克";
-	setarray @wrpP[0], 1200, 1800;
+	setarray @wrpP[0], 1200, 1200;
 	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
 	set @wrpC$[1], @wrpD$[1]+" -> "+@wrpP[1];
 	set @wrpC$[2], "取消";
-	callfunc "F_Kafra",0,0,1;
+	callfunc "F_Kafra",5,0,1,80,1000;
 
 	M_Save:
 		savepoint "cmd_fild07.gat",127,134;

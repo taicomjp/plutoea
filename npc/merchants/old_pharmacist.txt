@@ -1,250 +1,159 @@
 //===== eAthena Script =======================================
-//= Old Pharmacist
+//= Grandpa Pharmacist
 //===== By: ==================================================
-//= DZeroX
+//= kobra_k88
 //===== Current Version: =====================================
-//= 1.1a
+//= 1.2
 //===== Compatible With: =====================================
-//= eAthena SVN Trunk
+//= eAthena 7.15 +
 //===== Description: =========================================
 //= Trade in items for potions
 //===============================
 //= Breakdown of arguments used
-//= arg(0): Herb required.
-//= arg(1): Zeny cost.
-//= arg(2): Potion given.
+//= arg(0): first item id#
+//= arg(1): 2nd item id# if needed, or else use 0
+//= arg(2): zeny cost
+//= arg(3): potion id#
+//= arg(4): potion name
 //===== Additional Comments: =================================
-//= 1.0 - Fully working. [DZeroX]
-//= 1.0a - Minor fixes [Lupus]
-//= 1.1 - Added changed the dialogs and name to fit the
-//=       the official information. [DZeroX]
-//= 1.1a Removed .GATs [Lupus]
+//= Fully working
+//= 1.1 Negative input bug fixed [Lupus]
+//= 1.2 Created a subfunc for the potion making part.  Added more
+//= input/zeny exploit checks. Added Lupus's "loopless" technique.[kobra_k88]
 //============================================================
 
-alberta_in,16,28,4	script	Old Pharmacist	61,{
-	mes "[Old Pharmacist]";
-	mes "Err....Are you a customer...?";
-	switch(select("Make Potion","Talk.","Instruction of making potions","Cancel")) {
-		case 1:
-			next;
-			set .@weight,MaxWeight-Weight;
-			if ((.@weight) < 10000) {
-				mes "[Old Pharmacist]";
-				mes "Why are you carrying these so many!";
-				mes "Don't be greedy, carry only as much you need!";
-				next;
-				mes "[Old Pharmacist]";
-				mes "You are too heavy to receive potions from me...";
-				mes "Go store some items in your storage first!";
-				close;
-			} else {
-				mes "[Old Pharmacist]";
-				mes "You have all the stuff ready, right? Which one would you like?";
-				switch(select("Red Potion.","Orange Potion.","Yellow Potion.","White Potion.","Blue Potion.","Green Potion.","Actually, I don't want anything.")) {
-					case 1:
-						callsub L_making,507,3,501;
-					case 2:
-						next;
-						mes "[Old Pharmacist]";
-						if (countitem(507) < countitem(713)) {
-							set .@max,countitem(507);
-						}
-						if (countitem(508) < countitem(713)) {
-							set .@max,countitem(508);
-						} else {
-							set .@max,countitem(713);
-						}
-						if ((countitem(507) < 1) || (countitem(508) < 1) || (countitem(713) == 0)) {
-							mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-							mes "Get lost!";
-							close;
-						}
-						if (Zeny < 3) {
-							mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-							mes "Get lost!";
-							close;
-						}
-						mes "How many?";
-						switch(select("Make as many as I can.","I want to choose an amount.","Actually, I don't want anything.")) {
-							case 1:
-								next;
-								if ((countitem(507) < .@max) || (countitem(508) < .@max) || (countitem(713) < .@max) || (Zeny < .@max*3)) {
-									mes "[Old Pharmacist]";
-									mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
-									close;
-								}
-								set Zeny,Zeny-(.@max*getarg(1));
-								delitem getarg(0),.@max*2;
-								delitem 713,.@max;
-								getitem getarg(2),.@max; 
-								mes "[Old Pharmacist]";
-								mes "Here. Take them.";
-								mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
-								close;
-							case 2:
-								next;
-								mes "[Old Pharmacist]";
-								mes "Then pick a number below 100. If you don't want any, just enter '0'. With the materials you have, you can make about "+.@max+" potions.";
-								input .@amount;
-								if (.@amount == 0) {
-									next;
-									mes "[Old Pharmacist]";
-									mes "Make up your mind, will you?!";
-									close;
-								}
-								if (.@amount > 100) {
-									next;
-									mes "[Old Pharmacist]";
-									mes "Are you deaf? I said less than 100!";
-									close;
-								}
-								if ((countitem(507) < .@amount) || (countitem(508) < .@amount) || (countitem(713) < .@amount) || (Zeny < .@amount*3)) {
-									next;
-									mes "[Old Pharmacist]";
-									mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
-									close;
-								}
-								next;
-								set Zeny,Zeny-(.@amount*getarg(1));
-								delitem getarg(0),.@amount*2;
-								delitem 713,.@amount;
-								getitem getarg(2),.@amount; 
-								mes "[Old Pharmacist]";
-								mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
-								close;
-							case 3:
-								next;
-								mes "[Old Pharmacist]";
-								mes "What?!";
-								mes "Grrr...";
-								mes "Bleh!";
-								mes "Get lost!";
-								close;
-						}
-					case 3:
-						callsub L_making,508,10,503;
-					case 4:
-						callsub L_making,509,20,504;
-					case 5:
-						callsub L_making,510,30,505;
-					case 6:
-						callsub L_making,511,3,506;
-					case 7:
-						mes "[Old Pharmacist]";
-						mes "What?!";
-						mes "Grrr...";
-						mes "Bleh!";
-						mes "Get lost!";
-						close;
-					}
-				}
-		case 2:
-			mes "[Old Pharmacist]";
-			mes "With medicine, you can increase a person's ability to regenerate. But, they're only good up to a point. *Sigh* I'm starting to think of the days when I was young. I must be getting old.";
-			next;
-			mes "[Old Pharmacist]";
-			mes "Anyways, a potion is merely a potion. Nothing more and nothing less.";
-			close;
-		case 3:
-			mes "[Old Pharmacist]";
-			mes "Hrrrmm...";
-			mes "You young ones can be quite annoying. But, since you asked, I'll explain.";
-			next;
-			mes "[Old Pharmacist]";
-			mes "Herbs work well by themselves, but if you use my special techniques and skills to make potions out of them, the effect is much much greater.";
-			next;
-			mes "[Old Pharmacist]";
-			mes "If you ask eagerly and politely, I will make them for you. But, not for free... Don't worry though, I only charge a small fee, so it's not that expensive.";
-			next;
-			mes "[Old Pharmacist]";
-			mes "Red Potion - ^0098E52 Red Herbs, 1 Empty Bottle, 2 zeny fee.^000000";
-			mes "Orange Potion - ^0098E51 Red Herb, 1 Yellow Herb, 1 Empty Bottle, 5 zeny fee.^000000";
-			mes "Yellow Potion - ^0098E52 Yellow Herbs, 1 Empty Bottle, 10 zeny.^000000";
-			next;
-			mes "[Old Pharmacist]";
-			mes "White Potion - ^0098E52 White Herbs, 1 Empty Bottle, 20 zeny fee.^000000";
-			mes "Blue Potion - ^0098E52 Blue Herbs, 1 Empty Bottle, 30 zeny fee.^000000";
-			mes "Green Potion - ^0098E52 Green Herbs, 1 Empty Bottle, 3 zeny fee.^000000";
-			close;
-		case 4:
-			mes "[Old Pharmacist]";
-			mes "What a boring person. If you have something to say, why don't you say it?!";
-			close;
-	}
-	
-L_making:
+
+alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
+	mes "[藥劑師爺爺]";
+	mes "是....客人嗎...?";
 	next;
-	mes "[Old Pharmacist]";
-	if ((countitem(getarg(0))/2) < countitem(713)) {
-		set .@max,countitem(getarg(0))/2;
-	} else {
-		set .@max,countitem(713);
-	}
-	if ((countitem(getarg(0)) < 2) || (countitem(713) == 0)) {
-		mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-		mes "Get lost!";
+	menu "組合藥水",M_Make, "對話",M_Talk, "聽取組合藥水的告示",M_Info, "取消",M_End;
+	
+	M_Make:
+		mes "[藥劑師爺爺]";
+		mes "物品都齊全了嗎?您要組合哪一種藥水?";
+		M_Menu:
+		next;
+		menu	"紅色藥水",M_0,
+			"赤色藥水",M_1,
+			"黃色藥水",M_2,
+			"白色藥水",M_3,
+			"藍色藥水",M_4,
+			"綠色藥水",M_5,
+			"放棄",M_End;
+		
+		M_0:
+			callsub sF_Make, 507, 0, 2, 501, "紅色";
+			goto M_Menu;
+		M_1:
+			callsub sF_Make, 507, 508, 5, 502, "橘色";
+			goto M_Menu;
+		M_2:
+			callsub sF_Make, 508, 0, 10, 503, "黃色";
+			goto M_Menu;
+		M_3:
+			callsub sF_Make, 509, 0, 20, 504, "白色";
+			goto M_Menu;
+		M_4:
+			callsub sF_Make, 510, 0, 30, 505, "藍色";
+			goto M_Menu;
+		M_5:
+			callsub sF_Make, 511, 0, 3, 506, "綠色";
+			goto M_Menu;
+
+	M_Talk:
+		mes "[藥劑師爺爺]";
+		mes "藥水可以提高人類的恢復力.不過只是幫助而已...";
+		mes "哎呦...年紀大了會回憶以前的事情.";
+		mes "藥水只是藥的一種...只是這樣而已.";
 		close;
-	}
-	if (Zeny < 3) {
-		mes "You rascal! What did you expect?! Coming here with nothing. Tsk!";
-		mes "Get lost!";
+	M_Info:
+		mes "[藥劑師爺爺]";
+		mes "嗯...您們這些小傢伙真是煩人... 好,我會仔細告訴您們.";
+		next;
+		mes "[藥劑師爺爺]";
+		mes "藥草是可以直接使用的,不過我個人的秘方是做成藥水,效果會更好.";
+		next;
+		mes "[藥劑師爺爺]";
+		mes "如果您們求我,我就會做藥水給您們,不過不是免費的,我要收一點費用,當作我的零用錢,數目不會很多.";
+		next;
+		mes "[藥劑師爺爺]";
+		mes "紅色藥水 - ^0098E5 紅色藥草 x2, 空瓶 x1, 3 金幣.^000000";
+		mes "赤色藥水 - ^0098E5 紅色藥草 x1, 黃色藥草 x1, 空瓶 x1, 5 金幣.^000000";
+		mes "黃色藥水 - ^0098E5 黃色藥草 x2, 空瓶 x1, 10 金幣.^000000";
+		next;
+		mes "[藥劑師爺爺]";
+		mes "白色藥水 - ^0098E5 白色藥草 x2, 空瓶 x1, 20 金幣.^000000";
+		mes "藍色藥水 - ^0098E5 藍色藥草 x2, 空瓶 x1, 30 金幣.^000000";
+		mes "綠色藥水 - ^0098E5 綠色藥草 x2, 空瓶 x1, 3 金幣.^000000";
 		close;
-	}
-	mes "How many?";
-	switch(select("Make as many as I can.","I want to choose an amount.","Actually, I don't want anything.")) {
-		case 1:
-			next;
-			if ((countitem(getarg(0)) < .@max*2) || (countitem(713) < .@max) || (Zeny < .@max*getarg(1))) {
-				mes "[Old Pharmacist]";
-				mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
-				close;
-			}
-			set Zeny,Zeny-(.@max*getarg(1));
-			delitem getarg(0),.@max*2;
-			delitem 713,.@max;
-			getitem getarg(2),.@max; 
-			mes "[Old Pharmacist]";
-			mes "Here. Take them.";
-			mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
-			close;
-		case 2:
-			next;
-			mes "[Old Pharmacist]";
-			mes "Then pick a number below 100. If you don't want any, just enter '0'. With the materials you have, you can make about "+.@max+" potions.";
-			input .@amount;
-			if (.@amount == 0) {
-				next;
-				mes "[Old Pharmacist]";
-				mes "Make up your mind, will you?!";
-				close;
-			}
-			if (.@amount > 100) {
-				next;
-				mes "[Old Pharmacist]";
-				mes "Are you deaf? I said less than 100!";
-				close;
-			}
-			if ((countitem(getarg(0)) < .@amount*2) || (countitem(713) < .@amount) || (Zeny < .@amount*getarg(1))) {
-				next;
-				mes "[Old Pharmacist]";
-				mes "You rascal! You don't even have all the materials and you want me to make you potions?!";
-				close;
-			}
-			next;
-			set Zeny,Zeny-(.@amount*getarg(1));
-			delitem getarg(0),.@amount*2;
-			delitem 713,.@amount;
-			getitem getarg(2),.@amount; 
-			mes "[Old Pharmacist]";
-			mes "Here you go. It's all done so you can take it. But remember! Abusing medicine is not good.";
-			close;
-		case 3:
-			next;
-			mes "[Old Pharmacist]";
-			mes "What?!";
-			mes "Grrr...";
-			mes "Bleh!";
-			mes "Get lost!";
-			close;
-	}
+	M_End:
+		mes "[藥劑師爺爺]";
+		mes "真是奇怪的人,有話要說出來,幹嘛什麼也沒說就走過去了!";
+		close;
+
+// Subfunction for making potions
+//================================
+sF_Make:
+	set @herbnum, 2;
+	if(getarg(1) != 0) set @herbnum, 1;
+	if(countitem(getarg(0)) < @herbnum) goto L_NdHerbs;
+	if(getarg(1) != 0) if(countitem(getarg(1)) < @herbnum) goto L_NdHerbs;
+	if(countitem(713) < 1) goto L_NdBottle;
+	if(Zeny < getarg(2)) goto L_NdZeny;
+
+	mes "[藥劑師爺爺]";
+	mes "嗯，那麼你打算製作多少紅色藥水呢?";
+	next;
+	menu "能做多少就做多少",sM_0a, "讓我想想...",sM_0b, "取消",M_End;
+
+	sM_0a:
+		set @amount, 1000;
+		if(zeny/getarg(2) < @amount) set @amount, zeny/getarg(2);
+		if(countitem(getarg(0))/@herbnum < @amount) set @amount, countitem(getarg(0))/@herbnum;
+		if(getarg(1) != 0) if (countitem(getarg(1))/@herbnum < @amount) set @amount, countitem(getarg(1))/@herbnum;
+		if(countitem(713) < @amount) set @amount, countitem(713);
+		if(@amount > 0) goto L_End;
+		mes "[藥劑師爺爺]";
+		mes "唔...你沒有製作所需的正確物品...";
+		close;
+		
+	sM_0b:
+		input @amount;
+		if(@amount<1 || @amount>1000) goto L_BadAmnt;
+		if(countitem(getarg(0))/@herbnum < @amount) goto L_NdHerbs;
+		if(getarg(1) != 0) if (countitem(getarg(1))/@herbnum < @amount) goto L_NdHerbs;
+		if(countitem(713) < @amount) goto L_NdBottle;
+		if(Zeny < (getarg(2)*@amount)) goto L_NdZeny;
+
+	L_End:
+		set Zeny, Zeny - (getarg(2)*@amount);
+		delitem getarg(0), (@amount*@herbnum);
+		if(getarg(1) != 0) delitem getarg(1), (@amount*@herbnum);
+		delitem 713, @amount;
+		getitem getarg(3), @amount;
+		mes "[藥劑師爺爺]";
+		mes "那麼...這些是你要的 " +getarg(4)+ " 藥水,";
+		mes "歡迎下次再來!";
+		close;
+
+	L_NdBottle:
+		mes "[藥劑師爺爺]";
+		mes "你沒有足夠的空瓶來裝藥水! 笨蛋!!";
+		return;
+
+	L_NdHerbs:
+		mes "[藥劑師爺爺]";
+		mes "你到底想要我幫你什麼忙? 你連製作所需的正確物品都搞不清楚了!";
+		return;
+
+	L_NdZeny:
+		mes "[藥劑師爺爺]";
+		mes "你沒有足夠的錢來付我加工費啊...";
+		return;
+
+	L_BadAmnt:
+		mes "[藥劑師爺爺]";
+		mes "什麼? 你說你要幾個?!";
+		return;
 }

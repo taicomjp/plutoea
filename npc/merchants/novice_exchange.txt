@@ -1,4 +1,4 @@
-//===== eAthena Script ========================================
+//===== eAthena Script =======================================
 //= Novice Goods Exchanger
 //===== By: ==================================================
 //= ???, eAthena Team
@@ -11,6 +11,7 @@
 //= Official NPC.
 //===== Additional Comments: =================================
 //= 1.1 Made it as a function. U can add your own Merchs [Lupus]
+//= 1.1a Fixed item select [KarLaeda]
 //============================================================
 
 function	script	F_NMerch	{
@@ -44,16 +45,16 @@ function	script	F_NMerch	{
 			mes "Or "+getitemname(getarg(5))+"?";
 		next;
 		if(getarg(5))
-			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"",""+getitemname(getarg(5))+"","Cancel")-1;
+			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"",""+getitemname(getarg(5))+"","Cancel");
 		else
-			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"","Cancel")-1;
+			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"","Cancel");
 		if(@i==4 || (@i==3 && !getarg(5))) {
 			mes "["+getarg(0)+"]";
 			mes "Sure, no problem.";
 			close;
 		}
-		set @item,getarg(1+@i*2);
-		set @amount,getarg(2+@i*2);
+		set @item,getarg(@i*2-1);
+		set @amount,getarg(@i*2);
 		set @have,countitem(@item);
 		if(@have < @amount) {
 			mes "["+getarg(0)+"]";
@@ -138,23 +139,23 @@ function	script	F_NMerch	{
 	}
 }
 
-prontera.gat,123,102,5	script	商人#1	85,{
+prontera,123,102,5	script	商人#1	85,{
 	callfunc "F_NMerch","Merchant",935,5,914,10,909,10;
 }
 
-geffen.gat,173,88,5	script	商人#2	85,{
+geffen,173,88,5	script	商人#2	85,{
 	callfunc "F_NMerch","Merchant",935,5,915,6,909,10;
 }
 
-morocc.gat,180,259,3	script	商人#3	85,{
+morocc,180,259,3	script	商人#3	85,{
 	callfunc "F_NMerch","Merchant",935,5,916,7,909,10;
 }
 
-aldebaran.gat,152,63,5	script	商人#4	85,{
+aldebaran,152,63,5	script	商人#4	85,{
 	callfunc "F_NMerch","Merchant",955,1,916,7,909,10;
 }
 
-payon.gat,200,134,5	script	商人#5	85,{
+payon,200,134,5	script	商人#5	85,{
 	//we remove 3rd item, by adding 0,0
 	callfunc "F_NMerch","Merchant",902,6,909,10,0,0;
 }

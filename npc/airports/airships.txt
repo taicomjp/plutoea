@@ -3,7 +3,7 @@
 //===== By: ================================================== 
 //= MasterOfMuppets
 //===== Current Version: ===================================== 
-//= 0.5c
+//= 0.9
 //===== Compatible With: ===================================== 
 //= eAthena SVN 3422+(Requires jA Script System)
 //===== Description: ========================================= 
@@ -17,7 +17,15 @@
 //= 0.3 Implemented some more NPCs [MasterOfMuppets]
 //= 0.4 Implemented two mini games scripted by Dj-Yhn [MasterOfMuppets]
 //= 0.5 Removed Duplicates [Silent]
-//= 0.5aFixed a typo [Evera] 0.5b Fixed appledice bugs [Lupus]
+//= 0.5a Fixed a typo [Evera] 
+//= 0.5b Fixed appledice bugs [Lupus]
+//= 0.6 Added Rachel to the international route [Playtester]
+//= 0.7 Implemented Few Missings NPCs like (Pilot, Aanos, etc...).
+//=	Corrected Dialogs from some NPCs.
+//=	Added sistem to work with the "How Does the Airship Work" Quest [Samuray22]
+//= 0.8 Moved Gambling NPC Kaci since it's part of a quest. [SinSloth]
+//= 0.8b Fixed a Little Bug with the "How Does the Airship Work" Quest. [Samuray22]
+//= 0.9 Fixed a incorrect variable changed form "mob_inv" to "mobinv". [Samuray22]
 //============================================================ 
 //飛空艇系統腳本
 //漢化by	沁 ソ 印 記	2006/03/30
@@ -356,20 +364,6 @@ s_Material:
 
 }
 
-
-airplane.gat,33,69,4	script	凱西	73,{
-	callfunc "applegamble","凱西";
-	end;
-
-	OnLose:
-	emotion e_wah;
-	end;
-
-	OnWin:
-	emotion e_no1;
-	end;
-}
-
 airplane.gat,80,71,4	script	傑樂塔	834,{
 	mes "[傑樂塔]";
 	mes "我是為了傳達教誨才踏入旅途的, 透過教誨能使盧恩--米德加茲全部團結起來的話, 才是我真正的期望";
@@ -379,6 +373,15 @@ airplane.gat,80,71,4	script	傑樂塔	834,{
 airplane.gat,65,63,4	script	少女	714,{
 	mes "[少女]";
 	mes "這艘飛空艇有到薑餅城吧? 不過我等了老半天都沒聽到到達薑餅城的廣播...";
+	close;
+}
+
+airplane.gat,72,34,2	script	Aanos	702,{
+	mes "[Aanos]";
+	mes "Oh wooow~";
+	mes "The sky looks";
+	mes "so different and";
+	mes "pretty from up there!";
 	close;
 }
 
@@ -524,15 +527,70 @@ s_Record:
 
 }
 
+airplane_01.gat,221,158,6	script	Pilot#air-0::Pilot	852,{
+	set @pilot, rand(1,4);
+	if (@pilot == 1) {
+		mes "[Pilot]";
+		mes "Longitude, 131 degrees east.";
+		mes "Latitude, 37 degrees north.";
+		mes "We're right on course, captain.";
+		close;
+	} else if(@aa == 2) {
+		mes "[Pilot]";
+		mes "Looks like a really";
+		mes "cloudy day. Always hard";
+		mes "to navigate when the skies";
+		mes "aren't clear. Guess we'll";
+		mes "need to amp the radar.";
+		close;
+	} else if(@aa == 3) {
+		mes "[Pilot]";
+		mes "The Captain is a good";
+		mes "man and I can't think of";
+		mes "a finer person to command";
+		mes "this ship. Still, he's pretty";
+		mes "tough, a real slave driver.";
+		next;
+		mes "[^ff0000Tarlock^000000]";
+		mes "^ff0000Hey...!^000000";
+		mes "^ff0000Less chit-chat^000000";
+		mes "^ff0000and more piloting!^000000";
+		next;
+		mes "[Pilot]";
+		mes "R-right away, sir!";
+		mes "(See what I mean?)";
+		close;
+	}
+		mes "[Pilot]";
+		mes "This uniform is";
+		mes "really dapper, but";
+		mes "it's way too thick to";
+		mes "wear around the Airship.";
+		next;
+		mes "[Pilot]";
+		mes "...";
+		mes "......";
+		mes "No one ever really";
+		mes "comes into this room.";
+		mes "And the captain IS a reindeer.";
+		mes "I could just strip to my boxers.";
+		next;
+		//Emotion "Pilot#airplane_01" ET_HUK
+		mes "[Pilot]";
+		mes "Oh...! Hello there!";
+		mes "E-e-enjoying your flight?!";
+		close;
+}
+
 //============================================================ 
-//= 飛空艇系統 (朱諾 -> 依斯魯得島 -> 重複)
+//= 飛空艇系統 (朱諾 -> 依斯魯得島 -> 拉赫 -> 重複)
 //============================================================ 
 
 airplane_01.gat,243,74,4	script	#AirshipWarp-3	45,2,2{
 OnTouch:
 	if($@airplanelocation2 == 1)warp "izlude.gat",202,56;
 	if($@airplanelocation2 == 2)warp "yuno.gat",20,265;
-//	if($@airplanelocation2 == 3)warp "ra_fild12.gat",292,204;
+	if($@airplanelocation2 == 3)warp "ra_fild12.gat",292,204;
 	end;
 
 OnHide:
@@ -547,7 +605,7 @@ airplane_01.gat,243,29,4	script	#AirshipWarp-4	45,2,2{
 OnTouch:
 	if($@airplanelocation2 == 1)warp "izlude.gat",202,56;
 	if($@airplanelocation2 == 2)warp "yuno.gat",20,265;
-//	if($@airplanelocation2 == 3)warp "ra_fild12.gat",292,204;
+	if($@airplanelocation2 == 3)warp "ra_fild12.gat",292,204;
 	end;
 
 OnHide:
@@ -562,6 +620,7 @@ airplane_01.gat,1,1,0	script	YunoIzl_Airship	-1,{
 OnInit:
 while(1)
 {
+	disablenpc "Quest_Izl";
 	initnpctimer;
 	setnpctimer 0;
 	set $@airplanelocation2,0;
@@ -572,6 +631,13 @@ while(1)
 	mapannounce "airplane_01.gat","飛空艇要起飛了，下一個目的地是依斯魯得島",1,0x00FF00;
 	end;
 OnTimer15000:
+	set $@mobinv, $@mobinv+1;
+	set $@mobrand, rand(1,3);
+	if($@mobinv >= 9 && $@mobrand == 3) {
+		stopnpctimer;
+		enablenpc "Quest_Izl";
+		donpcevent "Quest_Izl::OnInvasion";
+	}
 	mapannounce "airplane_01.gat","目前本飛空艇正飛往依斯魯得島途中",1,0x00FF00;
 	end;
 OnTimer30000:
@@ -614,35 +680,39 @@ OnTimer120000:
 	mapannounce "airplane_01.gat","我們目前正停靠在朱諾中，等一下即將要出發囉",1,0x70DBDB;
 	end;
 OnTimer130000:
-	stoptimer;
-//OnTimer130000:
-//	set $@airplanelocation2,0;
-//	donpcevent "#AirshipWarp-3::OnHide";
-//	donpcevent "#AirshipWarp-4::OnHide";
-//	disablenpc "#AirshipWarp-3";
-//	disablenpc "#AirshipWarp-4";
-//	mapannounce "airplane_01.gat","The Airship is leaving the ground. Our next destination is Rachel.",1,0xFF8600;
-//	end;
-//OnTimer145000:
-//	mapannounce "airplane_01.gat","We are heading to Rachel.",1,0xFF8600;
-//	end;
-//OnTimer160000:
-//	mapannounce "airplane_01.gat","We will arrive in Rachel shortly.",1,0xFF8600;
-//	end;
-//OnTimer175000:
-//	set $@airplanelocation2,3;
-//	enablenpc "#AirshipWarp-3";
-//	enablenpc "#AirshipWarp-4";
-//	donpcevent "#AirshipWarp-3::OnUnhide";
-//	donpcevent "#AirshipWarp-4::OnUnhide";
-//	mapannounce "airplane_01.gat","Welcome to Rachel. Have a safe trip.",1,0xFF8600;
-//	end;
-//OnTimer185000:
-//	mapannounce "airplane_01.gat","Currently, we are in Rachel. The Airship will leave shortly.",1,0xFF8600;
-//	end;
-//OnTimer195000:
-// 	stoptimer;
+	set $@airplanelocation2,0;
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	disablenpc "#AirshipWarp-3";
+	disablenpc "#AirshipWarp-4";
+	mapannounce "airplane_01.gat","The Airship is leaving the ground. Our next destination is Rachel.",1,0xFF8600;
+	end;
+OnTimer145000:
+	mapannounce "airplane_01.gat","We are heading to Rachel.",1,0xFF8600;
+	end;
+OnTimer160000:
+	mapannounce "airplane_01.gat","We will arrive in Rachel shortly.",1,0xFF8600;
+	end;
+OnTimer175000:
+	set $@airplanelocation2,3;
+	enablenpc "#AirshipWarp-3";
+	enablenpc "#AirshipWarp-4";
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01.gat","Welcome to Rachel. Have a safe trip.",1,0xFF8600;
+	end;
+OnTimer185000:
+	mapannounce "airplane_01.gat","Currently, we are in Rachel. The Airship will leave shortly.",1,0xFF8600;
+	end;
+OnTimer195000:
+ 	stoptimer;
 }
+OnReturn:
+	killmonsterall "airplane_01";
+	set $@mobinv, 0;
+	mapannounce "airplane_01","Monster thread nullfied. The Airship is now returning to normal operation.",1,0x00FF00;
+	startnpctimer;
+	end;
 }
 
 //============================================================ 
@@ -665,13 +735,18 @@ airplane_01.gat,50,66,4	duplicate(AirshipApples)	霍慈	86
 
 airplane_01.gat,32,61,4	duplicate(TypingContest)	約翰 畢	49	
 
+airplane_01.gat,221,158,6	duplicate(Pilot)	Pilot#air-1	852
+
+
 airplane_01.gat,83,61,2	script	少 女#10	72,{
 
 	mes "[少 女]";
 	mes "嗚哇哇哇哇娃.......";
 	mes "我從外面跑著玩時, 有隻鹿突然對我凶巴巴的, 嚇死我了.. 啜泣";
 	close;
-
+OnTouch:
+	Emotion 28, "Dianne";
+	end;
 }
 
 airplane_01.gat,69,63,2	script	貴族紳士#06	55,{
@@ -683,8 +758,28 @@ airplane_01.gat,69,63,2	script	貴族紳士#06	55,{
 }
 
 airplane_01.gat,33,68,4	script	克拉莉絲	74,{
+	mes "[克拉莉絲]";
+	mes "你好嗎，我的名字叫克拉莉絲，您一直待在飛";
+	mes "空艇感到無聊吧，您要不要跟我輕鬆的玩";
+	mes "一把擲骰子遊戲啊?";
+	next;
 	callfunc "applegamble","克拉莉絲";
 	end;
+}
+
+airplane_01,71,31,6	script	Swordman Shimizu	106,{
+	mes "[Swordsman Shimizu]";
+	mes "Finally, after five";
+	mes "years of waiting...";
+	mes "I can have my revenge!";
+	next;
+	mes "[Swordsman Shimizu]";
+	mes "I just...";
+	mes "Have to make sure that";
+	mes "I don't keep missing my";
+	mes "stop. But soon, very soon,";
+	mes "vengeance will be mine!";
+	close;
 }
 
 //============================================================ 
@@ -851,16 +946,31 @@ s_Warp:
 
 }
 
+yuno,14,262,3	script	Airship Staff#yuno01::Airship Staff	91,{
+	mes "[Airship Staff]";
+	mes "Welcome to Juno Airport.";
+	mes "Please use this door to";
+	mes "board the Airship that will";
+	mes "be flying all the way to Izlude";
+	mes "in the Rune-Midgarts Kingdom.";
+	next;
+	mes "[Airship Staff]";
+	mes "Otherwise, if Juno is";
+	mes "your intended destination,";
+	mes "please head down the stairs";
+	mes "and ask the Arrival Staff to lead";
+	mes "you to the main terminal. Thank";
+	mes "you, and enjoy your travels.";
+	close;
+}
+
+yuno,88,263,5	duplicate(Airship Staff)	Airship Staff#yuno02	91
+
 //============================================================ 
 //= Apple Gambling Function
 //============================================================
 
 function	script	applegamble	{
-	mes "["+getarg(0)+"]";
-	mes "你好嗎，我的名字叫"+getarg(0)+"，您一直待在飛";
-	mes "空艇感到無聊吧，您要不要跟我輕鬆的玩";
-	mes "一把擲骰子遊戲啊?";
-	next;
 	switch(select("我要玩一把擲骰子:我想瞭解擲骰子遊戲的規則:取消")){
 	case 3:
 		mes "["+getarg(0)+"]";

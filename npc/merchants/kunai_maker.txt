@@ -1,9 +1,9 @@
 //===== eAthena Script =======================================
-//= Kunai "Trader" @ que_ng.gat
+//= Kunai "Trader" @ que_ng
 //===== By: ==================================================
-//= erKURITA
+//= eAthena dev team
 //===== Current Version: =====================================
-//= 1.0
+//= 1.2a
 //===== Compatible With: =====================================
 //= eAthena 1.0
 //===== Description: =========================================
@@ -13,97 +13,83 @@
 //= 1.0 Added the npc. It uses a function that sends the item 
 //=	  id of the 2 required items plus the amount. Can trade
 //= 	  up to 500 units (5,000 kunais) at once. [erKURITA]
-//============================================================
-//============================================================
-//2007-02-09  黑色小貓  中文化
+//= 1.1 Officialized script [Playtester]
+//= 1.2a Optimized/cleaned up a bit [ultramage]
 //============================================================
 
-que_ng.gat,72,29,3	script	飛刀交換商人	83,{
-	set @npcname$,"[進]";
+que_ng,72,29,3	script	Kunai Merchant Kashin	83,{
 
-	mes @npcname$;
-	mes "嗨! 我可以跟你交換有屬性的飛刀!";
-	mes "我將會收取你的屬性石和一種飛鏢數個，";
-	mes "以交換一種屬性飛刀!";
-	next;
-	mes @npcname$;
-	mes "你想要交換飛刀嗎? 這項服務是免費的!";
-	
-	switch(select("10 個巨毒飛刀:10 個垂冰飛刀:10 個強風飛刀:10 個黑土飛刀:10 個火焰飛刀:暫時不用")) {
-		//Callfunc usage: callfunc "Kunai_Trade",itemreqid1,itemreqct1,itemreqid2,itemreqct2,itemidtrade;
-		case 1:
-			callfunc "Kunai_Trade",13250,20,7524,1,13259;
-			goto L_Bye;
-		case 2:
-			callfunc "Kunai_Trade",13251,8,7522,2,13255;
-			goto L_Bye;
-		case 3:
-			callfunc "Kunai_Trade",13252,4,7523,2,13257;
-			goto L_Bye;
-		case 4:
-			callfunc "Kunai_Trade",13253,2,7524,1,13256;
-			goto L_Bye;
-		case 5:
-			callfunc "Kunai_Trade",13254,1,7521,2,13258;
-			goto L_Bye;
-		case 6:
-			goto L_Bye;
-	}
-	L_Bye:
+	mes "[Kashin]";	
+	if(BaseJob != Job_Ninja) {
+		mes "I am Kashin of the Wind. I distribute trade items to the shadows.";
 		next;
-		mes @npcname$;
-		mes "慢走! 希望再次看到你!";
+		mes "[Kashin]";
+		mes "It doesn't seem like you are a Ninja... Just take a good look around and be on your way.";
+		close;
+	}
+	mes "I'm Kashin!";
+	mes "If you're ever short on Shurikens, come and see me.";
+	next;
+	mes "[Kashin]";
+	mes "What will it be?";
+	mes "Choose what you want.";
+	next;
+
+	switch(select("Poison Kunais:Frost Kunais:Wind Kunais:Earth Kunais:Fire Kunais:Cancel")) {
+	//usage: callfunc "Kunai_Trade",itemreqid1,itemreqct1,itemreqid2,itemreqct2,itemidtrade;
+	case 1: callfunc "Kunai_Trade",13250,20,7524,1,13259; break;
+	case 2: callfunc "Kunai_Trade",13251,8,7522,2,13255; break;
+	case 3: callfunc "Kunai_Trade",13252,4,7523,2,13257; break;
+	case 4: callfunc "Kunai_Trade",13253,2,7524,1,13256; break;
+	case 5: callfunc "Kunai_Trade",13254,1,7521,2,13258; break;
+	default:
+		mes "[Kashin]";
+		mes "Hmm~ Ok~";
+		mes "Come again~";
+		mes "I, Kashin of the Wind, will always be at this place.";
+		close;
+	}
 	close;
 }
 
 function	script	Kunai_Trade	{
+	
+	mes "[Kashin]";
+	mes "If you give me "+getarg(1)+" "+getitemname(getarg(0))+" and "+getarg(3)+" "+getitemname(getarg(2))+", I'll give you a pack of 10 "+getitemname(getarg(4))+".";
 	next;
-	mes @npcname$;
-	
-	if (MaxWeight*50/100 < Weight) {
-		if (MaxWeight*90/100 < Weight) {
-			mes "很抱歉! 你的負重超過 90% ! 無法進行交換!";
-			return;
-		}
-		mes "你的負重超過 50% !你要繼續進行交換嗎?";
-		menu "是的!",-,"先不用了!",L_Return;
-	}
+	mes "[Kashin]";
+	mes "You can trade up to 500 packs at a time.";
+	mes "If you don't want to trade, just enter 0 as the amount.";
+	next;
+	input .@amount;
 
-	mes "你要跟我交換我的 10 個"+getitemname(getarg(4))+"用你的 "+getarg(1)+" 個"+getitemname(getarg(0))+" 和 "+getarg(3)+" 個"+getitemname(getarg(2))+"是嗎?";
-	
-	switch(select("是的!:我在考慮一下!")) {
-		case 1:
-			next; 
-			mes @npcname$;
-			if (countitem(getarg(0)) < getarg(1) || countitem(getarg(2)) < getarg(3)) {
-				mes "很抱歉! 你缺少交換需要的物品!";
-				mes "請帶齊再來!";
-				close;
-			} else
-			mes "請問你要交換多少隻? 一次最多可以交換^FF0000 500 ^000000隻飛刀!";
-			mes "^0000FF 1 組屬性石和飛鏢 ^000000 可以交換 ^0000FF 10 隻飛刀 ^000000給你!";
-			input @trade;
-			next;
-			mes @npcname$;
-			if (@trade > 500) {
-				mes "很抱歉! 但是一次最多能交換 500 隻飛刀! 請再試一次!";
-				close;
-			} else if (@trade < 1) {
-				mes "很抱歉! 每次至少需交換一隻飛刀! 請再試一次!";
-				close;
-			} else if ((countitem(getarg(0)) < @trade*getarg(1)) || (countitem(getarg(2)) < @trade*getarg(3))) {
- 				mes "很抱歉! 你沒有足夠的物品交換 "+@trade+" 隻飛刀! 請帶齊物品再來!";
-				close;
-			} else
-			mes "這是你交換的飛刀! 謝謝光臨!";
-			delitem getarg(0),getarg(1)*@trade;
-			delitem getarg(2),getarg(3)*@trade;
-			getitem getarg(4),10*@trade;
-			next;
-			return;
-		case 2:
-			return;
+	mes "[Kashin]";
+	if(.@amount < 1) {
+		mes "Hmm~ Ok~";
+		mes "Come again~";
+		mes "I, Kashin of the Wind, will always be at this place.";
+		close;
 	}
-L_Return:
-	return;
+	if(.@amount > 500) {
+		mes "You've exceeded the input amount!";
+		mes "Enter a valid number next time~!";
+		close;
+	}
+	if(countitem(getarg(0)) < .@amount*getarg(1) || countitem(getarg(2)) < .@amount*getarg(3)) {
+		mes "Hmm... this is no good~";
+		mes "You don't have enough materials to trade in for the amount of Kunai's that you want.";
+		mes "Bring some more if you want this amount.";
+		close;
+ 	}
+	if(checkweight(getarg(4), .@amount*10) == 0) {
+		mes "Your bag is too full to carry the trade items. Come back after you made room for the traded items.";
+		close;
+	}
+	mes "Ok~ Very well!";
+	mes "Amount verified!";
+	mes "Here are your traded items.";
+	delitem getarg(0),getarg(1)*.@amount;
+	delitem getarg(2),getarg(3)*.@amount;
+	getitem getarg(4),10*.@amount;
+	close;
 }
