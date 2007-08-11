@@ -12,6 +12,7 @@
 //===== Additional Comments: =================================
 //= 1.1 Made it as a function. U can add your own Merchs [Lupus]
 //= 1.1a Fixed item select [KarLaeda]
+//= Translated By 45°向上傾斜
 //============================================================
 
 function	script	F_NMerch	{
@@ -23,34 +24,34 @@ function	script	F_NMerch	{
 		mes "可以寄放在卡普拉的倉庫";
 		close;
 	}
-	mes "Good day!";
-	mes "Do you have any collection items such as "+getitemname(getarg(1))+" or "+getitemname(getarg(3))+"?";
+	mes "你好!";
+	mes "你有沒有收集一些物品像比如 "+getitemname(getarg(1))+" 或者是 "+getitemname(getarg(3))+"?";
 	if(getarg(5))
-		mes "...how about "+getitemname(getarg(5))+"?..";
-	mes "Oh, yeah, I need those for something.";
+		mes "...又或者是 "+getitemname(getarg(5))+"?..";
+	mes "噢, 是的, 我需要那些.";
 	next;
 	mes "["+getarg(0)+"]";
-	mes "Of course I am not asking you to give those for free!";
-	mes "How about... if I give you 1 Red";
-	mes "Potion for "+getarg(2)+" "+getitemname(getarg(1))+" or "+getarg(4)+" "+getitemname(getarg(3))+"?";
+	mes "當然我並不是免費要那些東西的!";
+	mes "像比如... 我用 1 瓶 紅色藥水來";
+	mes "換 "+getarg(2)+" 塊 "+getitemname(getarg(1))+" 或者是 "+getarg(4)+" 塊 "+getitemname(getarg(3))+"?";
 	if(getarg(5))
-		mes "Or "+getarg(6)+" "+getitemname(getarg(5))+"?";
+		mes "又或者是 "+getarg(6)+" 塊 "+getitemname(getarg(5))+"?";
 	next;
 	switch (select("好吧!:好像我有點吃虧...:不要!")) {
 	case 1:
 		mes "["+getarg(0)+"]";
-		mes "So which item do you bring me?";
+		mes "那麼你給我帶了什麼?";
 		mes ""+getitemname(getarg(1))+"?  "+getitemname(getarg(3))+"?";
 		if(getarg(5))
-			mes "Or "+getitemname(getarg(5))+"?";
+			mes "或者是 "+getitemname(getarg(5))+"?";
 		next;
 		if(getarg(5))
-			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"",""+getitemname(getarg(5))+"","Cancel");
+			set @i,select("-"+getitemname(getarg(1))+"","-"+getitemname(getarg(3))+"","-"+getitemname(getarg(5))+"","-取消");
 		else
-			set @i,select(""+getitemname(getarg(1))+"",""+getitemname(getarg(3))+"","Cancel");
+			set @i,select("-"+getitemname(getarg(1))+"","-"+getitemname(getarg(3))+"","-取消");
 		if(@i==4 || (@i==3 && !getarg(5))) {
 			mes "["+getarg(0)+"]";
-			mes "Sure, no problem.";
+			mes "好吧, 沒問題.";
 			close;
 		}
 		set @item,getarg(@i*2-1);
@@ -58,21 +59,21 @@ function	script	F_NMerch	{
 		set @have,countitem(@item);
 		if(@have < @amount) {
 			mes "["+getarg(0)+"]";
-			mes "Hey, where are all those";
-			mes getitemname(@item)+" you promised?";
+			mes "嘿, 你答應給我的";
+			mes getitemname(@item)+" 呢?";
 			close;
 		}
 		mes "["+getarg(0)+"]";
-		mes "Okay, let me take a look at the stuff you brought.";
+		mes "好吧, 讓我看看你帶的東西.";
 		next;
 		set @max,@have / @amount;
 		mes "["+getarg(0)+"]";
-		mes "You have total "+@have+" "+getitemname(@item)+"...";
-		mes "I can give you";
-		mes "total "+@max+" Red Potion for those.";
+		mes "你總共有 "+@have+" 塊 "+getitemname(@item)+"...";
+		mes "我需要給你";
+		mes "一共 "+@max+" 瓶紅色藥水.";
 		next;
 		mes "["+getarg(0)+"]";
-		mes "What do you say? Deal?";
+		mes "你說什麼? 交易麼?";
 		next;
 		if(select("要換:不想換")==2) {
 			mes "["+getarg(0)+"]";
@@ -81,46 +82,46 @@ function	script	F_NMerch	{
 			close;
 		}
 		mes "["+getarg(0)+"]";
-		mes "You know the exact number of Red Potions";
-		mes "you can receive for "+getitemname(@item)+", don't you?";
+		mes "你知道 "+getitemname(@item)+" 的數量";
+		mes "來換1瓶紅色藥水, 不是嗎?";
 		next;
 		mes "["+getarg(0)+"]";
-		mes "You can get Red Potions";
-		mes "from minimum 1 to maximum 100 at once.";
-		mes "If you change your mind, enter '0'";
-		mes "to cancel.";
+		mes "你可以得到紅色藥水並且從";
+		mes "1 到 100 一次交換.";
+		mes "如果你改變主意, 輸入 '0'";
+		mes "來取消.";
 		while(1) {
 			next;
 			input @val;
 			if(@val<0 || @val>100) {
 				mes "["+getarg(0)+"]";
-				mes "Uh oh, the number you entered";
-				mes "seemed incorrect.";
-				mes "You'd better check how many Red";
-				mes "Potions you can get.";
+				mes "啊哦, 你輸入的數字";
+				mes "看起來不正確.";
+				mes "你最好看看你能拿多";
+				mes "少的紅色藥水.";
 				continue;
 			}
 			break;
 		}
 		mes "["+getarg(0)+"]";
 		if(@val == 0) {
-			mes "What...how the hell did you even";
-			mes "bother to talk to me?";
-			mes "Leave, I don't deal with whimsical";
-			mes "people.";
+			mes "什麼... 怎麼來和我";
+			mes "說話來擾亂我?";
+			mes "滾, 我不想和你這種";
+			mes "善變的人.";
 			close;
 		}
 		if(@val > @max) {
-			mes "Uh oh, the number you entered";
-			mes "seemed incorrect.";
-			mes "You'd better check how many Red";
-			mes "Potions you can get.";
+			mes "啊哦, 你輸入的數字";
+			mes "看起來不正確.";
+			mes "你最好看看你能拿多";
+			mes "少的紅色藥水.";
 			close;
 		}
 		delitem @item,@amount*@val;
 		getitem 501,@val;
-		mes "There you go!";
-		mes "Thanks, it was a good deal.";
+		mes "給你!";
+		mes "謝謝, 完美的交易.";
 		close;
 	case 2:
 		mes "["+getarg(0)+"]";
@@ -139,23 +140,23 @@ function	script	F_NMerch	{
 	}
 }
 
-prontera,123,102,5	script	商人#1	85,{
-	callfunc "F_NMerch","Merchant",935,5,914,10,909,10;
+prontera.gat,123,102,5	script	商人#1	85,{
+	callfunc "F_NMerch","商人",935,5,914,10,909,10;
 }
 
-geffen,173,88,5	script	商人#2	85,{
-	callfunc "F_NMerch","Merchant",935,5,915,6,909,10;
+geffen.gat,173,88,5	script	商人#2	85,{
+	callfunc "F_NMerch","商人",935,5,915,6,909,10;
 }
 
-morocc,180,259,3	script	商人#3	85,{
-	callfunc "F_NMerch","Merchant",935,5,916,7,909,10;
+morocc.gat,180,259,3	script	商人#3	85,{
+	callfunc "F_NMerch","商人",935,5,916,7,909,10;
 }
 
-aldebaran,152,63,5	script	商人#4	85,{
-	callfunc "F_NMerch","Merchant",955,1,916,7,909,10;
+aldebaran.gat,152,63,5	script	商人#4	85,{
+	callfunc "F_NMerch","商人",955,1,916,7,909,10;
 }
 
-payon,200,134,5	script	商人#5	85,{
-	//we remove 3rd item, by adding 0,0
-	callfunc "F_NMerch","Merchant",902,6,909,10,0,0;
+payon.gat,200,134,5	script	商人#5	85,{
+	//我們去除了第3個物品, 借由加上了 0,0
+	callfunc "F_NMerch","商人",902,6,909,10,0,0;
 }

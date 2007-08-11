@@ -3,7 +3,7 @@
 //===== By: ================================================== 
 //= Skotlex 
 //===== Current Version: ===================================== 
-//= 5.4
+//= 5.7
 //===== Compatible With: ===================================== 
 //= eAthena SVN R3424+
 //===== Description: ========================================= 
@@ -23,8 +23,8 @@
 function	script	F_KafraExpress	{
 	set @name$,getarg(0);
 	set @ke_type,getarg(2);
-	if ($@kekp_reset)
-		set @kafraPass,0;
+	if ($@kekp_reset && @kafraPass > 0)
+		set @kafraPass,@kafraPass-1;
 	if (getarg(1) != "")
 		cutin getarg(1),2;
 	callfunc "F_keIntro",-1,"";
@@ -300,7 +300,7 @@ L_HEAL_ALL:
 //Function storage: allows access to the storage facility
 //The sent argument is the displaying image, so we can clear it afterwards.
 function	script	F_keStorage	{
-	if(basicskillcheck(0) > 0 && getskilllv(1) < 6) {
+	if(basicskillcheck() > 0 && getskilllv(1) < 6) {
 		callfunc "F_keIntro", -1, "I am sorry, but you beed basic skill level 6 to use the storage.";
 		return;
 	}
@@ -318,7 +318,7 @@ function	script	F_keStorage	{
 
 //Function G Storage: Allows access to the Guild Storage
 function	script	F_keGuildStorage	{
-	if(basicskillcheck(0) > 0 && getskilllv(1) < 6) {
+	if(basicskillcheck() > 0 && getskilllv(1) < 6) {
 		callfunc "F_keIntro", -1, "I am sorry, but you beed basic skill level 6 to use the storage.";
 		return;
 	}
@@ -352,7 +352,10 @@ function	script	F_kePass	{
 		return;
 	}
 	delitem 1084,1;
-	set @kafraPass,1;
+	if ($@kekp_reset > 0)
+		set @kafraPass,$@kekp_reset;
+	else
+		set @kafraPass,1;
 	callfunc "F_keIntro", e_lv, "Your Kafra Pass has been activated.";
 	return;
 }

@@ -1,133 +1,389 @@
-// 染衣服腳本
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041118.0.2
-//
-// 參考腳本:		作者不明
-//
-//============================================================
-
 //===== eAthena Script ======================================= 
 //= Clothes Dyer
 //===== By: ================================================== 
-//= kobra_k88
+//= Usnul
 //===== Current Version: ===================================== 
-//= 1.0
+//= 2.4
 //===== Compatible With: ===================================== 
-//= eAthena 7.15 +
+//= eAthena 1.0+
 //===== Description: ========================================= 
 //= Clothes dyer with standard palletes
 //===== Additional Comments: ================================= 
 //= Fully working
+//= 2.1 Shortened some labels to make this script loading,
+//= Added Black+White Colors desc [Lupus]
+//= 2.1a - added adv classes + abby class support [Lupus]
+//= 2.2 ?Spell checked. [Nexon]
+//= 2.3 - Fixed dis $hit! [Poki#3]
+//= 2.4 - Disabled cloth dyeing since it's not implemented
+//	  on official servers and cause your client to crash
+//	  [Playtester]
+//= Translated By 45°向上傾斜
+//============================================================
+//注意: 啟用時, 把 L_Busy 替換為 L_Dye(不會替換的,勿用)
 //============================================================ 
 
 
-
-// Dyer Ginedin Rephere ---------------------------------------------------
-prt_in.gat,284,168,2	script	奇列塔恩那波	55,{
-	mes "[服裝設計師 奇列塔恩那波]";
-	mes "11…12…嗯…好的…到今晚派對之前趕工可能來得及.  噢! 有客人來了...有什麼需要服務的嗎?";
+// 服裝師 奇列塔恩那波 ---------------------------------------------------
+prt_in.gat,284,168,2	script	服裝師 奇列塔恩那波	55,{
+	mes "[服裝師 奇列塔恩那波]";
+	mes "11... 12... 恩恩... 不錯. 我想我能夠在今晚的派對前完成. 啊噢! 我不知道你在這裡. 有什麼需要服務的嗎?";
 M_Menu:
 	next;
-	menu "對話",M_0, "衣服染色",M_1, "價格列表",M_2, "取消",M_End;
+	menu "-對話",L_Talk,"-衣服染色",L_Dye,"-價格列表",L_PriceList,"-取消",L_End;
 	
-	M_0:
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "有錢的小姐們是不是覺得世界變的很美好…每天都要急著設計參加派對的晚禮服給他們。";
-		mes "…我不覺得那是浪費…那又如何？世界上也要有這種人才會發覺人類的美麗。";
-		mes "這只是我個人的想法…沒毛沒鱗片的人類只有透過穿衣服的辦法，才可以表達人類的個性和美麗。";
-		next;
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "哈哈哈…從這種觀點來看我的工作可以算是崇高的也算是有成就感。";
-		mes "您也可以感覺的到嗎？粗糙的棉和皮塗著美好和華麗的顏色…像個新生命的熱情和活力…";
-		mes "雖然是很辛苦的工作，不過看見完成的晚禮服，就會把之前的辛苦都忘了。";
-		goto M_Menu;
+L_Talk:
+	mes "[服裝師 奇列塔恩那波]";
+	mes "生活可以更好.... 不過當我看到我所有接到的工作... 嗚呃!";
+	mes "盧恩 米得加爾特王國的年輕女人這幾天看起來好像很不錯.";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "我想她們可能是沉迷於上流社會而沒有留意到你.";
+	mes "我不認為愛美和趕時髦是有什麼錯誤的地方.";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "對我們來說, 誰沒有五顏六色的衣服和裝飾, 衣服是展示我們我們性格, 風格和美貌的方法之一.";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "哈哈... 當我一想到, 我就覺得我的工作真是值得花時間的.  我相信我提供的是人們需要的服務.";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "你也能感覺到嗎? 當編織物和皮革的顏色把生活渲染而帶來的無限活力?.....";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "即使工作時候很沉悶也很花時間, 當完成一件洋裝的時候更多的.....";
+	mes "是快樂和歡喜而不是想到辛苦的工作!!";
+	goto M_Menu;
 
-	M_1:
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "你是知道的，我現在可是忙的很，看在你這麼有誠意的份上撥空幫你設計一下";
-		mes "不過這個費用可不便宜，這己經是最大的優惠囉";
-		mes "費用請看^0000ff價格列表^000000，另外我店裡的染料都用完了";
-		mes "所以你得自己帶染料來，一次只要^0000ff染料一瓶^000000。";
-		next;
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "先選你要的顏色吧！";		
-		next;
-		menu	"紅色染料",sM_a, "黃色染料",sM_b,  "紫色染料",sM_c, "赤色染料",sM_d,
-			"藍色染料",sM_e, "改變主意不染了",LEnd;
+L_Dye:
+	mes "[服裝師 奇列塔恩那波]";
+	mes "喔... 你需要我? 不錯... 聽起來很棒.";
+	next;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "請選個適合你的顏色.";
+	next;
+	if(Sex==0) goto Female_dye;
+//=================================
+// 男性衣服染色
+//=================================
 
-		sM_a:
-			mes "[服裝設計師 奇列塔恩那波]";
-			if(countitem(975) < 1) goto sL_NoDye;
-			if(Zeny < 5000) goto sL_Zeny;
-			mes "好了，我幫你把衣服染成紅色.";
-			setlook 7,2;
-			delitem 975,1;
-			set Zeny, Zeny - 5000;
-			close;
+Male_dye:
+	if(BaseJob==Job_Novice || BaseJob==Job_Novice_High || BaseJob==Job_Baby) goto L_Novice_M;
+	if(BaseJob==Job_Swordman || BaseJob==Job_Swordman_High || BaseJob==Job_Baby_Swordman) goto L_Swordman_M;
+	if(BaseJob==Job_Mage || BaseJob==Job_Mage_High || BaseJob==Job_Baby_Mage) goto L_Mage_M;
+	if(BaseJob==Job_Archer || BaseJob==Job_Archer_High || BaseJob==Job_Baby_Archer) goto L_Archer_M;
+	if(BaseJob==Job_Acolyte || BaseJob==Job_Acolyte_High || BaseJob==Job_Baby_Acolyte) goto L_Acolyte_M;
+	if(BaseJob==Job_Merchant || BaseJob==Job_Merchant_High || BaseJob==Job_Baby_Merchant) goto L_Merchant_M;
+	if(BaseJob==Job_Thief || BaseJob==Job_Thief_High || BaseJob==Job_Baby_Thief) goto L_Thief_M;
+	if(BaseJob==Job_Knight || BaseJob==Job_Knight2 || BaseJob==Job_Crusader || BaseJob==Job_Crusader2 || BaseJob==Job_Lord_Knight || BaseJob==Job_Lord_Knight2 || BaseJob==Job_Paladin || BaseJob==Job_Paladin2 || BaseJob==Job_Stalker || BaseJob==Job_Baby_Knight || BaseJob==Job_Baby_Knight2 || BaseJob==Job_Baby_Crusader || BaseJob==Job_Baby_Crusader2) goto L_Swordman2_M;
+	if(BaseJob==Job_Priest || BaseJob==Job_Monk || BaseJob==Job_High_Priest || BaseJob==Job_Champion || BaseJob==Job_Baby_Priest || BaseJob==Job_Baby_Monk) goto L_Acolyte2_M;
+	if(BaseJob==Job_Wizard || BaseJob==Job_High_Wizard || BaseJob==Job_Baby_Wizard) goto L_Mage2_M;
+	if(BaseJob==Job_Blacksmith || BaseJob==Job_Alchem || BaseJob==Job_Whitesmith || BaseJob==Job_Creator || BaseJob==Job_Baby_Blacksmith || BaseJob==Job_Baby_Alchemist) goto L_Merchant2_M;
+	if(BaseJob==Job_Hunter || BaseJob==Job_Bard || BaseJob==Job_Sniper || BaseJob==Job_Clown || BaseJob==Job_Baby_Hunter || BaseJob==Job_Baby_Bard) goto L_Archer2_M;
+	if(BaseJob==Job_Assassin || BaseJob==Job_Rogue || BaseJob==Job_Assassin_Cross || BaseJob==Job_Baby_Assassin || BaseJob==Job_Baby_Rogue) goto L_Thief2_M;
+	if(BaseJob==Job_SuperNovice || BaseJob==Job_Super_Baby) goto L_Super_Novice_M;
+	goto sL_Sorry;
+//NOTE: Although Sages have pellets, they color non existent piece's of clothing. They are not listed, so players won't waste their items and zeny.
+//Professors also have a problem <.< The only thing that changes is a part of there Fox scarf. The Stalker Placement is not a bug!
 
-		sM_b:
-			mes "[服裝設計師 奇列塔恩那波]";
-			if(countitem(976) < 1) goto sL_NoDye;
-			if(Zeny < 5000) goto sL_Zeny;
-			mes "好了，我幫你把衣服染成黃色.";
-			setlook 7,0;
-			delitem 976,1;
-			set Zeny, Zeny - 5000;
-			close;
+L_Novice_M:
+	set @black, 1;
+	set @blue, 2;
+	set @green, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Swordman_M:
+	set @black, 1;
+	set @blue, 2;
+	set @green, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Mage_M:
+	set @red, 1;
+	set @violet, 2;
+	set @orange, 3;
+	set @white, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-紫色",L_Dye_Violet,"-橘色",L_Dye_Orange,"-白色",L_Dye_White,"-取消",L_End;
+L_Archer_M:
+	set @black, 1;
+	set @violet, 2;
+	set @green, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-紫色",L_Dye_Violet,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Acolyte_M:
+	set @blue, 1;
+	set @red, 2;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-紅色",L_Dye_Red,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Merchant_M:
+	set @black, 1;
+	set @blue, 2;
+	set @green, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Thief_M:
+	set @green, 1;
+	set @red, 2;
+	set @white, 4;
+	menu "-普通色",L_Dye_Default,"-綠色",L_Dye_Green,"-紅色",L_Dye_Red,"-白色",L_Dye_White,"-取消",L_End;
+L_Swordman2_M:
+	set @violet, 1;
+	set @red, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紫色",L_Dye_Violet,"-紅色",L_Dye_Red,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Acolyte2_M:
+	set @blue, 1;
+	set @green, 2;
+	set @red, 3;
+	set @white, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-紅色",L_Dye_Red,"-白色",L_Dye_White,"-取消",L_End;
+L_Mage2_M:
+	set @blue, 1;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Merchant2_M:
+	set @black, 1;
+	set @green, 2;
+	set @white, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-綠色",L_Dye_Green,"-白色",L_Dye_White,"-取消",L_End;
+L_Archer2_M:
+	set @black, 1;
+	set @blue, 2;
+	set @green, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Thief2_M:
+	set @blue, 1;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-取消",L_End;
+L_Super_Novice_M:
+	set @violet, 1;
+	set @blue, 2;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紫色",L_Dye_Violet,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
 
-		sM_c:
-			mes "[服裝設計師 奇列塔恩那波]";
-			if(countitem(981) < 1) goto  sL_NoDye;
-			if(Zeny < 5000) goto sL_Zeny;
-			mes "好了，我幫你把衣服染成紫色.";
-			setlook 7,4;
-			delitem 981,1;
-			set Zeny, Zeny - 5000;
-			close;
 
-		sM_d:
-			mes "[服裝設計師 奇列塔恩那波]";
-			if(countitem(980) < 1) goto sL_NoDye;
-			if(Zeny < 5000) goto sL_Zeny;
-			mes "好了，我幫你把衣服染成赤色.";
-			setlook 7,1;
-			delitem 980,1;
-			set Zeny, Zeny - 5000;
-			close;
+//=================================
+// 女性衣服染色
+//=================================	
+Female_dye:
+	if(BaseJob==Job_Novice || BaseJob==Job_Novice_High || BaseJob==Job_Baby) goto L_Novice_F;
+	if(BaseJob==Job_Swordman || BaseJob==Job_Swordman_High || BaseJob==Job_Baby_Swordman) goto L_Swordman_F;
+	if(BaseJob==Job_Mage || BaseJob==Job_Mage_High || BaseJob==Job_Baby_Mage) goto L_Mage_F;
+	if(BaseJob==Job_Archer || BaseJob==Job_Archer_High || BaseJob==Job_Baby_Archer) goto L_Archer_F;
+	if(BaseJob==Job_Acolyte || BaseJob==Job_Acolyte_High || BaseJob==Job_Baby_Acolyte) goto L_Acolyte_F;
+	if(BaseJob==Job_Merchant || BaseJob==Job_Merchant_High || BaseJob==Job_Baby_Merchant) goto L_Merchant_F;
+	if(BaseJob==Job_Thief || BaseJob==Job_Thief_High || BaseJob==Job_Baby_Thief) goto L_Thief_F;
+	if(BaseJob==Job_Knight || BaseJob==Job_Knight2 || BaseJob==Job_Crusader || BaseJob==Job_Crusader2 || BaseJob==Job_Lord_Knight || BaseJob==Job_Lord_Knight2 || BaseJob==Job_Paladin || BaseJob==Job_Paladin2 || BaseJob==Job_Stalker || BaseJob==Job_Baby_Knight || BaseJob==Job_Baby_Knight2 || BaseJob==Job_Baby_Crusader || BaseJob==Job_Baby_Crusader2) goto L_Swordman2_F;
+	if(BaseJob==Job_Priest || BaseJob==Job_Baby_Priest) goto L_Acolyte2_F;
+	if(BaseJob==Job_Wizard || BaseJob==Job_Sage || BaseJob==Job_High_Wizard || BaseJob==Job_Professor || BaseJob==Job_Baby_Wizard || BaseJob==Job_Baby_Sage) goto L_Mage2_F;
+	if(BaseJob==Job_Blacksmith || BaseJob==Job_Alchem || BaseJob==Job_Whitesmith || BaseJob==Job_Creator || BaseJob==Job_Baby_Blacksmith || BaseJob==Job_Baby_Alchemist) goto L_Merchant2_F;
+	if(BaseJob==Job_Hunter || BaseJob==Job_Dancer || BaseJob==Job_Sniper || BaseJob==Job_Gypsy || BaseJob==Job_Baby_Hunter || BaseJob==Job_Baby_Dancer) goto L_Archer2_F;
+	if(BaseJob==Job_Assassin || BaseJob==Job_Baby_Assassin) goto L_Thief2_F;
+	if(BaseJob==Job_Rogue || BaseJob==Job_Assassin_Cross || BaseJob==Job_Baby_Rogue) goto L_Thief3_F;
+	if(BaseJob==Job_SuperNovice || BaseJob==Job_Super_Baby) goto L_Super_Novice_F;
+	goto sL_Sorry;
+//NOTE: Same problems as with Males. This time: Monk, High Priest, Champion.
+//Rogue and Assassin Cross have her own check, because the default dye is black <.< The Stalker Placement is not a bug!
 
-		sM_e:
-			mes "[服裝設計師 奇列塔恩那波]";
-			if(countitem(978) < 1) goto sL_NoDye;
-			if(Zeny < 5000) goto sL_Zeny;
-			mes "好了，我幫你把衣服染成藍色.";
-			setlook 7,2;
-			delitem 978,1;
-			set Zeny, Zeny - 5000;
-			close;
+L_Novice_F:
+	set @blue, 1;
+	set @red, 2;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Swordman_F:
+	set @red, 1;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Mage_F:
+	set @red, 1;
+	set @violet, 2;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-紫色",L_Dye_Violet,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Archer_F:
+	set @red, 1;
+	set @green, 2;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Acolyte_F:
+	set @red, 1;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Merchant_F:
+	set @violet, 1;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紫色",L_Dye_Violet,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Thief_F:
+	set @red, 1;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Swordman2_F:
+	set @blue, 1;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Acolyte2_F:
+	set @red, 1;
+	set @green, 2;
+	set @white, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-白色",L_Dye_White,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Mage2_F:
+	set @red, 1;
+	set @blue, 2;
+	set @white, 3;
+	set @green, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-藍色",L_Dye_Blue,"-白色",L_Dye_White,"-綠色",L_Dye_Green,"-取消",L_End;
+L_Merchant2_F:
+	set @red, 1;
+	set @green, 2;
+	set @violet, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-紫色",L_Dye_Violet,"-黑色",L_Dye_Black,"-取消",L_End;
+L_Archer2_F:
+	set @blue, 1;
+	set @green, 3;
+	set @violet, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-綠色",L_Dye_Green,"-紫色",L_Dye_Violet,"-取消",L_End;
+L_Thief2_F:
+	set @black, 1;
+	set @yellow, 2;
+	set @white, 3;
+	menu "-普通色",L_Dye_Default,"-黑色",L_Dye_Black,"-黃色",L_Dye_Yellow,"-白色",L_Dye_White,"-取消",L_End;
+L_Thief3_F:
+	set @yellow, 2;
+	set @white, 3;
+	menu "-普通色",L_Dye_Default,"-黃色",L_Dye_Yellow,"-白色",L_Dye_White,"-取消",L_End;
+L_Super_Novice_F:
+	set @blue, 1;
+	set @red, 2;
+	set @green, 3;
+	set @black, 4;
+	menu "-普通色",L_Dye_Default,"-藍色",L_Dye_Blue,"-紅色",L_Dye_Red,"-綠色",L_Dye_Green,"-黑色",L_Dye_Black,"-取消",L_End;
 
-		sL_NoDye:
-			mes "客人! 您所指定的染色顏料沒帶來?";
-			close;
+//=================================
+// 染色腳本
+//=================================
 
-		sL_Zeny:
-			mes "抱歉! 您沒有足夠的金錢.";
-			close;
+L_Dye_Default:
+	mes "[服裝師 奇列塔恩那波]";
+	mes "我可以免費把衣服染成普通色.";
+	mes "你確定麼?";
+	next;
+	menu "-是的",-,"-不",L_End;
+	mes "[服裝師 奇列塔恩那波]";
+	mes "好了. 恢復原樣.";
+	setlook 7,0;
+	close;
+L_Dye_Orange:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(980) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 980,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了橘色.";
+	setlook 7,@orange;
+	close;
+L_Dye_Violet:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(981) < 1) goto  sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 981,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了紫色.";
+	setlook 7,@violet;
+	close;
+L_Dye_Red:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(975) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 975,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了紅色.";
+	setlook 7,@red;
+	close;
+L_Dye_Black:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(983) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 983,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了黑色.";
+	setlook 7,@black;
+	close;
+L_Dye_Green:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(979) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 979,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了綠色.";
+	setlook 7,@green;
+	close;
+L_Dye_Blue:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(978) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 978,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了藍色.";
+	setlook 7,@blue;
+	close;
+L_Dye_White:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(982) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 982,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了白色.";
+	setlook 7,@white;
+	close;
+L_Dye_Yellow:
+	mes "[服裝師 奇列塔恩那波]";
+	if(countitem(976) < 1) goto sL_NoDye;
+	if(Zeny < 10000) goto sL_Zeny;
+	delitem 976,1;
+	set Zeny, Zeny - 10000;
+	mes "好了. 衣服染成了黃色.";
+	setlook 7,@yellow;
+	close;
 
-	M_2:
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "以下是本店提供選擇的顏色以及價格:";
-		mes " - 紅色: 5000 zeny, 需要 1 個紅色染料";
-		mes " - 黃色: 5000 zeny, 需要 1 個黃色染料";
-		mes " - 紫色: 5000 zeny, 需要 1 個紫色染料";
-		mes " - 赤色: 5000 zeny, 需要 1 個赤色染料";
-		mes " - 藍色: 5000 zeny, 需要 1 個藍色染料";
-		goto M_Menu;
+sL_Sorry:
+	mes "哇嗚, 你的衣服真奇怪, 我以前從沒見過這樣的. 恩恩... 抱歉, 我沒辦法染顏色.";
+	close;
 
-	Cancel:
-		mes "[服裝設計師 奇列塔恩那波]";
-		mes "我現在很忙，不能招待您，請把這裡當自己家一樣吧.";
-		close;
+sL_Zeny:
+	mes "我很遺憾你沒有足夠的金錢.";
+	close;
+
+sL_NoDye:
+	mes "讓我來染衣服, 我需要相應的染料. 請察看下價目表吧.";
+	next;
+
+L_Busy:
+	mes "抱歉, 我太忙了不能給你染衣服.";
+	goto M_Menu;
+
+L_PriceList:
+	mes "[服裝師 奇列塔恩那波]";
+	mes "這個列表是你可以選的顏色及它們的價錢:";
+	mes " ";
+	mes " - ^FF4422紅色^000000: 10000 zeny, 1 個 紅色染料";
+	mes " - ^D5A500黃色^000000: 10000 zeny, 1 個 黃色染料";
+	mes " - ^AA00AA紫色^000000: 10000 zeny, 1 個 紫色染料";
+	mes " - ^FF8800橘色^000000: 10000 zeny, 1 個 橘色染料";
+	mes " - ^4422FF藍色^000000: 10000 zeny, 1 個 藍色染料";
+	mes " - ^009500綠色^000000: 10000 zeny, 1 個 綠色染料";
+	mes " - 黑色: 10000 zeny, 1 個 黑色染料";
+	mes " - 白色: 10000 zeny, 1 個 白色染料";
+	goto M_Menu;
+
+L_End:
+	mes "[服裝師 奇列塔恩那波]";
+	mes "那你自己在家做吧. 我沒空跟你這耗了.";
+	close;
 }
-
