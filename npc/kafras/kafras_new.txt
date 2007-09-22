@@ -1,208 +1,169 @@
-// 新區域之卡普拉
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041118.0.2
-//			20050317.0.1	修正 { 位置的錯誤及漏掉最後一個 }
-//
-// 注意事項:		呼叫 F_Kafra 函式攜帶參數代表意義
-//			arg(0): 第 0 攜帶參數為 0 為使用預設歡迎詞
-//						1 為死亡之城使用的歡迎詞
-//						2 為公會卡普拉使用的歡迎詞
-//
-//			arg(1): 第 1 攜帶參數為 1 表示無傳送服務功能
-//			arg(2): 第 2 攜帶參數為 1 表示無 '其他卡普拉服務資料' 選項
-//
-//============================================================
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 卡普拉腳本 -
+//----------------------------------
 
-//===== eAthena Script ===========
-//= New Kafras
-//===== By: =========================
-//= eAthena Dev Team
-//===== Current Version: ===================
-//= 3.0
-//===== Compatible With: =====================
-//= eAthena 1.0
-//===== Description: ============================================
-//= Description of argument settings for callfunc "F_Kafra".
-//=  arg(0): When set at 0 the default Kafra message is displayed.
-//=    When set to 1 the Niflhiem Kafra message is displayed.
-//=    When set to 2 the Guild Kafra message is displayed. 
-//=  arg(1): Set to 1 to disable teleport menu option.  Otherwise set to 0.
-//=  arg(2): Set to 1 to disable info menu.  Otherwise set to 0.
-//=  arg(3): Cost of Storage service
-//=  arg(4): Cost of Rent a Pushcart service
-//===== Additional Comments: ==============================================
-//= v1.1 Now using functions
-//= v2.1 Added Niflheim Kafra by Dizzy
-//= v2.1b Minor changes to function calls.  Using arguments.
-//= This version uses arrays .[kobra_k88]
-//= 2.2 Added Louyang Kafra, fixed other kafras not saving players coords [Lupus]
-//= 2.3 Added temp Amatsu + Ayothaya Kafra (wrong coords and sprite) [Lupus]
-//= 2.4 Added correct Ayothaya, Louyang & Amatsu Kafras. [Lupus]
-//= 2.5 Added 2 Einbroch Kafras. [Lupus]
-//= 2.6 Added the Einbech Kafra [MasterOfMuppets]
-//= 2.7 Added the Lighthalzen Kafras [MasterOfMuppets]
-//= 2.7b Chanced the Sprite of the Einbech Kafra. [Poki#3]
-//= 2.7c Added missing kafra in Lighthalzen, thanks to Muad_Dib [Vicious]
-//= 2.8 Removed warps from Umbala and Gonryun, thanks Drakee [Evera]
-//= 2.9 Fixed an incorrect savepoint (inside the hotel) the map was wrong.
-//= 3.0 Updated function calls with new arguments. [L0ne_W0lf]
-//=	Added unique Kafra Welcome messages.
-//==========================================================================
+//----------------------------------
+// < 天津 >
+//----------------------------------
 
-// Amatsu ------------------------------------------------------------------
-amatsu.gat,102,149,4	script	卡普拉服務人員::kaf_amatsu	116,{
+amatsu.gat,102,149,4	script	卡普拉服務人員#amatsunomal	116,{
 	cutin "kafra_02",2;
 	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
+	mes "你重遠方來到此地";
+	mes "學習這裡的文化嗎";
+	mes "或者你是來觀光的 ?";
+	mes "無論是什麼，為什麼不多留一會?";
+	mes "這裡的空氣充滿著";
+	mes "野花的原始氣息.";
+	next;
+	mes "[卡普拉服務人員]";
+	mes "別擔心. 就算是在國外";
+	mes "卡普拉公司也是";
 	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,3,1,50,700;
-
-	M_Save:
-		savepoint "amatsu.gat",116,94;
-		callfunc "F_KafEnd",0,1;
+	callfunc "KafraMain",3,0x5b,"amatsu.gat",116,94,"NULL",0,0,80,700;
+	end;
 }
 
-// Ayothaya ----------------------------------------------------------------
-ayothaya.gat,212,169,5	script	卡普拉服務人員::kaf_ayothaya	116,{
+//----------------------------------
+// < 哎喲泰雅 >
+//----------------------------------
+
+ayothaya.gat,212,169,6	script	卡普拉服務人員	116,{
 	cutin "kafra_02",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,3,1,50,700;
-
-	M_Save:
-		savepoint "ayothaya.gat",149,69;
-		callfunc "F_KafEnd",0,1;
+	callfunc "KafraMain",1,0x5b,"ayothaya.gat",217,187,"NULL",0,0,80,700;
+	end;
 }
 
-// Einbech -----------------------------------------------------------------
+//----------------------------------
+//  < 艾音貝赫 >
+//----------------------------------
 
-einbech.gat,181,132,4	script	卡普拉服務人員::kaf_einbech	860,{
-	cutin "kafra_08",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,40,850;
-
-	M_Save:
-		savepoint "einbech.gat",182,124;
-		callfunc "F_KafEnd",0,1;
+einbech.gat,181,132,5	script	卡普拉服務人員	115,{
+	cutin "kafra_03",2;
+	callfunc "KafraMain",4,0x7f,"einbech.gat",181,123,"NULL",0,0,40,850;
+	close2;
+	viewpoint 1,181,132,1,0x0000FF;
+	cutin "kafra_03",255;
+	end;
 }
 
-// Einbroch (North-East) ---------------------------------------------------
-einbroch.gat,242,205,5	script	卡普拉服務人員::kaf_einbroch	860,{
-	cutin "kafra_08",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,50,800;
+//----------------------------------
+// < 艾音布羅克 - 廣場 >
+//----------------------------------
 
-	M_Save:
-		savepoint "einbroch.gat",238,198;
-		callfunc "F_KafEnd",0,1;
-}
-
-// Einbroch (East) ---------------------------------------------------------
-einbroch.gat,59,203,5	script	卡普拉服務人員::kaf_einbroch2	861,{
-	cutin "kafra_09",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,50,800;
-
-	M_Save:
-		savepoint "einbroch.gat",240,197;
-		callfunc "F_KafEnd",0,1;
-}
-
-// Gonryun -----------------------------------------------------------------
-gonryun.gat,159,122,4	script	卡普拉服務人員::kaf_gonryun	116,{
+einbroch.gat,242,205,5	script	卡普拉服務人員#einbroch1	116,{
 	cutin "kafra_02",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,3,1,50,700;
-
-	M_Save:
-		savepoint "gonryun.gat",160,62;
-		callfunc "F_KafEnd",0,1;
+	callfunc "KafraMain",4,0x7f,"einbroch.gat",239,197,"NULL",0,0,40,800;
+	close2;
+	viewpoint 1,242,205,1,0x0000FF;
+	viewpoint 1,59,203,2,0x0000FF;
+	cutin "kafra_02",255;
+	end;
 }
 
-// Lighthalzen--------------------------------------------------------------
+//----------------------------------
+// < 艾音布羅克 - 空港 >
+//----------------------------------
 
-//Outside the hotel
-lighthalzen.gat,164,100,4	script	卡普拉服務人員::kaf_lighthalzen	860,{
-	cutin "kafra_08",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,40,800;
-
-	M_Save:
-		savepoint "lighthalzen.gat",158,94;
-		callfunc "F_KafEnd",0,1;
-}
-
-// Entrance
-lighthalzen.gat,191,320,4	script	卡普拉服務人員::kaf_lighthalzen2	861,{
-	cutin "kafra_09",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,40,800;
-
-	M_Save:
-		savepoint "lighthalzen.gat",194,313;
-		callfunc "F_KafEnd",0,1;
-}
-
-//Inside the hotel
-lhz_in02.gat,237,284,4	script	卡普拉服務人員::kaf_lhz_in02	861,{
-	cutin "kafra_09",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,4,1,40,800;
-
-	M_Save:
-		savepoint "lhz_in02.gat",278,215;
-		callfunc "F_KafEnd",0,1;
-}
-
-// Louyang -----------------------------------------------------------------
-louyang.gat,210,104,5	script	卡普拉服務人員::kaf_louyang	117,{
+einbroch.gat,59,203,5	script	卡普拉服務人員#einbroch2	117,{
 	cutin "kafra_01",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,3,1,50,700;
-
-	M_Save:
-		savepoint "louyang.gat",217,92;
-		callfunc "F_KafEnd",0,1;
+	callfunc "KafraMain",4,0x7f,"einbroch.gat",239,197,"NULL",0,0,40,800;
+	close2;
+	viewpoint 1,242,205,1,0x0000FF;
+	viewpoint 1,59,203,2,0x0000FF;
+	cutin "kafra_01",255;
+	end;
 }
 
-// Umbala Kafra ------------------------------------------------------------
-umbala.gat,128,133,4	script	卡普拉服務人員::kaf_umbala	721,{
+//----------------------------------
+// < 崑崙 >
+//----------------------------------
+
+gonryun.gat,159,122,4	script	卡普拉服務人員	116,{
+	cutin "kafra_02",2;
+	callfunc "KafraMain",1,0x5b,"gonryun.gat",160,62,"NULL",0,0,80,700;
+	end;
+}
+
+//----------------------------------
+// < 里希塔樂鎮 - 北ロкь >
+//----------------------------------
+
+lighthalzen.gat,191,320,4	script	卡普拉服務人員	861,{
+	cutin "kafra_09",2;
+	callfunc "KafraMain",4,0x5f,"lighthalzen.gat",194,313,"NULL",0,0,40,800;
+	end;
+}
+
+//----------------------------------
+// < 里希塔樂鎮 - 南 >
+//----------------------------------
+
+lighthalzen.gat,164,100,4	script	卡普拉服務人員	860,{
+	cutin "kafra_08",2;
+	callfunc "KafraMain",4,0x5f,"lighthalzen.gat",158,96,"NULL",0,0,40,800;
+	end;
+}
+
+//----------------------------------
+// < 里希塔樂鎮 - 旅館 >
+//----------------------------------
+
+lhz_in02.gat,237,284,4	script	卡普拉服務人員	861,{
+	cutin "kafra_09",2;
+	callfunc "KafraMain",4,0x5f,"lhz_in02.gat",278,214,"NULL",0,0,40,800;
+	end;
+}
+
+//----------------------------------
+// < 龍之城 >
+//----------------------------------
+
+louyang.gat,210,104,4	script	卡普拉服務人員	116,{
+	cutin "kafra_02",2;
+	callfunc "KafraMain",1,0x5b,"louyang.gat",218,97,"NULL",0,0,80,700;
+	end;
+}
+
+//----------------------------------
+// < 汶巴拉 >
+//----------------------------------
+
+umbala.gat,87,160,5	script	卡普拉服務人員	721,{
 	cutin "kafra_07",2;
-	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
-	setarray @wrpD$[0], "克魔島";
-	setarray @wrpP[0], 1800;
-	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
-	set @wrpC$[1], "取消";
-	callfunc "F_Kafra",5,0,1,80,0;
-	M_Save:
-		savepoint "umbala.gat",126,131;
-		callfunc "F_KafEnd",0,1;
+	set @code,10;
+	set @price,1800;
+	callfunc "KafraMain",0,0x57,"umbala.gat",100,154,"NULL",0,0,80,0,@code,@price;
+	end;
 }
 
-// Niflheim ----------------------------------------------------------------
-niflheim.gat,202,180,3	script	卡普拉服務人員::kaf_niflheim	791,{
-	callfunc "F_Kafra",1,2,1,150,0;
+//----------------------------------
+// < 尼芙菲姆 >
+//----------------------------------
 
-	M_Save:
-		savepoint "niflheim.gat",192,182;
-		callfunc "F_KafEnd",1,1;
+niflheim.gat,202,180,3	script	卡普拉服務人員	791,{
+	mes "[卡普拉服務人員]";
+	mes "歡迎... 來到... ";
+	mes "卡普拉公司...";
+	mes "我們... 到死... 都會繼續為您服務..."; 
+	next;
+	switch (select("倉庫服務","總結")) {
+	case 1:
+		percentheal 0,-10;
+		callfunc "KafraStorage",150;
+		end;
+	case 2:
+		percentheal 0,-10;
+		mes "[卡普拉服務人員]";
+		mes "我們, 卡普拉公司..."; 
+		mes "會一值在你身邊..."; 
+		mes "無論何時... 何地..."; 
+		mes "...任何原因..."; 
+		mes "請別忘記我們...";
+		break;
+	}
+	close;
 }

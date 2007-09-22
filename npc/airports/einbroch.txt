@@ -1,54 +1,39 @@
-//===== eAthena Script ======================================= 
-//= Einbroch 機場職員
-//===== By: ================================================== 
-//= L0ne_W0lf, Muad_Dib
-//===== Current Version: ===================================== 
-//= 1.3
-//===== Compatible With: ===================================== 
-//= eAthena Revision 3000+
-//===== Description: ========================================= 
-//= Einbroch 機場職員
-//===== Additional Comments: ================================= 
-//= Converted by Dr.Evil, 1.0b more typos and credits [Lupus]
-//= 1.1 Fixed wrong check, added extra condition [Justin84]
-//= 1.2 Removed Duplicates [Silent]
-//= 1.3 Fixed syntax errors for duplicate [KarLaeda]
-//= Translated By  45°向上傾斜
-//============================================================
-
+//===========================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------------------------------------------
+// - 艾音布羅克 機場 腳本 -
+// -----------------------------------------------------------------------------
+// 版本 1.3
+// -----------------------------------------------------------------------------
 
 airport.gat,126,43,4	script	機場 職員#01::AirportE	90,{
 	mes "[機場 職員]";
 	mes "您好，我們公司隨時提供給顧客便捷又舒適的旅行服務，會盡其所能的，請問您需要幫忙嗎？";
 	next;
-	menu "乘坐飛艇",-,"取消",L_Cancel;
-
+	if(select("進入機場內部","取消")==1) {
 		mes "[機場 職員]";
 		mes "利用飛空艇的費用為1200金幣，如果您持有飛空艇免費搭乘券的話，就能免費進入，請問您要進入機場內部嗎？";
 		next;
-		menu "是的",-,"不要",L_Cancel;
-
-		if(countitem(7311) > 0) goto L_GotTicket;
-		if(Zeny < 1200) goto L_NoZeny;
-			set Zeny, Zeny - 1200;
+		if(select("是","否")==1) {
+			if(countitem(7311) > 0) {
+				delitem 7311,1;
+				warp "airport.gat",148,51;
+				close;
+			}
+			if(zeny < 1200) {
+				mes "[機場 職員]";
+				mes "你沒有足夠的金錢.";
+				close;
+			}
+			set Zeny,zeny-1200;
 			warp "airport.gat",148,51;
 			close;
-
-		L_GotTicket:
-			delitem 7311,1;
-			warp "airport.gat",148,51;
-			close;
-
-	L_NoZeny:
-		mes "[機場 職員]";
-		mes "你沒有足夠的 zeny.";
-		close;
-
-	L_Cancel:
-		mes "[機場 職員]";
-		mes "謝謝你";
-		mes "送上我對你的祝福.";
-		close;
+		}
+	}
+	mes "[機場 職員]";
+	mes "請你下次再利用吧，謝謝光臨";
+	close;
 }
 
 airport.gat,143,43,4	duplicate(AirportE)	機場 職員#02	90
@@ -56,25 +41,20 @@ airport.gat,156,43,4	duplicate(AirportE)	機場 職員#03	90
 
 airport.gat,126,51,4	script	機場 職員#04::AirportE2	90,{
 	mes "[機場 職員]";
-	mes "歡迎你,請從這裡進入飛艇.";
+	mes "你好嗎，我們航空隨時提供給顧客便捷又舒適的旅行服務，會盡其所能，請問你需要幫忙嗎?";
 	next;
-	menu "離開通道",-,"取消",L_Cancel;
+	if(select("離開機場","取消")==1) {
 		mes "[機場 職員]";
-		mes "如果你離開通道,下次進入的時候將要再次付費";
-		mes "你確定退出嗎?";
+		mes "如果你要從機場內部離開又想進來的話，要在花一次費用喔，請問您要離開嗎?";
 		next;
-		menu "是的",-,"不要",L_Cancel;
-
+		if(select("是的","不要")==1) {
 			warp "airport.gat",142,40;
 			close;
-
-	L_Cancel:
-		mes "[機場 職員]";
-		mes "好吧, 謝謝你的";
-		mes "你的贊助";
-		mes "我希望你有";
-		mes "一次愉快的飛行~";
-		close;
+		}
+	}
+	mes "[機場 職員]";
+	mes "請你下次再利用吧，謝謝光臨";
+	close;
 }
 
 airport.gat,143,51,4	duplicate(AirportE2)	機場 職員#05	90

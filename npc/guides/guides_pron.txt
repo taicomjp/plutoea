@@ -1,169 +1,158 @@
-// 普隆德拉導遊腳本
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041215.0.1
-//
-//============================================================
-
-//===== eAthena Script ======================================= 
-//= Prontera Guides
-//===== By: ================================================== 
-//= kobra_k88
-//===== Current Version: ===================================== 
-//= 1.1
-//===== Compatible With: ===================================== 
-//= eAthena  0.5.2 +
-//===== Description: ========================================= 
-//=
-//===== Additional Comments: ================================= 
-//= Fully working
-//= v1.1 Now using duplicate command.
-//============================================================
+//===========================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ------------------------------------------
+// - 普隆德拉 導遊 腳本 -
+// ------------------------------------------
+// 版本 1.1
+//===========================================
 
 
 prontera.gat,154,189,4	script	導遊#1::Prt_Guide	105,{
 	cutin "prt_soldier",2;
 	mes "[普隆德拉導遊]";
 	mes "歡迎光臨 非常歡迎您們來到盧恩 米德加爾特王國美麗的首都普隆德拉.";
+	mes "我們為了來到普隆德拉的旅客 安排了導遊為您們介紹這個城市 當您們有問題的時候 隨時可以詢問他們.";
 	next;
 	mes "[普隆德拉導遊]";
-	mes "我們為了來到普隆德拉的旅客 安排了導遊為您們介紹這個城市 當您們有問題的時候 隨時可以詢問他們.";
-M_Menu:
-	next;
-	menu "開始由導遊說明城市",M_1, "聽取注意事項",M_2, "取消",M_End;
-
-	M_1:
-		mes "[普隆德拉導遊]";
-		mes "請問您需要要在微型地圖上留下記號嗎?";
+	mes "第一次來到這裡的旅客 先按主選單 選擇注意事項 瞭解必須注意的事情.";
+	while(1) {
 		next;
-		menu "不需要",sM_1a,"需要, 謝謝",sM_1b;
-		
-		sM_1a:
-			set @COMPASS_CHECK,0;
-			goto L_Cont;
-
-		sM_1b:
-			set @COMPASS_CHECK,1;
-
-		L_Cont:
-		mes "[普隆德拉導遊]";
-		mes "請您選擇想知道的建築物";
-		next;
-	sM_Menu:
-		menu 	"劍士工會",M_1_1, "^9999F5大聖堂^000000",M_1_2, "^ff0000騎士團^000000",M_1_3, "裝備商店",M_1_4,
-			"道具商店",M_1_5, "旅館",M_1_6, "精練工坊",M_1_7, "酒店",M_1_8, "^FF8800圖書館^000000",M_1_9, "轉職所",M_1_10,
-			"^AABBCC普隆德拉城堡^000000",M_1_11, "行政中心",M_1_12,
-			"刪除微型地圖上全部的記號",M_1_14, "取消",M_End;
-
-		M_1_1:
+		switch (select("開始由導遊說明城市","刪掉微型地圖上全部的記號","聽取注意事項","取消")) {
+		case 1:
+			if(@compass&0x01 == 0) {
+				mes "[普隆德拉導遊]";
+				mes "請您選擇想知道的選單";
+				mes "要在微型地圖上留下記號嗎?";
+				next;
+				if(select("要","不要")==1)
+					set @compass,@compass|0x01;
+			}
 			mes "[普隆德拉導遊]";
-			mes "專門辦理劍士轉職業務的劍士工會已經搬到 衛星都市--伊斯魯得, 普隆德拉的舊劍士工會現在已經是空屋.";
-			viewpoint 1,237,41,1,0x2222AA;
-			goto sL_Wipe;
-		M_1_2:
-			mes "[普隆德拉導遊]";
-			mes "盧恩 米德加爾特王國最大的教堂 -- `大聖堂', 位置在普隆德拉城的東北方.";
-			mes "您可以在那兒與上帝接觸或轉職成服事, 若是要結婚也可在那兒辦理證婚儀式.";
-			viewpoint 1,236,316,2,0xAAAAF5;
-			goto sL_Wipe;
-		M_1_3:
-			mes "[普隆德拉導遊]";
-			mes "保護盧恩 米德加爾特王國美麗的首都普隆德拉行政機關的騎士團位在普隆德拉城的西北方.";
-			viewpoint 1,46,345,3,0xFF0000;
-			goto sL_Wipe;
-		M_1_4:
-			mes "[普隆德拉導遊]";
-			mes "裝備商店位在以噴水池為中心的東北方.";
-			viewpoint 1,175,220,4,0xFF00FF;
-			goto sL_Wipe;
-		M_1_5:
-			mes "[普隆德拉導遊]";
-			mes "道具商店位在以噴水池為中心的西北方";
-			viewpoint 1,134,221,5,0xFF00FF;
-			goto sL_Wipe;
-		M_1_6:
-			mes "[普隆德拉導遊]";
-			mes "旅館位在以噴水池為中心的西方和東方各有一間.";
-			viewpoint 1,204,195,6,0x00DD55;
-			viewpoint 1,107,212,7,0x00DD55;
-			goto sL_Wipe;
-		M_1_7:
-			mes "[普隆德拉導遊]";
-			mes "精練工坊位在以噴水池為中心的東南方, 在那兒您可以將您的武器及防具精練得更加強韌.";
-			viewpoint 1,179,184,8,0x7901AD;
-			goto sL_Wipe;
-		M_1_8:
-			mes "[普隆德拉導遊]";
-			mes "酒店位在以噴水池為中心的東南方, 就在精練工坊對面, 是普隆德拉最熱門的聚會場所";
-			viewpoint 1,208,154,9,0xAA0077;
-			goto sL_Wipe;
-		M_1_9:
-			mes "[普隆德拉導遊]";
-			mes "從噴水池開始往北方走看見一塊空地, 在空地前的左邊和右邊各有一間圖書館, 在那兒有盧恩 米德加爾特王國最龐大的魔物資料.";
-			viewpoint 1,120,267,10,0xFF8800;
-			viewpoint 1,192,267,11,0xFF8800;
-			goto sL_Wipe;
-		M_1_10:
-			mes "[普隆德拉導遊]";
-			mes "轉職所位在以噴水池為中心的西南方";
-			viewpoint 1,133,183,12,0x4444FF;
-			goto sL_Wipe;
-		M_1_11:
-			mes "[普隆德拉導遊]";
-			mes "普隆德拉城堡位在於普隆德拉城的最北方.";
-			mes "城堡的後門是和北普隆德拉郊外相鄰在一起的.";
-			viewpoint 1,156,360,13,0xAABBCC;
-			goto sL_Wipe;
-		M_1_12:
-			mes "[普隆德拉導遊]";
-			mes "行政中心位在普隆德拉城東南方.";
-			viewpoint 1,75,91,14,0xAAEE00;
-			goto sL_Wipe;
-	
-		M_1_14:
-			set @COMPASS_CHECK, 2;
-
-		sL_Wipe:
-			if(@COMPASS_CHECK != 2) next;	// avoids a double 'next' when 'wipe indications' is chosen
-			if(@COMPASS_CHECK == 1) goto sM_Menu;
-			viewpoint 2,237,41,1,0x2222AA;
-			viewpoint 2,236,316,2,0xAAAAF5;
-			viewpoint 2,46,345,3,0xFF0000;
+			mes "請選擇地點";
+			while(1) {
+				next;
+				switch (select("劍士工會","^0000FF教堂^000000","騎士團","武器商店","道具商店","旅館",
+							"精練所","酒店","圖書館","研究所","普隆德拉城","辦公室","取消")) {
+				case 1:
+					mes "[普隆德拉導遊]";
+					mes "專門辦理劍士轉職業務的劍士工會已經搬到新城市伊茲魯達普隆德拉現在已經是空屋.";
+					if(@compass&0x01)
+						viewpoint 1,237,41,1,0x00FF00;
+					continue;
+				case 2:
+					mes "[普隆德拉導遊]";
+					mes "專門辦理服事轉職業務的教堂位置在普隆德拉東北方的郊區..";
+					if(@compass&0x01)
+						viewpoint 1,236,316,2,0xFF0000;
+					continue;
+				case 3:
+					mes "[普隆德拉導遊]";
+					mes "保護盧恩米德加爾特王國美麗的首都普隆德拉行政機關的騎士團位在普隆德拉西北方的郊區.";
+					if(@compass&0x01)
+						viewpoint 1,46,345,3,0x00FF00;
+					continue;
+				case 4:
+					mes "[普隆德拉導遊]";
+					mes "武器商店位在以噴水池中心的東北方.";
+					if(@compass&0x01)
+						viewpoint 1,175,220,4,0xFF00FF;
+					continue;
+				case 5:
+					mes "[普隆德拉導遊]";
+					mes "道具商店位在以噴水池中心的西北方";
+					if(@compass&0x01)
+						viewpoint 1,134,221,5,0xFF00FF;
+					continue;
+				case 6:
+					mes "[普隆德拉導遊]";
+					mes "旅館位在以噴水池中心的西方和東方各有一間.";
+					if(@compass&0x01) {
+						viewpoint 1,204,214,6,0xFF00FF;
+						viewpoint 1,107,192,7,0xFF00FF;
+					}
+					continue;
+				case 7:
+					mes "[普隆德拉導遊]";
+					mes "精練所位在以噴水池中心的東南方.";
+					if(@compass&0x01)
+						viewpoint 1,179,184,8,0x00FF00;
+					continue;
+				case 8:
+					mes "[普隆德拉導遊]";
+					mes "酒店位在以噴水池中心的東南方就在交易所對面";
+					if(@compass&0x01)
+						viewpoint 1,208,154,9,0x00FF00;
+					continue;
+				case 9:
+					mes "[普隆德拉導遊]";
+					mes "圖書館位在從噴水池開始往北方走看見一塊空地,在空地前的左邊和右邊各有一間.";
+					if(@compass&0x01) {
+						viewpoint 1,120,267,10,0x00FF00;
+						viewpoint 1,192,267,11,0x00FF00;
+					}
+					continue;
+				case 10:
+					mes "[普隆德拉導遊]";
+					mes "研究所位在以噴水池中心的西南方";
+					if(@compass&0x01)
+						viewpoint 1,133,183,12,0x00FF00;
+					continue;
+				case 11:
+					mes "[普隆德拉導遊]";
+					mes "普隆德拉城堡是位在普隆德拉北方的郊區的12點方向.";
+					mes "有一點要注意城堡的後門是和北普隆德拉相鄰在一起的";
+					if(@compass&0x01)
+						viewpoint 1,156,360,13,0x00FF00;
+					continue;
+				case 12:
+					mes "[普隆德拉導遊]";
+					mes "辦公室位在普隆德拉東南方的郊區的7點鐘方向.";
+					if(@compass&0x01)
+						viewpoint 1,75,91,14,0x00FF00;
+					continue;
+				case 13:
+					mes "[普隆德拉導遊]";
+					mes "選擇刪除編輯，即可刪除小地圖上的記號";
+				}
+				break;
+			}
+			continue;
+		case 2:
+			viewpoint 2,237,41,1,0x00FF00;
+			viewpoint 2,236,316,2,0xFF0000;
+			viewpoint 2,46,345,3,0x00FF00;
 			viewpoint 2,175,220,4,0xFF00FF;
-			viewpoint 2,134,221,5,0xFF00FF;
-			viewpoint 2,204,195,6,0x00DD55;
-			viewpoint 2,107,212,7,0x00DD55;
-			viewpoint 2,179,184,8,0x7901AD;
-			viewpoint 2,208,154,9,0xAA0077;
-			viewpoint 2,120,267,10,0xFF8800;
-			viewpoint 2,192,267,11,0xFF8800;
-			viewpoint 2,133,183,12,0x4444FF;
-			viewpoint 2,156,360,13,0xAABBCC;
-			viewpoint 2,75,91,14,0xAAEE00;
-			viewpoint 2,180,183,15,0xFF4477;
-			if (@COMPASS_CHECK == 0) goto sM_Menu;
+			viewpoint 2,8,134,5,0xFF00FF;
+			viewpoint 2,204,214,6,0xFF00FF;
+			viewpoint 2,107,192,7,0xFF00FF;
+			viewpoint 2,179,184,8,0x00FF00;
+			viewpoint 2,208,154,9,0x00FF00;
+			viewpoint 2,120,267,10,0x00FF00;
+			viewpoint 2,192,267,11,0x00FF00;
+			viewpoint 2,133,183,12,0x00FF00;
+			viewpoint 2,156,360,13,0x00FF00;
+			viewpoint 2,75,91,14,0x00FF00;
+			set @compass,@compass&~0x01;
+			continue;
+		case 3:
 			mes "[普隆德拉導遊]";
-			mes "所有的記號已經刪除";
+			mes "我們廢除了原來較差的指引方式採用最現代化的無論您在那裡都可以借由微型地圖知道您的位置.";
+			mes "您們可以直接確認盧恩米德加爾特王國魔法和科學技術組合後的廣域測位系統的功能.";
+			next;
+			mes "[普隆德拉導遊]";
+			mes "在流覽之前必須先參考右上方的微型地圖.";
+			mes "如果看不見微型地圖的話 請按'ctrl+tab'或者選取基本情報視窗內的地圖";
+			mes "微型地圖出現之後 在地圖上按幾下可以看見所有城市.";
+			continue;
+		case 4:
+			mes "[普隆德拉導遊]";
+			mes "那麼祝你有個愉快的旅行";
+			close2;
 			cutin "prt_soldier",255;
-			close;
-
-	M_2:
-		mes "[普隆得拉 導遊]";
-		mes "我們採用了最現代化的數位指引方式, 無論您在哪裡都可以借由微型地圖知道您的位置.";
-		mes "您們可以直接確認盧恩 米德加爾特王國魔法和科學技術組合後的廣網域測位系統的功能.";
-		next;
-		mes "[普隆得拉 導遊]";
-		mes "別忘了參考右上方的微型地圖";
-		mes "如果看不見微型地圖的話 請按 ^0000ff'Ctrl+Tab'^000000 或是選取基本情報窗口內的 ^0000ff'Map'^000000 按鈕開啟地圖";
-		mes "微型地圖出現之後 在其上的 ^ff0000+,-^000000 按鈕可讓您放大或縮小地圖顯示區域";
-		next;
-
-	M_End:
-		mes "[普隆德拉導遊]";
-		mes "住你有個美好的一天.";
-		cutin "prt_soldier",255;
-		close;
+			end;
+		}
+	}
 }
 
 // East ----------------------------------------------------

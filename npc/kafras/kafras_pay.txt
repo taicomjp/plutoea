@@ -1,101 +1,40 @@
-// 山岳之都 斐揚卡普拉
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041118.0.2
-//
-// 注意事項:		呼叫 F_Kafra 函式攜帶參數代表意義
-//			arg(0): 第 0 攜帶參數為 0 為使用預設歡迎詞
-//						1 為死亡之城使用的歡迎詞
-//						2 為公會卡普拉使用的歡迎詞
-//
-//			arg(1): 第 1 攜帶參數為 1 表示無傳送服務功能
-//			arg(2): 第 2 攜帶參數為 1 表示無 '其他卡普拉服務資料' 選項
-//
-//============================================================
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 卡普拉腳本 -
+//----------------------------------
 
-//===== eAthena Script =======================================
-//= Payon Kafras
-//===== By: =========================
-//= eAthena Dev Team
-//===== Current Version: ===================
-//= 2.4b
-//===== Compatible With: =====================
-//= eAthena 1.0
-//===== Description: ============================================
-//= Description of argument settings for callfunc "F_Kafra".
-//=  arg(0): When set at 0 the default Kafra message is displayed.
-//=    When set to 1 the Niflhiem Kafra message is displayed.
-//=    When set to 2 the Guild Kafra message is displayed. 
-//=  arg(1): Set to 1 to disable teleport menu option.  Otherwise set to 0.
-//=  arg(2): Set to 1 to disable info menu.  Otherwise set to 0.
-//=  arg(3): Cost of Storage service
-//=  arg(4): Cost of Rent a Pushcart service
-//===== Additional Comments: ==============================================
-//= v1.1 Now using functions
-//= v2.1b Minor changes to function calls.  Using arguments.
-//= This version uses arrays .[kobra_k88]
-//= v2.2 New Payon Locations. [Darkchild]
-//= 2.3 1 New Kafra, fixed save menus
-//= 2.31 New prices [Evera]
-//= 2.32 Minor fix to Payon Archer Kafra [SinSloth]
-//= 2.4 Updated function calls with new arguments. [L0ne_W0lf]
-//=	Added unique Kafra Welcome message.
-//= 2.4b Updated the remaning names for the Kafras. [L0ne_W0lf]
-//==========================================================================
+//----------------------------------
+// < 斐揚 - 北 >
+//----------------------------------
 
-
-// Main Town, South ----------------------------------------------------------
-payon.gat,181,104,4	script	卡普拉服務人員::kaf_payon	113,{
-	cutin "kafra_05",2;
-	callfunc "F_KafSetPay";
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,0,1,60,930;
-
-	M_Save:
-		savepoint "payon.gat",160,58;
-		callfunc "F_KafEnd",0,1;
-}
-
-// Main Town, Middle North --------------------------------------------------
-payon.gat,175,226,4	script	卡普拉服務人員::kaf_payon2	116,{
+payon.gat,175,226,4	script	卡普拉服務人員	116,{
 	cutin "kafra_02",2;
-	callfunc "F_KafSetPay";
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,0,1,60,930;
-
-	M_Save:
-		savepoint "payon.gat",257,242;
-		callfunc "F_KafEnd",0,1;
+	setarray @code,6,1,5;
+	setarray @price,1200,1200,1200;
+	callfunc "KafraMain",1,0x5f,"payon.gat",207,113,"NULL",0,0,40,800,@code,@price;
+	end;
 }
 
-// Archer Village ------------------------------------------------------------
-pay_arche.gat,55,123,0	script	卡普拉服務人員::kaf_payon2	115,{
-	cutin "kafra_03",2;
-	callfunc "F_KafSetPay";
-	mes "[卡普拉服務人員]";
-	mes "歡迎光臨，卡普拉公司隨時為您們服務，";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,5,1,90,1200;
+//----------------------------------
+// < 斐揚 - 南 >
+//----------------------------------
 
-	M_Save:
-		savepoint "pay_arche.gat",49,144;
-		callfunc "F_KafEnd",0,1;
+payon.gat,181,104,4	script	卡普拉服務人員	113,{
+	cutin "kafra_05",2;
+	setarray @code,6,1,5;
+	setarray @price,1200,1200,1200;
+	callfunc "KafraMain",1,0x5f,"payon.gat",160,58,"NULL",0,0,40,800,@code,@price;
+	end;
 }
 
+//----------------------------------
+// < 斐揚 - 弓箭手村 >
+//----------------------------------
 
-// Function: Sets variables for Payon Kafras ---------------------------------
-function	script	F_KafSetPay	{
-	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
-	setarray @wrpD$[0], "艾爾貝塔", "普隆德拉", "夢羅克";
-	setarray @wrpP[0], 1200, 1200, 1200;
-	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
-	set @wrpC$[1], @wrpD$[1]+" -> "+@wrpP[1];
-	set @wrpC$[2], @wrpD$[2]+" -> "+@wrpP[2];
-	set @wrpC$[3], "取消";
-	return;
+pay_arche.gat,55,123,4	script	卡普拉服務人員	114,{
+	cutin "kafra_04",2;
+	callfunc "KafraMain",1,0x5b,"pay_arche.gat",50,145,"NULL",0,0,40,800;
+	end;
 }
