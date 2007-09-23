@@ -1,46 +1,34 @@
-//===== eAthena Script ======================================= 
-//= 准它 企劃社 服務人員
-//===== By: ================================================== 
-//= Gepard
-//===== Current Version: ===================================== 
-//= 1.2
-//===== Compatible With: ===================================== 
-//= eAthena
-//===== Description: ========================================= 
-//= 准它 企劃社 服務人員 (Save, Storage & Pushcart Service)
-//= in Hugel
-//===== Additional Comments: ================================= 
-//= 1.0 First version, iRO Sakray X.4 [Gepard]
-//= 1.1 Optimized, fixed a conditional bug [Lupus]
-//= 1.1a Redo back. It wasn't a bug [Lupus]
-//= 1.2 Added Rachel 准它 企劃社 服務人員 [Playtester]
-//============================================================ 
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 准它 企劃社 服務人員 -
+//===================================
 
-hugel.gat,88,168,4	script	准它 企劃社 服務人員::CoolEventCorpStaffHugel	874,{
 
+function	script	ZondaMain	{
+
+	cutin "zonda_01",2;
 	mes "[准它 企劃社 服務人員]";
 	mes "歡迎光臨，准它";
 	mes "企畫設永遠秉持著最好服務的，";
 	mes "請問您需要哪一種服務呢?";
 	next;
-
 	switch(select("儲存服務:倉庫服務:手推車服務:結束")){
+
 	case 1:
+		savepoint getarg(0),getarg(1),getarg(2);
 		mes "[准它 企劃社 服務人員]";
-		mes "已經儲存好了，";
-		mes "謝謝您的使用";
-		emotion e_thx;
-		savepoint "hugel",96,155;
-		close;
+		mes "已經儲存好了 謝謝您的使用";
+		break;
+
 	case 2:
 		mes "[准它 企劃社 服務人員]";
 		if(basicskillcheck() && getskilllv(1) < 6){
-			mes "I'm sorry, but you";
-			mes "need the Novice's";
-			mes "Basic Skill Level 6 to";
-			mes "use the Storage Service.";
+			mes "你的基本技能要6級以上";
+			mes "才能使用倉庫服務";
 			emotion e_sry;
-			close;
+			break;
 		}
 		if(Zeny < 40){
 			mes "顧客，您支付的金額不足啊，";
@@ -54,168 +42,77 @@ hugel.gat,88,168,4	script	准它 企劃社 服務人員::CoolEventCorpStaffHugel	874,{
 		mes "感謝您的使用";
 		close2;
 		openstorage;
+		cutin "",255;
 		end;
+
 	case 3:
 		mes "[准它 企劃社 服務人員]";
 		if(BaseClass != Job_Merchant){
 			mes "很抱歉，";
 			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
 			emotion e_sry;
-			close;
+			break;
 		}
 		if(getskilllv(39) == 0){
-			mes "You can only rent a cart after";
-			mes "learning the Pushcart Skill.";
-			close;
+			mes "如果沒學相關技能的話";
+			mes "是沒有手推車的";
+			break;
 		}
 		if(checkcart() == 1){
-			mes "You already have";
-			mes "a Pushcart equipped.";
-			mes "Unfortunately, we can't";
-			mes "rent more than one to";
-			mes "each customer at a time.";
-			close;
+			mes "你已經租過手推車了";
+			break;
 		}
 		if(countitem(7061)){
 			delitem 7061,1;
 			setcart;
-			close;
+			break;
 		}
-		mes "The Pushcart rental";
-		mes "fee is 800 Zeny. Would";
-		mes "you like to rent a Pushcart?";
+		mes "手推車租金是800 Zeny";
+		mes "如果沒學相關技能的話";
+		mes "是沒有手推車的";
+		mes "還要租嗎?";
 		next;
-		if(select("Rent a Pushcart:Cancel") == 1){
+		if(select("租用手推車","取消") == 1){
 			if(Zeny < 800){
 				mes "[准它 企劃社 服務人員]";
-				mes "I'm sorry, but you";
-				mes "don't have enough";
-				mes "Zeny to pay the Pushcart";
-				mes "rental fee of 800 Zeny.";
+				mes "你的金錢不足啊";
+				mes "需要800 Zeny";
 				emotion e_cash;
-				close;
+				break;
 			} else {
 				set Zeny, Zeny - 800;
 				set RESRVPTS, RESRVPTS + 80;
 				setcart;
-				close;
+				break;
 			}
+			break;
 		}
-		close;
+		break;
+
 	case 4:
-	default:
 		mes "[准它 企劃社 服務人員]";
 		mes "我們准它 企劃社";
 		mes "永遠提供最好服務的，若有不便之處的";
 		mes "話請隨時告知我們，";
 		mes "下一次預計以更好的服務與你見面";
-		close;
+		break;
 	}
+	close2;
+	cutin "",255;
+	end;
 }
 
-rachel.gat,109,138,5	script	准它 企劃社 服務人員::CoolEventCorpStaffRachel	874,{
+lighthalzen.gat,94,248,4	script	准它 企劃社 服務人員	874,{
+	callfunc "ZondaMain","lighthalzen.gat",94,240;
+	end;
+}
 
-	mes "[准它 企劃社 服務人員]";
-	mes "歡迎光臨，准它";
-	mes "企畫設永遠秉持著最好服務的，";
-	mes "請問您需要哪一種服務呢?";
-	next;
+hugel.gat,88,168,4	script	准它 企劃社 服務人員	874,{
+	callfunc "ZondaMain","hugel.gat",96,155;
+	end;
+}
 
-	switch(select("儲存服務:倉庫服務:手推車服務:結束")){
-	case 1:
-		mes "[准它 企劃社 服務人員]";
-		mes "已經儲存好了，";
-		mes "謝謝您的使用";
-		emotion e_thx;
-		savepoint "rachel",113,137;
-		close;
-	case 2:
-		mes "[准它 企劃社 服務人員]";
-		if(basicskillcheck() && getskilllv(1) < 6){
-			mes "I'm sorry, but you";
-			mes "need the Novice's";
-			mes "Basic Skill Level 6 to";
-			mes "use the Storage Service.";
-			emotion e_sry;
-			close;
-		}
-		if(Zeny < 40){
-			mes "I'm sorry, but you don't";
-			mes "have enough Zeny to use";
-			mes "the Storage Service. Our";
-			mes "Storage access fee is 40 Zeny.";
-			emotion e_cash;
-			close;
-		}
-		set Zeny, Zeny - 40;
-		set RESRVPTS, RESRVPTS + 4;
-		mes "Let me open your personal";
-		mes "storage for you right away.";
-		mes "Thanks for supporting Cool";
-		mes "Event Corp. by using our";
-		mes "services. Have a good day~";
-		close2;
-		openstorage;
-		end;
-	case 3:
-		mes "[准它 企劃社 服務人員]";
-		if(BaseClass != Job_Merchant){
-			mes "I'm sorry, but the";
-			mes "Pushcart rental service";
-			mes "is only available to Merchants,";
-			mes "Blacksmiths, White Smiths,";
-			mes "Alchemists and Creators.";
-			emotion e_sry;
-			close;
-		}
-		if(getskilllv(39) == 0){
-			mes "You can only rent a cart after";
-			mes "learning the Pushcart Skill.";
-			close;
-		}
-		if(checkcart() == 1){
-			mes "You already have";
-			mes "a Pushcart equipped.";
-			mes "Unfortunately, we can't";
-			mes "rent more than one to";
-			mes "each customer at a time.";
-			close;
-		}
-		if(countitem(7061)){
-			delitem 7061,1;
-			setcart;
-			close;
-		}
-		mes "The Pushcart rental";
-		mes "fee is 800 Zeny. Would";
-		mes "you like to rent a Pushcart?";
-		next;
-		if(select("Rent a Pushcart:Cancel") == 1){
-			if(Zeny < 800){
-				mes "[准它 企劃社 服務人員]";
-				mes "I'm sorry, but you";
-				mes "don't have enough";
-				mes "Zeny to pay the Pushcart";
-				mes "rental fee of 800 Zeny.";
-				emotion e_cash;
-				close;
-			} else {
-				set Zeny, Zeny - 800;
-				set RESRVPTS, RESRVPTS + 80;
-				setcart;
-				close;
-			}
-		}
-		close;
-	case 4:
-	default:
-		mes "[准它 企劃社 服務人員]";
-		mes "Cool Event Corp. is always";
-		mes "striving to provide the best";
-		mes "services for our customers.";
-		mes "Help us become the best by";
-		mes "providing us with your opinions";
-		mes "and honest feedback. Thank you.";
-		close;
-	}
+rachel.gat,109,138,5	script	准它 企劃社 服務人員	874,{
+	callfunc "ZondaMain","rachel.gat",115,125;
+	end;
 }
