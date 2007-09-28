@@ -1,1044 +1,554 @@
-// µ²±B¸}¥»
-// 
-// ­«¾ã§@ªÌ:		Dino9021
+//====================================================================
+// [¯«] The Japanda Project [²ß]
+// http://opensvn.csie.org/Japanda
+// ------------------------------------------------------------------
+// - µ²±B¸}¥» -
+// ------------------------------------------------------------------
+//  ¡½ @event_marry -> ¨ü¥IÇÑÇåÇ¬ 0or1
+//  ¡½ @defend -> Ç»Ç~ÇÜÇ|Ç¿ÇÓÇÑÇåÇ¬¡B¶ùÇRÇUÇf¥K™EÇg
 //
-// ª©Åv«Å§i:		¥»¤å¥ó¥Ñ eAthenaC ½×¾Â´£¨Ñ¡A¸}¥»µ²ºcÄÝ­ì§@ªÌ©Ò¦³¡AÂ½Ä¶¤Î­×¥¿¤§ª©ÅvÄÝ Dino9021 ©Ò¦³
-//			Âà¸ü½Ð¤Å²¾°£¥ô¦ó»¡©ú±Ô­z»P»¡©ú¤å¥ó¡A¨Ã»Ýµù©ú½×¾Â³sµ² http://eathena.twbbs.org
-// 
-// ¤¤¤åª©¥»½s¸¹:	20041201.0.1
-//			20050306.0.1	­×§ïÀË¬d¨­¤W¬ïµÛ¬° getequipid(2) , ­ì¥» getequipname(2) ·|¦]¦øªA¾¹¤£¦P¦Ó¦³¥X¤J¤£¦n
-//					­×¥¿µ²±Bµ{§Ç¥¼§¹¦¨´N¤£¯à­«·s¥Ó½Ðµ²±Bªº°ÝÃD
-//					­×¥¿ marriage_ring NPC ¨S¿ìªk¨Ï¥Îªº°ÝÃD (¦] eAthena §ïÅÜ¤F OnTouch ±Ô­z)
-//			20050317.0.1	­×¥¿¤½ÃÒ¶O¥Î
-//			20050409.0.1	­×¥¿¤½ÃÒ¶O¥ÎÅã¥Üªº¼Æ­È
-//
-// ­ì©l¸}¥»:		EVENT_MARRIAGE v1.1 BY Kingbo
-//			2004-06-18 ­×¥¿ BY ¯Á§J
-// 			2005-05-21 ¼W¥[ Â÷±BªA°È¤H­û	by xuwujun
-//
-//==================================================================
-
-//==================================================================
-//			µ²±B¸}¥»¬yµ{»¡©ú
-//
-//	1. »Ý­n¨ì"µ²±B ªA°È¤H­û"³Bµn°O,¦pªG·í®É¦³¤H¦bµ²±B,«hµy«áµn°O.
-//		** µn°OªA°È¤H­û¨Ï¥Î½Ð°Ñ¨£¨ãÅé»¡©ú **
-//
-//	2. ·í¨k¤è©M¤k¤è³£µn°O«á,¨k¤è¥ý©M°ê¤ý¹ï¸Ü.µM«á¤k¤è¹ï¸Ü
-//	3. ¹ï¸Ü³£§¹¦¨«á,°h«á¤@¨B,¨ú±o§Ù«ü.§¹¦¨±BÂ§
-//	4. ¨C­Ó±BÂ§©T©w­­¨î®É¶¡5¤ÀÄÁ.¶W¥X«hµLªk§¹¦¨±BÂ§¨Ã¥BµLªk¦A¦¸µ²±B
-//
-//
-//
-//		2004-06-18 ­×¥¿ BY ¯Á§J
-//		(°Ñ·Ó EVENT_MARRIAGE v1.1 BY Kingbo)
-// $@marriage_party_id
-// $@tmp_party_id
-// $@marry_male
-// $@marry_male_name$
-// $@marry_female
-// $@marry_female_name$
-// $@EVENT_MARRIAGE
-// EVENT_MARRIAGE_APPLY
-//==================================================================
-
-prt_church.gat,99,124,4	script	°ê¤ý°¡¤U	108,{
-
-	if ( EVENT_MARRIAGE_APPLY == 0 ) goto L_SINGLE;
-	if ( EVENT_MARRIAGE_APPLY == 1 ) goto L_CHECK;
-	if ( EVENT_MARRIAGE_APPLY == 2 ) goto L_COME_HERE;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "µ²±Bªº·PÄ±«ç¼Ë";
-	mes "¬O¤£¬O«Ü¬ü§®©O¡I";
-	mes "¯¬§A­Ì©¯ºÖ¬üº¡";
-	close;
-
-L_SINGLE:
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Úªº«Ä¤l";
-	mes "§AÁÙ¬O©t¨­¤@¤H¶Ü¡H";
-	mes "¯¬Ä@§A¦­¤é§ä¨ì¦Û¤vªº¥t¤@¥b¡I";
-	close;
-
-L_COME_HERE:
-	mes "[°ê¤ý°¡¤U]";
-	mes "¨Ó¡I§Úªº«Ä¤l¡I";
-	mes "^FF0000¨«¨ì§Úªº¨­Ãä¨Ó¡I^000000";
-	close;
-
-L_CHECK:
-	if ( Sex == 1 ) goto L_MALE_MARRIAGE;
-	goto L_FEMALE_MARRIAGE;
-	close;
-
-L_MALE_MARRIAGE:
-	// ÀË¬d¶¤¥îID¡B¥Ó½Ð¤HID¨Ó§PÂ_¬O§_¬O¥¿½Tªºµn°O¤H
-	if ( getcharid(1) == 0 || getcharid(1) != $@tmp_party_id || getcharid(0) != $@marry_male ) goto L_NOPARTY2;
-	// ÀË¬d¨k¤k¬O§_³£µn°O§¹²¦
-	if ( $@marry_female == 0 ) goto L_NOT_APPLY;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Ú¿Ë·Rªº«Ä¤l¡A§A°µ¦nµ²±Bªº·Ç³Æ¤F¶Ü¡H";
-	next;
-	menu	"¬Oªº¡A§Ú·Ç³Æ¦n¤F¡I",-,
-		"§Ú¡K¡K¦AÅý§Ú¦Ò¼{¤@¤U¡K¡K",L_MENU_2,
-		"§Ú¬OµL¼Ä³æ¨­º~",L_MENU_3;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "¨º»ò§Ú­Ì¶}©l§a";
-	mes "½Ð·Ç³Æ¦n«Ó®ðªº·s­¦Â§ªA";
-	mes "©ñÃP¤@¤U¿E°Êªº¤ß±¡";
-	next;
-
-	// ÀË¬d¬O§_±N¿P§ÀªA¬ï¤W Item 7170
-	if ( GetEquipID(02) != 7170 ) goto L_NOWEAR;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "¶â¡A¬Ý¨Ó§A·Ç³Æªº¬Û·í¦n¡A¨º»ò¶}©l§a";
-	next;
-	announce "[°ê¤ý°¡¤U]¡G½Ñ¦ì¿Ë·Rªº§Ì¥S©j©f¡A§Ú­Ì²{¦b»E¶°¦b³o¸Ì¡A¬O¬°¤F³o¹ï·s¤H­n¦b¤W«Òªº­±«eµ²±B¥ß¬ù«Ø¥ß¬üº¡ªº®a®x¨Ó°µ¨£ÃÒ¡C±B«Ãªº°_·½¬O¤W«Ò³]¥ßªº¡C©¯ºÖªº®a®x¬O¥Ñ©ó¤W«Òªº®¦½ç¡A©Ò¦³·q¬È¤W«Ò¡A¿í¦æ¥Lªº¹D²zªº¡A¥²©w»X¨ü½çºÖ¡A©Ò¥H­n¥Î¸t¼äªº¤ß¡A¥H¥¿¦¡ªºÂ§»ö¨Óµ²±B¡A¤~¯à«Ø¥ß©¯ºÖ©M§Ö¼Öªº®a®x¡C",15;
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Ú¿Ë·Rªº«Ä¤l¡A½Ð§â§A©Ò·Rªº¤H¦W¦r¼g¤U¨Ó§a¡A§Ú­nÅý©Ò¦³¨ì¨Óªº¤H¬°§A­Ì¯¬ºÖ!!";
-	next;
-
-	// ÀË¬d¿é¤Jªº¦W¦r¬O§_©M¤k¤è¥Ó½Ð¤H¬Û¦P
-	input $@name$;
-	if($@marry_female_name$ != $@name$) goto L_DISAGREE;
-
-	announce "[°ê¤ý°¡¤U]¡G³o¹ï©¯ºÖªº¤H¨à¬O"+ strcharinfo(0) + " ©M "+ $@marry_female_name$ + "¡AÅý§Ú­Ì¤@°_¨Ó¯¬ºÖ³o¹ï·s¤H¡C",15;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥Î¸t¼äªº¤ß¡A¨Ó²âÅ¥¨Ó¦Û¥Dªº¯¬ºÖ§a¡I¡I";
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!";
-	announce "[°ê¤ý°¡¤U]¡G±B«Ã¬O¤W«Òªº¦w±Æ¡A¤Ò°ü¬O¤W«Ò©Ò°t¦Xªº¡A©Ò¥H­n¥Î®¥·qªº¤ß¨Ó»â¨ü¤W«Ò©Ò¦w±Æªº®¦½ç¡C ¦]¬°¤W«Ò°_ªì³Ð³y¨È·í©M®L«½¡A¬O¤@¨k¤@¤kªº®a®x¡A°µ§Ú­Ìªºº]¼Ë¡A©d¤lÁÙ¦b¤V¤Ò¤£¥i¦A°ù¡A¤V¤ÒÁÙ¦b©d¤l¥ç¤£¥i¦A¶ù¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!";
-	announce "[°ê¤ý°¡¤U]¡Gµ²±B¬O¤@¥Íªº·ù¬ù¡A¤­­Û¤§¤¤¤Ò°ü³Ì¿Ë»e¡C¸t¸g»¡¡G¥L­Ì­nµ²³s¤G¤H¦¨¬°¤@Åé¡A¤V¤Ò¤£¥iÂ÷±ó©d¤l¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!!";
-	announce "[°ê¤ý°¡¤U]¡G¥D­C¿q»¡¡G¤W«Ò©Ò°t¦Xªº¤H«K¤£¥i¤À¶}¡C ¤Ò°ü­n¬Û·R¡A¤V¤Ò­n·R±¤·ÓÅU¥Lªº©d¤l¡A¦p¦P°ò·þ·R±¤¥Lªº±Ð·|¡A©d¤l·í¶¶ªA¦oªº¤V¤Ò¡A¦p¦P±Ð·|¶¶ªA°ò·þ¡A¤Ò°ü¦P©~¤@³B¡A­n©M·ü¨Ã­n´L­«ªø½ú·RÅ@¤p½ú¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!!!";
-	announce "[°ê¤ý°¡¤U]¡G¤W«Ò¨Ï§A¬¡¦b¥@¤W¡A§A·í¥H·Å¬X©M­@¤ß¨Ó·ÓÅU¹ï¤è¡A·q·R¹ï¤è¡AµL½×¹ï¤è´I¦³ÁÙ¬O³h½a¡A°·±dÁÙ¬O±w¯f¡A§A¦b¤W«Ò©M²³¤H­±«e³\¿ÕÄ@·N³o¼Ë¶Ü¡H",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "²{¦b§A­Ì¤G¤H¤w¸gÅ¥¨£¸t¸gªº³o¨Ç±Ð°V¡A§A­Ì­YÄ@·Nµ²¦X¡A½Ð¥ÎÁ|°_§Aªº¤â¨ìÀY¤W¥ß»}¡C";
-	announce "[°ê¤ý°¡¤U]¡G¨ÓÅý§Ú­ÌÅ¥Å¥¨Ó¦Û["+ strcharinfo(0) + "]ªº»}¨¥§a!!",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "«Å»}¡G";
-	announce "§Ú«Å»}¡G§Ú¡X¡X["+ strcharinfo(0) + "]Ä@·N©Ó¨ü±µ¯Ç "+ $@marry_female_name$ + " °µ§Úªº©d¤l¡A¸Û¹ê¿í·Ó¤W«Òªº¦®©R¡A©M¥L¥Í¬¡¦b¤@°_¡CµL½×¦b¤°»òÀô¹Ò¡A³£Ä@·N²×¥Í¾i¦o¡B·R±¤¦o¡B¦w¼¢¦o¡B´L­«¦o¡B«OÅ@¦o¡A¥H¦Ü©^¥lÂk¥D¡C",15;
-	next;
-	announce "[°ê¤ý°¡¤U]¡G²{¦bÀ³¸Ó´«°Ý¤k¤è¤F",15;
-
-	// ¨k¤è§¹¦¨«Å»}¡Aµ¥«Ý¤k¤è«Å»}¡I
-	set $@EVENT_MARRIAGE, 1;
-	set EVENT_MARRIAGE_APPLY, 2;
-	close;
-
-L_FEMALE_MARRIAGE:
-	// ÀË¬d¨k¤è¬O§_«Å»}§¹¦¨
-	if ( $@EVENT_MARRIAGE != 1 ) goto L_WAIT;
-	// ÀË¬d¬O§_¬O¥¿½Tªº¶¤¥î©M¥Ó½Ð¤H
-	if ( getcharid(1) == 0 || getcharid(1) != $@tmp_party_id || getcharid(0) != $@marry_female ) goto L_NOPARTY2;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "¨º»ò§Ú­Ì¶}©l§a";
-	mes "½Ð·Ç³Æ¦nº}«Gªº·s®QÂ§ªA,©ñÃP¤@¤U¿E°Êªº¤ß±¡";
-	next;
-
-	// ÀË¬d¬O§_±Nµ²±BÂ§ªA¬ï¤W Item 2338
-	if ( GetEquipID(02) != 2338) goto L_NOWEAR;
-
-	mes "[°ê¤ý°¡¤U]";
-	mes "¶â¡A¬Ý¨Ó§A·Ç³Æªº¬Û·í¦n¡A¨º»ò¶}©l§a";
-	next;
-	announce "[°ê¤ý°¡¤U]¡G½Ñ¦ì¿Ë·Rªº§Ì¥S©j©f¡A§Ú­Ì²{¦b»E¶°¦b³o¸Ì¡A¬O¬°¤F³o¹ï·s¤H­n¦b¤W«Òªº­±«eµ²±B¥ß¬ù«Ø¥ß¬üº¡ªº®a®x¨Ó°µ¨£ÃÒ¡C±B«Ãªº°_·½¬O¤W«Ò³]¥ßªº¡C©¯ºÖªº®a®x¬O¥Ñ©ó¤W«Òªº®¦½ç¡A©Ò¦³·q¬È¤W«Ò¡A¿í¦æ¥Lªº¹D²zªº¡A¥²©w»X¨ü½çºÖ¡A©Ò¥H­n¥Î¸t¼äªº¤ß¡A¥H¥¿¦¡ªºÂ§»ö¨Óµ²±B¡A¤~¯à«Ø¥ß©¯ºÖ©M§Ö¼Öªº®a®x¡C",15;
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Ú¿Ë·Rªº«Ä¤l¡A½Ð§â§A©Ò·Rªº¤H¦W¦r¼g¤U¨Ó§a¡A§Ú­nÅý©Ò¦³¨ì¨Óªº¤H¬°§A­Ì¯¬ºÖ!!";
-	next;
-
-	//ÀË¬d¿é¤Jªº¦W¦r¬O§_©M¨k¤è¥Ó½Ð¤H¬Û¦P
-	input $@name$;
-	if($@marry_male_name$ != $@name$) goto L_DISAGREE;
-
-	announce "[°ê¤ý°¡¤U]¡G³o¹ï©¯ºÖªº¤H¨à¬O"+ strcharinfo(0) + " ©M "+ $@marry_male_name$ + "¡AÅý§Ú­Ì¤@°_¨Ó¯¬ºÖ³o¹ï·s¤H¡C",15;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥Î¸t¼äªº¤ß¡A¨Ó²âÅ¥¨Ó¦Û¥Dªº¯¬ºÖ§a¡I¡I";
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!";
-	announce "[°ê¤ý°¡¤U]¡G±B«Ã¬O¤W«Òªº¦w±Æ¡A¤Ò°ü¬O¤W«Ò©Ò°t¦Xªº¡A©Ò¥H­n¥Î®¥·qªº¤ß¨Ó»â¨ü¤W«Ò©Ò¦w±Æªº®¦½ç¡C ¦]¬°¤W«Ò°_ªì³Ð³y¨È·í©M®L«½¡A¬O¤@¨k¤@¤kªº®a®x¡A°µ§Ú­Ìªºº]¼Ë¡A©d¤lÁÙ¦b¤V¤Ò¤£¥i¦A°ù¡A¤V¤ÒÁÙ¦b©d¤l¥ç¤£¥i¦A¶ù¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!";
-	announce "[°ê¤ý°¡¤U]¡Gµ²±B¬O¤@¥Íªº·ù¬ù¡A¤­­Û¤§¤¤¤Ò°ü³Ì¿Ë»e¡C¸t¸g»¡¡G¥L­Ì­nµ²³s¤G¤H¦¨¬°¤@Åé¡A¤V¤Ò¤£¥iÂ÷±ó©d¤l¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!!";
-	announce "[°ê¤ý°¡¤U]¡G¥D­C¿q»¡¡G¤W«Ò©Ò°t¦Xªº¤H«K¤£¥i¤À¶}¡C ¤Ò°ü­n¬Û·R¡A¤V¤Ò­n·R±¤·ÓÅU¥Lªº©d¤l¡A¦p¦P°ò·þ·R±¤¥Lªº±Ð·|¡A©d¤l·í¶¶ªA¦oªº¤V¤Ò¡A¦p¦P±Ð·|¶¶ªA°ò·þ¡A¤Ò°ü¦P©~¤@³B¡A­n©M·ü¨Ã­n´L­«ªø½ú·RÅ@¤p½ú¡C",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "½Ð¥J²Óªº²âÅ¥!!!";
-	announce "[°ê¤ý°¡¤U]¡G¤W«Ò¨Ï§A¬¡¦b¥@¤W¡A§A·í¥H·Å¬X©M­@¤ß¨Ó·ÓÅU¹ï¤è¡A·q·R¹ï¤è¡AµL½×¹ï¤è´I¦³ÁÙ¬O³h½a¡A°·±dÁÙ¬O±w¯f¡A§A¦b¤W«Ò©M²³¤H­±«e³\¿ÕÄ@·N³o¼Ë¶Ü¡H",15;
-	next;
-	mes "[°ê¤ý°¡¤U]";
-	mes "²{¦b§A­Ì¤G¤H¤w¸gÅ¥¨£¸t¸gªº³o¨Ç±Ð°V¡A§A­Ì­YÄ@·Nµ²¦X¡A½Ð¥ÎÁ|°_§Aªº¤â¨ìÀY¤W¥ß»}¡C";
-	announce "[°ê¤ý°¡¤U]¡G¨ÓÅý§Ú­ÌÅ¥Å¥¨Ó¦Û["+ strcharinfo(0) + "]ªº»}¨¥§a!!",15;
-	next;
-	menu "§Úµo»}¡A²×¥Í¤£®¬¡I",-,"§Ú¡K¡K¦AÅý§Ú¦Ò¼{¤@¤U¡K¡K",L_MENU_2;
-	mes "[°ê¤ý°¡¤U]";
-	mes "«Å»}¡G";
-	announce "§Ú«Å»}¡G§Ú¡X¡X["+ strcharinfo(0) + "]Ä@·N©Ó¨ü±µ¯Ç "+ $@marry_male_name$ + " °µ§Úªº¤V¤Ò¡A¸Û¹ê¿í·Ó¤W«Òªº¦®©R¡A©M¥L¥Í¬¡¦b¤@°_¡CµL½×¦b¤°»òÀô¹Ò¡A³£Ä@·N²×¥Í¾i¥L¡B·R±¤¥L¡B¦w¼¢¥L¡B´L­«¥L¡B«OÅ@¥L¡A¥H¦Ü©^¥lÂk¥D¡C",15;
-	next;
-	announce "[°ê¤ý°¡¤U]¡G¨ì§Ú¨­Ãä¨Ó¡A§Úªº«Ä¤l¡IÅý©Ò¦³¤H¨Ó¨£ÃÒ§A­Ìªº©¯ºÖ¡I",15;
-
-	// ¤k¤è¦P·N¨Ã§¹¦¨¹ï¸Ü±Ò°Ê§Ù«üºÞ²z­û
-	set EVENT_MARRIAGE_APPLY, 2;
-	enablenpc "marriage_ring";
-	close;
-
-L_MENU_2:
-	mes "[°ê¤ý°¡¤U]";
-	mes "¦n¦n·Q·Q§a¡A²¦³º³o¬O§Aªº¿ï¾Ü¡K¡K";
-	close;
-L_MENU_3:
-	mes "[°ê¤ý°¡¤U]";
-	mes "³æ¨­¡K¡K¡K­Ë¤]¬O¤@ºØ¿ï¾Ü......";
-	close;
-L_NOWEAR:
-	mes "[°ê¤ý°¡¤U]";
-	mes "¬Ý¨Ó¨SÁÙ¨S¦³·Ç³Æ¦n¡A§Ö¥h·Ç³Æ¤@¤Uµ²±Bªº¦çªA§a¡I¡I";
-	mes "Ãø¹D§A­n¥úµÛ¨­¤lµ²±B¶Ü¡H";
-	close;
-L_DISAGREE:
-	mes "[°ê¤ý°¡¤U]";
-	mes "®@¡I¡H§Úªº¤W«Ò°Ú¡I";
-	mes "§A©~µM°O¿ù¤F·R¤Hªº¦W¦r¡I";
-	mes "¬Ý¨ÓÂù¤èªº·N¨£ÁÙ¨S¦³²Î¤@,¦n¦n°Ó¶q¤@¤U§a¡I¡I";
-	close;
-L_NOT_APPLY:
-	mes "[°ê¤ý°¡¤U]";
-	mes "§A«ç»ò¨S¦³±a¨Ó§Aªº·s®Q¡H";
-	mes "¬O¤£¬O§A¤@­Ó¤H°½°½¶]¨Óªº¡H";
-	mes "«¢«¢¡I¯u¬O­Ó¶Ì¥Ê°Ú¡I";
-	close;
-
-L_NOPARTY:
-	mes "[°ê¤ý°¡¤U]";
-	mes "§AÁÙ¨S¦³©M§A­nµ²±Bªº¹ï¶H²Õ¶¤¶Ü";
-	mes "ÁÙ¤£»°§Ö¥h¡A²Õ¶¤¦n«á¦A¦^¨Ó§ä§Ú";
-	close;
-
-L_NOPARTY2:
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Úªº«Ä¤l§O«æ§O«æ";
-	mes "ÁÙ¨S¦³½ü¨ì§A­Ì³o¹ï·s¤H";
-	mes "½Ðµy«Ý³á";
-	close;
-L_WAIT:
-	mes "[°ê¤ý°¡¤U]";
-	mes "§Úªº«Ä¤l§O«æ§O«æ";
-	mes "¥ýµ¥¨k¤è«Å»}§a¡I";
-	close;
-
-}
-
-
-prt_church.gat,99,123,4	script	marriage_ring	139,1,0,{
-
-OnTouch:
-	// ÀË¬d©Ê§O
-	if ( Sex == 0 ) goto L_FEMALE;
-	goto L_MALE;
-	end;
-	
-L_FEMALE:
-	// ÀË¬d¤Hª«ID
-	if ( getcharid(0) != $@marry_female ) end;
-	// ÀË¬d¬O§_¨S¦³§¹¦¨±B¨å
-	if ( EVENT_MARRIAGE_APPLY != 2 ) end;
-	// ÀË¬d¬O§_¬O±B¨å¶i¦æ
-	if ( $@EVENT_MARRIAGE == 1 ) goto L_FEMALE_FIRST;
-	
-	// ¤k¤è«á²¾°Ê
-	mes "[°ê¤ý°¡¤U]";
-	mes "¦n¨ÓÅ¥§Úªº«Å§G§a¡I";
-	announce "[°ê¤ý°¡¤U]¡G¨º»ò§Ú¦b¦¹«Å§G¡A¯¬¶P§A­Ì¦¨¬°¤Ò©d¡I",15;
-	announce $@marry_male_name$ + "©M" + $@marry_female_name$ + "ªº±BÂ§§¹¦¨¤F¡I",15;
-	// ¨ú±o§Ù«ü
-	getitem 2635, 1;
-	set EVENT_MARRIAGE_APPLY, 3;
-	set $@tmp_party_id,0;
-	set $@marry_male,0;
-	set $@marry_male_name$,0;
-	set $@marry_female,0;
-	set $@marry_female_name$,0;
-	stopnpctimer "TimerMarriage";
-	disablenpc "marriage_ring";
-	close;
-
-	// ¤k¤è¥ý²¾°Ê
-L_FEMALE_FIRST:
-	// §¹¦¨±B¨å
-	set EVENT_MARRIAGE_APPLY, 3;
-	set $@EVENT_MARRIAGE, 0;
-	
-	// ¨ú±o§Ù«ü
-	getitem 2635, 1;
-	// §¹¦¨µ²±B
-	marriage($@marry_male_name$);
-	end;	
-
-L_MALE:
-	// ÀË¬d¤Hª«ID
-	if ( getcharid(0) != $@marry_male ) end;
-	// ÀË¬d¬O§_¨S¦³§¹¦¨±B¨å
-	if ( EVENT_MARRIAGE_APPLY != 2 ) end;
-	// ÀË¬d¬O§_¬O±B¨å¶i¦æ
-	if ( $@EVENT_MARRIAGE == 1 ) goto L_MALE_FIRST;
-	
-	// ¨k¤è«á²¾°Ê
-	mes "[°ê¤ý°¡¤U]";
-	mes "¦n¨ÓÅ¥§Úªº«Å§G§a¡I";
-	announce "[°ê¤ý°¡¤U]¡G¨º»ò§Ú¦b¦¹«Å§G¡A¯¬¶P§A­Ì¦¨¬°¤Ò©d¡I",15;
-	announce $@marry_male_name$ + "©M" + $@marry_female_name$ + "ªº±BÂ§§¹¦¨¤F¡I",15;
-	// ¨ú±o§Ù«ü
-	getitem 2634, 1;
-	set EVENT_MARRIAGE_APPLY, 3;
-	set $@tmp_party_id,0;
-	set $@marry_male,0;
-	set $@marry_male_name$,0;
-	set $@marry_female,0;
-	set $@marry_female_name$,0;
-	stopnpctimer "TimerMarriage";
-	disablenpc "marriage_ring";
-	close;
-
-	// ¨k¤è¥ý²¾°Ê
-L_MALE_FIRST:
-	// §¹¦¨±B¨å
-	set EVENT_MARRIAGE_APPLY, 3;
-	set $@EVENT_MARRIAGE, 0;
-	
-	// ¨ú±o§Ù«ü
-	getitem 2634, 1;
-	// §¹¦¨µ²±B
-	marriage($@marry_female_name$);
-	end;
-
-OnInit:
-	disablenpc "marriage_ring";
-	end;
-}
-
-
-
-//
-//	========================================================
-//			µ²±Bµn°O¤H­û ¨Ï¥Î»¡©ú
-//	1. ­n¨D¨k¤è¥ýµn°O,°O¿ý¤Uaid,name,partyid.
-//	2. ¤k¤èµn°O®É,ÀË¬dpartyid.³q¹L«hµn°Oaid,name.
-//	3. ¦b¦³¤Hµn°O«áªº5¤ÀÄÁ¤§¤º,¨ä¥L¨kIDµLªkµn°O
-//	4. ¦pªG¶È¶È¨k¤èµn°O¦Ó¨S¦³¤k¤èµn°O.5¤ÀÄÁ«á¸ÓID
-//	   ¤]·|³Q»{¬°¬Oµ²±Bµ²§ô¦Ó¾É­PµLªk¦A¦¸¥Ó½Ð.
-//	   ¸Ñ¨M¤èªk:¿ï¾Ü"­«·s¶}©l",¦ý¬Oµ²±B¦¨¥\ªº¤£¯à¿ï¾Ü
-//	5. µ²±Bµn°O©Ò»Ý­nªºª««~
-//	   1) ¨k¤è¡G130W²{ª÷¡AÆp¥Û§Ù«ü¡Ñ1¡A¿P§ÀªA¡Ñ1(¤£³Q¦©°£)
-//	   2) ¤k¤è¡G120W²{ª÷¡AÆp¥Û§Ù«ü¡Ñ1¡AÂ§ªA¡Ñ1(¤£³Q¦©°£)
-//	========================================================
-//
- 
+//	¥¼½Õ¬dºç©ÒÆòÆèÇeÇqÇRÇi¦hÇ@ÆôÇrÇUÇN¾A·íÇR¸É§¹ÆýÇMÇeÇ@ by Rayce
+//====================================================================
 prt_church.gat,94,100,4	script	µ²±B ªA°È¤H­û	71,{
-	if ( EVENT_MARRIAGE_APPLY != 3 ) set EVENT_MARRIAGE_APPLY, 0;
+	cutin "wedding_marry01",2;
 	mes "[µ²±B §Ö¼Ö]";
 	mes "©Ò¿×µ²±B¬O«ü¡A";
 	mes "´Á«ÝµÛ©¯ºÖ¡A©Ò¦³¤H­Ìªº§Æ±æ¡A";
 	mes "½Ð°Ý§A¬O§_¦³¡A";
-	mes "·Q­nµ²±Bªº¹ï¶H¶Ü¡H";
+	mes "·Q­nµ²±Bªº¹ï¶H¶Ü?";
 	next;
-	menu "½Ð»¡©ú¦³Ãöµ²±B¨åÂ§ªº¨Æ±¡",L_MENU_1,
-             "½Ð°Ýµ²±B¨åÂ§ªº¹Lµ{¬O¤°»ò¼Ë¤l©O¡H",L_MENU_2,
-             "§Ú·Q­n¥Ó½Ðµ²±B¨åÂ§",L_MENU_3,
-             "§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î¡I",L_MENU_4,
-             "­«·s¶}©l",L_MENU_5;
-	close;
-	
-L_MENU_5:
-	//¦pªG¥¿¦¡§¹¦¨¤F±BÂ§.«h¤£¯à­«·s¶}©l
-	if ( EVENT_MARRIAGE_APPLY == 3 ) goto L_MARRIAGED;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "©Î³\­«·s¶}©l¤]¤£¿ù";
-	mes "§Æ±æ§A¯à§ä¨ì¯u¥¿¦X¾Aªº¦ñ«Q";
-	set EVENT_MARRIAGE_APPLY, 0;
-	close;
-	
-L_MARRIAGED:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¤£¦æ®@";
-	mes "§A¤w¸g¦³¦Xªkªº¦ñ«Q¤F";
-	mes "«ç»ò¯àÀH«K©ñ±ó©O¡H";
-	close;
-	
-// ±B¨å»¡©ú
-L_MENU_1:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "²{¦bµ²±B¬O¦b¿c®¦-¦Ì¼w¥[¯÷¤ý°ê¡A";
-	mes "°ê¤ý¯S¤O´Á©Z3¥@°¡¤U¡A";
-	mes "¬°¤F¤U¹F¹ï¤ý°ê¤º©Ò¦³ªº¦Ê©m­Ìªº¯¬ºÖ¡A";
-	mes "¥Î´L¶Qªº»y¨¥¡A¿Ë¦Û¥D«ùÃÒ±B¤Hªº¨¤¦â";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "ÁöµM¨C¤Ñ¦£¸L©ó°ê®a¤j¨Æ¡A";
-	mes "¬°¤F§Y±N­«·s¥Xµoªº¤p¨â¤f¡A";
-	mes "¯S¦a¨Ó¨ì¤F´¶¶©¼w©Ô±Ð°ó¡A";
-	mes "´Á´ÁêÊ©Ò¦³¤H³£¯à¹LµÛ©¯ºÖªº¥Í¬¡¡A";
-	mes "³o¬O°ê¤ý°¡¤Uµ¹ªº®¦¼w";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¨D±B­n·V­«¡A";
-	mes "¾G­«ªº´£¥X¡A";
-	mes "¥u­n¦³µ²¹L¤@¦¸±Bªº¤H¡A";
-	mes "¦A¤]¤£¯à«ì´_­ìª¬¡Aµ²±Bªº¨â­Ó¤H¡A";
-	mes "°£«DÂ÷¶}³o¤H¥@¶¡¬°¤î¡A";
-	mes "§_«h´N¥Ã»·¦b¤@°_";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¦¹¥~¨k©Ê©M¤k©Ê¡A";
-	mes "¤k©Ê¥u¯à»P¨k©Êµ²±B¡A";
-	mes "¥t¥~¤]¦³¥i¯à¡A";
-	mes "¦³¨Ç¤H·|´£¥X¡A©M¦P©ÊªÌ©Î©MÅ]ª«µ²±B¡A";
-	mes "³o¼Ëªº¥D±i¡K¬O¤£·|³Q¦¨¥ßªº";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "°²¦p¦³¬ù©w¦n¥¼¨Óªº¹ï¶Hªº¸Ü¡A";
-	mes "¤£§«¸ÕµÛ¨D±B¬Ý¬Ý§a¡A";
-	mes "Ä@´Á«Ý¥¼¨Ó©¯ºÖªº©Ò¦³ÅÊ¤H¡A";
-	mes "¯¬©¯ºÖ¬üº¡¡I¡I";
-	close;
-	
-// ¹Lµ{»¡©ú
-L_MENU_2:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "­º¥ý½T»{·s­¦·s®Q­Ì¡A";
-	mes "¦³³£¦V§Ú¥Ó½Ð¶Ü¡H";
-	mes "·íµM¨â¦ì³£¬O¡A¨S¦³µ²¹L±Bªº¤H¤~¹ï°Ú¡H";
-	mes "°²¦p¦³¥Ó½Ðªº¸Ü¡A¥u½Ð¨â¦ì²Õ¶¤¤§«á¡A";
-	mes "½Ð¨ì°ê¤ý°¡¤U¨º¸Ì§a¡I";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¨ì°ê¤ý°¡¤U¨º¸Ì«á¡A";
-	mes "¨k¤è¥ý»¡¸Ü¡A";
-	mes "µM«á¦A»¡­nµ²±B¤k©Êªº¦W¦r¡A";
-	mes "¦W¦r¤£¯àÁ¿¿ù¡A­nÁ¿¥¿½T¡A";
-	mes "µ²±B¨åÂ§¤~¯à°õ¦æ";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "·íÁ¿§¹¸Ü®É¡A";
-	mes "ºò±µµÛ¤k¤è¸ò°ê¤ý°¡¤UÁ¿¸Ü¡A";
-	mes "°ê¤ý°¡¤U·|°Ý§A¡A";
-	mes "§A­nµ²±B¹ï¶Hªº¦W¦r¡A";
-	mes "¬Û¹ïªº¤]¤@¼Ëªº¦^µª¨k©Êªº¦W¦r";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "°²¦pµ²±B¹ï¶Hªº¦W¦r¥¿½Tªº¸Ü¡A";
-	mes "·|¥æ´«µ²±B§Ù«ü¡A";
-	mes "±q¨ºÀþ¶¡¶}©l¡A";
-	mes "¨â­Ó¤H·|¥Ã»·ªº¦b¤@°_¡A¤£¿ù§a¡H";
-	mes "»¡¤£©w³Q©e°ûªº©Úµ´¤]¤£¤@©w¡A";
-	mes "¤]¤£­n¤ÓÃø¹L°Ú";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "·í·Q­nµ²±Bªº¤H¡A";
-	mes "¤Ó¦h»E¶°¦b¤@°_®É¡A";
-	mes "½Ð¤j®a´L¦u¯´§Ç¡A±µ¶¶§Ç¨Ó¸ò°ê¤ý»¡¸Ü¡A";
-	mes "°ê¤ý°¡¤U¤£¥i¯à¦P®Éªº¡A";
-	mes "¥D«ù¦n´X¹ï±BÂ§";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "³Ì«á¤@ÂI¡AÁ¿§¹¦W¦r«á¡A¦^µª­n§Ö";
-	mes "·í^ff0000·s­¦Á¿§¹¸Ü¡A¦b3¤ÀÄÁ¤§¤º¡A§â©Ò¦³ªº¹Lµ{³£°µ§¹§a^000000";
-	mes "­n¤£µM¡Aµ²±B¨åÂ§·|°±¤î¡A¦A¤]¤£¯àµ²±B¤F";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¼gµ²±B¹ï¶Hªº¦W¦r¡A³ÌÂ²³æªº¤èªk¬O¡A";
-	mes "¥ý±Hµ¹¹ï¤è¤@±i¯È±ø¡A";
-	mes "¦b¹ï¸Üµ¡¤f¸Ì©ñ¦W¦rªº³¡¥÷¡A";
-	mes "ÂI¿ï½bÀY¼Ð¥Ü¡A¥ªÃä§Y¥i";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¨º´N·|Åã¥Ü¨«¯È±øµ¹¹ï¤èªº¦W¦r¡A";
-	mes "«ö¦í CtrlÁäªº¦P®É¡A";
-	mes "¦A«ö CÁä¡A¨º¦W¦r·|³Q°O¿ý¡A";
-	mes "¥H«á­n©ñ¤J¦W¦r®É¡A";
-	mes "«ö¦í ShiftÁäªº¦P®É¡A";
-	mes "¦A«ö InsertÁä¡A¨º»ò¦W¦r´N«Ü§Ö¡A";
-	mes "«Ü¤è«Kªº¼g¦b¤W­±¤F";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¨º»ò´N¸ÕÅç¤@¦¸§a¡A";
-	mes "§â·Q­nµ²±B¹ï¶Hªº¦W¦r¡A";
-	mes "¨Ì§i¶D§Aªº¤è¦¡¼g¤@¹M¡A";
-	mes "«ö¦í CtrlÁäªº¦P®É¡A";
-	mes "¦A«ö CÁä¬O°O¿ý¡K¦^µª¬O¡A";
-	mes "«ö¦í ShiftÁäªº¦P®É¡A";
-	mes "¦A«ö InsertÁä";
-	next;
-	input @name$; //need to try
-	mes "[µ²±B §Ö¼Ö]";
-	mes "«Ü¦n¡A¼gªº¤£¿ù¡A";
-	mes "­Y¦b§Aªº¤ß¸Ì­±¤v¨M©w¦n¤Fªº¸Ü¡A";
-	mes "¤@©w­n¨Ó³o¸Ì¥Ó½Ð";
-	close;
-	
-// µ²±B¥Ó½Ð
-L_MENU_3:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "·Q­nµ²±Bªº¸Ü­n¥Ó½Ð¾¾¡A";
-	mes "¨k©Ê­n¥æ¥X^0000881,300,000ª÷¹ô©M";
-	mes "¿P§ÀªA1¥ó^000000¡A¤k©Ê­n¥æ^0000881200,000";
-	mes "ª÷¹ô©Mµ²±BÂ§ªA1¥ó^000000";
-	mes "µM«á¶ñ¼g¥Ó½Ð®Ñ§Y¥i¡A";
-	mes "°²¦p¨k¤kÂù¤è³£¦³¥Ó½Ðªº¸Ü¡A";
-	mes "´N¥i¥Hµ²±B¤F";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "§O§Ñ¤FÁÙ­n·Ç³Æµ²±B§Ù«ü¡A";
-	mes "¨k¤kÂù¤è³£»Ý­n^000088Æp¥Û§Ù«ü1­Ó^000000";
-	mes "·í¥Ó½Ðªº®É­Ô¡A¤@°_µ¹§Ú´N¦n¤F";
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¨â¦ì³£¥Ó½Ð¦n¤§«á¡A";
-	mes "´N¥i¥H°¨¤W°õ¦æµ²±B¨åÂ§¤F¡A";
-	mes "½Ð°Ý§A²{¦b­n¥Ó½Ðµ²±B¶Ü¡H";
-	next;
-	menu "¬O",-,"¤£¬O",L_NOMARRY;
-	
-	// ÀË¬d¬O§_µn°O©ÎªÌ¤w¸gµ²±B
-	if ( EVENT_MARRIAGE_APPLY >= 1 ) goto L_APPLY2;
-	
-	// ±N¬yµ{§¹¥þ¤À¶}¡A¤è«K¥H«á­×§ï
-	if ( Sex == 1 ) goto L_MALE_APPLY;
-	goto L_FEMALE_APPLY;
-	close;
-	
-	//	====================¨k¤èµn°O====================
-L_MALE_APPLY:
-	// ¨S¦³²Õ¶¤«h´£¥Ü¨Ã°h¥X¡I
-	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
-	// ¦pªG¦³¤H¤w¸g¥Ó½Ð©Î¶}©lµ²±B¡A«h´£¥Üµ¥­Ô
-	if (( getcharid(1) != $@tmp_party_id ) && ($@tmp_party_id !=0)) goto L_MUST_WAIT;
-	
-	// ÀË¬d­n¨Dªº³ø¦W¹D¨ã
-	if( countitem(2613) < 1 ) goto L_LOSTD;	// ÀË¬dÆp¥Û§Ù«ü
-	if( Zeny < 1300000 ) goto L_LOSTM;		// ÀË¬dµn°O¶O¥Î
-	if( countitem(7170) < 1 ) goto L_LOSTCM;// ÀË¬d¿P§ÀªA
-	// ¥þ³¡±a»ô«h¦©°£³ø¦W¶O
-	delitem 2613 , 1;
-	set Zeny, Zeny - 1300000;
-	
-	// ¼È¦s¥Ó½Ð¤HAID¡ANAME
-	set $@marry_male, getcharid(0);
-	set $@marry_male_name$, strcharinfo(0);
-	// ¼È¦s¥Ó½Ð¤HPARTY ID
-	set $@tmp_party_id, getcharid(1);
-	// ±N¥Ó½Ð¤Hª¬ºA§ï¬°¥Ó½Ð§¹²¦¡I
-	set EVENT_MARRIAGE_APPLY, 1; 
-	
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¶â¡I±µ¤U¨Ó½Ð¨ì¡y°ê¤ý°¡¤U¡z¨º¸Ì¥h§a";
-	mes "°ê¤ý°¡¤U·|¬°§A­Ì¥D«ù±BÂ§";
-	mes "½Ð¦b^FF00005¤ÀÄÁ^000000¤º§¹¦¨±B¨å®@¡I";
-	
-	// ¨k¤è¥Ó½Ð§¹²¦¡A¶}©l­p®É¡I
-	initnpctimer "TimerMarriage";
-	close;
-		
-	//	====================¤k¤èµn°O====================
-L_FEMALE_APPLY:
-	// ¨S¦³²Õ¶¤«h´£¥Ü¨Ã°h¥X¡I
-	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
-	// ÀË¬d¬O§_¬°¥Ó½Ð¤H¦P¤@²Õ¶¤¡I
-	if (( getcharid(1) != $@tmp_party_id ) && ($@tmp_party_id !=0))goto L_MUST_WAIT;
-	
-	// ÀË¬d­n¨Dªº³ø¦W¹D¨ã
-	if( countitem(2613) < 1 ) goto L_LOSTD;	// ÀË¬dÆp¥Û§Ù«ü
-	if( Zeny < 1200000 ) goto L_LOSTM;		// ÀË¬dµn°O¶O¥Î
-	if( countitem(2338) < 1 ) goto L_LOSTCM;// ÀË¬dÂ§ªA
-	// ¥þ³¡±a»ô«h¦©°£³ø¦W¶O
-	delitem 2613, 1;
-	set Zeny, Zeny - 1200000;
-	
-	// ¼È¦s¥Ó½Ð¤HAID¡ANAME
-	set $@marry_female, getcharid(0);
-	set $@marry_female_name$, strcharinfo(0);
-	// ±N¥Ó½Ð¤Hª¬ºA§ï¬°¥Ó½Ð§¹²¦¡I
-	set EVENT_MARRIAGE_APPLY, 1;
-	
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¶â¡I±µ¤U¨Ó½Ð¨ì¡y°ê¤ý°¡¤U¡z¨º¸Ì¥h§a";
-	mes "°ê¤ý°¡¤U·|¬°§A­Ì¥D«ù±BÂ§";
-	mes "½Ð¦b^FF00005¤ÀÄÁ^000000¤º§¹¦¨±B¨å®@¡I";
-	close;
-
-//	==================¤£º¡¨¬±ø¥ó«áªº¸õÂà====================
-L_NO_TEAM:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¤£¦æ®@¡I";
-	mes "¥²¶·¥ý©M§Aªº·R¤H^FF0000²Õ¶¤^000000¡I";
-	close;
-	
-L_MUST_WAIT:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¶â¡A¦n¹³¤w¸g¦³¤H¥Ó½Ð¤F";
-	mes "¬Ý¼Ë¤l¡A§A¤£±o¤£µ¥¤@·|";
-	mes "¤£¦n·N«ä°Ú¡I";
-	close;
-	
-L_LOSTD:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "§A¦n¹³§Ñ°O±a¡A";
-	mes "°µµ²±B§Ù«ü®É­n¥ÎªºÆp¥Û§Ù«ü¤F¡A";
-	mes "¬O¤£¬O©ñ¦b§Oªº¦a¤è¤F©O¡H";
-	mes "¥J²Óªº§ä§ä¤§«á¡A¦A¨Ó§ä§Ú§a";
-	close;
-	
-L_LOSTM:
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "§A¨­¤Wªº²{ª÷¦n¹³¤£¨¬³á";
-	close;
-	
-L_LOSTCM:
-	next;
-	mes "[µ²±B §Ö¼Ö]";
-	mes "±z¦n¹³§Ñ¤F±aÂ§ªA¨Ó³á";
-	close;
-
-L_NOMARRY:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "¯¬§A¦³¤@­Ó©¯ºÖªº¤@¤Ñ¡K¡I";
-	close;
-
-L_APPLY2:
-	mes "[µ²±B §Ö¼Ö]";
-	mes "Åý§Ú¥ý¨ÓÀË¬d¤@¤U";
-	if (EVENT_MARRIAGE_APPLY == 1) mes "¤w¸g¥Ó½Ð¹L´N¤£¯à¦A¥Ó½ÐÅo";
-	if (EVENT_MARRIAGE_APPLY == 3) mes "§A¤w¸gµ²¹L±B°Õ";
-	close;
-	
-//	===================³æ¨­­x¹Î¥X²{=========================
-L_MENU_4:
-	enablenpc "wed01";
-	enablenpc "wed02";
-	enablenpc "wed03";
-	enablenpc "wed04";
-	enablenpc "wed05";
-	enablenpc "wed06";
-	emotion 23;
-	mes "[³æ¨­ ­x¹Î]";
-	mes "ºë·Ò­n¦Û¤v°µ¡A¤~·|°µ¥X¦nªF¦è¡I";
-	mes "¦b¬}¥Þ¸Ì­±²Õ¶¤¬O°ø¨×ªº¦æ¬°¡I";
-	mes "§Ú¥i¥H¬I¤U¥X¤ß«¬ªº NPC¡I";
-	mes "±q¥X¥Í¨ìÂàÂ¾¡A³£¬O¦Û¤v½mªº¡I";
-	mes "¹L¸t½Ï¸`ªº®É­Ô¡A¨ì¥~­±©Þ¯ó¨D¥Í¡I";
-	mes "¡K§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î¡I";
-	next;
-	emotion 4;
-	disablenpc "wed01";
-	disablenpc "wed02";
-	disablenpc "wed03";
-	disablenpc "wed04";
-	disablenpc "wed05";
-	disablenpc "wed06";
-	close;
-	
+	switch (select("½Ð»¡©ú¦³Ãöµ²±B¨åÂ§ªº¨Æ±¡","µ²±B¨åÂ§ªº¹Lµ{¬O¤°»ò¼Ë¤l©O?","·Q­n¥Ó½Ðµ²±B¨åÂ§","§Ú¬OµL¼Äªº³æ¨­­x¹Î!")) {
+	case 1:
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¥Ø«e¬O¥Ñ±Ð¥D";
+		mes "­t³dµ²±B¡A¥Ñ©ó¦£¸L";
+		mes "¨Ó¥DºÞµ²±B¨åÂ§";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¦]¬°±Ð¥D¥ý¥Í¡A§â«Ü¦h³æ¨­¶Q±Ú¡A";
+		mes "µ²¦X¦¨«Ü¦h±¡«QªºÃö«Y¡A";
+		mes "©Ò¥H¤]¦³ '·Rªº±Ð¥D '¼ÊºÙ¡A";
+		mes "¨þ¨þ...";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "ÁöµM¨C¤Ñ¦£¸L©ó°ê®a¤j¨Æ¡A";
+		mes "¬°¤F§Y±N·s¥Xµoªº¤p­Ç¤f¡A";
+		mes "¯S¦a¨Ó¨ì¤F´¶¶©¼w©Ô±Ð°ó¡A";
+		mes "´Á«Ý©Ò¦³¤H³£¯à¹LµÛ©¯ºÖªº¥Í¬¡¡A";
+		mes "³o¬O±Ð¥Dµ¹ªº®¦¼w";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨D±B­n·V­«¡A";
+		mes "¾G­«ªº´£¥X¡A";
+		mes "¥u­n¦³µ²¹L¤@¦¸±Bªº¤H¡A";
+		mes "¦A¤]¤£¯à«ì´_­ìª¬¡Aµ²±Bªº¨â­Ó¤H¡A";
+		mes "°£«DÂ÷¶}³o¤H¥@¶¡¬°¤î¡A";
+		mes "§_«h´N¥Ã»··|¦b¤@°_";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¥t¥~¨k©Ê¹ï¤k©Ê¡A";
+		mes "¤k©Ê¥u¯à¹ï¨k©Êµ²±B¡A";
+		mes "¥t¥~¤]¦³¥i¯à¡A";
+		mes "¦³¨Ç¤H·|´£¥X¡A©M¦P©Ê©ÎªÌ©MÅ]ª«µ²±B¡A";
+		mes "³o¼Ëªº¥D±i... ¬O¤£·|³Q¦¨¥ßªº";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "°²¦p¦³¬ù©w¦n¥¼¨Óªº¹ï¶Hªº¸Ü¡A";
+		mes "¤£§«¸ÕµÛ¨D±B¬Ý¬Ý§a¡A";
+		mes "Ä@´Á«Ý¥¼¨Ó©¯ºÖªº©Ò¦³ÅÊ¤H¡A";
+		mes "¯¬ºÖ¬üº¡!!";
+		close2;
+		cutin "wedding_marry01",255;
+		end;
+	case 2:
+		mes "[µ²±B §Ö¼Ö]";
+		mes "­º¥ý¥ý½T»{·s­¦·s®Q­Ì¡A";
+		mes "³£¦³¦V§Ú¥Ó½Ð¶Ü¡A";
+		mes "·íµM¨â¦ì³£¬O¡A¨S¦³µ²¹L±Bªº¤H¤~¹ï°Ú?";
+		mes "°²¦p¦³¥Ó½Ðªº¸Ü¡A¥u½Ð¨â¦ì²Õ¹ï¤§«á¡A";
+		mes "½Ð¨ì±Ð¥D¨º¸Ì§a";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨ì±Ð¥D¨º¸Ì«á¡A";
+		mes "^0000FF¨k¤è^000000¥ý»¡¸Ü¡A";
+		mes "µM«á¦A»¡­nµ²±B¤k©Êªº¦W¦r¡A";
+		mes "¦W¦r¤£¯àÁ¿¿ù¡A­nÁ¿¥¿½T¡A";
+		mes "µ²±B¨åÂ§¤~¯à°õ¦æ";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "·íÁ¿§¹¸Ü®É¡A";
+		mes "ºò±µµÛ¤k¤è¸ò±Ð¥DÁ¿¸Ü¡A";
+		mes "±Ð¥D·|°Ý©p¡A";
+		mes "©p­nµ²±B¹ï¶Hªº¦W¦r¡A";
+		mes "¬Û¹ïªº¤]¤@¼Ëªº¦^µª¨k©Êªº¦W¦r";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "°²¦pµ²±B¹ï¶Hªº¦W¦r¥¿½Tªº¸Ü¡A";
+		mes "·|¥æ´«µ²±B§Ù«ü¡A";
+		mes "±q¨ºÀþ¶¡¶}©l¡A";
+		mes "¨â­Ó¤H·|¥Ã»·ªº¦b¤@°_¡A¤£¿ù§a?";
+		mes "»¡¤£©w³Q©e°ûªº©Úµ´¤]¤£¤@©w¡A";
+		mes "¤]¤£­n¤ÓÃø¹L°Ú";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "·í·Q­nµ²±Bªº¤H¡A";
+		mes "¤Ó¦hªº»E¶°¦b¤@°_®É¡A";
+		mes "½Ð¤j®a¿í¦u¯´§Ç¡A«ö¶¶§Çªº¨Ó¸ò°ê¤ý»¡¸Ü¡A";
+		mes "±Ð¥D¤£¥i¯à¦P®Éªº¡A";
+		mes "¥D«ù¦n´X¹ï±BÂ§";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "³Ì«á¤@ÂI¡AÁ¿§¹¦W¦r«á¡A";
+		mes "¦^µª­n§Ö";
+		mes "^ff0000·í·s­¦Á¿§¹¸Ü¡A¦b 3¤ÀÄÁ¤§¤º¡A";
+		mes "§â©Ò¦³ªº¹Lµ{³£°µ§¹^000000§a ­n¤£µM¡A";
+		mes "µ²±B¨åÂ§·|°±¤î¡A";
+		mes "¦A¤]¤£¯àµ²±B¤F";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¼gµ²±B¹ï¶Hªº¦W¦r¡A³ÌÂ²³æªº¤èªk¬O¡A";
+		mes "¥ý±Hµ¹¹ï¤è¤@±i¯È±ø¡A";
+		mes "¦b¹ï¸Üµøµ¡¸Ì©ñ¦W¦rªº³¡¥÷¡A";
+		mes "ÂI¿ï½bÀY¼Ð¥Ü¡A";
+		mes "¥ªÃä§Y¥i";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨º´N·|Åã¥Ü°e¯È±øµ¹¹ï¤èªº¦W¦r¡A";
+		mes "«ö¦í ctrlÁäªº¦P®É¡A";
+		mes "¦A«ö CÁä¡A¨º¦W¦r·|³Q°O¿ý¡A";
+		mes "¥H«á­n©ñ¤J¦W¦r®É¡A";
+		mes "«ö¦í shiftÁäªº¦P®É¡A";
+		mes "¦A«ö insert Áä¡A¨º»ò¦W¦r´N«Ü§Öªº¡A";
+		mes "«Ü¤è«Kªº¼g¦b¤W­±¤F";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨º»ò´N¸ÕÅç¤@¦¸§a¡A";
+		mes "§â·Q­nµ²±B¹ï¶Hªº¦W¦r¡A";
+		mes "¨Ì§i¶D§Aªº¤è¦¡¼g¤@¹M¡A";
+		mes "«ö¦í ctrlÁäªº¦P®É¡A";
+		mes "¦A«ö CÁä¬O°O¿ý... ?";
+		mes "«ö¦í shiftÁäªº¦P®É¡A";
+		mes "¦A«ö insert Áä";
+		next;
+		input @test$;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¦p¦ó?·|¤F¶Ü?";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "«Ü¦n¡A¼gªº¤£¿ù¡A";
+		mes "­Y¦b§Aªº¤ß²z¤w¨M©w¦n¤Fªº¸Ü¡A¤@©w­n¨Ó";
+		mes "³o¸Ì¥Ó½Ð";
+		close2;
+		cutin "wedding_marry01",255;
+		end;
+	case 3:
+		cutin "wedding_marry02",2;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "·Q­nµ²±Bªº¸Ü­n¥Ó½Ð¾¾¡A";
+		mes "¨k©Ê­n¥æ¥X^0000881,300,000ª÷¹ô©M";
+		mes "¿P§ÀªA1¥ó^000000¡A¤k©Ê­n¥æ^0000881,200,000";
+		mes "ª÷¹ô©Mµ²±BÂ§ªA1¥ó^000000";
+		mes "µM«á¶ñ¼g¥Ó½Ð®Ñ§Y¥i¡A";
+		mes "°²¦p¨k¤kÂù¤è³£¦³¥Ó½Ðªº¸Ü¡A";
+		mes "´N¥i¥Hµ²±B¤F";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "§O§Ñ¤FÁÙ­n·Ç³Æµ²±B§Ù«ü¡A";
+		mes "¨k¤kÂù¤è³£»Ý­n^000088Æp¥Û§Ù«ü1­Ó^000000";
+		mes "·í¥Ó½Ðªº®É­Ô¡A¤@°_µ¹§Ú´N¦n¤F";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨â¦ì³£¥Ó½Ð¦n¤§«á¡A";
+		mes "´N¥i¥H°¨¤W°õ¦æµ²±B¨åÂ§¤F¡A";
+		mes "½Ð°Ý§A²{¦b­n¥Ó½Ðµ²±B¶Ü?";
+		next;
+		if(select("¬O","§_")==2) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "¯¬§A¦³¤@­Ó©¯ºÖªº¤@¤Ñ..!";
+			close2;
+			cutin "wedding_marry02",255;
+			end;
+		}
+		if(PartnerId) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "¤w¥Ó½Ð¹L´N¤£¯à¦A¥Ó½ÐÅo";
+			close2;
+			cutin "wedding_marry02",255;
+			end;
+		}
+		if(Upper == 2) {
+			//¾i¤l¥¼½Õ¬d
+			close2;
+			cutin "wedding_marry02",255;
+			end;
+		}
+		if(@event_marry) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "¶â...? ¤§«e§A¦³¥Ó½Ð¹L°Ú¡A";
+			mes "¦]¬°¤w¸g³£¥Ó½Ð¦n¤F¡A";
+			mes "¦A°Ý¤@¤U­nµ²±Bªº¹ï¶H¡A";
+			mes "¬O§_¦³¥Ó½Ð¦n¤F©O¡A";
+			mes "°²¦p¨â¦ì³£¦³¥Ó½Ð¦nªº¸Ü¡A";
+			mes "½Ð¨ì±Ð¥D¨º¸Ì¡AÁ|¦æµ²±B¨åÂ§§a";
+			close2;
+			cutin "wedding_marry02",255;
+			end;
+		}
+		if(BaseLevel<45) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "±q¨D±B¨Ó»¡¡A¬°¤F¦Û¤v¯à";
+			mes "¦bµ²±Bªº¸q°È©Î«OÅ@¹ï¤è©Ê©R¡A";
+			mes "½Ð°ò¥»µ¥¯Å¹F45¥H¤W";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if(countitem(2613)<1) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "µ²±B§Ù«ü©O?";
+			mes "¦n¹³§Ñ°O±a¤F³á!";
+			mes "¥J²Óªº§ä§ä¤§«á¡A¦A¨Ó§ä§Ú§a!";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if((Sex==0 && countitem(2338)<1) || (Sex==1 && countitem(7170)<1)) {
+			mes "[µ²±B §Ö¼Ö]";
+			if(Sex==0) {
+				mes "«u§r!µ²±BÂ§ªA©O?";
+				mes "³o¥i¬O±BÂ§¤W·s®Qªº¸Ë§ê..";
+			}
+			else {
+				mes "«u§r!¿P§ÀªA©O?";
+				mes "³o¥i¬O±BÂ§¤W·s­¦ªº¸Ë§ê..";
+			}
+			mes "¬O¤@¥Í¤@¦¸ªº¨Æ±¡¡A½Ð§O§Ñ°O·Ç³Æ!";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if((Sex==0 && Zeny<1200000) || (Sex==1 && Zeny<1300000)) {
+			mes "[µ²±B §Ö¼Ö]";
+			mes "«Ü©êºp!±BÂ§ªº¶O¥Î»Ý­n";
+			if(Sex==0)
+				mes "1,200,000zeny¡C";
+			else
+				mes "1,300,000zeny¡C";
+			close;
+		}
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¥ý¦b³o¸Ì®¥³ß§Aµ²±B°Ú!";
+		mes "¤£ª¾¹D¹ï¶H¬O½Ö¡AÀ³¸Ó«Ü©¯ºÖ°Ú";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨º´N¶}©l±µ¨ü¥Ó½Ð®Ñ°Õ¡A";
+		mes "¦b³o¸Ì¼g¤@¤U¦Û¤vªº¦W¦r§a";
+		while(1) {
+			next;
+			input .@name$;
+			if(.@name$ != strcharinfo(0)) {
+				mes "[µ²±B §Ö¼Ö]";
+				mes "­ü­ò! ³s¦W¦r³£¤£·|¼g¥¿½T°Ú¡A";
+				mes "ÁÙ·Q­nµ²±B?";
+				mes "¥ý¥h¾Ç¤@¤U¡A¼g¦W¦rªº¤èªk«á¦A¨Ó§a¡A";
+				mes "¼g§Ö¤@ÂI·|¤ñ¸û¦n°Ú¡A";
+				mes "½Ð§A¦A¼g¤@¦¸";
+				continue;
+			}
+			break;
+		}
+		delitem 2613,1;
+		if(Sex==0) {
+			delitem 2338,1;
+			set Zeny,Zeny-1200000;
+		}
+		else {
+			delitem 7170,1;
+			set Zeny,Zeny-1300000;
+		}
+		set @event_marry,1;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¬Oªº¡A¥¿½Tªº±µ¦¬¨ìµ²±B¥Ó½Ð®Ñ¤F¡A";
+		mes "¥H«á´N¬O¤w³oºØ¤è¦¡¡A";
+		mes "¹ï±Ð¥D»¡¥X­nµ²±B¹ï¶Hªº¦W¦r¡A";
+		mes "­nµ²±B¤Hªº¦W¦r¤]­n¥¿½Tª¾¹D°Ú¡A";
+		mes "¤F¸Ñ¶Ü?";
+		mes "´£¦­°µ¦n·Ç³Æ¤§«á¦A¥h§a";
+		next;
+		mes "[µ²±B §Ö¼Ö]";
+		mes "¨º»ò"+strcharinfo(0)+" ¥ý¥Í / ¤p©j...";
+		mes "¦A°Ý¤@¤U­nµ²±Bªº¹ï¶H¡A";
+		mes "¬O§_¦³¥Ó½Ð¦n¤F©O¡A";
+		mes "°²¦p¨â¦ì³£¦³¥Ó½Ð¦nªº¸Ü";
+		mes "»°§Ö¨ì±Ð¥D¨º¸Ì¡AÁ|¦æµ²±B¨åÂ§§a";
+		mes "³Ì«á...";
+		mes "­n©¯ºÖ°Ú¡AÄ@¤Ñ¤U¦³±¡¤H²×¦¨²²ÄÝ~";
+		emotion 3;
+		close2;
+		cutin "wedding_marry02",255;
+		end;
+	case 4:
+		cutin "wedding_marry02",2;
+		emotion 23;
+		hideoffnpc "³æ¨­­x¹Î#´¶¶©¼w©Ô";
+		hideoffnpc "³æ¨­­x¹Î#¦Nªâ";
+		hideoffnpc "³æ¨­­x¹Î#¹ÚÃ¹§J";
+		hideoffnpc "³æ¨­­x¹Î#´´´­";
+		hideoffnpc "³æ¨­­x¹Î#¤Ñ¬zËm";
+		hideoffnpc "³æ¨­­x¹Î#§JÅ]®q";
+		emotion 27,"¨­­x­x¹Î#´¶¶©¼w©Ô";
+		emotion 27,"³æ¨­­x¹Î#¦Nªâ";
+		emotion 27,"³æ¨­­x¹Î#¹ÚÃ¹§J";
+		emotion 27,"³æ¨­­x¹Î#´´´­";
+		emotion 27,"³æ¨­­x¹Î#¤Ñ¬zËm";
+		emotion 27,"³æ¨­­x¹Î#§JÅ]®q";
+		mes "[³æ¨­­x¹Î]";
+		mes "ºë½m­n¦Û¤v°µ¡A¤~·|°µ¥X¦nªF¦è!";
+		mes "¦b°g®c¸Ì­±²Õ¶¤¬O°ø¨×ªº¦æ¬°!";
+		mes "§Ú¬O¦³¨M¤ßªº NPC!";
+		mes "±q¥X¥Í¨ìÂàÂ¾¡A³£¬O¦Û¤v½mªº!";
+		mes "¹L¸t½Ï¸`ªº®É­Ô¡A¨ì¥~­±©Þ¯ó¨D¥Í!";
+		mes "§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î!";
+		next;
+		hideonnpc "³æ¨­­x¹Î#´¶¶©¼w©Ô";
+		hideonnpc "³æ¨­­x¹Î#¦Nªâ";
+		hideonnpc "³æ¨­­x¹Î#¹ÚÃ¹§J";
+		hideonnpc "³æ¨­­x¹Î#´´´­";
+		hideonnpc "³æ¨­­x¹Î#¤Ñ¬zËm";
+		hideonnpc "³æ¨­­x¹Î#§JÅ]®q";
+		emotion 4;
+		close2;
+		cutin "wedding_marry02",255;
+		end;
+	}
+OnInit:
+	hideonnpc "³æ¨­­x¹Î#´¶¶©¼w©Ô";
+	hideonnpc "³æ¨­­x¹Î#¦Nªâ";
+	hideonnpc "³æ¨­­x¹Î#¹ÚÃ¹§J";
+	hideonnpc "³æ¨­­x¹Î#´´´­";
+	hideonnpc "³æ¨­­x¹Î#¤Ñ¬zËm";
+	hideonnpc "³æ¨­­x¹Î#§JÅ]®q";
+	end;
 }
 
-
-// ¥Î©ó¾ã­Ó±B¨åªº­p®É¡I±q¶}©l¨ìµ²§ô³W©w®É¶¡¡G5¤ÀÄÁ
-prt_church.gat,97,99,0	script	TimerMarriage	-1,{
-	end;
-
-
-// 5¤ÀÄÁ¨ì«á¡A±j¨îµ²§ô±BÂ§¡A¨Ã¥BÁ{®É¼Æ¾ÚÂk¹s¡I
-OnTimer300000:
-	announce $@marry_male_name$ + "©M" + $@marry_female_name$ + "ªº±BÂ§¤¤¤î¤F¡I",15;
-	set $@tmp_party_id,0;
-	set $@marry_male,0;
-	set $@marry_male_name$,0;
-	set $@marry_female,0;
-	set $@marry_female_name$,0;
+//========================================================================================
+prt_church.gat,100,128,4	script	±Ð¥D	60,{
+	cutin "wedding_bomars01",2;
+	if(.flag==1 || (.flag==2 && strcharinfo(0) != .bride$)) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "²{¦b¦³¤Hªº±BÂ§¥¿¦b¶i¦æ©O...";
+		mes "½Ð§Aµ¥µ¥§a";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	if(PartnerId) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "±z¤w¸gµ²¹L±BÅo¡A¯¬±z©¯ºÖ";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	if(@event_marry==0) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "·Q­nµ²±Bªº¸Ü¡A¥ý¥Ó½Ð§a";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	if(Sex==1) {
+		getpartymember getcharid(1);
+		for(set .@i,0; .@i<2; set .@i,.@i+1) {
+			if($@partymembername$[.@i] != strcharinfo(0))
+				set .@another$,$@partymembername$[.@i];
+		}
+		if($@partymembercount != 2 || readparam(Sex,.@another$) == 1) {
+			mes "[Ä_º¿¼Öµ·]";
+			mes "·Q­nµ²±Bªº¸Ü¡A";
+			mes "½Ð­­©w¨â¦ì¥ý²Õ¶¤¤§«á¡A¦A¨Ó§a";
+			close2;
+			cutin "wedding_bomars01",255;
+			end;
+		}
+		if(readparam(Upper,.@another$) == 2) {
+			close2;
+			cutin "wedding_bomars01",255;
+			end;
+		}
+		mes "[Ä_º¿¼Öµ·]";
+		mes "­nµ²±B¶Ü...?";
+		mes "¬O"+strcharinfo(0)+"...°Ú?";
+		mes "§A­n¥Ó½Ðµ²±B¨åÂ§¶Ü?";
+		next;
+		if(select("¬Oªº","¤£¬O")==2) {
+			mes "[Ä_º¿¼Öµ·]";
+			mes "¦n¦n·Q·Q§a¡A²¦³º³o¬O§Aªº¿ï¾Ü...";
+			close2;
+			cutin "wedding_bomars01",255;
+			end;
+		}
+		set .flag,1;
+		initnpctimer;
+		set .groom$,strcharinfo(0);
+		announce "Ä_º¿¼Öµ·: ¬O" + .groom$ + "§gªº¨D±B°Ú...",9;
+		mes "[Ä_º¿¼Öµ·]";
+		mes "¬O³o¼Ë°Ú¡A¦nªº..";
+		mes "§i¶D§Ú¨º·s®Qªº¦W¦r§a?";
+		next;
+		input .bride$;
+		if(.bride$ != .@another$) {
+			announce "Ä_º¿¼Öµ·: ¦n¹³·Ç³Æ¤£¨¬...¥ý¶i¦æ¤U¤@­Ó±BÂ§¡C",9;
+			mes "[Ä_º¿¼Öµ·]";
+			mes "®@!?§Úªº¤W«Ò°Ú!";
+			mes "§A©~µM°O¿ù¤F¥t¤@¥bªº¦W¦r!";
+			mes "¬Ý¨ÓÂù¤èªº·N¨£ÁÙ¨S¦³²Î¤@,¦n¦n°Ó¶q¤@¤U§a!!";
+			stopnpctimer;
+			set .flag,0;
+			close2;
+			cutin "wedding_bomars01",255;
+			end;
+		}
+		if(attachrid(getcharid(3,.bride$))) {
+			set @defend,0;
+			detachrid;
+		}
+		if(attachrid(getcharid(3,.groom$))) {
+			announce "Ä_º¿¼Öµ·¡G"+.groom$+" §g¹ï "+.bride$+" ¤p©j´£¥Xµ²±Bªº­n¨D¤F",9;
+			mes "[Ä_º¿¼Öµ·]";
+			mes "Á`¦Ó¨¥¤§..§A·|·ÓÅU¦o¤@½ú¤l§a?";
+			mes "¨ÓÂIµo»}©Ê½èªºµü»y§aXD...";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "§ÚÄ@·N©Ó¨ü±µ¯Ç "+.bride$+" °µ§Úªº©d¤l¡A¸Û¹ê¿í·Ó¤W«Òªº¦®©R¡A©M¥L¥Í¬¡¦b¤@°_";
+			next;
+			announce "Ä_º¿¼Öµ·¡G²{¦bÀ³¸Ó´«°Ý¤k¤è¤F¡AÅý§Ú¨ÓÅ¥Å¥ "+.bride$+" ¤p©jªº·N«ä¦p¦ó§a?",9;
+			mes "[Ä_º¿¼Öµ·]";
+			mes "²{¦bÀ³¸Ó´«°Ý¤k¤è¤F¡A§Ú­nÅ¥Å¥¦oªº·N¨£";
+			set .flag,2;
+			set @event_marry,0;
+		}
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	if(.flag==0) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "­nµ²±Bªº¸Ü...½Ð¨k¤è¹L¨Ó¥Ó½Ð§a";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	mes "[Ä_º¿¼Öµ·]";
+	mes "¬Û³{§Y¬O¦³½t";
+	next;
+	announce "Ä_º¿¼Öµ·: ·s®Q" +.bride$+ "¡A½Ð°Ý§A...",9;
+	mes "[Ä_º¿¼Öµ·]";
+	mes "" + .bride$+ "";
+	mes "§A­n¸ò¥L±`¬ÛÄâ¤â¡B¥Í¦º»P¦@";
+	mes "ªº·s­¦ªº¦W¤l¬O";
+	mes "" +.groom$+ "";
+	next;
+	if(select("¬Oªº","¤£¬O")==2) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "«ç»ò¤F";
+		announce "Ä_º¿¼Öµ·: ¦n¹³·Ç³Æ¤£¨¬...¥ý¶i¦æ¤U¤@­Ó±BÂ§¡C",9;
+		stopnpctimer;
+		set .flag,0;
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	mes "[Ä_º¿¼Öµ·]";
+	mes "·s®Q" +.bride$+ "";
+	mes "Àô¹ÒµL½×¬O¦n¬OÃa¡A";
+	mes "¬O´I¶Q¬O³h½â¡A";
+	mes "¬O°·±d¬O¯e¯f¡A";
+	mes "¬O¦¨¥\¬O¥¢±Ñ¡A";
+	mes "¥Ã»··ÓÅUµÛ"+.groom$+ "";
+	next;
+	if(select("§ÚÄ@·N","...§Ú¤£­n")==2) {
+		mes "[Ä_º¿¼Öµ·]";
+		mes "«ç»ò¤F";
+		announce "Ä_º¿¼Öµ·: ¦n¹³·Ç³Æ¤£¨¬...¥ý¶i¦æ¤U¤@­Ó±BÂ§¡C",9;
+		stopnpctimer;
+		set .flag,0;
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	if(@defend) {
+		set @event_marry,0;
+		mes "®É¶¡¨ì...";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	//µ²±B³B²z
+	if(getcharid(3,.groom$)<=0) {
+		stopnpctimer;
+		set .flag,0;
+		set @event_marry,0;
+		mes "·s­¦¤£¦b";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+	set .@dummy,marriage(.groom$);
+	getitem 2635,1,0;
+	getitem 2634,1,0,getcharid(3,.groom$);
+	set .flag,0;
+	set @event_marry,0;
+	sc_start SC_WEDDING,3600,0;
+	sc_start SC_WEDDING,3600,0,getcharid(3,.groom$);
+	wedding;
 	stopnpctimer;
+	announce "Ä_º¿¼Öµ·¡G¨º»ò§Ú¦b¦¹«Å§G¡A¯¬¶P§A­Ì¦¨¬°¤Ò©d!",9;
+	announce "Ä_º¿¼Öµ·¡G"+.groom$+" ©M "+.bride$+" ªº±BÂ§§¹¦¨¤F!",9;
+	mes "[Ä_º¿¼Öµ·]";
+	mes "¯¬§A­Ì©¯ºÖ..";
+	close2;
+	cutin "wedding_bomars01",255;
+	end;
+//·s­¦»¡§¹¸Ü¤§«á¡A·s®Q¦pªG¦b¤T¤ÀÄÁ¤§¤º¨S¦³»¡¸Ü...
+OnTimer180000:
+	announce "Ä_º¿¼Öµ·: ¦^µª¤ÓºC¤F...¤U¤@¦ì",9;
+	set $@marry,0;
 	end;
 }
 
-
-// ³æ¨­­x¹Î¡I©Ô­·¤»¤H²Õ¡I
-prt_church.gat,97,102,0	script	³æ¨­ ­x¹Î::wed01	105,{
-	close;
-OnInit:
-	disablenpc "wed01";
-	end;
-}
-prt_church.gat,98,102,0	script	³æ¨­ ­x¹Î::wed02	705,{
-	close;
-OnInit:
-	disablenpc "wed02";
-	end;
-}
-prt_church.gat,99,102,0	script	³æ¨­ ­x¹Î::wed03	707,{
-	close;
-OnInit:
-	disablenpc "wed03";
-	end;
-}
-prt_church.gat,100,102,0	script	³æ¨­ ­x¹Î::wed04	708,{
-	close;
-OnInit:
-	disablenpc "wed04";
-	end;
-}
-prt_church.gat,101,102,0	script	³æ¨­ ­x¹Î::wed05	767,{
-	close;
-OnInit:
-	disablenpc "wed05";
-	end;
-}
-prt_church.gat,102,102,0	script	³æ¨­ ­x¹Î::wed06	780,{
-	close;
-OnInit:
-	disablenpc "wed06";
-	end;
-}
-
-
-//
-//	========================================================
-//			Â÷±Bµn°O¤H­û ¨Ï¥Î»¡©ú
-//	1. ­n¨D¨k¤è¥ýµn°O,°O¿ý¤Uname,partyid.
-//	2. ¤k¤èµn°O®É,ÀË¬dpartyid.³q¹L«hµn°Oname.
-//	3. ¦b¦³¤Hµn°O«áªº2¤ÀÄÁ¤§¤º,¨ä¥L¨kIDµLªkµn°O
-//	4. ¦pªG¶È¶È¨k¤èµn°O¦Ó¨S¦³¤k¤èµn°O.2¤ÀÄÁ«á¸ÓID
-//	   ¤]·|³Q»{¬°¬OÂ÷±Bµ²§ô¦Ó¾É­PµLªk¦A¦¸¥Ó½Ð.
-//	   ¸Ñ¨M¤èªk:¿ï¾Ü"­«·s¶}©l",¦ý¬OÂ÷±B¦¨¥\ªº¤£¯à¿ï¾Ü
-//	5. µ²±Bµn°O©Ò»Ý­nªºª««~
-//	   1) ¨k¤è¡G130W²{ª÷¡Aµ²±B§Ù«ü¡Ñ1
-//	   2) ¤k¤è¡G120W²{ª÷¡Aµ²±B§Ù«ü¡Ñ1
-//$@li_party_id
-//$@divorce_male_name$
-//EVENT_DIVORCE_APPLY
-//$@EVENT_DIVORCE
-//$@divorce_male
-//$@divorce_female
-//	========================================================
-//
-prt_church.gat,94,97,4	script	Â÷±B ªA°È¤H­û	71,{
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "½Ð°Ý§A¬O§_¦³­nÂ÷±Bªº¹ï¶H°Ú";
-        next;
-	menu "½Ð°ÝÂ÷±Bªº¹Lµ{¬O¤°»ò¼Ë¤l©O¡H",L_MENU_1,
-             "§Ú·Q­n¥Ó½ÐÂ÷±B",L_MENU_2,
-             "­«·s¶}©l",L_MENU_3,
-             "§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î¡I",L_MENU_4;
-	close;
-// ¹Lµ{»¡©ú
-L_MENU_1:
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "­º¥ý½T»{·s­¦·s®Q­Ì¡A";
-	mes "¦³³£¦V§Ú¥Ó½Ð¶Ü¡H";
-	mes "·íµM¨â¦ì³£¬Oµ²¹L±Bªº¤H¤~¹ï°Ú¡H";
-	mes "°²¦p¦³¥Ó½Ðªº¸Ü¡A½Ð¨â¦ì²Õ¶¤¤§«á¥Ó½Ð.";
-	next;
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "¨k¤è¥ý»¡¸Ü¡AµM«á½T©w­n";
-	mes "Â÷±Bªº¨M¤ß¡AÂ÷±B¤~¯à°õ¦æ";
-	mes "Â÷±B¤~¯à°õ¦æ,»¡§¹«á½Ðµ¥«Ý·s®Q»¡.";
-	next;
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "µM«á§Ú·|°Ý·s®Q¨k¤èªº¦W¦r";
-	mes "¦W¦r¤£¯àÁ¿¿ù¡A­nÁ¿¥¿½T";
-	mes "Â÷±B¤~¯à°õ¦æ.";
-	next;  
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "³Ì«á¤@ÂI¡AÁ¿§¹¦W¦r«á¡A¦^µª­n§Ö";
-	mes "·í^ff0000·s­¦Á¿§¹¸Ü¡A¦b2¤ÀÄÁ¤§¤º¡A§â©Ò¦³ªº¹Lµ{³£°µ§¹§a^000000";
-	mes "­n¤£µM¡AÂ÷±B·|°±¤î";
-        close;
-L_MENU_3:
-        //¦pªG¥¿¦¡§¹¦¨¤FÂ÷±B.«h¤£¯à­«·s¶}©l
-	if ( EVENT_DIVORCE_APPLY == 2 ) goto L_DIVORCE;
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "©Î³\­«·s¶}©l¤]¤£¿ù";
-	mes "§Æ±æ§A¯à§ä¨ì¯u¥¿¦X¾Aªº¦ñ«Q";
-	set EVENT_DIVORCE_APPLY, 0;
-	close;
-//	===================³æ¨­­x¹Î¥X²{=========================
-L_MENU_4:
-	enablenpc "wed01";
-	enablenpc "wed02";
-	enablenpc "wed03";
-	enablenpc "wed04";
-	enablenpc "wed05";
-	enablenpc "wed06";
-	emotion 23;
-	mes "[³æ¨­ ­x¹Î]";
-	mes "ºë·Ò­n¦Û¤v°µ¡A¤~·|°µ¥X¦nªF¦è¡I";
-	mes "¦b¬}¥Þ¸Ì­±²Õ¶¤¬O°ø¨×ªº¦æ¬°¡I";
-	mes "§Ú¥i¥H¬I¤U¥X¤ß«¬ªº NPC¡I";
-	mes "±q¥X¥Í¨ìÂàÂ¾¡A³£¬O¦Û¤v½mªº¡I";
-	mes "¹L¸t½Ï¸`ªº®É­Ô¡A¨ì¥~­±©Þ¯ó¨D¥Í¡I";
-	mes "¡K§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î¡I";
-	next;
-	emotion 4;
-	disablenpc "wed01";
-	disablenpc "wed02";
-	disablenpc "wed03";
-	disablenpc "wed04";
-	disablenpc "wed05";
-	disablenpc "wed06";
-	close;
-L_DIVORCE:
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "§AÁÙ¨S¦³¦ñ«Q®@~";
-        next;
-        close;
-// Â÷±B¥Ó½Ð
-L_MENU_2:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "·Q­nÂ÷±Bªº¸Ü­n¥Ó½Ð¾¾¡A";
-	mes "¨k©Ê­n¥æ¥X^0000881,300,000ª÷¹ô©Mµ²±B§Ù«ü";
-	mes "¤k©Ê­n¥æ^0000881,200,000";
-	mes "ª÷¹ô©Mµ²±B§Ù«üµM«á¶ñ¼g¥Ó½Ð®Ñ§Y¥i¡A";
-	mes "°²¦p¨k¤kÂù¤è³£¦³¥Ó½Ðªº¸Ü¡A";
-	mes "´N¥i¥HÂ÷±B¤F";
-	next;
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "½Ð°Ý§A­n¥Ó½ÐÂ÷±B¶Ü?";
-        menu "¬O",-,"¤£¬O",L_NOdivorce;
-        // ¬O§_µn°O©ÎªÌ¤w¸gµ²±B
-	if ( EVENT_MARRIAGE_APPLY < 3 ) goto L_L1;
-        if ( EVENT_DIVORCE == 1 ) goto L_L2;
-        
-        // ±N¬yµ{§¹¥þ¤À¶}¡A¤è«K¥H«á­×§ï
-        if ( Sex == 1 ) goto L_MALE_LI;
-	goto L_FEMALE_LI;
-	close;
-	//	====================¨k¤èµn°O====================
-L_MALE_LI:
-        // ¨S¦³²Õ¶¤«h´£¥Ü¨Ã°h¥X¡I
-	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
-        // ¦pªG¦³¤H¤w¸g¥Ó½Ð©Î¶}©lÂ÷±B¡A«h´£¥Üµ¥­Ô
-	if ( $@li_party_id != 0 ) goto L_MUST_WAIT;
-        // ÀË¬d­n¨Dªº³ø¦W¹D¨ã
-	if( countitem(2634) < 1 ) goto L_LOSTD;	// ÀË¬dµ²±B§Ù«ü
-	if( Zeny < 1300000 ) goto L_LOSTM;	// ÀË¬dµn°O¶O¥Î
-        // ¥þ³¡±a»ô«h¦©°£³ø¦W¶O
-	set Zeny, Zeny - 1300000;
-	// ¼È¦s¥Ó½Ð¤HAID¡ANAME
-	set $@divorce_male, getcharid(0);
-	set $@divorce_male_name$, strcharinfo(0);
-        // ¼È¦s¥Ó½Ð¤HPARTY ID
-	set $@li_party_id, getcharid(1);
-        // ±N¥Ó½Ð¤Hª¬ºA§ï¬°¥Ó½Ð§¹²¦¡I
-	set EVENT_DIVORCE_APPLY, 1;
-        
-        set $@EVENT_DIVORCE, 1;
-	
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "½Ð¦b^FF00002¤ÀÄÁ^000000¤º§¹¦¨Â÷±B®@¡I";
-	
-	// ¨k¤è¥Ó½Ð§¹²¦¡A¶}©l­p®É¡I
-	initnpctimer "TimerDivorce";
-	close;
-//	====================¤k¤èµn°O====================
-L_FEMALE_LI:
-        if ( $@EVENT_DIVORCE != 1 ) goto L_WAIT;
-	// ¨S¦³²Õ¶¤«h´£¥Ü¨Ã°h¥X¡I
-	if ( getcharid(1) == 0 ) goto L_NO_TEAM;
-	// ÀË¬d¬O§_¬°¥Ó½Ð¤H¦P¤@²Õ¶¤¡I
-	if ( getcharid(1) != $@li_party_id ) goto L_MUST_WAIT;
-	// ÀË¬d­n¨Dªº³ø¦W¹D¨ã
-	if( countitem(2635) < 1 ) goto L_LOSTD;	// ÀË¬dµ²±B§Ù«ü
-	if( Zeny < 1200000 ) goto L_LOSTM;	// ÀË¬dµn°O¶O¥Î
-        // ®Ö¹ï¦W¦r¬O§_»P¨k¤èµn°O¤H¤@¼Ë
-        mes "[Â÷±B ªA°È¤H­û]";
-        mes "½Ð¿é¤J^FF0000¨k¤è^000000ªº¦W¦r¡I";
-        next;
-        input $@li_name$;
-	if($@divorce_male_name$ != $@li_name$) goto L_DISAGREE;
-	// ¥þ³¡±a»ô«h¦©°£³ø¦W¶O
-	set Zeny, Zeny - 1200000;
-        // ¼È¦s¤k¤èAID¡ANAME
-	set $@divorce_female, getcharid(0);
-	set $@divorce_female_name$, strcharinfo(0);
-        // ±N¥Ó½Ð¤Hª¬ºA§ï¬°¥Ó½Ð§¹²¦¡I
-	set EVENT_DIVORCE_APPLY, 1;
-        
-        mes "[Â÷±B ªA°È¤H­û]";
-	mes "½Ð¦b^FF00002¤ÀÄÁ^000000¤º§¹¦¨Â÷±B®@¡I";
-        enablenpc "divorce_ring";
-        close;
-//	==================¤£º¡¨¬±ø¥ó«áªº¸õÂà====================
-L_NO_TEAM:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¤£¦æ®@¡I";
-	mes "¥²¶·¥ý©M§Aªº·R¤H^FF0000²Õ¶¤^000000¡I";
-	close;
-
-L_MUST_WAIT:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¶â¡A¦n¹³¤w¸g¦³¤H¥Ó½Ð¤F";
-	mes "¬Ý¼Ë¤l¡A§A¤£±o¤£µ¥¤@·|";
-	mes "¤£¦n·N«ä°Ú¡I";
-	close;
-
-L_LOSTD:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "§A¦n¹³§Ñ°O±a¡A";
-	mes "Â÷±B®Éªº§Ù«ü¤F¡A";
-	mes "¬O¤£¬O©ñ¦b§Oªº¦a¤è¤F©O¡H";
-	mes "¥J²Óªº§ä§ä¤§«á¡A¦A¨Ó§ä§Ú§a";
-	close;
-
-L_LOSTM:
-	next;
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "§A¨­¤Wªº²{ª÷¦n¹³¤£¨¬³á";
-	close;
-L_L1:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "§AÁÙ¨Sµ²±B®@";
-	close;
-L_L2:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¥Ó½Ð¹L¤F´N¤£­n¥Ó½Ð¤F.";
-	close;
-L_NOdivorce:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¯¬§A¦³¤@­Ó¶}¤ßªº¤@¤Ñ¡K¡I";
-	close;
-L_WAIT:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "§Úªº«Ä¤l§O«æ§O«æ";
-	mes "¥ýµ¥¨k¤è«Å»}§a¡I";
-	close;
-L_DISAGREE:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "®@¡I¡H§Úªº¤W«Ò°Ú¡I";
-	mes "§A©~µM°O¿ù¤F·R¤Hªº¦W¦r¡I";
-	mes "¬Ý¨ÓÂù¤èªº·N¨£ÁÙ¨S¦³²Î¤@,¦n¦n°Ó¶q¤@¤U§a¡I¡I";
+//=======================Solo­x¹Î==============================
+prt_church.gat,97,102,0	script	³æ¨­­x¹Î#´¶¶©¼w©Ô	105,{
+	mes "[³æ¨­­x¹Î]";
+	mes "ºë½m­n¦Û¤v°µ¡A¤~·|°µ¥X¦nªF¦è!";
 	close;
 }
-prt_church.gat,94,97,4	script	divorce_ring	111,20,20,{
-	// ÀË¬d©Ê§O
-	if ( Sex == 0 ) goto L_FEMALE;
-	goto L_MALE;
-	end;
-L_FEMALE:
-	// ÀË¬d¤Hª«ID
-	if ( getcharid(0) != $@divorce_female ) end;
-	// ÀË¬d¬O§_¨S¦³§¹¦¨±B¨å
-	if ( EVENT_DIVORCE_APPLY != 1 ) end;
-	// ÀË¬d¬O§_±B¨å¶i¦æ
-	if ( $@EVENT_DIVORCE == 1 ) goto L_FEMALE_FIRST;
-	
-	// ¤k¤è«á²¾°Ê
-	if ( $@GOOD != 1 ) goto Fall;
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "Å¥§Úªº«Å§G§a¡I";
-	announce $@divorce_male_name$ + "©M" + $@divorce_female_name$ + "ªºÂ÷±B§¹¦¨¤F¡I",15;
-	set EVENT_DIVORCE_APPLY, 2;
-	set EVENT_MARRIAGE_APPLY, 0;//§âµ²±Bªº¼Ð»x³]¬°0
-	set $@li_party_id,0;
-	set $@divorce_male,0;
-	set $@divorce_female,0;
-	set $@divorce_male_name$,0;
-	set $@divorce_female_name$,0;
-	set $@GOOD, 0;
-	stopnpctimer "TimerDivorce";
-	disablenpc "divorce_ring";
-	close;
-// ¤k¤è¥ý²¾°Ê
-L_FEMALE_FIRST:
-	set EVENT_MARRIAGE_APPLY, 0;//§âµ²±Bªº¼Ð»x³]¬°0
-	set $@EVENT_DIVORCE, 0;
-	set EVENT_DIVORCE_APPLY, 2;
-	// §¹¦¨Â÷±B
-	set Result, divorce();
-	if (Result>0) goto L_DivorceOK;
-	if (Result==0) goto L_DivorceFail;
-	close;
-L_MALE:
-	// ÀË¬d¤Hª«ID
-	if ( getcharid(0) != $@divorce_male ) end;
-	// ÀË¬d¬O§_¨S¦³§¹¦¨±B¨å
-	if ( EVENT_DIVORCE_APPLY != 1 ) end;
-	// ÀË¬d¬O§_¬O±B¨å¶i¦æ
-	if ( $@EVENT_DIVORCE == 1 ) goto L_MALE_FIRST;
 
-	// ¨k¤è«á²¾°Ê
-	if ( $@GOOD != 1 ) goto Fall;
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "Å¥§Úªº«Å§G§a¡I";
-	announce $@divorce_male_name$ + "©M" + $@divorce_female_name$ + "ªºÂ÷±B§¹¦¨¤F¡I",15;
-	set EVENT_DIVORCE_APPLY, 2;
-	set EVENT_MARRIAGE_APPLY, 0;//§âµ²±Bªº¼Ð»x³]¬°0
-	set $@li_party_id,0;
-	set $@divorce_male,0;
-	set $@divorce_female,0;
-	set $@divorce_male_name$,0;
-	set $@divorce_female_name$,0;
-	set $@GOOD, 0;
-	stopnpctimer "TimerDivorce";
-	disablenpc "divorce_ring";
+prt_church.gat,98,102,0	script	³æ¨­­x¹Î#¦Nªâ	705,{
+	mes "[³æ¨­­x¹Î]";
+	mes "¦b¬}¥Þ¸Ì­±²Õ¶¤¬O°ø¨×ªº¦æ¬°!";
 	close;
-
-	// ¨k¤è¥ý²¾°Ê
-L_MALE_FIRST:
-	set EVENT_MARRIAGE_APPLY, 0;//§âµ²±Bªº¼Ð»x³]¬°0
-	set $@EVENT_DIVORCE, 0;
-	set EVENT_DIVORCE_APPLY, 2;
-	// §¹¦¨Â÷±B
-	set Result, divorce();
-	if (Result>0) goto L_DivorceOK;
-	if (Result==0) goto L_DivorceFail;
-	close;
-L_DivorceOK:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¦¨¥\~";
-	set $@GOOD, 1;
-	close;
-L_DivorceFail:
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "¥¢±Ñ~";
-	close;
-Fall:   
-	mes "[Â÷±B ªA°È¤H­û]";
-	mes "Â÷±B¥¢±Ñ~";
-	close;
-OnInit:
-	disablenpc "divorce_ring";
-	end;
 }
-// ¥Î©ó¾ã­ÓÂ÷±Bªº­p®É¡I±q¶}©l¨ìµ²§ô³W©w®É¶¡¡G2¤ÀÄÁ
-prt_church.gat,97,99,0	script	TimerDivorce	-1,{
-	end;
-OnTimer120000:
-	announce $@divorce_male_name$ + "©M" + $@divorce_female_name$ + "ªºÂ÷±B²×¤î¤F¡I",15;
-	set $@li_party_id,0;
-	set $@divorce_male,0;
-	set $@divorce_female,0;
-	set $@divorce_male_name$,0;
-	set $@divorce_female_name$,0;
-	stopnpctimer;
-	end;
-OnInit:
-	disablenpc "divorce_ring";
-	end;
+
+prt_church.gat,99,102,0	script	³æ¨­­x¹Î#¹ÚÃ¹§J	707,{
+	mes "[³æ¨­­x¹Î]";
+	mes "§Ú¥i¥H¬I©ñ¥X¤ß«¬ªº NPC!";
+	close;
+}
+
+prt_church.gat,100,102,0	script	³æ¨­­x¹Î#´´´­	708,{
+	mes "[³æ¨­­x¹Î]";
+	mes "±q¥X¥Í¨ìÂàÂ¾¡A³£¬O¦Û¤v½mªº!";
+	close;
+}
+
+prt_church.gat,101,102,0	script	³æ¨­­x¹Î#¤Ñ¬zËm	767,{
+	mes "[³æ¨­­x¹Î]";
+	mes "¹L¸t½Ï¸`ªº®É­Ô¡A¨ì¥~­±©Þ¯ó¨D¥Í!";
+	close;
+}
+
+prt_church.gat,102,102,0	script	³æ¨­­x¹Î#§JÅ]®q	780,{
+	mes "[³æ¨­­x¹Î]";
+	mes "...§Ú­Ì¬OµL¼Äªº³æ¨­­x¹Î!";
+	close;
 }

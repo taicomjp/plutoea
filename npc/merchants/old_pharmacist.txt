@@ -1,73 +1,129 @@
-//===== eAthena Script =======================================
-//= Grandpa Pharmacist
-//===== By: ==================================================
-//= kobra_k88
-//===== Current Version: =====================================
-//= 1.2
-//===== Compatible With: =====================================
-//= eAthena 7.15 +
-//===== Description: =========================================
-//= Trade in items for potions
-//===============================
-//= Breakdown of arguments used
-//= arg(0): first item id#
-//= arg(1): 2nd item id# if needed, or else use 0
-//= arg(2): zeny cost
-//= arg(3): potion id#
-//= arg(4): potion name
-//===== Additional Comments: =================================
-//= Fully working
-//= 1.1 Negative input bug fixed [Lupus]
-//= 1.2 Created a subfunc for the potion making part.  Added more
-//= input/zeny exploit checks. Added Lupus's "loopless" technique.[kobra_k88]
-//============================================================
-
-
+//===========================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 藥劑師爺爺 -
+//===========================================
 alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
 	mes "[藥劑師爺爺]";
 	mes "是....客人嗎...?";
 	next;
-	menu "組合藥水",M_Make, "對話",M_Talk, "聽取組合藥水的告示",M_Info, "取消",M_End;
-	
-	M_Make:
+	switch (select("組合藥水","對話","聽取組合藥水的告示","取消")) {
+	case 1:
 		mes "[藥劑師爺爺]";
 		mes "物品都齊全了嗎?您要組合哪一種藥水?";
-		M_Menu:
 		next;
-		menu	"紅色藥水",M_0,
-			"赤色藥水",M_1,
-			"黃色藥水",M_2,
-			"白色藥水",M_3,
-			"藍色藥水",M_4,
-			"綠色藥水",M_5,
-			"放棄",M_End;
-		
-		M_0:
-			callsub sF_Make, 507, 0, 2, 501, "紅色";
-			goto M_Menu;
-		M_1:
-			callsub sF_Make, 507, 508, 5, 502, "橘色";
-			goto M_Menu;
-		M_2:
-			callsub sF_Make, 508, 0, 10, 503, "黃色";
-			goto M_Menu;
-		M_3:
-			callsub sF_Make, 509, 0, 20, 504, "白色";
-			goto M_Menu;
-		M_4:
-			callsub sF_Make, 510, 0, 30, 505, "藍色";
-			goto M_Menu;
-		M_5:
-			callsub sF_Make, 511, 0, 3, 506, "綠色";
-			goto M_Menu;
-
-	M_Talk:
+		switch (select("紅色藥水","赤色藥水","黃色藥水","白色藥水","藍色藥水","綠色藥水","放棄")) {
+			case 1:
+				setarray .@need,507,713;
+				setarray .@amount,2,1;
+				set .@price,3;
+				set .@gain,501;
+				break;
+			case 2:
+				setarray .@need,507,508,713;
+				setarray .@amount,1,1,1;
+				set .@price,5;
+				set .@gain,502;
+				break;
+			case 3:
+				setarray .@need,508,713;
+				setarray .@amount,2,1;
+				set .@price,10;
+				set .@gain,503;
+				break;
+			case 4:
+				setarray .@need,509,713;
+				setarray .@amount,2,1;
+				set .@price,20;
+				set .@gain,504;
+				break;
+			case 5:
+				setarray .@need,510,713;
+				setarray .@amount,2,1;
+				set .@price,30;
+				set .@gain,505;
+				break;
+			case 6:
+				setarray .@need,511,713;
+				setarray .@amount,2,1;
+				set .@price,3;
+				set .@gain,506;
+				break;
+			case 7:
+				close;
+		}
+		if(Zeny<.@price) {
+			mes "[藥劑師爺爺]";
+			mes "做藥水還要帶來一些錢!您空手來要 幹嗎! 真是傻瓜!";
+			mes "滾出去!";
+			close;
+		}
+		set .@max,callfunc("MathMax",.@need,.@amount,.@price);
+		if(.@max==0) {
+			mes "[藥劑師爺爺]";
+			mes "做藥水連材料都沒帶!您空手來要 幹嗎! 真是傻瓜!";
+			mes "滾出去!";
+			close;
+		}
+		mes "[藥劑師爺爺]";
+		mes "要多少?";
+		next;
+		switch (select("全部組合","限定數量","放棄")) {
+			case 1:
+				set .@num,.@max;
+				break;
+			case 2:
+				mes "[藥劑師爺爺]";
+				mes "那請您填寫 100 以下.若不願意就填寫 0 .";
+				mes "看您收集的材料可能組合" +.@max+" 瓶.";
+				while(1) {
+					next;
+					input .@num;
+					if(.@num>100 || .@num<0) {
+						mes "[藥劑師爺爺]";
+						mes "只能100個以下!";
+						continue;
+					}
+					break;
+				}
+				if(.@num==0) {
+					mes "[藥劑師爺爺]";
+					mes "滾出去!";
+					close;
+				}
+				if(.@num > .@max) {
+					mes "[藥劑師爺爺]";
+					mes "材料呢?";
+					close;
+				}
+				break;
+			case 3:
+				mes "[藥劑師爺爺]";
+				mes "快滾吧!";
+				close;
+		}
+		if(@menu==2) {
+			delitem 507,.@num;
+			delitem 508,.@num;
+		}
+		else {
+			delitem .@need[0],.@num*2;
+		}
+		delitem 713,.@num;
+		set Zeny,Zeny-.@price*.@num;
+		getitem .@gain,.@num;
+		mes "[藥劑師爺爺]";
+		mes "做好了.拿回去吧.";
+		mes "記住! 光靠藥物不是辦法!";
+		close;
+	case 2:
 		mes "[藥劑師爺爺]";
 		mes "藥水可以提高人類的恢復力.不過只是幫助而已...";
 		mes "哎呦...年紀大了會回憶以前的事情.";
 		mes "藥水只是藥的一種...只是這樣而已.";
 		close;
-	M_Info:
+	case 3:
 		mes "[藥劑師爺爺]";
 		mes "嗯...您們這些小傢伙真是煩人... 好,我會仔細告訴您們.";
 		next;
@@ -87,73 +143,9 @@ alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
 		mes "藍色藥水 - ^0098E5 藍色藥草 x2, 空瓶 x1, 30 金幣.^000000";
 		mes "綠色藥水 - ^0098E5 綠色藥草 x2, 空瓶 x1, 3 金幣.^000000";
 		close;
-	M_End:
+	case 4:
 		mes "[藥劑師爺爺]";
 		mes "真是奇怪的人,有話要說出來,幹嘛什麼也沒說就走過去了!";
 		close;
-
-// Subfunction for making potions
-//================================
-sF_Make:
-	set @herbnum, 2;
-	if(getarg(1) != 0) set @herbnum, 1;
-	if(countitem(getarg(0)) < @herbnum) goto L_NdHerbs;
-	if(getarg(1) != 0) if(countitem(getarg(1)) < @herbnum) goto L_NdHerbs;
-	if(countitem(713) < 1) goto L_NdBottle;
-	if(Zeny < getarg(2)) goto L_NdZeny;
-
-	mes "[藥劑師爺爺]";
-	mes "嗯，那麼你打算製作多少紅色藥水呢?";
-	next;
-	menu "能做多少就做多少",sM_0a, "讓我想想...",sM_0b, "取消",M_End;
-
-	sM_0a:
-		set @amount, 1000;
-		if(zeny/getarg(2) < @amount) set @amount, zeny/getarg(2);
-		if(countitem(getarg(0))/@herbnum < @amount) set @amount, countitem(getarg(0))/@herbnum;
-		if(getarg(1) != 0) if (countitem(getarg(1))/@herbnum < @amount) set @amount, countitem(getarg(1))/@herbnum;
-		if(countitem(713) < @amount) set @amount, countitem(713);
-		if(@amount > 0) goto L_End;
-		mes "[藥劑師爺爺]";
-		mes "唔...你沒有製作所需的正確物品...";
-		close;
-		
-	sM_0b:
-		input @amount;
-		if(@amount<1 || @amount>1000) goto L_BadAmnt;
-		if(countitem(getarg(0))/@herbnum < @amount) goto L_NdHerbs;
-		if(getarg(1) != 0) if (countitem(getarg(1))/@herbnum < @amount) goto L_NdHerbs;
-		if(countitem(713) < @amount) goto L_NdBottle;
-		if(Zeny < (getarg(2)*@amount)) goto L_NdZeny;
-
-	L_End:
-		set Zeny, Zeny - (getarg(2)*@amount);
-		delitem getarg(0), (@amount*@herbnum);
-		if(getarg(1) != 0) delitem getarg(1), (@amount*@herbnum);
-		delitem 713, @amount;
-		getitem getarg(3), @amount;
-		mes "[藥劑師爺爺]";
-		mes "那麼...這些是你要的 " +getarg(4)+ " 藥水,";
-		mes "歡迎下次再來!";
-		close;
-
-	L_NdBottle:
-		mes "[藥劑師爺爺]";
-		mes "你沒有足夠的空瓶來裝藥水! 笨蛋!!";
-		return;
-
-	L_NdHerbs:
-		mes "[藥劑師爺爺]";
-		mes "你到底想要我幫你什麼忙? 你連製作所需的正確物品都搞不清楚了!";
-		return;
-
-	L_NdZeny:
-		mes "[藥劑師爺爺]";
-		mes "你沒有足夠的錢來付我加工費啊...";
-		return;
-
-	L_BadAmnt:
-		mes "[藥劑師爺爺]";
-		mes "什麼? 你說你要幾個?!";
-		return;
+	}
 }

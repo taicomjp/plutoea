@@ -1,146 +1,159 @@
-//===== eAthena Script ========================================
-//= Arrow Quiver Event
-//===== By: ==================================================
-//= Muad_Dib (Prometheus Project)
-//===== Current Version: =====================================
-//= 1.1
-//===== Compatible With: =====================================
-//= eAthena 1.0+
-//===== Description: =========================================
-//= Turns arrows into Arrow Quivers.
-//===== Additional Comments: =================================
-//= 07/06/05 : Added 1st Version. [Muad_Dib]
-//= Converted to eAthena format by Dr.Evil
-//= added prize to quest - 500 Zeny
-//= Fixed a few spelling errors. [Nexon]
-//= 1.1 Added Holy Arrow Quivers [Playtester]
-//============================================================
-
+//===========================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 箭矢筒 製作任務 -
+//===========================================
 
 payon_in01.gat,5,134,4	script	發明家 欽斯	89,{
+	if(Weight*100/MaxWeight >= 90) {
+		mes "[發明家 欽斯]";
+		mes "你現在負重太重了，連身體都站不穩";
+		mes "把東西清理過後再來的話";
+		mes "我會講一個讓你聽了";
+		mes "耳朵會豎起來的故事給你聽";
+		close;
+	}
 	mes "[發明家 欽斯]";
-	mes "我是天才發明家 欽斯!.";
+	mes "我是天才發明家 欽斯!";
 	mes "我這一次發明了一個，名留千史的物品!";
-	mes "就是^FF0000魔法箭矢筒^000000!!";
+	mes "就是^FF0000魔法箭箭矢筒^000000!!";
 	next;
 	mes "[發明家 欽斯]";
 	mes "我想了好幾十年...";
 	mes "不管是下大雨還是下大雪...";
 	mes "為了研空出我想得到的結果!";
-	mes "終於發現如何利用魔力把箭矢濃縮";
-	mes "製作成方便攜帶的^0000FF魔法箭矢筒^000000";
+	mes "已經發現如何利用魔力把箭矢濃縮";
+	mes "製作成可攜帶^0000FF魔法箭箭矢筒^000000";
 	mes "呵哈哈哈!";
 	next;
+	emotion 21;
 	mes "[發明家 欽斯]";
 	mes "這對拿弓的玩家來說";
 	mes "是一項大革命性的物品啊!";
-	mes "能製作出那個東西的我";
+	mes "能製作出那個東的我";
 	mes "真的是天天天天天才發明家 欽斯!!!";
 	next;
 	mes "[發明家 欽斯]";
-	mes "你!!有想要的箭矢筒嗎?";
+	mes "你 有想要的箭箭矢筒嘛?";
 	mes "我猜那個物品對你來說";
-	mes "是非常需要的物品吧!嘻嘻";
+	mes "是讓你心中非常滿意的品吧!嘻嘻";
 	next;
-	menu "箭矢筒",-,"鐵箭矢筒",Q2,"鋼鐵箭矢筒",Q3,"神之金屬箭矢筒",Q4,"火箭矢筒",Q5,"銀箭矢筒",Q6,"風靈箭矢筒",Q7,"地靈箭矢筒",Q8,"水靈箭矢筒",Q9,"影子箭矢筒",Q10,"無形箭矢筒",Q11,"鐵銹箭矢筒",Q12,"神聖箭矢筒",Q13;
-
-// Arguments
-//===========
-		callsub sF_Make, 1750,500,12004, "箭矢筒";
-			goto M_Menu;
-Q2:
-		callsub sF_Make, 1770,500,12005, "鐵箭矢筒";
-			goto M_Menu;
-Q3:
-		callsub sF_Make, 1753,500,12006, "鋼鐵箭矢筒";
-			goto M_Menu;
-Q4:
-		callsub sF_Make, 1765,500,12007, "神之金屬箭矢筒";
-			goto M_Menu;
-Q5:
-		callsub sF_Make, 1752,500,12008, "火箭矢筒";
-			goto M_Menu;
-Q6:
-		callsub sF_Make, 1751,500,12009, "銀箭矢筒";
-			goto M_Menu;
-Q7:
-		callsub sF_Make, 1755,500,12010, "風靈箭矢筒";
-			goto M_Menu;
-Q8:
-		callsub sF_Make, 1756,500,12011, "地靈箭矢筒";
-			goto M_Menu;
-Q9:
-		callsub sF_Make, 1754,500,12012, "水靈箭矢筒";
-			goto M_Menu;
-Q10:
-		callsub sF_Make, 1767,500,12013, "影子箭矢筒";
-			goto M_Menu;
-Q11:
-		callsub sF_Make, 1757,500,12014, "無形箭矢筒";
-			goto M_Menu;
-Q12:
-		callsub sF_Make, 1762,500,12015, "鐵銹箭矢筒";
-			goto M_Menu;
-Q13:
-		callsub sF_Make, 1772,500,12183, "神聖箭矢筒";
-			goto M_Menu;
-
-// Subfunction for making quivers
-//================================
-sF_Make:
-	set @arrownum,500;
-	if(countitem(getarg(0)) < @arrownum) goto L_NdArrows;
-	if(Zeny < getarg(1)) goto L_NdZeny;
+	switch (select("箭矢筒","鐵箭矢筒","鋼鐵箭矢筒","神之金屬箭矢筒","火箭矢筒","銀箭矢筒","風靈箭矢筒",
+						"地靈箭矢筒","水靈箭矢筒","影子箭矢筒","無形箭矢筒","鐵銹箭矢筒")) {
+		case 1:
+			set .@arr,1750;
+			set .@quiv,12004;
+			break;
+		case 2:
+			set .@arr,1770;
+			set .@quiv,12005;
+			break;
+		case 3:
+			set .@arr,1753;
+			set .@quiv,12006;
+			break;
+		case 4:
+			set .@arr,1765;
+			set .@quiv,12007;
+			break;
+		case 5:
+			set .@arr,1752;
+			set .@quiv,12008;
+			break;
+		case 6:
+			set .@arr,1751;
+			set .@quiv,12009;
+			break;
+		case 7:
+			set .@arr,1755;
+			set .@quiv,12010;
+			break;
+		case 8:
+			set .@arr,1756;
+			set .@quiv,12011;
+			break;
+		case 9:
+			set .@arr,1754;
+			set .@quiv,12012;
+			break;
+		case 10:
+			set .@arr,1767;
+			set .@quiv,12013;
+			break;
+		case 11:
+			set .@arr,1757;
+			set .@quiv,12014;
+			break;
+		case 12:
+			set .@arr,1762;
+			set .@quiv,12015;
+			break;
+	}
+	if(countitem(.@arr)<500 || Zeny<500) {
+		mes "[發明家 欽斯]";
+		mes "這是" +getitemname(.@arr)+ "可以";
+		mes "放入500只箭矢的大箭矢筒喔";
+		mes "因為用我自己特殊的秘方處理";
+		mes "比直接拿500只箭矢";
+		mes "還要更加輕便";
+		next;
+		mes "[發明家 欽斯]";
+		mes "怎樣?這是不是一件了不起的物品呢!";
+		mes "我這也算是做出了一個寶石呀!";
+		mes "像閃爍寶石頭一樣神秘的物!這就是我的寶物!";
+		mes "假如需要這個箭矢筒的話請帶" +getitemname(.@arr)+ "500只";
+		mes "和500金幣來吧";
+		mes "我會把它放在箭矢筒裡和你交換的";
+		close;
+	}
 	mes "[發明家 欽斯]";
-	mes "你想要製作多少?";
+	mes "喔喔~你!";
+	mes "剛好攜帶著一個適合的物品啊";
+	mes "要不要直接拿";
+	mes "^FF0000500Zeny^000000試試看呢";
+	mes getitemname(.@arr)+ "500個";
+	mes "我會把500個箭矢放在箭矢筒裡和你交換的プ";
 	next;
-	menu "全部.",-, "讓我決定一下.",sM_0b, "不做了",M_End;
-
-		set @amount,100;
-		if(zeny/getarg(1) < @amount) set @amount, zeny/getarg(1);
-		if(countitem(getarg(0))/@arrownum < @amount) set @amount, countitem(getarg(0))/@arrownum;
-		if(@amount > 0) goto L_End;
+	switch (select("把材料都交換","只製作一筒","我不想交換耶")) {
+	case 1:
+		set .@have,countitem(.@arr);	//矢所持數
+		set .@max,.@have/500;		//最大交換數
+		set .@price,.@max*500;		//料金
 		mes "[發明家 欽斯]";
-		mes "你並沒有準備好你需要的東西";
-		close;
-		
-	sM_0b:
-		input @amount;
-		if(@amount<1 || @amount>100) goto L_BadAmnt;
-		if(countitem(getarg(0))/@arrownum < @amount) goto L_NdArrows;
-		if(Zeny < (getarg(1)*@amount)) goto L_NdZeny;
-
-	L_End:
-		set Zeny, Zeny - (getarg(1)*@amount);
-		delitem getarg(0), (@amount*@arrownum);
-		getitem getarg(2), @amount;
+		mes "擁有的箭矢數量" +getitemname(.@arr)+ " :";
+		mes "^0000FF" +.@have+ " 個^000000";
+		mes "可以組合的箭矢筒數量" +getitemname(.@quiv)+ " :";
+		mes "^0000FF" +.@max+ " 個^000000";
+		mes "組合時需要的金幣 :";
+		mes "^0000FF" +.@price+ " Zeny^000000";
+		next;
+		mes "請問你要交換嘛?";
+		next;
+		if(select("我要交換","我不想交換耶")==2) {
+			mes "[發明家 欽斯]";
+			mes "相信我試用看看吧...";
+			mes "這真是一個偉大的發明以及偉大的發現...";
+			close;
+		}
+		break;
+	case 2:
+		set .@max,1;
+		set .@price,500;
+		break;
+	case 3:
 		mes "[發明家 欽斯]";
-		mes "完成了!";
-		mes "這是你的" +getarg(3)+ ".";
+		mes "相信我試用看看吧...";
+		mes "這真是一個偉大的發明以及偉大的發現...";
 		close;
-
-	L_NdArrows:
-		mes "[發明家 欽斯]";
-		mes "抱歉,但你需要500支箭矢與500Z我才能幫你製作箭筒.";
-		close;
-		
-	L_NdZeny:
-		mes "[發明家 欽斯]";
-		mes "你的錢不夠製作箭筒.";
-		close;
-
-	L_BadAmnt:
-		mes "[發明家 欽斯]";
-		mes "請你檢查你輸入的數字,必須為1到100.";	
-		close;
-
-L_Come:
+	}
+	delitem .@arr,.@max*500;
+	set Zeny,Zeny-.@price;
+	getitem .@quiv,.@max;
 	mes "[發明家 欽斯]";
-	mes "Please, come again whenever you want too.";
-	close;
-M_End:
-	mes "[發明家 欽斯]";
-	mes "相信我試用看看吧...";
-	mes "這真是一個偉大的發明以及偉大的發現...";
+	mes "來，這個物品請你收下吧";
+	mes "另外^0000FF有一點注意事項^000000請你記住";
+	mes "^FF0000重量超過90%的話，這箭矢筒就不能使用的";
+	mes "記得請小心不要掉了，掉了會很糟糕的。^000000";
 	close;
 }
