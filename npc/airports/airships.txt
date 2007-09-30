@@ -374,8 +374,10 @@ s_Play:
 	mes "你要選擇挑戰^FF0000打字遊戲比賽^000000啊，請你把提示的文章內容在最快的時間內，正確的輸入吧，那麼要開始了";
 	next;
 	//below arrays are for simplified entering of new lines ;P
+
 	//first lines array
-	setarray $@textstringsa$[0],"^00FFFFthkelfkskeldmsiejdlsle^0000FFhfndkelsheidl",
+	setarray $@textstringsa$[0],
+	"^00FFFFthkelfkskeldmsiejdlsle^0000FFhfndkelsheidl",
 	"^993366hfjdkeldjsieldjs^663366hfjdjeiskdlefvbd",
 	"^00FFFFCoboman no chikara-yumei na",
 	"^993366belief love luck grimace sweat rush",
@@ -387,6 +389,7 @@ s_Play:
 	"^00CCFFI'm the King of all Weirdos! Now",
 	"^00CCFFBy the power of^000000",
 	"^00CCFF...silence. quiet benevolence...";
+
 	//second lines array
 	setarray $@textstringsb$[0],"skemd",
 	"",
@@ -401,6 +404,7 @@ s_Play:
 	"p-po-poi-po-poi-poin-poing",
 	"soul mate... wonder. enigma...";
 	//for the few 3-liners... =X
+
 	setarray $@textstringsc$[0],"",
 	"",
 	"COBO ON!",
@@ -413,10 +417,12 @@ s_Play:
 	"",
 	"GOD-POING. I NEVER LOSE!",
 	"cloud.";
+
 	//comparisation strings
-	setarray $@compstring$[0],"thkelfkskeldmsiejdlslehfndkelsheidlskemd",
+	setarray $@compstring$[0],
+	"thkelfkskeldmsiejdlslehfndkelsheidlskemd",
 	"hfjdkeldjsieldjshfjdjeiskdlefvbd",
-	"Coboman no chikara-yumei na chikara-dalookii na chikara da ze! COBO ON",
+	"Coboman no chikara-yumei na chikara-dalookii na chikara da ze! COBO ON!",
 	"belief love luck grimace sweat rush folktale rodimus optimus bumblebee",
 	"callipygian salacious lascivious licentious prurient concupiscent",
 	"uNflAPPaBLe LoVaBLe SeCreTs AnD BoWLiNg aGaINST tHe KarMA of YoUtH",
@@ -426,16 +432,18 @@ s_Play:
 	"I'm the King of all Weirdos! Now you know of my true power. Obey~!",
 	"By the power of p-po-poi-po-poi-poin-poing GOD-POING. I NEVER LOSE!",
 	"...silence. quiet benevolence... soul mate... wonder. enigma... cloud";
+
 	//lengths
 	setarray $@lengths[0],20,32,73,73,65,66,67,55,67,66,67,69;
+
 	//	initnpctimer;
-	mes "[Nils]";
+	// pick 2 distinct phrases and initialize related variables
 	set @index,rand(1,getarraysize($@textstringsa$))-1;
 	set @string1a$,$@textstringsa$[@index];
 	set @string1b$,$@textstringsb$[@index];
 	set @string1c$,$@textstringsc$[@index];
 	set @typingstring1$,$@compstring$[@index];
-	set @typingkeys,$@lengths[@index];
+
 	set @index2,rand(1,getarraysize($@textstringsa$))-1;
 	while (@index2 == @index) {
 		set @index2,rand(1,getarraysize($@textstringsa$))-1;
@@ -444,8 +452,11 @@ s_Play:
 	set @string2b$,$@textstringsb$[@index2];
 	set @string2c$,$@textstringsc$[@index2];
 	set @typingstring2$,$@compstring$[@index2];
-	set @typingkeys,@typingkeys+$@lengths[@index2];
+
+	set @typingkeys,$@lengths[@index]+$@lengths[@index2];
 	set @start,gettime(3)*60*60+gettime(2)*60+gettime(1);
+
+	mes "[Nils]";
 	mes @string1a$;
 	if(@string1b$ != "")mes @string1b$;
 	if(@string1c$ != "")mes @string1c$;
