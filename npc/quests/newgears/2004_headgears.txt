@@ -1751,125 +1751,119 @@ xmas.gat,175,156,3	script	福順	712,{
 	}
 }
 
-//-------------------- 狐狸假面 --------------------
-
-//----- 狐狸版本 -----
-
-//npc "pay_dun03" "九尾狐#狐狸假面狐狸版本" NINE_TAIL 48 84 4 2 2
-
-pay_dun03.gat,48,84,4	script	九尾狐#狐狸假面狐狸版本	1180,10,10,{
-
-	if ( $@Taled == 1 ) end;
-	
-	set $@Talked,1;
-	initnpctimer  "九尾狐#NPC管理";
-	
+//Payon /=狐狸假面=/ //==Lets hope this works as it's supposed==//
+pay_dun03,48,84,4	script	九尾狐#1	1180,1,1{
 	mes "[九尾狐]";
 	mes "啃! 啃啃!";
 	mes "啃啃啃! 啃啃! 啃啃!!";
 	next;
-	menu	"在搖頭啊",L_SHAKE,
-		"在點頭啊",L_NOD;
-	close;
-L_SHAKE:
-	mes "[九尾狐]";
-	mes "啃啃! 啃! 啃!";
-	disablenpc "九尾狐#狐狸假面狐狸版本";
-	close;
+	switch(select("在搖頭啊:在點頭啊")) {
+	case 1:
+		mes "[九尾狐]";
+		mes "啃啃! 啃! 啃!";
+		close2;
+		donpcevent "九尾狐#1::OnReset";
+		end;
+	case 2:
+		emotion e_hmm;
+		close2;
+		disablenpc "九尾狐#1";
+		enablenpc "九尾狐#2";
+		end;
+	}
+
+OnInit:
+	disablenpc "九尾狐#1";
+	disablenpc "九尾狐#2";
+	monster "pay_dun03",48,84,"九尾狐",1180,1,"NT::OnMobDead";
 	end;
-		
-L_NOD:
-	disablenpc "九尾狐#狐狸假面狐狸版本";
-	enablenpc "九尾狐#狐狸假面人類別版本";
-	close;
+
+OnReset:
+	killmonster "pay_dun03","NT::OnMobDead";
+	disablenpc "九尾狐#1";
+	disablenpc "九尾狐#2";
+	initnpctimer;
+	end;
+
+OnTimer300000:
+OnSpawn:
+	stopnpctimer;
+	killmonster "pay_dun03","九尾狐#1::OnMobDead";
+	monster "pay_dun03",48,84,"九尾狐",1180,1,"NT::OnMobDead";
 	end;
 }
-
-//----- NPC管理 -----
-pay_dun03.gat,0,0,0	script	九尾狐#NPC管理	-1,{
-	end;
-OnTimer150000:
-	set $@Talked,0;
-	enablenpc "九尾狐#狐狸假面狐狸版本";
-	stopnpctimer "九尾狐#NPC管理";
+pay_dun03,48,84,1	script	NT	-1,{
+OnMobDead:
+	enablenpc "九尾狐#1";
 	end;
 }
-
-//----- 人類別版本 -----
-pay_dun03.gat,48,84,4	script	九尾狐#狐狸假面人類別版本	762,{
-
-	if ( countitem(1022) < 999 ) goto L_Fox_Mask_NOITEM;
-	
-	mes "[九尾狐]";
-	mes "歐嗚! 帶來了，人類別";
-	mes "好吧...用這個可以得救嗎!";
-	next;
-	menu	"交給他",L_GIVE,
-		"不交給他",L_KEEP;
-	close;
-	end;
-
-L_GIVE:
-	delitem 1022,999;
-	getitem 5069,1;
-	mes "[九尾狐]";
-	mes "來，拿到這個之後趕快去別的地方吧! 人類別!";
-	initnpctimer "九尾狐#NPC管理";
-	disablenpc "九尾狐#狐狸假面人類別版本";
-	close;
-	end;
-
-L_KEEP:
-	initnpctimer "九尾狐#NPC管理";
-	disablenpc "九尾狐#狐狸假面人類別版本";
-	close;
-	end;
-	
-L_Fox_Mask_NOITEM:
-	mes "[九尾狐]";
-	mes "......唉呦? 這不是人類別的男孩子模樣嗎!?!?";
-	mes "是不是變身術又失敗了呢...唉..反正";
-	next;
-	mes "[九尾狐]";
-	mes "你知道每天每天被追逐的生活，是多麼的辛苦嗎? 嗯?";
-	mes "我只想跟我老公，安安靜靜的過日子!";
-	next;
-	mes "[九尾狐]";
-	mes "某一天隨便的闖進來，對平淡過日子的我們任意的捕抓追逐，";
-	next;
-	mes "[九尾狐]";
-	mes "每天每天隔壁家的鬼女，多麼愛對我發牢騷，你知道嗎? 有些人流著口水 ";
-	mes "'哈哈，鬼女姑娘~' ";
-	mes "追逐到一半之後，把人家衣服脫掉，快要被這些人類別臭男生們氣瘋了!";
-	next;
-	mes "[九尾狐]";
-	mes "就像葡萄牙松木一樣的纖細，像繁星花一樣漂亮沒有暇疵品般的身材，為什麼人類別不瞭解呢?";
-	next;
-	mes "[九尾狐]";
-	mes "嗯...先把情緒安定下來，";
-	mes "我只想把我的老公救回來，";
-	mes "我希望你能幫我";
-	next;
-	mes "[九尾狐]";
-	mes "為了救我的老公，";
-	mes "請帶來^3333FF狐狸尾巴^000000^FF0000999^000000 ^3333FF個^000000";
-	mes "什麼? 你說太多了?";
-	next;
-	mes "[九尾狐]";
-	mes "哼，想到你對我們做的事情的話，太可惡了..";
-	mes "你們這些人類別種族沒有報償的話，不會做任何事情的，這我太瞭解了..";
-	next;
-	mes "[九尾狐]";
-	mes "嗯，好吧，我現在所戴的這假面^3333FF狐狸假面^000000 怎麼樣? 我把這個給你，請把物品找來";
-	mes "一定要^3333FF狐狸尾巴^000000^FF0000999^000000 ^3333FF個^000000啊";
-	initnpctimer "九尾狐#NPC管理";
-	disablenpc "九尾狐#狐狸假面人類別版本";
-	close;
-	end;
-
-OnInit: 
-	disablenpc "九尾狐#狐狸假面人類別版本";
-	end;
+pay_dun03,48,84,4	script	九尾狐#2	1180,{
+	if(countitem(1022)>998) {
+		mes "[九尾狐]";
+		mes "歐嗚! 帶來了，人類別";
+		mes "好吧...用這個可以得救嗎!";
+		next;
+		switch(select("交給他:不交給他")) {
+		case 1:
+			mes "[九尾狐]";
+			mes "來，拿到這個之後趕快去別的地方吧! 人類別!";
+			if(countitem(1022)>998) {
+				delitem 1022,999;
+				getitem 5069,1;
+			}
+			close2;
+			disablenpc "九尾狐#2";
+			donpcevent "九尾狐#1::OnReset";
+			end;		
+		case 2:
+			close2;
+			disablenpc "九尾狐#2";
+			donpcevent "九尾狐#1::OnReset";
+			end;
+		}
+	}
+	else {
+		mes "[九尾狐]";
+		mes "......唉呦? 這不是人類別的男孩子模樣嗎!?!?";
+		mes "是不是變身術又失敗了呢...唉..反正";
+		next;
+		mes "[九尾狐]";
+		mes "你知道每天每天被追逐的生活，是多麼的辛苦嗎? 嗯?";
+		mes "我只想跟我老公，安安靜靜的過日子!";
+		next;
+		mes "[九尾狐]";
+		mes "某一天隨便的闖進來，對平淡過日子的我們任意的捕抓追逐，";
+		next;
+		mes "[九尾狐]";
+		mes "每天每天隔壁家的鬼女，多麼愛對我發牢騷，你知道嗎? 有些人流著口水 ";
+		mes "'哈哈，鬼女姑娘~' ";
+		mes "追逐到一半之後，把人家衣服脫掉，快要被這些人類別臭男生們氣瘋了!";
+		next;
+		mes "[九尾狐]";
+		mes "就像葡萄牙松木一樣的纖細，像繁星花一樣漂亮沒有暇疵品般的身材，為什麼人類別不瞭解呢?";
+		next;
+		mes "[九尾狐]";
+		mes "嗯...先把情緒安定下來，";
+		mes "我只想把我的老公救回來，";
+		mes "我希望你能幫我";
+		next;
+		mes "[九尾狐]";
+		mes "為了救我的老公，";
+		mes "請帶來^3333FF狐狸尾巴^000000^FF0000999^000000 ^3333FF個^000000";
+		mes "什麼? 你說太多了?";
+		next;
+		mes "[九尾狐]";
+		mes "哼，想到你對我們做的事情的話，太可惡了..";
+		mes "你們這些人類別種族沒有報償的話，不會做任何事情的，這我太瞭解了..";
+		next;
+		mes "[九尾狐]";
+		mes "嗯，好吧，我現在所戴的這假面^3333FF狐狸假面^000000 怎麼樣? 我把這個給你，請把物品找來";
+		mes "一定要^3333FF狐狸尾巴^000000^FF0000999^000000 ^3333FF個^000000啊";
+		close2;
+		disablenpc "九尾狐#2";
+		donpcevent "九尾狐#1::OnReset";
+		end;
+	}
 }
 
 //-------------------- 鍾怪假面 --------------------
