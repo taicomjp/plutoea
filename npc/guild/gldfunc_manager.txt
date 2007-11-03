@@ -3,10 +3,11 @@
 //===== By: ==================================================
 //= jAthena - kalen (1.0) & eAthena Team
 //===== Current Version: =====================================
-//= 1.7
+//= 1.8
 //===== Compatible With: =====================================
-//= eAthena 0.1+; RO Episode 4+
+//= eAthena SVN; RO Episode 4+
 //===== Description: =========================================
+//= [ Aegis Conversion]
 //= The Guild Manager allows the Guildmaster to invest in comerce
 //= and defense, hire guardians and kafras, go to the treasure room,
 //= and surrender the guild castle.
@@ -31,314 +32,311 @@
 //= 1.6a Fix for guild manager recognizing [KarLaeda]
 //= 1.6b Fixed the chance for double invest, now 50% instead of 49% [Lupus]
 //= 1.7 Changed the names of the Kafra from "Service" to "Staff" [L0ne_W0lf]
-//==============================================
-function	script	F_GldManager	{
+//= 1.8 Rescripted to Aegis 10.3 standards. [L0ne_W0lf]
+//=	This update changes quite a bit of the internal workings of the guild manager.
+//=	No longer uses defined numerical values for guardian HP calculation
+//=	Guardian summon display list is now DYNAMIC. Updated with guardian corrections.
+//=	Added dialog for castle Abandoning. Commented out be default.
+//============================================================
 
-	set @GID, GetCastleData(getarg(1)+".gat",1);
-	mes "[ "+getarg(0)+" ]";
-	if (@GID == 0){
+function	script	F_GldManager	{
+	set .@GID, GetCastleData(getarg(1),1);
+
+	// Define the types of guardians on a per castle basis
+	// 1 - Soldier Guardian; 2 - Archer Guardian; 3 - Knight Guardian
+	// Aldebaran (Luina)
+	if (getarg(1) == "aldeg_cas01") setarray .@guardiantype[0],1,2,2,2,2,3,3,3;
+	if (getarg(1) == "aldeg_cas02") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
+	if (getarg(1) == "aldeg_cas03") setarray .@guardiantype[0],3,3,1,1,1,2,2,2;
+	if (getarg(1) == "aldeg_cas04") setarray .@guardiantype[0],2,2,2,1,1,1,3,3;
+	if (getarg(1) == "aldeg_cas05") setarray .@guardiantype[0],2,2,1,1,3,3,3,3;
+	// Geffen (Britoniah)
+	if (getarg(1) == "gefg_cas01") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
+	if (getarg(1) == "gefg_cas02") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
+	if (getarg(1) == "gefg_cas03") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
+	if (getarg(1) == "gefg_cas04") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
+	if (getarg(1) == "gefg_cas05") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
+	// Payon (Baulder)
+	if (getarg(1) == "payg_cas01") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
+	if (getarg(1) == "payg_cas02") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
+	if (getarg(1) == "payg_cas03") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
+	if (getarg(1) == "payg_cas04") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
+	if (getarg(1) == "payg_cas05") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
+	// Prontera (Valkyrie Realms)
+	if (getarg(1) == "prtg_cas01") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
+	if (getarg(1) == "prtg_cas02") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
+	if (getarg(1) == "prtg_cas03") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
+	if (getarg(1) == "prtg_cas04") setarray .@guardiantype[0],3,3,3,1,1,1,2,2;
+	if (getarg(1) == "prtg_cas05") setarray .@guardiantype[0],3,3,3,1,1,1,2,2;
+
+	if (.@GID == 0){
+		mes "[ "+getarg(0)+" ]";
 		mes "我在此等待我的主人... 勇趕的冒險者啊! 追隨你的命運吧!";
 		return 0;
 	}
-	if (getcharid(2) != @GID){
+	if (getcharid(2) != .@GID){
+		mes "[ "+getarg(0)+" ]";
 		mes "我追隨我的主人 ^5533FF" + getguildmaster(@GID) + "^000000 ! 嘿! 你不是這個公會的會員!!";
 		mes "守衛呢? 守衛!? 快消滅這些入侵者!";
 		return 0;
 	}
-	if (strcharinfo(0) != getguildmaster(@GID)){
-		mes "你不是 ^5533FF" + getguildmaster(@GID) + "^000000! 我只遵從 ^5533FF" + getguildmaster(@GID) + "^000000 主人的命令!";
-		return 0;
-	}
-
+	mes "[ "+getarg(0)+" ]";
 	mes "你好! 我的主人 ^5533FF" + getguildmaster(@GID) + "^000000 ! 有什麼我能為您效勞的地方嗎?";
 	next;
 
-	//Novice Castles. (we don't need ELSE here. Menu has direct labels)
-	if(getarg(1) == "nguild_prt" || getarg(1) == "nguild_alde" || getarg(1) == "nguild_gef" || getarg(1) == "nguild_pay" )
-		menu "僱用/解雇 卡普拉服務人員",M_Kaf, "進入珍寶庫房",M_Treas, "取消",M_End;
-
-	//Common WoE Castles
-	menu 	"給我做個簡報吧",M_Base, "投資商業發展",M_Comrc, "投資城堡防禦",M_Def, "設置守衛",M_Guard, 
-		"僱用/解雇 卡普拉服務人員",M_Kaf, "進入珍寶庫房",M_Treas, "取消",M_End;
-
-	//========================
-	M_Base:
-	//=========
+	// To allow abandoning of castles, uncomment the following switch,
+	// comment out the switch below it, and uncomment case 7.
+	//switch(select("Castle briefing:Invest in commercial growth:Invest in Castle Defenses:Summon Guardian:Employ / discharge a storehouse staff member:Go into Master's room:Abandon Castle")) {
+	switch(select("給我做個簡報吧:投資商業發展:投資城堡防禦:設置守衛:僱用/解雇 卡普拉服務人員:進入珍寶庫房")) {
+	case 1:
 		mes "[ "+getarg(0)+" ]";
 		mes "現在向您報告秘密基地的狀況";
 		mes " ";
-		mes "目前的商業發展程度: ^FF3322" + GetCastleData(getarg(1)+".gat",2) + "^000000";
-		mes "^0000ff - 您在過去一天之內投資了 " + GetCastleData(getarg(1)+".gat",4) + " 次^000000";
+		mes "目前的商業發展程度: ^FF3322" + GetCastleData(getarg(1),2) + "^000000";
+		if (GetCastleData(getarg(1),4) > 0)
+			mes "^0000ff - 您在過去一天之內投資了 " + GetCastleData(getarg(1),4) + " 次^000000";
 		next;
 		mes "[ "+getarg(0)+" ]";
-		mes "目前的城堡防禦程度: ^FF3322" + GetCastleData(getarg(1)+".gat",3)  + "^000000";
-		mes "^0000ff- 您在過去一天之內投資了 " +  GetCastleData(getarg(1)+".gat",5)  + " 次^000000";
+		mes "目前的城堡防禦程度: ^FF3322" + GetCastleData(getarg(1),3) + "^000000";
+		if (GetCastleData(getarg(1),5) > 0)
+			mes "^0000ff- 您在過去一天之內投資了 " + GetCastleData(getarg(1),5) + " 次^000000";
 		mes " ";
 		mes "報告完畢!";
 		return 0;
 
-	//========================
-	M_Comrc:
-	//=========
-		set @TriggerE,GetCastleData(getarg(1)+".gat",4);
-		set @Economy,GetCastleData(getarg(1)+".gat",2);
-		if(@Economy < 8) set @eco_invest,10000;
-		if(@Economy >= 8) set @eco_invest,20000;
-		if(@Economy >= 16) set @eco_invest,40000;
-		if(@Economy >= 25) set @eco_invest,80000;
-		if(@Economy >= 34) set @eco_invest,160000;
-		if(@Economy >= 44) set @eco_invest,320000;
-		if(@Economy >= 54) set @eco_invest,640000;
-		if(@Economy >= 65) set @eco_invest,1280000;
-		if(@Economy >= 76) set @eco_invest,2560000;
-		if(@Economy >= 88) set @eco_invest,5120000;
-
+	case 2:
+		set .@Economy,GetCastleData(getarg(1),2);
+		if(.@Economy < 8) set .@eco_invest,10000;
+		if(.@Economy >= 8) set .@eco_invest,20000;
+		if(.@Economy >= 16) set .@eco_invest,40000;
+		if(.@Economy >= 25) set .@eco_invest,80000;
+		if(.@Economy >= 34) set .@eco_invest,160000;
+		if(.@Economy >= 44) set .@eco_invest,320000;
+		if(.@Economy >= 54) set .@eco_invest,640000;
+		if(.@Economy >= 65) set .@eco_invest,1280000;
+		if(.@Economy >= 76) set .@eco_invest,2560000;
+		if(.@Economy >= 88) set .@eco_invest,5120000;
 		mes "[ "+getarg(0)+" ]";
-		if(@TriggerE == 2){
-			mes "^ff0000主人! 您今日投資次數已達上限! ^000000 我真希望快點看到我們的公會成長茁壯，越來越強大!";
- 			return 0;
-		}
-		if(@Economy >= 100){
-			mes "^ff0000目前此城堡的商業發展程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
-	 		return 0;
-		}
 		mes "提高商業發展程度的話，公會生產的物品數量會增加!";
 		mes "所以為了將來著想的話，這是一定要投資的啊!";
-		next;
-		mes "[ "+getarg(0)+" ]";
-		if(@TriggerE == 0) {
-			mes "您一天能投資兩次，不過第二次投資需要的金額會比較多";
-			mes "投資所需金額為 ^5533FF" + @eco_invest + "^000000 zeny.";
-		} else {
-			set @eco_invest,@eco_invest*4;
-			mes "您今天已經投資過一次了，如果想再投資一次則需要 ^5533FF" + @eco_invest + "^000000 Zeny.";
+		if (.@Economy == 100) {
+			mes " ";
+			mes "^ff0000目前此城堡的商業發展程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
+			return 0;
 		}
+		mes " ";
+		if (GetCastleData(getarg(1),4) == 2) {
+			mes "^ff0000主人! 您今日投資次數已達上限! ^000000 我真希望快點看到我們的公會成長茁壯，越來越強大!";
+			return 0;
+		}
+		else if (GetCastleData(getarg(1),4) == 0)
+			mes "您一天能投資兩次，投資所需金額為 ^5533FF" + .@eco_invest + "^000000 zeny，請問你要投資嗎?";
+		else
+			mes "您今天已經投資過一次了，如果想再投資一次則需要 ^5533FF" + .@eco_invest + "^000000 Zeny，請問你要投資嗎?";
 		next;
-		mes "[ "+getarg(0)+" ]";
-		mes "請問你要投資嗎?";
-		next;
-		menu "投資商業發展",-,"放棄",M_End;
-
+		if (select("投資商業發展:放棄") == 1) {
 			mes "[ "+getarg(0)+" ]";
-			if(Zeny < @eco_invest){
+			if (Zeny < .@eco_invest) {
 				mes "主人! 您沒有足夠的金額可以投資商業發展!";
 				return 0;
 			}
-			set Zeny,Zeny-@eco_invest;
-			SetCastleData getarg(1)+".gat",4,@TriggerE+1;
-			// if we learnt Emsolute Develop there's 50% chance to get +1 investment again
-			SetCastleData getarg(1),2,@Economy + 1 + (@Economy<99 && rand(2) && getgdskilllv(@GID,10014));
+			set zeny,zeny-.@eco_invest;;
+			SetCastleData getarg(1),4,GetCastleData(getarg(1),4)+1;
+			SetCastleData getarg(1),2,.@Economy + 1 + (.@Economy<99 && rand(2) && getgdskilllv(.@GID,10014));
 			mes "順利地完成投資了!";
 			return 0;
-
-	//=========================
-	M_Def:
-	//========
-		set @TriggerD,GetCastleData(getarg(1)+".gat",5);
-		set @Defence,GetCastleData(getarg(1)+".gat",3);
-		if(@Defence < 8) set @def_invest,20000;
-		if(@Defence >= 8) set @def_invest,40000;
-		if(@Defence >= 16) set @def_invest,80000;
-		if(@Defence >= 25) set @def_invest,160000;
-		if(@Defence >= 34) set @def_invest,320000;
-		if(@Defence >= 44) set @def_invest,640000;
-		if(@Defence >= 54) set @def_invest,1280000;
-		if(@Defence >= 65) set @def_invest,2560000;
-		if(@Defence >= 76) set @def_invest,5120000;
-		if(@Defence >= 88) set @def_invest,10240000;
-
+		}
 		mes "[ "+getarg(0)+" ]";
-		if(@TriggerD == 2){
-			mes "^ff0000主人! 您今日投資次數已達上限! ^000000 我真希望快點看到我們的公會成長茁壯，越來越強大!";
- 			return 0;
-		}
-		if(@Defence >= 100){
-			mes "^ff0000目前此城堡的城堡防禦程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
-	 		return 0;
-		}
+		mes "我將隨時聽後您的差遣! 主人!";
+		return 0;
+
+	case 3:
+		set .@Defence,GetCastleData(getarg(1),3);
+		if(.@Defence < 8) set .@def_invest,20000;
+		if(.@Defence >= 8) set .@def_invest,40000;
+		if(.@Defence >= 16) set .@def_invest,80000;
+		if(.@Defence >= 25) set .@def_invest,160000;
+		if(.@Defence >= 34) set .@def_invest,320000;
+		if(.@Defence >= 44) set .@def_invest,640000;
+		if(.@Defence >= 54) set .@def_invest,1280000;
+		if(.@Defence >= 65) set .@def_invest,2560000;
+		if(.@Defence >= 76) set .@def_invest,5120000;
+		if(.@Defence >= 88) set .@def_invest,10240000;
+		mes "[ "+getarg(0)+" ]";
 		mes "提高城堡防禦程度的話，僱用的守衛以及城堡的華麗金屬生命值將會增加!";
 		mes "所以為了城堡的安全著想的話，這是一定要投資的啊!";
-		next;
-		mes "[ "+getarg(0)+" ]";
-		if(@TriggerD == 0) {
-			mes "您一天能投資兩次，不過第二次投資需要的金額會比較多";
-			mes "投資所需金額為 ^5533FF" + @def_invest + "^000000 zeny.";
-		} else {
-			set @def_invest,@def_invest*4;
-			mes "您今天已經投資過一次了，如果想再投資一次則需要 ^5533FF" + @def_invest + "^000000 Zeny.";
+		if (.@Defence == 100) {
+			mes " ";
+			mes "^ff0000目前此城堡的城堡防禦程度以達 100 % 了，您已經不需要再加入任何投資了^000000";
+			return 0;
 		}
+		mes " ";
+		if (GetCastleData(getarg(1),5) == 2) {
+			mes "^ff0000主人! 您今日投資次數已達上限! ^000000 我真希望快點看到我們的公會成長茁壯，越來越強大!";
+			return 0;
+		}
+		else if (GetCastleData(getarg(1),5) == 0)
+			mes "您一天能投資兩次，投資所需金額為 ^5533FF" + .@def_invest + "^000000 zeny，請問你要投資嗎?";
+		else
+			mes "您今天已經投資過一次了，如果想再投資一次則需要 ^5533FF" + .@def_invest + "^000000 Zeny，請問你要投資嗎?";
 		next;
-		mes "[ "+getarg(0)+" ]";
-		mes "請問你要投資嗎?";
-		next;
-		menu "投資城堡防禦",-, "放棄",M_End;
 
+		if (select("投資城堡防禦:放棄") == 1) {
 			mes "[ "+getarg(0)+" ]";
-			if(Zeny < @def_invest){
+			if (Zeny < .@def_invest) {
 				mes "主人! 您沒有足夠的金額可以投資城堡防禦!";
 				return 0;
 			}
 			set Zeny,Zeny-@def_invest;
-			SetCastleData getarg(1)+".gat",5,@TriggerD+1;
-			SetCastleData getarg(1)+".gat",3,@Defence+1;
-			// set new hp values for guardians
-			set @Defence, @Defence + 1;
-			set @AGuardian, 28634 + (@Defence*2000);
-			set @KGuardian, 30214 + (@Defence*2000);
-			set @SGuardian, 15670 + (@Defence*2000);
-			//set @AGuardian,strmobinfo(4,1285) + (@Defence*2000);
-			//set @KGuardian,strmobinfo(4,1286) + (@Defence*2000);
-			//set @SGuardian,strmobinfo(4,1287) + (@Defence*2000);
-			if (GetCastleData(getarg(1)+".gat",10) == 1) SetCastleData getarg(1)+".gat",18,@SGuardian;
-			if (GetCastleData(getarg(1)+".gat",11) == 1) SetCastleData getarg(1)+".gat",19,@SGuardian;
-			if (GetCastleData(getarg(1)+".gat",12) == 1) SetCastleData getarg(1)+".gat",20,@SGuardian;
-			if (GetCastleData(getarg(1)+".gat",13) == 1) SetCastleData getarg(1)+".gat",21,@AGuardian;
-			if (GetCastleData(getarg(1)+".gat",14) == 1) SetCastleData getarg(1)+".gat",22,@AGuardian;
-			if (GetCastleData(getarg(1)+".gat",15) == 1) SetCastleData getarg(1)+".gat",23,@KGuardian;
-			if (GetCastleData(getarg(1)+".gat",16) == 1) SetCastleData getarg(1)+".gat",24,@KGuardian;
-			if (GetCastleData(getarg(1)+".gat",17) == 1) SetCastleData getarg(1)+".gat",25,@KGuardian;
+			SetCastleData getarg(1),5,GetCastleData(getarg(1),5)+1;
+			SetCastleData getarg(1),3,.@Defence+1;
+			set .@Defence, .@Defence + 1;
+			set .@AGuardian, strmobinfo(4,1285) + (.@Defence*2000);
+			set .@KGuardian, strmobinfo(4,1286) + (.@Defence*2000);
+			set .@SGuardian, strmobinfo(4,1287) + (.@Defence*2000);
 
+			for (set .@i, 0; .@i <= 7 ; set .@i, .@i+1) {
+				if (.@guardiantype[.@i] == 1) set .@GHP,.@SGuardian;
+				else if (.@guardiantype[.@i] == 2) set .@GHP,.@AGuardian;
+				else set .@GHP,.@KGuardian;
+				if (GetCastleData(getarg(1),(.@i + 10)) == 1) SetCastleData getarg(1),(.@i + 18),.@GHP;
+			}
 			mes "順利地完成投資了!";
 			return 0;
-
-	//=========================
-	M_Guard:
-	//=========
-		mes "[ "+getarg(0)+" ]";
-		if (getgdskilllv(@GID,10002) == 0){
-			mes "主人! 很抱歉您目前沒有辦法設置任何一個守衛! 您的公會必須具備 ^5533FF研究監護人^000000 技能才能設置守衛";
-			mes "設置守衛已經被取消.";
-			return 0;
 		}
+		mes "[ "+getarg(0)+" ]";
+		mes "我將隨時聽後您的差遣! 主人!";
+		return 0;
 
-		set @Defence,GetCastleData(getarg(1)+".gat",3);
-		set @Guardian0,guardianinfo(0);
-		set @Guardian1,guardianinfo(1);
-		set @Guardian2,guardianinfo(2);
-		set @Guardian3,guardianinfo(3);
-		set @Guardian4,guardianinfo(4);
-		set @Guardian5,guardianinfo(5);
-		set @Guardian6,guardianinfo(6);
-		set @Guardian7,guardianinfo(7);
-		set @AGuardian, 28634 + (@Defence*2000);
-		set @KGuardian, 30214 + (@Defence*2000);
-		set @SGuardian, 15670 + (@Defence*2000);
-		//set @AGuardian,strmobinfo(4,1285) + (@Defence*2000);
-		//set @KGuardian,strmobinfo(4,1286) + (@Defence*2000);
-		//set @SGuardian,strmobinfo(4,1287) + (@Defence*2000);
+	case 4:
+		set .@Defence,GetCastleData(getarg(1),3);
+		set .@AGuardian, strmobinfo(4,1285) + (.@Defence*2000);
+		set .@KGuardian, strmobinfo(4,1286) + (.@Defence*2000);
+		set .@SGuardian, strmobinfo(4,1287) + (.@Defence*2000);
 
-		//uncomment the following line to disable guardians Installation during WoE
-		//if(agitcheck()) goto L_CantGuard;
+		mes "[ "+getarg(0)+" ]";
 		mes "設置守衛的話，這些守衛可以協助抵禦外來的入侵者";
 		mes "請選擇守衛種類";
 		next;
+
+		for (set .@i, 0; .@i <= 7 ; set .@i, .@i+1) {
+			if (.@guardiantype[.@i] == 1) {
+				set .@type$,"士兵 守衛";
+				setarray .@GuardianHP[.@i],.@SGuardian;
+			}
+			else if (.@guardiantype[.@i] == 2) {
+				set .@type$,"弓箭手 守衛";
+				setarray .@GuardianHP[.@i],.@AGuardian;
+			}
+			else {
+				set .@type$,"騎士 守衛";
+				setarray .@GuardianHP[.@i],.@KGuardian;
+			}
+
+			if (GetCastleData(getarg(1),(.@i+10)))
+				setarray .@name$[.@i],"Guardian "+.@type$+" - Implemented (" + guardianinfo(.@i) + "/" + .@GuardianHP[.@i] + ")";
+			else
+				setarray .@name$[.@i],"Guardian "+.@type$+" - Not Implemented";
+		}
 	
-		menu "士兵 守衛 (" + @Guardian0 + "/" + @SGuardian + ")",L4_1,
-			"士兵 守衛 (" + @Guardian1 + "/" + @SGuardian + ")",L4_2,
-			"士兵 守衛 (" + @Guardian2 + "/" + @SGuardian + ")",L4_3,
-			"弓箭手 守衛 (" + @Guardian3 + "/" + @AGuardian + ")",L4_4,
-			"弓箭手 守衛 (" + @Guardian4 + "/" + @AGuardian + ")",L4_5,
-			"騎士 守衛 (" + @Guardian5 + "/" + @KGuardian + ")",L4_6,
-			"騎士 守衛 (" + @Guardian6 + "/" + @KGuardian + ")",L4_7,
-			"騎士 守衛 (" + @Guardian7 + "/" + @KGuardian + ")",L4_8;
-	
-		L4_1:
-			if (GetCastleData(getarg(1)+".gat",10) == 1) goto L_GotGuard;
-			set @GDnum,10;
-			set @GDnum2,18;
-			set @GuardianHP,@SGuardian;
-			goto L4_9;
-		L4_2:
-			if (GetCastleData(getarg(1)+".gat",11) == 1) goto L_GotGuard;
-			set @GDnum,11;
-			set @GDnum2,19;
-			set @GuardianHP,@SGuardian;
-			goto L4_9;
-		L4_3:
-			if (GetCastleData(getarg(1)+".gat",12) == 1) goto L_GotGuard;
-			set @GDnum,12;
-			set @GDnum2,20;
-			set @GuardianHP,@SGuardian;
-			goto L4_9;
-		L4_4:
-			if (GetCastleData(getarg(1)+".gat",13) == 1) goto L_GotGuard;
-			set @GDnum,13;
-			set @GDnum2,21;
-			set @GuardianHP,@AGuardian;
-			goto L4_9;
-		L4_5:
-			if (GetCastleData(getarg(1)+".gat",14) == 1) goto L_GotGuard;
-			set @GDnum,14;
-			set @GDnum2,22;
-			set @GuardianHP,@AGuardian;
-			goto L4_9;
-		L4_6:
-			if (GetCastleData(getarg(1)+".gat",15) == 1) goto L_GotGuard;
-			set @GDnum,15;
-			set @GDnum2,23;
-			set @GuardianHP,@KGuardian;
-			goto L4_9;
-		L4_7:
-			if (GetCastleData(getarg(1)+".gat",16) == 1) goto L_GotGuard;
-			set @GDnum,16;
-			set @GDnum2,24;
-			set @GuardianHP,@KGuardian;
-			goto L4_9;
-		L4_8:
-			if (GetCastleData(getarg(1)+".gat",17) == 1) goto L_GotGuard;
-			set @GDnum,17;
-			set @GDnum2,25;
-			set @GuardianHP,@KGuardian;
-		L4_9:
-			mes "[ "+getarg(0)+" ]";
-			mes "請問您確定要設置守衛嗎? 每設置一個守衛需要 ^5533FF10,000 zeny^000000";
-			next;
-			menu "設置守衛",-, "放棄",M_End;
-
-				if (Zeny < 10000){
-					mes "[ "+getarg(0)+" ]";
-					mes "主人! 您沒有足夠的金額可以設置守衛!";
-					return 0;
-				}
-				set Zeny,Zeny-10000;
-				SetCastleData getarg(1)+".gat",@GDnum,1;
-				SetCastleData getarg(1)+".gat",@GDnum2,@GuardianHP;
-				return 1;
-
-		L_GotGuard:
-			mes "[ "+getarg(0)+" ]";
-			mes "抱歉! 主人! 那個位置的守衛已經設置過了.....";
-			emotion 4;
-			return 0;
-		L_CantGuard:
-			mes "主人,您不知道在公會戰的時候不能設置守衛嗎!!";
-			emotion 4;
-			return 0;
-
-	//===========================
-	M_Kaf:
-	//======
-		mes "[ "+getarg(0)+" ]";
-		if (GetCastleData(getarg(1)+".gat",9) == 1) goto L_Dismiss;
-		if (getgdskilllv(@GID,10001) == 0){
-			mes "主人! 您並沒有與卡普拉總公司簽訂契約!";
-			mes "如果要僱用卡普拉服務人員的話，您的公會必須具備 ^5533FF和卡普拉訂契約^000000 技能才能僱用卡普拉服務人員";
-			return 0;
+		set .@menu$,.@name$[0]+":"+.@name$[1]+":"+.@name$[2]+":"+.@name$[3]+":"+.@name$[4]+":"+.@name$[5]+":"+.@name$[6]+":"+.@name$[7];
+		switch(select(.@menu$)) {
+		case 1: set @GDnum,10; break;
+		case 2: set @GDnum,11; break;
+		case 3: set @GDnum,12; break;
+		case 4: set @GDnum,13; break;
+		case 5: set @GDnum,14; break;
+		case 6: set @GDnum,15; break;
+		case 7: set @GDnum,16; break;
+		case 8: set @GDnum,17; break;
 		}
 
-		L_Hire:
+		mes "[ "+getarg(0)+" ]";
+		mes "請問您確定要設置守衛嗎? 每設置一個守衛需要 ^5533FF10,000 zeny^000000";
+		next;
+
+		if (select("設置守衛:放棄") == 1) {
+			mes "[ "+getarg(0)+" ]";
+			if (getgdskilllv(.@GID,10002) == 0) {
+				mes "主人! 很抱歉您目前沒有辦法設置任何一個守衛! 您的公會必須具備 ^5533FF研究監護人^000000 技能才能設置守衛";
+				mes "設置守衛已經被取消.";
+				return 0;
+			}
+			if (GetCastleData(getarg(1),@GDnum) == 1) {
+				mes "抱歉! 主人! 那個位置的守衛已經設置過了.....";
+				return 0;
+			}
+			if (Zeny < 1000) {
+				mes "主人! 您沒有足夠的金額可以設置守衛!";
+				return 0;
+			}
+			set zeny,zeny-10000;
+			set .@HP,@GDnum + 8;
+			SetCastleData getarg(1),@GDnum,1;
+			SetCastleData getarg(1),.@HP,.@GuardianHP[(@GDnum - 10)];
+			mes "順利地完成設置了!";
+			return 1;
+
+		}
+		mes "[ "+getarg(0)+" ]";
+		mes "我將隨時聽後您的差遣! 主人!";
+		return 0;
+
+	case 5:
+		if (GetCastleData(getarg(1),9) == 1) {
+			mes "[ "+getarg(0)+" ]";
+			mes "請問您要解雇卡普拉服務人員嗎?";
+			next;
+			switch(select("解雇卡普拉服務人員:取消")) {
+			case 1:
+				cutin "kafra_01",2;
+				mes "[卡普拉服務人員]";
+				mes "我做錯了什麼事嗎? 如果我有做錯事的話，能請您原諒我，再給我一次機會嗎?";
+				next;
+				switch(select("解雇:取消")) {
+				case 1:
+					mes "[卡普拉服務人員]";
+					mes "不能夠繼續為您服務真是我最大的遺憾...";
+					next;
+					cutin "kafra_01",255;
+					break;
+				case 2:
+					mes "[卡普拉服務人員]";
+					mes "I'll work hard for you... Thank you!";
+					return 0;
+				}
+				break;
+			case 2:
+				mes "[ "+getarg(0)+" ]";
+				mes "主人，我想我們應該要留下現在這位卡普拉服務人員，因為她已經竭盡所能地為我們服務了!";
+				return 0;
+			}	
+			disablenpc "卡普拉服務人員#"+getarg(4);
+			SetCastleData getarg(1),9,0;
+			mes "[ "+getarg(0)+" ]";
+			mes "....";
+			mes "卡普拉服務人員已經解雇了...不過...我們實在需要一位卡普拉服務人員來為我們服務啊!";
+			return 0;
+		}
+		else {
+			mes "[ "+getarg(0)+" ]";
 			mes "請問您想僱用一個公會專屬的卡普拉服務人員嗎? 這將需要 ^5533FF10,000 Zeny^000000 ";
 			next;
-			menu "僱用卡普拉服務人員",-,"放棄",sM_KafEnd;
-
+			if (select("僱用卡普拉服務人員:放棄") == 1) {
 				mes "[ "+getarg(0)+" ]";
-				if (Zeny < 10000){
+				if (getgdskilllv(.@GID,10001) == 0) {
+					mes "主人! 您並沒有與卡普拉總公司簽訂契約!";
+					mes "如果要僱用卡普拉服務人員的話，您的公會必須具備 ^5533FF和卡普拉訂契約^000000 技能才能僱用卡普拉服務人員";
+					return 0;
+				}
+				if (Zeny < 10000) {
+					mes "[ "+getarg(0)+" ]";
 					mes "主人! 您沒有足夠的金額可以僱用卡普拉服務人員!";
 					return 0;
 				}
 				set Zeny,Zeny-10000;
 				enablenpc "卡普拉服務人員#"+getarg(4);
-				SetCastleData getarg(1)+".gat",9,1;
+				SetCastleData getarg(1),9,1;
 				mes "成功的和卡普拉總公司簽訂契約了，您僱用了一位卡普拉服務人員!";
 				next;
 				cutin "kafra_01",2;
@@ -347,70 +345,57 @@ function	script	F_GldManager	{
 				next;
 				cutin "kafra_01",255;
 				mes "[ "+getarg(0)+" ]";
-				//mes "僱用的卡普拉服務人員將有 ^5533FF1 個月的時間^000000 在此服務，時間到了之後必須重新簽訂契約!";
-				mes "我想這位卡普拉服務人員一定能嘉惠公會會員們的!";
+				mes "僱用的卡普拉服務人員將有 ^5533FF1 個月的時間^000000 在此服務，時間到了之後必須重新簽訂契約!";
 				return 0;
+			}
+			mes "[ "+getarg(0)+" ]";
+			mes "好吧，不過我建議您盡快僱用一位卡普拉服務人員!";
+			return 0;
+		}
 
-			sM_KafEnd:
-				mes "[ "+getarg(0)+" ]";
-				mes "好吧，不過我建議您盡快僱用一位卡普拉服務人員!";
-				return 0;
-
-		L_Dismiss:
-			mes "請問您要解雇卡普拉服務人員嗎?";
-			next;
-			menu "解雇卡普拉服務人員",-,"取消",sM_KafEnd2;
-
-				cutin "kafra_01",2;
-				mes "[卡普拉服務人員]";
-				mes "我做錯了什麼事嗎? 如果我有做錯事的話，能請您原諒我，再給我一次機會嗎?";
-				next;
-				menu "解雇",-,"取消",ssM_KafEnd2;
-
-					mes "[卡普拉服務人員]";
-					mes "不能夠繼續為您服務真是我最大的遺憾...";
-					next;
-					disablenpc "卡普拉服務人員#"+getarg(4);
-					SetCastleData getarg(1)+".gat",9,0;
-					cutin "kafra_01",255;
-					mes "[ "+getarg(0)+" ]";
-					mes "卡普拉服務人員已經解雇了...不過...我們實在需要一位卡普拉服務人員來為我們服務啊!";
-					return 0;
-				ssM_KafEnd2:
-					mes "[卡普拉服務人員]";
-					mes "Thank you master, I'll do my best! ^^.";
-					cutin "kafra_01",255;
-					return 0;
-			sM_KafEnd2:
-				mes "[ "+getarg(0)+" ]";
-				mes "主人，我想我們應該要留下現在這位卡普拉服務人員，因為她已經竭盡所能地為我們服務了!";
-				return 0;
-
-	//=========================
-	M_Treas:
-	//========
+	case 6:
 		mes "[ "+getarg(0)+" ]";
 		mes "您要進入珍寶庫房嗎? 只有你，公會長，才能夠進入這個房間";
 		next;
-		menu "進入珍寶庫房",-,"取消",sM_TresEnd;
-
+		if (select("進入珍寶庫房:取消") == 1) {
 			mes "[ "+getarg(0)+" ]";
 			mes "請您跟著我穿過這條秘密走道";
 			mes "到了房間之後您必須拉下秘密機關才能再出來";
-			next;
-			warp getarg(1)+".gat",getarg(2),getarg(3);
-			return 0;
-		sM_TresEnd:
-			mes "[ "+getarg(0)+" ]";
-			mes "公會產品一天只會生產一次";
-			mes "當您有空的時候請記得盡快前往取出產品，否則他們將會自動消失!";
-			return 0;
-
-
-	//==========================
-	M_End:
-	//=======
+			warp getarg(1),getarg(2),getarg(3);
+			end;
+		}
 		mes "[ "+getarg(0)+" ]";
-		mes "我將隨時聽後您的差遣! 主人!";
+		mes "公會產品一天只會生產一次";
+		mes "當您有空的時候請記得盡快前往取出產品，否則他們將會自動消失!";
 		return 0;
+
+	//case 7:
+	//	mes "[ "+getarg(0)+" ]";
+	//	mes "Master!!";
+	//	mes "Will you give up this Castle after all that we have all gone through?!";
+	//	mes "If.. If this is your final decision, what does all the blood that has been shed mean to you!?";
+	//	mes "Please reconsider! Master!!";
+	//	next;
+	//	if (select("Leave Agit.:Cancel") == 1) {
+	//		mes "[ "+getarg(0)+" ]";
+	//		mes "Master!! Please think it over, Master!!";
+	//		mes "The blood we shed so far...don't you care for all the sacrifices that were made?!";
+	//		next;
+	//		if (select("Cancel:Leave Castle.") == 1) {
+	//			mes "[ "+getarg(0)+" ]";
+	//			mes "I knew you were kidding, Master!!";
+	//			mes "Please, Master.. Although you were kidding, don't do that again. You really scared me for a moment.";
+	//			return 0;
+	//		}
+	//		mes "[ "+getarg(0)+" ]";
+	//		mes "Master!!.....";
+	//		mes "...... Ma..s...ter.....";
+	//		callfunc "F_GuildBreak",getarg(0),getarg(4);
+	//		return 0;
+	//	}
+	//	mes "[ "+getarg(0)+" ]";
+	//	mes "I knew you were kidding, Master!!";
+	//	mes "Please, Master.. Although you were kidding, don't do that again. You really scared me for a moment.";
+	//	return 0;
+	}
 }

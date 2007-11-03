@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= [Ishizu-chan]
 //===== Current Version: =====================================
-//= 1.8
+//= 1.9
 //===== Compatible With: =====================================
 //= Any eAthena Version i guess?
 //===== Description: =========================================
@@ -20,6 +20,7 @@
 //= 1.6 Fixed experience gains to match upcoming rate adjustments. [SinSloth]
 //= 1.7 Fixed a minor bug with prevented code part from reseting properly. [SinSloth]
 //= 1.8 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
+//= 1.9 Fixed a bug in the last event which allowed an exploit after the first summoning. [SinSloth]
 //============================================================
 
 hu_fild01,140,163,5	script	進出 管理員	852,3,3,{
@@ -31,7 +32,8 @@ hu_fild01,140,163,5	script	進出 管理員	852,3,3,{
 	mes "我叫'賈泰 寧'，";
 	mes "請問需要幫忙嗎?";
 	next;
-	switch( select( "是達納托斯 塔台嗎?","我可以進入裡面嗎?","進入塔台","不用了" ) ) {
+	switch( select( "是達納托斯 塔台嗎?","我可以進入裡面嗎?","進入塔台","不用了" ) )
+	{
 		case 1:
 			mes "[賈泰]";
 			mes "是的，本塔台正是";
@@ -98,34 +100,43 @@ hu_fild01,140,163,5	script	進出 管理員	852,3,3,{
 			mes "請問你要進去嗎?";
 			mes "入場費是 ^FF00001人 5000金幣^000000.";
 			next;
-			if(select("進去","不要")==1) {
-					if(thana_quest) {
+			switch( select( "進去","不要" ) )
+			{
+				case 1:
+					if (thana_quest)
+					{
 						mes "[賈泰]";
 						mes "啊，你是"+strcharinfo(0)+"先生/小姐，";
 						mes "你是又來工作的嗎?";
 						mes "如同你聽到的一樣是 3000金幣";
 						next;
-						if(select("進去","下一次")==1) {
-							if (Zeny < 3000) {
+						switch( select( "進去","下一次" ) )
+						{
+							case 1:
+								if (Zeny < 3000)
+								{
+									mes "[賈泰]";
+									mes "啊，真抱歉，";
+									mes "不過你擁有的錢不夠支付";
+									close;
+								}
 								mes "[賈泰]";
-								mes "啊，真抱歉，";
-								mes "不過你擁有的錢不夠支付";
+								mes "謝謝你，";
+								mes "祝你有個美好的回憶...";
+								mes "那麼...";
+								set Zeny,Zeny - 3000;
+								close2;
+								warp "tha_scene01",131,220;
+								end;
+								
+							case 2:
+								mes "[賈泰]";
+								mes "那麼請你下次再來使用吧";
 								close;
-							}
-							mes "[賈泰]";
-							mes "謝謝你，";
-							mes "祝你有個美好的回憶...";
-							mes "那麼...";
-							set Zeny,Zeny - 3000;
-							close2;
-							warp "tha_scene01",131,220;
-							end;
 						}
-						mes "[賈泰]";
-						mes "那麼請你下次再來使用吧";
-						close;
 					}
-					if (Zeny < 5000) {
+					if (Zeny < 5000)
+					{
 						mes "[賈泰]";
 						mes "啊，真抱歉，";
 						mes "不過你擁有的錢不夠支付";
@@ -139,10 +150,13 @@ hu_fild01,140,163,5	script	進出 管理員	852,3,3,{
 					close2;
 					warp "tha_scene01",131,220;
 					end;
+				
+				case 2:
+					mes "[賈泰]";
+					mes "那麼請你下次再來使用吧";
+					close;
 			}
-			mes "[賈泰]";
-			mes "那麼請你下次再來使用吧";
-			close;
+		
 		case 4:
 			mes "[賈泰]";
 			mes "啊，是嗎?";
@@ -155,14 +169,16 @@ hu_fild01,140,163,5	script	進出 管理員	852,3,3,{
 
 tha_t01,149,78,4	script	服務人員	90,{
 
-	if(!thana_quest) {
+	if(!thana_quest)
+	{
 		mes "[狄材]";
 		mes "你好嗎?";
 		mes "歡迎你來到由雷根貝勒公司及";
 		mes "開放中這裡的 '達納托斯 塔台'，";
 		mes "請問需要幫忙嗎?";
 		next;
-		switch( select( "詢問有關達納托斯 塔台的事情","聽說你們在召募人..","沒事" ) ) {
+		switch( select( "詢問有關達納托斯 塔台的事情","聽說你們在召募人..","沒事" ) )
+		{
 			case 1:
 				mes "[狄材]";
 				mes "這裡 '達納托斯 塔台'，";
@@ -213,8 +229,9 @@ tha_t01,149,78,4	script	服務人員	90,{
 				mes "以現在的情況來看，過不久";
 				mes "3、4樓應該就能開發完成";
 				next;
-			L_Ask1:
-				switch( select( "魔物嗎?","清除魔物","......" ) ) {
+L_Ask1:
+				switch( select( "魔物嗎?","清除魔物","......" ) )
+				{
 					case 1:
 						mes "[狄材]";
 						mes "是的，自從我們開發";
@@ -2306,7 +2323,7 @@ thana_boss,217,167,0	script	Crest#1	111,3,3,{
 	end;
 	
 OnTouch:
-	if($@thana_summon2 == 6)
+	if($@thana_summon == 6)
 	{
 		mes "^3355FFYou cannot approach";
 		mes "the crest because it is";
@@ -2349,7 +2366,7 @@ thana_boss,202,75,0	script	Crest#2	111,3,3,{
 	end;
 	
 OnTouch:
-	if($@thana_summon2 == 6)
+	if($@thana_summon == 6)
 	{
 		mes "^3355FFYou cannot approach";
 		mes "the crest because it is";
@@ -2392,7 +2409,7 @@ thana_boss,80,76,0	script	Crest#3	111,3,3,{
 	end;
 	
 OnTouch:
-	if($@thana_summon2 == 6)
+	if($@thana_summon == 6)
 	{
 		mes "^3355FFYou cannot approach";
 		mes "the crest because it is";
@@ -2435,7 +2452,7 @@ thana_boss,62,171,0	script	Crest#4	111,3,3,{
 	end;
 	
 OnTouch:
-	if($@thana_summon2 == 6)
+	if($@thana_summon == 6)
 	{
 		mes "^3355FFYou cannot approach";
 		mes "the crest because it is";
@@ -2540,6 +2557,7 @@ OnTimer5000:
 
 OnTimer60000:
 	mapwarp "thana_boss","tha_t12",130,47;
+	set $@thana_summon2,0;
 	enablenpc "Crest#1";
 	enablenpc "Crest#2";
 	enablenpc "Crest#3";

@@ -4,9 +4,9 @@
 //= jAthena - kalen (1.0)
 //= 1.1 by Akaru, ho|yAnge|X, and Valaris
 //===== Current Version: =====================================
-//= 1.4
+//= 1.6
 //===== Compatible With: =====================================
-//= eAthena 0.1+; RO Episode 4+
+//= eAthena SVN; RO Episode 4+
 //===== Description: =========================================
 //= Flags display messages stating whether or not a guild castle has been captured.
 //= Allows the guild members to return to a captured castle.
@@ -23,37 +23,37 @@
 //= v1.3: Can now only flag in from outside the castle [Kayla]
 //= v1.3a: Implemented k3dt's exploit fix [Vicious]
 //= v1.4: By default town flags are set to no longer show text. [L0ne_W0lf]
+//= v1.5: Updated remaining dialog to iRO standards. [L0ne_W0lf]
+//= v1.6 Restructred script, and removed use of gotos. [L0ne_W0lf]
 //============================================================
 
 function	script	F_Flags	{
-
+	set .@GID, GetCastleData(getarg(1),1);
 	if (getarg(5) == 0) return;
-
-	set @GID, GetCastleData(getarg(1),1);
-	if (@GID != 0) goto L_Startg;
-
-	mes "[ 米德加茲王國公告 ]";
-	mes " ";
-	mes "1、依據神聖的盧恩-米德加茲王國" + getarg(0) + "公告令，把這裡公佈為沒有正式所有權的秘密基地。";
-	mes " ";
-	mes "2、戰勝守在這裡的，可怕的考驗之後，給破壞華麗金屬的人，國王會賜予經國王認證的,秘密基地所有權。";
-	return;
-L_Startg:
-	if ((getcharid(2) == @GID) && (getarg(4) == 1)) goto L_Startg2;
-	mes "[ 米德加茲王國公告 ]";
-	mes " ";
-	mes "1、依據神聖的盧恩-米德加茲王國公告令，這裡被認定為^ff0000" + GetGuildName(@GID) + "^000000公會的私有物。";
-	mes " ";
-	mes "2、^ff0000"+ GetGuildName(@GID) + "^000000的工會的主人是^0000ff" + GetGuildMaster(@GID) + "^000000，如果有任何人對這件事情有意見，請舉起你的劍，維護自己的名譽吧。";
-	return;
-L_Startg2:
-	mes "[ 響亮的聲音 ]";
-	mes "勇士...你要回歸屬於你的榮耀嗎，你是否現在就要回到城堡中去...?";
-	next;
-	menu "是的",M_Enter,"取消.",-;
-	return;
-
-	M_Enter:
-		if (getcharid(2) == GetCastleData(getarg(1),1)) warp getarg(1),getarg(2),getarg(3);
+	if (.@GID == 0) {
+		mes "[ 米德加茲王國公告 ]";
+		mes " ";
+		mes "1、依據神聖的盧恩-米德加茲王國" + getarg(0) + "公告令，把這裡公佈為沒有正式所有權的秘密基地。";
+		mes " ";
+		mes "2、戰勝守在這裡的，可怕的考驗之後，給破壞華麗金屬的人，國王會賜予經國王認證的,秘密基地所有權。";
 		return;
+	}
+	else {
+		if (getcharid(2) == .@GID && getarg(4) == 1) {
+			mes "[ 響亮的聲音 ]";
+			mes "勇士...你要回歸屬於你的榮耀嗎，你是否現在就要回到城堡中去...?";
+			next;
+			if (select("是的:取消") == 1) {
+				if (getcharid(2) == GetCastleData(getarg(1),1))
+					warp getarg(1),getarg(2),getarg(3);
+			}
+			return;
+		}
+		mes "[ 米德加茲王國公告 ]";
+		mes " ";
+		mes "1、依據神聖的盧恩-米德加茲王國公告令，這裡被認定為^ff0000" + GetGuildName(@GID) + "^000000公會的私有物。";
+		mes " ";
+		mes "2、^ff0000"+ GetGuildName(@GID) + "^000000的工會的主人是^0000ff" + GetGuildMaster(@GID) + "^000000，如果有任何人對這件事情有意見，請舉起你的劍，維護自己的名譽吧。";
+		return;
+	}
 }

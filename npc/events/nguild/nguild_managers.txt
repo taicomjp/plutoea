@@ -1,85 +1,173 @@
-//===== eAthena 腳本 =======================================
-//= 初學者工會城堡工會管理員
-//===== 製作: ==================================================
+//===== eAthena Script =======================================
+//= War of Emperium Managers for N Guild Castles
+//===== By: ==================================================
 //= kobra_k88
-//===== 當前版本: =====================================
-//= 1.0
-//===== 相容: =====================================
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
 //= eAthena 0.1+; RO Episode 4+
-//===== 描述: =========================================
-//= 
-//===== 附加注釋: =================================
-//= 基於現有工會腳本製作.  並不知道是否完全正確[kobra_k88]
+//===== Description: =========================================
+//=
+//==============================================
+//= Break down of arguments used in the function:
+//=   arg(0): name of Castle Manager
+//=   arg(1): name of guild castle.
+//=   arg(2): x1 coordinate for warp to treasure room
+//=   arg(3): y1 coordinate for warp to treasure room
+//=   arg(4): guild script suffix for kafra, etc.
+//===== Additional Comments: =================================
+//= 1.0 Based off existing guild scripts.  Do not know if it is accurate.[kobra_k88]
+//= 1.1 Added modified guild manager function. [L0ne_W0lf]
+//= 	Removed guardian summoning.
 //============================================================
 
+//==============================================
+function	script	F_GldManagerN	{
+
+	set @GID, GetCastleData(getarg(1),1);
+	mes "[ "+getarg(0)+" ]";
+	if (@GID == 0){
+		mes "I am waiting for my master.  Brave adventurer, follow your destiny!";
+		return;
+	}
+	if (getcharid(2) != @GID){
+		mes "I am here to follow ^5533FF" + getguildmaster(@GID) + "^000000's command! Hey! Your not even a part of the guild!!";
+		mes "Where are the guardians? Destroy these intruders!";
+		return;
+	}
+	if (strcharinfo(0) != getguildmaster(@GID)){
+		mes "You're not ^5533FF" + getguildmaster(@GID) + "^000000! I am here to follow ^5533FF" + getguildmaster(@GID) + "^000000's command only";
+		return 0;
+	}
+
+	mes "Welcome Master ^5533FF" + getguildmaster(@GID) + "^000000 ! I will assist you in any way I can!";
+	next;
+
+	menu "Kafra Staff Employment / Dismissal",M_Kaf, "Enter Treasure Room",M_Treas, "Cancel",M_End;
+
+	//===========================
+	M_Kaf:
+	//======
+		mes "[ "+getarg(0)+" ]";
+		if (GetCastleData(getarg(1),9) == 1) goto L_Dismiss;
+		if (getgdskilllv(@GID,10001) == 0){
+			mes "Master, you don't have a contract with the Kafra Staff Company.";
+			mes "In order to hire a Kafra, you must first learn the Guild skill ^5533FFContract With Kafra^000000.";
+			return;
+		}
+
+		L_Hire:
+			mes "Would you like to employ the services of a Kafra? You will need ^5533FF10,000 Zeny^000000 to do so... ";
+			next;
+			menu "Employ Kafra.",-,"Cancel",sM_KafEnd;
+
+				mes "[ "+getarg(0)+" ]";
+				if (Zeny < 10000){
+					mes "Master, you do not have enough money to employ a Kafra. Employment has been cancelled.";
+					return;
+				}
+				set Zeny,Zeny-10000;
+				enablenpc "Kafra Staff#"+getarg(4);
+				SetCastleData getarg(1),9,1;
+				mes "You have created a contract with the Kafra Staff Company.";
+				next;
+				cutin "kafra_01",2;
+				mes "[ Kafra Staff ]";
+				mes "How do you do? I'm here to provide you with helpful service! I'll do the best I can to serve you.";
+				next;
+				cutin "kafra_01",255;
+				mes "[ "+getarg(0)+" ]";
+				//mes "Your employment contract lasts ^5533FF1 month^000000.  After this term is over you will have to create a new contract.";
+				mes "I think the Kafra Staff will benefit our guild members.";
+				return;
+
+			sM_KafEnd:
+				mes "[ "+getarg(0)+" ]";
+				mes "As you wish Master.  But I suggest we get a Kafra as soon as possible!";
+				return;
+
+		L_Dismiss:
+			mes "Would you like to dismiss the current Kafra?";
+			next;
+			menu "Dismissal",-,"Cancel",sM_KafEnd2;
+
+				cutin "kafra_01",2;
+				mes "[ Kafra Staff ]";
+				mes "Have I done anything wrong? If I did, will you please forgive me?";
+				next;
+				menu "Dismiss",-,"Cancel",ssM_KafEnd2;
+
+					mes "[ Kafra Staff ]";
+					mes "It's unfortunate that I won't be able to serve your guild anymore....";
+					next;
+					disablenpc "Kafra Staff#"+getarg(4);
+					SetCastleData getarg(1),9,0;
+					cutin "kafra_01",255;
+					mes "[ "+getarg(0)+" ]";
+					mes "The Kafra has been dismissed.  But... we should really get a Kafra as soon as possible!";
+					return;
+				ssM_KafEnd2:
+					mes "[ Kafra Staff ]";
+					mes "Thank you master, I'll do my best! ^^.";
+					cutin "kafra_01",255;
+					return;
+			sM_KafEnd2:
+				mes "[ "+getarg(0)+" ]";
+				mes "Master, I think you should keep the current Kafra Staff because she is already trying her best to serve us";
+				return;
+
+	//=========================
+	M_Treas:
+	//========
+		mes "[ "+getarg(0)+" ]";
+		mes "Would you to go to our Treasure Room? Only you, the Guild Master, are allowed to enter this room.";
+		next;
+		menu "Enter Treasure room.",-,"Cancel",sM_TresEnd;
+
+			mes "[ "+getarg(0)+" ]";
+			mes "Please follow me through the secret passage way.";
+			mes "You must pull down on the secret switch in order to get out.";
+			next;
+			warp getarg(1),getarg(2),getarg(3);
+			return;
+		sM_TresEnd:
+			mes "[ "+getarg(0)+" ]";
+			mes "The goods are produced everyday.";
+			mes "You should get them whenever you can because they might dissapear if you take them at the wrong time.";
+			return;
+
+
+	//==========================
+	M_End:
+	//=======
+		mes "[ "+getarg(0)+" ]";
+		mes "As you wish, master.";
+		return;
+}
 
 // Castle 1 ==================================================================================
-nguild_alde.gat,218,175,0	script	弗若羅	55,{
-	if(callfunc("F_GldManager","弗若羅","nguild_alde",119,223,"N01") == 0) close;
-	
-	if(@GDnum==10) guardian "nguild_alde.gat",18,219,"士兵 守衛",1287,"Guardian_N01::OnGuardianDied",0;
-	if(@GDnum==11) guardian "nguild_alde.gat",117,42,"士兵 守衛",1287,"Guardian_N01::OnGuardianDied",1; 
-	if(@GDnum==12) guardian "nguild_alde.gat",207,153,"士兵 守衛",1287,"Guardian_N01::OnGuardianDied",2;
-	if(@GDnum==13) guardian "nguild_alde.gat",68,70,"弓箭手 守衛",1285,"Guardian_N01::OnGuardianDied",3;
-	if(@GDnum==14) guardian "nguild_alde.gat",187,140,"弓箭手 守衛",1285,"Guardian_N01::OnGuardianDied",4;
-	if(@GDnum==15) guardian "nguild_alde.gat",62,204,"騎士 守衛",1286,"Guardian_N01::OnGuardianDied",5;
-	if(@GDnum==16) guardian "nguild_alde.gat",113,100,"騎士 守衛",1286,"Guardian_N01::OnGuardianDied",6;
-	if(@GDnum==17) guardian "nguild_alde.gat",211,174,"騎士 守衛",1286,"Guardian_N01::OnGuardianDied",7;
-	mes "[弗若羅]";
-	mes "城堡守衛已經設置好了，他將會協助我們抵禦外來的入侵者";
+nguild_alde,218,175,0	script	弗若羅	55,{
+	callfunc "F_GldManager","弗若羅","nguild_alde",119,223,"N01";
 	close;
 }
 
 
 // Castle 2 ==================================================================================
-nguild_gef.gat,40,48,5	script	萊博	55,{
-	if(callfunc("F_GldManager","萊博","nguild_gef",155,112,"N02") == 0) close;
-
-	if(@GDnum==10) guardian "nguild_gef.gat",30,178,"士兵 守衛",1287,"Guardian_N02::OnGuardianDied",0; 
-	if(@GDnum==11) guardian "nguild_gef.gat",64,180,"士兵 守衛",1287,"Guardian_N02::OnGuardianDied",1;
-	if(@GDnum==12) guardian "nguild_gef.gat",61,25,"士兵 守衛",1287,"Guardian_N02::OnGuardianDied",2;
-	if(@GDnum==13) guardian "nguild_gef.gat",61,44,"弓箭手 守衛",1285,"Guardian_N02::OnGuardianDied",3; 
-	if(@GDnum==14) guardian "nguild_gef.gat",189,43,"弓箭手 守衛",1285,"Guardian_N02::OnGuardianDied",4; 
-	if(@GDnum==15) guardian "nguild_gef.gat",51,192,"騎士 守衛",1286,"Guardian_N02::OnGuardianDied",5; 
-	if(@GDnum==16) guardian "nguild_gef.gat",49,67,"騎士 守衛",1286,"Guardian_N02::OnGuardianDied",6; 
-	if(@GDnum==17) guardian "nguild_gef.gat",181,14,"騎士 守衛",1286,"Guardian_N02::OnGuardianDied",7;
-	mes "[萊博]";
-	mes "城堡守衛已經設置好了，他將會協助我們抵禦外來的入侵者";
+nguild_gef,40,48,5	script	萊博	55,{
+	callfunc "F_GldManager","萊博","nguild_gef",155,112,"N02";
 	close;
 }
 
 
 // Castle 3 ==================================================================================
-nguild_pay.gat,120,58,4	script	宕達	55,{
-	if(callfunc("F_GldManager","宕達","nguild_pay",290,7,"N03") == 0) close;
-
-	if(@GDnum==10) guardian "nguild_pay.gat",210,120,"士兵 守衛",1287,"Guardian_N03::OnGuardianDied",0; 
-	if(@GDnum==11) guardian "nguild_pay.gat",69,26,"士兵 守衛",1287,"Guardian_N03::OnGuardianDied",1; 
-	if(@GDnum==12) guardian "nguild_pay.gat",23,141,"士兵 守衛",1287,"Guardian_N03::OnGuardianDied",2;
-	if(@GDnum==13) guardian "nguild_pay.gat",224,87,"弓箭手 守衛",1285,"Guardian_N03::OnGuardianDied",3; 
-	if(@GDnum==14) guardian "nguild_pay.gat",81,45,"弓箭手 守衛",1285,"Guardian_N03::OnGuardianDied",4; 
-	if(@GDnum==15) guardian "nguild_pay.gat",214,53,"騎士 守衛",1286,"Guardian_N03::OnGuardianDied",5; 
-	if(@GDnum==16) guardian "nguild_pay.gat",69,26,"騎士 守衛",1286,"Guardian_N03::OnGuardianDied",6; 
-	if(@GDnum==17) guardian "nguild_pay.gat",23,141,"騎士 守衛",1286,"Guardian_N03::OnGuardianDied",7;
-	mes "[宕達]";
-	mes "城堡守衛已經設置好了，他將會協助我們抵禦外來的入侵者";
+nguild_pay,120,58,4	script	宕達	55,{
+	callfunc "F_GldManager","宕達","nguild_pay",290,7,"N03";
 	close;
 }
 
 
 // Castle 4 ==================================================================================
-nguild_prt.gat,112,181,0	script	希夫頓	55,{
-	if(callfunc("F_GldManager","希夫頓","nguild_prt",15,209,"N04") == 0) close;
-
-	if(@GDnum==10) guardian "nguild_prt.gat",196,92,"士兵 守衛",1287,"Guardian_N04::OnGuardianDied",0; 
-	if(@GDnum==11) guardian "nguild_prt.gat",113,200,"士兵 守衛",1287,"Guardian_N04::OnGuardianDied",1; 
-	if(@GDnum==12) guardian "nguild_prt.gat",111,186,"士兵 守衛",1287,"Guardian_N04::OnGuardianDied",2;
-	if(@GDnum==13) guardian "nguild_prt.gat",76,202,"弓箭手 守衛",1285,"Guardian_N04::OnGuardianDied",3; 
-	if(@GDnum==14) guardian "nguild_prt.gat",90,26,"弓箭手 守衛",1285,"Guardian_N04::OnGuardianDied",4; 
-	if(@GDnum==15) guardian "nguild_prt.gat",58,59,"騎士 守衛",1286,"Guardian_N04::OnGuardianDied",5; 
-	if(@GDnum==16) guardian "nguild_prt.gat",112,200,"騎士 守衛",1286,"Guardian_N04::OnGuardianDied",6; 
-	if(@GDnum==17) guardian "nguild_prt.gat",101,194,"騎士 守衛",1286,"Guardian_N04::OnGuardianDied",7;
-	mes "[希夫頓]";
-	mes "城堡守衛已經設置好了，他將會協助我們抵禦外來的入侵者";
+nguild_prt,112,181,0	script	希夫頓	55,{
+	callfunc "F_GldManager","希夫頓","nguild_prt",15,209,"N04";
 	close;
 }
