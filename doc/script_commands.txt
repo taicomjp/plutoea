@@ -1,21 +1,16 @@
 //===== Athena Doc ========================================
 //= eAthena Script Commands
-//===== By ================================================
-//= Fredzilla
-//===== Helped By =========================================
-//= Terminal Vertex & Z3R0 - Helped define getmapxy
-//= HappyDenn -  Gave everything to do with getpartymember 
-//=              a great help
-//= Maeki Rika - A section on general concepts and lots of
-//=              other updates and additions.
+//===== Description =======================================
+//= A reference manual for the eAthena scripting language.
+//= Commands are sorted depending on their functionality.
 //===== Version ===========================================
-//= 3.08.20071018
+//= 3.12.20071227
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
-//=       and things I have missed out
-//= 1.1 - Added better discription for "getmapxy"
-//= 1.2b- Added a description for getpartymember 
+//=       and things I have missed out [Fredzilla]
+//= 1.1 - Added better discription for "getmapxy" (by Terminal Vertex & Z3R0)
+//= 1.2b- Added a description for getpartymember (by HappyDenn)
 //=       (+few spelling mistakes corrected)
 //= 2.0 - +79kb extra stuff and numerous corrections by 
 //=       Maeki Rika.
@@ -88,9 +83,20 @@
 //=       Fixed 'duplicate' missing the target 'name' parameter! [ultramage]
 //= 3.08.20071018
 //=       Clarified how npc names work. [FlavioJS]
-//===== Description =======================================
-//= A reference manual for the eAthena scripting language,
-//= sorted out depending on their functionality.
+//= 3.09.20071103
+//=       Added script function 'strnpcinfo' [ultramage]
+//= 3.10.20071122
+//=       Added setnpcdisplay. [FlavioJS]
+//= 3.10.20071211
+//=       Added query_logsql. [Skotlex]
+//= 3.11.20071215
+//=       Updated guardianinfo and get-/setcastledata [ultramage]
+//= 3.12.20071218
+//=       Corrected various mistakes mentioned in bugreport:373 [ultramage]
+//= 3.12.20071227
+//=       Corrected description of scope and npc variables. [FlavioJS]
+//= 3.13.20080104
+//=       Updated 'setcell' desc to match latest code changes [ultramage]
 //=========================================================
 
 This document is a reference manual for all the scripting commands and functions 
@@ -386,17 +392,6 @@ The code part is the script code that will execute whenever the function is
 called with 'callfunc'. It has to be in curly brackets, unlike elsewhere where 
 we use curly brackets, these do NOT signify an optional parameter.
 
-** Alter a map cell
-
-<map name>%TAB%setcell%TAB%<type>,<x1>,<y1>,<x2>,<y2>
-
-This is sneaky, and isn't used in any official scripts, but it will let you 
-define an area (x1/y1-x2/y2 square) of a map as having cell type 'type', where 
-type is a number, which, among other things, defines whether the area is 
-walkable or not, whether it has Basilica working in it or not, and some other 
-things. This is a solution just itching for a problem and there's a number of 
-interesting things you could use it for. Further investigation on what types are 
-valid and mean what exactly is pending.
 
 Once an object is defined which has a 'code' field to it's definition, it 
 contains script commands which can actually be triggered and executed. 
@@ -493,12 +488,11 @@ local     - local to the server
 account   - attached to the account of the character identified by RID
 character - attached to the character identified by RID
 npc       - attached to the NPC
+scope     - attached to the scope of the instance
 
 Extent can be:
-permanent - Permanent NPC variables exist while the server is running.
-            Others still exist when the server resets.
-temporary - Temporary NPC variables exist while the script instance is running.
-            Others cease to exist when the server resets.
+permanent - They still exist when the server resets.
+temporary - They cease to exist when the server resets.
 
 Prefix: scope and extent
 nothing  - A permanent variable attached to the character, the default 
@@ -508,16 +502,21 @@ nothing  - A permanent variable attached to the character, the default
            'l' as a temporary variable prefix, so beware of having variable
            names starting with 'l' if you want full backward compatibility.
 "$"      - A global permanent variable.
-           They are stored in "save\mapreg.txt" file and are the only kind of
-           variables stored in a text file in the SQL version.
+           They are stored in "save\mapreg.txt" or database table `mapreg`,
+           depending on server type and the MAPREGSQL compilation flag.
 "$@"     - A global temporary variable.
            This is important for scripts which are called with no RID
            attached, that is, not triggered by a specific character object.
-"."      - A variable that exists on the NPC as long as the server is running.
-           They are only accessible from inside the NPC or by calling 
+"."      - A NPC variable.
+           They exist in the NPC and dissapear when the server restarts or the 
+           npc is reloaded. Can be accessed from inside the NPC or by calling 
            'getvariableofnpc'.
-".@"     - A temporary variable that exists until the script instance ends.
-           They are only accessible in that NPC instance.
+".@"     - A scope variable.
+           They are unique to the instance and scope. Each instance has it's 
+           own scope that ends when the script ends. Calling a function with 
+           callsub/callfunc starts a new scope, returning from the function 
+           ends it. When a scope ends, it's variables are converted to values 
+           ('return .@var;' returns a value, not a reference).
 "#"      - A permanent local account variable.
            They are stored with all the account data in "save\accreg.txt" in
            TXT versions and in the SQL versions in the 'global_reg_value'
@@ -544,10 +543,10 @@ Examples:
  $name$ - permanent global string variable
 $@name  - temporary global integer variable
 $@name$ - temporary global string variable
- .name  - permanent npc integer variable
- .name$ - permanent npc string variable
-.@name  - temporary npc integer variable
-.@name$ - temporary npc string variable
+ .name  - npc integer variable
+ .name$ - npc string variable
+.@name  - scope integer variable
+.@name$ - scope string variable
  #name  - permanent local account integer variable
  #name$ - permanent local account string variable
 ##name  - permanent global account integer variable
@@ -827,6 +826,7 @@ there are also some special labels which the script engine will start execution
 from if a special event happens:
 
 OnClock<hour><minute>:
+OnMinute<minute>:
 OnHour<hour>:
 On<weekday><hour><minute>:
 OnDay<month><day>:
@@ -864,21 +864,33 @@ This label will be executed if a trigger area is defined for the NPC object it's
 in. If it isn't present, the execution will start from the beginning of the NPC 
 code. The RID of the triggering character object will be attached.
 
-OnPCDieEvent:
-OnPCKillEvent:
-OnPCLogoutEvent:
 OnPCLoginEvent:
+OnPCLogoutEvent:
+OnPCBaseLvUpEvent:
+OnPCJobLvUpEvent:
 
-These four special labels will be invoked if you have set 'event_script_type' 
-value in your 'script_athena.conf' to 1, and you can change their names by 
-altering the configuration options in 'script_athena.conf'. It's pretty obvious 
-when those will get triggered. For more information, see 
-'npc/sample/PCLoginEvent.txt'
+It's pretty obvious when these four special labels will be invoked. For more
+information, see 'npc/sample/PCLoginEvent.txt'
+
+OnPCDieEvent:
+
+This special label triggers when a player dies. The variable 'killerrid' is
+set to the ID of the killer.
+
+OnPCKillEvent:
+
+This special label triggers when a player kills another player. The variable
+'killedrid' is set to the ID of the player killed.
+
+OnNPCKillEvent:
+
+This special label triggers when a player kills a monster. The variable
+'killedrid' is set to the Class of the monster killed.
 
 OnPCLoadMapEvent:
 
 This special label will trigger once a player steps in a map marked with the 
-'loadmap' mapflag and attach its RID. The fact that this label requires a 
+'loadevent' mapflag and attach its RID. The fact that this label requires a 
 mapflag for it to work is because, otherwise, it'd be server-wide and trigger
 everytime a player would change maps. Imagine the server load with 1,000 players
 (oh the pain...)
@@ -1458,7 +1470,7 @@ You can pass multiple arguments in a function call:
 
 getarg(0) would be 5, getarg(1) would be 4 and getarg(2) would be 3.
 
-Getarg has an optional argument since trunk r10773.
+Getarg has an optional argument since trunk r10773 and stable r10958.
 If the target argument exists, it is returned.
 Otherwise, if <default_value> is present it is returned instead, 
 if not the script terminates immediately.
@@ -1822,6 +1834,18 @@ returned when requesting that information.
 
 ---------------------------------------
 
+*strnpcinfo(<type>)
+
+This function will return the various parts of the name of the calling npc.
+Whatever it returns is determined by type.
+
+ 0 - The NPC's display name (visible#hidden)
+ 1 - The visible part of the NPC's display name
+ 2 - The hidden part of the NPC's display name
+ 3 - The NPC's unique name (::name)
+
+---------------------------------------
+
 *getarraysize(<array name>)
 
 This function returns the number of values that are contained inside the 
@@ -1919,7 +1943,7 @@ doesn't have an attached RID. Note that this will cause the map server to
 print "player not attached!" error messages, so it is preferred to use
 "playerattached" to check for the character attached to the script.
 
-if (getcharid(2)) mes "Only members of a guild are allowed beyond this point!";
+if( getcharid(2) == 0 ) mes "Only members of a guild are allowed here!";
 
 ---------------------------------------
 
@@ -2302,7 +2326,7 @@ recreate these items perfectly if they are destroyed. Here's what you get:
 @inventorylist_amount[]    - their corresponding item amounts.
 @inventorylist_equip[]     - whether the item is equipped or not.
 @inventorylist_refine[]    - for how much it is refined.
-@inventorylist_identify[]  - whether it's refined.
+@inventorylist_identify[]  - whether it is identified.
 @inventorylist_attribute[] - whether it is broken.
 @inventorylist_card1[]     - These four arrays contain card data for the items.
 @inventorylist_card2[]       These data slots are also used to store names
@@ -2811,12 +2835,12 @@ set @i, petstat(PET_CLASS);
 
 ---------------------------------------
 
-*getmonsterinfo(<item ID>,<type>)
+*getmonsterinfo(<mob ID>,<type>)
 
-This function will look up the monster with the specified ID number in the database 
-and return the info set by TYPE argument.
+This function will look up the monster with the specified ID number in the
+mob database and return the info set by TYPE argument.
 It will return -1 if there is no such item. Due to specific of MOB DB routines,
-it's better to check monster name. It'd return "Dummy" for a non-existing monster.
+it's better to check monster name. It'd return "Dummy" for a non-existing mob.
 
 Valid types are listed in const.txt:
 	MOB_NAME	0		MOB_LV	1
@@ -3166,7 +3190,7 @@ For a list of equipment slots see 'getequipid'.
 ==============================
 -------------------------
 
-*attachrid(<character ID>)
+*attachrid(<account ID>)
 *detachrid;
 
 A 'RID' is an ID of a character who caused the NPC script to run, as has been 
@@ -4853,6 +4877,13 @@ emotion will appear above each of their heads.
 
 ---------------------------------------
 
+*cmdothernpc "<npc name>","<command>";
+
+This is simply "donpcevent <npc name>::OnCommand<command>".
+It is an approximation of official server script language's 'cmdothernpc'.
+
+---------------------------------------
+
 *npctalk "<message>";
 
 This command will display a message to the surrounding area as if the NPC object 
@@ -4863,6 +4894,17 @@ complete the effect.
     // This will make everyone in the area see the NPC greet the character
     // who just invoked it.
     npctalk "Hello "+strcharinfo(0)+" how are you";
+
+---------------------------------------
+
+*setnpcdisplay("<npc name>", "<display name>", <class id>)
+*setnpcdisplay("<npc name>", "<display name>")
+*setnpcdisplay("<npc name>", <class id>)
+
+Changes the display name and/or display class of the target npc.
+Returns 0 is successful, 1 if the npc does not exist.
+
+Since trunk r11779
 
 ---------------------------------------
 \\
@@ -4880,59 +4922,34 @@ that timer.
 
 When this timer runs out, a new execution thread will start in the specified NPC 
 object at the specified label. If no such label is found in the NPC object, it 
-will run as if clicked. In either case, no RID will be attached during 
-execution.
+will run as if clicked. In either case, the script runs with no RID attached.
 
 The ticks are given in 1/1000ths of a second.
 
----------------------------------------
-
-*stoptimer;
-*inittimer;
-*enablearena;
-*disablearena;
-*cmdothernpc "<npc name?>","<command?>";
-
-This set of commands is marked as added by someone going under the nickname 
-'RoVeRT', as mentioned the source code comments, and has to do with timers and 
-scheduling working entirely unlike any other timing commands. It is not certain 
-that they actually even work properly anymore, and most of these read no 
-arguments, though the 'inittimer'/'stoptimer' pair of commands has to do 
-something with an 'OnTimer' label and will probably invoke it and 'cmdothernpc' 
-will execute starting with the label 'OnCommand'. Whatever they actually do, the 
-other commands can most likely do it better. The two arena commands definitely 
-do not do anything useful at all.
-
-None of these commands are used in any scripts bundled with eAthena. Most 
-probably they are deprecated and left in by mistake.
-
-Unless RoVeRT can be found and asked to clarify what these were made for, that 
-is.
+One more thing. These timers are stored as part of player data. If the player
+logs out, all of these get immediately deleted, without executing the script.
+If this behavior is undesirable, use some other timer mechanism (like 'sleep').
 
 ---------------------------------------
 
-*initnpctimer{ "<NPC object name>" {, <Attach Flag>} } |
-             {"<NPC object name>" | <Attach Flag> };
-*stopnpctimer{ "<NPC object name>" {, <Detach Flag>}  } |
-             { "<NPC object name>" | <Detach Flag> };
-*startnpctimer{ "<NPC object name>" {, <Attach Flag>} } |
-              { "<NPC object name>" | <Attach Flag> };
-*setnpctimer <tick>{,"<NPC object name>"};
-*getnpctimer(<type of information>{,"<NPC object name>"});
+*initnpctimer{ "<NPC name>" {, <Attach Flag>} } |
+             { "<NPC name>" | <Attach Flag> };
+*stopnpctimer{ "<NPC name>" {, <Detach Flag>}  } |
+             { "<NPC name>" | <Detach Flag> };
+*startnpctimer{ "<NPC name>" {, <Attach Flag>} } |
+              { "<NPC name>" | <Attach Flag> };
+*setnpctimer <tick>{,"<NPC name>"};
+*getnpctimer(<type of information>{,"<NPC name>"});
 *attachnpctimer {"<character name>"};
-*detachnpctimer {"<NPC object name>"};
+*detachnpctimer {"<NPC name>"};
 
-This set of commands and functions will create and manage an NPC-object based 
-timer. The NPC object may be declared by name, or the name in all cases may be 
-omitted, in that case this timer will be based in the object the current script 
-is running in.
+This set of commands and functions will create and manage an NPC-based timer.
+The NPC name may be omitted, in which case the calling NPC is used as target.
 
-Why is it actually part of an NPCs structure we aren't sure, but it is, and 
-while 'addtimer'/'deltimer' commands will let you have many different timers 
-referencing different labels in the same NPC, one each and each with their own 
-countdown, 'initnpctimer' can only have one per NPC object. But it can trigger 
-many labels and it can let you know how many were triggered already and how many 
-still remain.
+Contrary to addtimer/deltimer commands which let you have many different timers
+referencing different labels in the same NPC, each with their own countdown,
+'initnpctimer' can only have one per NPC object. But it can trigger many labels
+and let you know how many were triggered already and how many still remain.
 
 This timer is counting up from 0 in ticks of 1/1000ths of a second each. Upon 
 creating this timer, the execution will not stop, but will happily continue 
@@ -4943,27 +4960,25 @@ To create the timer, use the 'initnpctimer', which will start it running.
 'stopnpctimer' will pause the timer, without clearing the current tick, while 
 'startnpctimer' will let the paused timer continue.
 
-By default timers do not have a RID attached, which lets the timers continue even
+By default timers do not have a RID attached, which lets them continue even
 if the player that started them logs off. To attach a RID to a timer, you can
-either use the "attach flag" optional value when using initnpctimer/startnpctimer, 
-likewise, the optional flag of stopnpctimer detaches any RID after stopping
-the timer. Once a player is attached to a timer, it stays attached to all
-timers from that script until detached manually. You can have multiple
-npctimers going on at the same time as long as each one has a different player
-attached (think of each RID being used as an independant timer).
+either use the optional "attach flag" when using 'initnpctimer/startnpctimer', 
+or do it manually by using 'attachnpctimer'. Likewise, the optional flag of
+stopnpctimer lets you detach any RID after stopping the timer, and by using
+'detachnpctimer' you can detach a RID at any time.
 
-The other method to attach/detach a RID is through the script commands
-'attachnpctimer' and 'detachnpctimer'. Once attached, that will make the
-character the target for all character-referencing commands and functions,
-not to mention variables.
+Normally there is only a single timer per NPC, but as an exception, as long as
+you attach a player to the timer, you can have multiple timers running at once,
+because these will get stored on the players instead of the NPC.
+NOTE: You need to attach the RID before the timer _before_ you start it to
+get a player-attached timer. Otherwise it'll stay a NPC timer (no effect).
 
 If the player that is attached to the npctimer logs out, the "OnTimerQuit:"
 event label of that npc will be triggered, so you can do the appropiate
 cleanup (the player is still attached when this event is triggered).
 
-'setnpctimer' will explicitly set the timer to a given tick. To make it useful, 
-you will need the 'getnpctimer' function, which the type of information argument 
-means:
+The 'setnpctimer' command will explicitly set the timer to a given tick.
+'getnpctimer' provides timer information. Its parameter defines what type:
 
  0 - Will return the current tick count of the timer.
  1 - Will return 1 if there are remaining "OnTimer<ticks>:" labels in the 
@@ -5001,30 +5016,7 @@ Example 1:
 Example 2:
 
     OnTimer15000:
-        set $quote,rand(5);
-        if($quote == 0) goto Lquote0;
-        if($quote == 1) goto Lquote1;
-        if($quote == 2) goto Lquote2;
-        if($quote == 3) goto Lquote3;
-        if($quote == 4) goto Lquote4;
-    Lquote0:
-        npctalk "If 0 is randomly picked you will see this";
-        setnpctimer 0;
-        end;
-    Lquote1:
-        npctalk "If 1 is randomly picked you will see this";
-        setnpctimer 0;
-        end;
-    Lquote2:
-        npctalk "If 2 is randomly picked you will see this";
-        setnpctimer 0;
-        end;
-    Lquote3:
-        npctalk "If 3 is randomly picked you will see this";
-        setnpctimer 0;
-        end;
-    Lquote4:
-        npctalk "If 4 is randomly picked you will see this";
+	npctalk "Another 15 seconds have passed.";
         setnpctimer 0;
         end;
        
@@ -5273,6 +5265,8 @@ It's not clear what happens to a waiting room if the NPC is disabled with
 
 *enablewaitingroomevent {"<NPC object name>"};
 *disablewaitingroomevent {"<NPC object name>"};
+*enablearena;
+*disablearena;
 
 This will enable and disable triggering the waiting room event (see 
 'waitingroom') respectively. Optionally giving an NPC object name will do that 
@@ -5285,6 +5279,10 @@ accordingly.
 Normally, whenever a waiting room was created to make sure that only one 
 character is, for example, trying to pass a job quest trial, and no other 
 characters are present in the room to mess up the script.
+
+The 'enablearena'/'disablearena' commands are just aliases with no parameter.
+These are supposedly left here for compatibility with official server scripts,
+but no eathena script uses these at the moment.
 
 ---------------------------------------
 
@@ -5496,14 +5494,16 @@ set the things up that only castle guardians need.
 
 ---------------------------------------
 
-*guardianinfo(<guardian number>)
+*guardianinfo("<map name>", <guardian number>, <type>)
 
-This function will return the current hit point value for the specified guardian 
-number, if such guardian is currently installed. This function will only work if 
-the invoking character is on a castle map, and will refer only to the guardians 
-of that castle, regardless of anything else, i.e. whether the character is a 
-member of the guild owning the castle, etc, etc.
-If no guardian is installed in this slot, the function will return -1.
+This function will return various info about the specified guardian, or -1
+if it fails for some reason. It is primarily used in the castle manager npc.
+
+Map name and guardian number (value between 0 and 7) define the target.
+Type indicates what information to return:
+ 0 - visibility (whether the guardian is installed or not)
+ 1 - max. hp
+ 2 - current hp
 
 ---------------------------------------
 //
@@ -5914,6 +5914,7 @@ set @i, distance(100,200,101,202);
 ---------------------------------------
 
 *query_sql "your MySQL query", <array variable> {,<array variable>, ...};
+*query_logsql "your MySQL query", <array variable> {,<array variable>, ...};
 
 Puts up to 128 rows of values into the arrays and returns the number of rows.
 
@@ -5928,6 +5929,9 @@ mes "5."+@name$[4]+"("+@fame[4]+")";
 
 Note: In the TXT version it doesn't fill the array and always return -1.
 Note: Use $ as suffix in the array to receive all data as text.
+Note: The difference between query_sql and query_logsql is that the latter
+uses the sql connection to the log database, and should be used when you want
+to query the server log tables.
 
 ---------------------------------------
 
@@ -6104,6 +6108,46 @@ invoking character.
 This will recalculate the homunculus stats acording to its level, of the 
 current invoking character.
 
+---------------------------------------
+
+*setcell "<map name>",<x1>,<y1>,<x2>,<y2>,<type>,<flag>;
+
+Each map cell has several 'flags' that specify the properties of that cell.
+These include terrain properties (walkability, shootability, presence of water),
+skills (basilica, land protector, ...) and other (npc nearby, no vending, ...).
+Each of these can be 'on' or 'off'. Together they define a cell's behavior.
+
+This command lets you alter these flags for all map cells in the specified
+(x1,y1)-(x2,y2) rectangle. The 'flag' can be 0 or 1 (0:clear flag, 1:set flag).
+The 'type' defines which flag to modify. Possible options include cell_walkable,
+cell_shootable, cell_basilica. For a full list, see const.txt.
+
+Example:
+
+	setcell "arena",0,0,300,300,cell_basilica,1;
+	setcell "arena",140,140,160,160,cell_basilica,0;
+	setcell "arena",135,135,165,165,cell_walkable,0;
+	setcell "arena",140,140,160,160,cell_walkable,1;
+
+This will add a makeshift ring into the center of the map. The ring will be
+surrounded by a 5-cell wide 'gap' to prevent interference from outside, and
+the rest of the map will be marked as 'basilica', preventing observers from
+casting any offensive skills or fighting among themselves. Note that the wall
+will not be shown nor known client-side, which may cause movement problems.
+
+Another example:
+
+OnBarricadeDeploy:
+	setcell "schg_cas05",114,51,125,51,cell_walkable,0;
+	end;
+OnBarricadeBreak:
+	setcell "schg_cas05",114,51,125,51,cell_walkable,1;
+	end;
+
+This could be a part of the WoE:SE script, where attackers are not allowed
+to proceed until all barricades are destroyed. This script would place and
+remove a nonwalkable row of cells after the barricade mobs.
+	
 ---------------------------------------
 Whew.
 That's about all of them.
