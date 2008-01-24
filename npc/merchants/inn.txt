@@ -210,3 +210,36 @@ ra_in01.gat,376,69,4	script	飯店 職員#Annie	931,{
 		close;
 	}
 }
+
+ve_in.gat,157,219,5	script	旅館 主人	709,{
+	mes "[旅館 主人]";
+	mes "您好~";
+	mes "歡迎您來到在菲音斯裡最涼快的旅館~";
+	next;
+	switch(select("儲存位置","休息後再走 - 5000z","結束")) {
+	case 1:
+		savepoint "ve_in.gat",157,210;
+		mes "[旅館 主人]";
+		mes "謝謝你的利用";
+		mes "願菲依雅女神保佑你有個快樂的一天!";
+		close;
+	case 2:
+		if(Zeny<5000) {
+			mes "[旅館 主人]";
+			mes "顧客您的錢不夠喔!";
+			mes "休息一次要5000金幣";
+			close;
+		}
+		mes "[旅館 主人]";
+		mes "請您好好休息";
+		close2;
+		set Zeny,Zeny-5000;
+		warp "ve_in",184,228;
+		percentheal 100,100;
+		end;
+	case 3:
+		mes "[旅館 主人]";
+		mes "歡迎再度光臨~";
+		close;
+	}
+}
