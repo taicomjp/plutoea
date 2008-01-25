@@ -1,169 +1,127 @@
 //===== eAthena Script ======================================= 
-//= Yuno City
+//= Juno City
 //===== By: ================================================== 
-//= KitsuneStarwind, kobra_k88
+//= KitsuneStarwind, kobra_k88, L0ne_W0lf
 //===== Current Version: ===================================== 
-//= 1.3.2
+//= 1.4a
 //===== Compatible With: ===================================== 
-//= eAthena 7.15 +
+//= eAthena SVN
 //===== Description: ========================================= 
-//=
+//= [Aegis Conversion]
+//= NPCs for the City of Juno
 //===== Additional Comments: ================================= 
 //= Added additional npcs.  Added Metto quest. [kobra_k88]
 //= Moved item quest to quest folder. Re-edited a majority of the npcs. [kobra_k88]
-//= Removed duplicate npcs already found in the sage quest.
+//=a Removed duplicate npcs already found in the sage quest.
 //= Fixed & Spellchecked [massdriller]
 //= 1.3 Started updating Juno NPCs based on iRO. 10% complete.
 //= 1.3.2 Started updating Juno NPCs based on iRO. 30% complete.
+//= 1.3.3 Removed Noyee	NPC (it's implemented in sleipnir_seal.txt)
+//= 1.4 Updated to Aegis 10.3 standards. [L0ne_W0lf]
+//=	Added Juno Airship Representative.
+//= 1.4a Corrected a Typo error (bugreport:716) [Samuray22]
+//============================================================ 
+//Metto任務 移至 quest/quests_yuno.txt
+//三大賢者任務由於任務資料不齊全所以暫時保留舊版對話
+//多數NPC 對話內容未知
+//保留舊版兩位NPC [智者 伊斯卡拉] [青年婦女]
+//移除 [Airship Representative] <--EA用來替代飛空艇用 
 //============================================================ 
 
-
-yuno.gat,330,100,4	script	Knight	734,{
-	mes "[Leibech]";
-	mes "I have a great";
-	mes "interest in collecting";
-	mes "unique and uncommon";
-	mes "goods. You know, things";
-	mes "that most people see just";
-	mes "once in their lifetimes.";
-	next;
-	mes "[Leibech]";
-	mes "I usually use the";
-	mes "Alchesh Trading Company.";
-	mes "to help add to my collection.";
-	mes "Their prices aren't the cheapest,";
-	mes "but their service is very";
-	mes "reliable.";
-	close;
-}
-
-//======================================================================================
-yuno.gat,208,164,4	script	Active little girl	101,{
-	mes "[Hisa]";
-	mes ".....";
-	mes "This town is so boring.";
-	mes "No events, no festivals...";
-	mes "All people do all day is stay";
-	mes "at home and study. How dull!";
-	close;
-}
-
-//======================================================================================
-yuno.gat,184,173,4	script	印象者	729,{
-	mes "[印象者]";
-	mes "學者之城,朱諾是由三個島所組成的.";
-	next;
-	mes "[印象者]";
-	mes "它們是,";
-	mes "榮耀之島 - 所羅門";
-	mes "繁榮之島 - 米那特";
-	mes "智慧之島 - 斯諾塔拉";
-	next;
-	mes "[印象者]";
-	mes "每個島的位置是:";
-	mes "西北: 所羅門";
-	mes "東北: 斯諾塔拉";
-	mes "男方: 米那特";
-	close;
-}
-
-//======================================================================================
-yuno.gat,157,87,4	script	尤諾市民	102,{
-	mes "[漢斯]";
-	mes "如果你從阿爾帕蘭向北走,就會到達'高原'.";
-	mes "這是一片曾經被熔岩和火山覆蓋的地方.";
-	next;
-	mes "[漢斯]";
-	mes "在連接著高原山脈的最頂端,那裡有一座橋,它將引導著你前往朱諾.";
-	next;
-	mes "[漢斯]";
-	mes "這裡就是朱諾,你在這裡可以參觀到許多著名的地方諸如:";
-	mes "^5533FF'尤配擂斯'";
-	mes "'尤諾會議大廳'";
-	mes "'魔法學院'^000000";
-	mes "and the ^5533FF'怪物博物館'^000000";
-	next;
-	mes "[漢斯]";
-	mes "^5533FF'賢者城堡'^000000 也是這個城市最吸引人的地方.";
-	mes "每個以賢者為自己夢想的人都會造訪那裡";
-	next;
-	mes "[漢斯]";
-	mes "如果你也有興趣成為賢者,那為何不去那裡看看呢?";
-	close;
-}
-
-//=======================================================================================
-yuno.gat,157,205,4	script	工匠	54,{
-	mes "[工匠]";
-	mes "~(自言自語.......)~";
-	next;
-	mes "[工匠]";
-	mes "你好啊. 我先自我介紹一下,我是朱諾城裡的工匠,有什麼需要我幫助的嗎?";
-	next;
-	menu "關於強力裝備.",M_1,"關於特殊道具",M_2,"關於回復道具",M_3,"結束對話",M_End;
-	
-	M_1: 
-		mes "[工匠]";
-		mes "我向你建議 ^5533FF聖耀之盾^000000 和 ^5533FF神聖復仇者之劍^000000.這兩件裝備";
-		mes "它們重量非常輕而且很卓越.";
+// Juno
+// Freidrich#juno
+//============================================================ 
+yuno,184,173,4	script	印象者#juno	729,{
+	if (rand(1,5) == 1) {
+		mes "[印象者]";
+		mes "^3355FFJuno^000000 is kept aloft in the air by an ancient and mysterious force.";
 		next;
-		mes "[工匠]";
-		mes "因為自身附帶的聖屬性使得它們在防禦不死系和惡魔系的惡魔時表現十分優越,";
+		mes "[印象者]";
+		mes "This power is said to come from a relic from an ancient civilization called ^3355FFJuperos^000000 which existed here long before Juno.";
 		next;
-		mes "[工匠]";
-		mes "當然咯,因為它們十分珍貴,所以也不是被太多人輕易接受.";
-		close;
-		
-	M_2:
-		mes "[工匠]";
-		mes "據我所知有一件道具,人們總是叫它們 ^5533FF'老舊的魔法卷軸'^000000.";
-		mes "上面記錄了許多失傳已久的古魔法...... ";
-		next; 
-		mes "[工匠]";
-		mes "千萬不要因為它破破爛爛而小瞧它, 它對賢者的魔法研究大有幫助.";
-		mes "事實上也正是因為有了它,許多賢者才能放出各種高等級的法術.";
-		close;
-	
-	M_3:
-		mes "[工匠]";
-		mes "^5533FF'年糕'^000000!! 許多年來一直被人們所喜愛的食物.";
-		mes "品嚐它的時候,人們總是會懷念起昔日熙攘的市場和充滿溫馨的集市.";
+		mes "[印象者]";
+		mes "Research revealed that Juno's power source based on ^3355FFPieces of Ymir's Heart^000000. I hear that this power source is found where Juperos used to exist.";
 		next;
-		mes "[工匠]";
-		mes "年糕啊.....我真希望我現在能吃上幾快..............";
-		//possible quest here .. not sure though
+		mes "[印象者]";
+		mes "Since many scholars have been coming to Juno to study and research this power source, our city is basically a well known mecca for scholars.";
 		close;
-		
-	M_End:
-		mes "[工匠]";
-		mes "雖然朱諾被人稱作賢者之城,..............";
-		mes "但是還有許多善良的人們在這裡過著平凡的生活.";
+	}
+	else {
+		mes "[印象者]";
+		mes "學者之城,朱諾是由三個島所組成的.";
 		next;
-		mes "[工匠]";
-		mes "那麼就請你盡情享受這座獨特的城市吧.";
+		mes "[印象者]";
+		mes "它們是,";
+		mes "榮耀之島 - 所羅門";
+		mes "繁榮之島 - 米那特";
+		mes "智慧之島 - 斯諾塔拉";	
+		next;
+		mes "[印象者]";
+		mes "每個島的位置是:";
+		mes "西北: 所羅門";
+		mes "東北: 斯諾塔拉";
+		mes "南方: 米那特";
 		close;
+	}
 }
-
-//======================================================================================
-yuno.gat,336,227,4	script	尤諾奶奶	103,{
+//Juno Granny#juno	
+yuno,337,227,4	script	朱諾奶奶#juno	103,{
 	mes "[奶奶]";
-	mes "我是一位能預見未來的賢者.";
-	next;
-	mes "[奶奶]";
-	mes "閣下是否聽聞過一種boss怪物？它的名字在這片大陸上已經在這裡流傳很久了.";
-	mes "它就是 ^FF3355'黑暗之王'^000000.  傳言它是從不死王國來到了這片大陸.";
-	next;
-	mes "[奶奶]";
-	mes "每每伴隨它出現的是許多不死系的怪物，他們席捲而來，帶來寒冷、冰凍和死亡。";
-	next;
-	mes "[奶奶]";
-	mes "我想閣下已經做好了是否和它戰鬥的決定了.";
-	mes "留下唯一能做的事向世人說明閣下為何做出這樣的決定...";
-	close;
+	if (rand(1,50) == 1) {
+		if (Zeny > 999) {
+			mes "So, do you enjoy candy?";
+			next;
+			mes "^3355FF奶奶 hands you some candy^000000.";
+			next;
+			mes "[奶奶]";
+			mes "You've already chosen. It doesn't matter whether or not you get this candy. That doesn't matter at all. You have to understand why it's happened.";
+			next;
+			mes "[奶奶]";
+			mes "Here's ^3355FF1,000 zeny^000000.";
+			mes "Do you accept this?";
+			next;
+			if (select("Accept:Do not accept") == 1) {
+				mes "[奶奶]";
+				mes "*Giggle*";
+				mes "There you go~";
+				set zeny,zeny-1000;
+				getitem 529,1; //Candy
+				next;
+				mes "[奶奶]";
+				mes "*Giggle*";
+				mes "Well then...";
+				mes "See you ~";
+				close;
+			}
+			mes "[奶奶]";
+			mes "Yes, that's right. Now you must ask yourself why you didn't accept the candy I offered.";
+			close;
+		}
+		else {
+			mes "*Giggle giggle*";
+			mes "The time has come.";
+			mes "Well then...";
+			close;
+		}
+	}
+	else {
+		mes "我是一位能預見未來的賢者.";
+		next;
+		mes "[奶奶]";
+		mes "閣下是否聽聞過一種boss怪物?它的名字在這片大陸上已經在這裡流傳很久了.";
+		mes "它就是 ^FF3355'黑暗之王'^000000.  傳言它是從不死王國來到了這片大陸.";
+		next;
+		mes "[奶奶]";
+		mes "每每伴隨它出現的是許多不死系的怪物，他們席捲而來，帶來寒冷、冰凍和死亡";
+		next;
+		mes "[奶奶]";
+		mes "我想閣下已經做好了是否和它戰鬥的決定了.";
+		mes "留下唯一能做的事向世人說明閣下為何做出這樣的決定...";
+		close;
+	}
 }
-
-//========================================================================================
-yuno.gat,328,239,4	script	尤諾鬥士	732,{
+//Juno Fighter#juno
+yuno,328,239,4	script	尤諾鬥士#juno	732,{
 	mes "[史葛甫]";
 	mes "我叫史葛甫,我還是奶奶的保護者.";
 	next;
@@ -178,10 +136,21 @@ yuno.gat,328,239,4	script	尤諾鬥士	732,{
 	mes "....不好意思，我現在有點事情要離開了......再見......";
 	close;
 }
-
-//========================================================================================
-yuno.gat,343,68,4	script	尤諾暴君	730,{
+//Juno Despot#juno
+yuno,343,68,4	script	朱諾暴君#juno	730,{
 	mes "[尼諾]";
+	if (rand(1,1000) == 1) {
+		mes "You are very lucky to have me tell you this story. This only happens by ^FF33551 out of a 1,000 chance^000000.";
+		next;
+		mes "[尼諾]";
+		mes "This world you are experiencing is actually fabricated! It's time for you to see reality for what it is!";
+		next;
+		mes "[尼諾]";
+		mes "Open your eyes! Stop being manipulated by virtual reality!";
+		close2;
+		warp "prontera",182,206;
+		end;
+	}
 	mes "你聽過法老王的故事嗎?人們曾一度認為它是神的寵兒.";
 	mes "它的名字是 ^5533FF'法老王'^000000";
 	next;
@@ -193,51 +162,171 @@ yuno.gat,343,68,4	script	尤諾暴君	730,{
 	mes "你有沒有看見過這個可怕的人呢?";
 	close;
 }
-
-//=======================================================================================
-yuno.gat,261,99,4	script	克拉	735,{
-		mes "[克拉]";
-		mes "^5533FFYuphero^000000......,";
-		mes "這是一個古老的城市,許多有智慧有才能的人都居住在那裡.";
+//Juno Sage#juno
+yuno,165,111,4	script	賢者#juno		123,{
+	mes "[力摩普斯]";
+	if (rand(1,50) == 25) {
+		if (Zeny > 4999) {
+			mes "Look in my hand. I am holding two different kinds of herbs.";
+			next;
+			mes "[力摩普斯]";
+			mes "One is a ^3355FFBlue Herb^000000 which will make you forget about reality and keep you in this virtual reality^000000.";
+			next;
+			mes "[力摩普斯]";
+			mes "The other is a ^FF3355Red Herb^000000 which will reveal to you what is true and real.";
+			next;
+			mes "[力摩普斯]";
+			mes "Whichever one you choose, you must spend ^3355FF5,000 zeny^000000. Now, please select one.";
+			next;
+			if (select("Choose ^FF3355Red Herb^000000:Choose ^3355FFBlue Herb^000000.") == 1) {
+				mes "[力摩普斯]";
+				mes "As you have chosen, you will forget everything, and remain in this virtual reality.";
+				set zeny,zeny-5000;
+				getitem 507,1; //Red_Herb
+				close2;
+				warp "prontera",182,206;
+				end;
+			}
+			mes "[力摩普斯]";
+			mes "You will see the truth.";
+			set zeny,zeny-5000;
+			getitem 510,1; //Blue_Herb
+			close2;
+			warp "pay_dun03",200,222;
+			end;
+		}
+		else {
+			mes "Hmm. I'm sorry to say you just missed a fortunate chance. However, I can tell you don't have enough wealth to bring this fortune to fruition.";
+			close;
+		}
+	}
+	else {
+		mes "'預言'. 是人工製造的生命體,";
+		mes "自朱諾出現古文明以來它擔負起城市守衛的首領的職責,並且維護著這個城市的秩序";
 		next;
-		mes "[克拉]";
-		mes "自從發現了能控制依美曼心臟力量的方法之後,所以這個城市也就成了大陸中最發達的城市了.";
+		mes "[力摩普斯]";
+		mes "...它和機器人一樣.在長久的存在了一段期間之後,";
+		mes "它無法清楚的辨別敵人與朋友,";
 		next;
-		mes "[克拉]";
-		mes "然而,隨著時間慢慢的推移,人們開始濫用依美曼心臟的力量,最終這力量也就毀滅了他們自己.";
-		next;
-		mes "[克拉]";
-		mes "一旦你發現自己也擁有這種力量的時候,一定要謙遜地對待它.";
-		next;
-		mes "[克拉]";
-		mes "因為不懂謙卑的力量不是完美的.";
+		mes "[力摩普斯]";
+		mes "... 它變成了攻擊人的魔物..";
 		close;
+	}
+}
+//Juno Artisan#juno	
+yuno,157,205,4	script	工匠#juno	54,{
+	mes "[工匠]";
+	mes "你好啊. 我先自我介紹一下,我是朱諾城裡的工匠,有什麼需要我幫助的嗎?";
+	next;
+	switch(select("關於強力裝備:關於特殊道具:關於回復道具:結束對話")){
+		case 1:
+			mes "[工匠]";
+			mes "我向你建議 ^5533FF'聖耀之盾' 和 '神聖復仇者之劍'^000000.這兩件裝備";
+			mes "它們重量非常輕而且很卓越.";
+			next;
+			mes "[工匠]";
+			mes "因為自身附帶的聖屬性使得它們在防禦不死系和惡魔系的惡魔時表現十分優越,";
+			next;
+			mes "[工匠]";
+			mes "當然咯,因為它們十分珍貴,所以也不是被太多人輕易接受.";
+			close;
+		case 2:
+			mes "[工匠]";
+			mes "據我所知有一件道具,人們總是叫它們 ^5533FF'老舊的魔法卷軸'^000000.";
+			mes "上面記錄了許多失傳已久的古魔法..... ";
+			next; 
+			mes "[工匠]";
+			mes "千萬不要因為它破破爛爛而小瞧它, 它對賢者的魔法研究大有幫助.";
+			mes "事實上也正是因為有了它,許多賢者才能放出各種高等級的法術.";
+			close;
+		case 3:
+			mes "[工匠]";
+			mes "^5533FF'年糕'^000000!! 許多年來一直被人們所喜愛的食物.";
+			mes "品嚐它的時候,人們總是會懷念起昔日熙攘的市場和充滿溫馨的集市.";
+			next;
+			mes "[工匠]";
+			mes "年糕啊....我真希望我現在能吃上幾快...........";
+			close;
+		case 4:	
+			mes "[工匠]";
+			mes "雖然朱諾被人稱作賢者之城,...........";
+			mes "但是還有許多善良的人們在這裡過著平凡的生活.";
+			next;
+			mes "[工匠]";
+			mes "那麼就請你盡情享受這座獨特的城市吧.";
+			close;
+		}
+}
+//==================================
+// 三大賢者任務(由於任務內容不齊全~所以暫時保留舊版對話)
+//==================================
+yuno.gat,157,87,4	script	朱諾市民	102,{
+	mes "[漢斯]";
+	mes "如果你從阿爾帕蘭向北走,就會到達'高原'.";
+	mes "這是一片曾經被熔岩和火山覆蓋的地方.";
+	next;
+	mes "[漢斯]";
+	mes "在連接著高原山脈的最頂端,那裡有一座橋,它將引導著你前往朱諾.";
+	next;
+	mes "[漢斯]";
+	mes "這裡就是朱諾,你在這裡可以參觀到許多著名的地方諸如:";
+	mes "^5533FF'尤配擂斯'";
+	mes "'尤諾會議大廳'";
+	mes "'魔法學院'^000000";
+	mes "還有 ^5533FF'魔物博物館'^000000";
+	next;
+	mes "[漢斯]";
+	mes "^5533FF'賢者城堡'^000000 也是這個城市最吸引人的地方.";
+	mes "每個以賢者為自己夢想的人都會造訪那裡";
+	next;
+	mes "[漢斯]";
+	mes "如果你也有興趣成為賢者,那為何不去那裡看看呢?";
+	close;
 }
 
-//=========================================================================================
+yuno.gat,261,99,4	script	智者 宜酷拉	735,{
+	mes "[宜酷拉]";
+	mes "^5533FF優沛擂斯^000000......,";
+	mes "這是一個古老的城市,許多有智慧有才能的人都居住在那裡.";
+	next;
+	mes "[宜酷拉]";
+	mes "自從發現了能控制依美曼心臟力量的方法之後,所以這個城市也就成了大陸中最發達的城市了.";
+	next;
+	mes "[宜酷拉]";
+	mes "然而,隨著時間慢慢的推移,人們開始濫用依美曼心臟的力量,最終這力量也就毀滅了他們自己.";
+	next;
+	mes "[宜酷拉]";
+	mes "一旦你發現自己也擁有這種力量的時候,一定要謙遜地對待它.";
+	next;
+	mes "[宜酷拉]";
+	mes "因為不懂謙卑的力量不是完美的.";
+	close;
+}
+
 yuno.gat,306,207,6	script	智者 克拉	735,{
-		mes "[克拉]";
-		mes "有個非常危險的人住在這裡.";
-		mes "聽說他在進行某些邪惡的研究.";
-		next;
-		mes "[克拉]";
-		mes "人們都懼怕地叫他'瘋子科學家',他花了大量的時間在沒人會懂的邪惡的研究上";
-		next;
-		mes "[克拉]";
-		mes "在朱諾城外你會看到一種怪物";
-		mes "它用火球和火箭瘋狂地攻擊它能看到的任何生物.";
-		next;
-		mes "[克拉]";
-		mes "這種可怕的生物讓朱諾的居民們震驚.";
-		mes "除了這種怪的本身,還有更另人害怕是那個瘋子科學家製造了這種怪物...";
-		next;
-		mes "[克拉]";
-		mes "很難想像如果他不停止他的研究的話~~~天知道還會有什麼更可怕的怪物會被製造出來...";
-		close;
+	mes "[克拉]";
+	mes "有個非常危險的人住在這裡.";
+	mes "聽說他在進行某些邪惡的研究.";
+	next;
+	mes "[克拉]";
+	mes "人們都懼怕地叫他'瘋子科學家',他花了大量的時間在沒人會懂的邪惡的研究上";
+	next;
+	mes "[克拉]";
+	mes "在朱諾城外你會看到一種怪物";
+	mes "它用火球和火箭瘋狂地攻擊它能看到的任何生物.";
+	next;
+	mes "[克拉]";
+	mes "這種可怕的生物讓朱諾的居民們震驚.";
+	mes "除了這種怪的本身,還有更另人害怕是那個瘋子科學家製造了這種怪物...";
+	next;
+	mes "[克拉]";
+	mes "很難想像如果他不停止他的研究的話~~~天知道還會有什麼更可怕的怪物會被製造出來...";
+	close;
 }
-
-//==========================================================================================
-yuno.gat,213,298,4	script	智者 伊斯卡拉	735,{
+//==================================
+// 冥王EA rev 80 的舊版NPC
+//==================================
+yuno.gat,163,328,4	script	智者 伊斯卡拉	735,{
 	mes "[伊斯卡拉]";
 	mes "我記得曾經見過它~~對~~我想起來了 ";
 	mes "一張薄薄的紙漂浮在空中.我還問自己'誰把紙頭亂丟啊'.";
@@ -268,44 +357,6 @@ yuno.gat,213,298,4	script	智者 伊斯卡拉	735,{
 	close;
 }
 
-
-
-//======================================================================================
-yuno.gat,166,111,4	script	力摩普斯	120,{
-	mes "[力摩普斯]";
-	mes "'預言'. 是人工製造的生命體,";
-	mes "自朱諾出現古文明以來它擔負起城市守衛的首領的職責,並且維護著這個城市的秩序";
-	close;
-	mes "[力摩普斯]";
-	mes "....它和機器人一樣.在長久的存在了一段期間之後,";
-	mes "它無法清楚的辨別敵人與朋友,";
-	mes "所以,在不能分辨是敵是友的情況下.....";
-	close;
-	mes "[力摩普斯]";
-	mes ".... 它變成了攻擊人的魔物..";
-	close;
-}
-
-//=====================================================================================
-yuno.gat,184,173,4	script	印象者#2	729,{
-	mes "[印象者]";
-	mes "學者之城,尤諾是由三個島所組成的.";
-	next;
-	mes "[印象者]";
-	mes "它們是,";
-	mes "榮耀之島 - 所羅門";
-	mes "繁榮之島 - 米那特";
-	mes "智慧之島 - 斯諾塔拉";
-	next;
-	mes "[印象者]";
-	mes "每個島的位置是:";
-	mes "西北: 所羅門";
-	mes "東北: 斯諾塔拉";
-	mes "男方: 米那特";
-	close;
-}
-
-//=====================================================================================
 yuno.gat,80,150,4	script	青年婦女	746,{
 	mes "[青年婦女]";
 	mes "你有看到過這樣美麗的城市嗎?";
@@ -321,288 +372,106 @@ yuno.gat,80,150,4	script	青年婦女	746,{
 	close;
 }
 
-
-//===================================================================================================//
-//						米托 Quest
-//===================================================================================================//
-
-//========================================================================	
-yuno_in03.gat,25,39,3	script	米托	709,{
-	mes "[米托]";
-	if(metto_q == 2 || metto_q == 4 || metto_q == 6) goto L_Check;
-	if(metto_q == 1) goto L_Stang;
-	if(metto_q == 3) goto L_Kato;
-	if(metto_q == 5) goto L_Cici;
-	if(metto_q == 7) goto L_Ruined;
-	if(metto_q > 7) goto L_Done;
-	mes "不管今日明日還是將來,我要把我所有的時間都用來研究.";
-	mes "我生命的全部就是潛心研究並製造...";
+//==================================
+//	朱諾士兵
+//==================================
+//Juno Soldier#juno
+yuno,150,283,4	script	朱諾士兵#juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
 	next;
-	mes "[米托]";
-	mes "嶄新的尤諾,我自己的王國.為了達到這個目的,我必須弄清楚為什麼這個城市漂浮在空中.";
-	mes "如果我做到的話,實現我的目標就將不會再是霧裡看花,而即將成為現實!!";
+	mes "[朱諾士兵]";
+	mes "熔岩巨石魔物是石頭人不小心被石心岩漿捲入增加魔法力量的魔物.";
+	mes "...從身上流下來的岩漿...";
 	next;
-	mes "[米托]";
-	mes "那個^5544FF瓦干^000000 根本看不起我的研究...";
-	mes "但是他還沒有意識到我的靈感是來自神靈的!";
-	close;
-
-L_Stang:
-	mes "我現在要找我的同事 ^5533FF斯堂克勒^000000 幫我了. 我確信他一定會心甘情願幫我這樣一個老朋友的忙的.";
+	mes "[朱諾士兵]";
+	mes "那高熱可以把用鐵做成的鎧甲和武器全部融化掉.";
+	mes "若沒考慮清楚就去攻擊它會造成相當大的傷害,";
 	next;
-	mes "[米托]";
-	mes "恩恩.... 如果得到這個傢伙的幫助,這個世界也輕易被我改變.神啊,我企求你,一定要讓我們成功!!";
-	set metto_q, 2;
-	close;
-L_Kato:
-	mes "什麼? 斯堂克勒 竟然到愚蠢不肯幫我了?......沒關係,儘管這樣,我的研究進度也只是稍微減慢而已.";
-	mes ".........我現在該做什麼?!?!?";
-	emotion e_swt2;
-	next;
-	mes "[米托]";
-	mes "我還有個備用的計劃.  我確信我的朋友和同事 ^5533FF卡特^000000 會幫我一把的.";
-	next;
-	mes "[米托]";
-	mes "只要我掌握了他的'Great Z'機器人的方案,我就能繼續我的研究了...";
-	next;
-	mes "[米托]";
-	mes "斯堂克勒會幫我敞開他的大門.而且,更何況就算沒有他幫我,我的研究也能繼續進行下去.";
-	next;
-	mes "[米托]";
-	mes "我對這個年輕的朋友報著很大的希望~~啊哈哈哈!!!";
-	set metto_q, 4;
-	emotion e_gg;
-	close;
-L_Cici:
-	mes "什麼!?!?就在我正需要'Great Z'的時候你卻跑過來對我說它已經被卡特親手~~~毀滅了!?!?";
-	emotion e_wah;
-	next;
-	mes "[米托]";
-	mes "不!!!! 為什麼?? 怎麼可能?? 他為什麼要這麼做? 難道神在詛咒我嗎?!?";
-	emotion e_an;
-	next;
-	mes "[米托]";
-	mes "等.... 我需要冷靜下來...";
-	mes "如果我能得到 ^5533FF斯斯^000000 教授的發動機理論的幫助,我一定能完成我的研究...";
-	next;
-	mes "[米托]";
-	mes "(歎氣) 我還有希望.... 是的,我還有!! HAHAHA!!!"; 
-	set metto_q, 6;
-	emotion e_gg;
-	close;
-L_Check:
-	mes "我最好馬上去檢查一下發生了什麼事情....你為什麼還在這裡??";
-	mes "我馬上要離開了,我要準備一下.你為什麼不在我前面穿好衣服先出去??";
-	close;
-L_Ruined:
-	mes "............................";
-	next;
-	mes "[米托]";
-	mes "這樣的事情怎麼可能發生?? 我最好的3個同事在同一個時間拋棄了我?!?!";
-	mes "這真的是~~天~~要亡我嗎??我已經崩潰了!!!";
-	emotion 28;
-	next;
-	mes "[米托]";
-	mes "我還能做什麼? 難道已經到了讓我放棄這個實驗的時間了嗎....";
-	mes "那麼多年,那麼多年的研究就附之一炬了嗎........";
-	emotion e_sob;
-	next;
-	mes "[米托]";
-	mes "你一定很失望吧,但是請忘記....我發生的一切....忘記有我這個人...";
-	mes "究竟是誰在背後暗算我?? 那些心懷險惡的人竟然如此殘忍地讓一個人的夢破滅掉!!";
-	next;
-	mes "[米托]";
-	mes "我好累...也許是時候我該放棄了...一切都結束了. 請不要太失望...";
-	set metto_q, 8;
-	close;
-L_Done:
-	mes "看來我應該換一個工作了.最近大家似乎都在流行換工作.我對前景感到迷茫?";
-	mes "但是我唯一知道的是,我不會再當一個科學家了.";
-	next;
-	mes "[米托]";
-	mes "我不再做任何研究了...";
+	mes "[朱諾士兵]";
+	mes "和武器防御具也會受到傷害 ~.";
 	close;
 }
-
-//=====================================================================
-yuno_in01.gat,18,95,5	script	斯堂克勒	99,{
-	mes "[斯堂克勒]";
-	if(metto_q > 2) goto L_Done;
-	if(metto_q == 2) goto L_Start;
-	mes "我是生活在這個城市中的一位科學家.我叫 ^5533FF斯堂克勒^000000.";
-	mes "記住我的名字哦,將來一定會對你有用的.我可能會發明許多另人難以置信的創造.  Who knows, I may just invent something incredible.";
-	close;
-L_Start:
-	mes "要我幫忙請快點說?我的同僚米托馬上就要來我這裡了,我沒有太多時間了.";
-	mes "告訴我你有什麼需要??";
+//Juno Soldier#2juno	
+yuno,165,283,4	script	朱諾士兵#2juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
 	next;
-	menu "我想和你談談米托!!",-, "沒有什麼啦!",M_End;
-
-		mes "[斯堂克勒]";
-		mes "......................";
-		next;
-		mes "[斯堂克勒]";
-		mes "..................................";
-		next;
-		mes "[斯堂克勒]";
-		mes "這些是真的嗎??米托並不是把我作為他的夥伴,而僅僅是在利用我是嗎?";
-		mes "他竟然只把我作為他的一個助手,卻不斷地從我這裡剽竊我的發明和創造?!!";
-		emotion e_omg;
-		next;
-		mes "[斯堂克勒]";
-		mes "我竟然不敢相信我竟然如此地信任他....果然這些傳聞是真的 .... 他的確是個又自私又偏執的瘋子!!!";
-		mes "我竟然如此信任這樣一個卑鄙的傢伙!!";
-		emotion e_pif;
-		next;
-		mes "[斯堂克勒]";
-		mes "我再也不想見到他那張虛偽的臉了...";
-		next;
-		mes "[斯堂克勒]";
-		mes "我很高興像你這樣一個正直的值得信任的人把米托真實而醜陋的面目告訴我.";
-		mes "謝謝你把這些情況通報給我.";
-		next;
-		mes "[斯堂克勒]";
-		mes "請原諒,我現在有些事情不得不做.";
-		set metto_q, 3;
-		close;
-	M_End:
-		mes "[斯堂克勒]";
-		mes "你還在這裡幹什麼？浪費我的時間嗎?.";
-		emotion e_swt;
-		close;
-L_Done:
-	mes "畢竟米托真的是一個瘋子....我想他是最終會作出那個決定的人...";
+	mes "[朱諾士兵]";
+	mes "`邪惡向日葵', 長在地上面在許多花中突起的魔物.";
+	mes "因為它延伸的很長實時在很遠的地方也不能安心啊";
+	next;
+	mes "[朱諾士兵]";
+	mes "路過的地理學家在研究途中被這魔物吃掉了所以才會取到這樣的名字";
 	close;
 }
-
-//===================================================================
-yuno_in03.gat,179,43,5	script	斯斯	121,{
-	mes "[斯斯]";
-	if(metto_q > 6) goto L_Done;
-	mes "我叫 ^5533FF斯斯^000000. 我是這個城市中^5533FF3 最偉大的科學家之一 ^000000.";
-	mes "雖然這個城市中還有其他偉大的科學家,但是能成為頂尖3箇中的1個,難道不是件無尚光榮的事情嗎?";
-	if(metto_q == 6) goto L_Start;
-	close;
-
-L_Start:
+//Juno Soldier#3juno	
+yuno,227,292,4	script	朱諾士兵#3juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
 	next;
-	mes "[斯斯]";
-	mes "抱歉我大概有點太自負了,請為有什麼讓我為你效勞的嗎?";
+	mes "[朱諾士兵]";
+	mes "在朱諾 附近有一個叫 '偽天使' 假稱天使的傢伙存在.";
 	next;
-	menu "米托想讓我告訴你說.....",-, "沒什麼啦,別介意.",M_End;
-
-		mes "[斯斯]";
-		mes "什麼?? 米托他竟然說他不需要我的理論??? 他竟然敢這樣說!!!";
-		emotion e_pif;
-		next;
-		mes "[斯斯]";
-		mes "我一定要給他點教訓讓他知道什麼才是真正的科學家和真正的充滿智慧的研究!!";
-		emotion e_ag;
-		next;
-		mes "[斯斯]";
-		mes "... 無論如何...我再也不會給他的任何研究提供必要的設備了";
-		mes "他再也沒有什麼機會了.";
-		next;
-		mes "[斯斯]";
-		mes "去告訴他,我不會在幫他的研究出一丁點力了.";
-		mes "他再也做不出什麼另人矚目的研究了...";
-		set metto_q, 7;
-		close;
-
-	M_End:
-		mes "[斯斯]";
-		mes "什麼?只有這些?你簡直在浪費我的時間...";
-		emotion e_swt;
-		close;
-
-L_Done:
-	mes "恩...我想要改善一下發動機,但是我缺少必要的幫助,真頭痛啊.....";
-	mes "米托已經不再幫我了,越來越麻煩了...";
+	mes "[朱諾士兵]";
+	mes "假裝是個天使,假裝給你祈福,對沒有警覺心的旅行者,從背後攻擊,是屬於攻擊性魔物.";
+	mes "被漂後的模樣上當的話會倒大霉的.";
 	close;
 }
-
-//===================================================================
-yuno_in01.gat,18,30,3	script	瓦干	85,{
-	mes "[瓦干]";
-	if(metto_q > 0) goto L_Check;
-	mes "我確信你應該知道我們的城市已經存在了有好多年歷史了吧.";
-	mes "我們應該感激那些潛心在這裡研究他們存在的人們.";
+//Juno Soldier#4juno	
+yuno,165,228,4	script	朱諾士兵#4juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
 	next;
-	mes "[瓦干]";
-	mes "讓我們現在能夠享受到如此精彩的生活.";
-	mes "他們在一起工作,互相協作.";
+	mes "[朱諾士兵]";
+	mes "'Goat' is a monster that was an antelope living in the high mountains that was somehow turned into a monster.";
 	next;
-	mes "[瓦干]";
-	mes "但是不幸的是,總是有那麼幾個'壞蘋果'在裡面,造成許多麻煩.";
+	mes "[朱諾士兵]";
+	mes "Even if you manage to dodge to its horns, you still need to be wary of its powerful legs.";
 	next;
-	mes "[瓦干]";
-	mes "這些人讓我煩惱!";
-	emotion e_an;
-	next;
-	mes "[瓦干]";
-	mes "他們總是認為只有他們自己還有他們那些瘋狂的舉動才能幫助別人.";
-	mes "此外還有少部分自私的人. ^FF3333'米托'^000000 就是他們當中最壞的.";
-	next;
-	mes "[瓦干]";
-	mes "他除了破壞公共設施、干擾別人正常的生活以外什麼都不會做.";
-	next;
-	mes "[瓦干]";
-	mes "...這個混蛋只知道做這種事情,還想用研究來證明他做的是對的!!!!";
-	mes "他已經喪失理智了,應該滾得遠遠的!!!!!";
-	emotion e_ag;
-	next;
-	mes "[瓦干]";
-	mes "如果有辦法能阻止這個瘋子破壞我們社區的話...";
-	mes "我希望有人能夠有能力有勇氣去阻止 ^FF3333米托's^000000 的愚昧的舉動.......";
-	next;
-	menu "讓我去阻止它吧.",-, "我希望你們的城能夠從他的魔爪中倖存下來...",M_End;
-
-		mes "[瓦干]";
-		mes "哦?? 你真的肯幫我們阻止米托嗎?如果你肯這樣做的話,整個城市都會感激你的...";
-		mes "但是你用什麼計劃來完成這個相當困難的任務呢?";
-		emotion e_what;
-		next;
-		menu "是啊,非常困難....",M_End, "我現在正在想辦法...",-;
-
-			mes "[瓦干]";
-			mes "是啊,有必要的話你用個惡作劇來阻止他吧,把他和他邪惡的實驗分開就好辦了...";
-			mes "比如...";
-			next;
-			mes "[瓦干]";
-			mes "... 破壞他的實驗,讓它看上去注定要失敗的.";
-			mes "他很囉嗦,一旦有人問及關於他實驗的事情他就會喋喋不休.";
-			next;
-			mes "[瓦干]";
-			mes "讓我再仔細考慮一下這個計劃...";
-			set metto_q, 1;
-			close;
-	M_End:
-		mes "[瓦干]";
-		mes "當一切都發生時我們只好寄希望命運是站在我們這邊的....";
-		mes "仔細想想的話... 米托 在命運面前是個虔誠的信徒,如果我們能利用這點的話,或許會成為我們的優勢...";
-		close;
-L_Check:
-	if(metto_q == 8) goto L_Thank;
-	if(metto_q == 9) goto L_Done;
-	mes "破壞米托的實驗吧,怎麼樣?這個計劃應該行得通的.";
-	mes "我很抱歉把你捲入到我們城市的爭端中來,不過我們會感激你為我們做的一切.";
+	mes "[朱諾士兵]";
+	mes "Goat's legs are so strong because it's always climbing cliffs when it's not busy slaughtering the innocent.";
 	close;
-L_Thank:
-	mes "難以至信,你真的破壞掉米托的研究了?我不知對你說什麼感激的話才好.";
-	mes "沒有了米托的破壞的話,我想我們不用再擔心什麼了.";
-	emotion e_ic;
+}
+	
+//Juno Soldier#5juno	
+yuno,150,228,4	script	朱諾士兵#5juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
 	next;
-	mes "[瓦干]";
-	mes "這個城市的人民感謝你.這是一點小小的意思,無論如何都請不要拒絕....";
+	mes "[朱諾士兵]";
+	mes "Have you ever";
+	mes "seen a Large Jellopy?";
+	mes "Those things are huuuge!";
 	next;
-	mes "[瓦干]";
-	mes "再次感謝.我希望你為我們所做的能給我們的未來帶來好運!!!";
-	getitem 715,10;
-	emotion e_thx;
-	set metto_q, 9;
+	mes "[朱諾士兵]";
+	mes "It's hard to believe";
+	mes "that such a large and";
+	mes "shining jellopy even exists!";
 	close;
-L_Done:
-	mes "米托已經完蛋了.再次感謝你的幫助..";
-	emotion e_thx;
+}
+//Juno Soldier#6juno	
+yuno,334,182,4	script	朱諾士兵#6juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
+	next;
+	mes "[朱諾士兵]";
+	mes "Among the Sage's weapons, there is a 'Dagger of Counter.'";
+	next;
+	mes "[朱諾士兵]";
+	mes "Its use is limited to the Sage class, and it increases the chance of inflicting critical attacks. So, for Sages, that dagger can be very useful, as well as make them look stylish in battle.";
+	close;
+}	
+//Juno Soldier#7juno	
+yuno,263,320,4	script	朱諾士兵#7juno	105,{
+	mes "[朱諾士兵]";
+	mes "歡迎來到智慧無處不在的賢者之城";
+	next;
+	mes "[朱諾士兵]";
+	mes "歡迎各位來到朱諾";
+	next;
+	mes "[朱諾士兵]";
+	mes "據稱`大天使之盾' 是十字軍的專用裝備.";
+	mes " 神聖的盾牌是較長的菱形盾牌,中間有象徵天使翅膀的圖樣.特別是對付不死系惡魔型的魔物時發揮較大的威力 ...";
 	close;
 }
