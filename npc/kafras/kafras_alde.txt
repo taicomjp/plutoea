@@ -2,23 +2,15 @@
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // ---------------------------------
-// - 卡普拉腳本 - 改寫自JA
-//----------------------------------
-// < 艾爾帕蘭 >
-//----------------------------------
+// - 艾爾帕蘭 卡普拉腳本 - 
+//===================================
+// 版本：2.3a
+//===================================
 
-aldebaran.gat,143,119,4	script	卡普拉服務人員::kaf_aldebaran	113,{
+// Kafra Main Office (Kafra Leilah) ------------------------------------
+aldeba_in,96,181,4	script	Kafra Service	113,{
 	cutin "kafra_05",2;
-	setarray @code,3,13,2,9;
-	setarray @price,1200,1200,1800,1700;
-	callfunc "KafraMain",0,0x5f,"aldebaran.gat",167,112,"NULL",0,0,40,800,@code,@price;
-	end;
-}
-
-// 卡普拉總公司
-aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
-	cutin "kafra_05",2;
-	mes "[卡普拉 克拉麗絲]";
+	mes "[Kafra Leilah]";
 	mes "Hm...?";
 	mes "Oh, welcome to";
 	mes "the Kafra Corporation";
@@ -27,14 +19,14 @@ aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
 	next;
 	switch(select("Save:Use Storage:Rent a Pushcart:Cancel")) {
 	case 1:
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "Your Respawn Point has";
 		mes "been saved here, inside";
 		mes "of the Kafra Corporation";
 		mes "Headquarters. Thank you.";
 		next;
 		savepoint "aldeba_in",96,179;
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "Please make use of";
 		mes "the Kafra Services that are";
 		mes "available throughout all of";
@@ -44,32 +36,33 @@ aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
 		break;
 	case 2:
 		if (zeny < 20) {
-			mes "[卡普拉 克拉麗絲]";
+			mes "[Kafra Leilah]";
 			mes "Excuse me, but it";
 			mes "seems that you don't";
 			mes "have the 20 zeny to pay";
 			mes "the Storage access fee...";
 		}
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "Although this facility is";
 		mes "exclusively intended for";
-		mes "the training of Kafra Employee";
+		mes "the training of 卡普拉服務人員";
 		mes "and administrative functions,";
 		mes "I'll access your Storage for you.";
 		next;
 		set zeny,zeny-20;
 		set RESRVPTS, RESRVPTS + (20/5);
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "In the future, please";
-		mes "ask the Kafra Employee on";
+		mes "ask the 卡普拉服務人員 on";
 		mes "duty if you wish to use";
 		mes "any of the Kafra Services.";
 		mes "Thank you for your patronage.";
+		callfunc("F_CheckKafCode");    //check your storage password, if set
 		close2;
 		openstorage;
 		break;
 	case 3:
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "My apologies, but I'm";
 		mes "not on duty. I'd assist you";
 		mes "if I could, but actually don't";
@@ -77,8 +70,8 @@ aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
 		mes "Why don't you ask another Kafra";
 		mes "Employee for assistance?";
 		next;
-		mes "[卡普拉 克拉麗絲]";
-		mes "Kafra Employees are";
+		mes "[Kafra Leilah]";
+		mes "卡普拉服務人員s are";
 		mes "stationed all over the";
 		mes "Rune Midgard continent,";
 		mes "and you should be able to find";
@@ -86,7 +79,7 @@ aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
 		close2;
 		break;
 	case 4:
-		mes "[卡普拉 克拉麗絲]";
+		mes "[Kafra Leilah]";
 		mes "^666666*Whew...*^000000";
 		mes "Great, because I'm";
 		mes "actually on my break";
@@ -98,4 +91,22 @@ aldeba_in.gat,96,181,4	script	卡普拉服務中心	113,{
 	}
 	cutin "",255;
 	end;
+}
+
+// Central --------------------------------------------------
+aldebaran,143,119,4	script	卡普拉服務人員::kaf_aldebaran	113,{
+	cutin "kafra_05",2;
+	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
+	setarray @wrpP[0], 1200, 1200, 1800, 1700;
+	setarray @wrpD$[0], "吉芬", "朱諾" , "依斯魯得島", "妙勒尼 廢棄礦場";
+	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
+	set @wrpC$[1], @wrpD$[1]+" -> "+@wrpP[1];
+	set @wrpC$[2], @wrpD$[2]+" -> "+@wrpP[2];
+	set @wrpC$[3], @wrpD$[3]+" -> "+@wrpP[3];
+	set @wrpC$[4], "取消";
+	callfunc "F_Kafra",0,0,1,20,600;
+
+	M_Save:
+		savepoint "aldebaran",143,109;
+		callfunc "F_KafEnd",0,1,"in the city of Al De Baran";
 }

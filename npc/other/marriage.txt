@@ -410,7 +410,7 @@ prt_church.gat,100,128,4	script	教主	60,{
 			detachrid;
 		}
 		if(attachrid(getcharid(3,.groom$))) {
-			announce "寶瑪樂絲："+.groom$+" 君對 "+.bride$+" 小姐提出結婚的要求了",9;
+			announce "寶瑪樂絲:"+.groom$+" 君對 "+.bride$+" 小姐提出結婚的要求了",9;
 			mes "[寶瑪樂絲]";
 			mes "總而言之..你會照顧她一輩子吧?";
 			mes "來點發誓性質的詞語吧XD...";
@@ -418,7 +418,7 @@ prt_church.gat,100,128,4	script	教主	60,{
 			mes "["+strcharinfo(0)+"]";
 			mes "我願意承受接納 "+.bride$+" 做我的妻子，誠實遵照上帝的旨命，和他生活在一起";
 			next;
-			announce "寶瑪樂絲：現在應該換問女方了，讓我來聽聽 "+.bride$+" 小姐的意思如何吧?",9;
+			announce "寶瑪樂絲:現在應該換問女方了，讓我來聽聽 "+.bride$+" 小姐的意思如何吧?",9;
 			mes "[寶瑪樂絲]";
 			mes "現在應該換問女方了，我要聽聽她的意見";
 			set .flag,2;
@@ -491,16 +491,19 @@ prt_church.gat,100,128,4	script	教主	60,{
 		end;
 	}
 	set .@dummy,marriage(.groom$);
-	getitem 2635,1,0;
-	getitem 2634,1,getcharid(3,.groom$);
+	wedding;
+	sc_start SC_Wedding,60000000,1;
+	getitem 2635,1;
+	attachrid(getcharid(3,.groom$));
+	sc_start SC_Wedding,60000000,1;
+	getitem 2634,1;
+	detachrid;
+	attachrid(getcharid(3,.bride$));
 	set .flag,0;
 	set @event_marry,0;
-	sc_start SC_WEDDING,3600000000,0;
-	sc_start SC_WEDDING,3600000000,0,getcharid(3,.groom$);
-	wedding;
 	stopnpctimer;
-	announce "寶瑪樂絲：那麼我在此宣佈，祝賀你們成為夫妻!",9;
-	announce "寶瑪樂絲："+.groom$+" 和 "+.bride$+" 的婚禮完成了!",9;
+	announce "寶瑪樂絲:那麼我在此宣佈，祝賀你們成為夫妻!",9;
+	announce "寶瑪樂絲:"+.groom$+" 和 "+.bride$+" 的婚禮完成了!",9;
 	mes "[寶瑪樂絲]";
 	mes "祝你們幸福..";
 	close2;

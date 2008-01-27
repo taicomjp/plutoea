@@ -1,193 +1,233 @@
-// 精鍊腳本
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041201.0.1	
-//			20050204.0.1	修正 Material Salesmen 部分 NPC 名字的敘述
-//			20050210.0.1	修正華麗金屬鐵砧為不販賣
-//					修正部分 close;end; 敘述 為 close;
-//			20050302.0.1	修正賣強化金屬 NPC 某些對話不顯示 NPC 名字的問題
-//
-// 參考腳本:		Robert 蝴蝶君 2004-3-12 Mail:robert_st@21cn.com
-//
-// 修改部分:		repairmain 敘述簡化 (By Dino9021)
-// deepin[DDT] 2005/12/26更新到EA 腳本 1.6
-//
-//============================================================
-//===== eAthena Script =======================================
-//= Refining NPCs
-//===== By: ==================================================
-//= Syrus22 (1.1) dafide18 (1.4) Skotlex (1.5)
-//===== Current Version: =====================================
-//= 2.1
-//===== Compatible With: =====================================
-//= Any Athena Version
-//===== Description: =========================================
-//= Refining NPCs and Metal Salesmen.
-//===== Additional Comments: =================================
-//= 1.0 - by A bunch of people!
-//= Syrus22 - Completely redid the script using functions... also
-//= added the option for auto safe refining and multiple refining.
-//= 1.1 Negative input bug fixed [Lupus]
-//= 1.2 Added additional reparimen in morroc and payon.  Added
-//= Christopher the blacksmith in Geffen.  Edited some dialogue [kobra_k88]
-//= 1.3 New Payon Locations [Darkchild]
-//=       Corrected zeny subtraction thx to jpnmania77.[kobra_k88]
-//= 1.3a - Temporary corrected an exploit. Need to check sources
-//=        to fully fix bug [Shinigami]
-//=        Fixed repairman prices [shadowlady]
-//=        Fixed bug that skips requirements thanks to sir_loon [massdriller]
-//=        Fixed itemid error thanks to -Vitamin- [massdriller]
-//= 1.4 - check again item in refining procedure to avoid
-//=        hacker that can change item [dafide18]
-//= 1.5 - Fixed crashing due to badly used callfunc's [Skotlex]
-//        Lupus, don't rollback this important fix again! >.<
-//= 1.5a - Corrected an unneeded callfunc, fixed the anti-bot 
-//=       exploit ruining the safe refine loop. [Skotlex]
-//= 1.5b - Fixed Spelling mistakes. [Nexon] 
-//= 1.6	- Replaced all breaks for ends as per the new script engine [Skotlex]
-//= 1.7 - Added Einbroch Refiners (Custom names ^^;) and a duplicated BS Shop. [Poki#3]
-//= 1.8 - Added Lighthalzen Refiners (Custom names again ^^;) [Poki#3]
-//= 1.8a - Fixed wrong indication thanks to NeoSaro [Lupus]
-//= 1.9 - Rewrote repairman, removed the Steel from repair cost [DracoRPG]
-//= 2.0 - Fixed missed equppment presence check. Thx2 Coltaro [Lupus]
-//= 2.0a - Added weight checks thanks to Neouni [Playtester]
-//= 2.0b - Fixed the names of Lighthalzen and Einbroch refiners thanks to Maud_Dib [Kargha]
-//= 2.1 - Removed Duplicates [Silent]
-//============================================================
-
+//=========================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 精煉 腳本 -
+//=========================
+// 版本: 2.1
+//=========================
 
 //=========================================================
 // Christopher: Geffen Blacksmith
 //=========================================================
-geffen_in.gat,110,172,2	script	克理斯多福#1::Chrisbs	63,{
-	mes "[克理斯多福]";
-	mes "歡迎來到'克理斯多福'的工作室，在這裡你可以製作各種各樣的東西。親愛的，有什麼可以幫你的嗎？";
-	M_Menu:
+geffen_in.gat,110,172,0	script	克理斯多福#1::Chrisbs	63,{
+	mes "["+ strnpcinfo(1) +"]";
+	mes "歡迎光臨，鐵匠朋友，";
+	mes "這裡販賣所有關於鍛治用的物品";
+	mes "您需要什麼呢?";
 	next;
-	menu "購買鐵砧",M_0,"購買鍛造工具",M_1,"購買金屬",M_2,"原石加工",M_3,"取消",M_End;
-
-	M_0:
-		mes "[克理斯多福]";
-		mes "你必須知道，更好的鐵砧可以打造出更好的武器，但是它們的價格是非常昂貴的，在這裡你可以選擇更適合你的材料。";
+	switch (select("購買鐵砧","購買鍛治的物品","製作金屬","製作原石","取消")) {
+	case 1:
+		mes "["+ strnpcinfo(1) +"]";
+		mes "用來製作武器的鐵砧當然是越堅硬的金屬越好";
+		mes "不過您應該也知道，愈堅硬的金屬價格上就愈貴";
+		mes "您可以依造自己的經濟狀況選擇合適的";
 		next;
-		menu "鐵砧 - 30000z.",sM_Anvil, "神之金屬鐵砧 - 120000z.",sM_OriAnvil, "黃金鐵砧l - 300000z.",sM_GolAnvil,
-			"更好的鐵砧",sM_BetAnvil, "取消",M_Menu;
-
-		sM_Anvil:
-			if(Zeny < 30000) goto L_NoZeny;
-			if(checkweight(986,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 30000;
-			getitem 986,1;
-			mes "[克理斯多福]";
-			mes "你選擇的這一種是比較便宜的一種。";
-			next;
-			goto L_Thanks;
-		sM_OriAnvil:
-			if(Zeny < 120000) goto L_NoZeny;
-			if(checkweight(987,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 120000;
-			getitem 987,1;
-			mes "[克理斯多福]";
-			mes "噢！看來你是個行家。這一定是一個適合鐵匠的鐵砧，你說是嗎？";
-			next;
-			goto L_Thanks;
-		sM_GolAnvil:
-			if(Zeny < 300000) goto L_NoZeny;
-			if(checkweight(988,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 300000;
-			mes "[克理斯多福]";
-			mes "這一個是工作室之中的最好的一種，用這種鐵砧，你絕對可以稱霸鐵匠界。";
-			getitem 988,1;
-			next;
-			goto L_Thanks;
-		sM_BetAnvil:
-			mes "[克理斯多福]";
-			mes "很抱歉，我這裡沒有比黃金鐵砧更好的鐵砧了，";
-			mes "或許傳說中的'Ringgel'有比這更好的鐵砧，但是它只是一個傳說而已。.";
+		switch (select("鐵砧 - 30000 Zeny","神之金屬鐵砧 - 120000 Zeny",
+					"黃金鐵砧 - 300000 Zeny","更堅硬的鐵砧","結束交易")) {
+			case 1:
+				set .@itemid,986;
+				set .@price,3000;
+				break;
+			case 2:
+				set .@itemid,987;
+				set .@price,120000;
+				break;
+			case 3:
+				set .@itemid,988;
+				set .@price,300000;
+				break;
+			case 4:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "我們店舖裡沒有販賣比黃金鐵砧更堅硬的鐵砧";
+				mes "不知道傳說中'凌格'所製作的鐵砧是不是已經流傳於世...用這種程度堅硬的金屬做成的鐵砧不只我店舖裡沒有，其他店舖也都不會有";
+				close;
+			case 5:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "如果有任何需要的話，歡迎您再度光臨指教。請慢走";
+				close;
+		}
+		if(Zeny < .@price) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "您所擁有的金錢不足喔!總不能要我賠錢賣給您吧!";
 			close;
-
-	M_1:
-		mes "[克理斯多福]";
-		mes "一個值得尊敬的鍛造師，必須擁有一套優秀的工具。";
-		mes "你可以在我這裡選購一套適合你的，自己看看吧！";
-		sM_Menu1:
+		}
+		getitem .@itemid,1;
+		if(checkweight(.@itemid,1)==0)
+			close;
+		set Zeny,Zeny-.@price;
+		switch(@menu) {
+			case 1:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "這是相當物美價廉的東西";
+				mes "總之，非常感謝您的購買。如果有任何需要的話，歡迎您再度光臨指教";
+				break;
+			case 2:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "您的眼光不錯嘛!身為鐵匠所應該擁有的鐵砧最起碼也要有這個程度";
+				mes "總之，非常感謝您的購買。如果有任何需要的話，歡迎您再度光臨指教";
+				break;
+			case 3:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "您所選擇的這個是鐵砧用最堅硬又美麗的金屬所製成的!";
+				mes "只要有了這個，相信您一定可以成為一名偉大的鐵匠的";
+				mes "總之，非常感謝您的購買。如果有任何需要的話，歡迎您再度光臨指教";
+				break;
+		}
+		break;
+	case 2:
+		mes "["+ strnpcinfo(1) +"]";
+		mes "偉大的鐵匠當然得要用偉大的道具";
+		mes "如果在克理斯多福鐵匠鋪購買道具的話，您一定可以成為一名偉大的鐵匠的";
+		mes "選看看那一種道具最何您的心意吧!";
 		next;
-		menu "攜帶用熔礦爐 - 150z.",sM_Furn, "鋼鐵錘子 - 1000z.",sM_IrHam, "黃金錘子 - 3000z.",sM_GldHam,
-		     "神之金屬錘子 - 5000z.",sM_OriHam, "取消",M_Menu;
-
-		sM_Furn:
-			mes "[克理斯多福]";
-			mes "這是金屬打造的精煉工具，你打算購買多少個呢？請在提示訊框內輸入數量(最多1000個)，如果想再次挑選，請輸入'0'。";
-			set @input, 0;
-			input @input;
+		switch (select("攜帶用熔礦爐 - 150 Zeny","鋼鐵錘子 - 1000 Zeny",
+					"黃金錘子 - 3000 Zeny","神之金屬錘子 - 5000 Zeny","結束交易")) {
+			case 1:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "這是製作金屬的必需品!!";
+				next;
+				set .@itemid,612;
+				set .@price,150;
+				break;
+			case 2:
+				set .@itemid,613;
+				set .@price,1000;
+				break;
+			case 3:
+				set .@itemid,614;
+				set .@price,3000;
+				break;
+			case 4:
+				set .@itemid,615;
+				set .@price,5000;
+				break;
+			case 5:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "非常感謝您的購買。如果有任何需要的話，歡迎您再度光臨指教";
+				close;
+		}
+		mes "["+ strnpcinfo(1) +"]";
+		mes "好的，請問您要購買多少數量? 欲結束交易的話請按'0'";
+		while(1) {
 			next;
-			if(@input < 1 ) goto sM_Menu1;
-			if(@input > 1000 ) goto sM_Max;
-			if(Zeny < 150 * @input) goto L_NoZeny;
-			if(checkweight(612,@input) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - (150 * @input);
-			getitem 612, @input;
-			goto L_Thanks;
-		sM_IrHam:
-			if(Zeny < 1000) goto L_NoZeny;
-			if(checkweight(613,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 1000;
-			getitem 613,1;
-			goto L_Thanks;
-		sM_GldHam:
-			if(Zeny < 3000) goto L_NoZeny;
-			if(checkweight(614,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 3000;
-			getitem 614,1;
-			goto L_Thanks;
-		sM_OriHam:
-			if(Zeny < 5000) goto L_NoZeny;
-			if(checkweight(615,1) == 0 ) goto L_OverWeight;
-			set Zeny, Zeny - 5000;
-			getitem 615,1;
-			goto L_Thanks;
-		sM_Max:
-			mes "[克理斯多福]";
-			mes "對不起,你一次不能購買超過1000個.";
+			input .@num;
+			if(.@num < 0 || .@num > 500) {
+				mes "["+ strnpcinfo(1) +"]";
+				mes "只能購買500個以下";
+				continue;
+			}
+			break;
+		}
+		if(.@num == 0) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "歡迎再次光臨...";
 			close;
-
-	M_2:
-		mes "[克理斯多福]";
-		mes "我有兩種強化金屬可以出售,你需要哪一種?";
-		set @chris, 1;
-		set @name$, "克理斯多福";
-		callfunc "phramain";
-
-	M_3:
-		mes "[克理斯多福]";
-		mes "我這裡可以製作優質的金屬礦石，5個神之金屬原石可以製作成一個神之金屬，5個鋁原石可以製作成一個鋁，你打算做哪一種呢？";
-		set @chris, 1;
-		set @name$, "克理斯多福";
-		callfunc "orimain";
-
-	M_End:
+		}
+		if(Zeny < .@price*.@num) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "您所擁有的金錢不足喔!總不能要我賠錢賣給您吧!";
+			close;
+		}
+		if(checkweight(.@itemid,.@num)==0) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "在拿取東西前請先整理一下您的物品";
+			close;
+		}
+		set Zeny,Zeny-.@price*.@num;
+		getitem .@itemid,.@num;
+		mes "["+ strnpcinfo(1) +"]";
+		break;
+	case 3:
+		mes "["+ strnpcinfo(1) +"]";
+		mes "我這裡有各種各樣高質量的金屬";
+		mes "你要哪一種金屬?";
+		next;
+		if(checkweight(1010,10)==0 || checkweight(1011,10)==0) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "在拿取東西前請先整理一下您的物品";
+			close;
+		}
+		switch (select("強化武器金屬-級數一","強化武器金屬-級數二","打聽其他金屬")) {
+			case 1:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "一個200Z";
+				set .@itemid,1010;
+				set .@price,200;
+				break;
+			case 2:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "一個1000z";
+				set .@itemid,1011;
+				set .@price,1000;
+				break;
+			case 3:
+	 			mes "["+ strnpcinfo(1) +"]";
+ 				mes "好像還有一個神秘的金屬";
+				mes "["+ strnpcinfo(1) +"]";
+				close;
+		}
+		next;
+		switch (select("1 個購入","2 個購入","5 個購入","10 個購入!","取消")) {
+			case 1: set .@num,1; break;
+			case 2: set .@num,2; break;
+			case 3: set .@num,5; break;
+			case 4: set .@num,10; break;
+			case 5:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "歡迎再次光臨";
+				close;
+		}
+		if(Zeny < .@price*.@num) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "您所擁有的金錢不足喔!總不能要我賠錢賣給您吧!";
+			close;
+		}
+		set Zeny,Zeny-.@price*.@num;
+		getitem .@itemid,.@num;
+		mes "["+ strnpcinfo(1) +"]";
+		break;
+	case 4:
+		mes "["+ strnpcinfo(1) +"]";
+		mes "可以用來提煉的金屬有神之金屬與鋁兩種";
+		mes "只要各拿五個原石來提煉，就可以提煉出純度相當高的金屬";
+		mes "您想要製作哪種金屬呢?";
+		next;
+		switch (select("我想要製作神之金屬","我想要製作鋁","終止交易")) {
+			case 1:
+				set .@itemid,756;
+				set .@gain,984;
+				break;
+			case 2:
+				set .@itemid,757;
+				set .@gain,985;
+				break;
+			case 3:
+				mes "["+ strnpcinfo(1) +"]";
+				mes "如果有任何需要的話，歡迎您再度光臨指教。請慢走";
+				close;
+		}
+		if(countitem(.@itemid)<5) {
+			mes "["+ strnpcinfo(1) +"]";
+			mes "要是沒有五個" +getitemname(.@itemid)+ "的話，";
+			mes "我是沒有辦法製作出" +getitemname(.@gain)+ "來的";
+			close;
+		}
+		delitem .@itemid,5;
+		getitem .@gain,1;
+		mes "["+ strnpcinfo(1) +"]";
+		mes "拿去吧!這是約定好要給您的" +getitemname(.@gain)+ "";
 		close;
-
-	L_NoZeny:
-		mes "[克理斯多福]";
-		mes "我覺得這個價格已經是最低的了，因為這麼低的價錢，所以也不允許賒帳……";
-		emotion 4;
+	case 5:
+		mes "["+ strnpcinfo(1) +"]";
+		mes "如果有任何需要的話，歡迎您再度光臨指教。請慢走";
 		close;
-
-	L_OverWeight:
-		mes "[克理斯多福]";
-		mes "你沒辦法攜帶這麼多東西唷!";
-		close;
-
-	L_Thanks:
-		mes "[克理斯多福]";
-		mes "感謝您的光臨，歡迎下次光臨！";
-		emotion 15;
-		close;
+	}
+	mes "非常感謝您的購買。如果有任何需要的話，歡迎您再度光臨指教。請慢走";
+	close;
 }
 
-ein_in01,38,29,6	duplicate(Chrisbs)	克理斯多福#2	63
+ein_in01,38,29,6	duplicate(Chrisbs)	福 斯培諾#2	63
 
 //=====================================================================================
 // Weapon/Armor Refiners
@@ -217,13 +257,13 @@ yuno_in01.gat,164,26,6	script	尤思特	88,{
 	callfunc "refinemain";
 	end;
 }
-ein_in01.gat,24,87,6	script	Manthasman	826,{
-	set @name$,"Manthasman Pruhag";
+ein_in01.gat,24,87,6	script	曼塔斯曼	826,{
+	set @name$,"曼塔斯曼";
 	callfunc "refinemain";
 	end;
 }
-lhz_in02.gat,282,20,7	script	Fulerr	869,{
-	set @name$,"Fulerr";
+lhz_in02.gat,282,20,7	script	福樂	869,{
+	set @name$,"福樂";
 	callfunc "refinemain";
 	end;
 }
@@ -334,7 +374,7 @@ CHECK1:
 CHECK2:
 	if(getequipisidentify(@part)) goto CHECK3;
 	mes "[" + @name$ + "]";
-	mes "這項武器還沒通過鑒定，無法鍛治..";
+	mes "這項武器還沒通過鑑定，無法鍛治..";
 	close;
 
 //Check to see if the items is already +10
@@ -607,13 +647,13 @@ yuno_in01.gat,171,26,6	script	艾爾來特	88,{
 	callfunc "phramain";
 	end;
 }
-ein_in01.gat,15,87,7	script	Tirehaus	86,{
-	set @name$,"Tirehaus";
+ein_in01.gat,15,87,7	script	迪樂意哈斯	86,{
+	set @name$,"迪樂意哈斯";
 	callfunc "phramain";
 	end;
 }
-lhz_in02.gat,278,24,3	script	Krugg	86,{
-	set @name$,"Krugg";
+lhz_in02.gat,278,24,3	script	客勒柯	86,{
+	set @name$,"客勒柯";
 	callfunc "phramain";
 	end;
 }
@@ -703,13 +743,13 @@ yuno_in01.gat,171,22,6	script	湯馬思	88,{
 	callfunc "orimain";
 end;
 }
-ein_in01.gat,18,82,6	script	Matestein	84,{
-	set @name$,"Matestein";
+ein_in01.gat,18,82,6	script	馬帝修塔音	84,{
+	set @name$,"馬帝修塔音";
 	callfunc "orimain";
 	end;
 }
-lhz_in02.gat,281,24,5	script	Fruel	84,{
-	set @name$,"Fruel";
+lhz_in02.gat,281,24,5	script	葡魯依	84,{
+	set @name$,"葡魯依";
 	callfunc "orimain";
 	end;
 }
@@ -787,8 +827,8 @@ morocc_in.gat,71,40,2	script	艾爾發#02	99,{
 	callfunc "repairmain";
 	end;
 }
-lhz_in02.gat,284,14,3	script	Repairman#03	86,{
-	set @name$,"Repairman";
+lhz_in02.gat,284,14,3	script	修理工#03	86,{
+	set @name$,"修理工";
 	callfunc "repairmain";
 	end;
 }

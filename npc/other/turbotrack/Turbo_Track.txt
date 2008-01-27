@@ -17,21 +17,44 @@
 //= 1.3 Slight optimization to the point exchanger. [L0ne_W0lf]
 //============================================================
 
-turbo_room,130,92,3	script	Kafra Staff#tt	115,{
+turbo_room,130,92,3	script	卡普拉 職員#tt	115,{
 	cutin "kafra_03",2;
-	mes "[Kafra Staff]";
-	mes "Welcome~ The Kafra Services";
-	mes "are always on your side. Let me";
-	mes "remind you that using the Save";
-	mes "Service here will change your";
-	mes "Respawn Point to Al De Baran.";
-	mes "Now, how may I assist you?";
-	callfunc "F_Kafra",5,8,1,40,0;
-
-	M_Save:
-		savepoint "aldebaran",168,112;
-		callfunc "F_KafEnd",0,1,"in Al De Baran";
-
+	mes "[卡普拉 職員]";
+	mes "歡迎光臨，卡普拉服務永遠在您身邊服務";
+	mes "如果在這裡選擇儲存的話，將儲存在，";
+	mes "艾爾帕蘭 請留意!!";
+	mes "請問有什麼要幫忙的嗎?";
+	next;
+	switch(select("使用儲存服務","使用倉庫服務","確認其它情報","結束")) {
+	case 1:
+		savepoint "aldebaran",167,112;
+		mes "[卡普拉 職員]";
+		mes "已經儲存好了，謝謝你的使用";
+		break;
+	case 2:
+		callfunc "KafraStorage",40;
+		break;
+	case 3:
+		menu "確認累積點數",-;
+		mes "[卡普拉 職員]";
+		mes "顧客" +strcharinfo(0)+ "先生/小姐的累積點數是";
+		mes KAFRA_PIT+ "點，";
+		next;
+		mes "[卡普拉 職員]";
+		mes "累積點數可以在我們卡普拉總公司兌換商品，";
+		mes "歡迎使用我們便利的卡普拉服務，也多拿點商品回去吧";
+		break;
+	case 4:
+		mes "[卡普拉 職員]";
+		mes "我們卡普拉公司的服務是為了讓顧客們放心和方便的使用，";
+		mes "我們會盡最大的努力做到更好的服務";
+		mes "與嚴格的營樣處理";
+		mes "感謝您的使用";
+		break;
+	}
+	close2;
+	cutin "kafra_03",255;
+	end;
 }
 
 turbo_room,124,86,0	shop	Turbo Track Merchant	90,501:-1,502:-1,503:-1,504:-1,645:-1,656:-1,1065:-1,1750:-1

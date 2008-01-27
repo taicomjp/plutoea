@@ -2,35 +2,45 @@
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // ---------------------------------
-// - 卡普拉腳本 - 改寫自JA
+// - 艾爾貝塔 卡普拉腳本 - 
 //===================================
-// < 艾爾貝塔 - 北邊入口 >
-//----------------------------------
+// 版本：2.4
+//===================================
 
-alberta.gat,28,229,0	script	卡普拉服務人員::kaf_alberta	116,{
+
+// NorthWest -----------------------------------------------------------------
+alberta,28,229,0	script	卡普拉服務人員::kaf_alberta	116,{
 	cutin "kafra_02",2;
-	setarray @code,4,1,5;
-	setarray @price,1200,1800,1800;
-	callfunc "KafraMain",1,0x7f,"pay_fild03.gat",387,76,"alberta.gat",31,231,50,800,@code,@price;
-	close2;
-	viewpoint 1,28,229,1,0x0000FF;
-	viewpoint 1,113,60,2,0x0000FF;
-	cutin "kafra_02",255;
-	end;
+	callfunc "F_KafSetAlb";
+	callfunc "F_Kafra",0,0,0,50,850;
+
+	M_Save:
+		savepoint "alberta",31,231;
+		callfunc "F_KafEnd",0,1,"in the city of Alberta";
 }
 
-//----------------------------------
-// < 艾爾貝塔 - 南噴水池 >
-//----------------------------------
-
-alberta.gat,113,60,6	script	卡普拉服務人員#alberta2	112,{
+// South ---------------------------------------------------------------------
+alberta,113,60,6	script	卡普拉服務人員::kaf_alberta2	112,{
 	cutin "kafra_06",2;
-	setarray @code,4,1,5;
-	setarray @price,1200,1800,1800;
-	callfunc "KafraMain",1,0x7f,"alberta.gat",117,56,"NULL",0,0,50,800,@code,@price;
-	close2;
-	viewpoint 1,28,229,1,0x0000FF;
-	viewpoint 1,113,60,2,0x0000FF;
-	cutin "kafra_06",255;
-	end;
+	callfunc "F_KafSetAlb";
+	callfunc "F_Kafra",0,0,0,50,850;
+
+	M_Save:
+		savepoint "alberta",117,57;
+		callfunc "F_KafEnd",0,1,"in the city of Alberta";
+}
+
+
+// Function: Sets variables for Ablerta Kafras -------------------------------
+function	script	F_KafSetAlb	{
+	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
+	setarray @wrpP[0], 1200, 1800, 1800;
+	setarray @wrpD$[0], "裴揚", "夢羅克", "普隆德拉";
+	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
+	set @wrpC$[1], @wrpD$[1]+" -> "+@wrpP[1];
+	set @wrpC$[2], @wrpD$[2]+" -> "+@wrpP[2];
+	set @wrpC$[3], "取消";
+	setarray @viewpX[0], 28, 113, 0, 0;
+	setarray @viewpY[0], 229, 60, 0, 0;
+	return;
 }

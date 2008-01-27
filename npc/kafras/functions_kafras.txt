@@ -2,267 +2,577 @@
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // ---------------------------------
-// - 卡普拉腳本 - 改寫自JA
+// - 卡普拉腳本 - 
 //===================================
 
-function	script	KafraMain	{
-	function KafraSpeech {
-		if(getarg(0)!=3) {
-			mes "[卡普拉服務人員]";
+function	script	F_Kafra	{
+	callfunc "F_ClearGarbage"; //清除過期變數
+
+	//歡迎字句
+	switch(getarg(0)){
+		//預設
+		default:
+		case 0:
+			mes "["+ strnpcinfo(0) +"]";
 			mes "歡迎光臨，";
 			mes "卡普拉公司隨時為您們服務，";
-			switch(getarg(0)) {
-			case 0:
 			mes "需要什麼服務嗎?";
-				break;
-			case 1:
-			case 4:
+			break;
+
+		//尼芙菲姆
+		case 1:
+			mes "["+ strnpcinfo(0) +"]";
+			mes "歡迎... 來到... ";
+			mes "卡普拉公司...";
+			mes "我們... 到死... 都會繼續為您服務..."; 
+			break;
+
+		//公會城堡
+		case 2:
+			set @GID,getcharid(2);
+			mes "["+ strnpcinfo(0) +"]";
+	 		mes "歡迎光臨 '^ff0000" + GetGuildName(@GID) + "^000000' 的會員們";
+			mes "卡普拉服務(有限公司)";
+			mes "永遠在各位身邊為您服務";
+			break;
+
+		//天津、等
+		case 3:
+			mes "["+ strnpcinfo(0) +"]";
+			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
 			mes "需要什麼服務嗎?";
-				break;
-			case 2:	//克魔島地區
-				mes "我們卡普拉西部中心";
-				mes "通過改編程序";
-				mes "提供更好品質的服務.";
-				mes "謝謝大家~";
+			break;
+
+		//洛陽、泰國
+		case 4:
+			mes "["+ strnpcinfo(0) +"]";
+			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
+			mes "需要什麼服務嗎?";
+			break;
+
+		//無顯示
+		case 5:
+			break;
+	}
+	next;
+
+	M_Menu:
+		cleararray @K_Menu0$[0],"",7;
+	switch(getarg(1)){
+		// 儲存和倉庫 服務
+		case 1:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","總結";
+			break;
+
+		// 只有倉庫服務
+		case 2:
+			setarray @K_Menu0$[0],"倉庫服務","總結";
+			break;
+
+		// 無傳送服務
+		case 3: 
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務"," 其他訊息說明","總結";
+			break;
+
+		// Case 4 是秀發茲發德的禁止傳送訊息
+
+		// 沒有儲存或傳送
+		case 5:
+			setarray @K_Menu0$[0],"倉庫服務","手推車服務"," 其他訊息說明","總結";
+			break;
+
+		// 只有倉庫及確認其他資訊
+		case 6:
+			setarray @K_Menu0$[0],"倉庫服務"," 其他訊息說明","總結";
+			break;
+
+		// 只有儲存、倉庫、手推車租用
+		case 7:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","總結";
+			break;
+
+		// 競速場
+		case 8:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務"," 其他訊息說明","總結";
+			break;
+
+		// 普通卡普拉
+		default:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務"," 其他訊息說明","總結";
+			break;
+	}
+
+	// 公會卡普拉
+	if(getarg(0)==2) {
+		cleararray @K_Menu0$[0],"",7;
+		setarray @K_Menu0$[0],"倉庫服務","使用公會倉庫","手推車服務","傳送服務","總結";
+	}
+	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
+		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
+		@K_Menu0$[6],K_Menu6,@K_Menu0$[7],K_Menu7;
+	K_Menu0:
+		set @num,0;
+		goto K_Menuf;
+	K_Menu1:
+		set @num,1;
+		goto K_Menuf;
+	K_Menu2:
+		set @num,2;
+		goto K_Menuf;
+	K_Menu3:
+		set @num,3;
+		goto K_Menuf;
+	K_Menu4:
+		set @num,4;
+		goto K_Menuf;
+	K_Menu5:
+		set @num,5;
+		goto K_Menuf;
+	K_Menu6:
+		set @num,6;
+		goto K_Menuf;
+	K_Menu7:
+		set @num,7;
+	K_Menuf:
+		if (@K_Menu0$[@num] == "儲存服務") return;
+		if (@K_Menu0$[@num] == "倉庫服務"){
+			if(getarg(0) == 2) callfunc "F_KafStor",2,0,0;
+			else callfunc "F_KafStor",0,getarg(3),getarg(0);
+			next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "傳送服務"){
+			// 秀發茲發德的禁止傳送訊息
+			if(getarg(1) == 4){
+				mes "["+ strnpcinfo(0) +"]";
+				mes "我們卡普拉服務在秀發茲發德總公司，";
+				mes "因為和秀發茲發德 共和國";
+				mes "的協定，";
+				mes "'^ff0000在秀發茲發德內限制傳送服務^000000'";
+				mes "的關係，";
+				mes "目前不做任何傳送服務的";
 				next;
-				mes "[卡普拉服務人員]";
-				mes "需要什麼服務嗎?";
-				break;
+				mes "["+ strnpcinfo(0) +"]";
+				mes "想要移動到其它區域時，";
+				mes "請使用飛空艇吧";
+				next;
+				goto M_Menu;
 			}
-			next;
+			callfunc "F_KafTele",getarg(0);
+			goto M_Menu;
 		}
+		if (@K_Menu0$[@num] == "手推車服務"){
+			if(callfunc("F_KafCart",getarg(0),getarg(4)) == 1) next;
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == " 其他訊息說明"){
+			callfunc "F_KafInfo",getarg(2);
+			goto M_Menu;
+		}
+		if (@K_Menu0$[@num] == "總結"){
+			callfunc "F_KafEnd",getarg(0),0;
+			end;
+		}
+		if (@K_Menu0$[@num] == "使用公會倉庫"){
+			callfunc "F_KafStor",1,0;
+			next;
+			goto M_Menu;
+		}
+
+}
+
+
+// Storage Function =======================================================
+function	script	F_KafStor	{
+	// Unable to access Guild Storage (Busy)
+	if(getarg(0) == 1){
+		if(guildopenstorage(0) == 1){
+			mes "["+ strnpcinfo(0) +"]";
+			mes "真的很抱歉，有其他會員正在使用倉庫";
+			mes "請稍等一下";
+			close2;
+			cutin "", 255;
+			end;
+		}
+		cutin "", 255;
+		close;
+	}
+
+	// Unable to access Normal Storage (Insufficient Basic Skills)
+	if(basicskillcheck() && getskilllv(1) < 6){
+		mes "["+ strnpcinfo(0) +"]";
+		// Niflheim Specific Message
+		if (getarg(2) == 1) {
+			mes "^666666對...不..起，";
+			mes "...你的....職..業...等..級級..";
+			mes "要...六...六等..以上...才....可以..^000000";
+			return;
+		}
+		mes "你的基本技能要6級以上";
+		mes "才能使用倉庫服務";
 		return;
 	}
 
-	//位置ЙみйДみжЗ
-	function KafraSave {
-		if(getarg(5) == "NULL")
-			savepoint getarg(2),getarg(3),getarg(4);
-		else if(select("城市外面儲存","城市裡面儲存")==1)
-			savepoint getarg(2),getarg(3),getarg(4);
-		else
-			savepoint getarg(5),getarg(6),getarg(7);
-		mes "[卡普拉服務人員]";
-		mes "已經儲存好了 謝謝您的使用";
-		return;
+	// Accessing Normal Storage (Skipped if accessing Storage from Guild castle)
+	if(getarg(0) != 2){
+		// Consume "Free Ticket for Kafra Storage" if available.
+		if(countitem(7059)) delitem 7059,1;
+		else {
+			if(Zeny<getarg(1)){
+				mes "["+ strnpcinfo(0) +"]";
+				// Niflheim Specific Message
+				if (getarg(2) == 1) {
+					percentheal -50,-50;
+					mes "^666666很....抱歉...您的...金....錢不...足";
+					mes "...至少...需...要15..0金...幣^000000";
+					return;
+				}
+				//Standard Message
+				mes "很抱歉,您的金錢不足";
+				mes "至少需要"+getarg(1)+"金幣";
+				return;
+			}
+			set Zeny, Zeny-getarg(1);
+			set RESRVPTS, RESRVPTS + (getarg(1)/5);
+		}
 	}
 
-	//空間移動ДみжЗ
-	function KafraTrans {
-		if(getarg(0)==4) {
-			mes "[卡普拉服務人員]";
-			mes "我們卡普拉服務在秀發茲發德總公司，";
-			mes "因為和秀發茲發德 共和國";
-			mes "的協定，";
-			mes "'^ff0000在秀發茲發德內限制傳送服務^000000'";
-			mes "的關係，";
-			mes "目前不做任何傳送服務的";
-			next;
-			mes "[卡普拉]";
-			mes "想要移動到其它區域時，";
-			mes "請使用飛空艇吧";
-			return;
+	// Surpress the "End" message if in guild castle.
+	if (getarg(0) != 2) {
+		// Niflheim specific Message
+		if (getarg(2) == 1) {
+			percentheal 0,-10;
+			mes "["+ strnpcinfo(0) +"]";
+			mes "要...打...開倉...庫了，謝謝...你的...使....用";
 		}
-		copyarray @price,getarg(11),getarraysize(getarg(11));
-		if($placename$[0] == "") {
-			setarray $placename$,	"普隆德拉","依斯魯得島","吉芬","斐揚","夢羅克","艾爾貝塔",
-						"獸人地下洞窟","艾爾帕蘭","妙勒尼 廢棄礦場","克魔島","發樂斯 燈塔島",
-						"發樂斯 燈塔島","朱諾","普隆德拉","吉芬","斐揚","艾爾帕蘭",
-						"預備1","預備2","預備3";
+		// Normal message
+		else {
+			mes "["+ strnpcinfo(0) +"]";
+			mes "要打開倉庫了，謝謝你的使用";
 		}
-		for(set @i,0; @i<getarraysize(@price); set @i,@i+1)
-			set @place$[@i],$placename$[ getelementofarray(getarg(10),@i)-1 ] +" -> "+ @price[@i] +" z";
-		mes "[卡普拉服務人員]";
-		mes "請說你想要去的地方.";
-		next;
-		set @j,select(		@place$[0],@place$[1],@place$[2],@place$[3],@place$[4],@place$[5],@place$[6],@place$[7],
-					@place$[8],@place$[9],@place$[10],@place$[11],@place$[12],@place$[13],@place$[14],@place$[15],
-					@place$[16],@place$[17],@place$[18],@place$[19],"取消")-1;
-		if(@j==20) {
-			mes "[卡普拉服務人員]";
-			mes "謝謝";
-			mes "歡迎再來";
-			return;
-		}
-		if(Zeny<@price[@j]) {
-			mes "[卡普拉服務人員]";
-			mes "你的金錢不足啊";
-			return;
-		}
-		set Zeny,Zeny-@price[@j];
-		set KAFRA_PIT,KAFRA_PIT+(@price[@j]/10);
-		switch ( getelementofarray(getarg(10),@j) ) {
-			case 1: warp "prontera.gat",116,72; 	break;
-			case 2: warp "izlude.gat",91,105; 	break;
-			case 3: warp "geffen.gat",120,39; 	break;
-			case 4: warp "payon.gat",160,58; 	break;
-			case 5: warp "morocc.gat",156,46; 	break;
-			case 6: warp "alberta.gat",117,56; 	break;
-			case 7: warp "gef_fild10.gat",52,326; 	break;
-			case 8: warp "aldebaran.gat",167,112; 	break;
-			case 9: warp "mjolnir_02.gat",99,351; 	break;
-			case 10: warp "comodo.gat",209,143; 	break;
-			case 11:
-			case 12:
-				 warp "cmd_fild07.gat",127,134; break;
-			case 13: warp "yuno.gat",158,124; 	break;
+	}
+	callfunc("F_CheckKafCode");	//check your storage password, if set
 
-			case 14: warp "prontera.gat",278,211; 	break;
-			case 15: warp "geffen.gat",120,39; 	break;
-			case 16: warp "payon.gat",158,88; 	break;
-			case 17: warp "aldebaran.gat",132,103;	break;
-			//預備
-			case 18: warp "SavePoint",0,0;		break;
-			case 19: warp "SavePoint",0,0;		break;
-			case 20: warp "SavePoint",0,0;		break;
+	close2;
+	openstorage;
+	cutin "", 255;
+	end;
+}
+
+
+// Teleport Function ==================================================
+function	script	F_KafTele	{
+	mes "["+ strnpcinfo(0) +"]";
+	mes "請選擇你的目的地";
+	next;
+
+	menu 	@wrpC$[0],M_Wrp0, @wrpC$[1],M_Wrp1, @wrpC$[2],M_Wrp2, @wrpC$[3],M_Wrp3, 
+		@wrpC$[4],M_Wrp4, @wrpC$[5],M_Wrp5, @wrpC$[6],M_Wrp6;
+
+	M_Wrp0:
+		set @num, 0;
+		goto L_Warp;
+	M_Wrp1:
+		set @num, 1;
+		goto L_Warp;
+	M_Wrp2:
+		set @num, 2;
+		goto L_Warp;
+	M_Wrp3:
+		set @num, 3;
+		goto L_Warp;
+	M_Wrp4:
+		set @num, 4;
+		goto L_Warp;
+	M_Wrp5:
+		set @num, 5;
+		goto L_Warp;
+	M_Wrp6:
+		set @num, 6;
+
+	L_Warp:
+		if (@wrpC$[@num] == "總結") return;
+		// Consume "Free Ticket for Kafra Transportation" if available.
+		// Do not consume if in Guild castle
+		if(countitem(7060) > 0 && getarg(0) != 2) delitem 7060,1;
+		else {
+			if (Zeny<@wrpP[@num]){
+				mes "["+ strnpcinfo(0) +"]";
+				mes "金錢不足啊";
+				close2;
+				cutin "", 255;
+				end;
+			}
+			set Zeny, Zeny-@wrpP[@num];
+			set RESRVPTS, RESRVPTS + (@wrpP[@num]/16);
 		}
+		if (@wrpD$[@num] == "艾爾貝塔") warp "alberta", 117, 56;
+		if (@wrpD$[@num] == "艾爾帕蘭") warp "aldebaran",143,110;
+		if (@wrpD$[@num] == "艾爾帕蘭") warp "aldebaran",143,110;
+		if (@wrpD$[@num] == "克魔島") warp "comodo", 207, 144;
+		if (@wrpD$[@num] == "依斯魯得島") warp "izlude", 91, 105;
+		if (@wrpD$[@num] == "吉芬") warp "geffen", 120, 39;
+		if (@wrpD$[@num] == "夢羅克") warp "morocc", 156, 46;
+		if (@wrpD$[@num] == "裴揚") warp "payon", 168, 103;
+		if (@wrpD$[@num] == "普隆德拉") warp "prontera", 116, 72;
+		if (@wrpD$[@num] == "妙勒尼 廢棄礦場") warp "mjolnir_02", 82, 347;
+		if (@wrpD$[@num] == "發樂斯 燈塔島") warp "cmd_fild07", 127, 134;
+		if (@wrpD$[@num] == "獸人地下洞窟") warp "gef_fild10", 52, 326;
+		if (@wrpD$[@num] == "汶巴拉") warp "umbala", 130, 130;
+		if (@wrpD$[@num] == "朱諾") warp "yuno", 157, 123;
+		cutin "", 255;
 		end;
+}
+
+
+// Cart Function ========================================================
+function	script	F_KafCart	{
+	// Ensure that the class wanting to rent a pushcart is a merchant
+	if(baseClass != Job_Merchant){
+		mes "["+ strnpcinfo(0) +"]";
+		mes "很抱歉，";
+		mes "手推車是商人和鐵匠、鍊金術師專用的服務";
+		return 1;
+	}
+	// Make sure the invoking character does not have a cart already
+	else if(checkcart() == 1){
+		mes "["+ strnpcinfo(0) +"]";
+		mes "你已經租過手推車了";
+		return 1;
 	}
 
-	//ロみЬДみжЗ
-	function KafraCart {
-		if(baseClass != Job_Merchant){
-			mes "[卡普拉服務人員]";
-			mes "很抱歉，";
-			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
-			return;
-		}
-		if(checkcart()==1) {
-			mes "[卡普拉服務人員]";
-			mes "你已經租過手推車了";
-			return;
-		}
-		mes "[卡普拉服務人員]";
-		mes "手推車租金未"+getarg(9)+"Zeny。";
+	// Consume "Free Ticket for the Cart Service" if available.
+	// Do not consume if in Guild castle.
+	if(countitem(7061) > 0 && getarg(0) != 2) delitem 7061,1;
+	else {
+		mes "["+ strnpcinfo(0) +"]";
+		mes "手推車租金是 "+getarg(1)+"金幣";
 		mes "如果沒學相關技能的話";
 		mes "是沒有手推車的";
 		mes "還要租嗎?";
 		next;
-		if(select("租用手推車","取消")==2) {
-			mes "[卡普拉服務人員]";
-			mes "謝謝";
-			mes "歡迎再來";
-			return;
-		}
-		if(Zeny<getarg(9)) {
-			mes "[卡普拉服務人員]";
-			mes "你的金錢不足啊";
-			mes "需要"+getarg(9)+"Zeny。";
-			return;
-		}
-		set Zeny,Zeny-getarg(9);
-		setcart;
-		return;
+		menu "租用手推車",-, "取消",M_End;
+			if(Zeny<getarg(1)){
+				mes "["+ strnpcinfo(0) +"]";
+				mes "親愛的顧客，您的金錢不足";
+				mes "租用手推車需要"+getarg(1)+"金幣";
+				return 1;
+			}
+			set Zeny,Zeny-getarg(1);
+			set RESRVPTS, RESRVPTS + 48;
 	}
+	setcart;
+	return 1;
 
-	//點數確認
-	function KafraPoint {
-		mes "[卡普拉服務人員]";
-		mes strcharinfo(0)+" 顧客的儲蓄點數是 " +KAFRA_PIT+ " 點.";
-		next;
-		mes "[卡普拉服務人員]";
-  		mes "在卡普拉本社你可以把儲蓄點數交換成贈品.";
-  		mes "請多用方便的卡普拉服務，順便多得到贈品~";
-		return;
-	}
-
-	//總結
-	function KafraEnd {
-		mes "[卡普拉服務人員]";
-		mes "我們卡普拉公司的服務是為了讓顧客們放心和方便的使用. 我們會盡我們最大的努力做到更好的服務與嚴格的營業管理.";
-		mes "謝謝您們使用我們卡普拉公司的服務.";
-		return;
-	}
-
-	//アアろヘmain
-	KafraSpeech getarg(0);
-	setarray @serv$,"儲存服務","倉庫服務","傳送服務","手推車服務","點數累積確認","卡普拉服務人員位置分佈","總結";
-	for(set @i,0; @i<7; set @i,@i+1) {
-		if(getarg(1)&(1<<@i) == 0)
-			set @serv$[@i],"";
-	}
-	switch (select(@serv$[0],@serv$[1],@serv$[2],@serv$[3],@serv$[4],@serv$[5],@serv$[6])) {
-		case 1:
-			KafraSave 0,1,getarg(2),getarg(3),getarg(4),getarg(5),getarg(6),getarg(7);
-			break;
-		case 2:
-			callfunc "KafraStorage",getarg(8);
-			end;
-		case 3:
-			if(getarg(0) != 4)
-				KafraTrans getarg(0),1,2,3,4,5,6,7,8,9,getarg(10),getarg(11);
-			else
-				KafraTrans getarg(0);
-			break;
-		case 4:
-			KafraCart 0,1,2,3,4,5,6,7,8,getarg(9);
-			break;
-		case 5:
-			KafraPoint;
-			break;
-		case 6:
-			mes "[卡普拉服務人員]";
-			mes "小地圖中顯示了卡普拉服務人員分佈";
-			return;
-		case 7:
-			KafraEnd;
-			break;
-	}
-	close2;
-	cutin "kafra_01",255;
-	end;
+M_End:
+	return 0;
 }
 
-//倉庫ДみжЗクん分離
-function	script	KafraStorage	{
-	if(basicskillcheck() && getskilllv(1)<6) {
-		mes "[卡普拉服務人員]";
-		mes "你的基本技能要6級以上";
-		mes "才能使用倉庫服務";
-	}
-	else if(Zeny<getarg(0)) {
-		mes "[卡普拉服務人員]";
-		mes "很抱歉,您的金錢不足";
-		mes "這至少需要"+getarg(0)+"Zeny。";
-	}
-	else {
-		mes "[卡普拉服務人員]";
-		mes "要打開倉庫了";
-		mes "謝謝你的使用.";
-		close2;
-		set Zeny,Zeny-getarg(0);
-		openstorage;
-		cutin "kafra_01",255;
-		end;
-	}
-	close2;
-	cutin "kafra_01",255;
+
+// Pass Function ===============================================================
+function	script	F_KafGuide	{
+	mes "["+ strnpcinfo(0) +"]";
+	mes "WIP...";
 	return;
 }
 
+// Special Reserve Points Function ===========================================
+function	script	F_KafInfo	{
 
+	sM_Menu:
+//Uncomment next line to block Kafra Storage Protection
+//	if(getarg(0) == 0) menu "Check Special Reserve Points.",sM_ResChk, "Kafra Employee Locations",sM_KafLoc, "總結",sM_End;
+	if(getarg(0) == 0) menu "點數累積確認",sM_ResChk, "倉庫密碼服務",sM_KafCode, "卡普拉位置說明",sM_KafLoc, "總結",sM_End;
 
-//----------------------------------
-// < 普隆德拉 - 北邊卡普拉 >
-//----------------------------------
+	sM_ResChk:
+		mes "["+ strnpcinfo(0) +"]";
+		mes strcharinfo(0) + "顧客的儲蓄點數是";
+		mes RESRVPTS+ "點";
+		next;
+		mes "["+ strnpcinfo(0) +"]";
+		mes "在卡普拉本社你可以把儲蓄點數交換成贈品.";
+		mes "請多用方便的卡普拉服務，順便多得到贈品~";
+		next;
+		if(getarg(0) == 1) return;
+		goto sM_Menu;
 
-prt_fild01.gat,198,47,0	script	卡普拉服務人員#prt_fild	112,{
-	cutin "kafra_06",2;
-	setarray @code,2,3,4,5,6,7;
-	setarray @price,600,1200,1200,1200,1800,1700;
-	callfunc "KafraMain",1,0x5f,"prt_fild01.gat",198,51,"NULL",0,0,40,800,@code,@price;
-	end;
+	sM_KafLoc:
+		viewpoint 1,@viewpX[0],@viewpY[0],1,0xFF00FF;
+		viewpoint 1,@viewpX[1],@viewpY[1],2,0xFF00FF;
+		viewpoint 1,@viewpX[2],@viewpY[2],3,0xFF00FF;
+		viewpoint 1,@viewpX[3],@viewpY[3],4,0xFF00FF;
+		next;
+		viewpoint 2,@viewpX[0],@viewpY[0],1,0xFF00FF;
+		viewpoint 2,@viewpX[1],@viewpY[1],2,0xFF00FF;
+		viewpoint 2,@viewpX[2],@viewpY[2],3,0xFF00FF;
+		viewpoint 2,@viewpX[3],@viewpY[3],4,0xFF00FF;
+		goto sM_Menu;
+
+	sM_KafCode:
+		callfunc("F_SetKafCode","["+ strnpcinfo(0) +"]","卡普拉服務");
+
+	sM_End:
+		return;
 }
 
 
-//----------------------------------
-// < 克魔島 室內 >
-//----------------------------------
+// End Function =====================================================
+//  arg(0): used to determine what message to display.
+//  arg(1): used to determine if save message is displayed.
+//  arg(2): used to display the name of the area you're saving in.
+//===================================================================
+function	script	F_KafEnd	{
+	mes "["+ strnpcinfo(0) +"]";
+	//Save
+	if(getarg(1)==1) {
+		mes "已經儲存好了 謝謝您的使用";
+	}
 
-cmd_in02.gat,146,180,4	script	卡普拉服務人員#cmd_in02	721,{
-	cutin "kafra_07",2;
-	setarray @code,5,12;
-	setarray @price,1800,1200;
-	callfunc "KafraMain",2,0x5f,"comodo.gat",209,143,"NULL",0,0,40,800,@code,@price;
+	// Generic End
+	else if(getarg(0)==0 || getarg(0)==5 || getarg(0)==3) {
+		mes "我們卡普拉公司的服務是為了讓顧客們放心和方便的使用. 我們會盡我們最大的努力做到更好的服務與嚴格的營業管理.";
+		mes "謝謝您們使用我們卡普拉公司的服務.";
+	}
+
+	// Niflheim End
+	else if(getarg(0)==1) {
+		percentheal 0,- 25;
+		mes "我們，卡普拉...公司..."; 
+		mes "會一直...在你...身邊..."; 
+		mes "無論何時... 何地..."; 
+		mes "...任何原因..."; 
+		mes "請別...忘記我們...";
+	}
+
+	close2;
+	cutin "", 255;
 	end;
+}
+
+// Check Storage Password Function ====================
+function	script	F_CheckKafCode	{
+	if(#kafra_code==0) return;
+	mes "請輸入你的倉庫密碼：";
+	set @code_,0;
+	input @code_;
+	if(@code_ != #kafra_code-getcharid(3)-1337) {
+		dispbottom "密碼錯誤";
+		close2;
+		cutin "",255;
+		end;
+	}
+	set @kafcode_try,0;
+	set @code_,0;
+	mes "密碼確認完成";
+	close2;
+	openstorage;
+	cutin "", 255;
+	end;
+}
+
+// Set / Change / Clear Storage Password Function ====================
+// getarg(0) = NPC Name, getarg(1) = Company Name
+function	script	F_SetKafCode	{
+	mes getarg(0);
+	if(#kafra_code) {
+		mes "您的倉庫目前受密碼保護";
+		mes "需要什麼服務嗎?";
+		next;
+		menu "更改密碼 -> 5000z",-,
+		"移除密碼 -> 1000z",M_CLEAR,
+		"取消",M_END;
+	} else {
+		mes ""+getarg(1)+" 隆重得為您介紹一項新服務";
+		mes "'倉庫密碼'功能";
+		next;
+		menu "設置密碼 -> 5000z",M_SET,
+		"取消",M_END;
+	}
+
+	mes getarg(0);
+	mes "請先輸入您的^0000FF舊密碼^000000.";
+	set @code,callfunc("F_EntKafCode");
+	if(@code==0 || @code != #kafra_code-getcharid(3)-1337) {
+		mes "密碼錯誤，請重新輸入";
+		emotion e_hmm;
+		goto M_END;
+	}
+	next;
+
+M_SET:
+	mes getarg(0);
+	mes "現在請輸入您要的^FF0000密碼^000000";
+	set @code,callfunc("F_EntKafCode");
+	if(@code==0) {
+		mes "該號碼無效";
+		emotion e_hmm;
+		goto M_END;
+	}
+	next;
+	mes getarg(0);
+	if(Zeny < 5000) goto L_ZENY;
+	set Zeny,Zeny-5000;
+	//set RESRVPTS, RESRVPTS + (5000/50);	//hardcoded password doesn't add pts
+
+	set #kafra_code,@code+getcharid(3)+1337;
+	mes "倉庫密碼已設置完成，";
+	mes "感謝您使用 "+getarg(1)+".";
+	emotion e_thx;
+	goto M_END;	
+
+M_CLEAR:
+	mes getarg(0);
+	mes "請輸入您的倉庫密碼";
+	set @code,callfunc("F_EntKafCode");
+	if(@code==0) {
+		mes "密碼錯誤，請重新輸入";
+		emotion e_hmm;
+		goto M_END;
+	}
+	next;
+	mes getarg(0);
+	if(Zeny < 1000) goto L_ZENY;
+	set Zeny,Zeny-1000;
+	//set RESRVPTS, RESRVPTS + (1000/50);	//hardcoded password doesn't add pts
+	if(@code == #kafra_code-getcharid(3)-1337) {
+		set #kafra_code,0;
+		mes "倉庫密碼已移除，";
+		mes "感謝您使用"+getarg(1)+".";
+		emotion e_thx;
+	} else {
+		mes "密碼錯誤，將沒收您1000金幣";
+		emotion e_sry;
+	}
+	goto M_END;
+
+L_ZENY:
+	mes "您身上的金錢不足";
+	emotion e_cash;
+M_END:
+	close2;
+	cutin "",255;
+	end;
+}
+
+// Basic Password Validation Function ====================
+function	script	F_EntKafCode	{
+	mes "請輸入 1000~10000000 之間的數字:";
+	set @code_,0;
+	set @kafcode_try,@kafcode_try+1;
+	if(@kafcode_try>10) {
+		set @kafcode_try,0;
+		logmes "Hack: Tried to fit storage password.";
+	}
+	input @code_;
+	if(@code_<1000) {
+		mes "密碼長度過短，";
+		mes "請輸入 1000~10000000 之間的數字";
+		return 0;
+	}
+	if(@code_>10000000) {
+		mes "密碼長度過長";
+		mes "請輸入 1000~10000000 之間的數字";
+		return 0;
+	}
+	return @code_;
 }
