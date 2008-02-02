@@ -1,285 +1,302 @@
-// 劍士轉職腳本
-// 
-// 重整作者:		Dino9021
-//
-// 版權宣告:		本文件由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
-//			轉載請勿移除任何說明敘述與說明文件，並需註明論壇連結 http://eathena.twbbs.org
-// 
-// 中文版本編號:	20041118.0.2
-//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職命令改用 eAthena 之轉職函式
-//
-// 原始腳本:		不明
-//
-//============================================================
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 劍士 轉職腳本 - 
+//===================================
+// 版本：2.0
+//===================================
 
-
-//=====================================================================================
-// 劍士轉職任務 1.0
-//=====================================================================================
-
-izlude_in.gat,74,172,4	script	劍士公會人員#swd_1	119,{
-		mes "[劍士公會服務人員]";
-		mes "這裡是劍士公會！請問你有什麼事情嗎？";
-		next;
-		menu "轉職成為劍士。",L_APP,"詢問有關劍士。",L_INFO_S,"詢問有關轉職成為劍士的條件。",L_INFO_J,"放棄。",-;
-		mes "[劍士公會服務人員]";
-		mes "年輕就是本錢啊～～再多考慮看看吧。";
-		close;
-L_APP:
-	if (callfunc("Is_Sword_Class")) goto OUT_1;
-	if (BaseJob != Job_Novice) goto OUT_2;
-	if ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Knight) && (ReBirth != Job_Crusader)) goto OUT_2;		// 判斷轉生過但原職業非劍士系
-	if (JobLevel < 10) goto OUT_3;
-	if (SkillPoint != 0) goto OUT_4;
-	if (JOB_SW_Q != 0) goto L_NEXT_1;
+izlude_in,74,172,4	script	Swordman#swd_1	119,{
+	if (Upper == 1) {
+		if (Class == Job_Novice_High && ADVJOB == Job_Lord_Knight || ADVJOB == Job_Paladin) {
+			mes "[劍士公會服務人員]";
+			mes "恭喜你已經獲得新生";
+			mes "你正在重新走著劍士這條路";
+			mes "而且常於揮動著劍!";
+			next;
+			if (getskilllv(1) < 9) {
+				mes "[劍士公會服務人員]";
+				mes "唉啊，你的'基本技能'等級要到九等才可以啊";
+				close;
+			}
+			mes "[劍士公會服務人員]";
+			mes "太棒了! 祝賀你又踏上劍士這條路!";
+			next;
+			skill 143,0,0;
+			jobchange Job_Swordman_High;
+			skill 144,1,0;
+			skill 145,1,0;
+			skill 146,1,0;
+			mes "[劍士公會服務人員]";
+			mes "今後也要作為一個劍士系列的職業而更加努力啊";
+			mes "你的未來將會一片光明!";
+			close;
+		}
+		else {
+			mes "[劍士公會服務人員]";
+			mes "嗯?";
+			mes "什麼事呢?";
+			mes "我是劍士公會的人";
+			next;
+			mes "[劍士公會服務人員]";
+			mes "沒什麼東西好說....";
+			mes "我現在想睡覺了";
+			mes "如果沒事情的話請回去吧";
+			close;
+		}
+	}
 	mes "[劍士公會服務人員]";
-	mes "你想要轉職成為劍士？好的，請先填寫劍士轉職申請書。";
+	mes "這裡是劍士公會!";
+	mes "請問你有什麼事情嗎!?";
 	next;
-	menu "申請轉職為劍士。",L_APP_IN,"放棄。",-;
-
-	mes "[劍士公會服務人員]";
-	mes "往後若是想到的話，再來申請好了。";
-	close;
-
-L_APP_IN:
-		if ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Knight) || (ReBirth == Job_Crusader))) goto HighSwdM;			// 判斷轉生過且原職業為劍士系
-		savepoint "izlude_in.gat",65,165;
-		set JOB_SW_Q,1;
+	switch(select("轉職成為劍士:詢問有關劍士:詢問有關轉職成為劍士的條件:取消")) {
+	case 1:
+		if (BaseJob == Job_Swordman) {
+			mes "[劍士公會服務人員]";
+			mes "哈哈哈哈，你真幽默!你的職業已經是劍士啦!";
+			close;
+		}
+		else if (BaseJob != Job_Novice) {
+			mes "[劍士公會服務人員]";
+			mes "哈哈! 你在開玩笑嗎?";
+			mes "你已經是別的職業了啊!!";
+			close;
+		}
+		if (job_sword_q == 0) {
+			mes "[劍士公會服務人員]";
+			mes "你想要轉職成為劍士?好的，請先填寫劍士轉職申請書";
+			next;
+			if (select("申請轉職為劍士:放棄") == 1) {
+				savepoint "izlude_in",65,165;
+				set job_sword_q,1;
+				mes "[劍士公會服務人員]";
+				mes "很好，我馬上為你遞出申請書";
+				mes "啊，你已經準備好轉職成為劍士的條件的話，你可以立刻考口試";
+				mes "要不要?";
+				next;
+				if (select("好的:不要") == 1) {
+					mes "[劍士公會服務人員]";
+					mes "很好很好...我確認看看";
+					next;
+				}
+				else {
+					mes "[劍士公會服務人員]";
+					mes "如果對於轉職條件有任何疑問的話，歡迎向我詢問";
+					mes "接下來只要符合我們所開出來的條件就可以了。祝你好運!";
+					close;
+				}
+			}
+			else {
+				mes "[劍士公會服務人員]";
+				mes "往後若是想到的話，再來申請好了";
+				close;
+			}
+		}
 		mes "[劍士公會服務人員]";
-		mes "很好，我馬上為你遞出申請書。";
-		mes "啊，你已經準備好轉職成為劍士的條件的話，你可以立刻考口試。";
-		mes "要不要？";
-		next;
-		menu "要。",L_NEXT_1,"不要。",-;
-
+		if (getskilllv(1) < 9) {
+			mes "難道我沒有告訴過你嗎?";
+			mes "申請成為劍士的基本條件啊!!";
+			mes "也就是說你的'基本技能'等級要達到9";
+			mes "這樣才能申請成為劍士啊";
+			close;
+		}
+		else if (job_sword_q <= 3) {
+			mes "初心者的技能等級已經夠了，";
+			mes "實戰考試還沒有考過，是不是?";
+			mes "你連這種最基本的考試都過不了，";
+			mes "你想要成為劍士的夢想，";
+			mes "只能衝出大氣層飛向遙遠的宇宙，";
+			mes "繼續賣力的飛行.";
+			next;
+			mes "[劍士公會服務人員]";
+			mes "考試地點，在左邊的房間.";
+			mes "雖然入口是封閉的，";
+			mes "但是向劍士工會服務人員詢問的話，";
+			mes "他們就會讓你進去的";
+			close;
+		}
+		else if (job_sword_q == 4) {
+			mes "恭喜你!你現在已經成為人人稱羨的劍士了! ";
+			mes "現在就馬上開始轉職!";
+			next;
+			callfunc "Job_Change",Job_Swordman;
+			set job_sword_q,0;
+			mes "[劍士公會服務人員]";
+			mes "再次恭喜你成為劍士，";
+			mes "希望你往後能踴躍參與劍士公會舉辦的各種活動";
+			close;
+		}
+	case 2:
 		mes "[劍士公會服務人員]";
-		mes "如果對於轉職條件有任何疑問的話，歡迎向我詢問。";
-		mes "接下來只要符合我們所開出來的條件就可以了。祝你好運！";
-		close;
-
-HighSwdM:
-	mes "[劍士公會服務人員]";
-	mes "嗯，你的基本技能等級足夠。轉生名單上也有你的名字，我就接受你的請求，讓你轉職成為上位劍士。";
-	next;
-	setoption 0;
-	callfunc "Job_Change",Job_Swordman;
-	skill 144,1,0;
-	skill 145,1,0;
-	skill 146,1,0;
-	mes "[劍士公會服務人員]";
-	mes "恭喜你再次成為劍士，希望你往後能踴躍參與劍士公會舉辦的各種活動。";
-	close;
-
-L_NEXT_1:
-		mes "[劍士公會服務人員]";
-		mes "要嗎？那麼，我看看你的力量吧。";
-		next;
-		mes "[劍士公會服務人員]";
-	if (JOB_SW_Q == 4) goto SUCCESS;
-		mes "初心者的技能等級已經夠了，實戰考試還沒有考過，是不是？";
-		mes "如果連這種最基本的考試都過不了，你想要成為劍士的夢想，只能衝出大氣層飛向遙遠的宇宙，繼續賣力的飛行。";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "考試地點，在左邊的房間。";
-		mes "雖然入口是封閉的，但是向劍士工會服務人員詢問的話，他們就會讓你進去的。";
-		close;
-
-SUCCESS:
-		mes "恭喜你！你現在已經成為人人稱羨的劍士了！";
-		mes "現在就馬上開始轉職！";
-		next;
-		setoption 0;
-		callfunc "Job_Change",Job_Swordman;
-		mes "[劍士公會服務人員]";
-		mes "再次恭喜你成為劍士，希望你往後能踴躍參與劍士公會舉辦的各種活動。";
-		close;
-OUT_1:
-		mes "[劍士公會服務人員]";
-		mes "哈哈哈哈，你真幽默！你的職業已經是劍士啦！";
-		close;
-OUT_2:
-		mes "[劍士公會服務人員]";
-		mes "哈哈！真可笑！我代表劍士公會慎重地拒絕。";
-		mes "你已經從事劍士以外的職業了，不是嗎？";
-		close;
-OUT_3:
-		mes "[劍士公會服務人員]";
-		mes "你基本技能等級還未到達要求的標準呢！";
-		mes "問清楚轉職條件，等基本技能等級提升至要求的標準後再過來吧！";
-		close;
-OUT_4:
-		mes "[劍士公會服務人員]";
-		mes "嘿....既然你都已經確實的升級了，那為";
-		mes "什麼不把技能學起來呢？";
-		close;
-L_INFO_S:
-		mes "[劍士公會服務人員]";
-		mes "想要對劍士這個職業瞭解更多嗎？好吧！那我就說給你聽吧。";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "劍士最大的優勢，就是在近距離戰時能發揮最強大的威力。";
-		mes "近距離戰時，它比其它職業多三個優點！";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "１. 和其它職業相比ＨＰ高出許多。";
-		mes "２. 除了弓箭類和權杖類之外，所有的武器都可以裝備，可以視情況需要充分發揮。";
-		mes "３. 劍士的技能大部份都具有強大的攻擊力。";
+		mes "劍士最大的優勢，";
+		mes "就是在近距離戰時能發揮最強大的威力.";
+		mes "近距離戰時，";
+		mes "比其它職業佔優勢有三個!";
 		next;
 		mes "[劍士公會服務人員]";
-		mes "簡單說來就是這樣，我想你應該聽的懂。";
-		mes "另外，我個人認為，劍士不管做什麼事，都是世界上最耀眼的職業！";
-		close;
-L_INFO_J:
-		mes "[劍士公會服務人員]";
-		mes "你想成為劍士？";
-		if ((BaseJob == Job_Swordman) || ((BaseJob == Job_Novice) && (Upper == 1) && ((ReBirth == Job_Knight) || (ReBirth == Job_Crusader)))) mes "可是你的職業已經是劍士啦！";
-		if ((BaseJob != Job_Swordman) && ((BaseJob == Job_Novice) && (Upper == 1) && (ReBirth != Job_Knight) && (ReBirth != Job_Crusader))) mes "可是，你已經有了其他的職業了，你是不是搞錯了？";
-		mes "還是說你只想聽聽看條件是嗎？真的是這樣的話，說給你聽也無妨。";
-		next;
-		menu "是的，我想聽聽看。",L_GETINFO,"不了，我只是走錯路的。",-;
-
-		mes "[劍士公會服務人員]";
-		mes "我是不知道你為什麼在這裡閒晃啦。不過如果你想要出城的話，請往南邊去。";
-		close;
-L_GETINFO:
-		mes "[劍士公會服務人員]";
-		mes "想要成為劍士的話，基本技能等級要達到９級以上。若連這一點都辦不到的話，那還有什麼資格成為劍士呢？你說是不是啊？";
+		mes "第一 和其它職業相比HP比較高許多.";
+		mes "第二 除了弓箭類和權杖類之外，所有的武器都可以裝備，看情況充分利用.";
+		mes "第三 劍士的技能大部份都具有強大的攻擊力.";
 		next;
 		mes "[劍士公會服務人員]";
-		mes "第二 要通過劍士轉職考試的話，更詳細的內容，在考場等候區有考試服務人員會為你服務。";
+		mes "聽起來是簡單的解說";
+		mes "我想你大概聽的懂.";
+		mes "另外再加上一些我個人的想法，";
+		mes "劍士不管做什麼事，";
+		mes "都是世界上最耀眼的職業!";
+		close;
+	case 3:
+		mes "[劍士公會服務人員]";
+		mes "你真的想成為劍士嗎?";
+		if (BaseJob != Job_Novice) {
+			if (BaseJob == Job_Swordman) {
+				mes "不過根本不需要跟你說什麼條件，";
+				mes "因為你的職業已經是劍士啦!";
+			}
+			else {
+				mes "現在告訴你也太遲了，";
+				mes "誰叫你已經是其他職業了呢";
+			}
+		}
 		next;
 		mes "[劍士公會服務人員]";
-		mes "只要完全符合我們所要求的條件的話，我就會如你所願將你轉職成為劍士。";
+		mes "你是說你只想聽聽看條件是嗎?";
+		mes "真的是這樣的話，說給你聽也無妨";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "想要成為劍士的話，";
+		mes "基本技能等級要達到9級以上，";
+		mes "若連這一點都辦不到的話，";
+		mes "那還有什麼資格成為劍士呢?";
+		mes "你說是不是啊? ";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "第二 要通過劍士轉職考試的話，";
+		mes "更詳細的內容，";
+		mes "在考場等候區有考試服務人員會為你服務.";
+		next;
+		mes "[劍士公會服務人員]";
+		mes "只要完全符合我們所要求的條件的話，";
+		mes "我就會如你所願將你轉職成為劍士";
 		close;
+	case 4:
+		mes "[劍士公會服務人員]";
+		mes "哈哈哈，年輕就是本錢啊~~";
+		close;
+	}
 }
 
-izlude_in.gat,62,169,6	script	劍士公會人員#swd_2	85,{
-		mes "[劍士公會服務人員]";
-	if (callfunc("Is_Sword_Class")) goto OUT_1;
-	if (BaseJob != Job_Novice) goto OUT_2;
-	if (JobLevel < 10) goto OUT_3;
-	if (JOB_SW_Q == 0) goto APP_FIRST;
-	if (JOB_SW_Q == 4) goto SUCCESS;
-		mes "加油吧，希望你早日達成目標。";
-		next;
-		savepoint "izlude_in.gat",65,165;
+izlude_in,62,170,6	script	劍士公會服務人員#swd_2	85,{
+	mes "[劍士公會服務人員]";
+	if (BaseJob == Job_Swordman) {
+		mes "站住! 這裡是初學者考試場!";
+		mes "都已經轉職成劍士的傢伙，沒理由進到這裡面! 回去吧!";
+		close;
+	}
+	else if (BaseJob != Job_Novice) {
+		mes "是誰?!已經是其他職業的傢伙不要來這裡!";
+		close;
+	}
+	else if (getskilllv(1) < 9) {
+		mes "站住! 你未達參加實戰考試的條件，";
+		mes "'基本技能'等級需要9!";
+		close;
+	}
+	else if (job_sword_q == 4) {
+		mes "請到中央位置找轉職管理服務人員!";
+		close;
+	}
+	else if (job_sword_q == 0) {
+		mes "站住! 想要參加轉職考試嗎?";
+		mes "那麼首先，填好劍士轉職申請表格之後再來!";
+		close;
+	}
+	else {
+		savepoint "izlude_in",65,165;
 		warp "izlude_in",39,170;
 		end;
-APP_FIRST:
-		mes "站住！想要參加轉職考試嗎？";
-		mes "那麼首先，填好劍士轉職申請表格之後再來！";
-		close;
-SUCCESS:
-		mes "你已經通過考試了，請到中央位置找轉職管理服務人員！";
-		close;
-OUT_1:
-		mes "站住！這裡是初學者考試場！";
-		mes "都已經轉職成劍士的傢伙，沒理由進到這裡面！回去吧！";
-		close;
-OUT_2:
-		mes "是誰？！已經有其它職業的傢伙沒理由進到這裡面！回去吧！";
-		close;
-OUT_3:
-		mes "站住！這裡是初心者技能等級不到９的傢伙不能進去的地方。";
-		mes "若初心者技能等級到９的話，才能就讓你進去轉職考場。";
-		close;
+	}
 }
 
-izlude_in.gat,30,175,4	script	劍士公會人員#swd_3	92,{
-		mes "[劍士公會服務人員]";
-		mes "有關實戰考試，簡單的向你說明一次！請你聽好不要到時候不認帳";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "這考試的目的是，我要確認參賽者，有沒有充沛的體力和堅強的意志力，作為身為一名劍士的後盾！";
-		mes "若沒有天份的人，會在這場考試落榜。";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "考試 ^0083CF及格條件^000000非常簡單！";
-		mes "考場裡面所有的行程都通過之後，到達最後檢查地點，向一位監考人員索取合格證就可以啦";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "相反的，參賽者放棄或者在有限的時間內，沒有抵達檢查點就算是失敗";
-		mes "假如想要宣佈放棄的話，進入到每個場地入口處，或者在各檢查點向我們管理人員詢問";
-		next;
-		mes "[劍士公會服務人員]";
-		mes "考場分為三個場地，有陷阱和迷路不小心失誤的話，可是會掉進無底洞的呦！";
-		mes "祝你好運";
-		close;
+izlude_in.gat,30,175,4	script	劍士公會服務人員#swd3	92,{
+	mes "[劍士公會服務人員]";
+	mes "有關實戰考試，簡單的向你說明一次! 請你聽好不要到時候不認帳";
+	next;
+	mes "[劍士公會服務人員]";
+	mes "這考試的目的是，我要確認參賽者，有沒有充沛的體力和堅強的意志力，作為身為一名劍士的後盾!";
+	mes "若沒有天份的人，會在這場考試落榜";
+	next;
+	mes "[劍士公會服務人員]";
+	mes "考試 ^0083CF及格條件^000000非常簡單!";
+	mes "考場裡面所有的行程都通過之後，到達最後檢查地點，向一位監考人員索取合格證就可以啦";
+	next;
+	mes "[劍士公會服務人員]";
+	mes "相反的，參賽者放棄或者在有限的時間內，沒有抵達檢查點就算是失敗";
+	mes "假如想要宣佈放棄的話，進入到每個場地入口處，或者在各檢查點向我們管理人員詢問";
+	next;
+	mes "[劍士公會服務人員]";
+	mes "考場分為三個場地，有陷阱和迷路不小心失誤的話，可是會掉進無底洞的呦!";
+	mes "祝你好運";
+	close;
 }
 
-izlude_in.gat,30,163,0	script	考場負責人#swd_1	105,{
-		mes "[考場負責人]";
-	if (callfunc("Is_Sword_Class")) goto OUT_1;
-	if (BaseJob != Job_Novice) goto OUT_2;
-	if (JOB_SW_Q == 0) goto OUT_3;
-
-	set $sword_map, getmapusers("job_sword1.gat");
-	if($sword_map > 0) goto MSG_0;
-
-	if (JOB_SW_Q == 1) goto MSG_1;
-	if (JOB_SW_Q == 2) goto MSG_2;
-		mes "不要放棄！再挑戰吧！";
-		next;
-		warp "job_sword1",10,245;
+izlude_in,30,163,0	script	考場 負責人#swd_1	105,{
+	mes "[考場 負責人]";
+	if (BaseJob == Job_Swordman) {
+		mes "誰呀?!這裡是劍士考場，不是你進來的地方!趕快出去吧!";
+		close2;
+		warp "izlude_in",66,170;
 		end;
-MSG_0:
-		mes "[考場負責人]";
-		mes "現在有正人在進行考試當中";
-		mes "請在此等候！";
-		close;
-
-MSG_1:
-		mes "想要成為劍士嗎？嗯！看起來很壯碩啊！";
-		mes "和你以後的人生相比的話，這不算很難的行程，所以說不要太緊張好好的去再回來吧";
-		next;
-		set JOB_SW_Q,2;
-		warp "job_sword1",10,245;
+	}
+	else if (BaseJob != Job_Novice) {
+		mes "誰呀?!這裡是劍士考場，不是你進來的地方!趕快出去吧!";
+		close2;
+		warp "izlude_in",66,170;
 		end;
-MSG_2:
-		mes "重考嘛....不過，不放棄重新挑戰的精神，我很喜歡！吃下這個繼續加油啊！";
-		next;
-		getitem 512,5;
-		set JOB_SW_Q,3;
-		warp "job_sword1",10,245;
-		end;
-OUT_1:
-	mes "你不是已經轉職了嗎？怎麼會進到這裡來？趕快出去吧！";
-	next;
-	warp "izlude_in",66,170;
-	end;
-OUT_2:
-	mes "你是誰呀？！這裡是劍士考場，不是你進來的地方！趕快出去吧！";
-	next;
-	warp "izlude_in",66,170;
-	end;
-OUT_3:
-	mes "如果你想要參加劍士轉職考試的話，請你先去報名。";
-	next;
-	warp "izlude_in",66,170;
+	}
+	if (job_sword_q == 1) {
+		mes "想要成為劍士嗎?嗯!看起來很壯碩啊!!";
+		mes "和你以後的人生相比的話，";
+		mes "這不算很難的行程，";
+		mes "所以說不要太緊張好好的去再回來吧!";
+		set job_sword_q,2;
+	}
+	else if (job_sword_q == 2) {
+		mes "失敗了嗎...";
+		mes "不過，不放棄重新挑戰的精神，我很喜歡!吃下這個繼續加油啊!";
+		getitem 512,5; //Apple
+		set job_sword_q,3;
+	}
+	else if (job_sword_q == 3)
+		mes "不要放棄!再挑戰吧!";
+	close2;
+	warp "job_sword1",10,245;
 	end;
 }
 
 // Examination Courses NPCs
 //============================================================ 
 // 1-1
-job_sword1,230,245,2	script	考場服務人員#swd_1	105,{
-	callfunc "F_JobSwdMedic","一";
+job_sword1,230,245,2	script	醫務小組#swd_1	105,{
+	callfunc "F_JobSwd醫務小組","1st";
 }
-job_sword1,230,242,2	script	考場服務人員#swd_2	105,{
+job_sword1,230,242,2	script	考場 負責人#swd_2	105,{
 	callfunc "F_JobSwdStaff",1;
 }
-job_sword1,230,207,2	script	考場服務人員#2swd_2	105,{
-	callfunc "F_JobSwdMedic","二";
+job_sword1,230,207,2	script	醫務小組#2swd_2	105,{
+	callfunc "F_JobSwd醫務小組","2nd";
 }
-job_sword1,230,204,2	script	考場服務人員#2swd_3	105,{
+job_sword1,230,204,2	script	考場 負責人#2swd_3	105,{
 	callfunc "F_JobSwdStaff",1;
 }
 job_sword1,223,167,2	script	馬修塔印#swd_1_success	92,{
-	mapannounce "job_sword1","應試者 " + strcharinfo(0) + "。你成功通過考試",bc_map;
-	set JOB_SW_Q,4;
+	mapannounce "job_sword1","應試者 " + strcharinfo(0) + " 通過考試了",bc_map;
+	set job_sword_q,4;
 	mes "[馬修塔印]";
-	mes "恭喜你通過考試了！";
-	mes "合格通知書，已經送達到管理部門了，從這邊走出去，到中央轉職管理部門詢問即可。";
+	mes "恭喜你通過考試了!";
+	mes "合格通知書，已經送達到管理部門了，";
+	mes "從這邊走出去，到中央轉職管理部門詢問即可";
 	close2;
 	warp "izlude_in",66,173;
 	end;
@@ -287,34 +304,35 @@ job_sword1,223,167,2	script	馬修塔印#swd_1_success	92,{
 
 // Examination Course Fucntions
 //============================================================ 
-function	script	F_JobSwdMedic	{
+function	script	F_JobSwd醫務小組	{
 	percentheal 100,0;
 	mes "[醫務小組]";
-	mes "這裡是第 "+getarg(0)+" 個檢查點！ 我會幫你恢復體力，請你加油！";
+	mes "這裡是第"+getarg(0)+"個檢查點!";
+	mes "我會幫你恢復體力，請你加油!";
 	close;
 }
 
 function	script	F_JobSwdStaff	{
-	mes "[考場服務人員]";
-	mes "你要放棄考試嗎？";
+	mes "[考場 負責人]";
+	mes "你要放棄考試嗎?";
 	next;
 	if (select("是:不是") == 1) {
-		mapannounce "job_sword1","應試者 " + strcharinfo(0) + " 考生放棄考試了。",bc_map;
+		mapannounce "job_sword1","應試者 " + strcharinfo(0) + "放棄轉職考試了",bc_map;
 		warp "izlude_in",65,165;
 		end;
 	}
-	mes "[考場服務人員]";
-	mes "明智的決定！靠著年青人的毅力再奮戰一次！";
+	mes "[考場 負責人]";
+	mes "我會幫你恢復體力，請你加油!";
 	close;
 }
 
 function	script	F_JobSwdTestStaff	{
 OnTouch:
-	mes "[考場服務人員]";
-	mes "你要放棄考試嗎？";
+	mes "[考場 負責人]";
+	mes "Applicant " + strcharinfo(0) + ". Do you surrender??";
 	next;
-	if (select("是:不是") == 1) {
-		mapannounce "job_sword1","應試者 " + strcharinfo(0) + " 考生放棄考試了。",bc_map;
+	if (select("Yes.:No.") == 1) {
+		mapannounce "job_sword1","Applicant " + strcharinfo(0) + " quit the test..",bc_map;
 		warp "izlude_in",65,165;
 		end;
 	}
@@ -324,7 +342,7 @@ OnTouch:
 
 function	script	F_JobSwdTestStaff2	{
 OnTouch:
-	mapannounce "job_sword1","恭禧應試者 " + strcharinfo(0) + ". 通過第 "+getarg(0)+" 關。",bc_map;
+	mapannounce "job_sword1","Applicant " + strcharinfo(0) + ". Pass the "+getarg(0)+" course.",bc_map;
 	warp "job_sword1",getarg(1),getarg(2);
 	end;
 }
@@ -334,44 +352,38 @@ OnTouch:
 job_sword1,223,243,0	warp	checkp1-2#swd_1	1,1,job_sword1,11,206;
 job_sword1,223,205,0	warp	checkp2-3#swd_1	1,1,job_sword1,11,168;
 
-job_sword1,7,245,0	script	考場服務人員#swd_4	45,1,3,{
+job_sword1,7,245,0	script	考場 負責人#swd_4	45,1,3,{
 	callfunc "F_JobSwdTestStaff",10,245;
 }
 
-job_sword1,8,207,0	script	考場服務人員#swd_5	45,1,6,{
+job_sword1,8,207,0	script	考場 負責人#swd_5	45,1,6,{
 	callfunc "F_JobSwdTestStaff",11,207;
 }
 
-job_sword1,8,169,0	script	考場服務人員#swd_6	45,1,6,{
+job_sword1,8,169,0	script	考場 負責人#swd_6	45,1,6,{
 	callfunc "F_JobSwdTestStaff",11,169;
 }
 
-job_sword1,192,244,0	script	考場服務人員#swd_7	45,1,3,{
-	callfunc "F_JobSwdTestStaff2","一",215,244;
+job_sword1,192,244,0	script	考場 負責人#swd_7	45,1,3,{
+	callfunc "F_JobSwdTestStaff2","1st",215,244;
 }
 
-job_sword1,193,207,0	script	考場服務人員#swd_8	45,1,3,{
-	callfunc "F_JobSwdTestStaff2","二",215,205;
+job_sword1,193,207,0	script	考場 負責人#swd_8	45,1,3,{
+	callfunc "F_JobSwdTestStaff2","2nd",215,205;
+	warp "job_sword1",215,205;
 }
 
-job_sword1,193,168,0	script	考場服務人員#swd_9	45,1,3,{
-	callfunc "F_JobSwdTestStaff2","三",215,167;
+job_sword1,193,168,0	script	考場 負責人#swd_9	45,1,3,{
+	callfunc "F_JobSwdTestStaff2","3rd",215,167;
 }
-
-//==============================================================================
-// 傳點、陷阱設定
-//==============================================================================
-job_sword1.gat,65,117,0	warp	swd101	1,1,job_sword1.gat,10,245
-job_sword1.gat,98,27,0	warp	swd102	1,1,job_sword1.gat,11,207
-job_sword1.gat,161,27,0	warp	swd103	1,1,job_sword1.gat,11,207
-job_sword1.gat,239,117,0	warp	swd106	1,1,job_sword1.gat,11,169
-job_sword1.gat,192,244,0	warp	SwordWarp0	2,2,job_sword1.gat,215,244
-
-job_sword1.gat,192,206,0	warp	SwordWarp2	2,2,job_sword1.gat,215,205
-job_sword1.gat,192,168,0	warp	SwordWarp4	2,2,job_sword1.gat,215,167
 
 // Pitfalls (Set 1)
 //============================================================ 
+job_sword1,65,117,0	warp	л薑01-01	1,1,job_sword1,10,245;
+job_sword1,98,27,0	warp	л薑02-01	1,1,job_sword1,11,207;
+job_sword1,161,27,0	warp	л薑02-02	1,1,job_sword1,11,207;
+job_sword1,239,117,0	warp	л薑03-01	1,1,job_sword1,11,169;
+
 job_sword1,16,251,0	script	1_blank_1_a::SwdTrap1	-1,0,1,{
 OnTouch:
 	switch(rand(1,5)) {
@@ -429,6 +441,8 @@ job_sword1,181,250,0	duplicate(SwdTrap1)	1_blank_13_c	-1,1,0
 job_sword1,180,238,0	duplicate(SwdTrap1)	1_blank_14_a	-1,0,1
 job_sword1,183,238,0	duplicate(SwdTrap1)	1_blank_14_b	-1,0,1
 job_sword1,181,239,0	duplicate(SwdTrap1)	1_blank_14_c	-1,1,0
+
+job_sword1,193,245,0	warp	1_rest	1,3,job_sword1,215,244;
 
 // Pitfalls (Set 2)
 //============================================================ 
@@ -590,27 +604,24 @@ job_sword1,181,163,0	duplicate(SwdTrap3)	3_blank_30_c	-1,2,0
 
 // Monsters (all three courses)
 //============================================================ 
-job_sword1.gat,0,0,0,0	monster	蒼蠅	1183,5,0,0,0
-job_sword1.gat,201,36,0,0	monster	蒼蠅	1183,5,0,0,0
-job_sword1.gat,161,94,0,0	monster	蒼蠅	1183,5,0,0,0
-job_sword1.gat,35,79,0,0	monster	蒼蠅	1183,5,0,0,0
-job_sword1.gat,35,78,0,0	monster	綠棉蟲	1184,4,0,0,0
-job_sword1.gat,50,108,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,61,28,0,0	monster	綠棉蟲	1184,4,0,0,0
-job_sword1.gat,61,92,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,110,112,0,0	monster	綠棉蟲	1184,3,0,0,0
-job_sword1.gat,161,94,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,130,76,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,103,58,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,130,24,0,0	monster	綠棉蟲	1184,3,0,0,0
-job_sword1.gat,201,36,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,201,16,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,239,44,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,239,76,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,231,101,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,234,117,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,198,91,0,0	monster	綠棉蟲	1184,2,0,0,0
-job_sword1.gat,200,63,0,0	monster	綠棉蟲	1184,2,0,0,0
+job_sword1,0,0,0,0	monster	Chonchon	1183,20,0,0,0
+job_sword1,35,79,0,0	monster	Fabre	1184,3,60000,30000,0
+job_sword1,50,108,0,0	monster	Fabre	1184,3,60000,30000,0
+job_sword1,61,28,0,0	monster	Fabre	1184,3,60000,30000,0
+job_sword1,61,92,0,0	monster	Fabre	1184,3,60000,30000,0
+job_sword1,110,112,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,161,94,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,130,76,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,103,58,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,130,24,0,0	monster	Fabre	1184,5,60000,30000,0
+job_sword1,201,36,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,201,16,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,239,44,0,0	monster	Fabre	1184,3,60000,30000,0
+job_sword1,239,76,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,231,101,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,234,117,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,198,91,0,0	monster	Fabre	1184,2,60000,30000,0
+job_sword1,200,63,0,0	monster	Fabre	1184,2,60000,30000,0
 
 
 //============================================================ 
