@@ -1,33 +1,14 @@
-// 染髮腳本
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041118.0.2
-//
-// 參考腳本:		作者不明
-//
-//============================================================
+//===========================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -------------------------------------------
+// - 染髮 腳本 -
+// ------------------------------------------
+// 版本1.1
+//============================================
 
-//===== eAthena Script ======================================= 
-//= Hair Dyer
-//===== By: ================================================== 
-//= kobra_k88
-//===== Current Version: ===================================== 
-//= 1.1
-//===== Compatible With: ===================================== 
-//= eAthena 7.15 +
-//===== Description: ========================================= 
-//= Hair Dyer with standard palletes
-//===== Additional Comments: ================================= 
-//= Fully working
-//= 1.1 Bugfix: fixed missing menu label LEnd->M_End [Lupus]
-//============================================================ 
-
-
-
-
-// HairDyer Jovovich -----------------------------------------------------
 prt_in.gat,243,168,4	script	佑波迪曲	91,{
+
 	mes "[美容師 佑波迪曲]";
 	mes "歡迎光臨染髮工坊";
 	next;
@@ -35,19 +16,16 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 	mes "哎喲! 您的髮質變的很差. 需要專家來保養一下. 您先坐下吧.";
 	qMenu0:
 	next;
-	menu "染頭髮",M_0, "價格列表",M_1, "敘述染髮的內容",M_2, "取消",M_End;
-
-	M_0:
+	switch(select("染頭髮:價格列表:敘述染髮的內容:取消")) {
+	case 1:
 		mes "[美容師 佑波迪曲]";
 		mes "呵呵! 明智的選擇! 任何時間都是染髮的好時間.";
 		next;
 		mes "[美容師 佑波迪曲]";
 		mes "請選擇想染的顏色";
 		next;
-		menu	"紅色",sM_a, "黃色",sM_b, "紫色",sM_c, "赤色",sM_d, "綠色",sM_e,
-			"藍色",sM_f, "白色",sM_g, "黑色",sM_h, "改變主意不染了",LEnd;
-
-		sM_a:
+		switch(select("紅色:黃色:紫色:赤色:綠色:藍色:白色:黑色:不染了")) {
+		case 1:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(975) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -58,7 +36,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 
 			close;
 
-		sM_b:
+		case 2
 			mes "[美容師 佑波迪曲]";
 			if(countitem(976) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -68,7 +46,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_c:
+		case 3:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(981) < 1) goto  sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -78,7 +56,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_d:
+		case 4:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(980) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -88,7 +66,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_e:
+		case 5:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(979) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -98,7 +76,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_f:
+		case 6:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(978) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -108,7 +86,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_g:
+		case 7:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(982) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -118,7 +96,7 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			set Zeny, Zeny - 1000;
 			close;
 
-		sM_h:
+		case 8:
 			mes "[美容師 佑波迪曲]";
 			if(countitem(983) < 1) goto sL_NoDye;
 			if(Zeny < 1000) goto sL_Zeny;
@@ -127,7 +105,10 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 			delitem 983,1;
 			set Zeny, Zeny - 1000;
 			close;
-
+		case 9:
+			mes "[美容師 佑波迪曲]";
+			mes "不管男人女人都有愛打扮的權利和義務";
+			close;
 		sL_NoDye:
 			mes "客人! 您所指定的染色顏料沒帶來?";
 			close;
@@ -135,10 +116,10 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 		sL_Zeny:
 			mes "抱歉! 您沒有足夠的金錢.";
 			close;
-
-	M_1:
+		}
+	case 2:
 		mes "[美容師 佑波迪曲]";
-		mes "Here is the list of colors you can choose from and their prices:";
+		mes "這裡是價目表，還可以染的顏色：";
 		mes " - 紅色: 1000 zeny, 需要 1 個紅色染料";
 		mes " - 黃色: 1000 zeny, 需要 1 個黃色染料";
 		mes " - 紫色: 1000 zeny, 需要 1 個紫色染料";
@@ -147,9 +128,9 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 		mes " - 藍色: 1000 zeny, 需要 1 個藍色染料";
 		mes " - 白色: 1000 zeny, 需要 1 個白色染料";
 		mes " - 黑色: 1000 zeny, 需要 1 個黑色染料";
-		goto qMenu0;
+		close;
 
-	M_2:
+	case 3:
 		mes "[美容師 佑波迪曲]";
 		mes "心情不好的時候、失戀的時候、想裝帥的時候、有特別事情的時候，在特別的場所、特別的時間，只有您有獨特髮型，您想要炫耀嗎?";
 		next;
@@ -158,12 +139,12 @@ prt_in.gat,243,168,4	script	佑波迪曲	91,{
 		next;
 		mes "[美容師 佑波迪曲]";
 		mes "只需要 1000 zeny 與一個染料，我就可以幫你把頭髮染成夢想中的顏色!";
-		next;
-		goto qMenu0;
+		close;
 
-	M_End:
+	case 4:
 		mes "[美容師 佑波迪曲]";
 		mes "不管男人女人都有愛打扮的權利和義務";
 		close;
+	}
 }
 
