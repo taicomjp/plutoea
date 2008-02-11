@@ -1,73 +1,15 @@
-//===== eAthena Script ======================================= 
-//= Quest NPCs located in Lighthalzen
-//===== By: ================================================== 
-//= Persian, Vicious_Pucca, aoa00, Evera, MasterOfMupppets,
-//= Lupus, Lord Gywall
-//===== Current Version: ===================================== 
-//= 4.0
-//===== Compatible With: ===================================== 
-//= eAthena SVN
-//===== Description: ========================================= 
-//= Quests related to Lighthalzen City.
-//===== Additional Comments: ================================= 
-//= Grammar/script check please. This was a quick job.
-//= Things to add: Look at the thread "Lighthalzen Guard" in SVN script
-//= 0.3 Initial Release
-//= 0.5 Added mobsters spawn and Einbroch pollution. Alert lasts either 10 minutes or all mob killed.
-//= 0.6-0.9 fix small bug. Added Bio-lab entrance Quest. Added Getting security-card Quest.
-//= 1.0 Patched "mobsters spawn & Alert" like Real-RO.
-//= 1.0a fixed rand(1,10) + comparision. There just can't be 'X < 1' [Lupus]
-//= 1.1 Changed the mobster spawn to g_mobster to prevent exploits [MasterOfMuppets]
-//= 1.2 Added the cube room quest by DeNy, translated by vicious_pucca. [MasterOfMuppets]
-//=	Thanks to Linuxwolf for a grammar check as well =).
-//= 1.2a Moved Biolab entrance to lhz_dun warps. [Vicious]
-//= 1.3 Fixed password bug, fixed endless item exploit, some typos [Lupus]
-//= 1.4 Fixed password abuse. When people don't read the password under the picture
-//= 	and enter Zero shit 8) (TODO: I saw some "Sticks" abuses, too.. where you could skip a part of quest...)
-//= 1.5 Fixed Mobster's OnDead event(it has to start with "On"!) [Playtester]
-//= 1.5a Fixed "free stick" bug, thx 2 Neouni [Lupus]
-//= 1.6 Added Gywall's Pickpocket Quest
-//= 1.7 Implemented the Friendship quest [MasterOfMuppets]
-//= 1.8 Changed the name of the mobsters to Gangster, as it should be. [MasterOfMuppets]
-//= 1.9 Added extra input check on Biolab so that the first letter of the word could be capitalized or undercase. [Evera]
-//= 2.0 Removed Duplicates [Silent]
-//= 2.1 Added first part of Bio Ethics Quest [Evera]
-//= 2.2 Added bit to say Bio Ethics is unfinished, and if a player attempts, it warps them
-//= 	out after finished part... Don't want players getting stuck ;_; [Evera]
-//= 2.3 Finished Bio Ethics Quest. Need bug testers before moving to trunk, my
-//=	mind was somewhere else when writing @_@ [Evera]
-//= 2.4	Fixed the bug where a str&int debug was shown in the console for
-//=	test tube in bio labs quest. [Evera]
-//= 2.5	Fixed Kellasus giving you extra skills in Bio Ethics quest [Evera]
-//= 2.6	Fixed exploit letting any class get homunculus from Bio Ethics Quest [Evera]
-//= 2.6a Moved Bio Ethics Quest to Alchemist SKILL QUESTS [Lupus]
-//= 2.7 fixed bugs that let people bypass some quest parts V_V [Lupus]
-//=	reused cubekey var for 4 Cube Room key vars
-//= 2.8 More optimization. Also fixed bug with "2x short sticks -> long" [Lupus]
-//=	Now uses MISC_QUEST&512 instead of 'hzdun'. WIP
-//= 2.9 Fixed Friendship Quest levelup exploit (u could get EXP twice) [Lupus]
-//= 3.0 Added Cursed Spirit Quest. [SinSloth]
-//=	Moved a book non-related to Lighthalzen quests.
-//= 3.1 Added Schwartzvalt Trilogy Quest. [SinSloth]
-//= 3.2 Updated some NPCs regarding Hugel Rebellion Quest. [SinSloth]
-//= 3.2 Removed the NPC "#kiz03-4" as I couldn't find any [L0ne_W0lf]
-//=	reference to it in the Aegis script.
-//= 3.3 Fixed a wrong negative value checking in Schwartzvalt Trilogy quest. [SinSloth]
-//= 3.4 Fixed experience gains to match upcoming rate adjustments. [SinSloth]
-//= 3.5 Touch-ups to the Friendship quest. Added EXP reward. [L0ne_W0lf]
-//=	Added cutins for "Maku" npc, and changed "set HP" to percentheal.
-//= 3.5a Adjusted EXP given by "Benkasttein" to be the same as that given by Maku. [L0ne_W0lf]
-//= 3.6 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
-//= 3.7 Counter-fixed negative value checking to now look for both positive and negative values
-//=     since its symbol depends on the time. [SinSloth]
-//= 3.8 Removed bio ethic quest definition from header. [L0ne_W0lf]
-//= 3.9 Added Rekenber Job quest. Don't know why it hasn't been there before though. [SinSloth]
-//= 4.0 Updated several NPCs to Official (iRO) dialog, and restrucured. [L0ne_W0lf]
-//============================================================ 
+//==================================
+// [­ß] The PlutoEA Project [¤ý]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - ¨½¦è¶ð¼ÖÂí ¥ô°È¸}¥» - 
+//===================================
+// ª©¥»¡G4.0
+//===================================
 
 lighthalzen,1,1,7	script	sneakAddSuber	-1,{
 OnInit:
-	set $@sneakchance, 3;	// chance of successful sneak(0 = never, 10 = always)
+	set $@sneakchance, 3;	// °½«×ªº¦¨¥\¾÷²v(0 = ¤£¥i¯à¡A10 = «Ü®e©ö)
 	set $@sneakguard, 0;	// numbers of people who sneaked past guard
 	set $@threshold, 10;	// numbers of sneakers before mob appears
 	set $@mob, 50;		// Max respawn numbers of "mobsters"
@@ -108,8 +50,7 @@ OnTimer10000:
 MakeMob:
 	if($@lhz_alert == 1) goto ChkEnd;
 	set $@mobcount, $@mob;
-	mapannounce "lighthalzen","Attention, citizens. Our security has been breached and the city is in Gangster Alert status. Please find shelter immediately!", 1;
-	
+	mapannounce "lighthalzen","ªv¦wºû«ù§½: ¥Ñ©ó¥Ø«e§ø¸¨ªv¦w¤£¨Îªº½t¬G¡A½Ð¦U¦ì©~¥Á­Ìª`·N¦w¥þ¡A¦A»¡¤@¦¸¡A½Ð¦U¦ì©~¥Á­Ì­n¯S§Oª`·N¦w¥þ", 1;	
 	for( set $@i, 0; $@i < $@mob; set $@i, $@i + 1 ) {
 		monster "lighthalzen",0,0,"Gangster",1592,1,"AlertChk::OnMobKilled";
 	}
@@ -122,7 +63,7 @@ MakeMob:
 ClearMob:
 	if($@lhz_alert == 0) goto ChkEnd;
 	set $@mobcount, 0;
-	mapannounce "lighthalzen","Attention, citizens. Our law enforcement department has successfully contained the situation. Alert status has been canceled.", 1;	
+	mapannounce "lighthalzen","ªv¦wºû«ù§½: §Ú­Ìªv¦wºû«ù§½¸g¹L¤@µf§V¤O«á¡A²×©ó§â§ø¸¨ªº²§Ä³¥÷¤l³£³B¨M¤F¡A¦U¦ì©~¥Á­Ì¥i¥H©ñ¤ß¤F", 1;
 	killmonster "lighthalzen","AlertChk::OnMobKilled";
 	set $@lhz_alert, 0;
 	set $@sneakguard, 0;
@@ -140,30 +81,31 @@ ChkEnd:
 	end;	
 }
 
-lighthalzen,267,200,3	script	Guard#lhz01	868,{
+lighthalzen,267,200,3	script	Äµ½Ã#lhz01	868,{
 	if(countitem(7350)>0) {
-		mes "[Guard]";
-		mes "Hold it right th--!";
-		mes "Oh. I'm sorry. I didn't";
-		mes "realize you were carrying";
-		mes "a pass and had authorization.";
+		mes "[Äµ½Ã]";
+		mes "§A¬O½Ö!...¶â?¦³³q¦æÃÒ°Ú¡A";
+		mes "¥¢Â§¤F¡A§AªºÁ|¤î¦æ¬°";
+		mes "¹³¬O­Ó«_ÀI®a¡A¦ý½T¹ê";
+		mes "±o¨ì¨ºÃäªv¦wºû«ù§½ªº";
+		mes "³\¥i¡A¥i¥H³q¹L¤F!";
 		close2;
 		warp "lighthalzen",303,229;
 		end;
 	}
 	else if($@lhz_alert == 1) {
-		mes "[Guard]";
-		mes "Recently too many people";
-		mes "have been traveling between";
-		mes "Uptown and the ghetto, so";
-		mes "we've heightened security";
-		mes "around here. But how can";
-		mes "so many sneak through us?";
+		mes "[Äµ½Ã]";
+		mes "³Ìªñ¦³¤Ó¦h¤H";
+		mes "°½´ç¦Ü¹ï­±¡A";
+		mes "©Ò¥H¥[±j¤F«O¦wÄµ§Ù¡A";
+		mes "¨ì©³¬O½Ö¦Ñ¬O³o¼Ë";
+		mes "¨Ó¦^ªº°½´ç©O¡A";
+		mes "­ü... Á`¤§°ÝÃD¤£¤p°Ú";
 		close;
 	}
 	else if ((gettime(2)>00 && gettime(2)<10) || (gettime(2)>30 && gettime(2)<40)) {
 		if(rand(1,10) < 2) {
-			mes "[Guard]";
+			mes "[Äµ½Ã]";
 			mes "Hold it right there!";
 			mes "I can't permit anyone";
 			mes "to enter the slums.";
@@ -171,7 +113,7 @@ lighthalzen,267,200,3	script	Guard#lhz01	868,{
 			mes "came from, adventurer!";
 			close;
 		}
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Zzzz... Zzz...";
 		mes "ZZZzzzzzzzzzz...";
 		next;
@@ -196,7 +138,7 @@ lighthalzen,267,200,3	script	Guard#lhz01	868,{
 
 lighthalzen,294,223,7	script	Guard#lhz02	868,{
 	if(countitem(7350)>0) {
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Hold it right th--!";
 		mes "Oh. I'm sorry. I didn't";
 		mes "realize you were carrying";
@@ -206,7 +148,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 		end;
 	}
 	if($@lhz_alert == 1) {
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Recently too many people";
 		mes "have been traveling between";
 		mes "Uptown and the ghetto, so";
@@ -217,7 +159,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 	}
 	if((gettime(2)>00 && gettime(2)<10) || (gettime(2)>30 && gettime(2)<40)) {
 		if(rand(1,10) < 2) {
-			mes "[Guard]";
+			mes "[Äµ½Ã]";
 			mes "Hold it right there!";
 			mes "I can't permit anyone to";
 			mes "enter Uptown Lighthalzen!";
@@ -225,7 +167,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 			mes "then move on out of here!";
 			close;
 		}
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Zzzz... Zzz...";
 		mes "ZZZzzzzzzzzzz...";
 		next;
@@ -340,7 +282,7 @@ L_2:
 	mes "Agh! Quieten down! What did i tell you?";
 	mes "I've told you what i do, now will you stop staring at me?";
 	mes "And be quiet~!";
-	mes "You're weird.. ¬_¬";
+	mes "You're weird.. ¬_?";
 	next;
 	mes "[" +strcharinfo(0) + "]";
 	mes "Ah..Haha.. I'm sorry.";
@@ -6817,7 +6759,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 
 	if(lhz_boss < 11)
 	{
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "You are in the";
 		mes "President's House.";
 		mes "Arms are prohibited";
@@ -6848,7 +6790,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 			mes "[?????]";
 			mes "..........";
 			next;
-			mes "[Guard]";
+			mes "[Äµ½Ã]";
 			mes "Ah, Mr. Keshnaar.";
 			mes "Are you leaving?";
 			next;
@@ -6859,7 +6801,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 			if(Sex == 1) mes "young gentleman here is?";
 			else mes "lovely young lady is?";
 			next;
-			mes "[Guard]";
+			mes "[Äµ½Ã]";
 			mes "Mr. Keshnaar,";
 			mes "I present "+strcharinfo(0)+".";
 			mes ""+strcharinfo(0)+", allow me";
@@ -6871,7 +6813,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 			mes "me, I have some business";
 			mes "to attend to. Good day~";
 			next;
-			mes "[Guard]";
+			mes "[Äµ½Ã]";
 			mes "Take care,";
 			mes "Mr. Keshnaar.";
 			set lhz_boss,13;
@@ -6879,7 +6821,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 			close;
 
 		}
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Please wait a moment.";
 		mes "Currently, the president";
 		mes "is seeing another guest.";
@@ -6889,7 +6831,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 	}
 	else if(lhz_boss == 13)
 	{
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Now you may enter";
 		mes "and speak with the";
 		mes "president. Thank you";
@@ -6913,7 +6855,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 				mes "I'm sorry, but would you";
 				mes "please wait one minute?";
 				next;
-				mes "[Guard]";
+				mes "[Äµ½Ã]";
 				mes "Yes, sir.";
 				mes "My apologies, but would";
 				mes "you please wait until the";
@@ -6921,7 +6863,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 				close;
 
 			case 2:
-				mes "[Guard]";
+				mes "[Äµ½Ã]";
 				mes "Oh, Mr. Keshnaar is the";
 				mes "government negotiator from";
 				mes "the Rekenber Corporation.";
@@ -6933,7 +6875,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 	}
 	else
 	{
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Greetings.";
 		mes "You may enter to";
 		mes "see the president.";
@@ -7379,7 +7321,7 @@ L_Mission:
 				mes "did learn the secret for";
 				mes "which he was hunted...";
 				next;
-				mes "[Guard]";
+				mes "[Äµ½Ã]";
 				mes "Mr. President,";
 				mes "Ms. Hes O' Neil has an";
 				mes "urgent message for you.";
@@ -7642,7 +7584,7 @@ L_Mission:
 	}
 	else if(lhz_boss == 42)
 	{
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "Advisor Kurelle";
 		mes "is here now.";
 		next;
@@ -7650,7 +7592,7 @@ L_Mission:
 		mes "Let him in!";
 		mes "...................";
 		next;
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "...............?";
 		mes "Yes, sir...";
 		next;
@@ -9167,7 +9109,7 @@ lhz_in01,177,31,0	script	Door#sneak	111,{
 
 	if(lhz_boss < 29)
 	{
-		mes "[Guard]";
+		mes "[Äµ½Ã]";
 		mes "This is a";
 		mes "restricted area.";
 		mes "Please keep clear";

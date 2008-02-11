@@ -1,0 +1,208 @@
+
+
+payon_in01,193,30,4	script	糕餅 奶奶#rat	78,{
+	mes "[糕餅 奶奶]";
+	if (!lunar_rat) {
+		mes "唉喲.. 唉喲...";
+		mes "這要怎麼辦才好呢...";
+		next;
+		mes "[糕餅 奶奶]";
+		mes "咳嗽! 咳嗽!";
+		next;
+		mes "[糕餅 奶奶]";
+		mes "你們這些壞傢伙們...";
+		next;
+		select("奶奶請問有什麼心事嗎?");
+		mes "[糕餅 奶奶]";
+		mes "年輕人聽一聽我說的話吧，";
+		mes "為了這一次的過年所準備的糕餅材料";
+		mes "全部都這些壞老鼠們給偷走了..";
+		next;
+		mes "[糕餅 奶奶]";
+		mes "咳嗽! 咳嗽!";
+		next;
+		mes "[糕餅 奶奶]";
+		mes "沒有材料的話是做不出糕餅的";
+		mes "這要怎麼辦才好啊..";
+		next;
+		select("請問材料是什麼啊?");
+		mes "[糕餅 奶奶]";
+		mes "那個就是..";
+		mes "裝滿了米的米袋啊..";
+		mes "我兒子要用米 輾米才行的，";
+		mes "若沒有米的話 不能做出任何東西啊..";
+		mes "不知年輕人可否幫我啊?";
+		next;
+		if (select("當然啊:我不想啊") == 1) {
+			set lunar_rat,1;
+			mes "[" + strcharinfo(0)+"]";
+			mes "Of course.";
+			mes "What can I do?";
+			next;
+			mes "[糕餅 奶奶]";
+			mes "Well, do you think you";
+			mes "can catch the animals that";
+			mes "stole my Rice Pouches?";
+			mes "They're these blue and";
+			mes "white rats and these";
+			mes "nasty little moles.";
+			next;
+			select("請不要擔心");
+			mes "[" + strcharinfo(0)+"]";
+			mes "Not a problem.";
+			mes "I'll catch those animals,";
+			mes "and bring back any Rice";
+			mes "Pouches that I can find.";
+			next;
+			mes "[糕餅 奶奶]";
+			mes "Oh, thank you!";
+			mes "Good luck catching";
+			mes "those pests for me~";
+			close;
+		}
+		mes "[糕餅 奶奶]";
+		mes "I... Well...";
+		mes "That's true, but I was";
+		mes "planning on giving you";
+		mes "something nice in return";
+		mes "for your help. I know you're";
+		mes "not a bad person, so...";
+		close;
+	}
+	else if ((lunar_rat >= 1 && lunar_rat <= 2) || lunar_rat == 4) {
+		if (countitem(7770) >= 1 && lunar_rat == 2) {
+			mes "Oh, is that the";
+			mes "Sweet Rice my son made?";
+			mes "Would you let me have it?";
+			mes "Please wait here a moment,";
+			mes "and I'll make you some pastry~";
+			delitem 7770,1; //Sweet_rice
+			set lunar_rat,3;
+			close;
+		}
+		else if (lunar_rat == 4) {
+			if (countitem(7770) >= 1) {
+				mes "Oh, is that the";
+				mes "Sweet Rice my son made?";
+				mes "Would you let me have it?";
+				mes "Please wait here a moment,";
+				mes "and I'll make you some pastry~";
+				delitem 7770,1; //Sweet_rice
+				set lunar_rat,5;
+				close;
+			}
+			mes "Oh, where are all the";
+			mes "Rice Pouches? We need";
+			mes "them to make more rice cakes...";
+			close;
+		}
+		else if (countitem(7869) < 1 && lunar_rat <= 2) {
+			mes "Ooh, those white and";
+			mes "blue mouses might have";
+			mes "snatched my Rice Pouches";
+			mes "Those moles probably took";
+			mes "them too. Such nasty little";
+			mes "creatures, aren't they?";
+			close;
+		}
+		mes "Oh, is that one of my";
+		mes "Rice Pouches? I'm sorry,";
+		mes "but the pain my hips..";
+		mes "Would you mind being";
+		mes "a dear, and delivering";
+		mes "that to my son for me?";
+		set lunar_rat,2;
+		close;
+	}
+	else if (lunar_rat == 3 || lunar_rat == 5) {
+		set .@reward,rand(1,100);
+		if (.@reward <= 5) {
+			if (lunar_rat == 3) {
+				getitem 9038,1; // New_Year_Doll_Egg
+				set lunar_rat,4;
+			}
+			else if (lunar_rat == 5) {
+				getitem 668,1; // Red_Envelope
+			}
+		}
+		else if (.@reward >= 6 && .@reward <= 10) getitem 12198,2; // Lucky_Rice_Cake
+		else if (.@reward >= 11 && .@reward <= 30) getitem 12195,3; // Plain_Rice_Cake
+		else if (.@reward >= 31 && .@reward <= 40) getitem 12196,2; // Hearty_Rice_Cake
+		else if (.@reward >= 41 && .@reward <= 55) getitem 12123,2; // Honey_Pastry
+		else if (.@reward >= 56 && .@reward <= 70) getitem 12122,2; // Sesame_Pastry
+		else if (.@reward >= 71 && .@reward <= 80) getitem 12124,2; // Rainbow_Cake
+		else if (.@reward >= 81 && .@reward <= 90) getitem 12198,2; // Korean_Rice_Cake
+		else if (.@reward >= 91 && .@reward <= 100) getitem 12197,3; // Salty_Rice_Cake
+		// After getting the egg there is a chance to get an envelope with each turn in
+		if (rand(1,20) <= 5 && lunar_rat == 4) getitem 668,1; // Red_Envelope
+		// Set the quest accordingly for repeat turn-ins.
+		if (lunar_rat == 3) set lunar_rat,2;
+		else if (lunar_rat == 5) set lunar_rat,4;
+		mes "It's not nearly enough";
+		mes "to repay you for what you've";
+		mes "done for me, but I'd like";
+		mes "you to have this pastry that";
+		mes "I just made. Please enjoy it~";
+		next;
+		mes "[糕餅 奶奶]";
+		mes "Thank you for the";
+		mes "Sweet Rice! I'll be";
+		mes "sure to make something";
+		mes "delicious for you if you";
+		mes "bring me more, okay?";
+		close;
+	}
+}
+
+payon_in01,7,87,4	script	輾米廠 叔叔#rat	54,{
+	mes "[輾米廠 叔叔]";
+	if (!lunar_rat) {
+		mes "Breaks my heart...";
+		mes "My mom spends all this";
+		mes "time preparing rice for";
+		mes "the new year, and it's all";
+		mes "stolen by rats and vermin!";
+		close;
+	}
+	else if (lunar_rat == 1) {
+		mes "I hear from my mother";
+		mes "that you're helping her out.";
+		mes "She's a sweet old lady, huh?";
+		mes "If you find ang Rice Pouches,";
+		mes "you might want to have her";
+		mes "inspect them first.";
+		close;
+	}
+	else if (lunar_rat >= 2) {
+		if (countitem(7869) < 1) {
+			mes "If you bring me some";
+			mes "Rice Pouches, then I can";
+			mes "pound into into Sweet Rice.";
+			mes "You're here to help out my";
+			mes "mother, right? Thanks,";
+			mes "I really appreciate that.";
+			close;
+		}
+		mes "Oh, you brought me some";
+		mes "Rice Pouches from my mother?";
+		mes "Give me a second, and I'll";
+		mes "get this rice pounded into";
+		mes "paste, lickety split.";
+		next;
+		mes "[輾米廠 叔叔]";
+		mes "Hoo! Haa! Hi-yah!";
+		mes "Woosha! Whoosha!";
+		mes "Ka-taaaaaaaaaa!";
+		mes "WOOOSHA!";
+		next;
+		mes "[輾米廠 叔叔]";
+		mes "All done. Here, this";
+		mes "Sweet Rice is ready to";
+		mes "be made into pastries";
+		mes "Would you please bring";
+		mes "this to my mother?";
+		delitem 7869,1; //Rice_Pouch
+		getitem 7770,1; //Sweet_Rice
+		close;
+	}
+}
