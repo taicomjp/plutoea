@@ -4,6 +4,32 @@
 // ---------------------------------
 // - 卡普拉腳本 - 
 //===================================
+// - Fix-4c
+//===================================
+// - 參照官方修改 [笨冰]
+//===================================
+//   斐揚 斐字訂正
+//   修正 傳送汶巴拉座標
+//   修正 傳送斐揚座標
+//   修正 if (@wrpC$[@num] == "取消") return; (總結 -> 取消)
+//   選單 case 3,5,6,8 其他訊息說明 -> 其他訊息確認
+//   增加 case 9 普隆德拉中間卡普拉
+//   增加 case 10 汶巴拉卡普拉
+//   增加 case 11 沉船外島嶼卡普拉
+//   增加 case 12 里希塔樂鎮卡普拉
+//   增加 case 13 艾音布羅克、艾音貝赫卡普拉
+//   - 更改切入語法	if (@K_Menu0$[@num] == "儲存服務" || @K_Menu0$[@num] == "使用儲存服務")
+//                 	if (@K_Menu0$[@num] == "倉庫服務." || @K_Menu0$[@num] == "使用倉庫服務" || @K_Menu0$[@num] == "倉庫服務")
+//                 	if (@K_Menu0$[@num] == "傳送服務." || @K_Menu0$[@num] == "使用空間移動服務" || @K_Menu0$[@num] == "傳送服務")
+//                 	if (@K_Menu0$[@num] == "手推車服務." || @K_Menu0$[@num] == "使用手推車服務" || @K_Menu0$[@num] == "手推車服務")
+//                 	if (@K_Menu0$[@num] == " 其他訊息說明." || @K_Menu0$[@num] == " 其他訊息確認." || @K_Menu0$[@num] == "其他訊息確認." || @K_Menu0$[@num] == "其他訊息說明." || @K_Menu0$[@num] == "確認其它情報" || @K_Menu0$[@num] == "確認其它訊息")
+//                	if (@K_Menu0$[@num] == "總結." || @K_Menu0$[@num] == " 總結." || @K_Menu0$[@num] == "結束")
+//   公會卡普拉 刪除 -> (有限公司)
+//   公會卡普拉 選單內容修正 (移除公會倉庫服務，但保留，若許要請取消//)
+//   初始訊息增加 case 6 里希塔樂鎮 (特殊)
+//   秀發茲發德的禁止傳送訊息	if(getarg(1) == 4 || getarg(1) == 12 || getarg(1) == 13)
+//   修正初始訊息 case 4 為艾音布羅克專用
+//===================================
 
 function	script	F_Kafra	{
 	callfunc "F_ClearGarbage"; //清除過期變數
@@ -14,8 +40,8 @@ function	script	F_Kafra	{
 		default:
 		case 0:
 			mes "["+ strnpcinfo(0) +"]";
-			mes "歡迎光臨，";
-			mes "卡普拉公司隨時為您們服務，";
+			mes "歡迎光臨. 卡普拉公司";
+			mes "隨時為您們服務.";
 			mes "需要什麼服務嗎?";
 			break;
 
@@ -31,19 +57,20 @@ function	script	F_Kafra	{
 		case 2:
 			set @GID,getcharid(2);
 			mes "["+ strnpcinfo(0) +"]";
-	 		mes "歡迎光臨 '^ff0000" + GetGuildName(@GID) + "^000000' 的會員們";
-			mes "卡普拉服務(有限公司)";
-			mes "永遠在各位身邊為您服務";
+	 		mes "歡迎光臨 '^ff0000" + GetGuildName(@GID) + "^000000'";
+			mes "會員們,";
+			mes "卡普拉服務";
+			mes "永遠在各位身邊為您服務的";
 			break;
 
-		//天津、等
+		//天津、洛陽、泰國等
 		case 3:
 			mes "["+ strnpcinfo(0) +"]";
 			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
 			mes "需要什麼服務嗎?";
 			break;
 
-		//洛陽、泰國
+		//艾音布羅克
 		case 4:
 			mes "["+ strnpcinfo(0) +"]";
 			mes "歡迎光臨，卡普拉公司隨時為您們服務，";
@@ -53,6 +80,14 @@ function	script	F_Kafra	{
 		//無顯示
 		case 5:
 			break;
+
+		//里希塔樂鎮
+		case 6:
+			mes "["+ strnpcinfo(0) +"]";
+			mes "歡迎光臨，卡普拉公司";
+			mes "隨時為您們服務的，";
+			mes "需要什麼服務嗎?";
+			break;
 	}
 	next;
 
@@ -61,51 +96,76 @@ function	script	F_Kafra	{
 	switch(getarg(1)){
 		// 儲存和倉庫 服務
 		case 1:
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","總結.";
 			break;
 
 		// 只有倉庫服務
 		case 2:
-			setarray @K_Menu0$[0],"倉庫服務","總結";
+			setarray @K_Menu0$[0],"倉庫服務.","總結.";
 			break;
 
 		// 無傳送服務
 		case 3: 
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務"," 其他訊息說明","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","手推車服務.","其他訊息確認."," 總結.";
 			break;
 
 		// Case 4 是秀發茲發德的禁止傳送訊息
 
 		// 沒有儲存或傳送
 		case 5:
-			setarray @K_Menu0$[0],"倉庫服務","手推車服務"," 其他訊息說明","總結";
+			setarray @K_Menu0$[0],"倉庫服務.","手推車服務.","其他訊息確認."," 總結.";
 			break;
 
 		// 只有倉庫及確認其他資訊
 		case 6:
-			setarray @K_Menu0$[0],"倉庫服務"," 其他訊息說明","總結";
+			setarray @K_Menu0$[0],"倉庫服務.","其他訊息確認."," 總結.";
 			break;
 
 		// 只有儲存、倉庫、手推車租用
 		case 7:
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","手推車服務","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","手推車服務.","總結.";
 			break;
 
 		// 競速場
 		case 8:
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務"," 其他訊息說明","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","其他訊息確認.","總結.";
+			break;
+
+		// 普隆德拉卡普拉 (選單特殊)
+		case 9:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","傳送服務.","手推車服務.","其他訊息確認.","總結.";
+			break;
+
+		// 汶巴拉卡普拉 (選單特殊)
+		case 10:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","傳送服務.","其他訊息說明.","總結.";
+			break;
+
+		// 沉船外島嶼卡普拉 (選單特殊)
+		case 11:
+			setarray @K_Menu0$[0],"倉庫服務."," 其他訊息確認.","總結.";
+
+		// 里希塔樂鎮卡普拉 (選單特殊)
+		case 12:
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務","確認其它情報","結束";
+			break;
+
+		// 艾音布羅克卡普拉 (選單特殊)
+		case 13:
+			setarray @K_Menu0$[0],"使用儲存服務","使用倉庫服務","傳送服務.","手推車服務","確認其它訊息","結束";
 			break;
 
 		// 普通卡普拉
 		default:
-			setarray @K_Menu0$[0],"儲存服務","倉庫服務","傳送服務","手推車服務"," 其他訊息說明","總結";
+			setarray @K_Menu0$[0],"儲存服務","倉庫服務.","傳送服務.","手推車服務."," 其他訊息說明.","總結.";
 			break;
 	}
 
 	// 公會卡普拉
 	if(getarg(0)==2) {
 		cleararray @K_Menu0$[0],"",7;
-		setarray @K_Menu0$[0],"倉庫服務","使用公會倉庫","手推車服務","傳送服務","總結";
+		setarray @K_Menu0$[0],"使用倉庫服務","使用空間移動服務","使用手推車服務","結束";
+		//setarray @K_Menu0$[0],"使用倉庫服務","使用公會倉庫服務","使用空間移動服務","使用手推車服務","結束";	//TRO官方沒有公會倉庫服務
 	}
 	menu 	@K_Menu0$[0],K_Menu0,@K_Menu0$[1],K_Menu1,@K_Menu0$[2],K_Menu2,
 		@K_Menu0$[3],K_Menu3,@K_Menu0$[4],K_Menu4,@K_Menu0$[5],K_Menu5,
@@ -134,16 +194,16 @@ function	script	F_Kafra	{
 	K_Menu7:
 		set @num,7;
 	K_Menuf:
-		if (@K_Menu0$[@num] == "儲存服務") return;
-		if (@K_Menu0$[@num] == "倉庫服務"){
+		if (@K_Menu0$[@num] == "儲存服務" || @K_Menu0$[@num] == "使用儲存服務") return;
+		if (@K_Menu0$[@num] == "倉庫服務." || @K_Menu0$[@num] == "使用倉庫服務" || @K_Menu0$[@num] == "倉庫服務"){
 			if(getarg(0) == 2) callfunc "F_KafStor",2,0,0;
 			else callfunc "F_KafStor",0,getarg(3),getarg(0);
 			next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "傳送服務"){
+		if (@K_Menu0$[@num] == "傳送服務." || @K_Menu0$[@num] == "使用空間移動服務" || @K_Menu0$[@num] == "傳送服務"){
 			// 秀發茲發德的禁止傳送訊息
-			if(getarg(1) == 4){
+			if(getarg(1) == 4 || getarg(1) == 12 || getarg(1) == 13){
 				mes "["+ strnpcinfo(0) +"]";
 				mes "我們卡普拉服務在秀發茲發德總公司，";
 				mes "因為和秀發茲發德 共和國";
@@ -161,19 +221,19 @@ function	script	F_Kafra	{
 			callfunc "F_KafTele",getarg(0);
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "手推車服務"){
+		if (@K_Menu0$[@num] == "手推車服務." || @K_Menu0$[@num] == "使用手推車服務" || @K_Menu0$[@num] == "手推車服務"){
 			if(callfunc("F_KafCart",getarg(0),getarg(4)) == 1) next;
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == " 其他訊息說明"){
+		if (@K_Menu0$[@num] == " 其他訊息說明." || @K_Menu0$[@num] == " 其他訊息確認." || @K_Menu0$[@num] == "其他訊息確認." || @K_Menu0$[@num] == "其他訊息說明." || @K_Menu0$[@num] == "確認其它情報" || @K_Menu0$[@num] == "確認其它訊息"){
 			callfunc "F_KafInfo",getarg(2);
 			goto M_Menu;
 		}
-		if (@K_Menu0$[@num] == "總結"){
+		if (@K_Menu0$[@num] == "總結." || @K_Menu0$[@num] == " 總結." || @K_Menu0$[@num] == "結束"){
 			callfunc "F_KafEnd",getarg(0),0;
 			end;
 		}
-		if (@K_Menu0$[@num] == "使用公會倉庫"){
+		if (@K_Menu0$[@num] == "使用公會倉庫服務"){
 			callfunc "F_KafStor",1,0;
 			next;
 			goto M_Menu;
@@ -243,7 +303,7 @@ function	script	F_KafStor	{
 		if (getarg(2) == 1) {
 			percentheal 0,-10;
 			mes "["+ strnpcinfo(0) +"]";
-			mes "要...打...開倉...庫了，謝謝...你的...使....用";
+			mes "要...打...開倉...庫了，謝謝...您的...使....用";
 		}
 		// Normal message
 		else {
@@ -251,7 +311,8 @@ function	script	F_KafStor	{
 		}
 	}
 	callfunc("F_CheckKafCode");
-	mes "要打開倉庫了，謝謝你的使用";
+	mes "要打開倉庫了";
+	mes "謝謝您的使用.";
 	close2;
 	openstorage;
 	cutin "", 255;
@@ -262,7 +323,7 @@ function	script	F_KafStor	{
 // Teleport Function ==================================================
 function	script	F_KafTele	{
 	mes "["+ strnpcinfo(0) +"]";
-	mes "請選擇你的目的地";
+	mes "請說你想要去的地方.";
 	next;
 
 	menu 	@wrpC$[0],M_Wrp0, @wrpC$[1],M_Wrp1, @wrpC$[2],M_Wrp2, @wrpC$[3],M_Wrp3, 
@@ -290,7 +351,7 @@ function	script	F_KafTele	{
 		set @num, 6;
 
 	L_Warp:
-		if (@wrpC$[@num] == "總結") return;
+		if (@wrpC$[@num] == "取消") return;
 		// Consume "Free Ticket for Kafra Transportation" if available.
 		// Do not consume if in Guild castle
 		if(countitem(7060) > 0 && getarg(0) != 2) delitem 7060,1;
@@ -312,7 +373,7 @@ function	script	F_KafTele	{
 		if (@wrpD$[@num] == "依斯魯得島") warp "izlude", 91, 105;
 		if (@wrpD$[@num] == "吉芬") warp "geffen", 120, 39;
 		if (@wrpD$[@num] == "夢羅克") warp "morocc", 156, 46;
-		if (@wrpD$[@num] == "斐楊") warp "payon", 168, 103;
+		if (@wrpD$[@num] == "斐揚") warp "payon", 160, 58;
 		if (@wrpD$[@num] == "普隆德拉") warp "prontera", 116, 72;
 		if (@wrpD$[@num] == "妙勒尼 廢棄礦場") warp "mjolnir_02", 82, 347;
 		if (@wrpD$[@num] == "發樂斯 燈塔島") warp "cmd_fild07", 127, 134;
@@ -335,7 +396,8 @@ function	script	F_KafCart	{
 	}
 	// Make sure the invoking character does not have a cart already
 	else if(checkcart() == 1){
-		mes "["+ strnpcinfo(0) +"]";
+		if(getarg(1) == 13) mes "[卡普拉 職員]";
+		else mes "["+ strnpcinfo(0) +"]";
 		mes "你已經租過手推車了";
 		return 1;
 	}
@@ -352,7 +414,8 @@ function	script	F_KafCart	{
 		next;
 		menu "租用手推車",-, "取消",M_End;
 			if(Zeny<getarg(1)){
-				mes "["+ strnpcinfo(0) +"]";
+				if(getarg(1) == 13) mes "[卡普拉 職員]";
+				else mes "["+ strnpcinfo(0) +"]";
 				mes "親愛的顧客，您的金錢不足";
 				mes "租用手推車需要"+getarg(1)+"金幣";
 				return 1;
@@ -424,13 +487,19 @@ function	script	F_KafEnd	{
 	mes "["+ strnpcinfo(0) +"]";
 	//Save
 	if(getarg(1)==1) {
-		mes "已經儲存好了 謝謝您的使用";
+		mes "已經儲存好了";
+		mes "謝謝您的使用.";
 	}
 
 	// Generic End
 	else if(getarg(0)==0 || getarg(0)==5 || getarg(0)==3) {
 		mes "我們卡普拉公司的服務是為了讓顧客們放心和方便的使用. 我們會盡我們最大的努力做到更好的服務與嚴格的營業管理.";
 		mes "謝謝您們使用我們卡普拉公司的服務.";
+	}
+
+	else if(getarg(0)==4 || getarg(0)==6) {
+		mes "我們卡普拉公司的服務是，為了讓顧客們放心和方便的使用，我們會盡我們最大的努力做到更好的服務與嚴格的營業管理，";
+		mes "謝謝您使用";
 	}
 
 	// Niflheim End

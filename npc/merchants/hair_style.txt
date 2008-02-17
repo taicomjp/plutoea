@@ -1,2051 +1,515 @@
 //===== eAthena Script =======================================
 //= Hair Dresser
 //===== By: ==================================================
-//= [Muad_Dib] 1.0 (The Prometheus Project)
+//= [Muad_Dib] 1.0 (The Prometheus Project) & Samuray22
 //===== Current Version: =====================================
-//= 1.1
+//= 1.2
 //===== Compatible With: =====================================
-//= Any Athena Version; RO Episode 6+
+//= eAthena SVN
 //===== Description: =========================================
+//= [Aegis Conversion]
 //= Allows you to change your hairstyle.
 //===== Additional Comments: =================================
-//= 07/06/05 : Added 1st Version. [Muad_Dib]
-//= Converted to eAthena format by Dr.Evil Fixed typos [Nexon]
-//= 1.1 Removed Duplicates [Silent]
-//= Translated By 45°向上傾斜
+//= 1.2 Rescripted to the Aegis 10.3 Standards. [Samuray22]
 //============================================================
 
-alberta,137,37,6	script	 設計師#01	91,{
+// Stylist - alberta_in 55 142
+alberta_in,55,142,1	script	設計師	91,{
 	mes "[維羅妮卡]";
 	mes "歡迎~~歡迎~~";
-	mes "歡迎來到最好的美發店, 維羅妮卡的美麗廳室!!";
+	mes "歡迎來到最好的髮廊, 維羅妮卡的美髮沙龍!!";
 	mes "喔喔喔";
 	mes "來這裡為得是新髮型, 對不對?";
 	mes "我能為你做點什麼呢?";
 	next;
-	menu "-看一看髮型",Look,"-改變我的髮型",Change,"-結束對話",Cancel;
-Look:
-	set @hair,0;
-	mes "[維羅妮卡]";
-	mes "這裡有 19 種髮型, 1~19!!!";
-	mes "你想先看哪一種?";
-	mes "如果你不想看了, 請選 0.";
-	next;
-		if(sex==0) goto LookF;
-		input @hair_in;
-		if (@hair_in > 19) goto hairtohigh;
-		set @hair,@hair_in;
-	goto ShowPicM;
-	close;
-LookF:
-	set @hairf,0; 
-	input @hairf_in;
-	if (@hairf_in > 19) goto hairtohigh;
-	set @hairf,@hairf_in;
-	goto ShowPicF;
-	close;
-ShowPicM:
-		if (@hair == 0) goto hairnothing;
-		if (@hair == 1) goto mhair1show;
-		if (@hair == 2) goto mhair2show;
-		if (@hair == 3) goto mhair3show;
-		if (@hair == 4) goto mhair4show;
-		if (@hair == 5) goto mhair5show;
-		if (@hair == 6) goto mhair6show;
-		if (@hair == 7) goto mhair7show;
-		if (@hair == 8) goto mhair8show;
-		if (@hair == 9) goto mhair9show;
-		if (@hair == 10) goto mhair10show;
-		if (@hair == 11) goto mhair11show;
-		if (@hair == 12) goto mhair12show;
-		if (@hair == 13) goto mhair13show;
-		if (@hair == 14) goto mhair14show;
-		if (@hair == 15) goto mhair15show;
-		if (@hair == 16) goto mhair16show;
-		if (@hair == 17) goto mhair17show;
-		if (@hair == 18) goto mhair18show;
-		if (@hair == 19) goto mhair19show;
+	switch(select("Look through Hair Styles.:Change Hair Styles.:Stop talking.")) {
+		case 1:
+			mes "[維羅妮卡]";
+			mes "這裡有 19 種髮型, 1~19!!!";
+			mes "你想先看哪一種?";
+			mes "如果你不想看了, 請選 0.";
+			next;
+			input .@style;
+			if(.@style > 19) {
+				mes "[維羅妮卡]";
+				mes "抱歉, 這裡沒有其它號碼的髮型.";
+				mes "請選擇 1 到 19.";
+				next;
+			} else if(.@style == 0) {
+				mes "[維羅妮卡]";
+				mes "How was it?";
+				mes "Did you find any styles you like?";
+				mes "If you want to chage your hair style at anytime, I will do my best!!";
+				close;
+			}
+				callsub L_cutin,.@style;
+				mes "[維羅妮卡]";
+				switch(.@style) {
+					case 1:
+						if(Sex == 1) {
+							mes "噢~ '裝死'的風格!";
+							mes "它很整潔也很舒服.";
+							mes "你覺得如何? 你喜歡嗎?";
+							close2;
+							cutin "",255;
+							end;
+						}
+							mes "Oh~ 'First Aid' style'!";
+							mes "It is the style people wants to stroke your hair^^.";
+							mes "How do you think? Do you like it?";
+							close2;
+							cutin "",255;
+							end;
+					case 2:
+						if(Sex == 1) {
+							mes "Oh~ 'Two-Handed Sword Mastery' style!";
+							mes "Its style is very similar to one of the famous Swordman.";
+							mes "How do you think? Do you like it?";
+							close2;
+							cutin "",255;
+							end;
+						}
+							mes "噢~'狂擊'的風格!";
+							mes "感覺有種未被發現的強烈力量被隱藏著....";
+							mes "你覺得如何? 你喜歡嗎?";
+							close2; cutin "",255; end;
+					case 3:
+						if(Sex == 1) {
+							mes "Oh~ 'Napalm Beat' style!";
+							mes "It makes feeling there is unknown power...";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Frost Diver' style!";
+							mes "It feels cold but also warm...";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 4:
+						if(Sex == 1) {
+							mes "Oh~ 'Double Strafe' style!";
+							mes "It will make you feel your mind is very clear.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Arrow Shower' style!";
+							mes "It feels very refreshed~";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 5:
+						if(Sex == 1) {
+							mes "Oh~ 'Angelus' style!";
+							mes "It feels calm and reverence.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Heal' style!";
+							mes "It feels mind is cured.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 6:
+						if(Sex == 1) {
+							mes "Oh~ 'Pushcart' style!";
+							mes "This is the style based on motive of string cart..";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Vending' style!";
+							mes "It seems like making lots of money.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 7:
+						if(Sex == 1) {
+							mes "Oh~ 'Envenom' style!";
+							mes "It makes feel addicting into something..";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Double Strafe' style!";
+							mes "It makes whomever dash twice.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 8:
+						if(Sex == 1) {
+							mes "Oh~ 'Bowling Bash' style!";
+							mes "Once people sees it, they will fall for it!";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Gloria' style!";
+							mes "Its nobleness and holiness moods are great.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 9:
+						if(Sex == 1) {
+							mes "Oh~ 'Venom Dust' style!";
+							mes "It is the style gives feeling deadly charm.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Increase SP Recovery' style!";
+							mes "It makes feel like recovering spirit fully.";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 10:
+						if(Sex == 1) {
+							mes "Oh~ 'Turn Undead' style!";
+							mes "It gives feeling one attack can make Devils disappear!";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Prepare Potion' style!";
+							mes "It feels a wound is healed already!";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 11:
+						if(Sex == 1) {
+							mes "Oh~ 'Dragonology' style!";
+							mes "This is the style based on motive of mysterious Dragon...";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Grand Cross' style!";
+							mes "It feels a firm faith...";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 12:
+						if(Sex == 1) {
+							mes "Oh~ 'Mace Mastery' style!";
+							mes "It looks very hard and attractive!";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Intimidate' style!";
+							mes "It seems you saw this style somewhere...?";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 13:
+						if(Sex == 1) {
+							mes "Oh~ 'Thunderstorm' style!";
+							mes "It feels hit by thunder storm!!";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Spiritual Sphere Absorption' style!";
+							mes "It catches people's spirits^^";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 14:
+						if(Sex == 1) {
+							mes "Oh~ 'Encore' style!";
+							mes "It is the style makes people feels like asking you to sing~^^";
+							mes "How do you think? Do you like it??";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Gypsy's Kiss' style!";
+							mes "It makes people think you are very kind to all...";
+							mes "How do you think? Do you like it?";
+							close2; cutin "",255; end;
+					case 15:
+						if(Sex == 1) {
+							mes "Oh~ 'Grimtooth' style!";
+							mes "It feels like you will be pricked by hair!";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Counter Attack' style!";
+							mes "It feels it will kick when someone is near!";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+					case 16:
+						if(Sex == 1) {
+							mes "Oh~ 'Blitz Beat' style!";
+							mes "It feels it will attack 5 times...?";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Ankle Snare' style!";
+							mes "This is the style hardly move.";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+					case 17:
+						if(Sex == 1) {
+							mes "Oh~ 'Ore Discovery' style!";
+							mes "It feels like picking up things while walking.";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Hammer Fall' style!";
+							mes "It will make feeling dizzy!";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+					case 18:
+						if(Sex == 1) {
+							mes "Oh~ 'Fire Pillar' style!";
+							mes "It has been a great style over the one generation...!";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Jupitel Thunder' style!";
+							mes "It feels very neat.";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+					case 19:
+						if(Sex == 1) {
+							mes "Oh~ 'Guillotine Fist' style!";
+							mes "It feels like betting all at once!!";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+						}
+							mes "Oh~ 'Whirlwind' style!";
+							mes "It feels very refresh like wind.";
+							mes "How was it? Do you like it?";
+							close2; cutin "",255; end;
+				}
+		case 2:
+			if(BaseLevel < 60) {
+				mes "[維羅妮卡]";
+				mes "Wow~, Dear, this style looks good on you~";
+				mes "Don't change strangely.";
+				mes "Why don't you decorate hair with accessories~";
+				close;
+			} else if((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) || (Zeny < 99800)) {
+				mes "[維羅妮卡]";
+				mes "If you want to change your hair style, you need several items";
+				mes "Since you need many items....";
+				mes "I think you should write those down.";
+				next;
+				mes "[維羅妮卡]";
+				mes "3 瓶 中和劑，";
+				mes "3 瓶 混合劑，";
+				mes "100 撮 辮子，";
+				mes "100 撮 短辮子，";
+				mes "100 撮 長髮，";
+				mes "100 撮 金色頭髮，";
+				mes "100 撮 有光澤的頭髮";
+				next;
+				mes "[維羅妮卡]";
+				mes "而且我也需要 99,800 Zeny.";
+				mes "如果你收集到了全部...";
+				mes "我會給你看我能做到的~!!";
+				mes "噢噢噢.";
+				close;
+			}
+			mes "[維羅妮卡]";
+			mes "好吧, 那麼... 選擇你喜歡的髮型.";
+			mes "我會做到最好";
+			mes "有 19 種不同的髮型.";
+			mes "1 到 19~";
+			next;
+			input .@style;
+			if(.@style > 19) {
+				mes "[維羅妮卡]";
+				mes "沒有這個代號!";
+				mes "請檢查下你的數字~";
+				close;
+			} else if(.@style == 0) {
+				mes "[維羅妮卡]";
+				mes "It's been canceled.";
+				close;
+			} else if(getlook(1) == .@style) {
+				mes "[維羅妮卡]";
+				mes "You already have this style!!";
+				mes "I think you should look through Hair Styles again";
+				close;
+			}
+				callsub L_cutin,.@style;
+				mes "[維羅妮卡]";
+				mes "This is (" + .@style + ") style.";
+				mes "I will change your hair with this again.";
+				mes "Is that OK with you??";
+				next;
+				if(select("Yeah~ I'd love to.:No..I don't like it...") == 1) {
+						if(getlook(6) == 0) {
+							mes "[維羅妮卡]";
+							mes "You haven't dyeing your hair~ Not even once!!";
+							mes "I think dyeing your hair makes you much better...";
+							mes "I can do it for you as a service... for FREE ^^";
+							mes "Which color do you want?";
+							next;
+							switch(select("紅色:黃色:紫色:橘色:綠色:藍色:白色:黑色:取消")) {
+								case 1:
+									set .@pallete,8;
+									goto L_style;
+								case 2:
+									set .@pallete,1;
+									goto L_style;
+								case 3:
+									set .@pallete,2;
+									goto L_style;
+								case 4:
+									set .@pallete,3;
+									goto L_style;
+								case 5:
+									set .@pallete,4;
+									goto L_style;
+								case 6:
+									set .@pallete,5;
+									goto L_style;
+								case 7:
+									set .@pallete,6;
+									goto L_style;
+								case 8:
+									set .@pallete,7;
+									goto L_style;
+								case 9:
+									mes "[維羅妮卡]";
+									mes "Well.. then think it over..";
+									mes "and come visit me again.";
+									mes "Not only type of hair style but also color of it is very important.";
+									close;
+							}
+						}
+				L_style:
+						mes "[維羅妮卡]";
+						mes "現在開始~. 保持別動~";
+						mes "如果你動了, 可能就會不好.";
+						mes "請相信我!!";
+						next;
+						mes "[維羅妮卡]";
+						mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
+						mes "- 咯卡 咯卡 咯卡 咯卡 -";
+						mes "- 劈啪 劈啪 劈啪 劈啪 -";
+						next;
+						delitem 973,3;
+						delitem 974,3;
+						delitem 901,100;
+						delitem 1094,100;
+						delitem 1020,100;
+						delitem 1060,100;
+						delitem 7152,100;
+						setlook 1,.@style;
+						setlook 6,.@pallete;
+						cutin "",255;
+						mes "[維羅妮卡]";
+						mes "喔~ 非常好看~~";
+						mes "我希望你喜歡風格(" + .@style + ")";
+						mes "如果你想要換其它的髮型,";
+						mes "歡迎你隨時來我這裡~ 噢噢噢";
+						setlook 1,.@style;
+						setlook 6,.@pallete;
+						close;
+				}
+						mes "[維羅妮卡]";
+						mes "好的~ 請再選個吧~";
+						mes "這裡應該有你喜歡的風格.";
+						mes "僅告訴我你喜歡的代號.";
+						close;
+		case 3:
+			mes "[維羅妮卡]";
+			mes "每個人都有權利變漂亮...";
+			mes "我希望能幫你把你合適的髮型做得很好~";
+			mes "我真得做了~";
+			close;
+	}
+L_cutin:
+	if(Sex == 1) {
+		if(getarg(0) < 10)
+			cutin "hair_m_0"+getarg(0),4;
+		else
+			cutin "hair_m_"+getarg(0),4;
+	} else {
+		if(getarg(0) < 10)
+			cutin "hair_f_0"+getarg(0),4;
+		else
+			cutin "hair_f_"+getarg(0),4;
+	}
+	return;
+}
 
-mhair1show:
-		cutin "hair_m_01",4;
-	mes "[維羅妮卡]";
-	mes "噢~ '裝死'的風格!";
-	mes "它很整潔也很舒服.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair2show:
-		cutin "hair_m_02",4;
-	mes "[維羅妮卡]";
-	mes "噢~'雙手劍使用熟練度'的風格!";
-	mes "這個風格和一個著名的劍士很相似.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair3show:
-		cutin "hair_m_03",4;
-	mes "[維羅妮卡]";
-	mes "噢~'心靈爆破'的風格!";
-	mes "它讓你感覺到有一種未知的力量...";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair4show:
-		cutin "hair_m_04",4;
-	mes "[維羅妮卡]";
-	mes "噢~'二連擊'的風格!";
-	mes "它會使你的頭腦非常清楚.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair5show:
-		cutin "hair_m_05",4;
-	mes "[維羅妮卡]";
-	mes "噢~'天使之障壁'的風格!";
-	mes "它會平靜你.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair6show:
-		cutin "hair_m_06",4;
-	mes "[維羅妮卡]";
-	mes "噢~'使用手推車'的風格!";
-	mes "這個風格建立在一串手推車..";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair7show:
-		cutin "hair_m_07",4;
-	mes "[維羅妮卡]";
-	mes "噢~'施毒'的風格!";
-	mes "它讓人感覺沉溺於某些事情..";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair8show:
-		cutin "hair_m_08",4;
-	mes "[維羅妮卡]";
-	mes "噢~'怪物互擊'的風格!";
-	mes "人們一見到它, 就會愛上它.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair9show:
-		cutin "hair_m_09",4;
-	mes "[維羅妮卡]";
-	mes "噢~'病毒散撥'的風格!";
-	mes "這個風格有著致命的吸引力.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair10show:
-		cutin "hair_m_10",4;
-	mes "[維羅妮卡]";
-	mes "噢~'轉生術'的風格!";
-	mes "它的感覺是能使魔鬼消失的進攻!";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair11show:
-		cutin "hair_m_11",4;
-	mes "[維羅妮卡]";
-	mes "噢~'龍知識'的風格!";
-	mes "這個風格建立在神秘的龍上...";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair12show:
-		cutin "hair_m_12",4;
-	mes "[維羅妮卡]";
-	mes "噢~'權杖使用熟練度'的風格!";
-	mes "它看起來很複雜也很有魅力.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair13show:
-		cutin "hair_m_13",4;
-	mes "[維羅妮卡]";
-	mes "噢~'雷爆術'的風格!";
-	mes "它感覺會被蕾雨打到!!";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair14show:
-		cutin "hair_m_14",4;
-	mes "[維羅妮卡]";
-	mes "噢~'安可'的風格!";
-	mes "這個風格會使別人來請求你唱歌~";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair15show:
-		cutin "hair_m_15",4;
-	mes "[維羅妮卡]";
-	mes "噢~'無影之牙'的風格!";
-	mes "看起來你會因頭髮而被選中!";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair16show:
-		cutin "hair_m_16",4;
-	mes "[維羅妮卡]";
-	mes "噢~'閃電衝擊'的風格!";
-	mes "它感覺會攻擊 5 次...?";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair17show:
-		cutin "hair_m_17",4;
-	mes "[維羅妮卡]";
-	mes "噢~'尋找礦石'的風格!";
-	mes "當你步行時, 想要拾起一些東西.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair18show:
-		cutin "hair_m_18",4;
-	mes "[維羅妮卡]";
-	mes "噢~'火柱攻擊'的風格!";
-	mes "她是新一代最棒的風格...!";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-mhair19show:
-		cutin "hair_m_19",4;
-	mes "[維羅妮卡]";
-	mes "噢~'阿修羅霸凰拳'的風格!";
-	mes "它會突然感覺像是喜歡打賭!!";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;	
-ShowPicF:
-		if (@hairf == 0) goto hairnothing;
-		if (@hairf == 1) goto fhair1show;
-		if (@hairf == 2) goto fhair2show;
-		if (@hairf == 3) goto fhair3show;
-		if (@hairf == 4) goto fhair4show;
-		if (@hairf == 5) goto fhair5show;
-		if (@hairf == 6) goto fhair6show;
-		if (@hairf == 7) goto fhair7show;
-		if (@hairf == 8) goto fhair8show;
-		if (@hairf == 9) goto fhair9show;
-		if (@hairf == 10) goto fhair10show;
-		if (@hairf == 11) goto fhair11show;
-		if (@hairf == 12) goto fhair12show;
-		if (@hairf == 13) goto fhair13show;
-		if (@hairf == 14) goto fhair14show;
-		if (@hairf == 15) goto fhair15show;
-		if (@hairf == 16) goto fhair16show;
-		if (@hairf == 17) goto fhair17show;
-		if (@hairf == 18) goto fhair18show;
-		if (@hairf == 19) goto fhair19show;
-fhair1show:
-		cutin "hair_f_01",4;
-	mes "[維羅妮卡]";
-	mes "噢~ '裝死'的風格!";
-	mes "這風格會有人想要穿過你的頭髮.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair2show:
-		cutin "hair_f_02",4;
-	mes "[維羅妮卡]";
-	mes "噢~'狂擊'的風格!";
-	mes "感覺有種未被發現的強烈力量被隱藏著....";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair3show:
-		cutin "hair_f_03",4;
-	mes "[維羅妮卡]";
-	mes "噢~'冰凍術'的風格!";
-	mes "感覺很冷, 但卻是溫暖的....";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair4show:
-		cutin "hair_f_04",4;
-	mes "[維羅妮卡]";
-	mes "噢~'箭雨'的風格!";
-	mes "感覺精神很振作~";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair5show:
-		cutin "hair_f_05",4;
-	mes "[維羅妮卡]";
-	mes "噢~'治癒術'的風格!";
-	mes "感覺思想被淨化了.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair6show:
-		cutin "hair_f_06",4;
-	mes "[維羅妮卡]";
-	mes "噢~'露天商店'的風格!";
-	mes "看起來似乎賺了很多錢.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair7show:
-		cutin "hair_f_07",4;
-	mes "[維羅妮卡]";
-	mes "噢~'二連擊'的風格!";
-	mes "它讓人衝撞 2 次.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair8show:
-		cutin "hair_f_08",4;
-	mes "[維羅妮卡]";
-	mes "噢~'幸運之頌歌'的風格!";
-	mes "它的高貴和神聖的心境很厲害.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair9show:
-		cutin "hair_f_09",4;
-	mes "[維羅妮卡]";
-	mes "噢~'禪心'的風格!";
-	mes "感覺精神恢復得很飽滿.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair10show:
-		cutin "hair_f_10",4;
-	mes "[維羅妮卡]";
-	mes "噢~'藥水知識'的風格!";
-	mes "感覺創傷被痊癒了.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair11show:
-		cutin "hair_f_11",4;
-	mes "[維羅妮卡]";
-	mes "噢~'聖十字審判'的風格!";
-	mes "感覺很像堅定的信心.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair12show:
-		cutin "hair_f_12",4;
-	mes "[維羅妮卡]";
-	mes "噢~'脅持'的風格!";
-	mes "到處都可以看到這個風格...?";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair13show:
-	cutin "hair_f_13",4;
-	mes "[維羅妮卡]";
-	mes "噢~'吸收靈魂'的風格!";
-	mes "它可以捕捉別人的靈魂.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair14show:
-		cutin "hair_f_14",4;
-	mes "[維羅妮卡]";
-	mes "噢~'吉普塞女郎之吻'的風格!";
-	mes "它是人們覺得你對所有人都很親切...";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair15show:
-		cutin "hair_f_15",4;
-	mes "[維羅妮卡]";
-	mes "噢~'反擊'的風格!";
-	mes "感覺有人接近時就會反擊.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;				
-fhair16show:
-		cutin "hair_f_16",4;
-	mes "[維羅妮卡]";
-	mes "噢~'定位陷阱'的風格!";
-	mes "這個風格很難動";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair17show:
-		cutin "hair_f_17",4;
-	mes "[維羅妮卡]";
-	mes "噢~'大地之擊'的風格!";
-	mes "它會製造暈眩.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair18show:
-		cutin "hair_f_18",4;
-	mes "[維羅妮卡]";
-	mes "噢~'雷鳴術'的風格!";
-	mes "感覺很整潔.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-fhair19show:
-		cutin "hair_f_19",4;
-	mes "[維羅妮卡]";
-	mes "噢~'旋風'的風格!";
-	mes "感覺很像旋風.";
-	mes "你覺得如何? 你喜歡嗎?";
-	close;
-hairnothing:
-	mes "[維羅妮卡]";
-	mes "你找到你喜歡的風格了麼?";
-	mes "如果你隨時想要改變你的髮型, 我會做到最好的!!";
-	close;
-hairtohigh:
-	mes "[維羅妮卡]";
-	mes "抱歉, 這裡沒有其它號碼的髮型.";
-	mes "請選擇 1 到 19.";
-	close;
-Change:
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-
-		set @hairch,0;
-	mes "[維羅妮卡]";
-	mes "好吧, 那麼... 選擇你喜歡的髮型.";
-	mes "我會做到最好";
-	mes "有 19 種不同的髮型.";
-	mes "1 到 19~";
-	next;
-		if(sex==0) goto iffemale;
-		input @hairchange_in;
-		if (@hairchange_in > 19) goto tohighchange;
-		set @hairch,@hairchange_in;
-		if (@hairch == 1) goto mhair1;
-		if (@hairch == 2) goto mhair2;
-		if (@hairch == 3) goto mhair3;
-		if (@hairch == 4) goto mhair4;
-		if (@hairch == 5) goto mhair5;
-		if (@hairch == 6) goto mhair6;
-		if (@hairch == 7) goto mhair7;
-		if (@hairch == 8) goto mhair8;
-		if (@hairch == 9) goto mhair9;
-		if (@hairch == 10) goto mhair10;
-		if (@hairch == 11) goto mhair11;
-		if (@hairch == 12) goto mhair12;
-		if (@hairch == 13) goto mhair13;
-		if (@hairch == 14) goto mhair14;
-		if (@hairch == 15) goto mhair15;
-		if (@hairch == 16) goto mhair16;
-		if (@hairch == 17) goto mhair17;
-		if (@hairch == 18) goto mhair18;
-		if (@hairch == 19) goto mhair19;
-mhair1:
-		cutin "hair_m_01",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(1).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO1;
-	cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,1;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(1).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO1:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;					
-mhair2:
-		cutin "hair_m_02",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(2).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO2;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,2;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(2).";
-	mes "如果你想要換其它的髮型,";
-	mes "you are welcome welcome to vitis me anytime~ HoHoHo";
-	close;
-M_NO2:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;							
-mhair3:
-		cutin "hair_m_03",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(3).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO3;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,3;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(3).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO3:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;						
-mhair4:
-		cutin "hair_m_04",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(4).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO4;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,4;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(4).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO4:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair5:
-		cutin "hair_m_05",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(5).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO5;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,5;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(5).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO5:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair6:
-		cutin "hair_m_06",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(6).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO6;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,6;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(6).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO6:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair7:
-		cutin "hair_m_07",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(7).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO7;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,7;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(7).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO7:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair8:
-		cutin "hair_m_08",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(8).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO8;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,8;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(8).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO8:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair9:
-		cutin "hair_m_09",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(9).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO9;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-	if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-	set Zeny,Zeny-99800;
-	delitem 973,3;
-	delitem 974,3;
-	delitem 901,100;
-	delitem 1094,100;
-	delitem 1020,100;
-	delitem 1060,100;
-	delitem 7152,100;
-	setlook 1,9;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(9).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO9:
-	cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair10:
-	cutin "hair_m_10",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(10).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO10;
-	cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-	if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-	set Zeny,Zeny-99800;
-	delitem 973,3;
-	delitem 974,3;
-	delitem 901,100;
-	delitem 1094,100;
-	delitem 1020,100;
-	delitem 1060,100;
-	delitem 7152,100;
-	setlook 1,10;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(10).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO10:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair11:
-		cutin "hair_m_11",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(11).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO11;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-	if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-	set Zeny,Zeny-99800;
-	delitem 973,3;
-	delitem 974,3;
-	delitem 901,100;
-	delitem 1094,100;
-	delitem 1020,100;
-	delitem 1060,100;
-	delitem 7152,100;
-	setlook 1,11;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(11).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO11:
-	cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair12:
-	cutin "hair_m_12",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(12).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO12;
-	cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,12;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(12).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO12:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair13:
-		cutin "hair_m_13",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(13).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO13;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,13;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(13).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO13:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;	
-mhair14:
-		cutin "hair_m_14",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(14).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO14;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,14;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(14).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO14:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;	
-mhair15:
-		cutin "hair_m_15",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(15).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO15;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,15;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(15).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO15:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair16:
-		cutin "hair_m_16",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(16).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO16;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,16;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(16).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO16:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair17:
-		cutin "hair_m_17",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(17).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO12;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,17;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(17).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO17:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair18:
-		cutin "hair_m_18",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(18).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO12;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,18;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(18).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO18:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-mhair19:
-		cutin "hair_m_19",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(19).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",M_NO19;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,19;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(19).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-M_NO19:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-iffemale:
-		input @hairchange_in;
-		if (@hairchange_in > 19) goto tohighchange;
-		set @hairch,@hairchange_in;
-		if (@hairch == 1) goto fhair1;
-		if (@hairch == 2) goto fhair2;
-		if (@hairch == 3) goto fhair3;
-		if (@hairch == 4) goto fhair4;
-		if (@hairch == 5) goto fhair5;
-		if (@hairch == 6) goto fhair6;
-		if (@hairch == 7) goto fhair7;
-		if (@hairch == 8) goto fhair8;
-		if (@hairch == 9) goto fhair9;
-		if (@hairch == 10) goto fhair10;
-		if (@hairch == 11) goto fhair11;
-		if (@hairch == 12) goto fhair12;
-		if (@hairch == 13) goto fhair13;
-		if (@hairch == 14) goto fhair14;
-		if (@hairch == 15) goto fhair15;
-		if (@hairch == 16) goto fhair16;
-		if (@hairch == 17) goto fhair17;
-		if (@hairch == 18) goto fhair18;
-		if (@hairch == 19) goto fhair19;
-
-fhair1:
-		cutin "hair_f_01",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(1).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO1;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,1;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(1).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO1:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair2:
-		cutin "hair_f_02",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(2).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO2;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,2;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(2).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO2:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair3:
-		cutin "hair_f_03",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(3).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO3;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,3;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(3).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO3:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair4:
-		cutin "hair_f_04",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(4).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO4;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,4;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(4).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO4:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair5:
-		cutin "hair_f_05",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(5).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO5;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,5;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(5).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO5:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair6:
-		cutin "hair_f_06",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(6).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO6;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,6;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(6).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO6:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair7:
-		cutin "hair_f_07",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(7).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO7;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,7;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(7).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO7:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair8:
-		cutin "hair_f_08",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(8).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO8;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,8;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(8).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO8:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair9:
-		cutin "hair_f_09",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(9).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO9;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,9;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(9).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO9:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair10:
-		cutin "hair_f_10",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(10).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO10;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,10;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(10).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO10:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair11:
-		cutin "hair_f_11",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(11).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO11;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,11;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(11).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO11:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair12:
-		cutin "hair_f_12",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(12).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO12;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,12;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(12).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO12:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair13:
-		cutin "hair_f_13",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(13).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO13;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,13;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(13).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO13:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;	
-fhair14:
-		cutin "hair_f_14",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(14).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO14;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,14;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(14).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO14:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;	
-fhair15:
-		cutin "hair_f_15",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(15).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO15;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,15;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(15).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO15:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair16:
-		cutin "hair_f_16",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(16).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO16;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,16;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(16).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO16:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair17:
-		cutin "hair_f_17",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(17).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO17;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,17;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(17).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO17:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair18:
-		cutin "hair_f_18",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(18).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO18;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,18;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(18).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO18:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-fhair19:
-		cutin "hair_f_19",4;
-	mes "[維羅妮卡]";
-	mes "這是風格(19).";
-	mes "我會用這個來改變你現在的髮型.";
-	mes "好不好??";
-	next;
-	menu "-是的~ 我願意",-,"-不..我不願意..",F_NO19;
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "現在開始~. 保持別動~";
-	mes "如果你動了, 可能就會不好.";
-	mes "請相信我!!";
-	next;
-	mes "[維羅妮卡]";
-	mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-	mes "- 咯卡 咯卡 咯卡 咯卡 -";
-	mes "- 劈啪 劈啪 劈啪 劈啪 -";
-	next;
-		if ((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) ||(Zeny < 99800)) goto NOItem;
-		set Zeny,Zeny-99800;
-		delitem 973,3;
-		delitem 974,3;
-		delitem 901,100;
-		delitem 1094,100;
-		delitem 1020,100;
-		delitem 1060,100;
-		delitem 7152,100;
-		setlook 1,19;
-	mes "[維羅妮卡]";
-	mes "喔~ 非常好看~~";
-	mes "我希望你喜歡風格(19).";
-	mes "如果你想要換其它的髮型,";
-	mes "歡迎你隨時來我這裡~ 噢噢噢";
-	close;
-F_NO19:
-		cutin "",255;
-	mes "[維羅妮卡]";
-	mes "好的~ 請再選個吧~";
-	mes "這裡應該有你喜歡的風格.";
-	mes "僅告訴我你喜歡的代號.";
-	close;
-tohighchange:
-	mes "[維羅妮卡]";
-	mes "沒有這個代號!";
-	mes "請檢查下你的數字~";
-	close;
-NOItem:
-	mes "[維羅妮卡]";
-	mes "如果你想要換髮型, 你需要一些物品.";
-	mes "既然, 是你需要的東西....";
-	mes "我想你應該把它們記下來.";
-	next;
-	mes "[維羅妮卡]";
-	mes "3 瓶 中和劑,";
-	mes "3 瓶 混合劑,";
-	mes "100 撮 辮子,";
-	mes "100 撮 短辮子,";
-	mes "100 撮 長髮,";
-	mes "100 撮 金色頭髮,";
-	mes "100 撮 有光澤的頭髮.";
-	next;
-	mes "[維羅妮卡]";
-	mes "而且我也需要 99,800 Zeny.";
-	mes "如果你收集到了全部...";
-	mes "我會給你看我能做到的~!!";
-	mes "噢噢噢.";
-	close;
-Cancel:
-	mes "[維羅妮卡]";
-	mes "每個人都有權利變漂亮...";
-	mes "我希望能幫你把你合適的髮型做得很好~";
-	mes "我真得做了~";
-	close;
+// 流浪的 美容師
+alberta,33,141,1	script	流浪的 美容師	87,{
+	mes "[徹樂易 敝尚]";
+	mes "哼! 說什麼髮型設計師啊，少臭美啊，";
+	mes "還說什麼世界性的之類的，";
+	mes "我才是一位真正懂，美容與美姿的價值的人啊!";
+	mes "我才是美麗的創造者呀!";
+	next;
+	switch(select("請問你是做哪一行的?:也給我祝福好嗎!!:......")) {
+	case 1:
+		mes "[徹樂易 敝尚]";
+		mes "我!? 我是美容師啊，流浪在世界上，";
+		mes "給人類們美容的祝福，";
+		mes "做為樂趣而活的人呀，";
+		mes "不過在這個村落裡最近聽到，";
+		mes "有一位自稱是髮型設計師的小囉囉...";
+		next;
+		mes "[徹樂易 敝尚]";
+		mes "所以我才會特地來一趟的，";
+		mes "據我一直觀察，大家都想做自己想要的髮型啊，";
+		mes "這樣子是不行的!! 假如你對設計師說：";
+		mes "'請幫我這樣那樣剪燙好嗎?的話~'，";
+		mes "她會幫你剪燙成很奇怪的，不搭調的髮型給你的!";
+		next;
+		mes "[徹樂易 敝尚]";
+		mes "並且她剪髮的手藝和做造型的手藝，";
+		mes "經驗都不夠啊... 那種髮型怎麼能稱得上，";
+		mes "美容呢! 剪掉的頭髮，";
+		mes "有時候一看就知道剪太多了啦!";
+		mes "總而言之一句話，就是不滿意啊!!";
+		next;
+		mes "[徹樂易 敝尚]";
+		mes "假如你也想得到我的美容的祝福的話，";
+		mes "請隨時跟我說吧，";
+		mes "我會特別的花一點心思，幫你做好造型的，";
+		mes "知道了嘛? 不要委託給那種笨蛋的美容師，";
+		mes "你聽懂我的意思了嘛";
+		close;
+	case 2:
+		if(BaseLevel < 60) {
+			mes "[徹樂易 敝尚]";
+			mes "嗯，以我藝術的眼光來看的話，";
+			mes "最適合你的髮型的是，";
+			mes "就是你目前的髮型最恰當啊，";
+			mes "因為是我講的，請你相信吧";
+			close;
+		}
+		if(Zeny < 199800) {
+			mes "[徹樂易 敝尚]";
+			mes "對呀? 其它的東西都不需要，我只需要金幣呀!";
+			mes "請你準備好199,800 金幣之後再來找我吧，";
+			mes "以這樣的價格，可以得到我的漂亮的祝福，";
+			mes "你要感到光榮才行的..";
+			close;
+		}
+		mes "[徹樂易 敝尚]";
+		mes "好吧，那我就接受你的手續費 199,800 金幣吧，";
+		mes "好嘛? 還是你還要，";
+		mes "找那位笨蛋美容師，";
+		mes "去做出不像話的髮型也可以呀...";
+		next;
+		if(select("那就拜託你了:還是不想做") ==1 ) {
+			mes "[徹樂易 敝尚]";
+			mes "那麼----- 開始了!!!";
+			mes "開始要緊張囉!!";
+			next;
+			unequip;
+			mes "[徹樂易 敝尚]";
+			mes "嗚噢噢噢噢噢噢噢!! 特噢噢噢噢嗚!!";
+			next;
+			mes "[徹樂易 敝尚]";
+			mes "唉喲!! 加油!! 塔啊啊啊啊!!";
+			next;
+			mes "[徹樂易 敝尚]";
+			mes "完成了!! 了不起，很了不起呀!!";
+			mes "誰都不能追隨到我的髮型呀!";
+			mes "哇哈哈哈哈哈哈!!";
+			setlook 1,rand(1,19);
+			setlook 6,rand(1,6);
+			set Zeny,Zeny-199800;
+			close;
+		}
+		mes "[徹樂易 敝尚]";
+		mes "哼! 隨你的便!! 你一定會後悔的!!";
+		mes "真正的美麗是，在偉大的匠人之手，";
+		mes "所誕生的實事，";
+		mes "你總有一天會領悟到的...";
+		close;
+	case 3:
+		mes "[徹樂易 敝尚]";
+		mes "給一位連美容的美字都不知道的小囉囉，";
+		mes "去換髮型所進去的人們，";
+		mes "他們實在是太可憐了! 好可憐啊!!";
+		mes "比彌勒佛像更可憐啊!!";
+		close;
+	}
 }

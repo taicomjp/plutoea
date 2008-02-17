@@ -5,13 +5,13 @@
 // - 啟 海伊洛 任務腳本 - 
 //===================================
 // 版本：3.8 
-// 參考 [小軒] 提供的非官方腳本、堂本堂、天野幻境內任務流程
-// 刪除前面不必要的說明，減輕讀取負擔  by 笨冰
+// 中文化 [笨冰]
+// 08-02-17 整理 [熊貓]
 //===================================
 
-//----------------------------------------------------------------------------
+//------------------------
 // 朱諾 酒店裡的主人
-//----------------------------------------------------------------------------
+//------------------------
 yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 	if (checkweight(7487,1) == 0) {
 		mes "^3355FF- 等等!! -";
@@ -23,7 +23,7 @@ yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 		mes "[班德]";
 		mes "歡迎光臨，要點些什麼呢?";
 		next;
-		switch(select("啤酒","雞尾酒","燒酒","請問有什麼問題嗎?","下一次再來點")) {
+		switch(select("啤酒:雞尾酒:燒酒:請問有什麼問題嗎?:下一次再來點")) {
 		case 1:
 			mes "[班德]";
 			mes "啤酒的話馬上為你準備，";
@@ -75,43 +75,31 @@ yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 			mes "[班德]";
 			mes "........... 要拿來的物品在購買處那裡 會派人送過來的，所以並沒有什麼大礙，問題是要送往 '啟 海伊洛 學院'的 那些物品...";
 			next;
-
-			switch(select("原來是這樣啊","我可以幫你嗎?")) {
-
-			case 1:
+			if(select("原來是這樣啊:我可以幫你嗎?")==1) {
 				mes "[班德]";
 				mes "唉喲 唉喲...";
 				mes "我好像對客人說些沒有用的話了呢，";
 				mes "非常抱歉.. 真是的...哈哈...";
 				close;
-
-			case 2:
-				mes "[班德]";
-				mes "唉? 嗯........... 是有點煩瑣啦..";
-				mes "請問你可以幫我嗎?";
-				next;
-
-				switch(select("當然啊", "等等..讓我先想一下")) {
-
-				case 1:
-					mes "[班德]";
-					mes "是真的嗎? 真的感謝你啊!! 我也沒有什麼好報答你的呀..";
-					mes "要配送的物品是'調理用的酒'，要送達的地方是，";
-					mes "'啟 海伊洛 學院'的";
-					mes "^ff0000'利可雷音 太太'^000000啊";
-					getitem 7487,1; //Culinary_Wine
-					set KielHyreQuest,2;
-					close;
-
-				case 2:
-					mes "[班德]";
-					mes "..........";
-					mes "好 瞭解了... ";
-					close;
-
-				}
-
 			}
+			mes "[班德]";
+			mes "唉? 嗯........... 是有點煩瑣啦..";
+			mes "請問你可以幫我嗎?";
+			next;
+			if(select("當然啊:等等..讓我先想一下")==1) {
+				mes "[班德]";
+				mes "是真的嗎? 真的感謝你啊!! 我也沒有什麼好報答你的呀..";
+				mes "要配送的物品是'調理用的酒'，要送達的地方是，";
+				mes "'啟 海伊洛 學院'的";
+				mes "^ff0000'利可雷音 太太'^000000啊";
+				getitem 7487,1; //酒店的酒
+				set KielHyreQuest,2;
+				close;
+			}
+			mes "[班德]";
+			mes "..........";
+			mes "好 瞭解了... ";
+			close;
 
 		case 5:
 			mes "[班德]";
@@ -119,9 +107,7 @@ yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 			mes "再叫我吧";
 			close;
 		}
-
 	}
-
 	else if ((KielHyreQuest >= 2) && (KielHyreQuest < 6)) {
 		mes "[班德]";
 		mes "來來已經遲到了請你趕快送去吧，";
@@ -129,12 +115,11 @@ yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 		mes "遲到的話會完蛋的";
 		close;
 	}
-
 	else if ((KielHyreQuest == 6) && (KHPubMasterEnd != 1)) {
 		mes "[班德]";
 		mes "啊 你已經去回來了，這個真的謝謝你啦，啊 這個雖然是個小東西，就當做是酬勞請你收下它吧";
 		next;
-		switch(select("那.. 我需要調理用的酒啊.. ")) {
+		switch(select("那.. 我需要調理用的酒啊..")) {
 
 		case 1:
 			mes "[班德]";
@@ -144,20 +129,18 @@ yuno_in01,35,179,1	script	主人#KHQuest	46,4,4,{
 			next;
 			mes "[班德]";
 			mes "在這裡，啊啊..就當做是我的誠意好了，請你收下吧";
-			getitem 7487,1; //Culinary_Wine
+			getitem 7487,1; //酒店的酒
 			set zeny,zeny+1000;
 			set KHPubMasterEnd,1;
 			close;
 		}
 	}
-
 	else if ((KielHyreQuest > 6) || (KHPubMasterEnd == 1)) {
 		mes "[班德]";		
 		mes "上一次真的謝謝你啦";
 		mes "哈哈...";
 		close;
 	}
-
 OnTouch:
 	if (KielHyreQuest < 1) {
 		mes "[班德]";
@@ -185,10 +168,7 @@ yuno,217,114,4	script	賣吐司的可愛小孩	96,{
 			mes "[思茲]"; 
 			mes "歡迎光臨~ 請問需要土司嗎?";
 			next;
-
-			switch(select("受愛麗之託而來","沒事")) {
-
-			case 1:
+			if(select("受愛麗之託而來:沒事")==1) {
 				mes "[思茲]";
 				mes "啊... 妳是說^ff0000愛麗^000000姐姐的委託啊?";
 				next;
@@ -206,12 +186,10 @@ yuno,217,114,4	script	賣吐司的可愛小孩	96,{
 				mes "你只要說你是從朱諾土司商店派來的話，他們會給你麵粉和雞蛋的，只要把那些帶來的話，我會把多餘的那一份分給你的";
 				set KHToastGirlEnd,1;
 				close;
-
-			case 2:
-				mes "[思茲]";
-				mes "請你下一次再來使用~";
-				close;
 			}
+			mes "[思茲]";
+			mes "請你下一次再來使用~";
+			close;
 		}
 
 		else if (KHToastGirlEnd == 1) {
@@ -227,8 +205,8 @@ yuno,217,114,4	script	賣吐司的可愛小孩	96,{
 			mes "[思茲]";
 			mes "啊 你回來了，辛苦您了，來 這是約定好要給你的 麵粉和雞蛋，";
 			mes "幫我向^ff0000愛麗^000000姐姐問候一下";
-			delitem 7488,1; //Delivery_Package
-			getitem 7488,1; //Delivery_Package
+			delitem 7488,1; //送貨用的箱子
+			getitem 7488,1; //送貨用的箱子
 			set KHToastGirlEnd,3;
 			close;
 		}
@@ -286,7 +264,7 @@ lighthalzen,365,300,2	script	輾米廠 主人	46,{
 		mes "有什麼事嗎，我現在有點忙 請你下一次再來";
 		next;
 
-		switch(select("我是從朱諾土司商店那邊過來的","...")) {
+		switch(select("我是從朱諾土司商店那邊過來的:...")) {
 
 		case 1:
 			mes "[米思]";
@@ -297,7 +275,7 @@ lighthalzen,365,300,2	script	輾米廠 主人	46,{
 			next;
 			mes "[米思]";
 			mes "來 請收下，雞蛋會很容易碎掉的，所以請你好好的攜帶";
-			getitem 7488,1; //Delivery_Package
+			getitem 7488,1; //送貨用的箱子
 			set KHToastGirlEnd,2;
 			close;
 
@@ -334,10 +312,7 @@ yuno_fild08,196,196,5	script	少女#KHQuest	102,{
 	mes "啊...我也能進入'啟 海伊洛 學院'的話";
 	mes "那有多好呢... 為什麼我媽媽沒有把我生成 孤兒呢...真是的.";
 	next;
-
-	switch(select("啟 海伊洛 學院?")) {
-
-	case 1:
+	select("啟 海伊洛 學院?")
 		mes "[少女]";
 		mes "嗯...這裡是，只收容孤兒的地方啊，創立這學院的人是 '啟 海伊洛'這號人物，";
 		mes "聽說他以前製作出很多奇怪的機械，也賺了不少錢啊";
@@ -348,9 +323,7 @@ yuno_fild08,196,196,5	script	少女#KHQuest	102,{
 		mes "[少女]";
 		mes "聽說只要是在這間學院畢業的話，就能謀職很好的工作呢.. 啊.. 我也想進這間學院啊";
 		close;
-	}
 }
-
 
 //----------------------------------------------------------------------------
 // 啟 海依洛 學院前的警衛
@@ -363,18 +336,16 @@ yuno_fild08,158,194,5	script	警衛#1::KHAGuard	852,{
 		close;
 	}
 
-
 	else if (KielHyreQuest == 2) { 
 		mes "[警衛]";
 		mes "這裡是^FF0000'啟 海伊洛 學院'^000000，是限制一般人進出的，";
 		mes "若沒有什麼特別的事情，或事先沒有約好的話是不能進出的";
 		next;
-		switch(select("訂的貨已經到達了","......")) {
+		if(select("訂的貨已經到達了:......")==1) {
 		case 1:
 			mes "[警衛]";
 			mes "是送貨嗎?請告訴我收貨人姓名和物品名稱";
 			next;
-
 			input @KHDelivery$;
 			if (@KHDelivery$ != "利可雷音") {
 				mes "[警衛]";
@@ -412,7 +383,6 @@ yuno_fild08,158,194,5	script	警衛#1::KHAGuard	852,{
 				mes "請你再確認一次好嗎";
 				close;
 			}
-
 			mes "[警衛]";
 			mes "請問這是配送給^ff0000利可雷音 太太^000000的 酒嗎?";
 			mes "先讓我確認一下";
@@ -442,16 +412,11 @@ yuno_fild08,158,194,5	script	警衛#1::KHAGuard	852,{
 			close2;
 			warp "kh_school",71,155;
 			end;
-
-		case 2:
-			mes "[警衛]";
-			mes "若沒有其它事情的話 請你回去吧";
-			close;
-
 		}
-
+		mes "[警衛]";
+		mes "若沒有其它事情的話 請你回去吧";
+		close;
 	}
-
 	else if (KielHyreQuest >= 4) { 
 		mes "[警衛]";
 		mes "請問你還有什麼事嗎?";
@@ -511,9 +476,7 @@ kh_school,176,60,4	script	太太::LadyKHQ	101,{
 		mes "[利可雷音]";
 		mes "請問你有什麼事嗎?";
 		next;
-
-		switch(select("我是來送貨","沒什麼事")) {
-
+		switch(select("我是來送貨:沒什麼事")) {
 		case 1:
 			mes "[利可雷音]";
 			mes "啊，原來這樣啊，比我預期的晚了一些啊，我還以為你會來的更早一些呢，";
@@ -543,10 +506,9 @@ kh_school,176,60,4	script	太太::LadyKHQ	101,{
 			next;
 			mes "[利可雷音]";
 			mes "哼哼... 那麼請你把物品放著，就請你回去吧，沒必要繼續在這裡逗留";
-			delitem 7487,1; //Culinary_Wine
+			delitem 7487,1; //酒店的酒
 			set KielHyreQuest,4;
 			close;
-
 		case 2:
 			mes "[利可雷音]";
 			mes "這裡是禁止外人進出的，";
@@ -555,7 +517,6 @@ kh_school,176,60,4	script	太太::LadyKHQ	101,{
 		}
 		return;
 	}
-
 	else if (KielHyreQuest == 4) {
 		mes "[利可雷音]";
 		mes "若你完成事情了的話 ";
@@ -593,13 +554,11 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 		mes "[愛麗]";
 		mes "嗚唉唉唉唉.... 怎麼辦啊~ 怎麼辦啊~ 呵唉.....";
 		next;
-		switch(select("請問有什麼事嗎?","......")) {
-
-		case 1:
+		switch(select("請問有什麼事嗎?:......")) {
 			mes "[愛麗]";
 			mes "唉? 唉...那是因為.... 本來是要做薑餅的，不小心把材料掉在地上了.....呵唉.. 要在今晚之前做出來才可以的~";
 			next;
-			switch(select("我可以幫忙些什麼嗎?","唉喲.. 真可憐啊")) {
+			switch(select("我可以幫忙些什麼嗎?:唉喲.. 真可憐啊")) {
 
 			case 1: 
 				cutin "kh_elly02",2;
@@ -667,13 +626,11 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 				mes "很抱歉，我知道我很不應該.. 但還是拜託你啦!";
 				set KielHyreQuest,6;
 				goto KH_Elly_end;
-
 			Case 2:
 				mes "[愛麗]";
 				mes "呵唉~ 怎麼辦啊~ 怎麼.... 嗚嗯.... 請問~";
 				next;
 				switch(select("????")) {
-
 					mes "請問...~ 看樣子你是送貨的人.. 請幫我好嗎~ 好?不?好?";
 					next;
 					mes "少女突然抓著你的手臂開始拜託你了";
@@ -687,16 +644,13 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 					mes "[" + strcharinfo(0) + "]";
 					mes "啊哈哈哈哈..";
 					next;
-					switch(select("我會幫你","我拒絕幫你")) {
-		
+					switch(select("我會幫你:我拒絕幫你")) {
 					case 1:
-						//bigsmile
 						mes "唉唉唉唉~";
 						mes "真..真的嗎?";
 						mes "真的真的真的真的真的嗎~!!";
 						next;
 						goto L_Accept;
-
 					case 2:
 						mes "["+strcharinfo(0)+"]";
 						mes "對不起，";
@@ -708,22 +662,16 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 						mes "打擾到你真是抱歉啊..";
 						mes "嗚唉唉... ";
 						goto KH_Elly_end;
-
 					}
-
 				}
-
 			}
-
 		case 2:
 			mes "嗚唉唉唉唉唉...";
 			goto KH_Elly_end;
 		}
-
 	}
-
 	else if (KielHyreQuest == 6) {
-		//519 - Milk; 548 - Cheese; 7182 - Cacao; 7487 - Culinary_Wine; 7488 - Delivery_Package
+		//519 - 牛奶; 548 - 起士; 7182 - 可可; 7487 - 酒店的酒; 7488 - 送貨用的箱子
 		if ((countitem(519) < 7) || (countitem(548) < 2) || (countitem(7182) < 5) || (countitem(7487) < 1) || (countitem(7488) < 1)) {
 			mes "[愛麗]";
 			mes "'^0000FF麵粉^000000'和 '^0000FF雞蛋^000000'是從 ^008000朱諾^000000的 '^0000FF賣吐司的可愛小孩^000000'那裡 委託的話 她會給你的";
@@ -743,17 +691,14 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 			mes "[愛麗]";
 			mes "唉嘿嘿.. 那麼請你稍後一下~ 嚕魯 啦啦~";
 			set KielHyreQuest,8;
-			//KHPubMasterEnd no longer needed-- deleting.
 			set KHPubMasterEnd,0;
-			delitem 519,7; //Milk
-			delitem 548,2; //Cheese
-			delitem 7182,5; //Cacao
-			delitem 7487,1; //Culinary_Wine
-			delitem 7488,1; //Delivery_Package
+			delitem 519,7; //牛奶
+			delitem 548,2; //起士
+			delitem 7182,5; //可可
+			delitem 7487,1; //酒店的酒
+			delitem 7488,1; //送貨用的箱子
 			goto KH_Elly_end;
-
 		}
-
 	}
 
 	else if (KielHyreQuest == 8) {
@@ -783,10 +728,7 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 		mes "[愛麗]";
 		mes "嗚嗚.....請問... 我還有一個請求 可以再拜託你嗎?";
 		next;
-
-		switch(select("是什麼樣的請求呢?","對不起 我現在有點忙..")) {
-
-		case 1:
+		if(select("是什麼樣的請求呢?:對不起 我現在有點忙..")==1) {
 			mes "[愛麗]";
 			mes "嗯... 也就是說... 對我來說有一位非常重要的爺爺 存在啊";
 			next;
@@ -803,10 +745,7 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 			mes ".........";
 			mes "...........";
 			next;
-
-			switch(select("好吧，我來送給他吧","現在我有點忙啊")) {
-
-			case 1:
+			if(select("好吧，我來送給他吧:現在我有點忙啊")==1) {
 				cutin "kh_elly02",2;
 				mes "[愛麗]";
 				mes "嗚哇~ 真的謝謝你啦!^0000ff" + strcharinfo(0) + "^000000先生/小姐 真的很親切啊，唉嘿... 唉嘿嘿..";
@@ -815,21 +754,16 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 				mes "爺爺目前在'^FF0000啟 海伊洛 別墅^000000' 那裡啊，你說愛麗叫我來見他的話，他會見你的";
 				set KielHyreQuest,12;
 				goto KH_Elly_end;
-
-			case 2:
-				cutin "kh_elly03",2;
-				mes "[愛麗]";
-				mes "是是... 那就沒有辦法囉.. ...... ";
-				goto KH_Elly_end;
 			}
-
-
-		case 2:
 			cutin "kh_elly03",2;
 			mes "[愛麗]";
-			mes "是! 嗯.. 那就沒有辦法囉.. 嗚嗚...?";
+			mes "是是... 那就沒有辦法囉.. ...... ";
 			goto KH_Elly_end;
 		}
+		cutin "kh_elly03",2;
+		mes "[愛麗]";
+		mes "是! 嗯.. 那就沒有辦法囉.. 嗚嗚...?";
+		goto KH_Elly_end;
 	}
 
 	else if (KielHyreQuest == 12) {
@@ -850,7 +784,7 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 		mes "[愛麗]";
 		mes "請問.. 可以請你再去一趟嗎? 對了! 這一次我給你，爺爺給過我的別墅補助鑰匙吧，";
 		mes "用這把^FF0000鑰匙^000000的話，就可以進入到別墅裡面的";
-		getitem 7489,1; //Cottage Key
+		getitem 7489,1; //別墅補助鑰匙
 		set KielHyreQuest,16;
 		goto KH_Elly_end;
 	}
@@ -902,7 +836,7 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 		mes "[愛麗]";
 		mes ".........";
 		next;
-		switch(select("詢問有關爺爺的事情","詢問有關兒子齊爾的事情","詢問有關學院的事情")) {
+		switch(select("詢問有關爺爺的事情:詢問有關兒子齊爾的事情:詢問有關學院的事情")) {
 
 		case 1:
 			mes "[" + strcharinfo(0) + "]";
@@ -981,17 +915,7 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 			mes "[愛麗]";
 			mes "不過我是還好啦! 如果我遇到危險的話 '" + strcharinfo(0) + "'先生/小姐會幫助我的，唉嘿嘿..";
 			next;
-			switch(select("愛麗希雅小姐?","奇怪的事情?")) {
-
-			case 1:
-				mes "[愛麗]";
-				mes "是為爺爺從事秘書";
-				mes "工作職務的人，";
-				mes "是值得讓爺爺相信信賴的女人，";
-				mes "是一位非常漂亮的好心人";
-				goto KH_Elly_end;
-
-			case 2:
+			if(select("愛麗希雅小姐?:奇怪的事情?")==2) {
 				cutin "kh_elly04",2;
 				mes "[愛麗]";
 				mes "這是一項被禁忌的話題.. '因為" + strcharinfo(0) + "'先生/小姐是值得信賴的人，所以就告訴你吧";
@@ -1022,11 +946,14 @@ kh_school,179,39,1	script	看似可愛的 學生	895,{
 				mes "當我石化時'" + strcharinfo(0) + "'先生/小姐 對著我說，'^ff0000不要再睡了 起床了愛麗^000000'的話，我就可以馬上起床活動了，所以說我不太會害怕幽靈啊，唉唉嘿..";
 				set KielHyreQuest,24;
 				goto KH_Elly_end;
-
 			}
-
+			mes "[愛麗]";
+			mes "是為爺爺從事秘書";
+			mes "工作職務的人，";
+			mes "是值得讓爺爺相信信賴的女人，";
+			mes "是一位非常漂亮的好心人";
+			goto KH_Elly_end;
 		}
-
 	}
 
 	else if (KielHyreQuest == 24) {
@@ -1083,9 +1010,7 @@ yuno_fild08,69,185,0	script	窗戶::WindowKHQ1	111,{
 		next;
 		mes "...看樣子是可以利用排水管 ....";
 		next;
-		switch(select("利用排水管","尋找其它方法")) {
-
-		case 1:
+		if(select("利用排水管:尋找其它方法")==1) {
 			set @KHClimbAttempt,rand(1,5);
 			if (@KHClimbAttempt == 1) {
 				mes "^3355FF搭著排水管進入到了愛麗的房間^000000";
@@ -1093,21 +1018,13 @@ yuno_fild08,69,185,0	script	窗戶::WindowKHQ1	111,{
 				warp "kh_school",185,185;
 				end;
 			}
-
-			else {
-				mes "^3355FF搭著排水管爬上去之後又滑下來了^000000";
-				percentheal -10,0;
-				close;
-			}
-
-		case 2:
-			mes "^3355FF尋找別的方法吧^000000";
+			mes "^3355FF搭著排水管爬上去之後又滑下來了^000000";
+			percentheal -10,0;
 			close;
-
 		}
-
+		mes "^3355FF尋找別的方法吧^000000";
+		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -1139,7 +1056,7 @@ kh_school,178,180,5	script	愛麗	895,{
 		mes "難道愛麗.. 被石化了嗎.. 要怎麼辦呢..";
 		next;
 
-		switch(select("試著觸碰一下愛麗","試著跟她講話","不管它")) {
+		switch(select("試著觸碰一下愛麗:試著跟她講話:不管它")) {
 
 		case 1:
 			mes "[" + strcharinfo(0) + "]";
@@ -1161,8 +1078,8 @@ kh_school,178,180,5	script	愛麗	895,{
 				mes "..........";
 				next;
 				mes "^3355FF瞬間愛麗握緊的拳頭鬆開了，掉落了^000000小的黃金鑰匙^3355FF和^000000鈕扣^3355FF ...? 這是什麼呀?^000000";
-				getitem 7493,1; //Golden_Key
-				getitem 7494,1; //Exquisite_Button
+				getitem 7493,1; //黃金鑰匙
+				getitem 7494,1; //高級鈕釦
 				set KielHyreQuest,34;
 				close;
 			}
@@ -1210,14 +1127,12 @@ kh_school,178,180,5	script	愛麗	895,{
 			mes "請你去找在工廠秘密房間裡的^0000FF愛麗希雅^000000吧，";
 			mes "我在那女人的保安系統上輸入了我的名字，";
 			mes "那女的會來救我的";
-			getitem 7495,1; //Blue_Keycard
-			delitem 7491,1; //Steel_box
+			getitem 7495,1; //藍色鑰匙卡
+			delitem 7491,1; //鐵箱子
 			set KielHyreQuest,36;
 			close;
 		}
-
 	}
-
 	else if (KielHyreQuest >= 36) {
 		mes "^3355FF在箱子裡面的紙條，如下面這樣寫著^000000";
 		next;
@@ -1239,7 +1154,6 @@ kh_school,178,180,5	script	愛麗	895,{
 		mes "那女的會來救我的";
 		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -1278,9 +1192,7 @@ kh_school,175,175,0	script	薑餅提籃	111,{
 		next;
 		mes "是愛麗的薑餅提籃， 在裝滿薑餅的縫隙中 看到了白色物體， 拿起了一塊薑餅後 發現了^ff0000紙條^000000";
 		next;
-
-		switch(select("閱讀看看","不管它")) {
-
+		switch(select("閱讀看看:不管它")) {
 		case 1:
 			mes "穿著黑色衣服的男子";
 			mes "嘴裡邊唸著奇怪的咒文邊走著，";
@@ -1300,15 +1212,12 @@ kh_school,175,175,0	script	薑餅提籃	111,{
 			mes "'" + strcharinfo(0) + "'先生/小姐!!";
 			set KielHyreQuest,32;
 			close;
-
 		case 2:
 			mes "" + strcharinfo(0) + "";
 			mes ".........";
 			close;
-
 		}
 	}
-
 	else if (KielHyreQuest >= 32) {
 		mes "^3355FF有擺放著慢慢冷卻的薑餅^000000";
 		close;
@@ -1333,16 +1242,13 @@ yuno_fild08,72,170,0	script	墳墓	111,{
 		mes "^3355FF是某一個人的墳墓^000000";
 		close;
 	}
-
 	else if (KielHyreQuest == 36) {
 		if (countitem(7492) < 1) {
-			
 			mes "檢查墳墓周邊時發現了隱藏的門";
 			next;
 			mes "仔細的觀察後， 發現了可以放入某種東西的小縫隙和數字板";
 			close;
 		}
-
 		else {
 			mes "檢查墳墓周邊時發現了隱藏的門";
 			next;
@@ -1350,19 +1256,14 @@ yuno_fild08,72,170,0	script	墳墓	111,{
 			next;
 			mes "在小縫隙裡放入什麼呢?";
 			next;
-
 			input @KHInput$;
-
 			if (@KHInput$ == "黃色鑰匙卡") {
 				mes "^3355FF放入'黃色鑰匙卡'後，^000000";
 				mes "^3355FF'嗶~'的一聲 並且傳出人的聲音了，^000000";
 				mes "^3355FF請輸入'暗號'^000000";
 				next;
-
 				input @KHInput$;
-
 				next;
-
 				if (@KHInput$ == "4772961") {
 					mes "輸入了數字";
 					next;
@@ -1370,79 +1271,42 @@ yuno_fild08,72,170,0	script	墳墓	111,{
 					set KielHyreQuest,38;
 					close;
 				}
-
-				else {
-					mes "輸入了數字";
-					next;
-					mes "'暗號'錯誤，";
-					mes "請你重新輸入'";
-					close;
-				}
-			}
-
-			else {
-				mes "^3355FF沒有任何反應^000000";
+				mes "輸入了數字";
+				next;
+				mes "'暗號'錯誤，";
+				mes "請你重新輸入'";
 				close;
 			}
-
+			mes "^3355FF沒有任何反應^000000";
+			close;
 		}
-
 	}
-
 	else if ((KielHyreQuest >= 38) && (KielHyreQuest < 106)) {
 		mes "^3355FF通往工廠的門已經開啟著^000000";
 		next;
-
-		switch(select("進去","不進去")) {
-
-		case 1:
+		if(select("進去:不進去")==1) {
 			warp "kh_dun01",3,230;
 			end;
-		case 2:
-			mes ".........";
-			close;
 		}
-
+		mes ".........";
+		close;
 	}
-
 	else if (KielHyreQuest >= 106) {
-		if (countitem(7509) < 1) {
-			close;
-		}
-
-		else {
-			mes "走到墳墓旁邊之後，";
-			mes "在墳墓的某一部份上開始閃爍著光芒";
+		if (countitem(7509) < 1) close;
+		mes "走到墳墓旁邊之後，";
+		mes "在墳墓的某一部份上開始閃爍著光芒";
+		next;
+		if(select("使用 ^0000FF華麗的鑰匙卡^000000:不理它")==1) {
+			mes "^3355FF通往工廠的門已經開啟著^000000";
 			next;
-
-			switch(select("使用 ^0000FF華麗的鑰匙卡^000000","不理它")) {
-
-			case 1:
-				mes "^3355FF通往工廠的門已經開啟著^000000";
-				next;
-
-				switch(select("進去","不進去")) {
-
-				case 1:
-					warp "kh_dun01",3,230;
-					end;
-
-				case 2:
-					mes ".........";
-					close;
-
-				}
-
-			case 2:
-				mes ".........";
-				close;
-
+			if(select("進去:不進去")==1) {
+				warp "kh_dun01",3,230;
+				end;
 			}
-
 		}
-
+		mes ".........";
+		close;
 	}
-
 }
 
 //============================================================================
@@ -1465,32 +1329,23 @@ yuno_fild02,93,210,3	script	別墅管家	85,{
 		mes "因為這裡是私有地";
 		mes "所以不能隨便進出";
 		next;
-
-		switch(select("我是要來見啟 海伊洛先生的","我瞭解了")) {
-
-		case 1:
+		if(select("我是要來見啟 海伊洛先生的:我瞭解了")==1) {
 			mes "[別墅管家]";
 			mes "請問有事先約好嗎?";
 			next;
-			switch(select("是的","沒有")) {
-
-			case 1:
+			if(select("是的:沒有")==1) {
 				mes "[別墅管家]";
 				mes "主人現在出差中，所以不能見面啊";
 				set KielHyreQuest,14;
 				close;
-
-			case 2:
-				mes "[別墅管家]";
-				mes "若沒有事先約好的話 是不能見面的";
-				close;
 			}
-
-		case 2:
 			mes "[別墅管家]";
-			mes "再見囉";
+			mes "若沒有事先約好的話 是不能見面的";
 			close;
 		}
+		mes "[別墅管家]";
+		mes "再見囉";
+		close;
 	}
 }
 
@@ -1506,10 +1361,7 @@ yuno_fild02,75,218,0	script	門::DoorKHQ1	111,{
 	if (KielHyreQuest == 16) {
 		mes "有一道被關閉的門";
 		next;
-
-		switch(select("開啟","不管它")) {
-
-		case 1:
+		if(select("開啟:不管它")==1) {
 			mes "^3355FF使用鑰匙打開門之後，^000000";
 			mes "^3355FF從門縫裡掉落了一個紙條，^000000";
 			mes "^3355FF紙條上面寫著^000000";
@@ -1522,26 +1374,18 @@ yuno_fild02,75,218,0	script	門::DoorKHQ1	111,{
 			set KielHyreQuest,18;
 			warp "kh_vila",188,18;
 			end;
-
-		case 2:
-			mes "............";
-			close;
 		}
+		mes "............";
+		close;
 	}
-
 	if (KielHyreQuest >= 18) {
 		mes "^3355FF有一道開啟的門^000000";
 		next;
-
-		switch(select("進去","不進去")) {
-
-		case 1:
+		if(select("進去:不進去")==1) {
 			warp "kh_vila",188,18;
 			end;
-
-		case 2:
-			close;
 		}
+		close;
 	}
 }
 
@@ -1557,20 +1401,16 @@ yuno_fild02,109,218,0	script	門::DoorKHQ2	111,{
 	if (KielHyreQuest >= 16) {
 		mes "有一道被關閉的門";
 		next;
-
-		switch(select("開啟","不管它")) {
-
+		switch(select("開啟:不管它")) {
 		case 1:
 			mes "從愛麗那裡得到的鑰匙不能使用";
 			close;
-
 		case 2:
 			mes "............";
 			close;
 		}
 	}
 }
-
 
 //----------------------------------------------------------------------------
 // Store room interior; 牆壁
@@ -1584,17 +1424,13 @@ kh_vila,191,14,0	script	牆壁	111,{
 	if (KielHyreQuest >= 28) {
 		mes "牆面破裂後出現了一個秘密通路";
 		next;
-
-		switch(select("移動","不移動")) {
-
+		switch(select("移動:不移動")) {
 		case 1:
 			warp "kh_vila",17,177;
 			end;
-
 		case 2:
 			close;
 		}
-
 	}
 
 OnOpenDoor:
@@ -1618,20 +1454,13 @@ kh_vila,184,20,0	script	書#1::BookKHQ1	111,{
 			set KielHyreQuest,28;
 			close;
 		}
-
-		else {
-			mes "有書插在那邊";
-			close;
-		}
-
+		mes "有書插在那邊";
+		close;
 	}
-
 }
 
 kh_vila,181,20,0	duplicate(BookKHQ1)	書#2::BookKHQ2	111
-
 kh_vila,178,20,0	duplicate(BookKHQ1)	書#3::BookKHQ3	111
-
 kh_vila,175,19,0	duplicate(BookKHQ1)	書#4::BookKHQ4	111
 
 //----------------------------------------------------------------------------
@@ -1647,53 +1476,45 @@ OnTouch:
 			close;
 		}
 		mes "發現了掉落在地板上的'^FF0000信件^000000'";
-		getitem 7490,1; //Letter to Elly
+		getitem 7490,1; //給予愛麗的信
 		set KielHyreQuest,20;
 		close;
 	} 
-	end; 
+	end;
 }
 
 //----------------------------------------------------------------------------
 // Cottage interior, kitchen; Box (Pet Food vending machine)
 //----------------------------------------------------------------------------
 kh_vila,16,175,0	script	箱子::BoxKHQ1	111,{
-		mes "好吃 營養又高的寵物用";
-		mes "寵物飼料 自動販賣機，";
-		mes "為了你可愛的寵物";
-		mes "唯一的選擇!";
+	mes "好吃 營養又高的寵物用";
+	mes "寵物飼料 自動販賣機，";
+	mes "為了你可愛的寵物";
+	mes "唯一的選擇!";
+	next;
+	mes "和市面上所販賣的一般寵物飼料";
+	mes "是不一樣的!";
+	mes "使用方法:";
+	mes "把 1,100 zeny 投入到投幣口裡，";
+	next;
+	mes "將把手往右邊轉2次，";
+	mes "在取物口裡會出現";
+	mes "好吃營養又高的寵物飼料";
+	next;
+	if(select("購買:不購買")==1) {
+		mes "看來是有點貴了還是購買吧";
 		next;
-		mes "和市面上所販賣的一般寵物飼料";
-		mes "是不一樣的!";
-		mes "使用方法:";
-		mes "把 1,100 zeny 投入到投幣口裡，";
-		next;
-		mes "將把手往右邊轉2次，";
-		mes "在取物口裡會出現";
-		mes "好吃營養又高的寵物飼料";
-		next;
-		switch(select("購買","不購買")) {
-
-		case 1:
-			mes "看來是有點貴了還是購買吧";
-			next;
-			if (zeny < 1100) {
-				//Adlibbed dialog. Need weight check, too.
-				mes "^3355FF你的金額不足哦..^000000";
-				close;
-			}
-			else {
-				mes "只是寵物飼料啊";
-				set zeny,zeny-1100;
-				getitem 537,1;	//Pet_Food
-				close;
-			}
-
-		case 2:
-			mes "感覺有點不太對勁";
+		if (zeny < 1100) {
+			mes "^3355FF你的金額不足哦..^000000";
 			close;
 		}
-
+		mes "只是寵物飼料啊";
+		set zeny,zeny-1100;
+		getitem 537,1;	//寵物飼料
+		close;
+	}
+	mes "感覺有點不太對勁";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -1702,22 +1523,15 @@ kh_vila,16,175,0	script	箱子::BoxKHQ1	111,{
 kh_vila,30,184,0	script	蘋果 箱子	111,{
 	mes "裡面裝滿著一堆好吃的蘋果";
 	next;
-
-	switch(select("拿走","不拿走")) {
-
-	case 1:
+	if(select("拿走:不拿走")==1) {
 		mes "..想要去拿蘋果的時候，";
 		mes "在背後感覺到一股寒意，";
 		mes "難道是有死神在嗎?";
 		mes "看樣子還是不要拿好了";
 		close;
-
-	case 2: 
-		mes "感覺有點不太對勁";
-		close;
-
 	}
-
+	mes "感覺有點不太對勁";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -1732,24 +1546,16 @@ kh_vila,44,126,0	script	地圖	111,{
 		mes "^3355FF本來想看仔細一點就用手去觸摸地圖時，^000000";
 		mes "^3355FF觸摸到了一個粗壯的東西^000000";
 		next;
-
-		switch(select("不要去理它","多觀察一點")) {
-
-		case 1:
+		if(select("不要去理它:多觀察一點")==1) {
 			mes "看樣子並不是";
 			mes "什麼重要的物品";
 			close;
-
-		case 2:
-			mes "經過仔細觀察的結果， 地圖是牢牢的固定在牆壁上的， 好像是用膠水之類的物體 所固定似的，";
-			mes "若把膠水的黏性降低的話 應該是可以拔掉似的";
-			set KHCottagePoem1,1;
-			close;
-
 		}
-
+		mes "經過仔細觀察的結果， 地圖是牢牢的固定在牆壁上的， 好像是用膠水之類的物體 所固定似的，";
+		mes "若把膠水的黏性降低的話 應該是可以拔掉似的";
+		set KHCottagePoem1,1;
+		close;
 	}
-
 	else  if ((KHCottagePoem1 == 2) && (KielHyreQuest < 30)) {
 		mes "用壺水所出現的水蒸氣， 潤溼地圖的後方， 地圖一點點可以開始拔起來了";
 		next;
@@ -1816,27 +1622,18 @@ kh_vila,33,184,0	script	壺	111,{
 		mes "熱騰騰的蒸氣慢慢的飄上來中";
 		mes "熱騰騰的蒸氣...?! 不知道用這個可不可以 把地圖上的膠水給稀釋掉呢?";
 		next;
-
-		switch(select("試試看","看樣子不太可行的樣子")) {
-
-		case 1:
+		if(select("試試看:看樣子不太可行的樣子")==1) {
 			mes "^FF0000獲得了有熱騰騰蒸氣的壺^000000，不小心燙傷了一點自己";
 			set KHCottagePoem1,2;
 			close;
-
-		case 2:
-			mes "尋找其它方法吧";
-			close;
-
 		}
-
+		mes "尋找其它方法吧";
+		close;
 	}
-
 	else if ((KHCottagePoem1 > 1) || (KielHyreQuest >= 30)){
 		mes "這個地方是有著熱騰騰蒸氣壺的地方";
 		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -1850,38 +1647,28 @@ kh_vila,14,55,0	script	葫蘆瓶	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "看起來很貴的葫蘆瓶， ..要怎麼辦呢?";
 		next;
-
-		switch(select("把瓶子打破看看","檢查裡面","不理它")) {
-
+		switch(select("把瓶子打破看看:檢查裡面:不理它")) {
 		case 1:
 			mes "看起來很貴....";
 			mes "不能隨便亂動別人的東西";
 			close;
-
 		case 2:
 			mes "到底會有什麼呢? .....";
 			mes "把瓶子抬起來輕輕的搖晃時， 在裡面聽到'鏘~' 的一聲， 果然裡面有個 某種東西似的";
 			mes "獲得了'破舊銅鑄鑰匙'";
-			getitem 7329,1; //Old_Bronze_Key
+			getitem 7329,1; //破舊銅鑄鑰匙
 			close;
-
 		case 3:
 			mes "看起來只是普通的瓶子，";
 			mes "雖然看起來是有點貴..";
 			close;
-
 		}
-
 	}
-
-	else {
-		mes "是獲得破舊銅鑄鑰匙的葫蘆瓶，";
-		mes "看起來很貴";
-		close;
-	}
+	mes "是獲得破舊銅鑄鑰匙的葫蘆瓶，";
+	mes "看起來很貴";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -1899,13 +1686,13 @@ kh_vila,39,41,0	script	池塘	111,{
 		mes "看到了獅子像和兩個把手，可以拉拉看嗎?";
 		next;
 
-		switch(select("拉拉看","不去拉")) {
+		switch(select("拉拉看:不去拉")) {
 
 		case 1:
 			mes "要拉哪一個呢?";
 			next;
 
-			switch(select("右邊把手","左邊把手")) {
+			switch(select("右邊把手:左邊把手")) {
 
 			case 1:
 				mes "拉起了把手，";
@@ -1920,7 +1707,7 @@ kh_vila,39,41,0	script	池塘	111,{
 				mes "石頭池塘裸裸的呈現著";
 				next;
 
-				switch(select("看樣子在沒有什麼可以值得觀察的了","再多觀察一點")) {
+				switch(select("看樣子在沒有什麼可以值得觀察的了:再多觀察一點")) {
 
 				case 1:
 					mes "水都流走的池塘";
@@ -1931,7 +1718,7 @@ kh_vila,39,41,0	script	池塘	111,{
 					mes "觀察池塘在角落裡面，有著小小的按鈕物體";
 					next;
 
-					switch(select("按按看","....不管它")) {
+					switch(select("按按看:....不管它")) {
 
 					case 1:
 						mes "按下按鈕後，聽到了 '嗡~' 的一聲， 應該是從走道樓梯那裡傳來的";
@@ -1976,14 +1763,14 @@ OnTouch:
 	mes "看起來很兇的狗 在那裡嚷嚷著， 可以小心的路過嗎?";
 	next;
 
-	switch(select("路過","重新下去")) {
+	switch(select("路過:重新下去")) {
 
 	case 1:
 		if (countitem(537) >= 1) {
 			mes "......仔細的想一想.. 看來有帶寵物飼料啊";
 			next;
 
-			switch(select("試著使用寵物飼料看看","看樣子行不通的")) {
+			switch(select("試著使用寵物飼料看看:看樣子行不通的")) {
 
 			case 1:
 				mes "把寵物飼料往前方推出去，";
@@ -2012,22 +1799,15 @@ OnTouch:
 				close2;
 				warp "kh_vila",126,70;
 				end;
-
 			}
 		}
-
-		else {
-			goto NoPetFood;
-		}
-
+		goto NoPetFood;
 	case 2:
 		mes ".....會不會被狗咬啊?";
 		close2;
 		warp "kh_vila",126,70;
 		end;
-
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -2041,20 +1821,15 @@ kh_vila,115,186,0	script	抽屜::DrawerKHQ1	111,{
 		close;
 	}
 	if ((countitem(7492) < 1) && (KielHyreQuest <= 36)) {
-		switch(select("打開抽屜看看","不理它")) {
-
-		case 1:
+		if(select("打開抽屜看看:不理它")==1) {
 			mes "打開抽屜後看到黃色的物體";
 			getitem 7492,1; //黃色鑰匙卡
 			close;
-
-		case 2:
-			mes "尋找別的地方";
-			close;
 		}
+		mes "尋找別的地方";
+		close;
 	}
-
-	else {
+	if (countitem(7492)) {
 		mes "這裡是獲得^00FFFF黃色鑰匙卡^000000的抽屜，裡面是空的";
 		close;
 	}
@@ -2078,31 +1853,19 @@ kh_vila,107,126,0	script	箱子::BoxKHQ2	111,{
 		mes "看到了一個擺放著堅固的箱子， 觀察箱子後發現裡面還有 雙層構造的其它箱子， 第二個箱子被鑰匙給鎖住了，";
 		mes "....會不會是從葫蘆瓶裡得到的鑰匙 能開啟呢?";
 		next;
-
-		switch(select("開啟看看","看樣子是不會對的")) {
-
-		case 1:
+		if(select("開啟看看:看樣子是不會對的")==1) {
 			mes "'喳喀' 開啟了";
 			mes "'嘻嘻~' 箱子裡面有 綠色鑰匙卡";
 			mes ".....是鑰匙....";
 			getitem 7516,1;	//綠色鑰匙卡
-			delitem 7329,1;	//Old_Bronze_Key
+			delitem 7329,1;	//破舊銅鑄鑰匙
 			close;
-
-
-		case 2:
-			mes "應該是不會對的...";
-			close;
-
 		}
-
-	}
-
-	else {
-		mes "是獲得^33FF00綠色鑰匙卡^000000的箱子";
+		mes "應該是不會對的...";
 		close;
 	}
-
+	mes "是獲得^33FF00綠色鑰匙卡^000000的箱子";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -2120,87 +1883,55 @@ kh_vila,181,138,0	script	書櫃::BookshelfKHQ1	111,{
 		mes "裝滿許多書的書櫃， 有著相當多量的書籍 滿滿的 .......";
 		mes "........嗯? '為了愛麗'? '愛麗'?";
 		next;
-		switch(select("拿起書來查看一下","很特別的書啊")) {
-
-		case 1:
+		if(select("拿起書來查看一下:很特別的書啊")==1) {
 			mes "拿起書來查看後";
 			mes "沒有看到什麼特別的內容，";
 			mes "把書重新放回原處";
 			mes "查看書縫時，";
 			mes "看到裡面有堅硬的鐵壁";
 			next;
-
-			switch(select("再多觀察一下","應該是牆吧")) {
-
-			case 1:
+			if(select("再多觀察一下:應該是牆吧")==1) {
 				mes "把周圍的書拿開後，";
 				mes "出現了以鐵做成的金庫，";
 				mes "看到了兩個鑰匙孔，";
 				mes "...打不開";
 				next;
-
-				switch(select("用已攜帶的鑰匙試試看","....好像沒有合適的鑰匙")) {
-
-				case 1:
+				if(select("用已攜帶的鑰匙試試看:....好像沒有合適的鑰匙")==1) {
 					mes "要使用哪一把鑰匙插進第一個鑰匙孔?";
 					next;
-
 					if (countitem(7329) >= 1) {
-						switch(select("破舊銅鑄鑰匙","別墅補助鑰匙")) {
-
+						switch(select("破舊銅鑄鑰匙:別墅補助鑰匙")) {
 						case 1:
-							break;
-
 						case 2:
 							break;
-
 						}
-
 						mes "要使用哪一把鑰匙插進第二個鑰匙孔?";
 						next;
-
-						switch(select("破舊銅鑄鑰匙","別墅補助鑰匙")) {
-
+						switch(select("破舊銅鑄鑰匙:別墅補助鑰匙")) {
 						case 1:
-							break;
-
 						case 2:
 							break;
-
 						}
-
 					}
-
-
 					else if (countitem(7516) >= 1) {
-
-						switch(select("綠色鑰匙卡","別墅補助鑰匙")) {
-
+						switch(select("綠色鑰匙卡:別墅補助鑰匙")) {
 						case 1:
 							set @KHFirstKeyhole,1;
 							break;
-
 						case 2:
 							set @KHFirstKeyhole,2;
 							break;
-
 						}
-
 						mes "要使用哪一把鑰匙插進第二個鑰匙孔?";
 						next;
-
-						switch(select("綠色鑰匙卡","別墅補助鑰匙")) {
-
+						switch(select("綠色鑰匙卡:別墅補助鑰匙")) {
 						case 1:
 							set @KHSecondKeyhole,1;
 							break;
-
 						case 2:
 							set @KHSecondKeyhole,2;
 							break;
-
 						}
-
 						if (@KHFirstKeyhole == 2) && (@KHSecondKeyhole == 1) {
 							mes "和'喳喀!'一聲 一起 金庫開啟了， 金庫裡面有著白色的箱子";
 							mes "已獲得了^FF0000白色箱子^000000";
@@ -2209,38 +1940,23 @@ kh_vila,181,138,0	script	書櫃::BookshelfKHQ1	111,{
 							getitem 7491,1; //白色箱子
 							close;
 						}
-
 					}
-
 					mes "打不開";
 					close;
-
-
-				case 2:
-					mes "多逛一下別墅好了";
-					close;
-
 				}
-
-			case 2:
-				mes "把書放在原來的地方了";
+				mes "多逛一下別墅好了";
 				close;
-
 			}
-	
-		case 2:
-			mes "除此之外沒有看到特別的東西";
+			mes "把書放在原來的地方了";
 			close;
-
 		}
-	}
-
-	else {
-		mes "裝滿許多書的書櫃，";
-		mes "有著相當多量的書籍";
-		mes "滿滿的 .......";
+		mes "除此之外沒有看到特別的東西";
 		close;
 	}
+	mes "裝滿許多書的書櫃，";
+	mes "有著相當多量的書籍";
+	mes "滿滿的 .......";
+	close;
 
 }
 
@@ -2291,20 +2007,11 @@ kh_vila,123,170,0	script	藥櫃	111,{
 		mes "形形色色的瓶子混亂的擺在那裡， 是用在那裡的藥呢? ...... 好像在那裡某一本書上看過，";
 		mes "上面寫著好像在使用特定的液體時， 墨水才會有反應啊..";
 		next;
-
-		switch(select("真的會有那種東西嗎...","仔細想一想 剛才那個紙張才是...")) {
-
-		case 1:
-			mes "....怎麼可能會有那種東西呢";
-			close;
-
-		case 2:
-			switch(select("把紅色試藥滴落在上面","把藍色試藥滴落在上面","把黃色試藥滴落在上面","把綠色試藥滴落在上面","還是 不要做")) {
-
+		if(select("真的會有那種東西嗎...:仔細想一想 剛才那個紙張才是...")==2) {
+			switch(select("把紅色試藥滴落在上面:把藍色試藥滴落在上面:把黃色試藥滴落在上面:把綠色試藥滴落在上面:還是 不要做")) {
 			case 1:
 				set @KHPotionColor$,"紅色";
 				break;
-
 			case 2:
 				mes "藍色試藥順著紙張的表面流下了，";
 				mes "在試藥流過的地方，";
@@ -2326,68 +2033,58 @@ kh_vila,123,170,0	script	藥櫃	111,{
 				mes "....... 好奇怪的詩啊 ...到底有什麼樣的意義呢?";
 				set KHCottagePoem2,2;
 				close;
-
 			case 3:
 				set @KHPotionColor$,"黃色";
 				break;
-
 			case 4:
 				set @KHPotionColor$,"綠色";
 				break;
-
 			case 5:
 				mes "....怎麼可能會有那種東西呢";
 				close;
 			}
-
 			mes ""+@KHPotionColor$+"試藥順著紙張的表面下了，";
 			mes "很神奇的沒有潤溼紙面";
 			mes "也沒有任何反應";
 			close;
-
 		}
+		mes "....怎麼可能會有那種東西呢";
+		close;
 	}
-
 	else if ((KHCottagePoem2 >= 2) || (KielHyreQuest >= 30)) {
 		mes "這裡是";
 		mes "在紙裡面找到詩的地方，";
 		mes "要在唸一遍看看嗎?";
 		next;
-
-		switch(select("因為沒有時間下一次再唸吧","我要唸")) {
-
-		case 1:
+		if(select("因為沒有時間下一次再唸吧:我要唸")==1) {
 			mes "趕快到家裡面觀察一下吧";
 			close;
-
-		case 2:
-			mes "^0000FF第一頭蛇是以硬鐵所做成的蛇，";
-			mes "有著冰冷的身軀和堅硬的頭腦，";
-			mes "我拾起忿怒對著蛇頭砸下去了，";
-			mes "之後蛇就變的靜悄悄了，";
-			next;
-			mes "^0000FF第二頭蛇是以魔法所做成的蛇，";
-			mes "有著得到魔法的身軀和奸詐的頭腦，";
-			mes "我拾起愛對著蛇的心臟刺下去了，";
-			mes "之後蛇就變的靜悄悄了，";
-			next;
-			mes "^0000FF第三頭蛇是以血和肉所做成的蛇，";
-			mes "有著溫暖的身軀和柔軟的頭腦，";
-			mes "我拾起希望纏住了蛇的身軀，";
-			mes "之後蛇就變的靜悄悄了，";
-			next;
-			mes "^0000FF第四頭蛇是沒有形體的蛇，";
-			mes "牠的身軀和頭腦沒有任何人知道，";
-			mes "我拾起絕望投向虛空處，";
-			mes "蛇是否真的平靜下來";
-			next;
-			mes "^0000FF沒有人會知道的，";
-			mes "我的名字是 ^000000'^3355FF迷路的小惡魔^000000'";
-			mes "^0000FF我拿著四把劍和對著四頭蛇，";
-			mes "在黑暗裡尋找那位女的";
-			close;
-
 		}
+		mes "^0000FF第一頭蛇是以硬鐵所做成的蛇，";
+		mes "有著冰冷的身軀和堅硬的頭腦，";
+		mes "我拾起忿怒對著蛇頭砸下去了，";
+		mes "之後蛇就變的靜悄悄了，";
+		next;
+		mes "^0000FF第二頭蛇是以魔法所做成的蛇，";
+		mes "有著得到魔法的身軀和奸詐的頭腦，";
+		mes "我拾起愛對著蛇的心臟刺下去了，";
+		mes "之後蛇就變的靜悄悄了，";
+		next;
+		mes "^0000FF第三頭蛇是以血和肉所做成的蛇，";
+		mes "有著溫暖的身軀和柔軟的頭腦，";
+		mes "我拾起希望纏住了蛇的身軀，";
+		mes "之後蛇就變的靜悄悄了，";
+		next;
+		mes "^0000FF第四頭蛇是沒有形體的蛇，";
+		mes "牠的身軀和頭腦沒有任何人知道，";
+		mes "我拾起絕望投向虛空處，";
+		mes "蛇是否真的平靜下來";
+		next;
+		mes "^0000FF沒有人會知道的，";
+		mes "我的名字是 ^000000'^3355FF迷路的小惡魔^000000'";
+		mes "^0000FF我拿著四把劍和對著四頭蛇，";
+		mes "在黑暗裡尋找那位女的";
+		close;
 	}
 }
 
@@ -2404,80 +2101,60 @@ kh_vila,136,68,0	script	劍裝飾	111,{
 	else if ((KHCottagePoem1 <= 4) || (KHCottagePoem2 <= 2) && (KielHyreQuest < 30)) {
 		mes "有一個把手很漂亮的劍 和一個感覺可怕的蛇雕像， ..四把劍? 四頭蛇? 和剛才看到的詩 也什麼關係嗎?";
 		next;
-
-		switch(select("應該沒有什麼關係吧","我要再觀察一下")) {
-
+		switch(select("應該沒有什麼關係吧:我要再觀察一下")) {
 		case 1:
 			mes "應該是偶然吧";
 			close;
-
 		case 2:
 			mes "仔細的觀察蛇雕像，在蛇頭左側邊有一個 可以放入劍的洞口";
 			next;
-
-			switch(select("是什麼樣的洞口呢?","拔出劍來插插看")) {
-
+			switch(select("是什麼樣的洞口呢?:拔出劍來插插看")) {
 			case 1:
 				mes "...除了劍之外";
 				mes "看不到其它可適當插入的東西";
 				close;
-
 			case 2:
 				if (KHCottagePoem1 != 4) {
 					mes "劍是可以稍微移動的，";
 					mes "好像被什麼東西給頂住了不能動";
 					close;
 				}
-
 				else {
 					mes "不知道以什麼樣的順序放回去";
 					mes "怎麼辦呢?";
 					next;
-					switch(select("第一頭蛇","第二頭蛇","第三頭蛇","第四頭蛇")) {
-
+					switch(select("第一頭蛇:第二頭蛇:第三頭蛇:第四頭蛇")) {
 					case 1:
 						set @KHfirstSword,1;
 						break;
-
 					case 2:
 						set @KHfirstSword,2;
 						break;
-
 					case 3:
 						set @KHfirstSword,3;
 						break;
-
 					case 4:
 						set @KHfirstSword,4;
 						break;
-
 					}
-
 					next;
-
-					switch(select("第一頭蛇","第二頭蛇","第三頭蛇","第四頭蛇")) {
-
+					switch(select("第一頭蛇:第二頭蛇:第三頭蛇:第四頭蛇")) {
 					case 1:
 						set @KHSecondSword,1;
 						break;
-
 					case 2:
 						set @KHSecondSword,2;
 						break;
-
 					case 3:
 						set @KHSecondSword,3;
 						break;
-
 					case 4:
 						set @KHSecondSword,4;
 						break;
-
 					}
-
 					next;
 
-					switch(select("第一頭蛇","第二頭蛇","第三頭蛇","第四頭蛇")) {
+					switch(select("第一頭蛇:第二頭蛇:第三頭蛇:第四頭蛇")) {
 
 					case 1:
 						set @KHThirdSword,1;
@@ -2500,7 +2177,7 @@ kh_vila,136,68,0	script	劍裝飾	111,{
 
 					next;
 
-					switch(select("第一頭蛇","第二頭蛇","第三頭蛇","第四頭蛇")) {
+					switch(select("第一頭蛇:第二頭蛇:第三頭蛇:第四頭蛇")) {
 
 					case 1:
 						set @KHFouthSword,1;
@@ -2530,12 +2207,9 @@ kh_vila,136,68,0	script	劍裝飾	111,{
 						warp "kh_vila",178,72;
 						end;
 					}
-
-					else {
-						mes "....沒有任何的變化，";
-						mes "把劍重新放回原來的位置吧";
-						close;
-					}
+					mes "....沒有任何的變化，";
+					mes "把劍重新放回原來的位置吧";
+					close;
 				}
 			}
 		}
@@ -2545,19 +2219,12 @@ kh_vila,136,68,0	script	劍裝飾	111,{
 		mes "^3355FF這是移動到^000000";
 		mes "^3355FF秘密試驗室的通路^000000";
 		next;
-
-		switch(select("重新進去","不進去")) {
-
-		case 1:
+		if(select("重新進去:不進去")==1) {
 			warp "kh_vila",178,72;
 			end;
-
-		case 2:
-			close;
-
 		}
+		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -2570,7 +2237,6 @@ kh_vila,179,68,0	script	試驗管::TestTubeKHQ1	111,{
 	close;
 }
 
-
 //----------------------------------------------------------------------------
 // Cottage interior, Secret Room; Right test tube
 //----------------------------------------------------------------------------
@@ -2578,11 +2244,7 @@ kh_vila,185,68,0	script	試驗管::TestTubeKHQ2	111,{
 	if (KielHyreQuest == 28) {
 		mes "^3355FF看起來一位很嚴肅的老人 在試驗管裡，試驗管下面看到 紅色的按鈕^000000";
 		next;
-
-		switch(select("按一下按鈕","多觀察一會兒")) {
-
-		case 1:
-
+		if(select("按一下按鈕:多觀察一會兒")==1) {
 			mes "按下按鈕 試驗管裡的老人開始對著你說話了";
 			next;
 			mes "[???]";
@@ -2592,9 +2254,7 @@ kh_vila,185,68,0	script	試驗管::TestTubeKHQ2	111,{
 			mes "'假如你是我的朋友的話，";
 			mes "你一定會知道我的名字的?'";
 			next;
-
 			input @KHInput$;
-
 			if (@KHInput$ == "迷路的小惡魔") {
 				mes "[???]";
 				mes "請你記下這數字吧";
@@ -2608,21 +2268,13 @@ kh_vila,185,68,0	script	試驗管::TestTubeKHQ2	111,{
 				set KielHyreQuest,30;
 				close;
 			}
-
-			else {
-				mes "[???]";
-				mes "這應該不是你的名字吧..";
-				close;
-			}
-
-		case 2:
-			mes "應該是多觀察一下周圍是比較好一點吧";
+			mes "[???]";
+			mes "這應該不是你的名字吧..";
 			close;
-
 		}
-
+		mes "應該是多觀察一下周圍是比較好一點吧";
+		close;
 	}
-
 	else if (KielHyreQuest >= 30) {
 		mes "^FF00004772961^000000 ? 這是什麼數字啊?";
 		mes "........";
@@ -2646,10 +2298,7 @@ kh_dun01,235,48,0	script	堅固的門::HeavyDoorKHQ1	111,{
 	if ((KielHyreQuest >= 38) && (KielHyreQuest < 46)) {
 		mes "有著一座堅固的門";
 		next;
-
-		switch(select("開啟看看","不管它")) {
-
-		case 1:
+		if(select("開啟看看:不管它")==1) {
 			input @KHInput$;
 			if (@KHInput$ == "藍色鑰匙卡") {
 				mes "門 開啟了";
@@ -2657,24 +2306,14 @@ kh_dun01,235,48,0	script	堅固的門::HeavyDoorKHQ1	111,{
 				warp "kh_school",119,144;
 				end;
 			}
-
-			else {
-				mes "打不開";
-				close;
-			}
-
-		case 2:
-			mes "看樣子沒必要開啟";
+			mes "打不開";
 			close;
-
 		}
-
-	}
-
-	else {
-		mes "是緊閉關著的厚重的門";
+		mes "看樣子沒必要開啟";
 		close;
 	}
+	mes "是緊閉關著的厚重的門";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -2685,27 +2324,16 @@ kh_dun01,76,233,0	script	堅固的門::HeavyDoorKHQ2	111,{
 		mes "^3355FFThere is a large, heavy^000000";
 		mes "^3355FFdoor infront of you.^000000";
 		next;
-
-		switch(select("開啟看看","不管它")) {
-
-		case 1:
+		if(select("開啟看看:不管它")==1) {
 			input @KHInput$;
 			mes "打不開";
 			close;
-
-		case 2:
-			mes "看樣子沒必要開啟";
-			close;
-
 		}
-
-	}
-
-	else {
-		mes "是緊閉關著的厚重的門";
+		mes "看樣子沒必要開啟";
 		close;
 	}
-
+	mes "是緊閉關著的厚重的門";
+	close;
 }
 
 kh_dun01,106,233,0	duplicate(HeavyDoorKHQ2)	堅固的門::HeavyDoorKHQ3	111
@@ -2733,15 +2361,11 @@ kh_school,119,149,4	script	漂亮的女人::BeatifulLadyKHQ1	894,{
 		mes "[愛麗希雅]";
 		mes "可是怎麼看不到^FF0000愛麗^000000呢，她也被遇難了嗎? 請問你是^FF0000愛麗的朋友^000000嗎?";
 		next;
-
-		switch(select("黃色鑰匙卡","藍色鑰匙卡","黃金鑰匙","有畫著紋樣的鈕釦","......?")) {
-
+		switch(select("黃色鑰匙卡:藍色鑰匙卡:黃金鑰匙:有畫著紋樣的鈕釦:......?")) {
 		case 1:
 			break;
-
 		case 2:
 			break;
-
 		case 3:
 			mes "[愛麗希雅]";
 			mes "這是 啟 海伊洛 先生 給^FF0000愛麗^000000 保管的鑰匙啊，就用這個足以證明你是，^FF0000愛麗的朋友^000000了";
@@ -2749,7 +2373,6 @@ kh_school,119,149,4	script	漂亮的女人::BeatifulLadyKHQ1	894,{
 			cutin "",255;
 			warp "kh_school",120,180;
 			end;
-
 		case 4:
 			mes "[愛麗希雅]";
 			mes "那個是....";
@@ -2761,16 +2384,13 @@ kh_school,119,149,4	script	漂亮的女人::BeatifulLadyKHQ1	894,{
 			monster "kh_school",117,144,"恆量魔",1745,1;
 			monster "kh_school",117,144,"恆量魔",1745,1;
 			end;
-
 		case 5:
 			mes "[愛麗希雅]";
 			mes "...........";
 			close2;
 			cutin "",255;
 			end;
-
 		}
-
 		mes "[愛麗希雅]";
 		mes "不能只用這個來證明";
 		mes "你就是^FF0000愛麗的朋友^000000，";
@@ -2779,7 +2399,6 @@ kh_school,119,149,4	script	漂亮的女人::BeatifulLadyKHQ1	894,{
 		cutin "",255;
 		end;
 	}
-
 	else if (KielHyreQuest >= 40) {
 		mes "[愛麗希雅]";
 		mes "請跟我來";
@@ -2790,15 +2409,12 @@ kh_school,119,149,4	script	漂亮的女人::BeatifulLadyKHQ1	894,{
 	}
 }
 
-
 kh_school,117,149,4	script	漂亮的女人::BeatifulLadyKHQ2	894,{
 	end;
 }
 
 kh_school,118,149,4	duplicate(BeatifulLadyKHQ2)	漂亮的女人::BeatifulLadyKHQ3	894
-
 kh_school,120,149,4	duplicate(BeatifulLadyKHQ2)	漂亮的女人::BeatifulLadyKHQ4	894
-
 kh_school,121,149,4	duplicate(BeatifulLadyKHQ1)	漂亮的女人::BeatifulLadyKHQ5	894
 
 //----------------------------------------------------------------------------
@@ -2823,9 +2439,7 @@ kh_school,122,186,4	script	漂亮的女人	894,{
 		mes "[愛麗希雅]";
 		mes "請你救救^ff0000啟 海伊洛^000000先生吧，那個才是當務之急啊?";
 		next;
-
-		switch(select("這工廠到底是....?","請問^FF0000啟 海伊洛先生 ^000000發生了什麼事情呢..")) {
-
+		switch(select("這工廠到底是....?:請問^FF0000啟 海伊洛先生 ^000000發生了什麼事情呢..")) {
 		case 1:
 			mes "[愛麗希雅]";
 			mes "這裡隸屬於是 啟 海伊洛 企業 秘密事業的，";
@@ -2866,15 +2480,11 @@ kh_school,122,186,4	script	漂亮的女人	894,{
 			getitem 7496,1; //紅色鑰匙卡
 			set KielHyreQuest,40;
 			break;
-
 		}
-
 		close2;
 		cutin "",255;
 		end;
-
 	}
-
 	else if (KielHyreQuest == 40) {
 		mes "[愛麗希雅]";
 		mes "麻煩你快點去找^FF0000啟 海伊洛^000000先生吧";
@@ -2883,7 +2493,6 @@ kh_school,122,186,4	script	漂亮的女人	894,{
 		warp "kh_dun01",22,216;
 		end;
 	}
-
 	else if (KielHyreQuest == 42) {
 		mes "[愛麗希雅]";
 		mes "請問你有找到 ^FF0000啟 海伊洛^000000 先生嗎?";
@@ -2902,7 +2511,7 @@ kh_school,122,186,4	script	漂亮的女人	894,{
 		mes "[愛麗希雅]";
 		mes "按.照.命.令 來.執.行.";
 		set KielHyreQuest,44;
-		delitem 7497,1; //Metal_Fragment
+		delitem 7497,1; //碎金屬破片
 		close2;
 		cutin "",255;
 		end;
@@ -2917,23 +2526,21 @@ kh_school,122,186,4	script	漂亮的女人	894,{
 		mes "[愛麗希雅]";
 		mes "只要你到官邸 把^FF0000黃金鑰匙^000000 拿給他們看的話，";
 		mes "他們會為你服務的";
-		delitem 7492,1; //Yellow_Keycard
-		delitem 7495,1; //Blue_Keycard
-		delitem 7496,1; //Red_Keycard
+		delitem 7492,1; //黃色鑰匙卡
+		delitem 7495,1; //藍色鑰匙卡
+		delitem 7496,1; //紅色鑰匙卡
 		set KielHyreQuest,46;
 		close2;
 		warp "yuno_fild08",73,172;
 		cutin "",255;
 		end;
 	}
-	
 	else if (KielHyreQuest >= 44) {
 		close2;
 		warp "yuno_fild08",73,172;
 		cutin "",255;
 		end;
 	}
-	
 }
 
 //----------------------------------------------------------------------------
@@ -2957,8 +2564,6 @@ kh_dun01,166,223,0	script	機械裝置::KHKeyardReader	111,{
 	else if ((KielHyreQuest == 40) && (countitem(7496) >= 1)) {
 		mes "可以放入某種東西的機械裝置";
 		next;
-
-
 		input @KHInput$;
 		if (@KHInput$ == "紅色鑰匙卡") {
 			mes "^3355FF放入鑰匙卡後^000000";
@@ -2967,13 +2572,9 @@ kh_dun01,166,223,0	script	機械裝置::KHKeyardReader	111,{
 			warp "kh_dun01",170,227;
 			end;
 		}
-		else {
-			mes "^3355FF沒有任何反應^000000";
-			close;
-		}
-
+		mes "^3355FF沒有任何反應^000000";
+		close;
 	}
-
 }
 
 kh_dun01,162,206,0	duplicate(KHKeyardReader)	機械裝置	111
@@ -3005,7 +2606,6 @@ OnTouch:
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "好像在門的對面 聽到某人說話的聲音";
 		next;
 		mes "[????]";
@@ -3034,18 +2634,15 @@ OnTouch:
 		mes "請把這個帶走吧，把這個給^0000FF愛麗希雅^000000的話 她會知道怎麼做";
 		next;
 		mes "從門和地面的縫隙中 推出來了一個^FF0000碎金屬破片^000000";
-		getitem 7497,1; //Metal_Fragment
+		getitem 7497,1; //碎金屬破片
 		set KielHyreQuest,42;
 		close;
 	}
-
-
 	else if (KielHyreQuest >= 42) {
 		mes "[啟 海伊洛]";
 		mes "......";
 		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -3056,37 +2653,21 @@ kh_dun01,44,203,0	script	出入 裝置#KHEntry1::KHAccess	111,{
 		mes "^3355FF有一座巨大的門^000000";
 		close;
 	}
-
-	else {
-		mes "^3355FF有著可以讓鑰匙卡進去的機械裝置的門^000000";
+	mes "^3355FF有著可以讓鑰匙卡進去的機械裝置的門^000000";
+	next;
+	input @KHInput$;
+	if (@KHInput$ == "華麗的鑰匙卡") {
+		mes "使用'華麗的鑰匙卡'後，巨大的門開啟了，出現了通往下面的樓梯";
 		next;
-
-		input @KHInput$;
-		if (@KHInput$ == "華麗的鑰匙卡") {
-			mes "使用'華麗的鑰匙卡'後，巨大的門開啟了，出現了通往下面的樓梯";
-			next;
-
-			switch(select("下去","不下去")) {
-
-			case 1:
-				warp "kh_dun02",41,198;
-				end;
-
-			case 2:
-				mes "^3355FF過了一段時間後 門關起來了^000000";
-				close;
-
-			}
-
+		if(select("下去:不下去")==1) {
+			warp "kh_dun02",41,198;
+			end;
 		}
-
-		else {
-			mes "打不開";
-			close;
-		}
-
+		mes "^3355FF過了一段時間後 門關起來了^000000";
+		close;
 	}
-
+	mes "打不開";
+	close;
 }
 
 kh_dun01,36,195,0	duplicate(KHAccess)	出入 裝置#KHEntry2	111
@@ -3114,88 +2695,61 @@ kh_mansion,78,55,5	script	管家::StewardKHQ1	109,{
 		mes "請問你是主人的客人嗎?";
 		mes "那麼請出示證據給我看";
 		next;
-
-		switch(select("把黃金鑰匙拿給他看","????")) {
-
-		case 1:
+		if(select("把黃金鑰匙拿給他看:????")==1) {
 			mes "[管家]";
 			mes "是" + strcharinfo(0) + " 先生/小姐啊，我們正在等你呢，我來帶領你到主人那裡吧";
 			close2;
 			warp "kh_mansion",21,14;
 			end;
-
-		case 2:
-			mes "[管家]";
-			mes "若你不是客人的話，請你離開好嗎";
-			close2;
-			warp "lightalzen",188,201;
-			end;
-
 		}
-
+		mes "[管家]";
+		mes "若你不是客人的話，請你離開好嗎";
+		close2;
+		warp "lightalzen",188,201;
+		end;
 	}
-
 	if ((KielHyreQuest >= 50) && (KielHyreQuest < 64)) {
 		L_SeeKielHyre:
 		mes "[管家]";
 		mes ".....請問你要見我們家主人嗎?";
 		next;
-
-		switch(select("是的","不要")) {
-
-		case 1:
+		if (select("是的:不要")==1) {
 			mes "[管家]";
 			mes "我來帶你去";
 			close2;
 			warp "kh_mansion",21,14;
 			end;
-
-		case 2:
-			mes "[管家]";
-			mes "我在這裡等你吧";
-			close;
-
 		}
-
+		mes "[管家]";
+		mes "我在這裡等你吧";
+		close;
 	}
-
 	if ((KielHyreQuest == 52) || (KielHyreQuest == 54) || (KielHyreQuest >= 64) && (KielHyreQuest <= 70)) {
 		mes "[管家]";
 		mes "歡迎光臨，我們正在等你呢，請問你要跟主人說話嗎? 或是跟....";
 		next;
-
-		switch(select("^FF0000啟 海伊洛^000000","^3355FF米契爾^000000")) {
-
-		case 1:
+		if(select("^FF0000啟 海伊洛^000000:^3355FF米契爾^000000")==1) {
 			mes "[管家]";
 			mes "我瞭解了，我來帶你去吧";
 			close2;
 			warp "kh_mansion",21,14;
 			end;
-
-		case 2:
-			mes "[管家]";
-			mes "哈哈.... 看樣子你有帶來好消息啊";
-			next;
-			mes "^3355FF觀察周圍的管家的眼神不是普通啊... 果然平凡的管家是....^000000";
-			mes "^FFFFFF_^000000";
-			mes "[" + strcharinfo(0) + "]";
-			mes "請問你的名字是不是 爾普...嗯嗯.. ..........";
-			next;
-			mes "[管家]";
-			mes "看樣子沒有討厭的傢伙在這邊，請到這邊...";
-			close2;
-			warp "kh_mansion",20,87;
-			end;
-
 		}
-
+		mes "[管家]";
+		mes "哈哈.... 看樣子你有帶來好消息啊";
+		next;
+		mes "^3355FF觀察周圍的管家的眼神不是普通啊... 果然平凡的管家是....^000000";
+		mes "^FFFFFF_^000000";
+		mes "[" + strcharinfo(0) + "]";
+		mes "請問你的名字是不是 爾普...嗯嗯.. ..........";
+		next;
+		mes "[管家]";
+		mes "看樣子沒有討厭的傢伙在這邊，請到這邊...";
+		close2;
+		warp "kh_mansion",20,87;
+		end;
 	}
-
-	if (KielHyreQuest >= 70) {
-		goto L_SeeKielHyre;
-	}
-
+	if (KielHyreQuest >= 70) goto L_SeeKielHyre;
 }
 
 //----------------------------------------------------------------------------
@@ -3229,11 +2783,8 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "[啟 海伊洛]";
 		mes "若有疑問的話就直接問我吧，若是可以在回答的範圍內的話，我就幫你回答吧";
 		next;
-
 		L_Menu:
-
-		switch(select("機械人形是...?","^3355FF齊爾^000000這人是..?","^FF0000愛麗^000000所拿的鈕釦是?")) {
-
+		switch(select("機械人形是...?:^3355FF齊爾^000000這人是..?:^FF0000愛麗^000000所拿的鈕釦是?")) {
 		case 1:
 			mes "[啟 海伊洛]";
 			mes "是32年前 我20歲開始投入靈魂般";
@@ -3257,7 +2808,6 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			mes "請你去詢問^0000FF愛麗希雅^000000吧..";
 			if (@KHQ1Read < 1) { set @KHQ1Read,1; }
 			break;
-
 		case 2:
 			mes "[啟 海伊洛]";
 			mes "^3355FF齊爾^000000是";
@@ -3298,25 +2848,18 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			mes "連我都不知道他的真實面孔啊";
 			if (@KHQ3Read < 1) { set @KHQ3Read,1; }
 			break;
-
 		}
-
 		if ((@KHQ1Read == 1) && (@KHQ2Read == 1) && (@KHQ3Read == 1)) {
 			next;
 			mes "[啟 海伊洛]";
 			mes "呼嗚.. 請不要再詢問了，我有點累呀";
-			delitem 7493,1; //Golden_Key
-			delitem 7494,1; //Exquisite_Button
+			delitem 7493,1; //黃金鑰匙
+			delitem 7494,1; //高級鈕釦
 			set KielHyreQuest,48;
 		}
-
-		else { 
-			next;
-			goto L_Menu; 
-		}
-
+		next;
+		goto L_Menu; 
 	}
-
 	else if (KielHyreQuest == 48) {
 		mes "[啟 海伊洛]";
 		mes "還有.... 這是感謝的謝禮，雖然是小小的東西 請你收下吧...";
@@ -3324,12 +2867,10 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		getitem 12105,1; //Taming_Gift_Set
 		getexp 700000,0;
 	}
-
 	else if ((KielHyreQuest >= 50) && (KielHyreQuest < 64)) {
 		mes "[啟 海伊洛]";
 		mes "呼嗚.. 請不要再詢問了，我有點累呀";
 	}
-
 	else if (KielHyreQuest == 64) {
 		cutin "kh_kyel01",2;
 		mes "[啟 海伊洛]";
@@ -3338,16 +2879,12 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "["+strcharinfo(0)+"]";
 		mes "我還沒有正確的情報";
 	}
-
 	else if (KielHyreQuest == 68) {
 		cutin "kh_kyel02",2;
 		mes "[啟 海伊洛]";
 		mes "噢噢.. 是"+strcharinfo(0)+"先生啊 請問有什麼事嗎?";
 		next;
-
 		switch(select("詢問有關^3355FF愛麗希雅^000000的事情")) {
-
-		case 1:
 			mes "["+strcharinfo(0)+"]";
 			mes "我在朱諾的某個廢棄的民宅裡，看到了和 ^0000FF愛麗希雅^000000長的一模一樣的肖像畫";
 			next;
@@ -3417,10 +2954,7 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			mes "[啟 海伊洛]";
 			mes "可是我和那位女孩恩愛的事 只不過是你的妄想而已，我和那位女孩互相認識 的證據在哪裡呢? 呼呼";
 			next;
-
 			switch(select("把在涼亭上得到的肖像畫拿給他看")) {
-
-			case 1:
 				cutin "kh_kyel02",2;
 				mes "[啟 海伊洛]";
 				mes "這...這是? ....... 在那裡得到這..?";
@@ -3454,10 +2988,7 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 				mes "'看樣子需要確實的證據，'";
 				mes "'把那個拿給他看看嗎?'";
 				next;
-
 				switch(select("羅希米愛樂家 的肖像畫")) {
-
-				case 1:
 					mes "["+strcharinfo(0)+"]";
 					mes "真的是這樣嗎? 請你看這個，這肖像畫是在 羅希米愛樂家 那裡所發現的，也許是 羅希米愛樂家的家人吧";
 					next;
@@ -3498,10 +3029,7 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 					mes "[" + strcharinfo(0) + "]";
 					mes "請你看這個";
 					next;
-
 					switch(select("把詹姆斯的紙條 拿給他看")) {
-
-					case 1:
 						mes "[啟 海伊洛]";
 						mes "哼.. 這是什麼玩意紙條啊? 就用這種紙條一張來證明，詹姆斯沒有背叛那個女的嗎? 那不足以證明的? 結果那個女孩是沒有自殺嗎!";
 						next;
@@ -3532,10 +3060,7 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 						mes "[啟 海伊洛]";
 						mes ".............! 這...這是什麼話呀!! 我那天約她出來的證據 在在哪裡啊!!!";
 						next;
-
 						switch(select("K.H的 紙條")) {
-
-						case 1:
 							mes "["+strcharinfo(0)+"]";
 							mes "證據的話.... 在這裡啊，這紙條上明明寫著8月19日晚上，和她約在第一次所見面的地方 相見的內容啊，也許那個地點是.. 江邊吧";
 							next;
@@ -3565,36 +3090,26 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 							mes "[啟 海伊洛]";
 							mes "可是她確試圖 想要從我這裡找回戒指啊，只是小小的肢體衝突.. 那時因為好幾天的豪雨 造成地基脆弱而倒塌了....... .........";
 							next;
-
 							switch(select(".........")) {
-
-							case 1:
 								mes "[啟 海伊洛]";
 								mes "喀.. 喀喀.. 哈哈哈哈哈";
 								set KielHyreQuest,70;
-								delitem 7498,1; //Losimier's_House_Key
-								delitem 7499,1; //Portrait_of_a_Family
-								delitem 7500,1; //Portrait_of_a_Lady
-								delitem 7501,1; //K.H's_Letter
-								delitem 7502,1; //James's_Memo
-								delitem 7503,1; //Portrait_of_a_Guy
+								delitem 7498,1; //羅希米愛樂家的鑰匙
+								delitem 7499,1; //某個家族的肖像畫
+								delitem 7500,1; //女人的肖像畫
+								delitem 7501,1; //K.H的信
+								delitem 7502,1; //詹姆斯的便條紙
+								delitem 7503,1; //某一位男子的肖像畫
 								close2;
 								cutin "",255;
 								end;
 							}
-
 						}
-
 					}
-
 				}
-
 			}
-
 		}
-
 	}
-
 	else if (KielHyreQuest == 70) {
 		cutin "kh_kyel01",2;
 		mes "[啟 海伊洛]";
@@ -3649,10 +3164,7 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "[啟 海伊洛]";
 		mes "目前他正在製作 第3代 機械人形，擁有卓越的資質，可是....並沒有教他好好做人，只是一個不錯的繼承者而已...";
 		next;
-
 		switch(select("......")) {
-
-		case 1:
 			mes "[啟 海伊洛]";
 			mes "改造的機械人形，它們就如傳聞，就是披著人皮的殺人兵器啊，";
 			next;
@@ -3683,16 +3195,12 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			mes "[啟 海伊洛]";
 			mes "請你幫我阻擋^0000FF齊爾^000000吧，我再不想看到我所製作出來的小孩 遭受破壞啊";
 			mes "雖然....讓那些孩子們墮落的確實是我. .. 那些罪孽等到這些事情都結束後，我會自願接受懲罰的";
-			select("接受","接受他的委託","點頭示意");
-
+			select("接受:接受他的委託:點頭示意");
 			mes "[啟 海伊洛]";
 			mes "謝謝你，^0000FF齊爾^000000應該在 這官邸的地下呀";
 			set KielHyreQuest,72;
-
 		}
-
 	}
-
 	else if (KielHyreQuest == 72) {
 		cutin "kh_kyel01",2;
 		//I believe this text goes here o_o
@@ -3702,16 +3210,13 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "[啟 海伊洛]";
 		mes "請在那裡幫我找到那位孩子吧，並且在那孩子的心臟那裡 請拿一件物品來吧，那麼那孩子的暴力傾向會停住的";
 		next;
-
 		switch(select("物品?")) {
-
-		case 1:
 			mes "[啟 海伊洛]";
 			mes "^0000FF愛麗希雅^000000的戒指.. 是這一切事端起因的物品... 當我製作出那孩子時 為了不要忘記對 羅希米愛樂社的怨恨，";
 			next;
 			mes "[啟 海伊洛]";
 			mes "和我對那孩子的感情，於是在那孩子心臟裡 植入戒指來代替主要的零件了";
-			getitem 7504,1; //Power_Source
+			getitem 7504,1; //動力裝置
 			next;
 			cutin "kh_kyel03",2;
 			mes "[啟 海伊洛]";
@@ -3721,41 +3226,33 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			mes "若你準備好了的話，我就把你送到^0000FF齊爾^000000的 房間了";
 			set KielHyreQuest,74;
 			break;
-
 		}
-
 	}
-
 	else if ((KielHyreQuest >= 74) && (KielHyreQuest <= 104)) {
 		mes "[啟 海伊洛]";
 		mes "請問準備好了嗎?";
 		next;
-
-		switch(select("是的","還沒")) {
-
-		case 1:
+		if(select("是的:還沒")==1) {
 			mes "[啟 海伊洛]";
 			mes "那麼...就拜託你啦.. ";
 			enablenpc "Kiehl_Room_Warp";
 			donpcevent "Kiehl_Room_Warp::OnEnable";
-			break;
-
-		case 2:
-			mes "[啟 海伊洛]";
-			mes "若準備好了的話，";
-			mes "再來找我吧";
-			break;
-
+			close2;
+			cutin "",255;
+			end;
 		}
-
+		mes "[啟 海伊洛]";
+		mes "若準備好了的話，";
+		mes "再來找我吧";
+		close2;
+		cutin "",255;
+		end;
 	}
-
 	else if ((KielHyreQuest >= 74) && (KielHyreQuest <= 106)) {
 		cutin "kh_kyel01",2;
 		mes "[啟 海伊洛]";
 		mes "你來了嗎， 那請問齊爾有沒有怎麼樣啊?";
 		next;
-
 		if (countitem(7508) < 1) {
 			mes "[啟 海伊洛]";
 			mes "你還沒取出齊爾心臟裡的";
@@ -3767,7 +3264,6 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 			cutin "",255;
 			end;
 		}
-
 		mes "向啟 海伊洛把這幾天所發生的事情告訴他了， 聽完這番話的啟 海伊洛顯露出沉痛的表情";
 		next;
 		mes "[啟 海伊洛]";
@@ -3786,21 +3282,19 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "[啟 海伊洛]";
 		mes "我給你一把可以進入到工廠深層裡的鑰匙卡吧， 請你幫我檢查一下工廠吧， 我去檢查一下已倒塌的齊爾房間";
 		set KielHyreQuest,108;
-		getitem 7509,1; //Gorgeous_Keycard
+		getitem 7509,1; //華麗的鑰匙卡
 		next;
-
 		if (sex == 0) {
 			if (getpartnerid() == 0) set @KHTitle$,"小姐";
 			else set @KHSTitle$,"小姐";
 		}
 		else set @KHTitle$,"先生";
-
 		mes "[啟 海伊洛]";
 		mes "不管怎麼樣謝謝你啦 "+strcharinfo(0)+""+@KHTitle$+"";
 		mes "請你收下這個吧，這是這些日子以來你幫我做些事情的謝意表達..";
 		mes "那麼祝你一路小心啊";
-		getitem 616,1;  //Old card Album
-		delitem 7508,1; //Elisia's_Ring
+		getitem 616,1;  //老舊收集冊
+		delitem 7508,1; //愛麗希雅的戒指
 		getexp 1000000,0;
 	}
 
@@ -3809,35 +3303,33 @@ kh_mansion,22,28,4	script	啟 海伊洛	903,{
 		mes "......";
 		mes ".........";
 		mes "............";
-		delitem 7487,countitem(7487); //Culinary_Wine
-		delitem 7488,countitem(7488); //Delivery_Package
-		delitem 7489,countitem(7489); //Cottage Key
-		delitem 7490,countitem(7490); //Letter to Elly
-		delitem 7491,countitem(7491); //Steel_box
-		delitem 7492,countitem(7492); //Yellow_Keycard
-		delitem 7493,countitem(7493); //Golden_Key
-		delitem 7494,countitem(7494); //Exquisite_Button
-		delitem 7495,countitem(7495); //Blue_Keycard
-		delitem 7496,countitem(7496); //Red_Keycard
-		delitem 7497,countitem(7497); //Metal_Fragment
-		delitem 7498,countitem(7498); //Losimier's_House_Key
-		delitem 7499,countitem(7499); //Portrait_of_a_Family
-		delitem 7500,countitem(7500); //Portrait_of_a_Lady
-		delitem 7501,countitem(7501); //K.H's_Letter
-		delitem 7502,countitem(7502); //James's_Memo
-		delitem 7503,countitem(7503); //Portrait_of_a_Guy
-		delitem 7504,countitem(7504); //Power_Source
-		delitem 7505,countitem(7505); //Toy_Key
-		delitem 7506,countitem(7506); //Black_Keycard
-		delitem 7508,countitem(7508); //Elysia_Ring
-		delitem 7516,countitem(7516); //Green_Keycard
+		delitem 7487,countitem(7487); //酒店的酒
+		delitem 7488,countitem(7488); //送貨用的箱子
+		delitem 7489,countitem(7489); //別墅補助鑰匙
+		delitem 7490,countitem(7490); //給予愛麗的信
+		delitem 7491,countitem(7491); //鐵箱子
+		delitem 7492,countitem(7492); //黃色鑰匙卡
+		delitem 7493,countitem(7493); //黃金鑰匙
+		delitem 7494,countitem(7494); //高級鈕釦
+		delitem 7495,countitem(7495); //藍色鑰匙卡
+		delitem 7496,countitem(7496); //紅色鑰匙卡
+		delitem 7497,countitem(7497); //碎金屬破片
+		delitem 7498,countitem(7498); //羅希米愛樂家的鑰匙
+		delitem 7499,countitem(7499); //某個家族的肖像畫
+		delitem 7500,countitem(7500); //女人的肖像畫
+		delitem 7501,countitem(7501); //K.H的信
+		delitem 7502,countitem(7502); //詹姆斯的便條紙
+		delitem 7503,countitem(7503); //某一位男子的肖像畫
+		delitem 7504,countitem(7504); //動力裝置
+		delitem 7505,countitem(7505); //玩具鑰匙
+		delitem 7506,countitem(7506); //黑色鑰匙卡
+		delitem 7508,countitem(7508); //愛麗希雅的戒指
+		delitem 7516,countitem(7516); //綠色鑰匙卡
 	}
-
 	close2;
 	cutin "",255;
 	end;
 }
-
 
 //----------------------------------------------------------------------------
 // 愛麗希雅
@@ -3851,17 +3343,12 @@ kh_mansion,18,30,4	script	愛麗希雅	894,{
 		mes "想要對你說話呢";
 		close;
 	}
-
 	cutin "kh_ellisia",2;
-
 	if (KielHyreQuest < 70) {
 		mes "[愛麗希雅]";
 		mes "請問你需要 有關機械人形的說明嗎?";
 		next;
-
-		switch(select("是的","不需要")) {
-
-		case 1:
+		if(select("是的:不需要")==1) {
 			mes "[愛麗希雅]";
 			mes "所謂機械人形是指 自己會思考會動的人形，在過去有很多賢者們，做了很多研究所失敗的 機械工學的精粹";
 			next;
@@ -3869,9 +3356,7 @@ kh_mansion,18,30,4	script	愛麗希雅	894,{
 			mes "我的主人啟 海伊洛先生，從20歲開始做研究，";
 			mes "總計製作出了3種類型的機械人形，那些統稱為 第1代、第2代、第3代的 機械人形啊";
 			next;
-
-			switch(select("第1代?","第2代?","第3代?")) {
-
+			switch(select("第1代?:第2代?:第3代?")) {
 			case 1:
 				mes "[愛麗希雅]";
 				mes "你現在所看到的我'^0000FF愛麗希雅^000000'，";
@@ -3899,7 +3384,6 @@ kh_mansion,18,30,4	script	愛麗希雅	894,{
 				mes "情感的表情";
 				next;
 				break;
-
 			case 2:
 				mes "[愛麗希雅]";
 				mes "假如 第1代 機械人形是從純粹";
@@ -3934,7 +3418,6 @@ kh_mansion,18,30,4	script	愛麗希雅	894,{
 				mes "就讓它停止機能了";
 				next;
 				break;
-
 			case 3:
 				mes "[愛麗希雅]";
 				mes "和第2代 機械人形不一樣的是，";
@@ -3978,24 +3461,18 @@ kh_mansion,18,30,4	script	愛麗希雅	894,{
 				mes "測試中";
 				next;
 				break;
-
 			}
-		case 2:
 			mes "[愛麗希雅]";
 			mes "若需要的話請跟我說一聲吧";
-			break;
-
+			close2;
+			cutin "",255;
+			end;
 		}
-
-	}
-
-	else {
 		mes "[愛麗希雅]";
 		mes "......";
 		mes ".........";
 		mes "............";
 	}
-
 	close2;
 	cutin "",255;
 	end;
@@ -4040,7 +3517,7 @@ L_StartDialog:
 		mes "嗯...對我用強硬的方法把你帶過來， 我深深的說一聲對不起， 不過....請問你和 ^FF0000啟 海伊洛^000000是什麼關係啊?";
 		next;
 
-		switch(select("把目前所發生的事情說給她聽","我也不太清楚啊")) {
+		switch(select("把目前所發生的事情說給她聽:我也不太清楚啊")) {
 
 		case 2:
 			mes "[??????]";
@@ -4208,7 +3685,7 @@ L_StartDialog:
 			mes "反正以後請你多多幫助 我們就好了";
 			next;
 
-			switch(select("幫助他們","........")) {
+			switch(select("幫助他們:........")) {
 
 			case 1:
 				L_Help:
@@ -4270,24 +3747,17 @@ L_StartDialog:
 		mes "[米契爾]";
 		mes "怎麼樣啊? 準備好了嗎?";
 		next;
-
-		switch(select("是的","還沒有")) {
-
-		case 1:
+		if(select("是的:還沒有")==1) {
 			mes "[米契爾]";
 			mes "那麼就拜託你啦~?";
 			close2;
 			warp "yuno",54,209;
 			end;
-		case 2:
-			mes "[米契爾]";
-			mes "那麼等你準備好的話再來跟我說吧";
-			close;
-
 		}
-
+		mes "[米契爾]";
+		mes "那麼等你準備好的話再來跟我說吧";
+		close;
 	}
-
 	else if (KielHyreQuest == 64) {
 		mes "[米契爾]";
 		mes "啊啊，你回來了啊， 有帶來什麼好玩的情報嗎?";
@@ -4304,8 +3774,6 @@ L_StartDialog:
 		warp "kh_mansion",83,50;
 		end;
 	}
-
-
 	else if (KielHyreQuest >= 68) {
 		mes "[米契爾]";
 		mes "你怎麼還沒有離開啊?";
@@ -4373,46 +3841,7 @@ yuno,256,141,4	script	看似可疑的 奶奶	846,{
 		mes "小孩 小孩 我們 小孩　不要 哭啊 不要 哭啊 　你哭 的話 深水裡 的魚";
 		mes "也都 不能 睡著啊　　 睡吧 睡吧 我們 小孩 　不要 哭啊 不要 哭啊";
 		next;
-
-		switch(select("請問妳在做什麼呢?","看樣子小孩很愛哭啊?")) {
-
-		case 1:
-			mes "[奶奶]";
-			mes "嗯嗯? 嗯嗯...";
-			mes "我們家小孩一直哭不肯睡覺...";
-			mes "要哄她睡覺她卻要遠離媽媽";
-			mes "一直玩個不停..";
-			mes "也要等到小孩睡了，";
-			mes "我也才能做點家事啊..";
-			next;
-			mes "[奶奶]";
-			mes "因為小孩不睡我也沒能做家事";
-			mes "所以家裡有點亂..";
-			mes "唉喲.. 害的我還要 被主人罵..";
-			set KielHyreQuest,56;
-			next;
-
-			switch(select("請問小孩在哪裡呢?")) {
-
-			case 1:
-				mes "[奶奶]";
-				//Missing text, needs another run through.
-				mes "嗯嗯? 啊..小孩跑到哪裡去了呢?";
-				mes "剛才還在這裡啊...";
-				mes "小孩子覺得太無聊出去玩耍了吧..";
-				mes "啊! 你原來在這啊";
-				next;
-				mes "[奶奶]";
-				mes "我說過不可以捉弄旅行者嗎?";
-				mes "快點過來啊!";
-				mes "唉喲.. 很抱歉啊，";
-				mes "小孩子太調皮啦...";
-				close;
-
-			}
-
-		case 2:
-			//Missing text, needs another run through.
+		if(select("請問妳在做什麼呢?:看樣子小孩很愛哭啊?")==2) {
 			mes "[奶奶]";
 			mes "嗯? 嗯嗯...";
 			mes "小孩子每天說好冷所以才會哭，";
@@ -4426,53 +3855,68 @@ yuno,256,141,4	script	看似可疑的 奶奶	846,{
 			mes "[奶奶]";
 			mes "因為妳這樣不睡覺媽媽也不能做家事啊..";
 			close;
-
 		}
-
+		mes "[奶奶]";
+		mes "嗯嗯? 嗯嗯...";
+		mes "我們家小孩一直哭不肯睡覺...";
+		mes "要哄她睡覺她卻要遠離媽媽";
+		mes "一直玩個不停..";
+		mes "也要等到小孩睡了，";
+		mes "我也才能做點家事啊..";
+		next;
+		mes "[奶奶]";
+		mes "因為小孩不睡我也沒能做家事";
+		mes "所以家裡有點亂..";
+		mes "唉喲.. 害的我還要 被主人罵..";
+		set KielHyreQuest,56;
+		next;
+		switch(select("請問小孩在哪裡呢?")) {
+			mes "[奶奶]";
+			mes "嗯嗯? 啊..小孩跑到哪裡去了呢?";
+			mes "剛才還在這裡啊...";
+			mes "小孩子覺得太無聊出去玩耍了吧..";
+			mes "啊! 你原來在這啊";
+			next;
+			mes "[奶奶]";
+			mes "我說過不可以捉弄旅行者嗎?";
+			mes "快點過來啊!";
+			mes "唉喲.. 很抱歉啊，";
+			mes "小孩子太調皮啦...";
+			close;
+		}
 	}
-
 	else if ((KielHyreQuest >= 56) && (KielHyreQuest < 60)) {
 		mes "[奶奶]";
 		mes "我們家小孩到哪裡去了呢?";
 		mes "孩子呀~ 孩子呀~";
-
 		if (countitem(7500) < 1) { 
 			close;
 		}
-
-		else {
+		next;
+		switch(select("愛麗希雅? 難道是...")) {
+			cutin "kh_ellisia_port",1;
+			mes "^3355FF把愛麗希雅的肖像畫拿給奶奶看了^000000";
 			next;
-
-			switch(select("愛麗希雅? 難道是...")) {
-
-			case 1:
-				cutin "kh_ellisia_port",1;
-				mes "^3355FF把愛麗希雅的肖像畫拿給奶奶看了^000000";
-				next;
-				cutin "",255;
-				mes "[奶奶]";
-				mes "嗯嗯?";
-				mes "唉..愛麗! ^0000FF愛麗希雅^000000!!";
-				mes "你....你認識我們家愛麗啊?!";
-				mes "我們家小孩在哪裡呢?!?!";
-				next;
-				mes "[奶奶]";
-				mes "我們家小孩... 我們家愛麗";
-				mes "昨天離開家之後再也沒有回來了!!";
-				mes "若你知道我們家小孩在哪裡的話";
-				mes "請務必告訴我?!?!";
-				next;
-				mes "[" + strcharinfo(0) + "]";
-				mes "...奶奶手拿著肖像畫";
-				mes "很長一段時間忐忑不安後，";
-				mes "開始對自己自言自語了";
-				close;
-			}
-
+			cutin "",255;
+			mes "[奶奶]";
+			mes "嗯嗯?";
+			mes "唉..愛麗! ^0000FF愛麗希雅^000000!!";
+			mes "你....你認識我們家愛麗啊?!";
+			mes "我們家小孩在哪裡呢?!?!";
+			next;
+			mes "[奶奶]";
+			mes "我們家小孩... 我們家愛麗";
+			mes "昨天離開家之後再也沒有回來了!!";
+			mes "若你知道我們家小孩在哪裡的話";
+			mes "請務必告訴我?!?!";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "...奶奶手拿著肖像畫";
+			mes "很長一段時間忐忑不安後，";
+			mes "開始對自己自言自語了";
+			close;
 		}
-
 	}
-
 	else if (KielHyreQuest >= 60) {
 		mes "[奶奶]";
 		mes "我們家 ^0000FF愛麗希雅^000000 該睡了吧?";
@@ -4481,7 +3925,6 @@ yuno,256,141,4	script	看似可疑的 奶奶	846,{
 		mes "睡吧 睡吧~";
 		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -4503,70 +3946,50 @@ yuno,250,132,2	script	阿姨	711,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "[阿姨]";
 		mes "唉喲，最近天氣是怎麼搞的啊...";
 		next;
-
-		switch(select("......","詢問有關那位奶奶的事情..")) {
-
-		case 1:
+		if(select("......:詢問有關那位奶奶的事情..")==1) {
 			mes "[阿姨]";
 			mes "我也是上了年紀呀...唉喲喲.. ";
 			close;
-
-		case 2:
-			mes "[阿姨]";
-			mes "嗯? 啊.. 那位奶奶呀? 那位奶奶我是很熟啦，她是我好友的母親啊，叫做'^0000FF愛麗希雅^000000'啊...";
-			mes "不過卻紅顏薄命.. 唉咻.. 她曾是一位很漂亮又善良的朋友...";
-			next;
-			mes "[阿姨]";
-			mes "自從那事件之後 那位奶奶受不了那場打擊，就變成那個樣子了，唉咻...";
-			next;
-
-			switch(select("^3355FF愛麗希雅^000000小姐呢...?")) {
-
-			case 1:
-				mes "[阿姨]";
-				mes "^0000FF愛麗希雅^000000還....真的很漂亮呢.. 身為同樣的女人看了 也會被她迷住呀";
-				next;
-				mes "[阿姨]";
-				mes "所以在她的周圍附近 對她眼紅的男士很多，尤其是那羅希米愛樂家的兒子 詹姆斯最為嚴重，據傳聞他有向她 求婚啊...";
-				next;
-				mes "[阿姨]";
-				mes "不過沒多久因為^0000FF愛麗希雅^000000過世的關係，全部都落空了，好可惜啊...嗯...";
-				next;
-
-				switch(select("羅希米愛樂家??")) {
-
-				case 1:
-					mes "[阿姨]";
-					mes  "啊啊.. 羅希米愛樂家在朱諾算是 歷史很悠久的家族，好像是在..... ^0000FF愛麗希雅^000000過世之後，";
-					mes "可能是大兒子在事業上失敗，讓家世在一夕之間 就垮了....";
-					next;
-					mes "[阿姨]";
-					mes "於是後來就由 市府管理這間官邸，鑰匙卻交給我保管...";
-					next;
-
-					switch(select("請問我能進入官邸嗎?")) { 
-
-					case 1:
-						mes "[阿姨]";
-						mes "嗯.... 老實說是不可以的.. 但感覺你跟 ^0000FF愛麗希雅^000000很熟，我就相信你把鑰匙交給你，";
-						mes "你必須在市府派人來以前，把鑰匙還給我呀";
-						set KielHyreQuest,58;
-						getitem 7498,1; //Losimier's_House_Key
-						close;
-					}
-
-				}
-
-			}
-
 		}
-
+		mes "[阿姨]";
+		mes "嗯? 啊.. 那位奶奶呀? 那位奶奶我是很熟啦，她是我好友的母親啊，叫做'^0000FF愛麗希雅^000000'啊...";
+		mes "不過卻紅顏薄命.. 唉咻.. 她曾是一位很漂亮又善良的朋友...";
+		next;
+		mes "[阿姨]";
+		mes "自從那事件之後 那位奶奶受不了那場打擊，就變成那個樣子了，唉咻...";
+		next;
+		switch(select("^3355FF愛麗希雅^000000小姐呢...?")) {
+			mes "[阿姨]";
+			mes "^0000FF愛麗希雅^000000還....真的很漂亮呢.. 身為同樣的女人看了 也會被她迷住呀";
+			next;
+			mes "[阿姨]";
+			mes "所以在她的周圍附近 對她眼紅的男士很多，尤其是那羅希米愛樂家的兒子 詹姆斯最為嚴重，據傳聞他有向她 求婚啊...";
+			next;
+			mes "[阿姨]";
+			mes "不過沒多久因為^0000FF愛麗希雅^000000過世的關係，全部都落空了，好可惜啊...嗯...";
+			next;
+			switch(select("羅希米愛樂家??")) {
+				mes "[阿姨]";
+				mes  "啊啊.. 羅希米愛樂家在朱諾算是 歷史很悠久的家族，好像是在..... ^0000FF愛麗希雅^000000過世之後，";
+				mes "可能是大兒子在事業上失敗，讓家世在一夕之間 就垮了....";
+				next;
+				mes "[阿姨]";
+				mes "於是後來就由 市府管理這間官邸，鑰匙卻交給我保管...";
+				next;
+				switch(select("請問我能進入官邸嗎?")) { 
+					mes "[阿姨]";
+					mes "嗯.... 老實說是不可以的.. 但感覺你跟 ^0000FF愛麗希雅^000000很熟，我就相信你把鑰匙交給你，";
+					mes "你必須在市府派人來以前，把鑰匙還給我呀";
+					set KielHyreQuest,58;
+					getitem 7498,1; //羅希米愛樂家的鑰匙
+					close;
+				}
+			}
+		}
 	}
-
 	else if ((KielHyreQuest == 58) &&
 		(countitem(7499) < 1) || 
 		(countitem(7500) < 1) || 
@@ -4586,10 +4009,7 @@ yuno,250,132,2	script	阿姨	711,{
 		mes "請問事情做的還順利嗎?老實說這房子裡";
 		mes "沒有什麼值錢的東西啊，老早就被那些債主們都搬走了";
 		next;
-
 		switch(select("請問愛麗希雅為什麼....?")) {
-
-		case 1:
 			mes "[阿姨]";
 			mes "啊啊... 上次提過的羅希米愛樂家的 長子，我不是說詹姆斯答應愛麗希雅 要結婚的嗎?";
 			next;
@@ -4602,22 +4022,17 @@ yuno,250,132,2	script	阿姨	711,{
 			mes "[阿姨]";
 			mes "想要知道細節的話，請你去找 '啟 海伊洛' 學院南邊的漁夫吧，去那裡會有在江邊把^0000FF愛麗希雅^000000的 屍體撈起來的漁夫，請你去問他吧";
 			set KielHyreQuest,60;
-			delitem 7498,1; //Losimier's_House_Key 
+			delitem 7498,1; //羅希米愛樂家的鑰匙 
 			close;
-
 		}
-
 	}
-
 	else if (KielHyreQuest >= 60) {
 		mes "[阿姨]";
 		mes "要下雨了嗎....";
 		mes "全身又酸痛啊..";
 		close;
 	}
-
 }
-
 
 //----------------------------------------------------------------------------
 // Warp portal into Rosimier Mansion
@@ -4649,17 +4064,12 @@ kh_rossi,23,23,0	script	桌子	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		cutin "kh_family_port",1;
 		mes "^3355FF查看書桌後發現桌子的抽屜是可以打開的，在抽屜裡發現了一個相框^000000";
-		getitem 7499,1; //Portrait_of_a_Family
+		getitem 7499,1; //某個家族的肖像畫
 	}
-
-	else {
-		mes "^3355FF只是獲得家族肖像畫的空抽屜而已，看不到什麼其它的物品^000000";
-		mes "^3355FF是一個空空的抽屜^000000";
-	}
-
+	mes "^3355FF只是獲得家族肖像畫的空抽屜而已，看不到什麼其它的物品^000000";
+	mes "^3355FF是一個空空的抽屜^000000";
 	close2;
 	cutin "",255;
 	end;
@@ -4676,16 +4086,10 @@ kh_rossi,92,40,0	script	書櫃::ShelfKHQ1	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "有一個被鎖住的抽屜";
 		next;
-
-		switch(select("使用鑰匙","不管它")) {
-
-		case 1:
-			switch(select("鑰匙 1","鑰匙 2")) {
-
-			case 1:
+		if(select("使用鑰匙:不管它")==1) {
+			if(select("鑰匙 1:鑰匙 2")==1) {
 				mes "使用鑰匙後 響起'喳喀!'的一聲";
 				mes "抽屜被開啟了，";
 				mes "抽屜裡面有一位";
@@ -4695,30 +4099,19 @@ kh_rossi,92,40,0	script	書櫃::ShelfKHQ1	111,{
 				mes "女人的長相跟 ^0000FF愛麗希雅^000000一模一樣，";
 				mes "相框後面寫著 '摯愛的 ^0000FF愛麗希雅^000000..";
 				mes "詹姆斯' 留";
-				getitem 7500,1; //Portrait_of_a_Lady
+				getitem 7500,1; //女人的肖像畫
 				close2;
 				cutin "",255;
 				end;
-
-			case 2:
-				mes "^3355FF抽屜沒有被打開^000000";
-				close;
-
 			}
-
-		case 2:
-			mes ".............";
+			mes "^3355FF抽屜沒有被打開^000000";
 			close;
-
 		}
-
-	}
-
-	else {
-		mes "這裡是發現女人肖像畫的地方看不到什麼其它的物品";
+		mes ".............";
 		close;
 	}
-
+	mes "這裡是發現女人肖像畫的地方看不到什麼其它的物品";
+	close;
 }
 
 
@@ -4732,31 +4125,22 @@ kh_rossi,144,287,0	script	書桌::DeskKHQ2	111,{
 		mes "- 請先清理一下再回來吧 -^000000";
 		close;
 	}
-
 	mes "有一個開不啟的抽屜 和空抽屜的書桌";
 	next;
-
-	switch(select("第一個抽屜","第二個抽屜","第三個抽屜","不理它")) {
-
+	switch(select("第一個抽屜:第二個抽屜:第三個抽屜:不理它")) {
 	case 1:
 		mes "好像被什麼給卡住了打不開";
 		close;
-
 	case 2:
 		if (countitem(7501) < 1) {
 			mes "打開抽屜後看到了信件";
 			next;
 			mes "寫著 'K.H' 縮寫的人 好像要寫給^0000FF愛麗希雅^000000的信";
-			getitem 7501,1; //K.H's_Letter
+			getitem 7501,1; //K.H的信
 			close;
 		}
-
-		else {
-			mes "看到了一個空的抽屜";
-			close;
-
-		}
-
+		mes "看到了一個空的抽屜";
+		close;
 	case 3:
 		mes "打開抽屜後看到了一張紙條";
 		next;
@@ -4765,15 +4149,12 @@ kh_rossi,144,287,0	script	書桌::DeskKHQ2	111,{
 		mes "好像^0000FF愛麗希雅^000000從 詹姆斯那裡";
 		mes "得到訂婚戒指似的";
 		close;
-
 	case 4:
 		mes "......";
 		mes ".........";
 		mes "............";
 		close;
-
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -4787,17 +4168,12 @@ kh_rossi,149,288,0	script	書櫃::BookshelfKHQ2	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "觀察書櫃的途中，發現了夾在書本裡面的紙條";
-		getitem 7502,1; //James's_Memo
+		getitem 7502,1; //詹姆斯的便條紙
 		close;
 	}
-
-	else {
-		mes "有著累積了許多灰塵的書";
-		close;
-	}
-
+	mes "有著累積了許多灰塵的書";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -4818,7 +4194,6 @@ yuno_fild12,232,222,0	script	老漁夫	709,{
 		mes "這裡的魚就變得有點奇怪了，很難釣到魚... 唉喲....";
 		close;
 	}
-
 	else if (KielHyreQuest == 60) {
 		mes "[漁夫]";
 		mes "嗯? 你是誰啊? 對我有什麼話要說嗎? 有什麼事情要委託我的話 請先給謝禮啊 謝禮...";
@@ -4826,16 +4201,12 @@ yuno_fild12,232,222,0	script	老漁夫	709,{
 		next;
 		mes "[漁夫]";
 		mes "唉咻....最近這些年輕人們....唉咿.. 想想看離上一次吃到新鮮的生魚片 也過了一段滿長的時間啊...";
-
 		if (countitem(544) >= 10)  {
 			next;
 			mes "[漁夫]";
 			mes "嗯? 你說把這個給我呀? 唉喲 不需要這樣吧..... 呵呵...謝謝你，有什麼問題的話就直接問我吧";
 			next;
-
 			switch(select("30年前在這裡...")) {
-
-			case 1:
 				mes "[漁夫]";
 				mes "嗯? 讓我想一想...30年前啊... 啊啊...我想起來了，也就是... 正確的日子是 30年前的 8月 20日.....";
 				mes "那天是我老婆的生日啊，所以我記得很清楚啊";
@@ -4876,26 +4247,19 @@ yuno_fild12,232,222,0	script	老漁夫	709,{
 				mes "讓我想一想.... 好像叫做... '海洛?' '海音?' 大概是這類的名字...";
 				mes "事隔已久的事情了，所以也沒有再理會這件事情啊.... 不過他生活的地方我還記得呢...";
 				mes "'^FF0000在東北方 森林 警備隊 露營地附近的涼亭^000000' 的樣子..";
-				delitem 544,10; //Fish_Slice
+				delitem 544,10; //生魚片
 				set KielHyreQuest,62;
 				close;
 			}
-
 		}
-
-		else {
-			close;
-		}
-
+		close;
 	}
-
 	else if (KielHyreQuest >= 62) {
 		mes "[漁夫]";
 		mes "真是一間可惡的工廠啊..把江這樣弄成污染之後";
 		mes "叫我們怎麼活呀...唉喲..";
 		close;
 	}
-
 }
 
 //----------------------------------------------------------------------------
@@ -4906,7 +4270,6 @@ yuno_fild09,158,217,0	script	木板	111,{
 		mes "看起來沒什麼有用的木板掉落在草叢裡";
 		close;
 	}
-
 	else if (KielHyreQuest == 62) {
 		if (checkweight(7503,1) == 0) {
 			mes "^3355FF- 等等!! -";
@@ -4914,7 +4277,6 @@ yuno_fild09,158,217,0	script	木板	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "掉落著長型的木板，木板上纖細的寫著 K.H 的字樣";
 		next;
 		mes "為了觀察木板試著移動，那下面有 碎掉的相框，相框裡畫著不知在哪裡見過面的 年輕人的肖像畫，";
@@ -4922,13 +4284,12 @@ yuno_fild09,158,217,0	script	木板	111,{
 		cutin "kh_kyel_port",2;
 		mes "......感覺上^FF0000跟 啟 海伊洛^000000先生 滿像的";
 		set KielHyreQuest,64;
-		getitem 7503,1;	//Portrait_of_a_Guy
+		getitem 7503,1;	//某一位男子的肖像畫
 		next;
 		cutin "",255;
 		mes "看樣子已累積了不少的情報 回到 '米契爾'身邊吧";
 		close;
 	}
-
 }
 
 //============================================================================
@@ -4955,10 +4316,7 @@ kh_kiehl01,17,39,0	script	收訊機	111,{
 		monster "kh_kiehl01",18,31,"愛麗俄",1740,1,"Receiver::OnMyMobDead";
 		end;
 	}
-
-	else {
-		end;
-	}
+	end;
 
 OnMyMobDead:
 	set .KHKilled,.KHKilled-1;
@@ -4977,21 +4335,16 @@ kh_kiehl01,13,40,0	script	花瓶	111,{
 		mes "有放著花瓶";
 		close;
 	}
-
 	if (KielHyreQuest >= 74) {
-
-		switch(select("抬起花瓶","打破花瓶","把花瓶倒過來")) {
-
+		switch(select("抬起花瓶:打破花瓶:把花瓶倒過來")) {
 		case 1:
 			mes "^3355FF沒有任何東西^000000";
 			close;
-
 		case 2:
 			mes "打不破，";
 			mes "......";
 			mes "是雷根貝勒的特製品嗎?";
 			close;
-
 		case 3:
 			mes "花瓶底部有寫著 特別的文字";
 			mes "'^FF0000The rabbit often";
@@ -4999,13 +4352,9 @@ kh_kiehl01,13,40,0	script	花瓶	111,{
 			mes "The night eats the";
 			mes "pickled orange^000000'";
 			close;
-
 		}
-
 	}
-
 }
-
 
 //----------------------------------------------------------------------------
 // Kiehl's Room; Box
@@ -5018,28 +4367,19 @@ kh_kiehl01,19,25,0	script	箱子::BoxKHQ3	111,{
 			mes "- 請先清理一下再回來吧 -^000000";
 			close;
 		}
-
 		mes "有一個關閉的箱子， 箱子上有寫著奇怪的文字做為鑰匙的排列";
 		next;
 		input @KHInput$;
 		if (@KHInput$ == "open the door") {
 			mes "打開箱子時 從門那裡傳來了 '喳喀'一聲， 箱子裡面有著 ^FF0000小鑰匙^000000";
-			getitem 7505,1; //Toy_Key
+			getitem 7505,1; //玩具鑰匙
 			close;
 		}
-
-		else {
-			mes "'嗶~' 你所輸入的暗號錯誤";
-			close;
-		}
-
-	}
-
-	else {
-		mes "打開的箱子裡面沒有任何東西";
+		mes "'嗶~' 你所輸入的暗號錯誤";
 		close;
 	}
-
+	mes "打開的箱子裡面沒有任何東西";
+	close;
 }
 
 //----------------------------------------------------------------------------
@@ -5056,24 +4396,18 @@ kh_kiehl01,44,33,0	script	巨大的門#BigDoorKHQ1	111,{
 		if (@KHInput$ == "黑色鑰匙卡") {
 			if (countitem(7506) >= 1) {
 				mes "把黑色鑰匙卡放在裡面旋轉時 '喳喀'一聲 門開啟了";
-				delitem 7506,1; //Black_Keycard
+				delitem 7506,1; //黑色鑰匙卡
 				donpcevent "Big_Door_1_Warp::OnEnable";
 				enablenpc "Big_Door_1_Warp";
 				set .KHDoor1Opened,1;
 				close;
 			}
-
 		}
-
 		mes "打不開";
 		close;
 	}
-
-	else {
-		mes "^3355FF門已經開啟著^000000";
-		close;
-	}
-
+	mes "^3355FF門已經開啟著^000000";
+	close;
 }
 
 kh_kiehl01,43,33,0	script	Big_Door_1_Warp	45,1,1,{
@@ -5111,25 +4445,18 @@ kh_kiehl01,174,40,0	script	巨大的門#BigDoorKHQ2	111,{
 		if (@KHInput$ == "玩具鑰匙") {
 			if (countitem(7505) >= 1) {
 				mes "把鑰匙放在裡面旋轉時 '喳喀'一聲 門開啟了";
-				delitem 7505,1; //Toy_Key
+				delitem 7505,1; //玩具鑰匙
 				donpcevent "Big_Door_2_Warp::OnEnable";
 				enablenpc "Big_Door_2_Warp";
 				set .KHDoor2Opened,1;
 				close;
 			}
-
 		}
-
 		mes "打不開";
 		close;
 	}
-
-
-	else {
-		mes "^3355FF門已經開啟著^000000";
-		close;
-	}
-
+	mes "^3355FF門已經開啟著^000000";
+	close;
 }
 
 kh_kiehl01,174,39,0	script	Big_Door_2_Warp	45,1,1,{
@@ -5167,24 +4494,18 @@ kh_kiehl01,77,108,0	script	巨大的門#BigDoorKHQ3	111,{
 		if (@KHInput$ == "黑色鑰匙卡") {
 			if (countitem(7506) >= 1) {
 				mes "把黑色鑰匙卡放在裡面旋轉時 '喳喀'一聲 門開啟了";
-				delitem 7506,1; //Black_Keycard
+				delitem 7506,1; //黑色鑰匙卡
 				donpcevent "Big_Door_3_Warp::OnEnable";
 				enablenpc "Big_Door_3_Warp";
 				set .KHDoor3Opened,1;
 				close;
 			}
-
 		}
-
 		mes "打不開";
 		close;
 	}
-
-	else {
-		mes "^3355FF門已經開啟著^000000";
-		close;
-	}
-
+	mes "^3355FF門已經開啟著^000000";
+	close;
 }
 
 kh_kiehl01,78,108,0	script	Big_Door_3_Warp	45,1,1,{
@@ -5210,7 +4531,7 @@ OnTouch:
 }
 
 //----------------------------------------------------------------------------
-// Kiehl's Room; Big Door, (Fourth)
+// Kiehl's Room; 巨大的門, (Fourth)
 // - Consume TWO Black KeyCard when opened.
 // - Only one person actually needs to open it.
 //----------------------------------------------------------------------------
@@ -5222,24 +4543,18 @@ kh_kiehl01,42,177,0	script	巨大的門#BigDoorKHQ4	111,{
 		if (@KHInput$ == "黑色鑰匙卡") {
 			if (countitem(7506) >= 2) {
 				mes "把黑色鑰匙卡放在裡面旋轉時 '喳喀'一聲 門開啟了";
-				delitem 7506,2; //Black_Keycard
+				delitem 7506,2; //黑色鑰匙卡
 				donpcevent "Big_Door_4_Warp::OnEnable";
 				enablenpc "Big_Door_4_Warp";
 				set .KHDoor4Opened,1;
 				close;
 			}
 		}
-
 		mes "打不開";
 		close;
 	}
-
-
-	else {
-		mes "^3355FF門已經開啟著^000000";
-		close;
-	}
-
+	mes "^3355FF門已經開啟著^000000";
+	close;
 }
 
 kh_kiehl01,41,177,0	script	Big_Door_4_Warp	45,1,1,{
@@ -5278,10 +4593,7 @@ kh_kiehl01,15,179,0	script	機械人形#kh1	111,{
 		monster "kh_kiehl01",18,178,"愛麗瑟",1739,1,"Robots#kh1::OnMyMobDead";
 		end;
 	}
-
-	else  {
-		end;
-	}
+	end;
 
 OnMyMobDead:
 	set .KHKilled,.KHKilled-1;
@@ -5315,7 +4627,7 @@ kh_kiehl01,166,187,0	script	巨大的門#BigDoorKHQ5	111,{
 		if (KielHyreQuest < 86) {
 			mes "^3355FF有一座巨大的門， 門好像可以移動 傳來'吱支~吱支'^000000";
 			next;
-			select("推門","踢門","搖晃門","拉門","抬門");
+			select("推門:踢門:搖晃門:拉門:抬門");
 			mes "觸碰門之後，魔物們就出現了，難道是有什麼機關嗎?";
 			close2;
 			set @KHDoorPushAttempt,@KHDoorPushAttempt+1;
@@ -5328,22 +4640,17 @@ kh_kiehl01,166,187,0	script	巨大的門#BigDoorKHQ5	111,{
 			}
 			end;
 		}
-
 		else if ((KielHyreQuest > 84) && (KielHyreQuest < 94)) {
 			mes "觸碰了門好幾次之後， 沉重的門輕輕的開啟了，";
 			mes "看樣子在門縫裡塞個東西 用力的話門是可以開啟的";
 			next;
-
-			switch(select("鋼鐵","生鏽的鐵碎片","堅硬的鐵碎片","鐵碎片","螺絲","結束")) {
-
+			switch(select("鋼鐵:生鏽的鐵碎片:堅硬的鐵碎片:鐵碎片:螺絲:結束")) {
 			case 1:
 				set @KHPryingItem$,"鋼鐵";
 				break;
-
 			case 2:
 				set @KHPryingItem$,"生鏽的鐵碎片";
 				break;
-
 			case 3:
 				if (countitem(7507) >= 1) {
 					if (KielHyreQuest < 92) {
@@ -5353,7 +4660,6 @@ kh_kiehl01,166,187,0	script	巨大的門#BigDoorKHQ5	111,{
 						delitem 7507,1; //Hard_Piece_of_Steel
 						close;
 					}
-
 					else if (KielHyreQuest == 92) {
 						mes "使用了堅硬的鐵碎片之後，";
 						mes "形成了一個可以穿越的空間";
@@ -5361,71 +4667,42 @@ kh_kiehl01,166,187,0	script	巨大的門#BigDoorKHQ5	111,{
 						delitem 7507,1; //Hard_Piece_of_Steel
 						close;
 					}
-
 				}
-
-				else {
-					close;
-				}
-
+				close;
 			case 4:
 				set @KHPryingItem$,"鐵碎片";
 				break;
-
 			case 5:
 				set @KHPryingItem$,"螺絲";
 				break;
-
 			case 6:
 				mes "^3355FF門跟本就沒有在動^000000";
 				close;
-
 			}
-
 			mes "門跟本就沒有在動";
 			close;
-
 		}
-
 		else if ((KielHyreQuest >= 94) && (KielHyreQuest <= 104)) {
 			if (.KHDoor5Opened == 0) {
 				mes "^3355FF穿越門^000000";
 				next;
-
-				switch(select("是的","不要")) {
-
-				case 1:
+				if(select("是的:不要")==1) {
 					close2;
 					donpcevent "Big_Door_5_Warp::OnEnable";
 					enablenpc "Big_Door_5_Warp";
 					set .KHDoor5Opened,1;
 					end;
-
-				case 2:
-					close;
-
 				}
-			}
-
-			else {
-				mes "^3355FF門已經開啟著^000000";
 				close;
 			}
-
-		}
-
-		else {
-			mes "^3355FF有一座不能動彈的巨大的門^000000";
+			mes "^3355FF門已經開啟著^000000";
 			close;
 		}
-
-	}
-
-	else {
-		mes "^3355FF門關閉的很緊打不開^000000";
+		mes "^3355FF有一座不能動彈的巨大的門^000000";
 		close;
 	}
-
+	mes "^3355FF門關閉的很緊打不開^000000";
+	close;
 }
 
 kh_kiehl01,166,186,0	script	Big_Door_5_Warp	45,1,1,{
@@ -5532,13 +4809,13 @@ kh_kiehl02,50,52,4	script	齊爾#Original	902,{
 		close2;
 		cutin "",255;
 		set getvariableofnpc(.KHKilled,"KiehlRoom"),0;
-		monster "kh_kiehl02",49,48,"Aliot",1740,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",46,50,"Alicel",1739,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",49,50,"Constant",1745,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",53,53,"Aliot",1740,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",49,55,"Alicel",1739,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",49,53,"Constant",1745,1,"KiehlRoom::OnKiehlMobDead";
-		monster "kh_kiehl02",46,53,"Aliot",1740,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",49,48,"愛麗俄",1740,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",46,50,"愛麗瑟",1739,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",49,50,"恆量魔",1745,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",53,53,"愛麗俄",1740,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",49,55,"愛麗瑟",1739,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",49,53,"恆量魔",1745,1,"KiehlRoom::OnKiehlMobDead";
+		monster "kh_kiehl02",46,53,"愛麗俄",1740,1,"KiehlRoom::OnKiehlMobDead";
 		donpcevent "齊爾#Original::OnChangeState";
 		disablenpc "齊爾#Original";
 		end;
@@ -5671,7 +4948,7 @@ kh_kiehl02,50,52,4	script	齊爾#Original	902,{
 		mes "你在幹嘛呀! "+strcharinfo(0)+"";
 		mes "請你趕快使用^FF0000啟 海伊洛^000000給你的動力裝置吧!!!!!";
 		next;
-		delitem 7504,1; //Power_Source
+		delitem 7504,1; //動力裝置
 		announce "嗶啟~ 積翁~",bc_map,0xFF0000;
 		next;
 		mes "[齊爾]";
@@ -5795,20 +5072,17 @@ kh_kiehl02,50,52,4	script	齊爾#Original	902,{
 	if (KielHyreQuest == 104) {
 		cutin "kh_kiel02",2;
 		mes "^3355FF從不能行動的 ^0000FF齊爾^000000身上 把 戒指給拿出來了^000000";
-		getitem 7508,1; //Elisia's_Ring
+		getitem 7508,1; //愛麗希雅的戒指
 		set KielHyreQuest,106;
 		enablenpc "Kiehl_Room_Exit";
 		close2;
 		cutin "",255;
 		end;
 	}
-
-	else {
-		mes "只剩下不能行動的舊型 ^0000FF齊爾^000000身軀了";
-		close2;
-		cutin "",255;
-		end;
-	}
+	mes "只剩下不能行動的舊型 ^0000FF齊爾^000000身軀了";
+	close2;
+	cutin "",255;
+	end;
 
 OnTimer180000:
 	stopnpctimer;
