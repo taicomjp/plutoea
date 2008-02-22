@@ -1,1108 +1,1856 @@
-// 鍊金術士轉職腳本
-// 
-// 中文化作者:		Dino9021
-//
-// 版權宣告:		本文件由 eAthenaC 論壇提供，腳本結構屬原作者所有，翻譯及修正之版權屬 Dino9021 所有
-//			轉載請勿移除任何說明敘述與說明文件，並需註明論壇連結 http://eathena.twbbs.org
-// 
-// 中文版本編號:	20041118.0.2	轉職時會依照職業等級發給禮物
-//			20050210.0.1	鍊金術士職業相關物品販賣員重新從鍊金術士轉職腳本中分離出來並以 eAthena 腳本重新翻譯
-//					移除傳點設定 (於 npc\warps\other\jobquests.txt 中設定)
-//			20050420.0.1	修改職業判斷使用 eAthena 之變數，轉職命令改用 eAthena 之轉職函式
-//
-// 參考腳本:		本腳本參考 IRO 轉職程序編寫
-//			Athena Conversion by RoVeRT
-//			Kingbo 2004/2/15 AM 04:20
-//
-// 注:			本腳本同時需要 npc/quests/counteragent_mixture.txt 腳本
-//			本腳本同時需要 npc/quests/quests_yuno.txt 腳本
-//
-//============================================================
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 鍊金術師 轉職腳本 - 
+//===================================
+// 版本：2.6
+//===================================
 
-//===== eAthena Script ======================================= 
-//= Alchemist Job Quest
-//===== By: ==================================================
-//= nestor_zulueta (Fusion)
-//= converted by Darkchild
-//===== Current Version: ===================================== 
-//= 1.3
-//===== Compatible With: ===================================== 
-//= eAthena 1.0 +
-//===== Description: ========================================= 
-//= Alchemist job quest based off of official iRO quest.
-//===== Additional Comments: ================================= 
-//= v1.0 Working.
-//= npc/quests/counteragent_mixture.txt Also Needed
-//= npc/quests/quests_yuno.txt Also Needed [Darkchild]
-//= v1.1 Fixed some minor bugs.  Optimized some lines. Re-organized the script a bit. 
-//= Giving Parmry NPC, Hammer and Old Book now waves the 50000 fee. (based of mRO website)
-//= Having a joblvl of 50 allows you to skip Rasputin's test. (based of mRO website) [kobra_k88]
-//= 1.2 fixed a few typos (have to hunt more) [Lupus]
-//= 1.3 Added Baby Class Support [Lupus]
-//============================================================ 
-
-
-//==================================================================================================//
-//					Registration and First Test
-//==================================================================================================//
-alde_alche.gat,27,185,4	script	鍊金術師 組合員	744,{
+alde_alche,27,185,5	script	鍊金術師 組合員#am	744,{
 	mes "[帕樂米 基阿尼諾]";
-	if(BaseJob == Job_Merchant) goto L_Merc;
-	if(BaseJob == Job_Alchem) goto L_Alch;
-L_Other:	
-	mes "歡迎光臨鍊金術士公會! 我現在很忙，請你自己參觀吧!";
-	close;
-L_Alch:
-	mes "會友們，讓我們一起為鍊金事業的發展努力吧~~~！";
-	close;
-L_Merc:	
-	if(ALCH_Q == 1) goto L_Check;
-	if(ALCH_Q == 2) goto L_Test2;
-	if(ALCH_Q == 3) goto L_Test3;
-	if(ALCH_Q == 4) goto L_Test4;
-	if(ALCH_Q == 5) goto L_Test5;
-	if(ALCH_Q == 6) goto L_Test6;
-	if(ALCH_Q == 7) goto L_GoChange;
-	mes "歡迎光臨鍊金術士公會!";
-	mes "有什麼需要我效勞的地方嗎?";
-	next;
-	menu "請告訴我有關鍊金術士的事",M_Learn, "我想成為一名鍊金術士",L_Start, "取消",M_End;
-
-	M_Learn:
-		mes "[帕樂米 基阿尼諾]";
-		mes "鍊金術士是從目前已知的各種物質中研究並提煉創造出新物質的人.";
-		mes "他們研究化學元素中最微小的物質，並嘗試改變這些物質的特性.";
+	if (Upper == 1) {
+		mes "歡迎光臨，這裡是鍊金術師組合...";
+		mes "...噢噢? 怎麼會這樣?";
 		next;
 		mes "[帕樂米 基阿尼諾]";
-		mes "大部分的人都以為鍊金術士的最終目的是為了要提煉黃金，但那並非完全是事實.";
-		mes "他們從簡單的化學藥品中提煉創造初各種新的物質.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "有時候，有些研究的目的在於創造出新的生命....但那是屬於上帝的領域....";
-		mes "那個領域太複雜難懂了，所以到目前為止仍是處於研究階段.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "如果你有興趣成為一名鍊金術士，我建議你先培養一些作商人的經驗.";
-		mes "作一名商人能讓你有絕佳的機會在交易各種物品時瞭解它們的特性.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "只有你能為你自己作決定.";
-		mes "通往成為一名鍊金術士的道路是充滿了挑戰的.";
-		mes "你需要把心思專注在對於物品特性的瞭解與研究，而不只是單純的交易買賣上.";
+		mes ".....應該，不會吧";
+		mes "和我之前認識的人長得一模一樣啊，";
+		mes "是心理的作用嗎...";
 		close;
-	M_End:
-		mes "[帕樂米 基阿尼諾]";
-		mes "噢...那麼...有任何需要請儘管開口.";
-		close;
-L_Start:
-	mes "[帕樂米 基阿尼諾]";
-	if(JobLevel < 40) goto L_LowLvl;
-	mes "這樣嗎? 我是 鍊金術師 組合員 '帕樂米 基阿尼諾'";
-	mes "很高興認識你.";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "如果你加入我們的公會並通過我們的測驗，你就可以得到公會的認可，";
-	mes "成為一名鍊金術士並可以與我們一同作研究.";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "不過我們並不是來者不拒統統接受的.";
-	mes "你必須非常努力、有堅強的韌性、並且有決心把自己奉獻給鍊金研究.";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "在加入公會前有一些東西需要你去準備....";
-	mes "不過那等你申請加入之後我們再來討論吧!";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "說了那麼多，你想要加入鍊金術士公會嗎？";
-	next;
-	menu "我要申請加入",M_Apply,"讓我再考慮考慮吧",-;
-
-		mes "[帕樂米 基阿尼諾]";
-		mes "如果你是一個很有才幹的商人，";
-		mes "我們永遠都歡迎你來加入我們.";
-		mes "請時常來與我們交流.";
-		close;
-
-	HighAlc:
-		mes "[帕樂米 基阿尼諾]";
-		mes "哎呀! 你已經是上位商人了呢!";
-		mes "很抱歉! 我沒有辦法讓你轉職成鍊金術士!";
-		mes "請你去找製造家轉職吧!";
-		mes "那才是適合你的職業!";
-		close;
-
-	M_Apply:
-		if (((BaseJob == Job_Merchant) && (Upper == 1)) || (ReBirth > 0)) goto HighAlc;
-		mes "[帕樂米 基阿尼諾]";
-		mes "好的，請先填妥這些表格.....";
-		next;
-		mes "(你填寫了一些表格並把他交給帕樂米 基阿尼諾)";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "好極了! 首先，要加入鍊金術士公會必須先繳交 ^5533FF50,000^000000 zeny 的會費.";
-		mes "另外還需要帶一些東西來給我們.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "不過，如果你能帶一本 ^5533FF古魔法書^000000 及一個 ^5533FF高級鐵鑽^000000 來的話...";
-		mes "我們就跳過會費的部分吧.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "讓我瞧瞧.... 我們需要你帶....^5533FF100 個攜帶用熔礦爐^000000 過來.";
-		mes "等你準備好了就回來這裡找我.";
-		next;
-		mes "[帕樂米 基阿尼諾]";
-		mes "到時候我會一併向你收取 ^5533FF50,000^000000 zeny 的會費，所以屆時可別忘了把錢帶來.";
-		mes "希望很快能再見到你...";
-		set ALCH_Q,1;
-		close;
-L_LowLvl:
-	mes "你還沒夠資格轉職，回去多練幾年，等你的職業技能 40 級的時候再來找我.";
-	close;
-
-L_Check:
-	mes "噢! 你回來啦... 讓我瞧瞧....";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	if(countitem(612) < 100) goto L_NoItems;
-	if(countitem(1005) > 0 && countitem(1006) > 0) goto L_Skip;
-	if(zeny < 50000) goto L_NoZeny;
- 	set zeny,zeny - 50000;
-	delitem 612, 100;
-	mes "嗯... 50,000 zeny 的會費...... 100 個攜帶用熔礦爐.... 好極了!";
-	mes "接下來你得知道一些作鍊金術士應有的基礎.";
-	next;
-
-	L_Cont:
-	mes "[帕樂米 基阿尼諾]";
-	mes "不過在那之前... ^5533FF拉斯普琴^000000 想要先見見你.....";
-	mes "嗯..... 我不太清楚那是為了什麼....";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "你現在先去找他吧! 從我右手邊的樓梯下樓，他的房間在東南方的角落.";
-	set ALCH_Q,2;
-	close;
-
-	L_NoZeny:
-		mes "你還需要支付 ^FF553350,000^000000 zeny 的會費.";
-		mes "等你湊到足夠的錢再來找我吧.";
-		close;
-	L_NoItems:
-		mes "我之前不是跟你說過了嗎? 你得帶 ^FF3355100 個攜帶用熔礦爐^000000 來給我.";
-		mes "請準備好之後再回來找我...";
-		close;
-L_Skip:
-	mes "噢! 你有 ^5533FF古魔法書^000000 和 ^5533FF高級鐵鑽^000000 啊........";
-	mes "真是不簡單! 那我們就跳過會費的部分吧.";
-	next;
-	mes "[帕樂米 基阿尼諾]";
-	mes "太完美了! 那麼，我就收下你的古魔法書、高級鐵鑽和攜帶用熔礦爐了，接下來你得知道一些作鍊金術士應有的基礎..";
-	next;
-	delitem 1005,1;
-	delitem 1006,1;
- 	delitem 612, 100;
-	goto L_Cont;
-
-L_Test2:	
-	mes "快去見 ^5533FF拉斯普琴^000000 吧!";
-	close;
-L_Test3:	
-	mes "快去見 ^5533FF塔羅西亞^000000 吧!";
-	close;
-L_Test4:	
-	mes "快去見 ^5533FF班 黑文特^000000 吧!";
-	close;
-L_Test5:	
-	mes "快去見 ^5533FF尼克拉斯 波拉媒^000000 吧!";
-	close;
-L_Test6:	
-	mes "回去找 ^5533FF尼克拉斯 波拉媒^000000 吧!";
-	mes "他對你還有一些測驗未完成.";
-	close;
-L_GoChange:	
-	mes "哇! 你通過了所有的測驗嗎? 太厲害了，現在請你去見我們的公會長 ^5533FF賓珊特 卡樂士阿羅^000000 吧.";
-	mes "他是這裡唯一能幫你轉職的人.";
-	close;
-}
-
-
-//==================================================================================================//
-//					2nd Test: Math test :(
-//==================================================================================================//
-alde_alche.gat,175,107,4	script	怪癖的 鍊金術士	749,{
-	mes "[拉斯普琴 克勒咕哩]";
-	if(class == 5 || Class == 4006) goto L_Merc;
-L_Other:
-	mes "這是什麼? 嘻嘻嘻嘻...你很好奇我在作什麼?";
-	mes "我只告訴你一個人...你看我...呵呵呵呵";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "是一個研究者! 等這個藥劑完成了... 你就有能力征服一個國家!!";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "嘻嘻嘻嘻呵呵呵呵... 普隆德拉的人都還不知道這個秘密呢.....";
-	close;
-L_Merc:
-	if(ALCH_Q == 2) goto L_Start;
-	if(ALCH_Q == 3) goto L_Done;
-	mes "嘻嘻嘻嘻呵呵呵呵...";
-	mes "這是什麼? 你這個不學無術的笨蛋.";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "商人就該去開個店面賣東西...";
-	mes "你來這裡作什麼?!?";
-	mes "找東西搞破壞嗎?";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "嘻嘻嘻... 滾! 離開這裡!";
-	mes "別在這裡閒晃 ... 呵呵呵...";
-	close;
-L_Start:
-	if(ALCH_Q2 == 1) goto L_ReTest;
-	if(JobLevel == 50) goto L_Skip;
-	mes "呵呵... 有個笨蛋摔跤摔進來了...";
-	mes "加入公會?";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "我不喜歡這樣... 我不喜歡...!";
-	mes "世界各地的阿貓阿狗都來加入公會然後稱自己為 '鍊金術士' 結果呢? 只知道怎麼搗藥草!!!";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "嘻嘻嘻... 所以，想加入公會的人都需要通過面試才行!";
-	mes "我決定要狠狠教訓那些愚蠢的傢伙然後再把他們統統趕出去!!";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "你看起來真是有夠蠢的. 實在是太瘋狂了...";
-	mes "如果你剛剛只是在想要換件衣服的話我可以告訴你，你大錯特錯了... 呵呵呵..";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "哼! 現在我要出幾個問題考你，看看你的腦袋轉不轉得過來.";
-	mes "看看你有多聰明.";
-	next;
-	set @score,0;
-
-	//set of question 1
-	q1:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "12+23+34+45 =?";
-		next;
-		input @num;
-		if(@num == 114) set @score,@score+10;
-	q2:	
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "1000-36-227-348 =?";
-		next;
-		input @num;
-		if(@num == 389) set @score,@score+10;
-	q3:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "9765/3/5/7 =?";
-		next;
-		input @num;
-		if(@num == 93) set @score,@score+10; 
-	q4:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "(2646/7) + (13*28) =?";
-		next;
-		input @num;
-		if(@num == 742) set @score,@score+10;
-	q5:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "當用 7.6 折低價買進時";
-		mes "紅色藥水 12 瓶";
-		mes "蒼蠅翅膀 5 個";
-		mes "再加上 1 個蝴蝶翅膀總共多少錢?";
-		next;
-		input @num;
-		if(@num == 909) set @score,@score+10;
-	q6:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "彎刀 3 把";
-		mes "金屬頭盔 2 頂";
-		mes "再加上 1 件長大衣總共多重?";
-		next;
-		input @num;
-		if(@num == 450) set @score,@score+10;
-	q7:	
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "聖職之帽、大衣、歌劇之魂假面";
-		mes "紫蝶髮帶、披肩、戰士長靴";
-		mes "耳罩、安全帽.";
-		mes "以上裝備防禦值加起來總共多少?";
-		next;
-		input @num;
-		if(@num == 22) set @score,@score+10;
-	q8:	
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "如果你以 7.6 折低價買進金屬頭盔";
-		mes "然後再以原價的 8 折賣出去";
-		mes "那麼你可以賺多少錢?";
-		next;
-		input @num;
-		if(@num == 1760) set @score,@score+10;
-		goto L_Total;
-
-L_ReTest:
-	mes "什麼?! 你想再考一次?";
-	mes "我不是叫你滾了嗎?";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "好吧! 就讓你再考一次...";
-	mes "我原諒你... 呵呵呵.,.";
-	mes "這次好好表現吧...";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "好，現在開始回答我的問題.";
-	mes "看看你有多聰明.";
-	next;
-	set @score,0;
-
-	//set of question 2
-	q11:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "13+25+37+48=?";
-		next;
-		input @num;
-		if(@num == 123) set @score,@score+10;
-	q12:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "1000-58-214-416 =?";
-		next;
-		input @num;
-		if(@num == 312) set @score,@score+10;
-	q13:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "12*24*3=?";
-		next;
-		input @num;
-		if(@num == 864) set @score,@score+10;
-	q14:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "10530/3/5/2=?";
-		next;
-		input @num;
-		if(@num == 351) set @score,@score+10;
-	q15:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "(35*19) - (1792/7) =?";
-		next;
-		input @num;
-		if(@num == 409) set @score,@score+10;
-	q16:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "(2368/8) + (24*17) = ?";
-		next;
-		input @num;
-		if(@num == 704) set @score,@score+10;
-	q17:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "(2646/7) + (13*28)=?";
-		next;
-		input @num;
-		if(@num == 742) set @score,@score+10;
-	q18:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "當用 7.6 折低價買進時";
-		mes "綠色藥水 15 瓶";
-		mes "放大鏡 6 個";
-		mes "再加上 4 個設置用陷阱道具總共多少錢?";
-		next;
-		input @num;
-		if(@num == 934) set @score,@score+10;
-	q19:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "圓柄馬刀 3 把";
-		mes "無邊帽 4 頂";
-		mes "再加上 2 雙戰士長靴總共多重?";
-		next;
-		input @num;
-		if(@num == 550) set @score,@score+10;
-	q20:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "圓盾、長大衣、防毒面具";
-		mes "紅蝶髮帶、紫蝶髮帶、草帽";
-		mes "眼鏡.";
-		mes "以上裝備防禦值加起來總共多少?";
-		next;
-		input @num;
-		if(@num == 16) set @score,@score+10;
-	q21:
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "如果你以 7.6 折低價買進緊身便衣";
-		mes "然後再以原價的 8 折賣出去";
-		mes "那麼你可以賺多少錢?";
-		next;
-		input @num;
-		if(@num == 2840) set @score,@score+10;
-L_Total:
-	mes "[拉斯普琴 克勒咕哩]";
-	if(@score < 80) goto L_Failed;
-	set ALCH_Q,3;
-	set ALCH_Q2, 0;
-	mes "嘻嘻嘻... 你快滾吧...";
-	mes "要常常作研究並提供給拉斯普琴我... 嘻嘻嘻!";
-	next;	
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "還不快滾! 去找 ^5533FF塔羅西亞^000000 吧!";
-	mes "他會教你怎麼進行實驗.";
-	mes "告訴他是我叫你去的.";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "嘻嘻嘻呵呵呵...";
-	mes "別以為這樣就結束了!";
-	close;
-
-	L_Failed:
-		set ALCH_Q2,1;
-		mes "...呵呵呵... 你這個蠢蛋...";
-		mes "我竟然笨到以為你能回答所有的問題!";
-		mes "你簡直是錯得一塌糊塗!!!";
-		next;
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "連這麼簡單的問題都不會還想作什麼鍊金術士?!";
-		mes "什麼? 你有沒有答對任何一題?";
-		next;
-		mes "[拉斯普琴 克勒咕哩]";
-		mes "笨蛋! 在鍊金術士的世界裡只要錯一個小地方就全盤皆錯了!";
-		mes "滾!! 滾遠一點!!";
-		close;
-L_Done:
-	mes "你還在這裡作什麼? 快滾吧!";
-	mes "去找 ^5533FF塔羅西亞^000000 吧!";
-	mes "他會教你怎麼進行實驗.";
-	mes "告訴他是我叫你去的.";
-	next;
-	mes "[拉斯普琴 克勒咕哩]";
-	mes "嘻嘻嘻呵呵呵...";
-	mes "別以為這樣就結束了!";
-	close;
-L_Skip:
-	mes "噢... 你的等級還滿高的嘛..... 我今天就放你一馬好了...";
-	mes "接下來你需要去找 ^5533FF塔羅西亞^000000.";
-	mes "他會教你怎麼進行實驗.";
-	mes "告訴他是我叫你去的.";
-	set ALCH_Q,3;
-	set ALCH_Q2, 0;
-	close;
-}
-
-
-//==================================================================================================//
-//					3rd Test: Mix some medicine
-//==================================================================================================//
-alde_alche.gat,13,15,8	script	研究者	750,{
-	mes "[研究者 塔羅西亞]";
-	if(BaseJob == Job_Merchant) goto L_Merc;
-L_Other:
-	mes "失去的總比得到的多...";
-	mes "永遠都是這樣的...";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "一切都是幻覺啊!!";
-	mes "嚇不倒我的!!";
-	mes "哈哈哈哈哈...";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "天堂是不存在的... 曾經存在過嗎?";
-	mes "我珍愛的哈蒙娜.... 啊....";
-	close;
-
-L_Merc:
-	if(ALCH_Q == 3) goto L_Start;
-	if(ALCH_Q == 4) goto L_Done;
-	goto L_Other;
-
-L_Start:
-	if(ALCH_Q2 == 1) goto L_Check;
-	mes "...........";
-	mes ".........";
-	mes "....誰...";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "狼? 還是人...";
-	mes "你一定也在找尋某樣東西吧...";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "如果你有某樣你很珍愛的東西，小心...";
-	mes "人很容易在追尋另一件東西的時候失去了原有的東西...";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "..........";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "... 呃...你為什麼會來到這裡?";
-	mes "來到一個像這樣的地方...";
-	next;
-	menu "我想學習如何做實驗",M_Exp, "請告訴我更多有關哈蒙娜的事",M_Flow;
-
-	M_Flow:	
-		mes "[研究者 塔羅西亞]";
-		mes ".......";
-		mes "......";
-		mes "...想一下你最珍愛的東西...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes ".... 我依稀記得曾經有一朵花....";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "我加了一些東西到我的研究裡.....";
-		mes "為了我的珍愛...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "就說是狼與花之間的風流韻事吧...";
-		mes "我不會告訴你細節的...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "但，是的... 那是一朵花...";
-		mes "在她閃耀的光芒下，聽說可以讓你看見天堂裡如幻影一般的花...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "我創造了一個生命.";
-		mes "沒有人相信我從一朵花創造了一個類人生物!!!";
-		mes "我的研究啊!";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "但現在，我身無長物...";
-		mes "都結束了，全部都結束了...";
-		mes "我的生命就停在那一剎那之間...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "啊... 哈蒙娜...美麗原野中的花朵們...";
-		mes "到哪裡去了....";
-		close;
-	M_Exp:
-		mes "[研究者 塔羅西亞]";
-		mes "你想學鍊金術...";
-		mes "我所擁有的全部知識..";
-		mes "為了讓我的夢想成真...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "我會教你一些基本的東西...";
-		mes "但你必須先決定你的夢想.";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "好吧，這些都是最基本的.";
-		mes "要製造一些最簡單的藥劑...";
-		mes "準備一些材料...";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "^5533FF藥缽 3 個";
-		mes "空瓶 3 個";
-		mes "紅色藥草 1 片";
-		mes "黃色藥草 1 片";
-		mes "白黃色藥草 1 片^000000";
-		next;
-		mes "[研究者 塔羅西亞]";
-		mes "等你準備好了再回來找我吧...";
-		set ALCH_Q2, 1;
-		close;
-
-L_Check:
-	mes "...........";
-	mes ".........";
-	mes "...誰....";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "呃...你是那個想學鍊金術的人啊...";
-	mes "你準備好需要的東西了嗎?";
-	next;
-	if(countitem(7134) < 3 || countitem(713) < 3 || countitem(507) < 1 || countitem(508) < 1 || countitem(509) < 1) goto L_NotEnuf;
-	delitem 7134,3;
-	delitem 713,3;
-	delitem 507,1;
-	delitem 508,1;
-	delitem 509,1;
-	mes "[研究者 塔羅西亞]";
-	mes "嗯，看來該有的東西都有了.";
-	mes "就如同我先前答應你的，教你製造一些最簡單的藥劑";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "首先，準備好藥缽，把一部份少量的藥草像這樣放進藥缽裡.";
-	mes "然後慢慢地研磨.";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "倒進一些乾淨的清水然後攪拌直到變成濃稠狀";
-	mes "接著繼續加入其他剩下的藥草";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "就這樣慢慢做，等到你覺得份量夠用了";
-	mes "就慢慢地把它裝進空瓶裡";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "吶! 你看，完成了.";
-	mes "現在，照我剛剛的方法作一遍.";
-	mes "這應該很簡單吧!";
-	next;
-	set @score,0;
-	menu "準備藥缽",-, "把藥缽戴在頭上",M_0, "把藥缽一腳踢飛",M_0;
-
-		set @score,@score+10;
-	M_0:
-
-	menu "在藥缽中放入沙子",M_1, "在藥缽中放入藥草",-, "在藥缽中放入跳蚤",M_1;
-
-		set @score,@score+10;
-	M_1:
-
-	menu "打碎藥草",-, "打碎藥缽",M_2, "打碎塔羅西亞的腳",M_2;
-
-		set @score,@score+10;
-	M_2:
-
-	menu "噴灑清水",M_3, "把水喝掉",M_3, "倒進清水",-;
-
-		set @score,@score+10;
-	M_3:
-
-	menu "繼續研磨藥草",-, "繼續吃掉藥草",M_4, "繼續唱歌跳舞",M_4;
-
-		set @score,@score+10;
-	M_4:
-
-	menu "放進麵條用高溫油炸",M_5, "把成品倒入空瓶",-, "舉起藥缽一飲而盡",M_5;
-
-		set @score,@score+10;
-	M_5:
-
-	mes "[研究者 塔羅西亞]";
-	if(@score < 60) goto L_Failed;
-	mes "... 做得不錯. 就第一次作的生手來說你的表現算不錯的...";
-	mes "喏，就把他當成紀念品收起來吧.";
-	getitem 501,1;
-	getitem 503,1;
-	getitem 504,1;
-	set ALCH_Q,4;
-	set ALCH_Q2,0;
-	next;
-	mes "[研究者 塔羅西亞]";
-L_Done:
-	mes "接下來去隔壁房間找 ^5533FF班 黑文特^000000 吧...";
-	mes "他會指導你更多細節.";
-	mes "去向他好好學習吧.";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "別忘了...";
-	mes "要好好保護你真正珍愛的東西.....";
-	close;
-
-	L_Failed:
-		mes "... 簡直是一塌糊塗，原料都被你搞爛了...";
-		mes "... 再去準備一份材料來吧.";
-		close;
-L_NotEnuf:
-	mes "[研究者 塔羅西亞]";
-	mes "...忘了需要哪些材料了嗎?";
-	mes "在跟你說一遍.";
-	mes "別再忘了.";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "^5533FF藥缽 3 個";
-	mes "空瓶 3 個";
-	mes "紅色藥草 1 片";
-	mes "黃色藥草 1 片";
-	mes "白黃色藥草 1 片^000000";
-	next;
-	mes "[研究者 塔羅西亞]";
-	mes "等你準備好了再回來找我吧...";
-	close;	
-}
-
-
-//==================================================================================================//
-//					4th Test: Learn from Morgenstein
-//==================================================================================================//
-alde_alche.gat,79,19,4	script	實驗專家	748,{
-	mes "[班 黑文特]";
-	if(BaseJob == Job_Merchant) goto L_Merc;
-L_Other:
-	mes "再加一點進去 ... 對，再加一點點進去....";
-	mes "嗯...只要再加一點點進去應該就能成功了!";
-	next;
-	mes "[班 黑文特]";
-	mes "為什麼!! 為什麼又失敗了!!!";
-	mes "沒有錯啊!";
-	mes "為什麼! 為什麼!";
-	next;
-	mes "[班 黑文特]";
-	mes "這表示我得再去搜集更多材料嗎...";
-	mes "總有一天我一定能成功....呼...";
-	close;
-L_Merc:
-	if(ALCH_Q == 4) goto L_Start;
-	if(ALCH_Q == 5) goto L_Done;
-	goto L_Other;
-L_Start:
-	if(ALCH_Q2 == 1) goto L_Check;
-	mes "啊啊啊... 為什麼這個程序停住了...出了什麼錯?";
-	mes "理論上來說應該都正確啊...";
-	mes "應該是哪一個步驟出了問題了吧...";
-	mes "到底是哪一個步驟...";
-	next;
-	mes "[班 黑文特]";
-	mes "就是這裡! 到這裡的時候它停住了... 而這個步驟是解決不流動的方法.";
-	mes "我怎麼會犯這麼愚蠢的錯誤...我怎麼會把它搞混了...";
-	next;
-	mes "[班 黑文特]";
-	mes "對了對了，就是這樣，我得修正這個地方.";
-	mes "應該不需要全部從頭來...";
-	mes "我只要修正這個地方...";
-	mes "....但是，等一下... 等等...";
-	next;
-	mes "[班 黑文特]";
-	mes ".....................";
-	next;
-	mes "[班 黑文特]";
-	mes "....你是誰?";
-	next;
-	menu "我想成為一名鍊金術士",-,".....",M_Bye;
-
-		mes "[班 黑文特]";
-		mes "噢! 這樣啊....";
-		mes "哈哈! 你想學像這樣的鍊金術? 有趣的商人... 啊?";
-		next;
-		mes "[班 黑文特]";
-		mes "嗯! 好吧! 但是我現在有個很迫切的實驗需要去做.";
-		mes "所以...別擋住我的路!";
-		next;
-		menu "多少教我一些吧",-,"..........",M_Bye;
-
-			mes "[班 黑文特]";
-			mes "嚇... 我不是叫你別打擾我嗎?";
-			mes "我說的話你聽不懂嗎?!";
+	}
+	if (BaseJob != Job_Merchant) {
+		if (BaseJob == Job_Alchemist) {
+			mes "歡迎光臨，" +strcharinfo(0)+ "";
+			mes "鍊金術師公會今天也如往日一樣忙碌";
 			next;
-			mes "[班 黑文特]";
-			mes "好好好，我會出一些功課給你.";
-			mes "自己去研究，有結果了再回來.";
-			mes "我看看...什麼比較好... 嗯...";
+			mes "[帕樂米 基阿尼諾]";
+			mes "這裡是向人偶注入生命這類的研究，";
+			mes "也就是對於生命工學的研究相當繁盛的地方";
 			next;
-			mes "[班 黑文特]";
-			mes "噢! 我想到了! 去向 ^5533FF莫基斯坦^000000 打聽吧. 向他學習如何製造 ^009500中和劑^000000 與 ^FF3355混和劑^000000.";
-			mes "你可以在 ^5533FF吉分城^000000 找到他.";
-			next;
-			mes "[班 黑文特]";
-			mes "你不需要把製作好的中和劑跟混和劑帶來. 但一定要專心看他是怎麼製造的並把製造方法學起來.";
-			mes "瞭解嗎?";
-			next;
-			mes "[班 黑文特]";
-			mes "那麼，祝你好運.";
-			mes "你最好趕快出發，才不會繼續打擾我.";
-			set ALCH_Q2,1;
+			mes "[帕樂米 基阿尼諾]";
+			mes "誰都想取得研究的成功";
+			mes "因為這些都是復雜的研究，";
+			mes "所以大家都很忙";
 			close;
-	M_Bye:
-		mes "[班 黑文特]";
-		mes "如果你在這裡沒有事要幹就請你趕快離開好嗎!!!";
+		}
+		else if (BaseClass == Job_Novice) {
+			mes "歡迎光臨，這裡是鍊金術師組織，";
+			mes "我們在徵求有能力有實力的人才，";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "如果你對化學有興趣的話，下次再來吧，";
+			mes "不過。。。";
+			mes "要以商人的身分，了解一些對物品的知識";
+			close;
+		}
+		mes "Welcome to the";
+		mes "Alchemist Union.";
+		mes "We are recruiting";
+		mes "talented people";
+		mes "with novel ideas.";
+		next;
+		mes "[帕樂米 基阿尼諾]";
+		mes "If you know any exceptional Merchants, by all means, please refer them to us. Those types of people tend to have a talent for Alchemy and experimentation~";
 		close;
-L_Check:
-	if(al_morgen != 1) goto L_NotRdy;
-	mes "嗯...剪一段觸鬚...";
-	mes "混和一些粘稠液體...";
-	mes "在試管裡加入一些傑勒比結晶... 咦? 藥缽跑哪兒去了?...";
-	next;
-	mes "[班 黑文特]";
-	mes "嗯...就這樣混和在一起... 就像這樣，嗝... 尼克拉斯不知道有沒有忘記什麼...";
-	mes "哼... 真是偉大的計劃啊...";
-	mes "....啊! 等等... 等一下...";
-	next;
-	mes "[班 黑文特]";
-	mes "呃，你是之前來的那個商人啊? 那麼，你學到了什麼了嗎?";
-	mes "我可不是叫你去那邊玩的.";
-	next;
-	mes "[班 黑文特]";
-	mes "好! 我出幾個問題問你，看看你學到了什麼.";
-	next;
-	set @score,0;
-
-	Q_1a:
-		mes "[班 黑文特]";
-		mes "哪一個是製作中和劑必需的材料?";
+	}
+	if (ALCH_Q == 0) {
+		mes "Welcome to the";
+		mes "Alchemist Union.";
+		mes "How may I help you?";
 		next;
-		menu "柔毛",-,"粘稠液體",-,"家畜血",-;
-
-	Q_1b:
-		mes "[班 黑文特]";
-		mes "哪一個不是製作中和劑必需的材料?";
+		switch(select("I would like to learn about Alchemists.:I want to become an Alchemist.:Nothing.")) {
+		case 1:
+			mes "[帕樂米 基阿尼諾]";
+			mes "鍊金術士是從目前已知的各種物質中研究並提煉創造出新物質的人.";
+			mes "他們研究化學元素中最微小的物質，並嘗試改變這些物質的特性.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "大部分的人都以為鍊金術士的最終目的是為了要提煉黃金，但那並非完全是事實.";
+			mes "他們從簡單的化學藥品中提煉創造初各種新的物質.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "有時候，有些研究的目的在於創造出新的生命....但那是屬於上帝的領域....";
+			mes "那個領域太複雜難懂了，所以到目前為止仍是處於研究階段.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "如果你有興趣成為一名鍊金術士，我建議你先培養一些作商人的經驗.";
+			mes "作一名商人能讓你有絕佳的機會在交易各種物品時瞭解它們的特性.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "只有你能為你自己作決定.";
+			mes "通往成為一名鍊金術士的道路是充滿了挑戰的.";
+			mes "你需要把心思專注在對於物品特性的瞭解與研究，而不只是單純的交易買賣上.";
+			close;
+		case 2:
+			mes "[帕樂米 基阿尼諾]";
+			mes "這樣嗎? 我是 鍊金術師 組合員 '帕樂米 基阿尼諾'";
+			mes "很高興認識你.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "如果你加入我們的公會並通過我們的測驗，你就可以得到公會的認可，";
+			mes "成為一名鍊金術士並可以與我們一同作研究.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "不過我們並不是來者不拒統統接受的.";
+			mes "你必須非常努力、有堅強的韌性、並且有決心把自己奉獻給鍊金研究.";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "在加入公會前有一些東西需要你去準備....";
+			mes "不過那等你申請加入之後我們再來討論吧!";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "說了那麼多，你想要加入鍊金術士公會嗎?";
+			next;
+			if (select("我要申請加入:讓我再考慮考慮吧") == 1) {
+				if (JobLevel < 40) {
+					mes "[帕樂米 基阿尼諾]";
+					mes "Hmmm...";
+					mes "Just a moment.";
+					mes "I'm sorry to say that";
+					mes "you're not experienced";
+					mes "enough as a Merchant to";
+					mes "join us right now.";
+					next;
+					mes "[帕樂米 基阿尼諾]";
+					mes "You must be at least";
+					mes "^551A8BJob Level 40^000000 to become";
+					mes "an Alchemist. Come back";
+					mes "later when you meet the";
+					mes "Job Level requirement, okay?";
+					close;
+				}
+				mes "[帕樂米 基阿尼諾]";
+				mes "Alright, your application has been accepted. Now, you must pay the 50,000 Zeny application fee and bring some items before you can begin your formal training.";
+				next;
+				mes "[帕樂米 基阿尼諾]";
+				mes "But if you bring an ^551A8BOld Magic Book^000000 and ^551A8BHammer of Blacksmith^000000,";
+				mes "we will accept that as a substitute for the item requirement.";
+				next;
+				mes "[帕樂米 基阿尼諾]";
+				mes "Now...";
+				mes "Please sign";
+				mes "the application.";
+				next;
+				select(strcharinfo(0));
+				mes "[帕樂米 基阿尼諾]";
+				mes "Good, good. Now, if you have";
+				mes "the Zeny for your application fee ready, I will tell you which items you will need to bring. Now, pay attention.";
+				next;
+				if (Zeny < 50000) {
+					mes "[帕樂米 基阿尼諾]";
+					mes "Uh oh. You don't";
+					mes "seem to have enough Zeny.";
+					mes "Come back to me when you have 50,000 Zeny, otherwise we can't process your application.";
+					close;
+				}
+				set zeny,zeny-50000;
+				mes "[帕樂米 基阿尼諾]";
+				mes "Let's see.";
+				mes "" + name + "";
+				mes "needs to bring...";
+				switch(rand(1,3)) {
+				case 1:
+					set ALCH_Q,1;
+					mes "^551A8B7 Berserk Potions^000000.";
+					break;
+				case 2:
+					set ALCH_Q,2;
+					mes "^551A8B100 Mini Furnaces^000000.";
+					break;
+				case 3:
+					set ALCH_Q,3;
+					mes "^551A8B7,500 Fire Arrows^000000.";
+				}
+				next;
+				mes "[帕樂米 基阿尼諾]";
+				mes "Once you've gathered";
+				mes "those items, come back";
+				mes "to me and your training";
+				mes "as an Alchemist will begin.";
+				mes "See you soon~";
+				close;
+			}
+			mes "[帕樂米 基阿尼諾]";
+			mes "Talented Merchants";
+			mes "are always welcome here.";
+			mes "Please come back soon.";
+			close;
+		case 3:
+			mes "[帕樂米 基阿尼諾]";
+			mes "Umm...";
+			mes "Please let me know";
+			mes "if you need anything.";
+			close;
+		}
+	}
+	else if (ALCH_Q >= 1 && ALCH_Q <= 3) {
+		if (countitem(1006) > 0 && countitem(1005) > 0) {
+			mes "Well now~!";
+			mes "You've brought an";
+			mes "Old Magic Book and";
+			mes "a Hammer of Blacksmith.";
+			mes "We'll put these items";
+			mes "to good use.";
+			next;
+			delitem 1006,1; //Old_Magic_Book
+			delitem 1005,1; //Hammer_Of_Blacksmith
+			mes "[帕樂米 基阿尼諾]";
+			mes "Okay, now you need to learn";
+			mes "the basics to being an Alchemist and learn the procedures for mixing chemicals and medicines.";
+			set ALCH_Q,4;
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "But before all of that, you need to speak to Raspuchin. I'm not really sure what you'll be talking about with him...";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "It shouldn't be anything extraordinary, but you're still required to speak to Raspuchin, since apparently he's a part of the Alchemist selection process.";
+			close;
+		}
+		switch(ALCH_Q) {
+		case 1: setarray .@items[0],657,7; break;
+		case 2: setarray .@items[0],612,100; break;
+		case 3: setarray .@items[0],1752,7500; break;
+		}
+		if (countitem(.@items[0]) >= .@items[1]) {
+			mes "Seems like";
+			mes "you're all ready.";
+			mes "The Union will put";
+			mes "these items to good use.";
+			next;
+			delitem .@items[0],.@items[1];
+			mes "[帕樂米 基阿尼諾]";
+			mes "Okay, now you need to learn";
+			mes "the basics to being an Alchemist and learn the procedures for mixing chemicals and medicines.";
+			set ALCH_Q,4;
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "But before all of that, you need to speak to Raspuchin. I'm not really sure what you'll be talking about with him...";
+			next;
+			mes "[帕樂米 基阿尼諾]";
+			mes "It shouldn't be anything extraordinary, but you're still required to speak to Raspuchin, since apparently he's a part of the Alchemist selection process.";
+			close;
+		}
+		mes "Aren't you ready?";
+		mes "Like I said before,";
+		mes "you must bring";
+		mes "^551A8B"+.@items[1]+" "+getitemname(.@items[0])+"s^000000.";
 		next;
-		menu "卡勒波迪藥水",-,"帝特立米藥水",Q_2a,"酒精",Q_2a;
-
-			set @score,@score+10;
-
-	Q_2a:
-		mes "[班 黑文特]";
-		mes "哪一個是製作混合劑必需的材料?";
-		next;
-		menu "魔物飼料",-,"人魚嘴巴",-,"腐爛繃帶",-;
-
-	Q_2b:
-		mes "[班 黑文特]";
-		mes "哪一個不是製作混合劑必需的材料?";
-		next;
-		menu "卡勒波迪藥水",L_Result,"帝特立米藥水",-,"酒精",L_Result;
-
-			set @score,@score+10;
-
-L_Result:
-	mes "[班 黑文特]";
-	if(@score < 20) goto L_Failed;
-	mes "嗯...你學的還不錯... 現在你認識了一些藥劑的材料了.";
-	mes "啊?";
-	mes "我知道，你有很多話要說，但是現在先讓我繼續我的實驗好嗎?";
-	next;
-	mes "[班 黑文特]";
-	mes "請你去隔壁的房間  ^5533FF尼克拉斯^000000 或許比我有更多可以教你的.";
-	set ALCH_Q,5;
-	set ALCH_Q2,0;
-	set al_morgen, 0;
-	close;
-
-	L_Failed:
-		mes "...老實說，你不知道對吧?";
-		mes "我不是叫你去找莫基斯坦學習嗎?...";
-		next;
-		mes "[班 黑文特]";
-		mes "沒學到東西就不要想回來這裡!";
-		mes "不要再打擾我了! 快滾!";
+		mes "[帕樂米 基阿尼諾]";
+		mes "Come back when you";
+		mes "have prepared the";
+		mes "required items.";
 		close;
-L_NotRdy:
-	mes "我不是叫你去吉芬找莫基斯坦學習嗎?...";
-	mes "他是個聰明絕頂的人! 你應該多向他學習學習!";
-	close;
-L_Done:
-	mes "你在這裡做什麼? 我不是叫你去隔壁的房間找  ^5533FF尼克拉斯^000000 嗎?";
-	mes "他或許比我有更多可以教你的，我這裡沒你的事了.";
-	close;
-
+	}
+	else if (ALCH_Q == 4) {
+		mes "Go and talk to";
+		mes "Mr. Raspuchin.";
+		mes "He's involved in the";
+		mes "Alchemist selection process, whatever that might mean.";
+		next;
+		mes "[帕樂米 基阿尼諾]";
+		mes "Hopefully, it";
+		mes "won't be too much of";
+		mes "a problem. I guess he'll just interview you, and ask you";
+		mes "some simple questions.";
+		close;
+	}
+	else {
+		mes "Ah, I'm sorry, but";
+		mes "I'm busy right now~";
+		next;
+		mes "[帕樂米 基阿尼諾]";
+		mes "Why don't you ask";
+		mes "someone else if you're";
+		mes "not sure who to visit";
+		mes "next? Good luck~";
+		close;
+	}
 }
 
-
-//==================================================================================================//
-//				Test 5 & 6: Word Scramble, Help the Baijin Bros.
-//==================================================================================================//
-alde_alche.gat,145,19,4	script	尼克拉斯 波拉媒	57,{
-	mes "[尼克拉斯 波拉媒]";
-	if(BaseJob == Job_Merchant) goto L_Merc;
-L_Other:
-	mes "加勒昆保欲豪原非物沾久審的擊字";
-	mes "路宣敗不原狼給心木爬提肝祥兔怪";
-	mes "翁波宣商人理安壁力大全怕理課感";
-	mes "商率壽朋兜知商傷花全踢理有食差";
-	mes "食草受商於善傷的久戰多怕九分當";
-	mes "......唸唸....";
-	close;
-L_Merc:
-	if(ALCH_Q == 5) goto L_Start;
-	if(ALCH_Q == 6) goto L_Start2;
-	if(ALCH_Q == 7) goto L_Done;
-	goto L_Other;
-L_Start:
-	if(ALCH_Q2 == 1) goto L_ReTest;
-	mes "噢... 你是想成為鍊金術士的商人?";
-	mes "但你知道的... 不是任何人都能成為鍊金術士的.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "鍊金術士公會不喜歡沒有明確目標卻想成為鍊金術士的人.";
-	mes "所以... 我來測驗測驗你，看看你有沒有資格.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "如你所見，鍊金術士必須熟記許多化學反應方程序";	
-	mes "除此之外還有大量的各種知識";
-	mes "如果你沒有足夠的水準的話..";
-	mes "我的測驗對你來說是很困難的.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "這個測驗的目的是為了防止無用、沒前途的人加入鍊金公會成為負擔!";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "好吧... 那我就開始出題了!";
-	mes "這是要測驗你的集中精神夠不夠，避免你在看那些圖表的時候被自己搞混了.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "找出這些字母裡隱藏的單字. 這個隱藏的單字可能有用到這些字母的一部分或全部都用到";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "如果你找得出這些隱藏的單字，你就能通過我的測驗.";
-	next;
-
-	Q_1:
-		set @score,0;
-		mes "[尼克拉斯 波拉媒]";
-		mes "s m i e x b w u n e n t a g l r";
+alde_alche,175,107,3	script	怪癖的 鍊金術士#am	749,{
+	mes "[拉斯普琴 克勒咕哩]";
+	if (BaseJob != Job_Merchant) {
+		if (BaseJob == Job_Alchemist) {
+			mes "Heeheehee";
+			mes "keheheh~!";
+			mes "Eh? What do you want?!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "You're not here to steal my experimental results or plagiarize my work, are you? How dare you consider intellectual theft!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "You're not, are you?";
+			mes "Well, as a colleague,";
+			mes "let me just warn you";
+			mes "that such tricks aren't";
+			mes "tolerated here in the";
+			mes "Alchemist Union!";
+			close;
+		}
+		else if (BaseClass == Job_Novice) {
+			mes "Heeheehee";
+			mes "keheheh~!";
+			mes "How cute, you've come";
+			mes "all this way just to play...";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "I'll let you";
+			mes "go this time...";
+			mes "But next time, don't";
+			mes "expect to leave so easily...";
+			close;
+		}
+		else {
+			mes "這是什麼? 嘻嘻嘻嘻...你很好奇我在作什麼?";
+			mes "我只告訴你一個人...你看我...呵呵呵呵";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "是一個研究者! 等這個藥劑完成了... 你就有能力征服一個國家!!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "嘻嘻嘻嘻呵呵呵呵... 普隆德拉的人都還不知道這個秘密呢.....";
+			close;
+		}
+	}
+	if (ALCH_Q == 0) {
+		mes "嘻嘻嘻嘻呵呵呵呵...";
+		mes "這是什麼? 你這個不學無術的笨蛋.";
 		next;
-		menu "tiger",-,"wolf",Q_2,"pumpkin",Q_2,"tripped",Q_2;
-
-			set @score,@score+10; 
-
-	Q_2:
-		mes "[尼克拉斯 波拉媒]";
-		mes "n i e g b o p d s o a u w r v";
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "商人就該去開個店面賣東西...";
+		mes "你來這裡作什麼?!?";
+		mes "找東西搞破壞嗎?";
 		next;
-		menu "bash",Q_3,"provoke",Q_3,"endure",-,"stun",Q_3,"abracadabra",Q_3;
-
-			set @score,@score+10; 
-
-	Q_3:
-		mes "[尼克拉斯 波拉媒]";
-		mes "l r m g r e x t a v i n e d e";
-		next;
-		menu "alberta",Q_4,"latifoliate",Q_4,"crimson",Q_4,"maple",Q_4,"evergreen",-;
-
-			set @score,@score+10; 
-
-	Q_4:
-		mes "[尼克拉斯 波拉媒] ";
-		mes "r o e h n r o m c a i n p t t";
-		next;
-		menu "forgemerchant",L_Score,"potionmerchant",-,"dcmerchant",L_Score,"vendingmerchant",L_Score;
-	
-			set @score,@score+10; 
-L_Score:
-	if(@score < 40) goto L_Failed;
-	set ALCH_Q,6;
-	set ALCH_Q2,0;
-	mes "[尼克拉斯 波拉媒]";
-	mes "看起來還不錯.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "我檢查看看.";
-	mes "...幹得好! 全部答對了!";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "你是怎麼找到全部的隱藏單字的?";
-	mes "就是要集中精神!! 集中精神就能很容易地看懂複雜的藥劑字典了.";
-	mes "嗯... 下一個是...";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "噢! 隨時回到這裡來吧! 記得先把你的思緒整理好...";
-	close;
-
-	L_Failed:
-		mes "[尼克拉斯 波拉媒]";
-		mes "嗯... 失敗!";
-		mes "戴上你的老花眼鏡吧，也許那可以讓你看清楚一點.";
-		set ALCH_Q2,1;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "嘻嘻嘻... 滾! 離開這裡!";
+		mes "別在這裡閒晃 ... 呵呵呵...";
 		close;
-L_ReTest:
-	mes "噢! 你又來啦?";
-	mes "健全的心靈是可以從外表的改變上感覺得到的."; 
-	next;
-	goto Q_1;	
-
-L_Start2:
-	if(ALCH_Q2 > 0) goto L_Check2;
-	mes "接下來，你得去一些地方.";
-	mes "去 ^5533FF'遺忘的城市--朱諾'^000000 找向那裡的賢者研究鍊金術的 ^FF3355發仁 與 發鎮^000000 兩兄弟.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "幫他們解決困難然後再回來這裡，喏，帶著這些東西... 可以讓你更接近他們.";
-	next;
-	getitem 974,1;
-	getitem 7068,5;
-	getitem 7043,5;
-	getitem 756,3;
-	getitem 757,3;
-	mes "[尼克拉斯 波拉媒]";
-	mes "混合劑 1 瓶";
-	mes "燃燒一半的木材 5 根";
-	mes "黃晶沙 5 份";
-	mes "神之金屬原石 3 顆";
-	mes "鋁原石 3 顆";
-	set ALCH_Q2,1;
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "祝你一路平安";
-	mes "那裡可是朱諾吶...可別死在半路上.";
-	close;
-L_Check2:
-	if(ALCH_Q2 < 2) goto L_NotDone;
-	set ALCH_Q, 7;
-	set ALCH_Q2, 0;
-	mes "噢! 你終於回來了啊.";
-	mes "我收到他們兩兄弟寄來的信，他們說很高興見到你.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-	mes "你應該是成功的幫他們解決了問題吧.";
-	mes "既然你能夠解決他們的問題，那麼我想你應該是有資格成為一名鍊金術士的.";
-	next;
-	mes "[尼克拉斯 波拉媒]";
-L_Done:
-	mes "去二樓找公會會長吧!";
-	mes "恭喜你! 你就快要可以轉職了!";
-	close;
-
-	L_NotDone:
-		mes "發仁與發鎮兩兄弟在朱諾! 快去協助他們吧.";
+	}
+	else if (ALCH_Q >= 1 && ALCH_Q <= 3) {
+		mes "Heeheehee";
+		mes "keheheh~!";
+		mes "What do you";
+		mes "want, kid?";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "What...?";
+		mes "Learn Alchemy?!";
+		mes "Don't even speak";
+		mes "such nonsense!";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Even if you tried studying for a thousand years, maybe even more, it'd be useless to you! Forget about it and just worry about your store!";
 		close;
-
+	}
+	else if (ALCH_Q == 4) {
+		mes "Heeheehee";
+		mes "keheheh~!";
+		mes "What do you";
+		mes "want, kid?";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "What...?";
+		mes "Join the Union!?";
+		mes "I don't like it...";
+		mes "I just don't...!";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Nowadays, anyone thinks they can";
+		mes "be Alchemists just by knowing how to mix a few herbs. That's why my interview is necessary.";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Heeheehee";
+		mes "keheheh~!";
+		mes "I plan on weeding out all the dumb and incompetent, and chase them";
+		mes "all away! We don't need morons!";
+		next;
+		if (JobLevel == 50) {
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Wait...";
+			mes "Maybe I've";
+			mes "misjudged you.";
+			if (sex == 1) {
+				mes "You might be a pretty boy,";
+				mes "but I can tell you're smart";
+				mes "from your eyes.";
+			}
+			else {
+				mes "Huh. You're a cutie alright,";
+				mes "but I can tell you've got brains.";
+			}
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "You're not just some stupid kid.";
+			mes "I can tell youve gone through some rough times as a Merchant. Excellent. Keh heh heh~";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Fine, just so we don't insult each other's intelligence, I'll just let you pass the interview.";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "So hurry up, become an Alchemist, do some good research, and you might turn out to be of some help to me. Hahahahahaha~!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Now go to 塔羅西亞!";
+			mes "He'll teach you how to do the experiments. Just tell him that";
+			mes "I sent you.";
+			set ALCH_Q,6;
+			close;
+		}
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Surprised, are you?";
+		mes "Keheheh~ If you thought";
+		mes "becoming an Alchemist was";
+		mes "just a matter of changing";
+		mes "your clothes, then you're";
+		mes "sadly mistaken.";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Now, try solving";
+		mes "all these problems.";
+		mes "Let's see how smart";
+		mes "really are.";
+		next;
+L_AskQuestions:
+		switch(rand(1,3)) {
+		case 1:
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "12 + 23 + 34 + 45 = ?";
+			next;
+			input .@input;
+			if (.@input != 114) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "1000 - 36 - 227 - 348 = ?";
+			next;
+			input .@input;
+			if (.@input != 389) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "14 * 17 * 3 = ?";
+			next;
+			input .@input;
+			if (.@input != 714) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "9765 / 3 / 5 / 7 = ?";
+			next;
+			input .@input;
+			if (.@input != 93) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(47 * 28) - (1376 / 4) = ?";
+			next;
+			input .@input;
+			if (.@input != 972) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(2646 / 7) + (13 * 28) = ?";
+			next;
+			input .@input;
+			if (.@input != 742) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "How much do";
+			mes "12 Red Potions,";
+			mes "1 Butterfly Wing";
+			mes "and 5 Fly Wings cost";
+			mes "after a 24 % discount?";
+			next;
+			input .@input;
+			if (.@input != 909) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total weight of";
+			mes "3 Scimiters, 2 Helms";
+			mes "and 1 Long Coat?";
+			next;
+			input .@input;
+			if (.@input != 450) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total defense of";
+			mes "a Biretta, Mantle,";
+			mes "Opera Mask, Ribbon,";
+			mes "Muffler, Boots, and";
+			mes "Ear Muffs?";
+			next;
+			input .@input;
+			if (.@input != 20) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "If you buy 5 Helms";
+			mes "with a 24 % discount";
+			mes "and sell it at 20";
+			mes "how much profit";
+			mes "do you earn?";
+			next;
+			input .@input;
+			if (.@input != 8800) set .@w_point,.@w_point+1;
+			break;
+		case 2:
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "13 + 25 + 37 + 48 = ?";
+			next;
+			input .@input;
+			if (.@input != 123) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "1000 - 58 - 214 - 416 = ?";
+			next;
+			input .@input;
+			if (.@input != 312) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "12 * 24 * 3 = ?";
+			next;
+			input .@input;
+			if (.@input != 864) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "10530 / 3 / 5 / 2 = ?";
+			next;
+			input .@input;
+			if (.@input != 351) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(35 * 19) - (1792 / 7) = ?";
+			next;
+			input .@input;
+			if (.@input != 409) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(2368 / 8) + (24 * 17) = ?";
+			next;
+			input .@input;
+			if (.@input != 704) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(2646 / 7) + (13 * 28) = ?";
+			next;
+			input .@input;
+			if (.@input != 742) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total price of";
+			mes "15 Green Potions,";
+			mes "6 Magnifiers and";
+			mes "4 Traps after";
+			mes "a 24 % discount?";
+			next;
+			input .@input;
+			if (.@input != 934) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total weight of";
+			mes "3 Ring Pommel Sabers,";
+			mes "4 Caps, and 2 Boots?";
+			next;
+			input .@input;
+			if (.@input != 550) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total defense of";
+			mes "a Buckler, Long Coat,";
+			mes "Gas Mask, Big Ribbon,";
+			mes "Cute Ribbon, Sakkat,";
+			mes "and Glasses?";
+			next;
+			input .@input;
+			if (.@input != 16) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "How much profit do you";
+			mes "make if you buy Tights";
+			mes "at a 24 % discount and";
+			mes "sell it at 20 % of";
+			mes "the normal price?";
+			next;
+			input .@input;
+			if (.@input != 8520) set .@w_point,.@w_point+1;
+			break;
+		case 3:
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "12 + 23 + 34 + 45 = ?";
+			next;
+			input .@input;
+			if (.@input != 114) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "1000 - 58 - 214 - 416 = ?";
+			next;
+			input .@input;
+			if (.@input != 312) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "14 * 17 * 3 = ?";
+			next;
+			input .@input;
+			if (.@input != 714) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "10530 / 3 / 5 / 2 = ?";
+			next;
+			input .@input;
+			if (.@input != 351) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(47 * 28) - (1376 / 4) = ?";
+			next;
+			input .@input;
+			if (.@input != 972) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "(2646 / 7) + (13 * 28) = ?";
+			next;
+			input .@input;
+			if (.@input != 742) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total cost of";
+			mes "6 Red Potions,";
+			mes "7 Green Potions,";
+			mes "and 8 Fly Wings";
+			mes "after a 24 % discount?";
+			next;
+			input .@input;
+			if (.@input != 798) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total weight of";
+			mes "2 Ring Pommel Sabers,";
+			mes "3 Caps, and 3 boots?";
+			next;
+			input .@input;
+			if (.@input != 480) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "What is the";
+			mes "total defense of";
+			mes "a Mirror Shield, Mr. Smile, Leather Jacket, Silk Robe, Wedding Veil, Muffler, and Eye Patch?";
+			next;
+			input .@input;
+			if (.@input != 12) set .@w_point,.@w_point+1;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "If you buy 4 Padded Armors";
+			mes "at a 25% discount and sell";
+			mes "them at 20% of the original";
+			mes "price, how much profit would";
+			mes "you make from this sale?";
+			next;
+			if (.@input != 7680) set w_point,w_point+1;
+		}
+		if (.@w_point == 0) {
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Ooh...";
+			mes "Excellent! Great!";
+			mes "You got them all correct!?";
+			mes "Keheheh, I have no choice but to acknowledge you...";
+			next;
+		}
+		else if (.@w_point == 1) {
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "You got one wrong!";
+			mes "But I'll let it slide.";
+			mes "You pass the interview!";
+			next;
+		}
+		else if (.@w_point == 2 && ALCH_Q == 5) {
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "You've got serious";
+			mes "weaknesses in math,";
+			mes "but I'll let you go this time...";
+			next;
+		}
+		else {
+			set ALCH_Q,5;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Keheheh! Idiot!";
+			mes "Just listening to your";
+			mes "answers is making me feel";
+			mes "stupider! You might as well";
+			mes "have got them all wrong!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "How can a person that";
+			mes "can't even answer all of";
+			mes "these simple questions think";
+			mes "of becoming an Alchemist?!";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Hm...?";
+			mes "Did you get";
+			mes "any right?";
+			next;
+			mes "[拉斯普琴 克勒咕哩]";
+			mes "Fool! Even if you make one little mistake, everything goes wrong";
+			mes "in Alchemy! Now get out of here!";
+			mes "You make me sick!";
+			close;
+		}
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "So hurry up, become an Alchemist, do some good research, and you might turn out to be of some help to me. Hahahahahaha~!";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Now go to 塔羅西亞!";
+		mes "He'll teach you how to do the experiments. Just tell him that";
+		mes "I sent you.";
+		set ALCH_Q,6;
+		close;
+	}
+	else if (ALCH_Q == 5) {
+		mes "What...?!";
+		mes "You want to take";
+		mes "the test again?!";
+		mes "I thought I told";
+		mes "you to leave!";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "I don't like it...";
+		mes "I don't like this!";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Fine...";
+		mes "I'll try to overlook your pitiful performance last time and give";
+		mes "you another chance. Don't screw";
+		mes "up again, got it?";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Now then,";
+		mes "give me all the";
+		mes "^551A8Bright^000000 answers";
+		mes "this time.";
+		next;
+		goto L_AskQuestions;
+	}
+	else if (ALCH_Q == 6) {
+		mes "What are you doing?";
+		mes "Go and find 塔羅西亞 now.";
+		next;
+		mes "[拉斯普琴 克勒咕哩]";
+		mes "Keheheheheheheheh~";
+		mes "Don't think this is the end of it!";
+		close;
+	}
+	mes "Keheheheheheheheh~";
+	mes "Don't think this is the end of it!";
+	close;
 }
 
-
-//==================================================================================================//
-//					Job Changer
-//==================================================================================================//
-alde_alche.gat,101,184,4	script	精通 鍊金術士	122,{
-	mes "[賓珊特 卡樂士阿羅]";
-	if(Class == 5 || Class == 4006) goto L_Merc;
-	if(Class == 18 || Class == 4019) goto L_Alch;
-L_Other:
-	mes "啊? 平民百姓到這裡來做什麼??";
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "這裡沒什麼好玩的東西，快離開吧.";
-	close;
-L_Alch:
-	mes "啊? 鍊金術要注意什麼? 永遠萬事小心，以安全為前題.";
-	mes "我可不想你把自己給炸掉或炸掉任何東西.....";
-	close;
-L_Merc:
-	if(ALCH_Q == 7) goto L_Change;
-	mes "啊? 商人?";
-	mes "你對鍊金術有興趣嗎?";
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "這裡是鍊金術士公會";
-	mes "我們研究各種不同的物質.";
-	mes "我們的目的是以非魔法的手段創造新的物質.";
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "創造新的生活，研究長生不老與不死藥...";
-	mes "我們也製造出以前所沒有的新原料...";
-	mes "這只是一小部分我們做的事而已.";
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "作商人那麼久了";
-	mes "你應該對每一樣東西都很感興趣吧?";
-	mes "如果你也對鍊金術有興趣的話";
-	mes "要不要加入我們鍊金術士公會啊?";
-	close;
-L_Change:
-	if(skillpoint != 0) goto L_Skpoint;
-	mes "噢! 好的! 你已經加入鍊金術士公會，而且也學了一些基本的東西，幹得好!";
-	next;
-	setoption 0;
-	callfunc "Job_Change",Job_Alchem;
-	jobchange 18;
-	emotion 46;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "從現在開始，你就是鍊金術士公會所承認的一名鍊金術士了.";
-	mes "我希望你能繼續不斷地學習...";
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "這本說明書送給你";
-	mes "就從這裡開始你的各項研究吧!";
-	set @jobgift,rand(1,6);
-	if(JobLevel > 49) set @jobgift,0;
-	if(@jobgift==1) getitem 7127,1;
-	if(@jobgift==2) getitem 7128,1;
-	if(@jobgift==3) getitem 7129,1;
-	if(@jobgift==4) getitem 7130,1;
-	if(@jobgift==5) getitem 7131,1;
-	if(@jobgift==6) getitem 7132,1;
-	if(@jobgift==0) getitem 7133,1;
-	next;
-	mes "[賓珊特 卡樂士阿羅]";
-	mes "那麼，有機會再見吧...";
-	mes "要以身為一名鍊金術士為榮!";
-	close;
-
-	L_Skpoint:
-		mes "你還有一些必備技能還沒學會吧? 等你先學會那些技能之後，再來申請吧";
+alde_alche,13,15,7	script	研究者#am	750,{
+	mes "[塔羅西亞]";
+	if (BaseJob != Job_Merchant) {
+		if (BaseJob == Job_Alchemist) {
+			mes "啊....是你來了嗎....這樣啊";
+			mes "是為了成為優秀的鍊金術師來的吧....";
+			next;
+			mes "[塔羅西亞]";
+			mes "如果有像幻想花....";
+			mes "那樣美麗而皎潔的花....啊啊....";
+			next;
+			mes "[塔羅西亞]";
+			mes "能看到那個光的話這事就可以完成";
+			mes "可愛的莫哈娜....";
+			mes "哈哈哈哈....";
+			close;
+		}
+		else {
+			mes "不再有任何得失了....";
+			mes "本來就是這樣....";
+			next;
+			mes "[塔羅西亞]";
+			mes "在被我詛咒的眼睛里映照著遺失許久的幻想";
+			mes "啊哈哈哈哈....";
+			next;
+			mes "[塔羅西亞]";
+			mes "沒有所謂的樂園....對吧....";
+			mes "我所愛的哈莫娜....啊啊....";
+			close;
+		}
+	}
+	if (ALCH_Q == 6) {
+		mes "...";
+		next;
+		mes "[塔羅西亞]";
+		mes "...";
+		mes "......";
+		next;
+		mes "[塔羅西亞]";
+		mes "...";
+		mes "......";
+		mes "Who is it...?";
+		next;
+		monster "alde_alche",13,15,"Wolf",1013,1;
+		killmonsterall "alde_alche";
+		mes "[塔羅西亞]";
+		mes "A wolf?";
+		mes "Or a human?";
+		mes "You must be seeking";
+		mes "something, are you not?";
+		next;
+		mes "[塔羅西亞]";
+		mes "After all...";
+		mes "Everyone has desires";
+		mes "to fulfill. Be be careful.";
+		mes "Do not be like the wild";
+		mes "wolf drawn to the flowers.";
+		next;
+		mes "[塔羅西亞]";
+		mes "In your efforts to gain something else, you may end up sacrificing something precious to you.";
+		next;
+		mes "[塔羅西亞]";
+		mes "Cultivating joy and happiness";
+		mes "is much like cultivating flowers.";
+		mes "If something is missing, the";
+		mes "flower will wilt away...";
+		next;
+		mes "[塔羅西亞]";
+		mes "What brings you";
+		mes "to this kind of place?";
+		next;
+		switch(select("I want to learn how to experiment.:Tell me more about flowers.:Nothing.")) {
+		case 1:
+			mes "[塔羅西亞]";
+			mes "你想學鍊金術...";
+			mes "我所擁有的全部知識..";
+			mes "為了讓我的夢想成真...";
+			next;
+			mes "[塔羅西亞]";
+			mes "我先教你基本的....";
+			mes "要怎麼做，最後還是要你自己判斷....";
+			next;
+			mes "[塔羅西亞]";
+			mes "好吧，這些都是最基本的.";
+			mes "要製造一些最簡單的藥劑...";
+			mes "準備一些材料...";
+			next;
+			mes "[塔羅西亞]";
+			mes "^3355FF藥缽^000000 3個";
+			mes "^3355FF空瓶^000000 3個";
+			mes "^3355FF紅色藥草^000000 1個";
+			mes "^3355FF黃色藥草^000000 1個";
+			mes "^3355FF白色藥草^000000 1個";
+			next;
+			mes "[塔羅西亞]";
+			mes "等你準備好了....再來吧";
+			close;
+		case 2:
+			mes "[塔羅西亞]";
+			mes "Flowers...?";
+			mes "In the darkest";
+			mes "recesses of my mind,";
+			mes "there is a blossum";
+			mes "that I faintly remember...";
+			next;
+			mes "[塔羅西亞]";
+			mes "For the one that";
+			mes "I love, I put all";
+			mes "of my efforts into";
+			mes "researching that one thing.";
+			next;
+			mes "[塔羅西亞]";
+			mes "I won't tell you the details,";
+			mes "but I was basically researching";
+			mes "the relationship between";
+			mes "wolves and flowers.";
+			next;
+			mes "[塔羅西亞]";
+			mes "But yes...";
+			mes "It was a flower.";
+			mes "With its shine, it was said";
+			mes "to let you see paradise.";
+			mes "The ^551A8BIllusion Flower^000000...";
+			next;
+			mes "[塔羅西亞]";
+			mes "I even made";
+			mes "a Homunculus,";
+			mes "but no one believed that I could create new life from a flower...";
+			next;
+			mes "[塔羅西亞]";
+			mes "Then...";
+			mes "Well, some other things happened, and now I have nothing left. Time no longer has any meaning for me.";
+			next;
+			mes "[塔羅西亞]";
+			mes "Ahh...";
+			mes "Harmona...";
+			mes "Where have you gone?";
+			mes "I hope you're in a field";
+			mes "of beautiful flowers...";
+			close;
+		case 3:
+			mes "[塔羅西亞]";
+			mes "Consider what";
+			mes "is most precious";
+			mes "to you. It cannot";
+			mes "be protected if you";
+			mes "do not recognize it.";
+			close;
+		}
+	}
+	else if (ALCH_Q == 7) {
+		mes "...";
+		mes "......";
+		next;
+		mes "[塔羅西亞]";
+		mes "...";
+		mes "......";
+		mes "Who is it...?";
+		next;
+		mes "[塔羅西亞]";
+		mes "Ah...";
+		mes "You are the one who";
+		mes "wishes to learn Alchemy.";
+		mes "Have you prepared everything?";
+		next;
+		if (countitem(710) > 0) {
+			mes "[塔羅西亞]";
+			mes "Wait.";
+			mes "That Illusion Flower.";
+			mes "How did you get that?";
+			next;
+			mes "[塔羅西亞]";
+			mes "Where did you find it?!";
+			mes "The flower that slowly";
+			mes "blooms under the";
+			mes "moonlight?";
+			mes "It's beautiful...!";
+			next;
+			mes "[塔羅西亞]";
+			mes "Th-That flower...";
+			mes "Please let me see it.";
+			mes "The Illusion Flower!";
+			mes "Uwaaaaaaah!!";
+			next;
+			mes "[塔羅西亞]";
+			mes "Would you be so kind";
+			mes "as to let me have this flower?";
+			mes "I'm sure that this is the Moonlight Flower that I've been seeking!";
+			next;
+			if (select("Sorry, I can't give it to you.:I brought it to give to you.") == 1) {
+				mes "[塔羅西亞]";
+				mes "I understand.";
+				mes "You can't give";
+				mes "such a precious";
+				mes "flower to just anyone.";
+				mes "Well... It's okay.";
+				next;
+				mes "[塔羅西亞]";
+				mes "It just brought back old memories. I shouldn't have asked in the first place. In any case, please bring what is needed for the experiment.";
+				next;
+				mes "[塔羅西亞]";
+				mes "Please leave that flower";
+				mes "somewhere else. It brings";
+				mes "back too many memories...";
+				close;
+			}
+			mes "[塔羅西亞]";
+			mes "Are you";
+			mes "serious?!";
+			mes "Thank you!";
+			mes "Such a precious flower.";
+			mes "Ah, Harmona, my love...";
+			next;
+			mes "[塔羅西亞]";
+			mes "Yes...";
+			mes "I shall repay you for this.";
+			mes "I shall plant all of my knowledge of Alchemy directly into your mind...";
+			next;
+			mes "[塔羅西亞]";
+			mes "Open your eyes wide,";
+			mes "and look into my eyes!!";
+			mes "Don't stop until the end!!";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			mes "Aenean fermentum ullamcorper.";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			mes "Aenean fermentum ullamcorper.";
+			mes "Vestibulum ante ipsum primis in";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			mes "Aenean fermentum ullamcorper.";
+			mes "Vestibulum ante ipsum primis in";
+			mes "faucibus orci luctus et ultrices";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			mes "Aenean fermentum ullamcorper.";
+			mes "Vestibulum ante ipsum primis in";
+			mes "faucibus orci luctus et ultrices";
+			mes "posuere cubilia Curae; Morbi";
+			next;
+			mes "Lorem ipsum dolor sit amet,";
+			mes "consectetuer adipiscing elit.";
+			mes "Aenean fermentum ullamcorper.";
+			mes "Vestibulum ante ipsum primis in";
+			mes "faucibus orci luctus et ultrices";
+			mes "posuere cubilia Curae; Morbi";
+			mes "massa, fermentum vitae...";
+			next;
+			delitem 710,1; //Illusion_Flower
+			mes "[塔羅西亞]";
+			mes "^666666*Gasp...*^000000";
+			mes "You are now";
+			mes "an Alchemist!!";
+			mes "Go to the Union";
+			mes "and cast away the last";
+			mes "vestiges of Merchant life!!";
+			set ALCH_Q,40;
+			close;
+		}
+		else if (countitem(7134) > 2 && countitem(713) > 2 && countitem(507) > 0 && countitem(508) > 0 && countitem(509) > 0) {
+			mes "[塔羅西亞]";
+			mes "Seems like you have everything ready. As promised, I will teach you how to make simple medicine.";
+			next;
+			mes "[塔羅西亞]";
+			mes "First, prepare the Medicine Bowl. Then, you put the Herbs inside, like this, and slowly crush them.";
+			next;
+			mes "[塔羅西亞]";
+			mes "Pour small amounts";
+			mes "of clean water and stir";
+			mes "the mixture until it thickens.";
+			mes "Afterwards, add some more Herbs.";
+			next;
+			mes "[塔羅西亞]";
+			mes "That's how you make it. If you think you have enough, gently pour the mixture into an empty bottle.";
+			delitem 7134,3; //Medicine_Bowl
+			delitem 713,3; //Empty_Bottle
+			delitem 507,1; //Red_Herb
+			delitem 508,1; //Yellow_Herb
+			delitem 509,1; //White_Herb
+			next;
+			mes "[塔羅西亞]";
+			mes "There you go,";
+			mes "it's complete.";
+			mes "Now, make some medicine";
+			mes "using the simple procedure";
+			mes "I just explained to you.";
+			set w_point,0;
+			next;
+			switch(select("Prepare the Medicine Bowl.:Put the Medicine Bowl on your head.:Kick the Medicine Bowl.")) {
+			case 1:
+				break;
+			case 2:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "What...?";
+				next;
+				break;
+			case 3:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "No!";
+				next;
+				break;
+			}
+			switch(select("Put some dirt in the Medicine Bowl.:Put some Herbs in the Medicine Bowl.:Put a Harp in the Medicine Bowl.")) {
+			case 1:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "...Eh!?";
+				mes "That's not";
+				mes "medicine!";
+				next;
+				break;
+			case 2:
+				break;
+			case 3:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "A Harp?";
+				mes "And how would";
+				mes "you do that?";
+				next;
+				break;
+			}
+			switch(select("Crush the Herbs.:Crush the Medicine Bowl.:Crush 塔羅西亞's foot.")) {
+			case 1:
+				break;
+			case 2:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Wh-What are";
+				mes "you doing!?";
+				next;
+				break;
+			case 3:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Agh...!";
+				mes "What do you";
+				mes "think you're";
+				mes "doing?!";
+				next;
+				break;
+			}
+			switch(select("Spray clean water.:Drink clean water.:Pour clean water.")) {
+			case 1:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Huh?";
+				mes "What are you doing?";
+				next;
+				break;
+			case 2:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "W-wait...";
+				mes "Are you";
+				mes "taking a break?";
+				next;
+				break;
+			case 3:
+				break;
+			}
+			switch(select("Continue crushing the Herbs.:Continue eating the Herbs.:Continue dancing and singing.")) {
+			case 1:
+				break;
+			case 2:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Eat the Herbs?";
+				mes "I think you need";
+				mes "to focus on the";
+				mes "task at hand...";
+				next;
+				break;
+			case 3:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Singing and";
+				mes "dancing? Alchemists";
+				mes "don't do that, have";
+				mes "you gone crazy?";
+				next;
+				break;
+			}
+			switch(select("Put noodles in and fry it.:Pour it in an empty bottle.:Hold the Medicine Bowl and drink it.")) {
+			case 1:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "We're Alchemists,";
+				mes "not restaurant chefs.";
+				next;
+				break;
+			case 2:
+				break;
+			case 3:
+				set .@w_point,.@w_point+1;
+				mes "[塔羅西亞]";
+				mes "Huh...";
+				mes "Pretty sloppy...";
+				next;
+				break;
+			}
+			if (.@w_point > 0) {
+				mes "[塔羅西亞]";
+				mes "...";
+				mes "......";
+				next;
+				mes "[塔羅西亞]";
+				mes "You messed up the mixture";
+				mes "since you didn't follow the procedure! Get some more ingredients so you can try it";
+				mes "again until you get it right.";
+				close;
+			}
+			getitem 501,1; //紅色藥水
+			getitem 503,1; //黃色藥水
+			getitem 504,1; //白色藥水
+			mes "[塔羅西亞]";
+			mes "Good job.";
+			mes "It came out pretty well considering it's your first time. Go ahead and keep the medicines that you've just made.";
+			set ALCH_Q,8;
+			next;
+			mes "[塔羅西亞]";
+			mes "Now, go into the next room";
+			mes "and speak to 班 黑文特 to";
+			mes "continue your training.";
+			next;
+			mes "[塔羅西亞]";
+			mes "Never forget...";
+			mes "You must always protect";
+			mes "what is most precious to you.";
+			close;
+		}
+		else {
+			mes "[塔羅西亞]";
+			mes "Have you forgotten";
+			mes "what you need to bring?";
+			mes "Let me remind you once";
+			mes "again. You must come";
+			mes "back with...";
+			next;
+			mes "[塔羅西亞]";
+			mes "^551A8B3 Medicine Bowls^000000,";
+			mes "^551A8B3 Empty Bottle^000000,";
+			mes "^551A8B1 Red Herb^000000,";
+			mes "^551A8B1 Yellow Herb^000000 and";
+			mes "^551A8B1 White Herb^000000.";
+			next;
+			mes "[塔羅西亞]";
+			mes "Come back";
+			mes "when you are";
+			mes "ready...";
+			close;
+		}
+	}
+	else if (ALCH_Q == 8) {
+		mes "I said to go";
+		mes "to 班 黑文特.";
+		mes "I'd like to teach you";
+		mes "more, but I can't.";
+		next;
+		mes "[塔羅西亞]";
+		mes "Aah...";
+		mes "Harmona, my love.";
+		mes "I can't even see the flower anymore. My soul quietly";
+		mes "withers as well..";
 		close;
+	}
+	else if (ALCH_Q == 40) {
+		mes "I have already given you all of my knowledge and have nothing more";
+		mes "to teach you.";
+		next;
+		mes "[塔羅西亞]";
+		mes "Go to the second floor and talk to speak to our Union Leader. Once";
+		mes "you do that, your life as an Alchemist will begin.";
+		close;
+	}
+	else {
+		mes "When you have";
+		mes "your dreams, you";
+		mes "have everything.";
+		mes "Without them, you have";
+		mes "nothing more to lose.";
+		next;
+		mes "[塔羅西亞]";
+		mes "These cursed eyes...";
+		mes "They've lost sight of";
+		mes "my dreams a long time ago.";
+		mes "Ha ha ha ha...";
+		next;
+		mes "[塔羅西亞]";
+		mes "Does paradise";
+		mes "really exist...?";
+		mes "Not without my love...";
+		mes "Not without Harmona...";
+		close;
+	}
+}
+
+alde_alche,79,19,5	script	Experiment Expert#am	748,{
+	mes "[班 黑文特]";
+	if (BaseJob != Job_Merchant) {
+		if (BaseJob == Job_Alchemist) {
+			mes "What do you want?";
+			mes "I'm busy!! Don't";
+			mes "bother me and get";
+			mes "on your way.";
+			next;
+			mes "[班 黑文特]";
+			mes "Now, come on...";
+			mes "You'll never get";
+			mes "any research completed if you just slack off. Go out and learn all that you can.";
+			next;
+			mes "[班 黑文特]";
+			mes "Reading science journals and performing experiments. That's what Alchemy is all about. Now, let me get back to work!";
+			close;
+		}
+		else {
+			mes "Just a little...";
+			mes "A little bit more...";
+			mes "Nooo! Just a little";
+			mes "bit more and it";
+			mes "would've been done!";
+			next;
+			mes "[班 黑文特]";
+			mes "Why...?!";
+			mes "Why, another failure?!";
+			mes "My calculations were";
+			mes "all correct! W-Wait...!";
+			next;
+			mes "[班 黑文特]";
+			mes "Perhaps, if I capacitated the thermal flux by using the neutronic gradient, it just might work...!";
+			close;
+		}
+	}
+	if (ALCH_Q == 8) {
+		mes "Arrrrgh...!";
+		mes "Why isn't this formula working? What's wrong? In theory, it's all correct, but there must be an error in the formula somewhere...";
+		next;
+		mes "[班 黑文特]";
+		mes "I pour it in here, and it should stop. Wait, this is the wrong solution! How could I make such";
+		mes "a dumb mistake?! When did these";
+		mes "get switched?!";
+		next;
+		mes "[班 黑文特]";
+		mes "Okay, okay...";
+		mes "I just need to fix this part.";
+		mes "No need to start over. I just";
+		mes "need to fix it... But wait. Wait...";
+		next;
+		mes "[班 黑文特]";
+		mes ".................";
+		next;
+		mes "[班 黑文特]";
+		mes "Um...";
+		mes "Who are you?";
+		next;
+		if (select("I want to become an Alchemist.:.......") == 2) {
+			mes "[班 黑文特]";
+			mes "Hmm...?";
+			mes "What, did you just want to watch? Fine, fine, but do it quietly and leave right when you're done.";
+			next;
+			mes "[班 黑文特]";
+			mes "Stay out of my way and don't go around touching stuff. There might be some volatile materials, so it'd be dangerous to have any accidents.";
+			close;
+		}
+		mes "[班 黑文特]";
+		mes "You...?";
+		mes "An Alchemist?";
+		mes "What a funny Merchant.";
+		next;
+		mes "[班 黑文特]";
+		mes "Well, that's nice, but I have very urgent experiments that require";
+		mes "my attention, so don't get";
+		mes "in the way.";
+		next;
+		if (select("Teach me something.:...") == 1) {
+			mes "[班 黑文特]";
+			mes "Argh...!";
+			mes "Didn't I just tell you not to bother me? What's so hard to understand about that?";
+			next;
+			mes "[班 黑文特]";
+			mes "Fine, fine. I'll give you an assignment. Learn something";
+			mes "new and come back. Let's see.";
+			mes "What would be good...";
+			next;
+			mes "[班 黑文特]";
+			mes "Okay, I got it.";
+			mes "Go learn how to make";
+			mes "a Counteragent and Mixture";
+			mes "from Molgenstein.";
+			next;
+			mes "[班 黑文特]";
+			mes "You don't need to bring anything. Just go watch him at work and have him tell you how he makes those solutions. Got it?";
+			next;
+			mes "[班 黑文特]";
+			set ALCH_Q,9;
+			mes "Well then, see you later.";
+			mes "You'd better get going as";
+			mes "soon as you can.";
+			close;
+		}
+		mes "[班 黑文特]";
+		mes "...";
+		next;
+		mes "[班 黑文特]";
+		mes "...";
+		mes "......";
+		next;
+		mes "[班 黑文特]";
+		mes "...";
+		mes "......";
+		next;
+		mes "[班 黑文特]";
+		mes "So if I recalibrate the combustion rate of this compound, that should negate any cohesive tendencies in this particle flux...";
+		next;
+		mes "[班 黑文特]";
+		mes "But what am I going to do";
+		mes "about all of this spontaneous";
+		mes "crystallization?! I can't very well remove this matrix, I need it for the catalyst to reach the triple point.";
+		next;
+		mes "[班 黑文特]";
+		mes "Damn!";
+		mes "What am";
+		mes "I going to do?!";
+		close;
+	}
+	else if (ALCH_Q == 9) {
+		mes "Alright, if I make an incision here in the Tentacle, and add a Jellopy and Sticky Mucus solution into the... Where the hell did my Medicine Bowl go?";
+		next;
+		mes "[班 黑文特]";
+		mes "Did I use them all at a time like this?! I wonder if Nicholas has any left. Ugh, what a pain. Wait. Wait a minute...";
+		next;
+		mes "[班 黑文特]";
+		mes "...";
+		next;
+		mes "[班 黑文特]";
+		mes "...";
+		mes "......";
+		mes "Who are you?";
+		next;
+		if (select("I want to become an Alchemist?:.......") == 2) {
+			mes "[班 黑文特]";
+			mes "Hmm...?";
+			mes "What, did you just want to watch? Fine, fine, but do it quietly and leave right when you're done.";
+			next;
+			mes "[班 黑文特]";
+			mes "Stay out of my way and don't go around touching stuff. There might be some volatile materials, so it'd be dangerous to have any accidents.";
+			close;
+		}
+		mes "[班 黑文特]";
+		mes "Ah, of course. The Merchant from before. So what did you learn from Molgenstein? I didn't just send you there for fun, you know.";
+		next;
+		mes "[班 黑文特]";
+		mes "Let me ask you";
+		mes "some questions to";
+		mes "check what you've";
+		mes "learned.";
+		next;
+		if(MISC_QUEST & 4) {
+			mes "[班 黑文特]";
+			mes "Which item is not";
+			mes "necessary to make";
+			mes "a Counteragent?";
+			next;
+			if (select("Karvodailnirol:Detrimindexta:Alcohol") != 1) set .@w_point,.@w_point+1;
+			mes "[班 黑文特]";
+			mes "What item is not";
+			mes "necessary to make";
+			mes "a Mixture?";
+			next;
+			if (select("Karvodailnirol:Detrimindexta:Alcohol") != 2) set .@w_point,.@w_point+1;
+			if (.@w_point > 0) {
+				mes "[班 黑文特]";
+				mes "Weren't you listening to Molgenstein at all? Maybe you";
+				mes "have to watch him make it again.";
+				next;
+				mes "[班 黑文特]";
+				mes "If you can't tell the exact items that you need in an experiment,";
+				mes "you might end up hurting yourself!";
+				close;
+			}
+			mes "[班 黑文特]";
+			mes "Good, you've learned well.";
+			mes "Okay, now you know something about experimentation. You're done here, so now I can continue with my experiments.";
+			next;
+			mes "[班 黑文特]";
+			mes "Go out and find the room next";
+			mes "to this one and talk to Nicholas. He'll continue your training.";
+			next;
+			set ALCH_Q,20;
+			mes "[班 黑文特]";
+			mes "What are you";
+			mes "still doing here?";
+			mes "Go! We both have";
+			mes "more important";
+			mes "things to do!";
+			close;
+		}
+		else {
+			mes "[班 黑文特]";
+			mes "What item do";
+			mes "you need to make";
+			mes "a Counteragent?";
+			next;
+			select("Feather:Sticky Mucus:Animal Gore");
+			mes "[班 黑文特]";
+			mes "What item do";
+			mes "you need to make";
+			mes "a Mixture?";
+			next;
+			select("Monster Feed:Ancient Lips:Rotten Bandage");
+			mes "[班 黑文特]";
+			mes "Be honest. You don't know, do you?! Didn't I say to go to Molgenstein and have him teach you?!";
+			next;
+			mes "[班 黑文特]";
+			mes "Don't even think about coming back until you talk to him! Now stop bothering me and get out of here!";
+			close;
+		}
+	}
+	else if (ALCH_Q == 20) {
+		mes "What...?";
+		mes "I thought I told you to";
+		mes "talk to Nicholas next door?";
+		next;
+		mes "[班 黑文特]";
+		mes "I need to continue my research,";
+		mes "and you need to finish becoming an Alchemist. Come on, get moving!";
+		close;
+	}
+	else {
+		mes "Just a little...";
+		mes "A little bit more...";
+		mes "Nooo! Just a little";
+		mes "bit more and it";
+		mes "would've been done!";
+		next;
+		mes "[班 黑文特]";
+		mes "Why...?!";
+		mes "Why, another failure?!";
+		mes "My calculations were";
+		mes "all correct! Wait...";
+		next;
+		mes "[班 黑文特]";
+		mes "Perhaps, if I capacitated the thermal flux by using the neutronic gradient, it just might work...";
+		close;
+	}
+}
+
+alde_alche,101,184,4	script	精通 鍊金術師#am	122,{
+	cutin "job_alche_vincent",2;
+	mes "[賓珊特 卡樂士阿羅]";
+	if (Upper == 1) {
+		mes "You have transcended...";
+		mes "Excellent, excellent.";
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "You don't belong here.";
+		mes "Go and explore the wide world, my friend.";
+		close2;
+		cutin "",255;
+		end;
+	}
+	if (BaseJob != Job_Merchant) {
+		if (BaseJob == Job_Alchemist) {
+			mes "研究進度如何了?";
+			mes "製作藥品的時候要非常注意啊";
+			next;
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "有時候實驗失敗會帶來不可預料的後果!";
+			mes "在很多實驗中都必須非常小心";
+			next;
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "做出了新的人工生命體時，";
+			mes "一定要向公會匯報哦";
+			mes "大家都在積極的研究中呢";
+			mes "你也要加油哦!";
+		}
+		else if (BaseClass == Job_Novice) {
+			mes "小朋友不準在這";
+			mes "在這兒玩會受傷的";
+			next;
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "看看，這裡有很多很危險的東西呢";
+			mes "到外面玩吧";
+		}
+		else {
+			mes "Hmm...?";
+			mes "What's an adventurer";
+			mes "doing here in the";
+			mes "Alchemist Union?";
+			next;
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "I'm afraid there's";
+			mes "not much we can offer";
+			mes "you here if you're not";
+			mes "a member of our Union.";
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+	if (ALCH_Q == 0) {
+		mes "Hmm...?";
+		mes "A Merchant?";
+		mes "Are you interested";
+		mes "in learning Alchemy?";
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "This is the Alchemist Union.";
+		mes "We research and experiment with many different substances in order to create new materials without using magic.";
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "Someday, we hope to unlock";
+		mes "the secret of life, as well as the other mysteries of science.";
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "After being traveling as a Merchant for a long time, you must have developed some scientific curiosity. If you'd like to learn Alchemy, why don't you try joining the Alchemist Union?";
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if (ALCH_Q == 40) {
+		if (JobLevel < 40) {
+			set ALCH_Q,0;
+			mes "Hmm...you don't seem to be qualified yet.";
+			mes "Remember, you must reach at least job level 40 to become an Alchemist.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if (SkillPoint) {
+			mes "Ah, you're almost";
+			mes "ready to become an";
+			mes "Alchemist, but you must";
+			mes "first allocate your unused";
+			mes "Skill Points.";
+			next;
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "Talk to me again";
+			mes "once you have spent";
+			mes "all of your extra";
+			mes "Skill Points.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		mes "Ah, well done.";
+		mes "I can see that you";
+		mes "have learned all of";
+		mes "the basics of Alchemy.";
+		next;
+		set ALCH_Q,0;
+		set .@jlevel,JobLevel;
+		callfunc "Job_Change",Job_Alchemist;
+		callfunc "F_ClearJobVar";
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "Henceforth, you are";
+		mes "now a member of our";
+		mes "illustrious Union.";
+		mes "I hope you learn a lot...";
+		next;
+
+		if (.@jlevel == 50) {
+			getitem 7133,1; //Slim_Potion_Create_Book
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "Let me give you";
+			mes "something special.";
+			mes "You can use this to";
+			mes "begin your life";
+			mes "of research.";
+		}
+		else {
+			switch(rand(1,6)) {
+			case 1:
+				getitem 7127,1; //Alcol_Create_Book
+				break;
+			case 2:
+				getitem 7128,1; //FireBottle_Create_Book
+				break;
+			case 3:
+				getitem 7129,1; //Acid_Create_Book
+				break;
+			case 4:
+				getitem 7130,1; //Plant_Create_Book
+				break;
+			case 5:
+				getitem 7131,1; //Mine_Create_Book
+				break;
+			case 6:
+				getitem 7144,1; //Normal_Potion_Book
+			}
+			mes "[賓珊特 卡樂士阿羅]";
+			mes "And...";
+			mes "Here's a little";
+			mes "something to help";
+			mes "you begin your";
+			mes "research.";
+		}
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "I'll see";
+		mes "you later then...";
+		mes "Remember to carry";
+		mes "yourself with pride";
+		mes "as an Alchemist!";
+		close2;
+		cutin "",255;
+		end;
+	}
+	else {
+		mes "Ah...";
+		mes "I believe you've";
+		mes "already registered";
+		mes "for training to become";
+		mes "an Alchemist.";
+		next;
+		mes "[賓珊特 卡樂士阿羅]";
+		mes "Please listen to the";
+		mes "other Alchemists and follow their instructions carefully. You will learn much from them.";
+		close2;
+		cutin "",255;
+		end;
+	}
+}
+
+alde_alche,145,19,1	script	Chief Researcher#am	57,{
+
+	if (ALCH_Q > 19 && ALCH_Q < 22) {
+		if (ALCH_Q == 20) {
+			mes "[Nicholas Flamel]";
+			mes "Ooh...";
+			mes "You're the upstart";
+			mes "Merchant that wants";
+			mes "to become an Alchemist?";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Not just anyone can become an Alchemist, you know. You've got to have motivation and clear goals and a strong sense of focus.";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Alchemists must memorize many chemical equations, scientific laws and a lot of other information. It's actually pretty tough.";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "If you can't focus, you'll be confused later when you look at Alchemy charts. My test will judge your ability to do just that.";
+			next;
+		}
+		mes "[Nicholas Flamel]";
+		mes "Find the words scrambled";
+		mes "in the group of letters I give you. They can be made by using some";
+		mes "or all of the letters.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "You pass if you";
+		mes "choose the word";
+		mes "that is ^551A8BIN^000000 the puzzle.";
+		next;
+		switch(rand(1,3)) {
+		case 1:
+			mes "t m y a n y e o b n e g p r i";
+			next;
+			if (select("Brake:Brass:Bug:Broken:Brigan?") == 5) set .@alch_t,.@alch_t+10;
+			mes "o n c u t a p j l e r s v m u";
+			next;
+			if (select("vendor:storage:weapon:simple:streetshop") == 1) set .@alch_t,.@alch_t+10;
+			mes "t v a r m e g p h e u b o y l";
+			next;
+			if (select("molasses:party:leader:sweets:treacle") == 2) set .@alch_t,.@alch_t+10;
+			mes "q z a h n a i n b r d p t n c";
+			next;
+			if (select("partisan:partizan:pato:paros:pack") == 2) set .@alch_t,.@alch_t+10;
+			break;
+		case 2:
+			mes "m p d i c f a r o g n k w a s";
+			next;
+			if (select("packman:sunshine:ragnarok:wonderland:frost") == 1) set .@alch_t,.@alch_t+10;
+			mes "g b n o p r e f a r e t a s k";
+			next;
+			if (select("purple:smoker:ragnarok:bolt:burnt wood") == 3) set .@alch_t,.@alch_t+10;
+			mes "u g n i s j e k c e o g n d p";
+			next;
+			if (select("scab:kinship:donate:source:opening") == 5) set .@alch_t,.@alch_t+10;
+			mes "r o e h n r o m c a i n p t t";
+			next;
+			if (select("forgemerchant:potionmerchant:dcmerchant:vendingmerchant:battlemerchant") == 2) set .@alch_t,.@alch_t+10;
+			break;
+		case 3:
+			mes "s m i e x b w u n e t a g l r";
+			next;
+			if (select("tiger:wolf:pumpkin:tripped:tore") == 1) set .@alch_t,.@alch_t+10;
+			mes "n i e g b o p d s o a u w r v";
+			next;
+			if (select("bash:provoke:endure:stun:abracadabra") == 3) set .@alch_t,.@alch_t+10;
+			mes "l r m g r e x t a v i n e d e";
+			next;
+			if (select("alberta:latifoliate:crimson:maple:evergreen") == 5) set .@alch_t,.@alch_t+10;
+			mes "r o e h n r o m c a i n p t t";
+			next;
+			if (select("forgemerchant:potionmerchant:dcmerchant:vendingmerchant:battlemerchant") == 2) set .@alch_t,.@alch_t+10;
+			break;
+		}
+		mes "[Nicholas Flamel]";
+		mes "Ah, you finished.";
+		mes "Now, let's see...";
+		if (.@alch_t > 30) {
+			set ALCH_Q,22;
+			mes "Excellent job!";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Great, you found all of those hidden words. With that kind of concentration, you should have no problem memorizing information.";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Come back in a little bit while";
+			mes "I prepare the next assignment";
+			mes "for your training.";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Oh, and before you talk to";
+			mes "me again, make sure you have";
+			mes "^551A8Bplenty of room in your inventory^000000.";
+			close;
+		}
+		else {
+			set ALCH_Q,21;
+			mes "^666666*Gasp!*^000000 H-horrible!";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Judging from these results, you obviously have a problem with concentrating.";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "If you can't even solve these easy word puzzles, how can you keep track of your experiments and research?";
+			next;
+			mes "[Nicholas Flamel]";
+			mes "Why don't you relax";
+			mes "and rest a bit before";
+			mes "you take the test again?";
+			close;
+
+		}
+	}
+	else if (ALCH_Q == 22) {
+		set .@now_weight,MaxWeight-Weight;
+		if (.@now_weight < 1370) {
+			mes "[Nicholas Flamel]";
+			mes "Whoa...";
+			mes "You're carrying too much stuff! First, put some of your things in Kafra Storage.";
+			close;
+		}
+		mes "[Nicholas Flamel]";
+		mes "Alright...";
+		mes "For your next";
+		mes "assignment, you'll";
+		mes "need to travel to ^551A8BJuno^000000.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "There, you'll need to talk to ^551A8BBain^000000 and ^551A8BBajin^000000. Those two are doing Alchemy research with the Sages";
+		mes "in Juno. You'll learn something by assisting them with their project.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "Come back here to me after you";
+		mes "help them out. They'll need all of these items to continue their experiments.";
+		next;
+		set ALCH_Q,23;
+		mes "[Nicholas Flamel]";
+		mes "1 Mixture,";
+		mes "5 Burnt Tree,";
+		mes "5 Fine Sand,";
+		mes "3 Rough Oridecon";
+		mes "and 3 Rough Elunium.";
+		getitem 974,1; //Mixture
+		getitem 7068,5; //Burn_Tree
+		getitem 7043,5; //Fine_Sand
+		getitem 756,3; //Oridecon_Stone
+		getitem 757,3; //Elunium_Stone
+		next;
+		mes "[Nicholas Flamel]";
+		mes "Alright.";
+		mes "Have a safe trip";
+		mes "and come back in";
+		mes "one piece.";
+		close;
+	}
+	else if (ALCH_Q == 23) {
+		mes "[Nicholas Flamel]";
+		mes "Didn't I say to";
+		mes "go to Juno and help";
+		mes "Bain and Bajin with";
+		mes "their Alchemy research?";
+		close;
+	}
+	else if (ALCH_Q == 24) {
+		set ALCH_Q,40;
+		mes "[Nicholas Flamel]";
+		mes "Ah, you're back!";
+		mes "I just got a message from Bain";
+		mes "and Bajin. They let me know that they were very happy with your assistance.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "If you were good enough";
+		mes "to help out those brothers,";
+		mes "you definitely qualify to be";
+		mes "an Alchemist.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "Good work!";
+		mes "All you have to do now is speak to the Union Leader on the 2nd floor! Congratulations, you'll become an Alchemist very soon!";
+		close;
+	}
+	else if (ALCH_Q == 40 && BaseJob == Job_Merchant) {
+		mes "[Nicholas Flamel]";
+		mes "All you have to do now is speak to the Union Leader on the 2nd floor! Congratulations, you'll become an Alchemist very soon!";
+		close;
+	}
+	else {
+		mes "[Nicholas Flamel]";
+		mes "Lorem ipsum dolor sit amet,";
+		mes "consectetuer adipiscing elit.";
+		mes "Vivamus sem. Sed metus";
+		mes "lacus, viverra id, rutrum eget,";
+		mes "rhoncus sit amet, lectus.";
+		next;
+		mes "[Nicholas Flamel]";
+		mes "Suspendisse sit amet urna in";
+		mes "nisl fringilla faucibus. Nulla scelerisque eros...";
+		mes "^666666*Mumble Mumble*^000000";
+		close;
+	}
 }
