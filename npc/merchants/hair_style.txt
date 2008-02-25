@@ -1,420 +1,467 @@
-//===== eAthena Script =======================================
-//= Hair Dresser
-//===== By: ==================================================
-//= [Muad_Dib] 1.0 (The Prometheus Project) & Samuray22
-//===== Current Version: =====================================
-//= 1.2
-//===== Compatible With: =====================================
-//= eAthena SVN
-//===== Description: =========================================
-//= [Aegis Conversion]
-//= Allows you to change your hairstyle.
-//===== Additional Comments: =================================
-//= 1.2 Rescripted to the Aegis 10.3 Standards. [Samuray22]
-//============================================================
+//========================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 髮型變更 腳本 -
+//========================
+//= 版本：1.2(TRO)
+//========================
 
-// Stylist - alberta_in 55 142
-alberta_in,55,142,1	script	設計師	91,{
-	mes "[維羅妮卡]";
-	mes "歡迎~~歡迎~~";
-	mes "歡迎來到最好的髮廊, 維羅妮卡的美髮沙龍!!";
-	mes "喔喔喔";
-	mes "來這裡為得是新髮型, 對不對?";
-	mes "我能為你做點什麼呢?";
+// 艾莉兒
+alberta,25,238,6	script	艾莉兒::HairDresser	756,{
+	cutin "son",2;
+	mes "[艾莉兒]";
+	mes "你好~";
+	mes "我是音樂精靈 ^3355FF艾莉兒^000000";
+	mes "為了回饋大家的厚愛，";
+	mes "我已經學會了";
+	mes "怎麼樣幫各位打扮頭髮的功課了";
 	next;
-	switch(select("Look through Hair Styles.:Change Hair Styles.:Stop talking.")) {
+	mes "[艾莉兒]";
+	mes "有時候也需要換一換心情啊，";
+	mes "我試著轉換一下你的心情，";
+	mes "幫你換一下髮型好嗎?";
+	next;
+	switch(select("我要看髮型:我想改變髮型:結束對話")) {
+	case 1:
+		mes "[艾莉兒]";
+		mes "髮型種類，從1號到19號，";
+		mes "請問你要看幾號?";
+		mes "不想看的話 ，請選擇0號，";
+		next;
+		input .@style;
+		mes "[艾莉兒]";
+		switch(.@style) {
+		case 0:
+			mes "怎麼樣，看夠了嗎?";
+			mes "有喜歡的髮型的話，";
+			mes "隨時可以請叫我幫忙，";
+			mes "我會盡最大的本份幫你打扮的";
+			close2;
+			cutin "son",255;
+			end;
 		case 1:
-			mes "[維羅妮卡]";
-			mes "這裡有 19 種髮型, 1~19!!!";
-			mes "你想先看哪一種?";
-			mes "如果你不想看了, 請選 0.";
-			next;
-			input .@style;
-			if(.@style > 19) {
-				mes "[維羅妮卡]";
-				mes "抱歉, 這裡沒有其它號碼的髮型.";
-				mes "請選擇 1 到 19.";
-				next;
-			} else if(.@style == 0) {
-				mes "[維羅妮卡]";
-				mes "How was it?";
-				mes "Did you find any styles you like?";
-				mes "If you want to chage your hair style at anytime, I will do my best!!";
-				close;
+			if(Sex) {
+				mes "這是'裝死' 髮型!";
+				mes "整齊又平穩，是它的特點，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'緊急治療' 髮型!";
+				mes "誰看了都想去撫摸的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
 			}
-				callsub L_cutin,.@style;
-				mes "[維羅妮卡]";
-				switch(.@style) {
-					case 1:
-						if(Sex == 1) {
-							mes "噢~ '裝死'的風格!";
-							mes "它很整潔也很舒服.";
-							mes "你覺得如何? 你喜歡嗎?";
-							close2;
-							cutin "",255;
-							end;
-						}
-							mes "Oh~ 'First Aid' style'!";
-							mes "It is the style people wants to stroke your hair^^.";
-							mes "How do you think? Do you like it?";
-							close2;
-							cutin "",255;
-							end;
-					case 2:
-						if(Sex == 1) {
-							mes "Oh~ 'Two-Handed Sword Mastery' style!";
-							mes "Its style is very similar to one of the famous Swordman.";
-							mes "How do you think? Do you like it?";
-							close2;
-							cutin "",255;
-							end;
-						}
-							mes "噢~'狂擊'的風格!";
-							mes "感覺有種未被發現的強烈力量被隱藏著....";
-							mes "你覺得如何? 你喜歡嗎?";
-							close2; cutin "",255; end;
-					case 3:
-						if(Sex == 1) {
-							mes "Oh~ 'Napalm Beat' style!";
-							mes "It makes feeling there is unknown power...";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Frost Diver' style!";
-							mes "It feels cold but also warm...";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 4:
-						if(Sex == 1) {
-							mes "Oh~ 'Double Strafe' style!";
-							mes "It will make you feel your mind is very clear.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Arrow Shower' style!";
-							mes "It feels very refreshed~";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 5:
-						if(Sex == 1) {
-							mes "Oh~ 'Angelus' style!";
-							mes "It feels calm and reverence.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Heal' style!";
-							mes "It feels mind is cured.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 6:
-						if(Sex == 1) {
-							mes "Oh~ 'Pushcart' style!";
-							mes "This is the style based on motive of string cart..";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Vending' style!";
-							mes "It seems like making lots of money.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 7:
-						if(Sex == 1) {
-							mes "Oh~ 'Envenom' style!";
-							mes "It makes feel addicting into something..";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Double Strafe' style!";
-							mes "It makes whomever dash twice.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 8:
-						if(Sex == 1) {
-							mes "Oh~ 'Bowling Bash' style!";
-							mes "Once people sees it, they will fall for it!";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Gloria' style!";
-							mes "Its nobleness and holiness moods are great.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 9:
-						if(Sex == 1) {
-							mes "Oh~ 'Venom Dust' style!";
-							mes "It is the style gives feeling deadly charm.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Increase SP Recovery' style!";
-							mes "It makes feel like recovering spirit fully.";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 10:
-						if(Sex == 1) {
-							mes "Oh~ 'Turn Undead' style!";
-							mes "It gives feeling one attack can make Devils disappear!";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Prepare Potion' style!";
-							mes "It feels a wound is healed already!";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 11:
-						if(Sex == 1) {
-							mes "Oh~ 'Dragonology' style!";
-							mes "This is the style based on motive of mysterious Dragon...";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Grand Cross' style!";
-							mes "It feels a firm faith...";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 12:
-						if(Sex == 1) {
-							mes "Oh~ 'Mace Mastery' style!";
-							mes "It looks very hard and attractive!";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Intimidate' style!";
-							mes "It seems you saw this style somewhere...?";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 13:
-						if(Sex == 1) {
-							mes "Oh~ 'Thunderstorm' style!";
-							mes "It feels hit by thunder storm!!";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Spiritual Sphere Absorption' style!";
-							mes "It catches people's spirits^^";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 14:
-						if(Sex == 1) {
-							mes "Oh~ 'Encore' style!";
-							mes "It is the style makes people feels like asking you to sing~^^";
-							mes "How do you think? Do you like it??";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Gypsy's Kiss' style!";
-							mes "It makes people think you are very kind to all...";
-							mes "How do you think? Do you like it?";
-							close2; cutin "",255; end;
-					case 15:
-						if(Sex == 1) {
-							mes "Oh~ 'Grimtooth' style!";
-							mes "It feels like you will be pricked by hair!";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Counter Attack' style!";
-							mes "It feels it will kick when someone is near!";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-					case 16:
-						if(Sex == 1) {
-							mes "Oh~ 'Blitz Beat' style!";
-							mes "It feels it will attack 5 times...?";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Ankle Snare' style!";
-							mes "This is the style hardly move.";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-					case 17:
-						if(Sex == 1) {
-							mes "Oh~ 'Ore Discovery' style!";
-							mes "It feels like picking up things while walking.";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Hammer Fall' style!";
-							mes "It will make feeling dizzy!";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-					case 18:
-						if(Sex == 1) {
-							mes "Oh~ 'Fire Pillar' style!";
-							mes "It has been a great style over the one generation...!";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Jupitel Thunder' style!";
-							mes "It feels very neat.";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-					case 19:
-						if(Sex == 1) {
-							mes "Oh~ 'Guillotine Fist' style!";
-							mes "It feels like betting all at once!!";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-						}
-							mes "Oh~ 'Whirlwind' style!";
-							mes "It feels very refresh like wind.";
-							mes "How was it? Do you like it?";
-							close2; cutin "",255; end;
-				}
 		case 2:
-			if(BaseLevel < 60) {
-				mes "[維羅妮卡]";
-				mes "Wow~, Dear, this style looks good on you~";
-				mes "Don't change strangely.";
-				mes "Why don't you decorate hair with accessories~";
-				close;
-			} else if((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) || (Zeny < 99800)) {
-				mes "[維羅妮卡]";
-				mes "If you want to change your hair style, you need several items";
-				mes "Since you need many items....";
-				mes "I think you should write those down.";
-				next;
-				mes "[維羅妮卡]";
-				mes "3 瓶 中和劑，";
-				mes "3 瓶 混合劑，";
-				mes "100 撮 辮子，";
-				mes "100 撮 短辮子，";
-				mes "100 撮 長髮，";
-				mes "100 撮 金色頭髮，";
-				mes "100 撮 有光澤的頭髮";
-				next;
-				mes "[維羅妮卡]";
-				mes "而且我也需要 99,800 Zeny.";
-				mes "如果你收集到了全部...";
-				mes "我會給你看我能做到的~!!";
-				mes "噢噢噢.";
-				close;
+			if(Sex) {
+				mes "這是'雙手劍使用熟練度' 髮型!";
+				mes "和有一位有名的劍士髮型很類似，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'狂擊' 髮型!";
+				mes "可以感覺到，";
+				mes "有一股隱藏著強烈力量的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
 			}
-			mes "[維羅妮卡]";
-			mes "好吧, 那麼... 選擇你喜歡的髮型.";
-			mes "我會做到最好";
-			mes "有 19 種不同的髮型.";
-			mes "1 到 19~";
-			next;
-			input .@style;
-			if(.@style > 19) {
-				mes "[維羅妮卡]";
-				mes "沒有這個代號!";
-				mes "請檢查下你的數字~";
-				close;
-			} else if(.@style == 0) {
-				mes "[維羅妮卡]";
-				mes "It's been canceled.";
-				close;
-			} else if(getlook(1) == .@style) {
-				mes "[維羅妮卡]";
-				mes "You already have this style!!";
-				mes "I think you should look through Hair Styles again";
-				close;
-			}
-				callsub L_cutin,.@style;
-				mes "[維羅妮卡]";
-				mes "This is (" + .@style + ") style.";
-				mes "I will change your hair with this again.";
-				mes "Is that OK with you??";
-				next;
-				if(select("Yeah~ I'd love to.:No..I don't like it...") == 1) {
-						if(getlook(6) == 0) {
-							mes "[維羅妮卡]";
-							mes "You haven't dyeing your hair~ Not even once!!";
-							mes "I think dyeing your hair makes you much better...";
-							mes "I can do it for you as a service... for FREE ^^";
-							mes "Which color do you want?";
-							next;
-							switch(select("紅色:黃色:紫色:橘色:綠色:藍色:白色:黑色:取消")) {
-								case 1:
-									set .@pallete,8;
-									goto L_style;
-								case 2:
-									set .@pallete,1;
-									goto L_style;
-								case 3:
-									set .@pallete,2;
-									goto L_style;
-								case 4:
-									set .@pallete,3;
-									goto L_style;
-								case 5:
-									set .@pallete,4;
-									goto L_style;
-								case 6:
-									set .@pallete,5;
-									goto L_style;
-								case 7:
-									set .@pallete,6;
-									goto L_style;
-								case 8:
-									set .@pallete,7;
-									goto L_style;
-								case 9:
-									mes "[維羅妮卡]";
-									mes "Well.. then think it over..";
-									mes "and come visit me again.";
-									mes "Not only type of hair style but also color of it is very important.";
-									close;
-							}
-						}
-				L_style:
-						mes "[維羅妮卡]";
-						mes "現在開始~. 保持別動~";
-						mes "如果你動了, 可能就會不好.";
-						mes "請相信我!!";
-						next;
-						mes "[維羅妮卡]";
-						mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
-						mes "- 咯卡 咯卡 咯卡 咯卡 -";
-						mes "- 劈啪 劈啪 劈啪 劈啪 -";
-						next;
-						delitem 973,3;
-						delitem 974,3;
-						delitem 901,100;
-						delitem 1094,100;
-						delitem 1020,100;
-						delitem 1060,100;
-						delitem 7152,100;
-						setlook 1,.@style;
-						setlook 6,.@pallete;
-						cutin "",255;
-						mes "[維羅妮卡]";
-						mes "喔~ 非常好看~~";
-						mes "我希望你喜歡風格(" + .@style + ")";
-						mes "如果你想要換其它的髮型,";
-						mes "歡迎你隨時來我這裡~ 噢噢噢";
-						setlook 1,.@style;
-						setlook 6,.@pallete;
-						close;
-				}
-						mes "[維羅妮卡]";
-						mes "好的~ 請再選個吧~";
-						mes "這裡應該有你喜歡的風格.";
-						mes "僅告訴我你喜歡的代號.";
-						close;
 		case 3:
-			mes "[維羅妮卡]";
-			mes "每個人都有權利變漂亮...";
-			mes "我希望能幫你把你合適的髮型做得很好~";
-			mes "我真得做了~";
-			close;
+			if(Sex) {
+				mes "這是'心靈爆破' 髮型!";
+				mes "可以感覺到，不知明力量的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'冰凍術' 髮型!";
+				mes "雖然有點涼，但感覺到溫暖的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 4:
+			if(Sex) {
+				mes "這是'二連矢' 髮型!";
+				mes "讓心裡變的很清澈的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是' 箭雨' 髮型!";
+				mes "想要清爽的感覺，這是不錯的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 5:
+			if(Sex) {
+				mes "這是'天使之障壁' 髮型!";
+				mes "這是很平穩很虔誠的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'治癒術' 髮型!";
+				mes "這是可以治癒心裡感覺的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 6:
+			if(Sex) {
+				mes "這是'手推車使用' 髮型!";
+				mes "這是借用手推車，";
+				mes "雄偉的基礎造型所做的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'露天商店' 髮型!";
+				mes "看樣子可以賺大錢的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 7:
+			if(Sex) {
+				mes "這是'施毒' 髮型!";
+				mes "感覺好像給中毒感覺的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'二刀連擊' 髮型!";
+				mes "不管是誰，都會來觸碰兩次的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 8:
+			if(Sex) {
+				mes "這是'怪物互擊' 髮型!";
+				mes "只要看一眼的話，";
+				mes "會讓很多人迷上的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'幸運之頌歌' 髮型!";
+				mes "看起來高尚神聖的氣氛，很漂亮吧";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 9:
+			if(Sex) {
+				mes "這是'病毒散撥' 髮型!";
+				mes "有致命吸引力的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'禪心' 髮型!";
+				mes "讓精神力充滿精神感覺的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 10:
+			if(Sex) {
+				mes "這是'轉生術' 髮型!";
+				mes "感覺上可以讓魔物一擊之斃的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'配藥' 髮型!";
+				mes "感覺上疼痛的傷口，都會好的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 11:
+			if(Sex) {
+				mes "這是'龍知識' 髮型!";
+				mes "把神秘的龍族為基礎造型，所做的髮型";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'聖十字審判' 髮型!";
+				mes "感覺到沒有不變的信任髮型..";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 12:
+			if(Sex) {
+				mes "這是'權杖使用熟練度' 髮型!";
+				mes "看起來很堅固而美觀的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'抄襲' 髮型!";
+				mes "好像在哪裡有看過的髮型...?";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 13:
+			if(Sex) {
+				mes "這是'雷爆術' 髮型!";
+				mes "感覺上好像在哪裡，";
+				mes "被雷擊中過的感覺!!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'吸氣' 髮型!";
+				mes "看久了的話，整個精神會被陷入的感覺";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 14:
+			if(Sex) {
+				mes "這是'安可' 髮型!";
+				mes "這是讓人感覺到，想要去點歌的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'為您服務' 髮型!";
+				mes "好像對任何人，都很善良的髮型...";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 15:
+			if(Sex) {
+				mes "這是'無影之牙' 髮型!";
+				mes "刺刺的感覺好像被刺到的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'反擊' 髮型!";
+				mes "不小心接近的話，會被踢到的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 16:
+			if(Sex) {
+				mes "這是'閃電衝擊' 髮型!";
+				mes "好像感覺到被踢到五次傷害的髮型...?";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'定位陷阱' 髮型!";
+				mes "被碰到的話，好像感覺到很難移動的髮型";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 17:
+			if(Sex) {
+				mes "這是'尋找礦石' 髮型!";
+				mes "走在路上隨便撿東撿西的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'大地之擊' 髮型!";
+				mes "這是讓精神恍惚的，漂亮的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 18:
+			if(Sex) {
+				mes "這是'火柱攻擊' 髮型!";
+				mes "風靡一個時代漂亮的髮型...!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'雷鳴術' 髮型!";
+				mes "緊張刺激感覺的，超新鮮的髮型，";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		case 19:
+			if(Sex) {
+				mes "這是'阿修羅霸凰拳' 髮型!";
+				mes "一拳把所有的希望都寄託在上面的髮型!";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			} else {
+				mes "這是'風元素領域' 髮型!";
+				mes "像吹動的風一樣，是一個涼快的髮型";
+				mes "怎麼樣，還滿意嗎?";
+				break;
+			}
+		default:
+			mes "哎唷，沒有這種髮型啊，";
+			mes "號碼只有從1號到 19號為止，";
+			close2;
+			cutin "son",255;
+			end;
+		}
+		cutin "son",255;
+		callsub L_cutin,.@style;
+		close2;
+		end;
+	case 2:
+		if(BaseLevel < 60) {
+			mes "[艾莉兒]";
+			mes "哎唷，客人，你現在的髮型，";
+			mes "最適合你不過了，";
+			mes "不要改成其它奇怪的髮型，";
+			mes "試著用其它的裝飾品，裝飾一下吧";
+			close2;
+			cutin "son",255;
+			end;
+		} else if((countitem(973) < 3) || (countitem(974) < 3) || (countitem(901) <100) || (countitem(1094) <100) || (countitem(1020) <100) || (countitem(1060) <100) || (countitem(7152) <100) || (Zeny < 99800)) {
+			mes "[艾莉兒]";
+			mes "想要換髮型的話，";
+			mes "要準備一些東西，";
+			mes "需要的東西比較多，";
+			mes "請你好好的記下來吧!";
+			next;
+			mes "[艾莉兒]";
+			mes "中和劑 3個，";
+			mes "混合劑 3個，";
+			mes "辮子100個，";
+			mes "短辮子100個，";
+			mes "長髮100個，";
+			mes "金色頭髮100個，";
+			mes "光澤的頭髮100個";
+			next;
+			mes "[艾莉兒]";
+			mes "另外還需要 99,800 金幣，";
+			mes "都準備好之後再來的話，";
+			mes "我會把我的本事秀給你看的，哈哈哈";
+			close2;
+			cutin "son",255;
+			end;
+		}
+		mes "[艾莉兒]";
+		mes "好的，接下來... 請選擇你想換的髮型吧";
+		mes "我會把我的本事秀給你看的";
+		mes "髮型種類，從1號到19號，";
+		mes "請問要幾號呢?";
+		next;
+		input .@style;
+		if(.@style > 19) {
+			mes "[艾莉兒]";
+			mes "哎唷，沒有這種髮型啊，";
+			mes "號碼只有從1號到 19號為止，";
+			close2;
+			cutin "",255;
+			end;
+		} else if(.@style == 0) {
+			mes "[艾莉兒]";
+			mes "已經取消了";
+			close2;
+			cutin "",255;
+			end;
+		} else if(getlook(1) == .@style) {
+			mes "[艾莉兒]";
+			mes "你已經有了這個髮型了，";
+			mes "我認為你需要再看看其他的髮型";
+			close2;
+			cutin "",255;
+			end;
+		}
+		cutin "son",255;
+		callsub L_cutin,.@style;
+		mes "[艾莉兒]";
+		mes "這是 " + .@style + "號髮型";
+		mes "我將會為你改變成這個髮型";
+		mes "要開始改變髮型了嗎??";
+		next;
+		if(select("是，我想現在就改變髮型:不，讓我再考慮看看...")==2) {
+			mes "[艾莉兒]";
+			mes "好吧，要慎重的選擇髮型，";
+			mes "看哪一種髮型是你喜歡的，";
+			mes "記得髮型號碼之後再來告訴我吧!";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if(getlook(6) == 0) {
+			mes "[艾莉兒]";
+			mes "你還沒有染過頭髮呀?";
+			mes "我覺得染個新的髮色會比較好唷，";
+			mes "在換髮型之前，我可以免費提供你這項服務";
+			mes "想要染哪種顏色呢?";
+			next;
+			switch(select("紅色:黃色:紫色:赤色:綠色:藍色:白色:黑色:取消")) {
+			case 1:
+				set .@pallete,8;
+				break;
+			case 2:
+				set .@pallete,1;
+				break;
+			case 3:
+				set .@pallete,2;
+				break;
+			case 4:
+				set .@pallete,3;
+				break;
+			case 5:
+				set .@pallete,4;
+				break;
+			case 6:
+				set .@pallete,5;
+				break;
+			case 7:
+				set .@pallete,6;
+				break;
+			case 8:
+				set .@pallete,7;
+				break;
+			case 9:
+				mes "[艾莉兒]";
+				mes "好吧，";
+				mes "歡迎再度光臨，";
+				mes "不只是髮型重要，頭髮的顏色也是很重要的";
+				close2;
+				cutin "",255;
+				end;
+			}
+		}
+		mes "[艾莉兒]";
+		mes "現在，要開始囉~ 請不要動~";
+		mes "如果動了，你的髮型可能就會變的很難看了";
+		mes "只要相信我就好，馬上為你秀出漂亮的髮型!";
+		next;
+		mes "[艾莉兒]";
+		mes "- 卡嚓 卡嚓 卡嚓 卡嚓 -";
+		mes "- 咯卡 咯卡 咯卡 咯卡 -";
+		mes "- 劈啪 劈啪 劈啪 劈啪 -";
+		next;
+		delitem 973,3;
+		delitem 974,3;
+		delitem 901,100;
+		delitem 1094,100;
+		delitem 1020,100;
+		delitem 1060,100;
+		delitem 7152,100;
+		setlook 1,.@style;
+		setlook 6,.@pallete;
+		mes "[艾莉兒]";
+		mes "哇~ 看起來非常的不錯呢!";
+		mes "希望你會喜歡 " + .@style + "號髮型";
+		mes "如果你看上了其它喜歡的髮型";
+		mes "歡迎隨時回來找我唷，哈哈哈";
+		setlook 1,.@style;
+		setlook 6,.@pallete;
+		close2;
+		cutin "",255;
+		end;
+	case 3:
+		mes "[艾莉兒]";
+		mes "每一個人都有愛美的權利...";
+		mes "希望你能真正的找到，";
+		mes "適合你的髮型";
+		close2;
+		cutin "son",255;
+		end;
 	}
 L_cutin:
-	if(Sex == 1) {
+	if(Sex) {
 		if(getarg(0) < 10)
-			cutin "hair_m_0"+getarg(0),4;
+		cutin "hair_m_0"+getarg(0),4;
 		else
-			cutin "hair_m_"+getarg(0),4;
+		cutin "hair_m_"+getarg(0),4;
 	} else {
 		if(getarg(0) < 10)
-			cutin "hair_f_0"+getarg(0),4;
+		cutin "hair_f_0"+getarg(0),4;
 		else
-			cutin "hair_f_"+getarg(0),4;
+		cutin "hair_f_"+getarg(0),4;
 	}
 	return;
 }
+
+morocc,160,97,4	duplicate(HairDresser)	艾莉兒#moc	756
+prontera,146,92,6	duplicate(HairDresser)	艾莉兒#prt	756
+geffen,120,60,8	duplicate(HairDresser)	艾莉兒#gef	756
+aldebaran,143,116,4	duplicate(HairDresser)	艾莉兒#alde	756
+izlude,134,92,4	duplicate(HairDresser)	艾莉兒#izl	756
+
 
 // 流浪的 美容師
 alberta,33,141,1	script	流浪的 美容師	87,{

@@ -1,22 +1,15 @@
-//===== eAthena Script ======================================= 
-//= Rachel Quests
-//===== By: ================================================== 
-//= L0ne_W0lf
-//===== Current Version: ===================================== 
-//= 2.1
-//===== Compatible With: ===================================== 
-//= eAthena SVN
-//===== Description: ========================================= 
-//= Collection of Rachel Quests 
-//= * Lost Child
-//= * Bruspetti
-//= * Ice Necklace
-//= * Sanctuary/donation
-//===== Comments: ============================================
-//= Lost Child Quest:
+//===================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 拉赫 地區任務腳本 - 
+//===================================
+// 版本：2.2a
+//===================================
+//= 錯誤的差事:
 //= - End of quest coincides with opening the Sanctuary.
 //= - Variable in use: lost_boy (max 13)
-//= Bruspetti Quest:
+//= 未能開拓的命運:
 //= - [Aegis conversion]
 //= - Requires friendship quest as a prerequisite.
 //= - Variable in use: rach_vice (max 24)
@@ -32,31 +25,13 @@
 //= - Variable in use: Once completed MISC_QUEST bit 8192 is set
 //= - Variable in use: ra_have_donated (0 no/1 yes)
 //= - Variable in use: $rachel_donate (max 10000)
-//===== Additional Comments: ================================= 
-//= 1.0 First version, needs testing. [L0ne_W0lf]
-//= 1.1 Some slight optimization. [L0ne_W0lf]
-//= 1.2 Fixed Man Stuck in Ice only giving 1 Freezing Snow Powder. [L0ne_W0lf]
-//= 1.3 Added the ability to redeem lottery tickets before donation max is met. [L0ne_W0lf]
-//= 1.4 Removed an erroneous "case". Thanks, Jet. [L0ne_W0lf]
-//= 1.5 Fixed a bug in Bruspetti quest. [SinSloth]
-//= 1.5b Fixed some typos in various quests. [SinSloth]
-//= 1.6 Fixed a couple bugs with the Pope's Office Guards... [L0ne_W0lf]
-//= 1.7 Fixed Maheo, he will revert to his frozen state when clicked. [L0ne_W0lf]
-//=	Replaced  instances of "+name+", with "+strcharinfo(0)".
-//= 1.8 Various fixes: Hamion will now delete items used for Wind Hammer. [L0ne_W0lf]
-//=	Fixed EXP reward in Ice Necklace quest, fixed a typo in an NPC header.
-//=	Another minor fix to Hamion. "< 1" -> "< 2". Added a missing close to
-//=	the ontouch "key". Thanks to Gepard for pointing them out.
-//= 1.9 Fixed a misorder with variable checkings. [SinSloth]
-//= 2.0 Fixed experience gains to match upcoming rate adjustments. [SinSloth]
-//= 2.1 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
-//============================================================ 
+//===================================
 
-// Lost Child Quest (Prerequisite to High Priest quest)
+// 錯誤的差事 (神殿密穴前置)
 //============================================================ 
-ra_in01,384,246,3	script	Vincent#ra_in01	47,{
+ra_in01,384,246,3	script	賓珊特#ra_in01	47,{
 	if (BaseLevel < 60) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "You're inside Sir Zhed's";
 		mes "looking for new employees,";
 		mes "I don't think you're suited";
@@ -66,14 +41,14 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 	}
 
 	if (lost_boy < 1) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "I am Vincert, steward of";
 		mes "this mansion and faithful";
 		mes "servant to its master, Sir";
 		mes "Zhed, the most powerful";
 		mes "man in all of Arunafeltz.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "My master is currently out";
 		mes "to attend the High Priest";
 		mes "assembly, and has been gone";
@@ -85,7 +60,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		switch(select("I'm too busy.:Sure, why not?")) {
 
 		case 1:
-			mes "[Vincent]";
+			mes "[賓珊特]";
 			mes "I understand.";
 			mes "I'm sorry that you're";
 			mes "too busy at the moment...";
@@ -95,7 +70,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 			close;
 
 		case 2:
-			mes "[Vincent]";
+			mes "[賓珊特]";
 			mes "Thank you. You see,";
 			mes "the pope awarded Sir Zhed";
 			mes "for his great contributions to";
@@ -103,14 +78,14 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 			mes "However, this jewel is missing";
 			mes "and I need your help to find it.";
 			next;
-			mes "[Vincent]";
+			mes "[賓珊特]";
 			mes "I don't have any proof, but";
 			mes "I suspect it was stolen by";
 			mes "Phobe, a servant that";
 			mes "disappeared about the same";
 			mes "time the gem disappeared.";
 			next;
-			mes "[Vincent]";
+			mes "[賓珊特]";
 			mes "Please retrieve this gem";
 			mes "and find who stole it before";
 			mes "Sir Zhed returns and finds";
@@ -118,7 +93,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 			mes "can keep this secret, I'd";
 			mes "very much appreciate it.";
 			next;
-			mes "[Vincent]";
+			mes "[賓珊特]";
 			mes "I believe that you'd want";
 			mes "to interrogate Phobe, but";
 			mes "he has run away somewhere.";
@@ -132,7 +107,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 	}
 
 	else if ((lost_boy >= 1) && (lost_boy < 4)) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "I suggest looking around";
 		mes "the mansion and asking the";
 		mes "servants for any clues about";
@@ -141,7 +116,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 	}
 
 	else if ((lost_boy >= 4) && (lost_boy < 7)) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "We're running out";
 		mes "of time... Please find";
 		mes "the gem and Phobe";
@@ -150,12 +125,12 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 	}
 
 	else if (lost_boy == 7) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Ah...!";
 		mes "H-hello! How are";
 		mes "you still, er... That";
 		mes "look on your face? Did";
-		mes "you happen to find Logan?";
+		mes "you happen to find 羅甘?";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "No! I actually got";
@@ -165,7 +140,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "you, and you try to have me";
 		mes "killed! I want an explanation!";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "I... Yes, you deserve";
 		mes "the truth after wh-what";
 		mes "I tried to do to you. First";
@@ -177,7 +152,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "Why, what's";
 		mes "the big deal?";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "There's something of";
 		mes "a class system here in";
 		mes "Arunafeltz. No one talks";
@@ -185,7 +160,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "immigrated here and built this";
 		mes "city are the dominant class.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "The native people are";
 		mes "second class citizens that";
 		mes "are looked down upon by the";
@@ -193,14 +168,14 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "that developed this city. It";
 		mes "is a sad, undeniable truth.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "The native people typically";
 		mes "suffer from lower class status,";
 		mes "and usually do the hard, blue";
 		mes "collar work in the city. Jenny,";
 		mes "Phobe's mother, is one of them.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "It's taboo for me to love her,";
 		mes "especially since Sir Zhed has";
 		mes "taken me under his wing and";
@@ -208,7 +183,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "I married her, it'd greatly";
 		mes "damage his reputation.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "I tried to control my";
 		mes "feelings but... Well,";
 		mes "Phobe was born. And there's";
@@ -216,7 +191,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "get secretly married though,";
 		mes "and I don't regret that.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Phobe must resent me...";
 		mes "I've had to treat him and";
 		mes "his mother like slaves";
@@ -224,7 +199,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "I know it's horrible... To be";
 		mes "so cold to those you love.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "When he ran off with the";
 		mes "jewel, I was actually more";
 		mes "worried about Phobe than";
@@ -232,7 +207,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "I did what I could to try to";
 		mes "get him back: I hired you.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "However, once you found";
 		mes "Phobe, I planned to have";
 		mes "you killed so that we could";
@@ -240,7 +215,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "sorry, I know it's wrong, but";
 		mes "I was so worried about my boy!";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "I hope you forgive me...";
 		mes "I'll do what I should've";
 		mes "done from the beginning...";
@@ -248,7 +223,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "for the gem's theft, and Sir";
 		mes "Zhed can do to me what he will.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "The gem is very special...";
 		mes "Our pope commanded my";
 		mes "master to keep the jewel";
@@ -270,7 +245,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "returns, so I'll try to find";
 		mes "them for you as soon as I can.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "You're willing to";
 		mes "do that for me? ^333333*Sob*^000000";
 		mes "Even after what I've put";
@@ -289,7 +264,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 
 
 	else if (lost_boy == 8) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "The gem is very special...";
 		mes "Our pope commanded my";
 		mes "master to keep the jewel";
@@ -311,7 +286,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "returns, so I'll try to find";
 		mes "them for you as soon as I can.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "You're willing to";
 		mes "do that for me? ^333333*Sob*^000000";
 		mes "Even after what I've put";
@@ -329,7 +304,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 
 
 	else if (lost_boy == 9) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "You came back!";
 		mes "Were you able to";
 		mes "find Phobe?! H-how";
@@ -348,7 +323,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "reward now, right?";
 		mes "And no one has to die?";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Yes, yes, thank you so";
 		mes "much! I'll never forget";
 		mes "what you've done for me.";
@@ -360,7 +335,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "to return it to wherever";
 		mes "it's supposed to go, right?";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Oh, yes, I'd better do";
 		mes "that. While I return this";
 		mes "jewel, would you please";
@@ -377,7 +352,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 	}
 
 	else if (lost_boy == 10) {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Oh! While I return this";
 		mes "jewel, would you please";
 		mes "tell my wife Jenny that our";
@@ -398,7 +373,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "the gem was returned...";
 		mes "She seemed pretty relieved...";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Thank you so much,";
 		mes "adventurer. She's such";
 		mes "a kind, loving woman, and";
@@ -406,14 +381,14 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "all that torment. I don't deserve";
 		mes "such a beautiful woman...";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "It's very fortunate that";
 		mes "you've come to save us...";
 		mes "Please drop by the next";
 		mes "time that you're in Rachel,";
 		mes "and I'll try to help you if I can.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Ah, actually, I have";
 		mes "one last favor to ask";
 		mes "of you. Would you please";
@@ -421,13 +396,13 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		mes "to my master? He should still";
 		mes "be in the temple right now.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "If you ask for High";
 		mes "Priest Zhed and mention";
 		mes "that I sent you, then he";
 		mes "will meet with you.";
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Now is the time for";
 		mes "me to give you your";
 		mes "reward. How about that?";
@@ -437,7 +412,7 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		getitem 617,1; //Old_Violet_Box
 		set lost_boy,12;
 		next;
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Ah, and this note is a";
 		mes "letter of recommendation";
 		mes "that I have written for you.";
@@ -447,12 +422,12 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 		next;
 		mes "^3355FFYou received a letter";
 		mes "of recommendation";
-		mes "from Vincent.^000000";
+		mes "from 賓珊特.^000000";
 		close;
 	}
 
 	else {
-		mes "[Vincent]";
+		mes "[賓珊特]";
 		mes "Thank you for everything";
 		mes "that you've done for me";
 		mes "and my family. If you ever";
@@ -463,10 +438,10 @@ ra_in01,384,246,3	script	Vincent#ra_in01	47,{
 
 }
 
-rachel,114,232,3	script	Logan#ra_in01	869,{
+rachel,114,232,3	script	羅甘#ra_in01	869,{
 	if ((lost_boy < 1) || (lost_boy >= 3)) {
-		mes "[Logan]";
-		mes "I'm just Logan, one";
+		mes "[羅甘]";
+		mes "I'm just 羅甘, one";
 		mes "of the many servants";
 		mes "working here in Sir Zhed's";
 		mes "glorious mansion. I've got";
@@ -483,7 +458,7 @@ rachel,114,232,3	script	Logan#ra_in01	869,{
 		mes "I heard that he used";
 		mes "to work around here.";
 		next;
-		mes "[Logan]";
+		mes "[羅甘]";
 		mes "Er, may I ask";
 		mes "you are? Why are";
 		mes "you looking for him?";
@@ -495,7 +470,7 @@ rachel,114,232,3	script	Logan#ra_in01	869,{
 		mes "the servants around here";
 		mes "was a good starting point.";
 		next;
-		mes "[Logan]";
+		mes "[羅甘]";
 		mes "Oh, okay. Yeah, Phobe's";
 		mes "been missing ever since";
 		mes "he left to buy stuff from";
@@ -506,7 +481,7 @@ rachel,114,232,3	script	Logan#ra_in01	869,{
 		mes "Er, kid? Just";
 		mes "how old is Phobe?";
 		next;
-		mes "[Logan]";
+		mes "[羅甘]";
 		mes "He just turned fifteen.";
 		mes "That's all I know about";
 		mes "him. Truth be told, I don't";
@@ -514,9 +489,9 @@ rachel,114,232,3	script	Logan#ra_in01	869,{
 		mes "started working here. Why don't";
 		mes "you ask the senior employees?";
 		next;
-		mes "[Logan]";
+		mes "[羅甘]";
 		mes "Let's see...";
-		mes "You could ask Mr. Manson";
+		mes "You could ask Mr. 曼森";
 		mes "inside the mansion. He's";
 		mes "been working here for a while.";
 		set lost_boy,2;
@@ -524,22 +499,22 @@ rachel,114,232,3	script	Logan#ra_in01	869,{
 	}
 
 	else if (lost_boy == 2) {
-		mes "[Logan]";
+		mes "[羅甘]";
 		mes "If you want to learn";
 		mes "more about Phobe, you'd";
 		mes "better ask one of the senior";
 		mes "employees since I just started";
-		mes "working here. Mr. Manson in";
+		mes "working here. Mr. 曼森 in";
 		mes "the mansion is a good bet.";
 		close;
 	}
 
 }
 
-ra_in01,372,200,3	script	Manson#ra_in01	929,{
+ra_in01,372,200,3	script	曼森#ra_in01	929,{
 	if (lost_boy < 1) {
-		mes "[Manson]";
-		mes "I am Manson, one of the";
+		mes "[曼森]";
+		mes "I am 曼森, one of the";
 		mes "many servants working here";
 		mes "in Sir Zhed's mansion. Er,";
 		mes "would you be more careful";
@@ -549,7 +524,7 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 	}
 
 	else if (lost_boy == 1) {
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "You know, considering";
 		mes "that natives like me are";
 		mes "looked down upon and";
@@ -566,15 +541,15 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 		mes "He's gone missing, so I've";
 		mes "been hired to look for him.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "Ah, so you're the one";
-		mes "that Vincent hired, huh?";
+		mes "that 賓珊特 hired, huh?";
 		mes "That's good, that's good.";
 		mes "I'm pretty sure Phobe is";
 		mes "hiding somewhere and";
 		mes "just goofing around.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "I'm sure he can take care";
 		mes "of himself, so we won't have";
 		mes "to worry too much. Let's see,";
@@ -582,7 +557,7 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 		mes "errands to for him to do,";
 		mes "so I sent him to the market.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "That's the last time I saw";
 		mes "him. I guess he's using the";
 		mes "money I gave him to feed himself";
@@ -590,7 +565,7 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 		mes "so I can't really blame him.";
 		mes "We've all done crazy things~";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "Ah, our gardener Jenny";
 		mes "was the one that introduced";
 		mes "me to him. She's worked for";
@@ -598,22 +573,22 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 		mes "she loves kids. I guess she's";
 		mes "got a soft spot for Phobe.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "No one knows who his";
 		mes "parents are, so I guess";
 		mes "he's an orphan. That's";
 		mes "probably why she has him.";
 		mes "working with us in the mansion.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "Jenny has done a lot for";
 		mes "that boy. We skipped our";
 		mes "usual employment process";
 		mes "just for her, you know? And";
-		mes "now Jenny and even Vincent";
+		mes "now Jenny and even 賓珊特";
 		mes "are worried about him missing.";
 		next;
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "You know, if you want to";
 		mes "know more about that kid,";
 		mes "you should talk to Jenny.";
@@ -625,7 +600,7 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 	}
 
 	else if (lost_boy == 3) {
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "You know, if you want to";
 		mes "know more about that kid,";
 		mes "you should talk to Jenny.";
@@ -636,7 +611,7 @@ ra_in01,372,200,3	script	Manson#ra_in01	929,{
 	}
 
 	else {
-		mes "[Manson]";
+		mes "[曼森]";
 		mes "Nuts, there's so much";
 		mes "work to do! I never seem";
 		mes "to get it all done until";
@@ -662,10 +637,10 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Excuse me, but are";
 		mes "you Jenny? I've been";
-		mes "told by Manson to speak";
+		mes "told by 曼森 to speak";
 		mes "to you if I wanted to learn";
 		mes "more about Phobe. You see,";
-		mes "Vincent hired me to find him.";
+		mes "賓珊特 hired me to find him.";
 		next;
 		mes "[Jenny]";
 		mes "Oh! That's wonderful";
@@ -688,7 +663,7 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 		mes "just give him a chance.";
 		next;
 		mes "[Jenny]";
-		mes "Oh... Vincent must";
+		mes "Oh... 賓珊特 must";
 		mes "also be--I'm-I'm very";
 		mes "glad that he's hired";
 		mes "you. But as for places";
@@ -746,7 +721,7 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 			mes "Actually... Uh...";
 			mes "I have something very";
 			mes "important to discuss";
-			mes "with Vincent first.";
+			mes "with 賓珊特 first.";
 		}
 
 		else if (lost_boy == 8) {
@@ -762,7 +737,7 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 			mes "["+strcharinfo(0)+"]";
 			mes "Actually... Uh...";
 			mes "I should report to";
-			mes "Vincent first and return";
+			mes "賓珊特 first and return";
 			mes "this jewel, but I'll deliver";
 			mes "some good news soon,";
 			mes "I promise. Se eyou later~";
@@ -779,7 +754,7 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 			mes "["+strcharinfo(0)+"]";
 			mes "The jewel's been returned,";
 			mes "so everything should be fine";
-			mes "now. Also, Vincent explained";
+			mes "now. Also, 賓珊特 explained";
 			mes "everything to me. You know,";
 			mes "how you, him, and Phobe";
 			mes "are all related, so...";
@@ -828,9 +803,9 @@ rachel,48,237,3	script	Jenny#ra_in01	894,{
 	
 }
 
-rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
+rachel,138,73,5	script	無所事事的 市場商人#ra_in01	85,{
 	if ((lost_boy < 4) || (lost_boy >= 6)) {
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Man! Business is going";
 		mes "sooo slooow right now!";
 		mes "Well, no point standing";
@@ -845,7 +820,7 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 		mes "Excuse me?";
 		mes "Hello? Sir?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Finally! A customer!";
 		mes "I knew someone would come";
 		mes "eventually! So whaddya want";
@@ -860,7 +835,7 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 		mes "years old. He supposedly";
 		mes "ran away from home, so.";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Fifteen? My own son is";
 		mes "that age... I'm sorry, but";
 		mes "I haven't seen any lads that";
@@ -871,7 +846,7 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Cool. Thanks a lot.";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Alright, then!";
 		mes "Good luck bringing that";
 		mes "boy home! Oh, and are you";
@@ -884,13 +859,13 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 		mes "recognize any of these";
 		mes "goods that you're selling.";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "You know how some restaurants";
 		mes "offer dishes with mock meat";
 		mes "made out of vegetables and";
 		mes "stuff like wheat gluten, right?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Get this: mock vegetables";
 		mes "made out of pure meat! Now";
 		mes "how's that for the best of both";
@@ -904,7 +879,7 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 		mes "mouth! What the heck";
 		mes "is that supposed to be?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "It's the world's";
 		mes "first zucchini...";
 		mes "Made completely out";
@@ -933,9 +908,9 @@ rachel,138,73,5	script	Idle Merchant#ra_in01	85,{
 
 }
 
-rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
+rachel,120,47,3	script	無所事事的 市場商人#ra_in01_2	85,{
 	if ((lost_boy < 5) || (lost_boy > 6)) {
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "I'm thinking of quitting";
 		mes "this business... No one";
 		mes "to seems to want whatever";
@@ -949,7 +924,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "Excuse me,";
 		mes "um... Hello?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Oh! Welcome to my shop!";
 		mes "How can I help you today?";
 		next;
@@ -961,7 +936,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "here a few days ago.";
 		mes "Have you seen him?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "Oh! Yeah, last night,";
 		mes "some guy asked me to tell";
 		mes "anyone looking for this guy";
@@ -976,7 +951,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "Does he know where Phobe";
 		mes "is? I-Is Phobe alright?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "No clue. I told you all";
 		mes "I know. Let's see, his";
 		mes "name was... Nogan?";
@@ -984,7 +959,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "like that. That's";
 		mes "all I know, honest.";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "So the kid's missing,";
 		mes "huh? Good luck finding";
 		mes "him. Oh, and be careful";
@@ -995,7 +970,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 	}
 
 	else if (lost_boy == 6) {
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "So yeah, last night,";
 		mes "some guy asked me to tell";
 		mes "anyone looking for this guy";
@@ -1010,7 +985,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "Does he know where Phobe";
 		mes "is? I-Is Phobe alright?";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "No clue. I told you all";
 		mes "I know. Let's see, his";
 		mes "name was... Nogan?";
@@ -1018,7 +993,7 @@ rachel,120,47,3	script	Idle Merchant#ra_in01_2	85,{
 		mes "like that. That's";
 		mes "all I know, honest.";
 		next;
-		mes "[Idle Merchant]";
+		mes "[無所事事的 市場商人]";
 		mes "So the kid's missing,";
 		mes "huh? Good luck finding";
 		mes "him. Oh, and be careful";
@@ -1087,7 +1062,7 @@ ra_fild01,245,325,3	script	Suspicious Man#ra_in01	934,{
 		mes "This wasn't what I expected.";
 		next;
 		mes "[Suspicious Man]";
-		mes "Vincent's instructions";
+		mes "賓珊特's instructions";
 		mes "were to kill anyone that";
 		mes "asked about Rogan, some";
 		mes "name he made up. My name";
@@ -1102,7 +1077,7 @@ ra_fild01,245,325,3	script	Suspicious Man#ra_in01	934,{
 		mes "red jewel or something?";
 		next;
 		mes "["+strcharinfo(0)+"]";
-		mes "Huh? No! Vincent actually";
+		mes "Huh? No! 賓珊特 actually";
 		mes "sent me to look for the guy";
 		mes "that stole that jewel, and";
 		mes "to retrieve it for him!";
@@ -1118,7 +1093,7 @@ ra_fild01,245,325,3	script	Suspicious Man#ra_in01	934,{
 		mes "["+strcharinfo(0)+"]";
 		mes "I don't know...";
 		mes "I'm going to talk";
-		mes "to Vincent and make";
+		mes "to 賓珊特 and make";
 		mes "him explain everything.";
 		set lost_boy,7;
 		close;
@@ -1136,7 +1111,7 @@ ra_fild01,245,325,3	script	Suspicious Man#ra_in01	934,{
 		mes "["+strcharinfo(0)+"]";
 		mes "I don't know...";
 		mes "I'm going to talk";
-		mes "to Vincent and make";
+		mes "to 賓珊特 and make";
 		mes "him explain everything.";
 		close;
 	}
@@ -1154,7 +1129,7 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 		mes "^3355FFYou catch a shining";
 		mes "glint from this boy's";
 		mes "back pocket. Perhaps he";
-		mes "has the jewel that Vincent";
+		mes "has the jewel that 賓珊特";
 		mes "wants you to retrieve.^000000";
 		next;
 		mes "["+strcharinfo(0)+"]";
@@ -1185,7 +1160,7 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 		next;
 		mes "[Phobe]";
 		mes "Hah! You mean ''Mister";
-		mes "Vincent!'' That's fine";
+		mes "賓珊特!'' That's fine";
 		mes "by me! That's exactly";
 		mes "why I took this thing!";
 		next;
@@ -1232,7 +1207,7 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 		mes "you can force Phobe to";
 		mes "return home for now, so";
 		mes "you should bring this red";
-		mes "jewel back to Vincent.^000000";
+		mes "jewel back to 賓珊特.^000000";
 		set lost_boy,9;
 		close;
 	}
@@ -1241,7 +1216,7 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 		mes "[Phobe]";
 		mes "I... I'm not ready";
 		mes "to go back home just";
-		mes "fine, and let Mister Vincent";
+		mes "fine, and let Mister 賓珊特";
 		mes "know that I'm not sorry";
 		mes "for what I did, okay?!";
 		next;
@@ -1249,7 +1224,7 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 		mes "you can force Phobe to";
 		mes "return home for now, so";
 		mes "you should bring this red";
-		mes "jewel back to Vincent.^000000";
+		mes "jewel back to 賓珊特.^000000";
 		close;
 	}
 
@@ -1280,13 +1255,13 @@ rachel,263,32,3	script	Kid#ra_in01	931,{
 }
 
 //End of Lost Child quest
-//============================================================ 
+//============================================================
 
-//Bruspetti Quest (Perequisite: Lighthalzen "Friendship" quest)
-//============================================================ 
-ra_in01,235,194,5	script	Katinshuell	931,{
+//未能開拓的命運 (Perequisite: Lighthalzen "Friendship" quest)
+//============================================================
+ra_in01,235,194,5	script	卡汀休爾	931,{
 	if (rach_vice > 21) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "If I had only turned";
 		mes "myself in... Maybe if I had";
 		mes "made an effort to pay for";
@@ -1296,7 +1271,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if ((rach_vice == 21) && (countitem(1201) > 0)) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Please... Please just";
 		mes "leave me alone. I've lost";
 		mes "the woman I love because";
@@ -1309,7 +1284,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 21) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I suppose it's my";
 		mes "fate to bear this guilt.";
 		mes "It's already destroyed my";
@@ -1319,21 +1294,21 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if ((rach_vice == 20) && (countitem(1201) > 0)) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I suppose there's";
 		mes "no reason to hide";
 		mes "anything anymore...";
 		mes "You've probably figured";
 		mes "the important stuff by now...";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I used to work as one";
 		mes "of the security guards in";
 		mes "Lighthalzen. We basically";
 		mes "watched the border between";
 		mes "the rich area and the slums.";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I actually was ordered";
 		mes "to kill someone that was";
 		mes "repeatedly moving between";
@@ -1345,7 +1320,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I was paid a lot of money";
 		mes "to do it. At first, I thought";
 		mes "I was just doing my job. You";
@@ -1357,7 +1332,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I was scared to kill him,";
 		mes "but once I did it, the guilt";
 		mes "and the torment has been";
@@ -1370,7 +1345,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Bruspetti shocked me when";
 		mes "she had learned about what";
 		mes "I did back then. My one true";
@@ -1382,7 +1357,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I couldn't stop her...";
 		mes "I struggled, and tried to";
 		mes "save her, but she managed";
@@ -1394,7 +1369,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I came here after";
 		mes "killing a man to start";
 		mes "a new life, maybe get";
@@ -1406,7 +1381,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Are you happy now?";
 		mes "Are you happy now that?";
 		mes "I've told you the truth?";
@@ -1417,14 +1392,14 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "......";
 		mes ".........";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "...............................";
 		mes "God! My life sucks!";
 		close;
 	}
 
 	else if (rach_vice == 21) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "^333333*Pant pant*^000000";
 		mes "After all this";
 		mes "time... I thought";
@@ -1435,7 +1410,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if ((rach_vice == 20) && (countitem(1201) > 0)) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I...";
 		mes "I don't deserve this!";
 		mes "Why do you keep hounding";
@@ -1449,7 +1424,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "did she learn about";
 		mes "you in Lighthalzen?";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I... I don't have";
 		mes "to tell you anything!";
 		next;
@@ -1461,7 +1436,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "you, and it involved a";
 		mes "Knife... just like this one.";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes ".........!";
 		mes ".............";
 		mes "NOoo! I'm sorry, it's";
@@ -1472,12 +1447,12 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		next;
 		mes "[" + strcharinfo(0) + "]";
 		mes "Huh...?";
-		mes "Mr. Katinshuell?";
+		mes "Mr. 卡汀休爾?";
 		close;
 	}
 
 	else if ((rach_vice == 19) || (rach_vice == 20)) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I...";
 		mes "I don't deserve this!";
 		mes "Why do you keep hounding";
@@ -1491,7 +1466,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "did she learn about";
 		mes "you in Lighthalzen?";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I... I don't have";
 		mes "to tell you anything!";
 		set rach_vice,20;
@@ -1508,7 +1483,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "Let's see...";
 		mes "Oh this entry looks";
 		mes "interesting. It's all";
-		mes "about you, Katinshuell.";
+		mes "about you, 卡汀休爾.";
 		next;
 		mes "- Date: OOXX -";
 		mes "I'm so in love with him,";
@@ -1563,7 +1538,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "you at Freya's Spring?";
 		set rach_vice,19;
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes ".........";
 		mes "I... I...";
 		mes ".........";
@@ -1571,7 +1546,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 17) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Damn it! I don't want to";
 		mes "think about her anymore!";
 		mes "Get away from me, and take";
@@ -1589,7 +1564,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 16) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Ha ha ha...";
 		mes "Is this some sort";
 		mes "of interrogation?";
@@ -1601,10 +1576,10 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "Alright then, why";
 		mes "don't you explain this?";
 		next;
-		switch(select("Mr. Shendar's House:Lighthalzen:Freya's Spring:Bruspetti")) {
+		switch(select("孫達魯's House:Lighthalzen:Freya's Spring:Bruspetti")) {
 		case 1:
 			mes "[" + strcharinfo(0) + "]";
-			mes "Mr. Shendar, Bruspetti's";
+			mes "孫達魯, Bruspetti's";
 			mes "father, says that someone";
 			mes "has been sneaking into his";
 			mes "house for some reason.";
@@ -1617,7 +1592,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			mes "And you did mention";
 			mes "you were looking for it.";
 			next;
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "Hmpf! S-stop";
 			mes "talking crazy talk!";
 			mes "I don't know what";
@@ -1633,7 +1608,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			mes "to learn something really";
 			mes "important over there...";
 			next;
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "No...!";
 			mes "She couldn't have...!";
 			next;
@@ -1645,21 +1620,21 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			mes "What would she be trying";
 			mes "to find in Lighthalzen?";
 			next;
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "No! No no no!";
 			mes "Shut up! Shut up!";
 			mes "Please! Just leave";
 			mes "me alone! Get away";
 			mes "from me right now!";
 			next;
-			switch(select("Mr. Shendar's House:Freya's Spring:Recent Break-up")) {
+			switch(select("孫達魯's House:Freya's Spring:Recent Break-up")) {
 			case 1:
 				mes "[" + strcharinfo(0) + "]";
 				mes "So while she was away";
 				mes "in Lighthalzen, you snuck";
-				mes "in Mr. Shendar's house and--";
+				mes "in 孫達魯's house and--";
 				next;
-				mes "[Katinshuell]";
+				mes "[卡汀休爾]";
 				mes "Y-yes! Yes, that's right!";
 				mes "It's because I was so worried";
 				mes "about her! I had no idea that";
@@ -1680,7 +1655,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 				mes "to Freya's Spring, all";
 				mes "by yourself, didn't you?!";
 				next;
-				mes "[Katinshuell]";
+				mes "[卡汀休爾]";
 				mes "......";
 				mes ".........";
 				mes "Um? ...Yes.";
@@ -1700,21 +1675,21 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 				mes "Lighthalzen... They're related";
 				mes "somehow, aren't they?";
 				next;
-				mes "[Katinshuell]";
+				mes "[卡汀休爾]";
 				mes "......";
 				mes ".........";
 				mes "No! It's not true!";
 				next;
 				mes "[" + strcharinfo(0) + "]";
 				next;
-				switch(select("Mr. Shendar's house:Freya's Spring")) {
+				switch(select("孫達魯's house:Freya's Spring")) {
 				case 1:
 					mes "[" + strcharinfo(0) + "]";
 					mes "So while she was away";
 					mes "in Lighthalzen, you snuck";
-					mes "in Mr. Shendar's house and--";
+					mes "in 孫達魯's house and--";
 					next;
-					mes "[Katinshuell]";
+					mes "[卡汀休爾]";
 					mes "Y-yes! Yes, that's right!";
 					mes "It's because I was so worried";
 					mes "about her! I had no idea that";
@@ -1736,7 +1711,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 					mes "And why has Bruspetti";
 					mes "not returned home yet?";
 					next;
-					mes "[Katinshuell]";
+					mes "[卡汀休爾]";
 					mes "...Will you stop talking nonsense?";
 					mes "What is your evidence to convict me with the crime?";
 					mes "I don't wish to hear you any longer.";
@@ -1747,7 +1722,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 					mes "So you were plotting to get rid of the possibility, too.";
 					next;
 					set rach_vice,17;
-					mes "[Katinshuell]";
+					mes "[卡汀休爾]";
 					mes "No! Stop it! Stop!";
 					mes "Are you implying that";
 					mes "I killed her?! I didn't!";
@@ -1765,7 +1740,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			mes "hanging around there";
 			mes "by yourself, eh?";
 			next;
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "...............................";
 			mes "It's because I really";
 			mes "miss my ex-girlfriend.";
@@ -1782,7 +1757,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			mes "your girlfriend, then...";
 			mes "Who is?! Answer that!";
 			next;
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "...............................";
 			mes "Fine, fine. You win.";
 			mes "She was my ex-girlfriend.";
@@ -1802,7 +1777,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if ((rach_vice == 15) && (countitem(7571))) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Oh, it's you again.";
 		mes "What do you want now?";
 		mes "I just told you that I'm not";
@@ -1810,12 +1785,12 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "anyone. I'm still coping with";
 		mes "breaking up with my girlfriend.";
 		mes "[" + strcharinfo(0) + "]";
-		mes "Katinshuell... I get the";
+		mes "卡汀休爾... I get the";
 		mes "feeling that you're hiding";
 		mes "something. By any chance,";
 		mes "was Bruspetti your girlfriend?";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Huh?! Er, wh-wh-what?";
 		mes "What makes you think that?";
 		mes "That's none of your business!";
@@ -1831,7 +1806,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "very reassuring. Well, I guess";
 		mes "I can flip through this book...";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Hey! Hey that's...";
 		mes "That's Bruspetti's diary!";
 		mes "I-I've been looking for-- um...";
@@ -1846,11 +1821,11 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		next;
 		mes "^3355FFYou nonchalantly";
 		mes "toss the diary at";
-		mes "Katinshuell's feet,";
+		mes "卡汀休爾's feet,";
 		mes "and it opens to one of";
 		mes "the pages in the middle.^000000";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "......!";
 		set rach_vice,16;
 		delitem 7571,1; //Blue_Diary
@@ -1858,7 +1833,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if ((rach_vice == 10) || (rach_vice == 11)) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Argh! I'm so depressed.";
 		mes "Honestly, I just want to";
 		mes "be left by myself for a really";
@@ -1867,7 +1842,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		next;
 		input .@input$;
 		if (.@input$ == "Lighthalzen") {
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "Lighthalzen...?";
 			mes "a city in the Schwaltzvalt";
 			mes "Republic. That, and it's";
@@ -1876,7 +1851,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			next;
 		}
 		else if (.@input$ == "Bruspetti") {
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "...It's been a while";
 			mes "since I heard that name.";
 			mes "Bruspetti... She's pretty";
@@ -1886,7 +1861,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			next;
 		}
 		else if (.@input$ == "Freya's Spring") {
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "Freya's Spring...";
 			mes "That's just a park";
 			mes "where old people and";
@@ -1896,13 +1871,13 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 			next;
 		}
 		else {
-			mes "[Katinshuell]";
+			mes "[卡汀休爾]";
 			mes "..." + .@input$ + "?";
 			mes "What? I don't understand you...";
 			close;
 		}
 		set rach_vice,11;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "You happy, now?";
 		mes "Quit trying to pry into";
 		mes "my personal business,";
@@ -1913,7 +1888,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 4) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Uh... ";
 		mes "I just told you that I broke";
 		mes "up with my girlfriend. You";
@@ -1924,14 +1899,14 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 
 	else if (rach_vice == 3) {
 		set rach_vice,4;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Eh? Oh, it's one of you";
 		mes "guys, those do-gooder";
 		mes "adventurers. You must not";
 		mes "have anything else to do...";
 		mes "Otherwise, why talk to me?";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "Geez... I know you guys go";
 		mes "around solving problems,";
 		mes "but this is one thing you";
@@ -1942,7 +1917,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 2) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "You're an adventurer,";
 		mes "so I don't think you'd ";
 		mes "understand how difficult";
@@ -1950,7 +1925,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "life. When you've lived through";
 		mes "certain things, it's tough.";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "When you're busy, you're";
 		mes "distracted. But even if I'm";
 		mes "left all alone, these thoughts";
@@ -1959,7 +1934,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 1) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "You're an adventurer,";
 		mes "so I don't think you'd ";
 		mes "understand how difficult";
@@ -1967,7 +1942,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "life. When you've lived through";
 		mes "certain things, it's tough.";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "When you're busy, you're";
 		mes "distracted. But even if I'm";
 		mes "left all alone, these thoughts of mine never cease to haunt me...";
@@ -1975,7 +1950,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	}
 
 	else if (rach_vice == 0) {
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "You're an adventurer,";
 		mes "so I don't think you'd ";
 		mes "understand how difficult";
@@ -1983,7 +1958,7 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		mes "life. When you've lived through";
 		mes "certain things, it's tough.";
 		next;
-		mes "[Katinshuell]";
+		mes "[卡汀休爾]";
 		mes "I don't need any more";
 		mes "excitement in my life.";
 		mes "I just want to live quietly,";
@@ -1993,14 +1968,14 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 		if (friendship > 10) set rach_vice,1;
 		close;
 	}
-	mes "[Katinshuell]";
+	mes "[卡汀休爾]";
 	mes "Do you believe in karma?";
 	mes "I do... No matter what you";
 	mes "do, even if you don't get";
 	mes "caught, somehow it just";
 	mes "catches up to you.";
 	next;
-	mes "[Katinshuell]";
+	mes "[卡汀休爾]";
 	mes "Have you ever felt";
 	mes "guilty about something,";
 	mes "but hid from the truth?";
@@ -2010,9 +1985,9 @@ ra_in01,235,194,5	script	Katinshuell	931,{
 	close;
 }
 
-ra_in01,250,19,3	script	Mr. Shendar	929,{
+ra_in01,250,19,3	script	孫達魯	929,{
 	if (rach_vice > 21) {
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "When will my precious";
 		mes "daughter Bruspetti be";
 		mes "coming home? I'm sure that";
@@ -2020,7 +1995,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "but a father can't help but";
 		mes "worry himself to death.";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Ah, if you happen to";
 		mes "see my daughter in your";
 		mes "travels, please tell her";
@@ -2031,20 +2006,20 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	}
 
 	else if (rach_vice == 14) {
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "So you have a pretty";
 		mes "good idea of who was";
 		mes "sneaking around my house?";
 		next;
 		mes "[" + strcharinfo(0) + "]";
 		mes "Well, I suspect this guy";
-		mes "named Katinshuell because";
+		mes "named 卡汀休爾 because";
 		mes "he might have been Bruspetti's";
 		mes "boyfriend and he's been acting";
 		mes "funny. Still, I don't have any";
 		mes "real evidence of that.";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Bruspetti's boyfriend?!";
 		mes "Hmpf! I don't like that";
 		mes "boy already. I haven't";
@@ -2055,7 +2030,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	}
 
 	else if (rach_vice == 13) {
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Hey! Hey! Are you";
 		mes "the pervert that's been";
 		mes "sneaking into my house";
@@ -2072,7 +2047,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "Ow! What did";
 		mes "you do that for?";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Still alive, eh? Hmpf!";
 		mes "I'll finish you off! I'll...";
 		mes "Er, huh?! Wait, I think";
@@ -2080,7 +2055,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "adventurer that's been";
 		mes "here before, right?";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Oh... I think I've made";
 		mes "a mistake. I thought you";
 		mes "were that person that's";
@@ -2098,19 +2073,19 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		next;
 		mes "["+ strcharinfo(0) +"]";
 		mes "Right, his name was";
-		mes "Katinshuell. That guy's";
+		mes "卡汀休爾. That guy's";
 		mes "been acting really funny.";
 		mes "Maybe he was the one sneaking";
 		mes "around here? I'd better go";
 		mes "and ask him about this...";
 		next;
 		set rach_vice,14;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Wait, where are";
 		mes "you going? I... I'm";
 		mes "sorry for hitting you?";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Curses! If that guy is my";
 		mes "daughter's boyfriend, and he's";
 		mes "trespassing into my home, then";
@@ -2118,15 +2093,15 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "It's too bad that I can't ask";
 		mes "Bruspetti anything about him...";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Hm... Alright, adventurer.";
 		mes "If you can find it, I'll allow";
 		mes "you to take and read my";
 		mes "daughter's diary. We need";
 		mes "to learn more about this guy";
-		mes "Katinshuell. If he's dangerous...";
+		mes "卡汀休爾. If he's dangerous...";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "I'm sorry... I'm asking you";
 		mes "for your help... But there's";
 		mes "nothing else I can do as her";
@@ -2137,7 +2112,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	}
 
 	else if (rach_vice == 9) {
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Curses! I should have never";
 		mes "mentioned my daughter's";
 		mes "diary to an adventurer like";
@@ -2148,7 +2123,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 
 	else if (rach_vice == 8) {
 		set rach_vice,9;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "What? My daughter went";
 		mes "to Lighthalzen? She doesn't";
 		mes "know anyone there. Hmm, maybe";
@@ -2156,7 +2131,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "planning to go to learn more";
 		mes "about what was bothering her.";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Yes, she was very generic:";
 		mes "''Dad, I need to go somewhere.''";
 		mes "and ''There's something I need";
@@ -2164,7 +2139,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "all the details does not put";
 		mes "a doting father at ease!";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Well, thank you for letting";
 		mes "me know where she might be.";
 		mes "Now, I wish I knew what she";
@@ -2172,7 +2147,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "she wrote something about it";
 		mes "in her diary? Yes, perhaps...";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "No! I can't do it!";
 		mes "As a loving father, I can't";
 		mes "allow myself to invade my";
@@ -2180,7 +2155,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "Even if she did carelessly leave";
 		mes "her diary on top of her drawer.";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Oh, but how a father";
 		mes "worries. Will my sweet,";
 		mes "darling Bruspetti be alright?";
@@ -2189,7 +2164,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 
 	else if ((rach_vice == 4) || (rach_vice == 5)) {
 		set rach_vice,5;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "I miss my daughter. Yes,";
 		mes "the house smells different";
 		mes "without her around. It's a little";
@@ -2197,7 +2172,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "but Bruspetti always did smell";
 		mes "nice, just like her mother.";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Even if they didn't wear";
 		mes "perfume, they had this";
 		mes "distinctively pleasant";
@@ -2207,7 +2182,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	}
 
 	else if (rach_vice == 2) {
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Take my advice: never";
 		mes "have a daughter! You worry";
 		mes "too much about them, and they";
@@ -2215,7 +2190,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "they grow up! I bet she's";
 		mes "having a grand old time...";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Confound it...!";
 		mes "Whoever that guy is,";
 		mes "he better not try any funny";
@@ -2227,7 +2202,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 
 	else if (rach_vice == 1) {
 		set rach_vice,2;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "I just found out that";
 		mes "my precious daughter has";
 		mes "been going out with someone.";
@@ -2235,7 +2210,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "for this boy, and I haven't";
 		mes "heard a word from her since!";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Take my advice: never";
 		mes "have a daughter! You worry";
 		mes "too much about them, and they";
@@ -2243,7 +2218,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		mes "they grow up! I bet she's";
 		mes "having a grand old time...";
 		next;
-		mes "[Mr. Shendar]";
+		mes "[孫達魯]";
 		mes "Probably on some lovey";
 		mes "dovey trip with whoever that";
 		mes "boy is. She's been gone an";
@@ -2253,7 +2228,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 		close;
 	}
 
-	mes "[Mr. Shendar]";
+	mes "[孫達魯]";
 	mes "I just found out that";
 	mes "my precious daughter has";
 	mes "been going out with someone.";
@@ -2261,7 +2236,7 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	mes "to see this boy, and I haven't";
 	mes "heard a word from her since!";
 	next;
-	mes "[Mr. Shendar]";
+	mes "[孫達魯]";
 	mes "Take my advice: never";
 	mes "have a daughter! You worry";
 	mes "too much about them, and they";
@@ -2271,9 +2246,9 @@ ra_in01,250,19,3	script	Mr. Shendar	929,{
 	close;
 }
 
-rachel,73,244,3	script	Lachellen	919,{
+rachel,73,244,3	script	羅雪蓮	919,{
 	if (rach_vice > 21) {
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "If you happen to see";
 		mes "Bruspetti, tell her to";
 		mes "come talk to me. I need";
@@ -2284,7 +2259,7 @@ rachel,73,244,3	script	Lachellen	919,{
 	}
 
 	else if ((rach_vice == 11) || (rach_vice == 12)) {
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Oh, hello again~";
 		mes "Is there any way I can";
 		mes "help you this time? I know";
@@ -2294,7 +2269,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		next;
 		input .@input$;
 		if (.@input$ == "Lighthalzen") {
-			mes "[Lachellen]";
+			mes "[羅雪蓮]";
 			mes "Lighthalzen? Oh, that's";
 			mes "right! Bruspetti did ask";
 			mes "me about Lighthalzen a while";
@@ -2305,23 +2280,23 @@ rachel,73,244,3	script	Lachellen	919,{
 		}
 		else if (.@input$ == "Freya's Spring") {
 			set rach_vice,12;
-			mes "[Lachellen]";
+			mes "[羅雪蓮]";
 			mes "Freya's Spring?";
 			mes "Oh, I like that place!";
 			mes "Speaking of which, I know";
-			mes "someone named Katinshuell";
+			mes "someone named 卡汀休爾";
 			mes "that went there pretty often.";
 			mes "Usually men don't go alone...";
 			next;
-			mes "[Lachellen]";
+			mes "[羅雪蓮]";
 			mes "Wait, that's the place";
 			mes "I told you about, where";
 			mes "Bruspetti and her boyfriend";
 			mes "usually met. Do you think";
-			mes "she and Katinshuell...?";
+			mes "she and 卡汀休爾...?";
 			mes "Ooh, maybe I figured it out!";
 			next;
-			mes "[Lachellen]";
+			mes "[羅雪蓮]";
 			mes "But yeah, that place is";
 			mes "usually filled with couples,";
 			mes "so you look like a real loser";
@@ -2330,13 +2305,13 @@ rachel,73,244,3	script	Lachellen	919,{
 			next;
 		}
 		else {
-			mes "[Lachellen]";
+			mes "[羅雪蓮]";
 			mes "Oh, I'm sorry...";
 			mes "I don't know anything";
 			mes "about "+.@input$+".";
 			close;
 		}
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Well, I don't know if";
 		mes "you learned anything";
 		mes "important from me,";
@@ -2347,7 +2322,7 @@ rachel,73,244,3	script	Lachellen	919,{
 	}
 
 	else if (rach_vice == 7) {
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Let's see... Bruspetti";
 		mes "and her guy would usually";
 		mes "meet at... Um, I know where";
@@ -2355,7 +2330,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		mes "give you good directions";
 		mes "to get there. Er, sorry!";
 		next;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Luckily, this town";
 		mes "isn't that big, so I'm";
 		mes "sure you'll find something";
@@ -2367,7 +2342,7 @@ rachel,73,244,3	script	Lachellen	919,{
 
 	else if (rach_vice == 6) {
 		set rach_vice,7;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Oh, Bruspetti's dad";
 		mes "was talking about how";
 		mes "good she smells? Yeah,";
@@ -2375,7 +2350,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		mes "that around here, so he's";
 		mes "not creepy or anything.";
 		next;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "I see, so you think you";
 		mes "caught wind of her in some";
 		mes "other town. Yeah, I heard";
@@ -2383,7 +2358,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		mes "if she could learn something,";
 		mes "and she hasn't returned yet.";
 		next;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Oh, you know what?";
 		mes "If she's in Lighthalzen,";
 		mes "she's probably gone there to";
@@ -2391,7 +2366,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		mes "Bruspetti mentioned something";
 		mes "about that when I last saw her.";
 		next;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "I don't know anything";
 		mes "else. Hmm, maybe if you";
 		mes "check the place where she";
@@ -2403,7 +2378,7 @@ rachel,73,244,3	script	Lachellen	919,{
 
 	else if ((rach_vice == 2) || (rach_vice == 3)) {
 		set rach_vice,3;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "Ooh, I'm so jealous";
 		mes "of Bruspetti! She's been";
 		mes "spending so much time with";
@@ -2411,7 +2386,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		mes "But she still refuses to tell";
 		mes "me what his name is.";
 		next;
-		mes "[Lachellen]";
+		mes "[羅雪蓮]";
 		mes "She told me that she's";
 		mes "serious about him, but";
 		mes "she's also admitted that";
@@ -2420,7 +2395,7 @@ rachel,73,244,3	script	Lachellen	919,{
 		close;
 	}
 
-	mes "[Lachellen]";
+	mes "[羅雪蓮]";
 	mes "My friend Bruspetti";
 	mes "is a really nice girl~";
 	mes "Everyone loves her, and";
@@ -2428,7 +2403,7 @@ rachel,73,244,3	script	Lachellen	919,{
 	mes "the guys are jealous of";
 	mes "her new boyfriend!";
 	next;
-	mes "[Lachellen]";
+	mes "[羅雪蓮]";
 	mes "Still, she's really";
 	mes "shy, and won't tell me";
 	mes "who he is. There's a lot";
@@ -2586,7 +2561,7 @@ OnTouch:
 		mes "["+ strcharinfo(0) +"]";
 		mes "The water's not that";
 		mes "cold, or very deep...";
-		mes "And Katinshuell mentioned";
+		mes "And 卡汀休爾 mentioned";
 		mes "that her body went limp...";
 		mes "But she was still looking";
 		mes "at him. It's haunting...";
@@ -2596,7 +2571,7 @@ OnTouch:
 		mes "She loved him, but couldn't";
 		mes "bear to live with his secret.";
 		mes "In the end, it's all so very";
-		mes "tragic. Katinshuell isn't";
+		mes "tragic. 卡汀休爾 isn't";
 		mes "really a bad person...";
 		next;
 		mes "[" + strcharinfo(0) + "]";
@@ -2613,7 +2588,7 @@ OnTouch:
 		else getexp 450000,0;
 		mes "[" + strcharinfo(0) + "]";
 		mes "Somehow, I wish that";
-		mes "Katinshuell had the";
+		mes "卡汀休爾 had the";
 		mes "strength to face his";
 		mes "guilt, and then to";
 		mes "forgive himself.";
@@ -2692,7 +2667,7 @@ ra_in01,255,25,0	script	Book#ra_in	111,{
 		mes "found Bruspetti's diary.";
 		mes "Perhaps you should take";
 		mes "it with you the next time";
-		mes "you talk to Katinshuell.^000000";
+		mes "you talk to 卡汀休爾.^000000";
 		close;
 	}
 
@@ -2704,7 +2679,7 @@ ra_in01,255,25,0	script	Book#ra_in	111,{
 		mes "You now have permission";
 		mes "to take it with you so that";
 		mes "you can figure out if she and";
-		mes "Katinshuell are connected...^000000";
+		mes "卡汀休爾 are connected...^000000";
 		close;
 	}
 
@@ -2721,7 +2696,7 @@ ra_in01,255,25,0	script	Book#ra_in	111,{
 
 }
 
-//End of Bruspetti quest
+//End of 未能開拓的命運
 //============================================================ 
 
 // Ice Necklace/Summon Ktullanux Quest and Glaial Heart buyer
@@ -2735,17 +2710,20 @@ ra_in01,255,25,0	script	Book#ra_in	111,{
 rachel,157,183,3	script	Sincere Follower Urstia	916,{
 	cutin "ra_usti1",2;
 	if (ice_necklace_q < 1) {
-		mes "[Urstialla]";
-		mes "Oh, are you an adventurer";
-		mes "from the outside? Praise be";
-		mes "to Freya! Her love and grace";
-		mes "reaches all over the world,";
-		mes "touching even the hearts of";
-		mes "foreigners, leading them here!";
+		mes "[烏絲提阿拉]";
+		mes "願菲依雅的恩典與你同在..";
 		next;
-		if (select("Freya? I'd like to know more.:That's crazy talk!") == 1) {
+		mes "[烏絲提阿拉]";
+		mes "你是從外地來的喔，";
+		mes "你一定是是受到菲依雅的指引來到阿盧納貝茲的吧?";
+		mes "我們阿盧納貝茲的教徒們對崇拜菲依雅的所有人都很寬待";
+		next;
+		mes "[" +strcharinfo(0)+ "]";
+		mes "啊，你好嗎";
+		next;
+		if (select("我來是為了接受菲依亞的教誨:我只是來觀光") == 1) {
 			emotion e_ok;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "The day is coming when";
 			mes "Freya will resurrect and";
 			mes "lead all of her faithful to";
@@ -2753,7 +2731,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "deep sleep, but even then,";
 			mes "she watches over all of us.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "You see, Freya used up";
 			mes "all of her power fighting the";
 			mes "most fearsome of demons";
@@ -2767,7 +2745,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "know that all of";
 			mes "this happened?";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "These are truths that all";
 			mes "of Freya's worshippers know.";
 			mes "Freya delivers her messages to";
@@ -2775,7 +2753,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "our beautiful pope that shines";
 			mes "with brilliant white light.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "Unfortunately, even the most";
 			mes "faithful experience lapses in";
 			mes "judgment. It shames me to";
@@ -2787,7 +2765,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "do, if you don't";
 			mes "mind me asking?";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "I don't know, but Egapeo";
 			mes "has been sick for a while";
 			mes "now. I'm convinced that he";
@@ -2798,7 +2776,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "["+strcharinfo(0)+"]";
 			mes "...Wait. What?!";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "I know that if I pray hard";
 			mes "enough and please Freya,";
 			mes "she will forgive my son and";
@@ -2806,7 +2784,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "But sometimes prayer isn't";
 			mes "enough... I need to pay tribute.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "I managed to acquire a";
 			mes "necklace of incomparable";
 			mes "beauty from the dwarves.";
@@ -2814,7 +2792,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "with age and need to be shined";
 			mes "before I can offer them to Freya.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "However, not just anyone can";
 			mes "shine this special necklace";
 			mes "forged by the Dwarves. I need";
@@ -2822,7 +2800,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "to help me. I think there's only";
 			mes "one mage that can polish this...";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "Maheo, the renown mage with";
 			mes "access to the most powerful";
 			mes "magic spells in the world,";
@@ -2830,7 +2808,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "necklace's gems! However";
 			mes "There's no way I can reach him.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "You see, Maheo left on a";
 			mes "journey to subjugate the";
 			mes "ice monsters in the ice cave";
@@ -2838,7 +2816,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "returned yet. That place is too";
 			mes "dangerous for people like me.";
 			next;
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "I know that you adventurers";
 			mes "regularly travel through those";
 			mes "kinds of areas, so would you";
@@ -2847,7 +2825,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			mes "my behalf? Please, for my son...";
 			next;
 			if (select("But that's none of my business!:Alright, I'll do it.") == 1) {
-				mes "[Urstialla]";
+				mes "[烏絲提阿拉]";
 				mes "I... I see.";
 				mes "I thought that Freya";
 				mes "had led you to me, but";
@@ -2856,7 +2834,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 				mes "I need to pray more fervently?.";
 				goto L_End;
 			}
-			mes "[Urstialla]";
+			mes "[烏絲提阿拉]";
 			mes "Thank you so much!";
 			mes "Please, take care of this";
 			mes "necklace and ask Maheo";
@@ -2868,7 +2846,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 			goto L_End;
 		}
 		cutin "ra_usti2",2;
-		mes "[Urstialla]";
+		mes "[烏絲提阿拉]";
 		mes "...............................";
 		mes "Are you telling me";
 		mes "that you don't believe?";
@@ -2878,7 +2856,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 	}
 
 	else if ((ice_necklace_q >= 1) && (ice_necklace_q < 5)) {
-		mes "[Urstialla]";
+		mes "[烏絲提阿拉]";
 		mes "Please find Maheo the";
 		mes "Mage and ask him to restore";
 		mes "the beauty of the necklace";
@@ -2890,14 +2868,14 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 	}
 
 	else if (ice_necklace_q == 5) {
-		mes "[Urstialla]";
+		mes "[烏絲提阿拉]";
 		mes "Oh! My necklace! Thank you!";
 		mes "It's so beautiful! It will";
 		mes "make a wonderful tribute to";
 		mes "Freya! I am certain with this,";
 		mes "my son will get better!";
 		next;
-		mes "[Urstialla]";
+		mes "[烏絲提阿拉]";
 		mes "Here, I know it's not much,";
 		mes "but please accept this as a";
 		mes "token of my appreication for";
@@ -2911,7 +2889,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 		mes "a worthwhile experience";
 		mes "for me.";
 		next;
-		mes "[Urstialla]";
+		mes "[烏絲提阿拉]";
 		mes ".........";
 		mes "............";
 		mes "May Freya always protect and";
@@ -2920,7 +2898,7 @@ rachel,157,183,3	script	Sincere Follower Urstia	916,{
 		goto L_End;
 	}
 
-	mes "[Urstialla]";
+	mes "[烏絲提阿拉]";
 	mes "May Freya always";
 	mes "protect and guide you";
 	mes "with her everflowing";
@@ -3169,8 +3147,7 @@ ice_dun02,120,105,3	script	Man Stuck in Ice#cave	924,5,5,{
 		mes "^3355FF*Pzzzzz*";
 		mes "*CRASH!*^000000";
 		next;
-		enablenpc "Maheo#cave";
-		disablenpc "Man Stuck in Ice#cave";
+		setnpcdisplay "Man Stuck in Ice#cave",937;
 		emotion e_gasp;
 		mes "[Maheo]";
 		mes "Finally...!";
@@ -3229,10 +3206,10 @@ ice_dun02,120,105,3	script	Man Stuck in Ice#cave	924,5,5,{
 		delitem 7572,1; //Ashy_Necklace
 		delitem 7569,1; //Wind Hammer
 		set ice_necklace_q,5;
-		enablenpc "Man Stuck in Ice#cave";
-		disablenpc "Maheo#cave";
+		close2;
 		cutin "",255;
-		close;
+		setnpcdisplay "Man Stuck in Ice#cave",924;
+		end;
 	}
 
 OnTouch:
@@ -3415,15 +3392,6 @@ rachel,265,98,3	script	Hamion#aru	930,{
 
 }
 
-ice_dun02,120,105,3	script	Maheo#cave	937,{
-	enablenpc "Man Stuck in Ice#cave";
-	disablenpc "Maheo#cave";
-	end;
-OnInit:
-	disablenpc "Maheo#cave";
-	end;
-}
-
 rachel,113,96,5	script	Mohadian	929,10,10,{
 	if (ice_necklace_q == 6) {
 		mes "[Mohadian]";
@@ -3431,7 +3399,7 @@ rachel,113,96,5	script	Mohadian	929,10,10,{
 		mes "here, and I've heard good";
 		mes "things about you. Some of";
 		mes "the customers've heard that";
-		mes "you helped Urstialla by going";
+		mes "you helped 烏絲提阿拉 by going";
 		mes "into that dangerous Ice Cave.";
 		next;
 		mes "[Mohadian]";
@@ -3883,7 +3851,7 @@ OnTouch:
 			next;
 			select("Kick Door.:Smash Door with Weapon.");
 			donpcevent "Nemma#ra_temple::OnEmotion";
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Please don't do that!";
 			close;
 		}
@@ -3892,81 +3860,60 @@ OnTouch:
 	end;
 }
 
-ra_temple,116,174,3	script	Nemma#ra_temple	920,{
+ra_temple,116,174,3	script	內麻#ra_temple	920,{
 	cutin "ra_nemma02",2;
 	if ($rachel_donate < 10000) {
 		if (ra_have_donated == 0) {
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
-			mes "Good day, adventurer.";
-			mes "May I ask what brings";
-			mes "you to the temple today?";
+			mes "[內麻 神官]";
+			mes "您好 旅行者，";
+			mes "來到神殿有什麼事情嗎?";
 			next;
-			if (select("Just sight-seeing.:I came to pray.") == 1) {
+			if (select("我是來觀光的:想對神做個禮拜...") == 1) {
 				cutin "ra_nemma01",2;
-				mes "[Priestess Nemma]";
-				mes "I guess most foreigners";
-				mes "aren't familiar with our";
-				mes "faith, so I suppose they";
-				mes "wouldn't come here to pray...";
-				mes "Well, I hope you enjoy your";
-				mes "time here, adventurer.";
+				mes "[內麻 神官]";
+				mes "沒有跟神普遍化生活過的外國人們";
+				mes "常常藉著觀光來到神殿啊";
 				goto L_End;
 			}
-			mes "[Priestess Nemma]";
-			mes "Oh! I'm glad to see that";
-			mes "our kind of spirituality is";
-			mes "practiced in other countries~";
-			mes "You know, we at the Temple of";
-			mes "Cheshrumnir will be hosting a";
-			mes "festival here at the temple.";
+			mes "[內麻 神官]";
+			mes "唉呦，這位旅行者好有禮貌啊，";
+			mes "也剛剛好啊，神殿所舉辦的慶典開幕日子";
+			mes "也沒剩下幾天了，在這";
+			mes "瑟斯隆尼勒神殿為了慶典正在募款獻金啊";
+			next;
+			mes "[內麻 神官]";
+			mes "因為是給神進貢慶典的關係，奉獻是越多";
+			mes "越好的... 這並不是強迫啊!";
+			mes "誠心是比較重要的";
 			next;
 			cutin "ra_nemma01",2;
-			mes "[Priestess Nemma]";
-			mes "We're accepting donations";
-			mes "for the festival, so we'd be";
-			mes "grateful if you could make";
-			mes "a contribution. Regardless,";
-			mes "we invite you to celebrate the";
-			mes "grace of the goddess with us.";
+			mes "[內麻 神官]";
+			mes "獻金也是慶典的一環，嗯...";
+			mes "曾經也有反對這樣獻金的大神官們所在，";
+			mes "所以按照帳號會分給摸彩券的!";
+			next;
+			mes "[內麻 神官]";
+			mes "我們會在神殿倉庫拿取";
+			mes "^0000FF某一個好東西^000000之後，會給獻金";
+			mes "的人們做為禮物的，什麼是好的東西我們";
+			mes "也不清楚，只要有拿到我們就給他們啊";
 			Emotion e_ho;
 			next;
-			mes "[Priestess Nemma]";
-			mes "There's one High Priest that";
-			mes "disagrees with collecting money";
-			mes "from the temple's patrons, but";
-			mes "it's up to you if you want to";
-			mes "give or not. If you donate, you";
-			mes "might be able to win a prize!";
-			next;
-			mes "[Priestess Nemma]";
-			mes "You can use our Lottery Tickets";
-			mes "to win something nice from our";
-			mes "Temple Storage. However, you";
-			mes "donate the 50,000 zeny for each";
-			mes "Lottery Ticket, which also happens to be the minimum donation amount.";
-			next;
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
-			mes "The prizes that are given to";
-			mes "donators are also randomly";
-			mes "chosen, so I have no way of";
-			mes "telling you what you'd get.";
-			mes "Would you be interested";
-			mes "in making a donation?";
+			mes "[內麻 神官]";
+			mes "請問你要奉獻嗎?";
 			next;
-			if (select("No, thanks.:Sure.") == 1) {
+			if (select("不要:好呀") == 1) {
 				cutin "ra_nemma01",2;
-				mes "[Priestess Nemma]";
-				mes "I understand. Well,";
-				mes "maybe some other time.";
-				mes "May Freya bless you on";
-				mes "all your journeys. May the";
-				mes "grace of the goddess always";
-				mes "support us in all that we do~";
+				mes "[內麻 神官]";
+				mes "好的，瞭解了，";
+				mes "神的恩寵、神的祝福，";
+				mes "我們要成為祂的柺杖，";
+				mes "在你行走的每一個腳步上伴隨著你";
 				goto L_End;
 			}
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Great! How much would you";
 			mes "like to donate? We can only";
 			mes "accept donations in increments";
@@ -3990,7 +3937,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 			case 4:
 				cutin "ra_nemma02",2;
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "I understand that it takes";
 				mes "some thought to part with an";
 				mes "amount of money like 50,000";
@@ -4006,7 +3953,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 		else {
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Oh, you're " + strcharinfo(0) + "!";
 			mes "Welcome back! I remember";
 			mes "that you donated just a little";
@@ -4017,7 +3964,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			switch(select("I've come to donate again.:Just sight-seeing.:I came to attend the service.:I just wanted to see you again.")) {
 
 			case 1:
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "You've come to make another";
 				mes "donation? Splendid! How much";
 				mes "would you like to donate this";
@@ -4042,7 +3989,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 				case 4:
 					cutin "ra_nemma02",2;
-					mes "[Priestess Nemma]";
+					mes "[內麻 神官]";
 					mes "I understand that it takes";
 					mes "some thought to part with an";
 					mes "amount of money like 50,000";
@@ -4054,13 +4001,13 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 				goto L_End;
 
 			case 2:
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Oh! If you'd like some";
 				mes "information about our temple,";
 				mes "why don't you ask Priestess";
 				mes "Pano at the Help Desk inside?";
 				next;
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Penno will also redeem";
 				mes "your Lottery Tickets for";
 				mes "prizes, although she doesn't";
@@ -4070,7 +4017,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 				break;
 
 			case 3:
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "You're here for the";
 				mes "service? That's great~";
 				mes "I hope you find the sense";
@@ -4079,7 +4026,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 				break;
 
 			case 4:
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Oh, how sweet of you~";
 				break;
 
@@ -4094,13 +4041,13 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 	else {
 		if (MISC_QUEST & 8192) {
 			cutin "ra_nemma01",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Welcome to our temple!";
 			goto L_End;
 		}
 
 		if (ra_tem_q < 1) {
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Hello, there!";
 			mes "...............................";
 			mes "Um, for some reason, the";
@@ -4108,14 +4055,14 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "But it should be open now. Well";
 			mes "this happens sometimes so...";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "See, there's this auto locking";
 			mes "system that was added to the";
 			mes "gate when this temple was";
 			mes "built, but now it's more of";
 			mes "an annoyance than security.";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Every time someone messes";
 			mes "with the lock, or if it breaks,";
 			mes "we have to wait until it auto";
@@ -4123,7 +4070,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "again. No one can fix it";
 			mes "really quickly, you know...";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "^333333*Sniff*^000000 What should I do?";
 			mes "The auto reset never takes";
 			mes "this long, and I really need";
@@ -4134,7 +4081,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 		}
 
 		else if ((ra_tem_q >= 1) && (ra_tem_q < 10)) {
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "If the gate's locked, then";
 			mes "I've just got to find that";
 			mes "secret entrance. Some kids";
@@ -4142,7 +4089,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "and play pranks in the temple,";
 			mes "but I don't know who they are...";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Panno would know";
 			mes "what to do... I think.";
 			mes "Ooh, Panno, help me!";
@@ -4151,7 +4098,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 		else if (ra_tem_q == 10) {
 			cutin "ra_nemma04",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Oh, "+strcharinfo(0)+"!";
 			mes "The gate just opened and";
 			mes "I was able to get inside";
@@ -4159,7 +4106,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "getting really worried";
 			mes "about it for awhile.";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "This is the first time that the";
 			mes "gate locked up since Panno";
 			mes "was assigned to her post in";
@@ -4168,7 +4115,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "she got in trouble, you know?";
 			next;
 			cutin "ra_nemma02",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Wait, wait...";
 			mes "I'm outside. What if";
 			mes "the gate locks up again?";
@@ -4179,7 +4126,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 		else if (ra_tem_q == 11) {
 			emotion e_ho;
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Hey, "+strcharinfo(0)+"~!";
 			mes "We reached our target!";
 			mes "Isn't that great? We're no";
@@ -4190,7 +4137,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 		}
 
 		else if (ra_tem_q == 12) {
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Mmm... I know what";
 			mes "I can do! I can ask for";
 			mes "Firecrackers! Yes, that'll";
@@ -4199,7 +4146,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "those things are sold?";
 			next;
 			cutin "ra_nemma01",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "I, uh, can't give you";
 			mes "much... But if you would";
 			mes "bring me some Firecrackers,";
@@ -4208,7 +4155,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 			mes "all I can really offer.";
 			next;
 			cutin "ra_nemma04",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Hey, bring me";
 			mes "a lot of Firecrackers,";
 			mes "like, ^FF000020 of them^000000! Thank";
@@ -4218,13 +4165,13 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 		}
 
 		else if (ra_tem_q == 13) {
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Hey, did you bring me";
 			mes "^FF000020 Firecrackers^000000? Mmm?";
 			next;
 			if(select("Yes.:No, not yet.") == 1) {
 				cutin "ra_nemma01",2;
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Let's see...";
 				next;
 				if (countitem(12018) >= 20) {
@@ -4232,19 +4179,19 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 					delitem 12018,20; //FireCracker";
 					getexp 200000,0;
 					set ra_tem_q,14;
-					mes "[Priestess Nemma]";
+					mes "[內麻 神官]";
 					mes "Yay!";
 					mes "Firecrackers!";
 					mes "Oh, let me pray";
 					mes "for your good fortune!";
 					next;
-					mes "^3355FFPriestess Nemma prayed";
+					mes "^3355FF內麻 神官 prayed";
 					mes "fervently for your good";
 					mes "fortune. It feels like";
 					mes "it's actually working...^000000";
 					next;
 					cutin "ra_nemma04",2;
-					mes "[Priestess Nemma]";
+					mes "[內麻 神官]";
 					mes "I'm done!";
 					mes "Now it's time";
 					mes "to play! Hm, maybe";
@@ -4253,7 +4200,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 					goto L_End;
 				}
 				cutin "ra_nemma02",2;
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Awww...";
 				mes "This isn't enough";
 				mes "Firecrackers. I mean,";
@@ -4264,7 +4211,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 			else {
 				cutin "ra_nemma01",2;
-				mes "[Priestess Nemma]";
+				mes "[內麻 神官]";
 				mes "Awww...";
 				mes "Well, I don't really";
 				mes "have much to pay you";
@@ -4276,7 +4223,7 @@ ra_temple,116,174,3	script	Nemma#ra_temple	920,{
 
 		else {
 			cutin "ra_nemma01",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Welcome to our temple!";
 		}
 		goto L_End;
@@ -4294,7 +4241,7 @@ OnEmotion:
 
 S_Donate:
 	cutin "ra_nemma01",2;
-	mes "[Priestess Nemma]";
+	mes "[內麻 神官]";
 	mes "So, " + strcharinfo(0) + "...";
 	mes "I just want to make sure:";
 	mes "You want to donate "+getarg(1);
@@ -4303,7 +4250,7 @@ S_Donate:
 	else mes "Tickets. Is that correct?";
 	next;
 	if (select("No:Yes") == 1) {
-		mes "[Priestess Nemma]";
+		mes "[內麻 神官]";
 		mes "Oh, I see. Well, if you";
 		mes "don't have enough zeny with";
 		mes "you, then you can just come";
@@ -4315,7 +4262,7 @@ S_Donate:
 	if (zeny >= getarg(0)*50000) {
 		if (!checkweight(7570,getarg(0))) {
 			cutin "ra_nemma02",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "I can scarcely believe it...";
 			mes "You're carrying so much stuff,";
 			mes "you don't even have enough";
@@ -4324,7 +4271,7 @@ S_Donate:
 			mes "your things in Storage, yes?";
 			next;
 			cutin "ra_nemma01",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Don't worry, I'll still be";
 			mes "here after you make more";
 			mes "space available in your";
@@ -4338,7 +4285,7 @@ S_Donate:
 		set ra_have_donated,1;
 		if ($rachel_donate > 9999) {
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "There you are~";
 			mes "Thanks so much for";
 			mes "your donation! I'm sure";
@@ -4350,7 +4297,7 @@ S_Donate:
 		else {
 			set .@Remaining,10000-$rachel_donate;
 			cutin "ra_nemma03",2;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "Thank you so much! We'll be";
 			mes "continuing to accept donations";
 			mes "until we reach our target. Once";
@@ -4358,7 +4305,7 @@ S_Donate:
 			mes "in increments of 50,000 zeny,";
 			mes "our fundraiser will finish.";
 			next;
-			mes "[Priestess Nemma]";
+			mes "[內麻 神官]";
 			mes "If you're feeling so";
 			mes "inclined, come back later";
 			mes "and make another contribution.";
@@ -4368,7 +4315,7 @@ S_Donate:
 		}
 	}
 	else {
-		mes "[Priestess Nemma]";
+		mes "[內麻 神官]";
 		mes "I'm sorry, but you have";
 		mes "less than "+@Donate$+" zeny...";
 		mes "I know it's asking a lot,";
@@ -4927,10 +4874,10 @@ que_rachel,169,18,0	script	Quest Temple Exit#ra_tem	45,2,2,{
 
 }
 
-ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
+ra_temin,277,159,3	script	傑德 大神官#rachel	932,{
 	cutin "ra_gman",2;
 	if (MISC_QUEST & 8192) {
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "I need to rest now";
 		mes "But I thank you for";
 		mes "stopping by to check";
@@ -4939,23 +4886,23 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 	}
 
 	if (lost_boy == 12) {
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "For some reason, you look";
 		mes "familiar to me. Are you supposed";
 		mes "to be here? Otherwise, you should";
 		mes "leave this place if you don't have";
 		mes "the proper authorization.";
 		next;
-		select("I'm here on Vincent's behalf");
-		mes "[High Priest Zhed]";
-		mes "Vincent sent you? I see.";
+		select("I'm here on 賓珊特's behalf");
+		mes "[傑德 大神官]";
+		mes "賓珊特 sent you? I see.";
 		mes "You must have been looking";
-		mes "for me. I am High Priest Zhed,";
+		mes "for me. I am 傑德 大神官,";
 		mes "and I understand that you";
 		mes "have a package for me.";
 		next;
-		mes "[High Priest Zhed]";
-		mes "Usually, Vincent doesn't";
+		mes "[傑德 大神官]";
+		mes "Usually, 賓珊特 doesn't";
 		mes "trust strangers to deliver";
 		mes "these packages, but perhaps";
 		mes "this was necessitated by some";
@@ -4963,23 +4910,23 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 		mes "let's see what he sent me.";
 		next;
 		cutin "ra_gman2",2;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Hm? What's this?";
-		mes "Vincent sent a note?";
+		mes "賓珊特 sent a note?";
 		mes "I suppose this must be";
 		mes "important. Give me just a";
 		mes "moment to read this, please.";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "..................................";
-		mes "Hrrrmm. Vincent. Now";
+		mes "Hrrrmm. 賓珊特. Now";
 		mes "I understand. So he was being";
 		mes "intentionally cold towards Jenny";
 		mes "and Phoebe so other people";
 		mes "wouldn't get suspicious.";
 		next;
 		cutin "ra_gman",2;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Still, I don't think he";
 		mes "had to do that--it might";
 		mes "have been a little too";
@@ -4987,15 +4934,15 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 		mes "appreciate your help";
 		mes "in this matter, adventurer.";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "But tell me, did you only";
-		mes "help Vincent and risk your";
+		mes "help 賓珊特 and risk your";
 		mes "life because you were being";
 		mes "paid? Were you only being";
 		mes "motivated by the money?";
 		next;
 		select("Actually... I was just curious.");
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "You were doing this just to";
 		mes "satisfy your curiosity? Heh";
 		mes "heh, that's very interesting";
@@ -5004,7 +4951,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 		mes "that. May I have your name?";
 		next;
 		select("Tell him your name.");
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes ""+strcharinfo(0)+"...";
 		mes "Yes, that's a fine name.";
 		mes "It suits you well. I'll be sure";
@@ -5012,7 +4959,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 		mes "me thank you for risking your";
 		mes "life to retrive my belongings.";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "I shall be praying for";
 		mes "Freya to guide and protect";
 		mes "you in your travels. Peace";
@@ -5024,7 +4971,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 	}
 
 	else if ((lost_boy == 13) && (ra_tem_q < 14)) {
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Ah, "+strcharinfo(0)+"...";
 		mes "I appreciate that you've";
 		mes "managed to retrieve my";
@@ -5036,12 +4983,12 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 
 	else {
 		if (lost_boy < 13) {
-			mes "[High Priest Zhed]";
+			mes "[傑德 大神官]";
 			mes "May Freya be with you.";
 		}
 		else {
 			if (ra_tem_q == 14) {
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Ah, good, I was hoping you'd";
 				mes "show up here sooner or later";
 				mes "I have a favor to ask of you";
@@ -5050,7 +4997,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "than any other adventurer.";
 				next;
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "However, before I give you";
 				mes "the details, you must know";
 				mes "that this favor must be kept";
@@ -5060,7 +5007,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				next;
 				if (select("Let me think about it.:Yes, sure.") == 2) {
 					cutin "ra_gman",2;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Ah, I'm relieved to see";
 					mes "that you accept. Don't worry,";
 					mes "this task isn't complicated,";
@@ -5068,7 +5015,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "in the way of sacrifice.";
 					next;
 					cutin "ra_gman2",2;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "As you may already know,";
 					mes "our country of Arunafeltz";
 					mes "worships the goddess Freya";
@@ -5077,7 +5024,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "and our religion, really.";
 					next;
 					cutin "ra_gman",2;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Now, the leader of our";
 					mes "national religion, our pope,";
 					mes "is a direct servant of Freya";
@@ -5085,7 +5032,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "to us. As such, she must live";
 					mes "by very strict guidelines.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Our pope is curious about";
 					mes "the outside world and wishes";
 					mes "to learn more about what lies";
@@ -5093,28 +5040,28 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "cannot come easily by this";
 					mes "sort of knowledge.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Firstly, she cannot leave";
 					mes "Rachel, the place where the";
 					mes "spirit of goddess Freya dwells";
 					mes "Secondly, all citizens and priests are forbidden to leave the city in";
 					mes "order to preserve our sanctity.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "These are implicit rules that";
 					mes "normally aren't discussed openly,";
 					mes "but everyone follows them to";
 					mes "prevent from being stigmatized.";
 					mes "Frankly, I think it's somewhat shameful, but we're working on it.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Furthermore, our pope must";
 					mes "maintain her image of aloof";
 					mes "piety, so it'd be inappropriate of her to openly question outside";
 					mes "world affairs. Although, such";
 					mes "knowledge would benefit her.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "That is why the high priests";
 					mes "decided to enlist a trustworthy";
 					mes "adventurer to inform our pope";
@@ -5122,7 +5069,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "you understand why I've asked";
 					mes "you to keep all of this secret.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "You won't need to divulge";
 					mes "outrageous secrets or anything";
 					mes "like that. I presume mundane";
@@ -5130,7 +5077,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "please her. Just let her be";
 					mes "able to envision your homeland.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Personally, I think it would";
 					mes "be refreshing for our pope to";
 					mes "hear a few of your stories as";
@@ -5138,7 +5085,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "our goddess on the behalf of";
 					mes "everyone in our glorious city.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Unfortunately, I cannot escort";
 					mes "you to the priestess, but I will";
 					mes "relate the means to which you";
@@ -5146,7 +5093,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "First, you will need a ^FF0000High";
 					mes "Priest's Recommendation^000000";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "I will write that for you, so";
 					mes "there's no need to concern";
 					mes "yourself with that. Next, you";
@@ -5154,21 +5101,21 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					mes "Hearts^000000 as symbolic proof of";
 					mes "your strength and purity.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "While I finish writing this";
 					mes "recommendation, let me tell";
 					mes "you how to get to the pope's";
 					mes "office where you must go once";
 					mes "you gather 40 Glacial Hearts.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Head west from the chapel";
 					mes "in the center of the temple,";
 					mes "and then enter a door guarded";
 					mes "by two soldiers. Show them your";
 					mes "recommendation and Glacial Hearts, and they should grant you passage.";
 					next;
-					mes "[High Priest Zhed]";
+					mes "[傑德 大神官]";
 					mes "Ah, here you are";
 					mes "I've finished writing";
 					mes "your recommendation.";
@@ -5182,7 +5129,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 					goto L_End;
 
 				}
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "I understand, but if you";
 				mes "change your mind, please";
 				mes "come back and let me know";
@@ -5193,7 +5140,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 			}
 
 			else if ((ra_tem_q == 15) || (ra_tem_q == 16)) {
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Once you gather";
 				mes "^FF000040 Glacial Hearts^000000,";
 				mes "you can show them, along";
@@ -5201,7 +5148,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "written for you, to the soldiers";
 				mes "guarding the pope's office.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "When you're ready to go";
 				mes "to the pope's office, just";
 				mes "head west from the chapel";
@@ -5212,14 +5159,14 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 			}
 
 			else if (ra_tem_q == 17) {
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Ah, thank you so much";
 				mes "for spending some time";
 				mes "with the pope for me";
 				mes "I can tell that she really";
 				mes "enjoyed speaking to you.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "I am curious, though...";
 				mes "Our pope is unaccustomed";
 				mes "to speaking with outsiders,";
@@ -5229,20 +5176,20 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				next;
 				select("Well, she did mention some Holy Ground...");
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "What...?!";
 				mes "She mentioned";
 				mes "the Holy Ground...?!";
 				next;
 				cutin "ra_gman",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "The Holy Ground is a place";
 				mes "where all humans, including";
 				mes "the pope, have been forbidden.";
 				mes "We used to allow people to";
 				mes "visit in the past, but...";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Only the gods can access";
 				mes "that place now. Listen, if";
 				mes "the other priests ask about";
@@ -5250,7 +5197,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "pope, please do not make any";
 				mes "mention of the Holy Ground.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Please don't ask me";
 				mes "why, but believe me that";
 				mes "it's very important that";
@@ -5265,7 +5212,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "a private matter.";
 				next;
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Er, yes, of course!";
 				mes "Excuse me for a moment...";
 				mes "While you're waiting for me,";
@@ -5282,7 +5229,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 			}
 
 			else if (ra_tem_q == 18) {
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Er, I thought I asked you";
 				mes "to wait in the next room?";
 				close2;
@@ -5293,7 +5240,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 
 
 			else if (ra_tem_q == 19) {
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "I apologize for making";
 				mes "you wait for so long: I had";
 				mes "some crucial matters to";
@@ -5303,7 +5250,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				next;
 				select("Ask about Bekento");
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Bekento? Ah, you must";
 				mes "have been speaking to";
 				mes "High Priestess Niren.";
@@ -5312,18 +5259,18 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "full name is Zhed Bekento.";
 				next;
 				cutin "ra_gman",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Speaking of which...";
 				mes "Did Niren ask you anything";
 				mes "or tell you something that";
 				mes "was out of the ordinary?";
 				next;
 				mes "^3355FFAfter a little hesitation,";
-				mes "you tell High Priest Zhed";
+				mes "you tell 傑德 大神官";
 				mes "about your conversation";
 				mes "with High Priestess Niren.^000000";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Hmm, I see.";
 				mes "Yes. That sounds";
 				mes "like something she'd do.";
@@ -5332,14 +5279,14 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "I'm getting old, you know.";
 				next;
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Ah, but before you go, let";
 				mes "me warn you not to ^FF0000go near";
 				mes "the Holy Ground^000000. I repeat,";
 				mes "stay away from the Holy Ground.";
 				next;
 				mes "^3355FFThe Holy Ground...";
-				mes "Why is High Priest Zhed";
+				mes "Why is 傑德 大神官";
 				mes "so adamant about protecting";
 				mes "the Holy Ground? Regardless...";
 				mes "If you want to go there, then";
@@ -5350,7 +5297,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 
 			else if ((ra_tem_q >= 20) && (ra_tem_q < 22)) {
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Whatever you do, whatever";
 				mes "journeys you take, please";
 				mes "make sure that you stay";
@@ -5365,7 +5312,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 
 			else if (ra_tem_q == 23) {
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Oh, it's you.";
 				mes "Let me guess...";
 				mes "After everything I said,";
@@ -5375,7 +5322,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				next;
 				select("Did something happen?");
 				cutin "ra_gman",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Well, honestly, I've been";
 				mes "temporarily suspended from";
 				mes "work, but no need to worry.";
@@ -5383,7 +5330,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "in conflict with the other High";
 				mes "Priests for a while, anyway.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Please don't worry about it.";
 				mes "If not this, they would have";
 				mes "found some other way to attack";
@@ -5392,7 +5339,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "your intrusion for their benefit.";
 				next;
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "All I want is for";
 				mes "Arunafeltz to be safe";
 				mes "and at peace. I hope this";
@@ -5401,7 +5348,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "work according to Freya's will.";
 				next;
 				cutin "ra_gman",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Ah, and please do not";
 				mes "blame Niren. She must have";
 				mes "her own reasons for her own";
@@ -5409,7 +5356,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "much but in the end, I think";
 				mes "that we are still friends.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "One last thing:";
 				mes "try not to let the";
 				mes "other priests catch you";
@@ -5417,7 +5364,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "It'd be a little embarassing";
 				mes "for me, you understand.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Still, you were secretly";
 				mes "invited here, so I'm sure";
 				mes "that only a very few of them";
@@ -5426,7 +5373,7 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "what you will, right?";
 				next;
 				cutin "ra_gman2",2;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "...I think I know what";
 				mes "you saw in the Holy Ground.";
 				mes "I'm sure that you have much";
@@ -5434,13 +5381,13 @@ ra_temin,277,159,3	script	High Priest Zhed#rachel	932,{
 				mes "to seek for answers. Please,";
 				mes "you must be patient.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Until the right time";
 				mes "comes, I want you not";
 				mes "to tell anyone else what";
 				mes "you saw in the Holy Ground.";
 				next;
-				mes "[High Priest Zhed]";
+				mes "[傑德 大神官]";
 				mes "Well then, adventurer,";
 				mes "thank you for coming by.";
 				mes "I need to go lay down now,";
@@ -5505,7 +5452,7 @@ ra_temin,170,46,3	script	Panno#rachel	920,{
 			next;
 			if (select("Yes:No") == 1) goto L_Lottery;
 			cutin "ra_fano03",2;
-			mes "[Priestess Panno]";;
+			mes "[Priestess Panno]";
 			mes "You can redeem your";
 			mes "Lottery Tickets at any";
 			mes "time, so please visit";
@@ -5645,7 +5592,7 @@ ra_temin,170,46,3	script	Panno#rachel	920,{
 			next;
 			select("Explain");
 			mes "["+strcharinfo(0)+"]";
-			mes "I think that Priestess Nemma";
+			mes "I think that 內麻 神官";
 			mes "has been worried about the";
 			mes "gate being broken, though";
 			mes "it hasn't been like that since";
@@ -5882,7 +5829,7 @@ L_Lottery:
 	}
 	else {
 		mes "You can obtain them from";
-		mes "Priestess Nemma at the temple";
+		mes "內麻 神官 at the temple";
 		mes "entrance after you donate zeny.";
 	}
 	next;
@@ -6105,7 +6052,7 @@ ra_temsky,99,99,5	script	Pope#rachel	936,{
 		mes "Already?! Hmpf...";
 		mes "Oh, before I forget,";
 		mes "I needed to tell you that";
-		mes "High Priest Zhed wanted";
+		mes "傑德 大神官 wanted";
 		mes "to talk to you, "+strcharinfo(0)+".";
 		next;
 		mes "[Pope]";
@@ -6199,14 +6146,14 @@ OnTouch:
 		mes "an outsider in this";
 		mes "situation? Answer me!";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Is this about the";
 		mes "accident? You know that";
 		mes "I've disagreed with the";
 		mes "actions that have led to";
 		mes "the mana leakage.";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Even though I thought";
 		mes "it was a reckless decision,";
 		mes "I've closed the shrine and";
@@ -6228,7 +6175,7 @@ OnTouch:
 		mes "to speak to our pope during";
 		mes "such a tumultuous time?!";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Why not? I thought it'd";
 		mes "bring her great comfort.";
 		mes "She is very confused as to";
@@ -6236,7 +6183,7 @@ OnTouch:
 		mes "closed, and she cannot know";
 		mes "what is happening there.";
 		next;
-		mes "[High Priest Zhed]";
+		mes "[傑德 大神官]";
 		mes "Again... I strongly";
 		mes "disagree with what is";
 		mes "secretly going on over";
@@ -6303,19 +6250,19 @@ OnTouch:
 		mes "your talk with the pope, but";
 		mes "you make sure not to mention";
 		mes "anything about the Holy Ground";
-		mes "as High Priest Zhed had asked.^000000";
+		mes "as 傑德 大神官 had asked.^000000";
 		next;
 		mes "[High Priestess Niren]";
 		mes "Ah, that's fairly";
 		mes "interesting, your land.";
 		mes "Tell me, how did you come";
 		mes "to know Bekento, er, I mean,";
-		mes "High Priest Zhed?";
+		mes "傑德 大神官?";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "(^666666Bekento?^000000)";
 		next;
-		select("Explain how You Met High Priest Zhed");
+		select("Explain how You Met 傑德 大神官");
 		cutin "ra_gwoman2",2;
 		mes "[High Priestess Niren]";
 		mes ".........................";
@@ -6329,7 +6276,7 @@ OnTouch:
 		mes "If you don't mind...";
 		mes "I want to give you a bit of";
 		mes "advice. Don't get too close";
-		mes "to High Priest Zhed. If you";
+		mes "to 傑德 大神官. If you";
 		mes "do, you might end up getting";
 		mes "yourself in trouble.";
 		next;
@@ -6339,7 +6286,7 @@ OnTouch:
 		mes "as soon as she said those words.";
 		mes "What could she possibly mean?";
 		mes "For now, you may as well";
-		mes "talk to High Priest Zhed.^000000";
+		mes "talk to 傑德 大神官.^000000";
 		set ra_tem_q,19;
 		close;
 	}
@@ -6387,7 +6334,7 @@ OnTouch:
 		if (select("Quit:Use Small Key") == 2) {
 			mes "^3355FFYou insert the Small";
 			mes "Key that you found in";
-			mes "High Priest Zhed's room,";
+			mes "傑德 大神官's room,";
 			mes "and find that it is able";
 			mes "to unlock this door.^000000";
 			close2;
@@ -6534,7 +6481,7 @@ OnTouch:
 		next;
 		sc_end SC_Blind;
 		mes "^3355FFIt would be best to";
-		mes "ask High Priest Zhed";
+		mes "ask 傑德 大神官";
 		mes "about what had happened.^000000";
 		set ra_tem_q,23;
 		close;
@@ -6552,7 +6499,7 @@ rachel,142,167,5	script	Seeking Follower#rachel	916,6,6,{
 		next;
 		select("Yes.");
 		mes "[Arunafeltz Follower]";
-		mes "High Priest Zhed";
+		mes "傑德 大神官";
 		mes "would like to see";
 		mes "you right away, "+strcharinfo(0)+".";
 		next;
@@ -6582,7 +6529,7 @@ OnTouch:
 		next;
 		select("Yes.");
 		mes "[Arunafeltz Follower]";
-		mes "High Priest Zhed";
+		mes "傑德 大神官";
 		mes "would like to see";
 		mes "you right away, "+strcharinfo(0)+".";
 		next;
@@ -6598,6 +6545,3 @@ OnTouch:
 	}
 
 }
-
-// End of Donation Lottery/High Priest quest
-//============================================================

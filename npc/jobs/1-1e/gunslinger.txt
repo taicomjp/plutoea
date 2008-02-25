@@ -1,59 +1,38 @@
-//===== eAthena Script ======================================= 
-//= Gunslinger Job Quest
-//===== By: ================================================== 
-//= erKURITA & RockmanEXE
-//= Direct credits quote from RockmanExe: 
-//= "info provided by RockmanEXE cause he pwnz0rz yer arse"
-//= DON'T REMOVE THIS! (by request of him, he provided all
-//= the info regarding the quests and shops.)
-//===== Current Version: ===================================== 
-//= 1.8
-//===== Compatible With: ===================================== 
-//= eAthena SVN
-//===== Description: ========================================= 
-//= "Semi" Official Gunslinger Quest ~ The text isn't the same
-//= but it does the things it has to do :P
-//===== Additional Comments: ================================= 
-//= 1.0 Made the NPC [erKURITA]
-//= 1.5 Couple fixes to the npc, aswell as adding the missing
-//=	  3 green herbs. [erKURITA]
-//= 1.6 job number->const, commonized variable name,
-//= 	optimized [Lupus]
-//= 1.7 Now uses only ONE variable GUNS_Q [Lupus]
-//= 1.7a Grammar fixes, few spelling fixes, etc [CBMaster]
-//= 1.7b Parenthesis fixes [KarLaeda]
-//= 1.8 Fixed the reward you can get [Playtester]
-//============================================================ 
-//2007-02-07  黑色小貓  中文化
-//============================================================ 
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 神鎗手 轉職腳本 - 
+//===================================
+// 版本：1.8 部分中文化 by 黑色小貓
+//===================================
 
-que_ng.gat,152,167,3	script	米勒 教官	901,{
+que_ng.gat,152,167,3	script	米勒 大師	901,{
 
-	set .@npcname$,"[米勒教官]";
 	if (Class == Job_Novice) {
 		if (GUNS_Q >= 1) {
-			mes .@npcname$;
+			mes "[米勒 大師]";
 			mes "喔~ 你回來了?";
 			next;
 			if (GUNS_Q == 10005) {
 				if (SkillPoint > 0) {
-					mes .@npcname$;
+					mes "[米勒 大師]";
 					mes "嗯~ 很抱歉，你仍有技能點數尚未用完! 你需要先將點數用完才能轉職成為槍手!";
 					close;
 				} else if (JobLevel < 10) {
-					mes .@npcname$;
+					mes "[米勒 大師]";
 					mes "嗯~ 很抱歉，你的職業等級不足! 你需要升級職業等級至10級才能轉職!";
 					close;
 				}
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "我很高興知道你完成了聰明的黃牛角的任務，讓我確定你配的上成為一名...";
 				next;
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "槍手!!";
 				callfunc "Job_Change",Job_Gunslinger;
-				callfunc "F_ClearJobVar";		//clears all job variables for the current player
+				callfunc "F_ClearJobVar";
 				next;
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "喔! 差點忘了，因為我很欣賞你，所以這送給你！";
 				if (rand(1,3) < 3) {
 					getitem 13100,1;
@@ -62,57 +41,56 @@ que_ng.gat,152,167,3	script	米勒 教官	901,{
 				}
 				close;
 			}
-			mes .@npcname$;
+			mes "[米勒 大師]";
 			mes "但是你還沒完成我告訴你的任務! 需要我在告訴你一次嗎?";
 			switch (select ("是的，請再告訴我一次!:不，謝了!")) {
 				case 1:
 					next;
-					mes .@npcname$;
+					mes "[米勒 大師]";
 					mes "你要先去斐揚，在南方出口的城牆邊找到聰明的黃牛角，他會委託你一些事情! 去吧!";
 					close;
 				case 2:
 					next;
-					mes .@npcname$;
+					mes "[米勒 大師]";
 					mes "快去吧! 你想要成為一名槍手的，不是嗎?";
 					close;
 			}
 		}
-		mes .@npcname$;
+		mes "[米勒 大師]";
 		mes "嗨! ^0000CC"+strcharinfo(0)+"^000000，我要你幫我完成一件事，你願意嗎?";
 		switch (select ("好的!:不要!")) {
 			case 1:
 				next;
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "很好，我要你去斐揚為聰明的黃牛角做一件事!";
 				next;
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "他將會在南方出口的城牆邊等你，到時見!";
 				set GUNS_Q,1;
 				close;
 			case 2:
 				next;
-				mes .@npcname$;
+				mes "[米勒 大師]";
 				mes "這真是太糟糕了! 等你準備好再回來吧!";
 				close;
 		} 
 
 	}
-	mes .@npcname$;
+	mes "[米勒 大師]";
 	mes "嗨，小子! 最近過的好嗎?";
 	close;
 }
 
 payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 
-	set .@npcname$,"[黃牛角]";
 	if (GUNS_Q == 1) {
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "喔! 你是 ^0000CC"+strcharinfo(0)+"^000000，是嗎? 艾音布羅克的米勒告訴我你會來幫我收集一些東西!";
 		next;
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "我要煮一份特製的湯給我妻子，但是就如你所見，我沒有時間去收集材料，因為我的妻子生病了!";
 		next;
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "所以，可以請你幫忙嗎? 拜託你?";
 		switch (select ("好的，可以!:抱歉! 現在不行!")) {
 			case 1:
@@ -121,44 +99,44 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 
 			case 2:
 				next;
-				mes .@npcname$;
+				mes "[黃牛角]";
 				mes "喔~ 我該怎麼辦才好!";
 				close;
 		}
 
 	} else if (GUNS_Q > 1 && GUNS_Q < 10000) {
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "喔! 你回來了! 你找到所有材料了嗎?";
 		next;
 		switch (select("是的，我找到了!:我忘記要找的東西了!")) {
 			case 1:
 				next;
 				if (countitem(949) < 3) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你缺少3個柔毛!";
 					close;
 				} else if (countitem(912) < 3) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你缺少3個剎勒空結晶!";
 					close;
 				} else if (countitem(1013) < 3) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你缺少3個彩色昆蟲外殼!";
 					close;
 				} else if (countitem(GUNS_Q) < 1) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你沒有智慧樹枝!";
 					close;
 				} else if (countitem(511) < 3) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你缺少3個綠色藥草!";
 					close;
 				} else if (countitem(935) < 10) {
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "抱歉，你缺少10個堅硬外殼!";
 					close;
 				}
-				mes .@npcname$;
+				mes "[黃牛角]";
 				mes "太好了! 你找到全部的材料了! 真是太感謝你了!";
 				delitem 949,3;
 				delitem 912,3;
@@ -167,14 +145,14 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 				delitem 935,10;
 				delitem 511,3;
 				next;
-				mes .@npcname$;
+				mes "[黃牛角]";
 				mes "喔! 你真是幫了個大忙! 我將會向艾音布羅克的米勒推薦你的就職申請!";
 				set GUNS_Q,10003;
 				close;
 			case 2:
 			L_LIST:
 				next;
-				mes .@npcname$;
+				mes "[黃牛角]";
 				mes "好的，我將會再告訴你一次! 請記住!";
 				mes "^33CCFF 3個柔毛^000000";
 				mes "^009933 3個剎勒空結晶^000000";
@@ -183,39 +161,39 @@ payon.gat,184,65,3	script	聰明的 黃牛角	866,{
 				mes "^663300 1 "+getitemname(GUNS_Q)+"^000000";
 				mes "^FF6600 10個堅硬外殼^000000";
 				next;
-				mes .@npcname$;
+				mes "[黃牛角]";
 				mes "請快點! 我不知道我妻子還能活多久，喔~ 親愛的...";
 				close;
 		}
 	} else if (GUNS_Q == 10003 || GUNS_Q == 10004) {
 		if (countitem(519) >= 1 && GUNS_Q == 10004) {
-			mes .@npcname$;
+			mes "[黃牛角]";
 			mes "就是它! 我忘記牛奶了! 太好了，非常謝謝你! 你的牛奶可以給我嗎?";
 			switch(select("當然! 拿去吧!:抱歉，不行!")) {
 				case 1:
 					next;
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "太謝謝你了! 去找米勒吧! 他會答應你的就職! 再次謝謝你! 再見!";
 					delitem 519,1;
 					set GUNS_Q,10005;
 					close;
 				case 2:
 					next;
-					mes .@npcname$;
+					mes "[黃牛角]";
 					mes "喔，拜託請你給我! 我真的非常需要它! 拜託!";
 					close;
 			}
 		}
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "我還是要繼續等，我相信一定少了什麼東西，感謝你的幫忙!";
 		set GUNS_Q,10004;
 		close;
 	} else if (Class == Job_Gunslinger || GUNS_Q == 10005) {
-		mes .@npcname$;
+		mes "[黃牛角]";
 		mes "嗨! ^0000CC"+strcharinfo(0)+"^000000! 你最近好嗎? 我妻子要我謝謝你的關心!";
 		close;
 	} 
-	mes .@npcname$;
+	mes "[黃牛角]";
 	mes "嗨! 你最近好嗎? 一定過的很好吧! 是吧!";
 	close;
 }
