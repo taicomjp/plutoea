@@ -1,417 +1,1219 @@
-// 朱諾城任務腳本
-// 
-// 中文化作者:		Dino9021
-// 
-// 中文版本編號:	20041118.0.2
-//
-// 修改部分:		非鍊金術士任務時得到的物品改為正常
-//
-// 注:			本腳本對應鍊金術士轉職腳本 if(ALCH_Q == 6) goto L_Alchemist;
-//
-//============================================================
+//====================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 朱諾 地區任務腳本 - 
+//====================================
+// 版本：1.9
+//====================================
+//= 阻止瘋狂科學家:
+//= - Not really sure exaclty what it's for. :P
+//= - Variable in use: metto_q (max 9)
+//= 發仁與發鎮兄弟:
+//= - Used in part of the Alchemist job quest.
+//= - Variable in use: bros_q (max 1)
+//= Doomed Swords Part 2:
+//= - Continuation of the Comodo Quest
+//= - Part 1: Found in Quests_Comodo.txt
+//= - Part 3: Found in Doomed_Swords.txt
+//= - Variable in use dmdswrd_Q (Max 45)
+//====================================
 
-//===== eAthena Script ======================================= 
-//= Quests NPCs located in Yuno City
-//===== By: ================================================== 
-//= DiaDz (v1.0)
-//===== Current Version: ===================================== 
-//= 1.2
-//===== Compatible With: ===================================== 
-//= eAthena 7.15 +
-//===== Description: ========================================= 
-//=
-//===== Additional Comments: ================================= 
-//= v1.1 Re-did the text and re-organized the script.  Corrected some items. [kobra_k88]
-//= v1.2 Added part to Bro's for alchemist quest [Darkchild]
-//============================================================ 
+// 阻止瘋狂科學家
 
-
-
-
-//===========================================================================
-
-// Metto Quest
-
-yuno_in03.gat,25,39,3	script	麥斗	709,{
+yuno_in03,26,39,3	script	麥斗#juno	709,{
 	mes "[麥斗]";
-	if(metto_q == 2 || metto_q == 4 || metto_q == 6) goto L_Check;
-	if(metto_q == 1) goto L_Stang;
-	if(metto_q == 3) goto L_Kato;
-	if(metto_q == 5) goto L_Cici;
-	if(metto_q == 7) goto L_Ruined;
-	if(metto_q > 7) goto L_Done;
-	mes "今天研究，明天也研究...研究研究研究...咳咳咳咳咳咳!";
-	next;
-	mes "[麥斗]";
-	mes "我全心全意的投入，我要創一個我自己的國家，首先呢得先瞭解這塊大地，為何漂浮在空中的原理，只要利用這原理，要創作我的國家並不是夢啊!";
-	next;
-	mes "[麥斗]";
-	mes "^ff0000歪根^000000這傢伙...說的我研究根本是不可能的，受到神保護的我研究一定會成功的!";
-	close;
-
-L_Stang:
-	mes "我想去找我的夥伴^ff0000斯塘酷^000000想把我現在進行的研究跟他說明一下，假如..有你幫我的話，這個研究馬上就會結束了，假如你也想看到我的研究結果的話，對神祈禱吧!";
-	set metto_q, 2;
-	close;
-L_Kato:
-	mes "咳啊啊!斯塘酷突然不想和我開會，也不想和我見面...這樣子對我的研究會造成影響，咳啊!.....這到底是怎麼回事啊!";
-	emotion e_swt2;
-	next;
-	mes "[麥斗]";
-	mes "還好...我有投保!從傢伙伴科學家^ff0000卡特^000000那裡把研究要用到的，無敵鐵金鋼Z，如果拿到的話";
-	next;
-	mes "[麥斗]";
-	mes "我的研究就可以順利進行!如能跟..斯塘酷先生討論的話，就可以做到更完美了.....真是可惜啊...";
-	next;
-	mes "[麥斗]";
-	mes "你也可以試著期待啊!哈哈哈哈哈哈哈...";
-	set metto_q, 4;
-	emotion e_gg;
-	close;
-L_Cici:
-	mes "這到底怎麼一回事啊!我什麼時候叫你把無敵鐵金鋼Z破壞呢!!";
-	emotion e_wah;
-	next;
-	mes "[麥斗]";
-	mes "沒關係...我的運氣還沒用完，雖然的影響研究的進度，利用^ff0000實實^000000博士的輕引擎理論的話還是可以的..!!";
-	mes "呵呵呵呵!";
-	emotion e_an;
-	next;
-	mes "[麥斗]";
-	mes "我還剩下命運啊，咳..咳..咳..";
-	set metto_q, 6;
-	emotion e_gg;
-	close;
-L_Check:
-	mes "我現在要出去工作了，你還留在這裡幹嘛?我還有些東西要做準備，要晚一點出去，你先出去吧!";
-	close;
-L_Ruined:
-	mes "........";
-	next;
-	mes "[麥斗]";
-	mes "........";
-	mes "這種事情一直發生...同樣的事情連續3次了...到底是怎麼一回事，神要拋棄我了...";
-	emotion e_sob;
-	next;
-	mes "[麥斗]";
-	mes "唉呦...一輩子奉獻的研究，要準備收尾了嗎?..";
-	emotion e_sob;
-	next;
-	mes "[麥斗]";
-	mes "對期待我研究結果的你，很不好意思，把這個給忘了吧!天運也不幫我了...";
-	next;
-	mes "[麥斗]";
-	mes "我有點累了...想要休息..再也不想作研究之類的事了，請不要再期待了..";
-	set metto_q, 8;
-	close;
-L_Done:
-	mes "我也想了一陣子，不想再作這一行了，找個比較熱門的職業，反正不管怎麼樣...就是不做科學家了";
-	close;
+	if (metto_q == 0) {
+		mes "In the Lab today, in the Lab tomorrow! Everyday is filled with research! Even if it takes my entire life, I will not give up until I have made a new Juno...";
+		next;
+		mes "[麥斗]";
+		mes "A new Juno in which all will bask in the light of my genius! If I can just harness the power of flight... I know I can do it!";
+		next;
+		mes "[麥斗]";
+		mes "^FF0000歪根^000000 said that my idea was crazy and impossible. But I am no fool, I won't be swayed by his words of mockery!";
+		close;
+	}
+	else if (metto_q == 1) {
+		set metto_q,2;
+		mes "I'm going to ask my colleague ^FF0000Stangckle^000000 to help me. I am sure he will be more than willing to help out an old friend.";
+		next;
+		mes "[麥斗]";
+		mes "If I had that fellow's help, this would be much easier. Pray! Pray to whatever God you believe that we will succeed!";
+		close;
+	}
+	else if (metto_q == 3) {
+		set metto_q,4;
+		mes "What? That punk Stangckle said he doesn't want to help me?! This is not good. This will slow my research considerably.";
+		next;
+		mes "[麥斗]";
+		mes "...";
+		mes "What will";
+		mes "I do now?!";
+		next;
+		mes "[麥斗]";
+		mes "Luckily, I have a back up plan. I am positive that my friend and colleague ^FF0000Kato^000000 will lend his aid.";
+		next;
+		mes "[麥斗]";
+		mes "If I can only study his super robot, Great Z, I can continue my research...";
+		next;
+		mes "[麥斗]";
+		mes "I guess if Stangckle doesn't want to help me, he can have it his way. I must continue my research, whether or not he helps me.";
+		next;
+		mes "[麥斗]";
+		mes "Expect great things, young friend. Muahahahha.";
+		close;
+	}
+	else if (metto_q == 5) {
+		set metto_q,6;
+		mes "What? You mean to tell me that the very thing I need to continue my research, the mighty Great Z, has been destroyed?!!";
+		next;
+		mes "[麥斗]";
+		mes "Nooooo~!! Why? Why would they do that? Are the Gods cursing me?!";
+		next;
+		mes "[麥斗]";
+		mes "Wait, I need...";
+		mes "To calm down...";
+		next;
+		mes "[麥斗]";
+		mes "If I can just get the help of professor ^FF0000實實^000000 with his Riding Engine theory, I might be able to finish my research...";
+		next;
+		mes "[麥斗]";
+		mes "I still";
+		mes "have hope!";
+		mes "Ha! Ha! Ha!";
+		close;
+	}
+	else if (metto_q == 7) {
+		set metto_q,8;
+		mes "...";
+		next;
+		mes "[麥斗]";
+		mes "...";
+		mes "......";
+		next;
+		mes "[麥斗]";
+		mes "How can this happen 3 times in a row? Its true, the Gods have forsaken me! I'm ruined... RUINED!!!";
+		next;
+		mes "[麥斗]";
+		mes "What can I do now...? Has the time really come for me to forfeit all my years of research?";
+		next;
+		mes "[麥斗]";
+		mes "I know I've disappointed you, but please, forget all about me.";
+		next;
+		mes "[麥斗]";
+		mes "Who would do this to me? What kind of malicious person would shatter a man's dreams??";
+		next;
+		mes "[麥斗]";
+		mes "I'm tired of this. I think that the time has come for me to give up. It's all over. Please don't be too disappointed...";
+		close;
+	}
+	else if (metto_q == 8) {
+		mes "Maybe I should look into a job change. I hear it is a popular decision these days.";
+		next;
+		mes "[麥斗]";
+		mes "I wonder what I should look into? All I know for sure is that I don't want to be scientist anymore. I'm done with research...";
+		close;
+	}
+	else {
+		mes "I better get going to check this new thing out. What are you still doing here? I'll be leaving in a bit.";
+		next;
+		mes "[麥斗]";
+		mes "I need to get ready! You go ahead and take off, I'll be going out soon.";
+		close;
+	}
 }
 
-//===================================================================
-yuno_in01.gat,18,30,3	script	歪根	85,{
+yuno_in01,17,30,5	script	歪根#juno	85,{
 	mes "[歪根]";
-	if(metto_q > 0) goto L_Check;
-	mes "你也知道我們村落是利用高度發展的科技出來的，這些榮耀都是這些人努力研究的結果";
-	next;
-	mes "[歪根]";
-	mes "所以對這些努力的科學家，村落方面會給予他們幫助和獎勵等等..就是因為有些人太過份了，真的讓人受不了，努力研究是不錯，不過有些造成對周圍的危害還真不少啊";
-	next;
-	mes "[歪根]";
-	mes "中以^ff0000麥斗^000000這傢伙最頭痛";
-	emotion e_an;
-	next;
-	mes "[歪根]";
-	mes "他以作研究為名目將公共設施破壞、噪音..等等，讓人感到不愉快。什麼惡事都做的人真是叫人頭痛，究竟怎樣才能讓他停止呢...";
-	emotion e_ag;
-	next;
-	menu "讓我來處理吧",-, "祈禱上天保佑村子",M_End;
-
-		mes "[歪根]";
-		mes "噢!你要幫我處理嗎?非常的感謝你，心地真好，處理的方法嗎...對第一次見到的地外人來說是較難處理的事情?";
-		emotion e_what;
+	if (metto_q == 0) {
+		mes "I'm sure that you know our city has been living off our research for many years.";
 		next;
-		menu "當然囉",M_Sure, "不，我現在才要想想看",-;
-
+		mes "[歪根]";
+		mes "We owe this quality of life to those who have dedicated their lives to research and study.";
+		next;
+		mes "[歪根]";
+		mes "So we help each other and study together. It is nice to have such solid support around when we are conducting research.";
+		next;
+		mes "[歪根]";
+		mes "But there are those few bad apples that just drive me crazy...";
+		next;
+		mes "[歪根]";
+		mes "It's good to try hard, but there are those selfish and crazy mad scientists that make things harder for the rest of us.";
+		next;
+		mes "[歪根]";
+		mes "Out of all those, ^FF0000Metto^000000 must be the worst by far. He's into crazy things...";
+		next;
+		mes "[歪根]";
+		mes "For science, he's destroyed public facilities, has been the cause of noise and air pollution and generally disturbing the peace...";
+		next;
+		mes "[歪根]";
+		mes "And he's justifying his behavior under the excuse of research! He's a crazy fellow who's taken it too far!";
+		next;
+		mes "[歪根]";
+		mes "I wish there was a way that we could stop him from wrecking it for the rest of us. Some brave, daring soul should be able to do something...";
+		next;
+		if (select("Leave it to me.:I wish your village luck in doing so.") == 1) {
+			if (Class == Job_Novice) {
+				mes "[歪根]";
+				mes "Hmm...";
+				mes "Thanks for the offer, but I don't think this is something that you could do...";
+				next;
+				mes "[歪根]";
+				mes "I think we need someone a bit harsher to help us out. I think it would be a little too much for a Novice.";
+				next;
+				mes "[歪根]";
+				mes "Please don't be";
+				mes "offended by this.";
+				close;
+			}
+			set metto_q,1;
 			mes "[歪根]";
-			mes "有霸氣是不錯啦...什麼都不懂就行動有點不妥，麥斗是非常相信命運，用他不知道的方式在背後阻擾，當他受到很多阻擾時";
+			mes "Oh, are you going to take care of this for us? We would be very grateful.";
 			next;
 			mes "[歪根]";
-			mes "他會認為天運不幫他，到時候會不會有放棄的想法呢?另外他有一點囉嗦的個性，碰到第一次見面的人也會跟他一直哈啦!利用這種個性，應該可以解決問題吧?祝你幸運!!!";
-			set metto_q, 1;
-			close;
-		M_Sure:
+			mes "But how do you plan to go about doing this? I'm guessing it's harder than it sounds...";
+			next;
+			if (select("Of course I have a plan.:I guess I need a plan.") == 1) {
+				mes "[歪根]";
+				mes "I have faith in you. You should know that he believes in fate. Use that to your advantage.";
+				next;
+				mes "[歪根]";
+				mes "I feel much better knowing you will take care of this little problem...";
+				close;
+			}
 			mes "[歪根]";
-			mes "他很相信命運的，利用這種個性，應該可以解決問題吧?另外他有一點囉嗦的個性，碰到第一次見面的人也會跟他一直哈啦，祝你幸運!!!";
-			set metto_q, 1;
+			mes "Hmmm... I admire your zeal, but how do you expect to accomplish anything without a plan?";
+			next;
+			mes "[歪根]";
+			mes "You need a ruse to trick him into quitting. Something subtle, like... Hmm...";
+			next;
+			mes "[歪根]";
+			mes "...Sabotaging his experiments and making it look like it was his destiny to fail!";
+			next;
+			mes "[歪根]";
+			mes "He's talkative, so if you approach him, he'll tell you all you need to know.";
+			next;
+			mes "[歪根]";
+			mes "Yeah...";
+			mes "I've been thinking of this plan for a while...";
 			close;
-	M_End:
+		}
 		mes "[歪根]";
-		mes "對啊，祈禱能得上天保佑，不過看來麥斗是一個特別相信上天的男人..利用這方法，也許會有辦法解決吧，唉呦...";
+		mes "We will have to pray for fate to help us. Now to think of it, Metto is a strong believer in fate.";
+		next;
+		mes "[歪根]";
+		mes "If only we could use that to our advantage...";
 		close;
-L_Check:
-	if(metto_q == 8) goto L_Thank;
-	if(metto_q == 9) goto L_Done;
-	mes "麥斗現在怎樣了呢...我們自己的事還要麻煩你，真是不好意思";
-	close;
-L_Thank:
-	mes "謝謝你!總算解決村裡的頭痛人物，重新讓他重生了";
-	emotion e_ic;
-	next;
-	mes "[歪根]";
-	mes "以後村裡會平靜些，這是和你約定的報酬，請收下吧!";
-	next;
-	mes "[歪根]";
-	mes "祝你的未來與幸運同在!";
-	getitem 715,10;
-	emotion e_thx;
-	set metto_q, 9;
-	close;
-L_Done:
-	mes "祝你的未來與幸運同在!";
-	emotion e_thx;
-	close;
+	}
+	else if (metto_q == 8) {
+		mes "Thank you for your help. Because of your work in ridding us of Metto, we have one less worry.";
+		next;
+		mes "[歪根]";
+		mes "I'm sure the people of Juno are very thankful. Here is a little token of our appreciation...";
+		next;
+		mes "[歪根]";
+		if (Class == Job_Sage) {
+			set .@now_weight,maxweight - weight;
+			if (.@now_weight < 300) {
+				mes "Oh no, it seems that you are carrying too much stuff! Would you make some room?";
+				close;
+			}
+			set metto_q,9;
+			mes "I wish you luck in your future endeavors...";
+			getitem 715,10; //Yellow_Gemstone
+			close;
+		}
+		set .@now_weight,maxweight - weight;
+		if (.@now_weight < 150) {
+			mes "Oh no, it seems that you are carrying too much! Would you make some room?";
+			close;
+		}
+		set metto_q,9;
+		mes "I wish you luck in your future endeavors...";
+		getitem 717,5; //Blue_Gemstone
+		close;
+	}
+	else if (metto_q == 9) {
+		mes "Things around here seem much more peaceful without that Metto around. Thanks for your help.";
+		close;
+	}
+	else {
+		mes "How goes your work with Metto? Hopefully the plan is going well. I'm sorry to bother you with such a task.";
+		close;
+	}
 }
 
-//=====================================================================
-yuno_in01.gat,18,95,5	script	斯塘酷	99,{
-	mes "[斯塘酷]";
-	if(metto_q > 2) goto L_Done;
-	if(metto_q == 2) goto L_Start;
-	mes "我是這村落科學家中的一位，我叫，斯塘酷，要把我的名字記住，以後會對你有好處的";
-	close;
-L_Start:
-	mes "來這裡有什麼事嗎?等一下預計我的夥伴麥斗，會來這邊開會，請你辦完事，快點離開吧!還有事嗎?";
-	next;
-	menu "打擾他們的研究",-, "沒事啊",M_End;
-
-		mes "[斯塘酷]";
-		mes "........";
+yuno_in01,17,95,5	script	Stangckle#juno	99,{
+	mes "[Stangckle]";
+	if (metto_q == 2) {
+		mes "What can I do for you? My colleague Metto is coming here soon, so I don't have much time. So what did you say you needed?";
 		next;
-		mes "[斯塘酷]";
-		mes "........";
-		next;
-		mes "[斯塘酷]";
-		mes "........";
-		next;
-		mes "[斯塘酷]";
-		mes "那是真的嗎?麥斗不將我當作夥伴看，只把我當作研究的道具看待?等研究結果出爐時，他會佔為己有，這是真的嗎?";
-		emotion e_omg;
-		next;
-		mes "[斯塘酷]";
-		mes "休嗚...有被背叛的感覺...這個瘋狂科學家";
-		emotion e_pif;
-		next;
-		mes "[斯塘酷]";
-		mes "假如他真的這樣看待我，真的讓我有被背叛的感覺...還開什麼會啊!!!我連他的臉都不想見到";
-		set metto_q, 3;
+		if (select("I'm here to stop your research.:I don't need anything.") == 1) {
+			set metto_q,3;
+			mes "[Stangckle]";
+			mes "...";
+			next;
+			mes "[Stangckle]";
+			mes "...";
+			mes "......";
+			next;
+			mes "[Stangckle]";
+			mes "...";
+			mes "......";
+			mes ".........";
+			next;
+			mes "[Stangckle]";
+			mes "Is that true?? Metto doesn't think of me as a colleague, but still wants me to help him?!";
+			next;
+			mes "[Stangckle]";
+			mes "He only sees me as an assistant and is going to steal all the credit for our discoveries?!";
+			next;
+			mes "[Stangckle]";
+			mes "This guy can't be trusted! The rumors were true: he really is mad!";
+			next;
+			mes "[Stangckle]";
+			mes "And to think, I really respected that traitor! I can't even stand to see that guy's face anymore.";
+			next;
+			mes "[Stangckle]";
+			mes "I'm glad that an honest, trustworthy person such as yourself had the guts to tell me. Thank you.";
+			next;
+			mes "[Stangckle]";
+			mes "Now if you'll excuse me, I have work to do.";
+			close;
+		}
+		mes "[Stangckle]";
+		mes "What are you doing then? Stop wasting my time.";
 		close;
-	M_End:
-		mes "[斯塘酷]";
-		mes "真是一個無聊的傢伙，沒事就快點出去吧";
-		emotion e_swt;
+	}
+	else if (metto_q == 0) {
+		mes "I am one of the scientists in this city. My name is Stangckle.";
+		next;
+		mes "[Stangckle]";
+		mes "You should remember my name, it may be useful to you in the future.";
 		close;
-L_Done:
-	mes "現在要和麥斗這樣瘋狂科學家要澄清關係，以後決定要成為不會給居民帶來危害的科學家";
-	close;
+	}
+	else if (metto_q == 1) {
+		mes "I am one of the scientists in this city. My name is Stangckle.";
+		next;
+		mes "[Stangckle]";
+		mes "You should remember my name, it may be useful to you in the future.";
+		close;
+	}
+	else {
+		mes "So Metto has become one of those mad scientists. I guess that is the choice he has ultimately made for his life.";
+		close;
+	}
 }
 
-yuno_in01.gat,19,183,4	script	卡特	55,{
-	mes "[卡特]";
-	if(metto_q > 4) goto L_Done;
-	if(metto_q == 4) goto L_Start;
-	mes "我是卡特，專門作機械的博士，目前沒有做什麼特別的研究活動..我所做的無敵鐵金鋼Z特殊合金是傑作中的傑作啊!";
-	close;
-
-L_Start:
-	mes "我看起來像一位機械人無情的男子，不光只有腦袋，是擁有很多創造靈魂熱騰騰在運轉的科學家，你找我有什麼事嗎?";
-	next;
-	menu "打擾你的研究",-, "只跟你打招呼",M_End;
-
-		mes "[卡特]";
-		mes "嗯?我的無敵鐵金鋼Z，比斯塘酷的研究還不如嗎?反正我們兩個都沒有表態，實際上聽到你這句話我是有點不高興，";
-		emotion e_omg;
+yuno_in01,19,183,5	script	Kato#juno	55,{
+	mes "[Kato]";
+	if (metto_q == 4) {
+		mes "I am a scientist researching all sorts of things.";
 		next;
-		mes "[卡特]";
-		mes "本來要給麥斗的無敵鐵金鋼Z，我要把他給毀掉!";
-		emotion e_sob;
+		mes "[Kato]";
+		mes "Of course, my research is private and confidential. But is there anything I can do for you?";
 		next;
-		mes "[卡特]";
-		mes "很難得聽到的話，讓你跑一趟傳達給我，真是謝謝你!";
-		set metto_q, 5;
+		if (select("I want to stop you from making a mistake.:Just saying hello.") == 1) {
+			set metto_q,5;
+			mes "[Kato]";
+			mes "What? Metto said, my Great Z is inferior to Stangckles research?!";
+			next;
+			mes "[Kato]";
+			mes "H-he said I should rename my invention to 'Lame Z?' *Sniff* I... I don't believe it... *Sob*";
+			next;
+			mes "[Kato]";
+			mes "I-If my invention is no good, then I guess I should destroy my Great Z... *sigh*";
+			next;
+			mes "[Kato]";
+			mes "Thank you for letting me know. I know it wasn't easy to tell me.";
+			close;
+		}
+		mes "[Kato]";
+		mes ".........................";
+		mes "Okay...";
+		mes "Um... Hey.";
 		close;
-	M_End:
-		mes "[卡特]";
-		mes "............";
-		mes "真是一個無聊的傢伙...";
+	}
+	else if (metto_q == 6 || metto_q == 7 || metto_q == 8 || metto_q == 9) {
+		mes "I am interested in researching artificial intelligence. You know, like robots.";
+		next;
+		mes "[Kato]";
+		mes "I know it a very difficult feat to accomplish, but where there's a will, there's a way.";
+		next;
+		mes "[Kato]";
+		mes "If you ever see something really amazing like this, you'll know its my handiwork.";
 		close;
-
-L_Done:
-	mes "我現在想獨自創造一個可以讓人們搭乘的大型機器，雖然有點難，只要有這特殊合金的話，總有一天可以達成我的目標的";
-	next;
-	mes "[卡特]";
-	mes "如果有一天在修發茲看到這樣巨大的東西時，就把他想成那是我作的東西";
-	close;
+	}
+	else {
+		mes "I am a scientist of Artificial Intelligence and Robotics.";
+		next;
+		mes "[Kato]";
+		mes "I don't have a specific project right now, but my latest creation, the 'Great Z,' is truly a product of sheer and utter genius.";
+		close;
+	}
 }
 
-yuno_in03.gat,179,43,5	script	實實	121,{
-	mes "[實實]";
-	if(metto_q > 6) goto L_Done;
-	mes "我的名字叫實實!是這村落3大頭腦中的一名!雖然這村落的科學家並不多";
-	mes "不過可以進入到3大頭腦中，也算是不簡單的人物!咳喝!";
-	if(metto_q == 6) goto L_Start;
-	close;
-
-L_Start:
-	next;
-	mes "[實實]";
-	mes "自誇的話講到這邊..有什麼事?";
-	next;
-	menu "打擾你的研究",-, "只跟你打招呼",M_End;
-
+yuno_in03,178,43,0	script	實實#juno	121,{
+	if (metto_q == 6) {
 		mes "[實實]";
-		mes "嗯...麥斗說..不需要的我輕引擎理論..哼..自傲的傢伙..我真想把他抓起來再綁起來，教育他我研究的偉大性";
-		emotion e_pif;
+		mes "My name is 實實. I am one of the three great scientists in this city.";
 		next;
 		mes "[實實]";
-		mes "卻變成我要先跟他說抱歉，哈哈哈哈...不過這次輕引擎理論，因為材料的不足，卻完全失敗了，即時他沒有這樣講，也無法成功的～～";
-		emotion e_ag;
+		mes "There are many great scientists in this city, but being in the top three is a true honor. Don't you agree?";
 		next;
 		mes "[實實]";
-		mes "已經知道麥斗的心思後，即時再研究使研究成功，我也不想和他共享研究結果，謝謝你轉告給他";
-		set metto_q, 7;
-		close;
-
-	M_End:
+		mes "Well, I think I've bragged a little too much now, what can I do for you?";
+		next;
+		switch(select("I want to warn you.:Nothing, just saying Hi.")) {
+		case 1:
+			set metto_q,7;
+			mes "[實實]";
+			mes "Hm? Metto said that he doesn't need my Riding Engine theory?! Hmpf, what an ingrate!";
+			next;
+			mes "[實實]";
+			mes "I have half a mind to teach him a little something about true science and intelligent research.";
+			next;
+			mes "[實實]";
+			mes "He thinks that I owe him an apology?! For what? Why should I apologize...?!";
+			next;
+			mes "[實實]";
+			mes "Whatever, I really didn't have the necessary parts to help him anyway. I guess, either way, he would not have had a chance.";
+			next;
+			mes "[實實]";
+			mes "Let him know I really don't want to be a part of what he is doing. He isn't even doing the type of research that we would be able to publicize.";
+			close;
+			break;
+		case 2:
+			mes "[實實]";
+			mes "What? That's it? I was bored before you came, but you've managed to bore me even more.";
+			break;
+		}
+	}
+	else if (metto_q < 6) {
 		mes "[實實]";
-		mes "真是一個無聊的傢伙，剛好做的不耐煩，你又跑過來煩我";
-		emotion e_swt;
+		mes "My name is 實實. I am one of the three great scientists in this city.";
+		next;
+		mes "[實實]";
+		mes "There are many great scientists here, but being in the top three is a true honor, wouldn't you agree?";
 		close;
-
-L_Done:
-	mes "嗯...";
-	mes "輕引擎理論的新定義不錯，不過材料不足還真是傷腦筋啊!大條啊～～";
-	close;
+	}
+	else {
+		mes "[實實]";
+		mes "Hmmm...";
+		mes "I want to improve the Riding Engine in a new way, but I lack the parts I need...";
+		next;
+		mes "[實實]";
+		mes "What a headache~ And Metto has never offered me any help at all. This will not be easy.";
+		close;
+	}
 }
 
-yuno_in01.gat,103,158,4	script	發仁	98,{
-	set @name$, "[發仁]";
+// 鍊金術師兄弟
+yuno_in01,103,157,3	script	發仁#juno	98,{
+
+	if (countitem(974) > 0 && countitem(612) > 4 && countitem(1003) > 4 && countitem(7068) > 4 && countitem(7043) > 4 && countitem(757) > 2 && countitem(756) > 2 && Zeny > 2000) {
+		if (ALCH_Q == 23) set ALCH_Q,24;
+		set .@kyulkwa,rand(1,10);
+		mes "[發仁]";
+		mes "噢噢，把所需要的材料全收集好了嗎?";
+		mes "真的謝謝!";
+		mes "好，那麼就開始合成吧!";
+		mes "請稍微等待一下!";
+		next;
+		mes "-鐺 鏘 鏘 鏘-";
+		next;
+		mes "-鐖 鐖 鐖 鐖 鏗 鏗-";
+		next;
+		mes "-喝 嘎 喝 嘎 碰!-";
+		next;
+		if (.@kyulkwa < 4 || .@kyulkwa > 8)
+			callsub S_DelItems,1002,5,1;
+		if (.@kyulkwa == 5 || .@kyulkwa == 6 || .@kyulkwa == 8)
+			callsub S_DelItems,723,5,1;
+		else if (.@kyulkwa == 7)
+			callsub S_DelItems,969,2,0;
+	}
+	if (bros_q == 1) {
+		mes "[發仁]";
+		mes "我怕你突然會忘記材料，";
+		mes "把主要的材料再念一遍給你，";
+		mes "順便做記錄把它背下來吧";
+		next;
+		mes "[發仁]";
+		mes "^FF0000混合劑^000000 1支";
+		mes "^FF0000攜帶用熔礦爐^000000 3個";
+		mes "^FF0000燃燒一半的木材^000000 5個";
+		mes "^FF0000煤礦^000000 5個";
+		mes "^FF0000黃晶沙^000000 5個";
+		next;
+		mes "[發仁]";
+		mes "^FF0000鋁原石^000000 3個";
+		mes "^FF0000神之金屬原石^000000 3個";
+		next;
+		mes "[發仁]";
+		mes "還需要放入2000Zeny，要一起攪拌";
+		mes "那就拜託你啦";
+		close;
+	}
+	if (bros_q == 0) {
+		mes "[發仁]";
+		mes "我和鍊金術師發仁弟弟一起，正在努力的研究，自已會講話自已會思考的自動人型";
+		mes "過去，以星星命名被自然界選取的物質和金屬，做成自己會自動講話會思考的自動人型";
+		mes "過去文獻上有這樣的記載，以前有這樣的人";
+		mes "我相信我們也會辦到的";
+		next;
+		mes "[發仁]";
+		mes "可是現在因材料的不足，研究的進度沒有往前邁進";
+		mes "到底其他鍊金術師們怎麼樣搜集材料的?";
+		mes "錢也是一個問題，把其它魔物殺掉，所得到的寶物也應該很多啊";
+		mes "唉呦....需要很多種材料啊，問題大啦....";
+		next;
+		if (select("我來幫你尋找:你加油吧") == 1) {
+			set bros_q,1;
+			mes "[發仁]";
+			mes "噢...噢...偉大的外地人啊!";
+			mes "是你讓我們的研究熱度繼續的延續下去了，那我就告訴你我們所需要的東西了!";
+			next;
+			mes "[發仁]";
+			mes "^ff0000混合劑^000000 1支";
+			mes "^ff0000攜帶用熔礦爐^000000 3個";
+			mes "^ff0000燃燒一半的木材^000000 5個";
+			mes "^ff0000煤礦^000000 5個";
+			mes "^ff0000黃晶沙^000000 5個";
+			next;
+			mes "[發仁]";
+			mes "^ff0000鋁原石^000000 3個";
+			mes "^ff0000神之金屬原石^000000 3個";
+			next;
+			mes "[發仁]";
+			mes "另外還需要2000Zeny";
+			mes "當把物質混合的時候，適當的放入金幣的話，效果會好一點";
+			mes "那就....拜託你啦";
+			close;
+		}
+		mes "[發仁]";
+		mes "我真的羨慕你，像你這樣強壯的旅行者....";
+		close;
+	}
+
+S_DelItems:
+	delitem 974,1; //Mixture
+	delitem 612,5; //Portable_Furnace
+	delitem 1003,5; //Coal
+	delitem 7068,5; //Burn_Tree
+	delitem 7043,5; //Fine_Sand
+	delitem 757,3; //Elunium_Stone
+	delitem 756,3; //Oridecon_Stone
+	set zeny,zeny-2000;
+	getitem getarg(0),getarg(1); //Gold
+	mes "[發仁]";
+	mes "呵!呵!呵!";
+	mes "合成結束了";
+	if (getarg(2) == 1) {
+		mes "不知道為什麼合成了"+getarg(1)+"個";
+	}
+	else {
+		mes "不知道為什麼合成了";
+	}
+	mes "^FF0000"+getitemname(getarg(0))+"^000000 !";
+	next;
+	mes "[發仁]";
+	mes "因為知道這個結果，";
+	mes "所以這東西不需要了!";
+	next;
+	mes "[發仁]";
+	mes "謝謝你的配合";
+	mes "那麼祝你旅途愉快~";
+	close;
+}
 	
-OnStart:
-	mes @name$;
-	if(bros_q == 1) goto L_Check;
-	mes "我們要發明一種可以與人交談對話的娃娃! 呃... 至少...那是我們想要做的....";
-	mes "這個點子是來自一個古老的傳說，傳說中的娃娃可以像真人一樣的活動.";
-	next;
-	mes @name$;
-	mes "我想如果有人能做出這樣的娃娃，那一定就是我們了.";
-	next;
-	mes @name$;
-	mes "但是我現在還缺少一些材料.";
-	mes "雖然有些東西是買得到的，但是仍然有許多東西是怪物們才有的......";
-	next;
-	mes @name$;
-	mes "我的武藝太差了，根本打不贏那些怪物....... 這樣下去怎麼能完成這個發明??.....";
-	next;
-	menu "我幫你搜集需要的物品吧",-, "祝你好運",M_End;
+yuno_in01,100,153,7	script	發鎮	47,0,0,{
 
-		mes @name$;
-		mes "真的嗎? 現在已經很少人願意幫助陌生人了. 我們會很感激你的協助的.";
-		mes "以下是我們需要的物品.......";
-		callsub sF_List;
-		set bainbajin_q, 1;
+	if (countitem(974) > 0 && countitem(612) > 4 && countitem(1003) > 4 && countitem(7068) > 4 && countitem(7043) > 4 && countitem(757) > 2 && countitem(756) > 2 && Zeny > 2000) {
+		if (ALCH_Q == 23) set ALCH_Q,24;
+		set .@kyulkwa,rand(1,10);
+		mes "[發鎮]";
+		mes "噢噢，把所需要的材料全收集好了嗎?";
+		mes "真的謝謝!";
+		mes "好，那麼就開始合成吧!";
+		mes "請稍微等待一下!";
+		next;
+		mes "-鐺 鏘 鏘 鏘-";
+		next;
+		mes "-鐖 鐖 鐖 鐖 鏗 鏗-";
+		next;
+		mes "-喝 嘎 喝 嘎 碰!-";
+		next;
+
+		if (.@kyulkwa < 4 || .@kyulkwa > 8)
+			callsub S_DelItems,1002,5,1;
+		if (.@kyulkwa == 5 || .@kyulkwa == 6 || .@kyulkwa == 8)
+			callsub S_DelItems,723,5,1;
+		else if (.@kyulkwa == 7)
+			callsub S_DelItems,984,3,1;
+	}
+	if (bros_q == 1) {
+		mes "[發鎮]";
+		mes "嗯?你忘記材料了嗎?";
+		mes "我再念一遍給你，好好記住啊";
+		next;
+		mes "[發鎮]";
+		mes "^ff0000混合劑^000000 1支";
+		mes "^ff0000攜帶用熔礦爐^000000 3個";
+		mes "^ff0000燃燒一半的木材^000000 5個";
+		mes "^ff0000煤礦^000000 5個";
+		mes "^ff0000黃晶沙^000000 5個";
+		next;
+		mes "[發鎮]";
+		mes "^ff0000鋁原石^000000 3個";
+		mes "^ff0000神之金屬原石^000000 3個";
+		next;
+		mes "[發鎮]";
+		mes "還需要放入2000Zeny一起攪拌";
+		mes "我知道這很為難你";
+		mes "那就拜託你啦";
 		close;
-
-	M_End:
-		mes @name$;
-		mes "我們的確需要非常多的好運才能成功. 如果你知道有誰能夠協助我們，請告訴我們.";
+	}
+	if (bros_q == 0) {
+		mes "[發鎮]";
+		mes "我是鍊金術師發鎮，我和哥哥一起做研究，不過...";
+		mes "雖然我們的夢想是製作自動人型，我還是喜歡和哥哥做研究";
+		mes "不管做什麼事，都很喜歡和他一起，努力的把事情完成";
+		next;
+		mes "[發鎮]";
+		mes "可是現在因為材料不足的關系，";
+		mes "研究的進度沒有往前邁進";
+		mes "我們已經這麼賣力了，";
+		mes "運也不好....休嗚";
+		next;
+		if (select("我來幫你尋找:打起精神來") == 1) {
+			set bros_q,1;
+			mes "[發鎮]";
+			mes "噢...噢...偉大的外地人啊!";
+			mes "是你讓我們的研究熱度繼續的延續下去了，那我就告訴你，我們所需要的東西了!";
+			next;
+			mes "[發鎮]";
+			mes "^FF0000混合劑^000000 1支";
+			mes "^FF0000攜帶用熔礦爐^000000 3個";
+			mes "^FF0000燃燒一半的木材^000000 5個";
+			mes "^FF0000煤礦^000000 5個";
+			mes "^FF0000黃晶沙^000000 5個";
+			next;
+			mes "[發鎮]";
+			mes "^FF0000鋁原石^000000 3個";
+			mes "^FF0000神之金屬原石^000000 3個";
+			next;
+			mes "[發鎮]";
+			mes "另外還需要2000Zeny";
+			mes "當把物質混合的時候，適當的放入金幣的話，效果會好一點";
+			mes "那就....拜託你啦";
+			close;
+		}
 		close;
+	}
 
-L_Check:
-	mes @name$;
-	if(countitem(974) < 1 || countitem(612) < 5 || countitem(7068) < 5 || countitem(1003) < 5 || countitem(7043) < 5 || 
-		countitem(757) < 3 || countitem(756) < 3 || Zeny < 2000) goto L_NotEnuf;
-	delitem 974,1;
-	delitem 612,5;
-	delitem 7068,5;
-	delitem 1003,5;
-	delitem 7043,5;
-	delitem 757,3;
-	delitem 756,3;
-	set Zeny, Zeny-2000;
-	mes "真是太感謝你了! 你找到了我所需要的全部東西. 沒有你的協助我們真不知道該怎麼繼續這個計劃.";
+S_DelItems:
+	delitem 974,1; //Mixture
+	delitem 612,5; //Portable_Furnace
+	delitem 1003,5; //Coal
+	delitem 7068,5; //Burn_Tree
+	delitem 7043,5; //Fine_Sand
+	delitem 757,3; //Elunium_Stone
+	delitem 756,3; //Oridecon_Stone
+	set zeny,zeny-2000;
+	getitem getarg(0),getarg(1); //Gold
+	mes "[發鎮]";
+	mes "合成結束了!";
+	if (getarg(2) == 1) {
+		mes "不知道為什麼合成了"+getarg(1)+"個";
+	}
+	else {
+		mes "不知道為什麼合成了";
+	}
+	mes "^FF0000"+getitemname(getarg(0))+"^000000 !";
 	next;
-	mes @name$;
-	set bainbajin_q, 0;
-	if(ALCH_Q == 6) goto L_Alchemist;
-
-	L_Other:
-		mes "這裡是一點小意思，感謝你的協助.";
-		set @greatful,rand(0,4);
-		if(@greatful==0) getitem 969, 3;
-		if(@greatful>0 && @greatful<3) getitem 999, 5;
-		if(@greatful>2) getitem 969, 3;
-		close;
-
-	L_Alchemist:
-		mes "嗯...現在我們來試試這個...";
-		mes "等一等...";
-		next;
-		mes "-喔喔呼呼啊啊啊啊啊啊";
-		next;
-		mes "-喀啦喀啦喀啦喀啦喀啦";
-		next;
-		mes "-碰叮鏘鏘鏘碰碰碰嘩啦";
-		next;
-		mes @name$;
-		mes "喔喔喔喔! 成功了!";
-		mes "不知道還能做什麼，不過這次我們製造出了";
-		set @wowitem,rand(2);
-		if(@wowitem == 0) mes "5 個紅寶石!";
-		if(@wowitem == 1) mes "3 個黃金!";
-		next;
-		set ALCH_Q2, 2;
-		mes @name$;
-		mes "現在我們知道這是可行的了";
-		mes "不過這些成品我們不需要留著.";
-		mes "何不就送給你呢?";
-		mes "如果你還發現了其他的材料";
-		mes "別忘了帶來給我們喔! 呵呵呵呵...";
-		if(@wowitem == 0) getitem 723,5;
-		if(@wowitem == 1) getitem 969,3;
-		next;
-		mes @name$;
-		mes "謝謝你協助我們";
-		mes "我們會永遠記得你，感激你的.";
-		mes "祝你旅途一路順利!";
-		close;
-
-	L_NotEnuf:
-		mes "你忘記了我們需要的東西了嗎? 我建議你拿紙筆記下來......";
-		callsub sF_List;
-		close;
-
-sF_List:
-	next;
-	mes @name$;
-	mes "^5533FF混合劑 1 瓶";
-	mes "攜帶用熔礦爐 5 具";
-	mes "燃燒一半的木材 5 根";
-	mes "煤礦 5 份";
-	mes "黃晶沙 5 份";
-	mes "神之金屬原石 3 顆";
-	mes "鋁原石 3 顆^000000";
-	next;
-	mes @name$;
-	mes "另外我們還需要 ^5533FF2,000 zeny^000000.";
-	mes "這些錢可以減輕我們執行這個計劃的經濟負擔. 祝你好運!";
-	return;
+	mes "[發鎮]";
+	mes "因為知道這個結果，";
+	mes "所以這東西不需要了!";
+	mes "若還想持續研究的話，";
+	mes "只要材料齊全的話歡迎再來!";
+	close;
 }
 
-//=====================================================================
-yuno_in01.gat,99,153,4	script	發鎮	47,{
-	set @name$, "[發鎮]";
-	doevent "發仁::OnStart";
-	close;
+// Doomed Swords - Juno Portion
+//============================================================ 
+yuno,157,87,4	script	A Citizen of Juno#juno	102,{
+	mes "[Shalima]";
+	mes "When you go north from Al De Baran, you will arrive at 'Elmeth Plateau,' a place covered with molten rock.";
+	next;
+	mes "[Shalima]";
+	mes "On the top of a mountain connected to the plateau, you can find a bridge which leads you to this place!, ^3355FFJuno,^000000 the city of Sages.";
+	next;
+	if (dmdswrd_Q == 23) {
+		mes "[Shalima]";
+		mes "Oh...?";
+		mes "what is that shining object you're carrying with you? Isn't that...?";
+		next;
+		mes "[Shalima]";
+		mes "The ^3355FFStamp of Muriniel^000000? What a surprise!";
+		next;
+		mes "[Shalima]";
+		mes "When you go East from the entrance of Juno, you will find the Street of Book Stores. If you have some time, please visit ^3355FFSir Yklah^000000 who is one of 3 well-known sages in Juno.";
+		next;
+		mes "[Shalima]";
+		mes "I believe he may take some special interest in the Stamp you are carrying.";
+		close;
+	}
+	else {
+		mes "[Shalima]";
+		mes "In Juno, you can visit places such as the 'Juphero Plaza,' 'Juno Conference Hall,' 'Schweicherbil Magic Academy', or the 'Monster Museum.' These places are famous around the world!";
+		next;
+		mes "[Shalima]";
+		mes "You may also wish to drop by the 'Sage Castle,' where people can change their jobs into 'Sage,' one of the more unique classes.";
+		next;
+		mes "[Shalima]";
+		mes "If you're interested in the Sage class, why don't you go look around the castle?";
+		close;
+	}
+}
+
+yuno,261,99,4	script	Sage Yklah#juno	735,{
+	if (dmdswrd_Q == 23 || dmdswrd_Q == 24 || dmdswrd_Q == 25) {
+		switch(dmdswrd_Q) {
+		case 23:
+			mes "[Yklah]";
+			mes "- ! ! ! -";
+			next;
+			mes "[Yklah]";
+			mes "That item...";
+			mes "That shining item you're carrying, isn't that...? ^3355FFStamp of Muriniel^000000?! Oh! What a surprise!";
+			next;
+			mes "[Yklah]";
+			mes "I've heard that it's from a hot and dry land, but I never dreamed I'd be able to see it with my own eyes!";
+			next;
+			mes "[Yklah]";
+			mes "Who are you...? Who are you carrying this legendary item for?";
+			next;
+			switch(select("(Show him the slate):I'm a genius!:I'm a GM!")) {
+			case 1:
+				mes "[Yklah]";
+				mes "...I can't believe my eyes! Only a chosen few can possess the Stamp of Muriniel...";
+				next;
+				mes "[Yklah]";
+				mes "Oh yes. That's right, that's right. As far as I can tell, you don't seem to understand how to use this item...";
+				next;
+				mes "[Yklah]";
+				mes "There is one old song in Juno, about ^3355FF'The Doomed Sword'^000000 that you may have been looking for.";
+				next;
+				mes "[Yklah]";
+				mes "'Even if you're running toward a light on the other side of the mist, you can't reach it.'";
+				next;
+				mes "[Yklah]";
+				mes "'The chime of the bell from across the valley cannot be held in your hand.'";
+				next;
+				mes "[Yklah]";
+				mes "Yes, it's sort of a difficult song to understand, but it's supposed to express how Sages in ancient times feel about obtaining the doomed swords.";
+				//mes "that's how exactly sages in ancient ages felt about obtaining the doomed sword.";
+				next;
+				mes "[Yklah]";
+				mes "If you're still set on the idea of obtaining the doomed sword, come and talk to me sometime.";
+				next;
+				mes "[Yklah]";
+				mes "As you already possess the Stamp of Muriniel, I am more than willing to help you.";
+				set dmdswrd_Q,24;
+				close;
+			case 2:
+				mes "[Yklah]";
+				mes "Hmm?";
+				mes "A genius you say? How can you say that in a city full of wise men? That's nothing special.";
+				next;
+				mes "[Yklah]";
+				mes "Plus, if you're a colleague, I think I would remember you. I don't tend to forget people that I've met at least once.";
+				close;
+			case 3:
+				mes "[Yklah]";
+				mes "A...";
+				mes "GM?";
+				next;
+				mes "[Yklah]";
+				mes "I don't understand what you're talking about. But there's an ancient Juno song about this GM you speak of...";
+				next;
+				mes "[Yklah]";
+				mes "'^FF3355Impersonating GMs is punishable with a permanent account block^000000.' But what could it possibly mean?";
+				next;
+				mes "^3355FFHow depressing!^000000";
+				close;
+			}
+		case 24:
+			if (countitem(7030) > 2 && countitem(913) > 9 && countitem(7032) > 0) {
+				mes "[Yklah]";
+				mes "Hmm! Good job, you brought all of the items. Try inserting them in the grooves.";
+				next;
+				mes "[Yklah]";
+				mes "To be honest, I thought about it before, but this is the first time that I'll actually try this experiment. Go ahead, I want to see what happens!";
+				next;
+				mes "^3355FFYou inserted items";
+				mes "in the grooves .^000000";
+				delitem 7030,3; //Claw_Of_Desert_Wolf
+				delitem 913,10; //Tooth_Of_Bat
+				delitem 7032,1; //Piece_Of_Egg_Shell
+				next;
+				mes "^3355FF*Crank Crank*^000000";
+				mes "^3355FFYou hear a strange sound come from inside the statue.^000000";
+				next;
+				mes "^3355FF*Click*";
+				mes "*Click Click*^000000";
+				next;
+				mes "^3355FFA small hole opened near the foot of the statue, and a ^9999FF Stamp of Muriniel^3355FF came out of the hole.^000000";
+				next;
+				mes "^3355FFYou got ^9999FFA piece from the Stamp of Muriniel^3355FF.^000000";
+				next;
+				mes "[Yklah]";
+				mes "Huh?! That piece seems to fit to the stamp you have. Why don't you try joining them together?";
+				next;
+				mes "^3355FFYou join the two stamps together.^000000";
+				next;
+				mes "^3355FFYou got the";
+				mes "True Stamp of Muriniel.^000000";
+				set dmdswrd_Q,25;
+				next;
+				mes "[Yklah]";
+				mes "Oh? This pattern is...!! Ah, now I see how it works. Now, please listen...";
+				next;
+				mes "[Yklah]";
+				mes "I'd like you to bring the slate to Snotora, the island of knowledge, that is a part of Juno. You will find a Statue of the Goddess Snotora somewhere on the island.";
+				next;
+				mes "[Yklah]";
+				mes "Near the statue, you will find ^3355FFSyklah^000000, one of well-known 3 sages in Juno. Speak to him, he will tell you something about the pattern on the slate.";
+				next;
+				mes "[Yklah]";
+				mes "May God";
+				mes "light your way...";
+				close;
+			}
+			else {
+				mes "[Yklah]";
+				mes "Let me tell you everything I know about the doomed sword. There's an old song about the legendary doomed sword...";
+				next;
+				mes "[Yklah]";
+				mes "^3355FFYou, the one with sincere faith, who humbly accepts the prosperity of Mineta, the knowledge of Snotora and the honor of Solomon...^000000";
+				next;
+				mes "[Yklah]";
+				mes "^3355FFI hereby grant you this column of light. The Three Sages of Juno will be your guide^000000.";
+				next;
+				mes "[Yklah]";
+				mes "Well, if you already know a little bit about Juno, you'd know that Juno consists of 3 islands that represent propsperity, knowledge and honor.";
+				next;
+				mes "[Yklah]";
+				mes "The 3 sages described in the song represent each island. By now, you've probably guessed that I am one of them.";
+				next;
+				mes "[Yklah]";
+				mes "There is a Juno tradition in which the three best Sages are chosen to represent each of Juno's islands.";
+				next;
+				mes "[Yklah]";
+				mes "As one of the three, I will serve as one of your guides in this part of your journey for the doomed sword.";
+				next;
+				mes "^3355FFYklah pointed at a pole of the statue with his finger, and you see that there is a strange pattern engraved on the pole.^000000";
+				next;
+				mes "[Yklah]";
+				mes "Now, look at this. This statue was erected to pay tribute to one of the first 3 sages. When you look into the bottom of the pole, you will see several small grooves.";
+				next;
+				mes "[Yklah]";
+				mes "If you insert some items in the grooves, we may get some more clues relating to the doomed sword.";
+				next;
+				mes "[Yklah]";
+				mes "From the stories that I've been told by great Sages, I've figured exactly which items you'll need to place into those grooves.";
+				next;
+				mes "[Yklah]";
+				mes "You will need...";
+				mes "^3355FF3 Claw of Desert Wolf^000000";
+				mes "^3355FF10 Tooth of Bat^000000";
+				mes "^3355FF1 Piece of Egg Shell^000000.";
+				next;
+				mes "[Yklah]";
+				mes "Return once you have obtained those items, and we will speak of the doomed sword again.";
+				next;
+				mes "[Yklah]";
+				mes "For your information, you can obtain the claw of desert wolf from the Morroc desert, and the tooth of bat can be found in most caves around the world.";
+				next;
+				mes "[Yklah]";
+				mes "Lastly, the piece of egg shell can be found from solid egg monsters in the Payon cave.";
+				close;
+			}
+		case 25:
+			mes "[Yklah]";
+			mes "From the stories that I've been told by great Sages, I've figured exactly which items you'll need to place into those grooves.";
+			next;
+			mes "[Yklah]";
+			mes "You will need...";
+			mes "^3355FF3 Claw of Desert Wolf^000000";
+			mes "^3355FF10 Tooth of Bat^000000";
+			mes "^3355FF1 Piece of Egg Shell^000000.";
+			next;
+			mes "[Yklah]";
+			mes "Return once you have obtained those items, and we will speak of the doomed sword again.";
+			next;
+			mes "[Yklah]";
+			mes "For your information, you can obtain the claw of desert wolf from the Morroc desert, and the tooth of bat can be found in most caves around the world.";
+			next;
+			mes "[Yklah]";
+			mes "Lastly, the piece of egg shell can be found from solid egg monsters in the Payon cave.";
+			close;
+		}
+	}
+	else {
+		mes "[Yklah]";
+		mes "^3355FFJuphero^000000...";
+		mes "That was the name of the city that once existed in ancient times.";
+		next;
+		mes "[Yklah]";
+		mes "The most intelligent and talented people of that time lived there, harnessing the pieces of Ymir's heart to power their civilization.";
+		next;
+		mes "[Yklah]";
+		mes "Unfortunately, they happened to abuse that great power and somehow destroyed themselves.";
+		next;
+		mes "[Yklah]";
+		mes "If you long to acquire God's knowledge, you must first be humble. Otherwise...";
+		close;
+	}
+}
+	
+yuno,305,207,4	script	Sage Syklah#juno	735,{
+	if (dmdswrd_Q == 25 || dmdswrd_Q == 26 || dmdswrd_Q == 27) {
+		switch(dmdswrd_Q) {
+		case 25:
+			mes "[Syklah]";
+			mes "What's that?!";
+			mes "Can it be the Stamp of Muriniel?";
+			next;
+			mes "[Syklah]";
+			mes "Now, we shall battle to the death to see if you are worthy of possessing this item. Prepare yourself!";
+			next;
+			mes "[Syklah]";
+			mes "...";
+			mes "Muhahahahaha!!! Don't worry, I was only messing with you. Yklah told me that you might be coming.";
+			next;
+			mes "[Syklah]";
+			mes "It is said that The Stamp of Muriniel chooses its owner by its own will, and will not appear otherwise.";
+			next;
+			mes "[Syklah]";
+			mes "Even though I am one of the three great Sages of Juno, I've never even seen this item before.";
+			next;
+			mes "[Syklah]";
+			mes "Yklah gave me an idea about the Stamp of Muriniel you've brought, so we'll try it out as well.";
+			next;
+			mes "[Syklah]";
+			mes "The pattern engraved on the Stamp of Muriniel has shapes that are similar to the pattern engraved on this^3355FFStatue of the Goddess Snotora^000000.";
+			next;
+			mes "^3355FFYou see for yourself that, indeed, the pattern on the statue of the Goddess Snotora matches that on the Stamp of Muriniel.^000000";
+			next;
+			mes "[Syklah]";
+			mes "When I was young, I learned about a legendary stamp ink related to this statue. But at the time, it made no sense to me. Just how legendary can stamp ink be?";
+			next;
+			mes "[Syklah]";
+			mes "But now I believe that this stamping ink can be used with this Stamp of Muriniel.";
+			next;
+			mes "[Syklah]";
+			mes "But even though I've learned how to make this special stamping ink, it is too difficult for me to collect the materials that are necessary to create it.";
+			next;
+			mes "[Syklah]";
+			mes "Okay, if you're ready, please bring me the following items. I feel like making legendary red ink, so bring me...";
+			next;
+			mes "[Syklah]";
+			mes "^3355FF20 Red Herb^000000,";
+			mes "^3355FF5 Stone^000000 and";
+			mes "^3355FF1 Stone Heart^000000.";
+			mes "The Stone Heart will be used as a bottle to hold this special ink.";
+			next;
+			mes "[Syklah]";
+			mes "I think that's all I need. Anyway, I believe that gathering these items shouldn't be a difficult task for you. Good luck to you.";
+			set dmdswrd_Q,26;
+			close;
+		case 26:
+			if (countitem(7049) > 4 && countitem(953) > 0 && countitem(507) > 19) {
+				mes "[Syklah]";
+				mes "Hahaha...!";
+				mes "So you've already gathered the items I've asked for. Good, good. Let's get started...";
+				delitem 7049,5; //Stone
+				delitem 953,1; //Stone_Heart
+				delitem 507,20; //Red_Herb
+				next;
+				mes "^3355FFSage Syklah grinded the stones and stone heart and molded them into a strange shape.^000000";
+				next;
+				mes "^3355FFHe then ground the red herbs and placed them into the stone mold.^000000";
+				next;
+				mes "^3355FFAfterwards, he then took a strangely shaped capsule from his pocket, sprinkled some liquid from it, and began to chant a spell...^000000";
+				next;
+				mes "[Syklah]";
+				mes "Haooooh...";
+				mes "Doo de doo de~ Dah dah dah Dan dan dan Dah dah dah! Nu ha nu ha nu hahaha... Moo hee moo hee moo hee~";
+				mes "- Pah ahhhh !! -";
+				next;
+				mes "^3355FFThe Stamping Ink of Muriniel has been created, and has been given to you by the sage Syklah.^000000";
+				set dmdswrd_Q,27;
+				next;
+				mes "[Syklah]";
+				mes "Now, with this stamping ink, you are able to use the Stamp of Muriniel.";
+				next;
+				mes "[Syklah]";
+				mes "Now, I don't think you can use the stamp just anywhere. After all, it is a legendary item.";
+				next;
+				mes "[Syklah]";
+				mes "Please visit the Third Sage ^3355FFEsklah^000000 who stays on Solomon, the island of prosperity, here in Juno.";
+				next;
+				mes "[Syklah]";
+				mes "He will be able to tell you more about where to use this stamp. However, be careful. He is the most fastidious sage among all of us.";
+				close;
+			}
+			else {
+				mes "[Syklah]";
+				mes "I hope you will bring me what I need to make the 'Stamp of Muriniel' ink soon.";
+				next;
+				mes "[Syklah]";
+				mes "I will need...";
+				mes "^3355FF20 Red Herb^000000,";
+				mes "^3355FF5 Stone^000000 and";
+				mes "^3355FF1 Stone Heart^000000.";
+				close;
+			}
+		case 27:
+			mes "[Syklah]";
+			mes "Please visit ^3355FFEsklah^000000 on the island of prosperity, Solomon. But be careful. He is the most exacting Sage out of all of us.";
+			close;
+		}
+	}
+	else {
+		mes "[Syklah]";
+		mes "The people here keep talking of some suspicious man living in Juno.";
+		next;
+		mes "[Syklah]";
+		mes "Supposedly, he's pretty dangerous, and is always immersing himself in some kind of research.";
+		next;
+		mes "[Syklah]";
+		mes "People already consider him a 'Mad Scientist,' wasting his time studying impractical things beyond the understanding of normal people.";
+		next;
+		mes "[Syklah]";
+		mes "It's rumored that this scientist is responsible for creating 'Blazer,' a monster made of magic flame.";
+		next;
+		mes "[Syklah]";
+		mes "It's a dangerous and fearsome monster that casts spells like Fire Bolt and Fire Ball that lives outside of Juno.";
+		close;
+	}
+}
+	
+yuno,213,298,4	script	Sage Esklah#juno	735,{
+	if (dmdswrd_Q == 27 || dmdswrd_Q == 28 || dmdswrd_Q == 29 || dmdswrd_Q == 30) {
+		switch(dmdswrd_Q) {
+		case 27:
+			mes "[Esklah]";
+			mes "Hm...?";
+			mes "You must be the one who holds the Stamp of Muriniel...";
+			next;
+			mes "[Esklah]";
+			mes "Heh, you don't look like much. But even though you're ordinary looking, you possess the legendary item!";
+			next;
+			mes "[Esklah]";
+			mes "Only a few people in Rune-Midgard's history have been chosen to use the ^3355FFStamp of Muriniel.^000000";
+			next;
+			mes "[Esklah]";
+			mes "However, it's my job to test whether or not you are truly qualified to possess it.";
+			next;
+			mes "[Esklah]";
+			mes "Let me tell you about the stamp craftman ^3355FFMuriniel^000000.";
+			next;
+			mes "[Esklah]";
+			mes "This man lived long ago, somewhere in Mt. Mjornir. He was eager in his studies, and wanted to recreate every pattern that existed in the world.";
+			next;
+			mes "[Esklah]";
+			mes "Believing that people were obstacles to his study of patterns, he lived in seclusion, studying alone.";
+			next;
+			mes "[Esklah]";
+			mes "While studying patterns one day, he happened to find a magic circle that connected this world to another world.";
+			next;
+			mes "[Esklah]";
+			mes "That circle was totally different from ones used by Mages, Wizards or sages. This pattern had the power to summon an evil creature from the other world.";
+			next;
+			mes "[Esklah]";
+			mes "In order to summon the creature, the pattern must be created in the perfect location. Muriniel began to explore various places and finally found the spot he was looking for.";
+			next;
+			mes "[Esklah]";
+			mes "The place he found is now ^3355FFMuriniel's Cottage^000000. But to see that place, you will first need the ^3355FFCompass of Muriniel^000000.";
+			next;
+			mes "[Esklah]";
+			mes "Heh heh. That's right, making the Compass of Muriniel will be my test for you.";
+			next;
+			mes "[Esklah]";
+			mes "Now listen carefully, I won't tell you more than once. I will need you to collect some items to make the ^3355FFCompass of Muriniel^000000.";
+			next;
+			mes "[Esklah]";
+			mes "Bring me...";
+			mes "^3355FF2 Iron Ore^000000,";
+			mes "^3355FF10 Acorn^000000 and";
+			mes "^3355FF5 Decayed Nail^000000.";
+			next;
+			mes "[Esklah]";
+			mes "For someone seeking the doomed sword, this should be a relatively simple task. Now go, and bring me what I have asked."			;
+			set dmdswrd_Q,28;
+			close;
+		case 28:
+			if (countitem(1002) > 1 && countitem(1026) > 9 && countitem(957) > 4) {
+				mes "[Esklah]";
+				mes "Let's see.";
+				mes "2 Iron Ore...";
+				mes "10 Acorn...";
+				mes "5 Decayed Nail...";
+				mes "Good, that's everything!";
+				delitem 1002,2; //Iron_Ore
+				delitem 1026,10; //Acorn
+				delitem 957,5; //Decayed_Nail
+				next;
+				mes "[Esklah]";
+				mes "Good work. Now, while I make the body of the compass, you can go and bring me the rest of the items I'll need.";
+				next;
+				mes "[Esklah]";
+				mes "Muhahahaha! What's with that look? You know how this kind of business gets done!";
+				next;
+				mes "[Esklah]";
+				mes "Now stop whining";
+				mes "and go bring...";
+				mes "^3355FF2 Brigan^000000 and";
+				mes "^3355FF1 Phracon^000000.";
+				mes "Now isn't that simple?";
+				mes "Muhahahaha!!";
+				set dmdswrd_Q,29;
+				close;
+			}
+			mes "[Esklah]";
+			mes "Now listen carefully. I won't tell you more than once. I need some items to create the ^3355FFCompass of Muriniel^000000.";
+			next;
+			mes "[Esklah]";
+			mes "Bring me...";
+			mes "^3355FF2 Iron Ore^000000,";
+			mes "^3355FF10 Acorn^000000, and";
+			mes "^3355FF5 Decayed Nail^000000.";
+			close;
+		case 29:
+			if (countitem(7054) > 1 && countitem(1010) > 0) {
+				mes "[Esklah]";
+				mes "Now...";
+				mes "Show me";
+				mes "what you brought.";
+				mes "That's 2 Brigan and...";
+				mes "1 Phracon. Hmm. Very good.";
+				mes "Now let me get to work.";
+				delitem 7054,2; //Brigan
+				delitem 1010,1; //Phracon
+				next;
+				mes "[Esklah]";
+				mes "Hmm...";
+				mes "Let's see...";
+				mes "There, it's finished.";
+				next;
+				mes "^3355FFSage Esklah handed you the ^3355FFCompass of Muriniel^000000.";
+				next;
+				mes "^3355FFIn the direction the compass is pointing, some words are engraved...^000000";
+				next;
+				mes "^3355FF- Mountain Mjornir -^000000";
+				mes "^3355FF- mjolnir_02 . 170 193 -^000000";
+				next;
+				mes "[Esklah]";
+				mes "Look at the middle of compass carefully to find the place you must use the stamp. I wish you the best of luck in your journey.";
+				set dmdswrd_Q,30;
+				close;
+			}
+			mes "[Esklah]";
+			mes "Listen carefully!";
+			mes "I want you to bring...";
+			mes "^3355FF2 Brigan^000000 and";
+			mes "^3355FF1 Phracon^000000";
+			mes "Isn't that simple and easy?";
+			mes "Muhahaha! Now, get a move on!";
+			close;
+		case 30:
+			mes "^3355FFYou look into the compass of Muriniel and take note of the engraving...^000000";
+			next;
+			mes "^3355FF- Mountain Mjornir -^000000";
+			mes "^3355FF- mjolnir_02 . 170 193 -^000000";
+			close;
+		}
+	}
+	else {
+		mes "[Esklah]";
+		mes "I remember watching a harmless";
+		mes "piece of paper floating";
+		mes "through the air...";
+		next;
+		mes "[Esklah]";
+		mes "As I was thinking of how wonderfully poetic that image was, that paper suddenly attacked me! Me, one of Juno's greatest Sages!";
+		next;
+		mes "[Esklah]";
+		mes "I tried defending myself with my trusty sword, but being paper-thin, that monster managed to dodge all of my blows. I had to cast magic in order to destroy it.";
+		next;
+		mes "[Esklah]";
+		mes "Later, I learned that monster is known as ^3355FFThe Paper^000000.";
+		next;
+		mes "[Esklah]";
+		mes "It used to be a part of an old book that contained a lot of ancient knowledge about Juno, but somehow, became a monster. Isn't that peculiar?";
+		close;
+	}
+}
+	
+mjolnir_02,170,193,4	script	Muriniel's Cottage#juno	111,{
+	if (dmdswrd_Q == 30 || dmdswrd_Q == 31) {
+		switch(dmdswrd_Q) {
+		case 30:
+			mes "^3355FFMuriniel's pattern is carved into the wooden floor.^000000";
+			next;
+			mes "^3355FFUsing the ^9999FFStamp of Muriniel^3355FF and the ^9999FFStamping Ink of Muriniel^3355FF, you fit the stamp into the pattern on the floor.^000000";
+			next;
+			mes "^3355FF*Woon Woon*^000000";
+			next;
+			mes "^3355FFYou can faintly hear someone's voice softly in the distance.^000000";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "You, who are in the future, let me introduce myself.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "My name is Muriniel, the stamp craftman living in your past. I appreciate that you have overcome many obstacles to reach this place.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "However, you must first prove that you are qualified to wield the great power of the doomed sword.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "The great Sages in Juno have helped me to install this magical system in my cottage to leave my message to you, adventurer in the future.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "I know that you seek more power by obtaining a doomed sword. But not just anyone can handle the might of a doomed sword.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "And I shudder to think what would happen if such power were to fall into evil hands. The test I have prepared cannot begin until Autumn follows a hot summer.";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "I shall give you an item that promises you of the quest I will give you in the future. Return to this place when the trees begin to shed their leaves...";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "Until that time comes, prepare yourself. And stay alive.";
+			next;
+			mes "^3355FF*Bzzzt!*";
+			mes "*Bzzzzzzt--*^000000";
+			next;
+			mes "^3355FFSuddenly, the Stamp of Muriniel and the Compass of Muriniel break open to reveal a small, shining object.^000000";
+			next;
+			mes "^3355FFYou have received the ^9999FFDignity of Muriniel^000000.";
+			set dmdswrd_Q,31;
+			close;
+		case 31:
+			mes "^3355FFYou can faintly hear someone's voice coming from somewhere...^000000";
+			next;
+			mes "[Muriniel's Recording]";
+			mes "Please remember to return to this place when the trees begin to shed their leaves. Until then, prepare yourself and stay alive.";
+			close;
+		}
+	}
+	else {
+		mes "'Muriniel's Cottage'";
+		next;
+		mes "^3355FFFor some reason, that message is written in this place. But what could be so significant about a cottage like this?^000000";
+		close;
+	}
 }
