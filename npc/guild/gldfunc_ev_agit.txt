@@ -101,8 +101,8 @@ function	script	F_GuildBreak	{
 
 	killmonsterall .@map$;
 
-	Announce "秘密基地 [" + GetCastleName(.@map$) + "] 被放棄了",0;
-	disablenpc "卡普拉服務人員#"+.@castle$;
+	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [] 公會佔領了",0;
+	disablenpc "卡普拉 職員#"+.@castle$;
 
 	SetCastleData .@map$,0,0;
 	return;
@@ -125,20 +125,21 @@ function	script	F_AgitBreak	{
 	SetCastleData .@map$, 3, .@Defence;
 
 	SetCastleData .@map$,1, .@GID;
-	MapAnnounce .@map$,"華麗金屬被破壞了.",bc_map,0x00FF00;
- 	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [" + GetGuildName(.@GID) + "] 公會佔領了",bc_all;
+	MapAnnounce .@map$,"華麗金屬被破壞了",bc_map,0x00FF00;
+	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [" + GetGuildName(.@GID) + "] 公會佔領了",bc_all;
 	GetCastleData .@map$,0,"::OnRecvCastle"+.@castle$;
 
-	disablenpc "Kafra Staff#"+.@castle$;
+	disablenpc "卡普拉 職員#"+.@castle$;
 
-	// remove investment data and kafra
-	for( set .@i, 4; .@i <= 9; set .@i, .@i+1 )
+	// Set data to be cleared from the castle
+	// If the new owning guild doesn't have have 
+	// Guardian Research erase all guardian data.
+	// Otherwise remove investment data and kafra.
+	if (getgdskilllv(.@GID,10002) == 0) set .@data,25;
+	else set .@data,9;
+
+	for( set .@i, 4; .@i <= .@data; set .@i, .@i+1 )
 		SetCastleData .@map$, .@i, 0;
-
-	// if the new guild doesn't have Guardian Research, erase guardians
-	if( getgdskilllv(.@GID,10002) == 0 )
-		for( set .@i, 10; .@i <= 17; set .@i, .@i+1 )
-			SetCastleData .@map$, .@i, 0;
 
 	return;
 }
