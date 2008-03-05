@@ -6,7 +6,7 @@
 //===========================================
 function	script	TownInn	{
 	next;
-	switch (select("儲存","休息 - 5000z","結束")) {
+	switch (select("儲存:休息 - 5000z:結束")) {
 	case 1:
 		savepoint getarg(2),getarg(3),getarg(4);
 		mes "["+getarg(1)+"]";
@@ -219,7 +219,7 @@ ra_in01,376,69,4	script	飯店 職員#Annie	931,{
 	mes "歡迎光臨來到菲依雅永無止盡的愛一樣";
 	mes "以溫馨為自豪的拉赫飯店";
 	next;
-	switch(select("儲存","休息 - 5000z","取消")) {
+	switch(select("儲存:休息 - 5000z:取消")) {
 	case 1:
 		savepoint "ra_in01",375,61;
 		mes "[飯店 職員]";
@@ -251,12 +251,12 @@ ra_in01,376,69,4	script	飯店 職員#Annie	931,{
 }
 
 // 菲音斯
-ve_in,157,219,5	script	旅館 主人	709,{
+ve_in,157,219,5	script	旅館 主人#venis	709,{
 	mes "[旅館 主人]";
 	mes "您好~";
 	mes "歡迎您來到在菲音斯裡最涼快的旅館~";
 	next;
-	switch(select("儲存位置","休息後再走 - 5000z","結束")) {
+	switch(select("儲存位置:休息後再走 - 5000z:結束")) {
 	case 1:
 		savepoint "ve_in",157,210;
 		mes "[旅館 主人]";
@@ -282,5 +282,37 @@ ve_in,157,219,5	script	旅館 主人	709,{
 		mes "謝謝你，";
 		mes "歡迎再度光臨";
 		close;
+	}
+}
+
+// 莫斯科比亞
+mosk_in,135,191,5	script	旅館 主人#mosk	961,{
+	mes "[旅館 主人]";
+	mes "唉喲~ 歡迎光臨，";
+	mes "這裡是位在莫斯科比亞裡";
+	mes "最舒適最安逸的設備而感到自豪的";
+	mes "'蘋果樹'旅館啊";
+	next;
+	switch(select("儲存位置:我要休息 - 5000z")) {
+	case 1:
+		savepoint "mosk_in",142,188;
+		mes "[旅館 主人]";
+		mes "是的，在這個位置儲存好了，";
+		mes "感謝您的使用";
+		close;
+	case 2:
+		if(Zeny<5000) {
+			mes "[旅館 主人]";
+			mes "顧客您的錢不夠喔!";
+			mes "休息一次要5000金幣";
+			close;
+		}
+		mes "[旅館 主人]";
+		mes "好好休息吧";
+		close2;
+		set Zeny,Zeny-5000;
+		warp "mosk_in",215,181;
+		percentheal 100,100;
+		end;
 	}
 }
