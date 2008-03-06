@@ -9255,11 +9255,11 @@ L_Path:
 que_sign01,178,169,0	script	#serinwarp	45,1,1,{
 
 	if ($signroomfull > 2) {
-    	if (getmapusers("que_sign02") > 0 || getareausers("que_sign01",229,227,166,162) > 0) end;
-        donpcevent "#signserin::OnInit";
+		if (getmapusers("que_sign02") > 0 || getareausers("que_sign01",229,227,166,162) > 0) end;
+		donpcevent "#signserin::OnInit";
 	}
-    warp "niflheim",30,156;
-    end;
+	warp "niflheim",30,156;
+	end;
 }
 
 que_sign01,178,19,0	script	#serinwarp2	45,1,1,{
@@ -9273,80 +9273,70 @@ que_sign01,178,19,0	script	#serinwarp2	45,1,1,{
 
 geffen,119,55,1	script	GeffeniaWarper	45,2,2,{
 
-    switch ($GeffeniaWarp) {
-
-    case 1:
-        warp "gefenia01",58,169;
-        break;
-
-    case 2:
-        warp "gefenia02",116,115;
-        break;
-
-    case 3:
-        warp "gefenia03",130,206;
-        break;
-
-    case 4:
-        warp "gefenia04",133,88;
-        break;
-
+	switch ($GeffeniaWarp) {
+	case 1:
+		warp "gefenia01",58,169;
+		break;
+	case 2:
+		warp "gefenia02",116,115;
+		break;
+	case 3:
+		warp "gefenia03",130,206;
+		break;
+	case 4:
+		warp "gefenia04",133,88;
+		break;
 	}
 
 OnWarping:
-    misceffect 215;
-    mapannounce "geffen","由於來自吉芬噴水池的閃光，通往葛帔尼亞的入口已經開啟。.",1,0x9CFF00;
-    misceffect 247;
-    initnpctimer;
-    end;
+	misceffect 215;
+	mapannounce "geffen","由於來自吉芬噴水池的閃光，通往葛帔尼亞的入口已經開啟",1,0x9CFF00;
+	misceffect 247;
+	initnpctimer;
+	end;
 
 OnTimer15000:
-    misceffect 247;
-    end;
+	misceffect 247;
+	end;
 
 OnTimer30000:
-    misceffect 247;
-    end;
+	misceffect 247;
+	end;
 
 OnTimer45000:
-    stopnpctimer;
-    mapannounce "geffen","通往葛帔尼亞的入口現在被關閉。",1,0x9CFF00;
-    misceffect 16;
+	stopnpctimer;
+	mapannounce "geffen","通往葛帔尼亞的入口現在被關閉",1,0x9CFF00;
+	misceffect 16;
 
 OnInit:
-    disablenpc "GeffeniaWarper";
+	disablenpc "GeffeniaWarper";
 	set $GeffeniaWarp,0;
-    end;
+	end;
 
 }
 
 geffen,119,49,1	script	噴水池#SignFountain	111,{
 
-	if(countitem(7025) && !$GeffeniaWarp)goto L_Lament;
+	if(countitem(7025) && !$GeffeniaWarp) {
+		specialeffect2 200;
+		mes "^3355FF你接近的噴水池，一盞奇怪的燈開始在你的口袋內和從在噴水池的水內深的東西由於金星的悲傷發出";
+		next;
+		if(select("把魔王之眼淚扔進噴水池:忽視它")==1){
+			misceffect 247;
+			set $GeffeniaWarp,rand(1,4);
+			enablenpc "GeffeniaWarper";
+			donpcevent "GeffeniaWarper::OnWarping";
+			mes "^3355FF 魔王之眼淚";
+			mes "飛濺進水，";
+			mes "光顯示獨特的翹曲";
+			mes "在噴水池的前面 ...";
+			close;
+		}
+		mes "......";
+		close;
+	}
 	mes "有噴水池";
-	mes " ";
 	close;
-
-L_Lament:
-	specialeffect2 200;
-	mes "^3355FF你接近的噴水池，一盞奇怪的燈開始在你的口袋內和從在噴水池的水內深的東西由於金星的悲傷發出。";
-	next;
-	menu "把魔王之眼淚扔進噴水池",L_Throw,"忽視它",-;
-
-	mes "......";
-	close;
-
-L_Throw:
-	misceffect 247;
-	set $GeffeniaWarp,rand(1,4);
-	enablenpc "GeffeniaWarper";
-	donpcevent "GeffeniaWarper::OnWarping";
-	mes "^3355FF 魔王之眼淚";
-	mes "飛濺進水，";
-	mes "光顯示獨特的翹曲";
-	mes "在噴水池的前面 ...";
-	close;
-
 }
 
 //==================================================
