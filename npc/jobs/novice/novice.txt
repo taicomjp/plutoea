@@ -1,30 +1,12 @@
-//===== eAthena Script ======================================= 
-//= Ep 10+ Novice Training Grounds
-//===== By: ================================================== 
-//= Dr.Evil & MasterOfMuppets
-//===== Current Version: ===================================== 
-//= 1.7a
-//===== Compatible With: ===================================== 
-//= eAthena SVN 3422+(Requires jA Script System)
-//===== Description: ========================================= 
-//= The New Novice Training Grounds Script, Script by yukito
-//= merged with english dialogues from Prometheus.
-//===== Additional Comments: ================================= 
-//= 1.0 Added the New Novice Training Grounds, a big thanks [MasterOfMuppets]
-//=	to Dr.Evil who did 90% of the work =)
-//= 1.0b Temp measure to stop exploits. [Vicious]
-//= 1.2 Removed Duplicates [Silent]
-//= 1.3 Removed Duplicates [Toms]
-//= 1.4 Added Kafra Free Cart Tickets, as in official one [Lupus]
-//= 1.5 Fixed warps, removed map duplicates, typos [Lupus]
-//= 1.6 Changed clone maps new_1-? -> new_zone0? [Lupus]
-//= 1.7 Now Kafra Tickets are given at correct NPC/Actions [Lupus]
-//= 1.7a a bit of optimization [Lupus]
-//============================================================ 
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 新手訓練場 腳本 - 
+//===================================
+// 版本：1.7a
+//===================================
 
-//====================================================================
-//Ragnarok Online Novice Script by yukito
-//====================================================================
 //看板
 new_1-1,66,114,4	script	看板	111,{
 	mes "^FF0000=================================^000000";
@@ -34,7 +16,14 @@ new_1-1,66,114,4	script	看板	111,{
 }
 
 new_1-1,53,114,4	script	西恩	727,{
-	if(Class != Job_Novice || Upper) goto L_Fail;
+	if(Class != Job_Novice || Upper) {
+		mes "[西恩]";
+		mes "你不應該在這裡";
+		close2;
+		savepoint "prontera",273,354;
+		warp "prontera",273,354;
+		end;
+	}
 	switch (NEW_MES_FLAG0) {
 	case 0:	mes "[西恩]";
 		mes "唉喲? 新手耶?";
@@ -145,7 +134,6 @@ new_1-1,53,114,4	script	西恩	727,{
 		mes "像這樣！";
 		next;
 		mes "[西恩]";
-		mes "[西恩]";
 		mes "還會提升你的經驗值呢！";
 		set NEW_MES_FLAG0,3;
 		set BaseExp,BaseExp+9;
@@ -197,64 +185,59 @@ new_1-1,53,114,4	script	西恩	727,{
 		close;
 	}
 	close;
-
-L_Fail:
-	mes "[西恩]";
-	mes "你不應該在這裡";
-	close2;
-	savepoint "prontera",273,354;
-	warp "prontera",273,354;
-	end;
 }
 
 new_1-1,144,116,2	script	警衛#01	105,{
-	mes "[初心者 修練場 警衛]";
-	mes "您好！請進～歡迎光臨初心者修練場～";
-	mes "您若進入城內，首先看到的是初心者修練場。";
+	mes "[初學者 修練場 警衛]";
+	mes "您好！請進～歡迎光臨初學者修練場～";
+	mes "您若進入城內，首先看到的是初學者修練場。";
 	close;
 }
 
 new_1-1,144,107,2	script	警衛#02	105,{
-	mes "[初心者 修練場 警衛]";
+	mes "[初學者 修練場 警衛]";
 	if(rand(2)) {
-		mes "進來吧！歡迎來到初心者修練場。";
-		mes "準備迎接新人生的各位初心者，我會讓你們自我好好磨練，來計劃燦爛的未來。初心者修練場將會盡力而為。";
+		mes "進來吧！歡迎來到初學者修練場。";
+		mes "準備迎接新人生的各位初學者，我會讓你們自我好好磨練，來計劃燦爛的未來。初學者修練場將會盡力而為。";
 	} else {
-		mes "好！走吧！初心者們！你們所奔向的這條路將是明日的希望之路。";
+		mes "好！走吧！初學者們！你們所奔向的這條路將是明日的希望之路。";
 	}
 	close;
 }
 
 //註冊組員
 new_1-2,100,29,4	script	註冊組員#nz	86,{
-	if(Class != Job_Novice || Upper) goto L_Fail;
-	mes "[初心者 修練場 註冊組員]";
-	mes "歡迎光臨！這裡是 ^FF0000初心者 修練場^000000";
-	mes "首次上線申請仙境傳說的各位玩家 請先選擇^0099FF初心者 修練場 介紹^000000選項之後，希望您能詳讀內容。";
+	if(Class != Job_Novice || Upper) {
+		mes "[初學者 修練場 註冊組員]";
+		mes "你不應該在這裡";
+		close2;
+		savepoint "prontera",273,354;
+		warp "prontera",273,354;
+		end;
+	}
+	mes "[初學者 修練場 註冊組員]";
+	mes "歡迎光臨！這裡是 ^FF0000初學者 修練場^000000";
+	mes "首次上線申請仙境傳說的各位玩家 請先選擇^0099FF初學者 修練場 介紹^000000選項之後，希望您能詳讀內容。";
 L_loop:
 	next;
-	switch( select("我要申請初心者修練場。:仙境傳說馬上開始！:^3355FF初心者 修練場介紹^000000:不用了！") ) {
+	switch( select("我要申請初學者修練場:仙境傳說馬上開始:^3355FF初學者 修練場介紹^000000:不用了") ) {
 	case 1:	mes "[初學者 修練場 註冊組員]";
 		mes "閣下的申請書已經順利通過";
 		mes "關於修練場各課程的詳細內容，如有疑問請詢問各課程的註冊組員";
 		next;
-		mes "[初心者 修練場 註冊組員]";
-		mes "我們先給你修練補助費 150 元. 如果想知道課程如何進行，請向中央大廳的註冊組員詢問。";
-		mes "我將送您到初心者修練場。";
-		next;
 		mes "[初學者 修練場 註冊組員]";
-		mes "我們先給你修練補助費50元，如果想知道課程如何進行，請向中央大廳的註冊組員詢問";
+		mes "如果想知道課程如何進行，請向中央大廳的註冊組員詢問";
 		mes "我將送你到初學者修練場";
 		close2;
-		set Zeny,Zeny+50;
 		warp "new_1-2",100,70;
 		end;
+
 	case 2:	mes "[初學者 修練場 註冊組員]";
 		mes "是的，我知道了";
 		mes "期待你能成為社會所需要的人，並且盼望你能成功";
 		close2;
 		set NEW_MES_FLAG0,0;
-		switch( rand(6) ) {
+		switch(rand(6)) {
 		case 0:	savepoint "prontera",273,354;
 			warp "prontera",273,354;
 			break;
@@ -300,19 +283,12 @@ L_loop:
 		mes "如果想來這樣的初學者修練場的話，請你在下面選單上選擇填寫“初學者修練場的申請書”";
 		mes "如不經過初學者修練場而想直接去村落的話，請你選擇“直接開始仙境傳說”";
 		break;
+
 	case 4:	mes "[初學者 修練場 註冊組員]";
 		mes "請你慢慢地思考";
 		close;
 	}
 	goto L_loop;
-	
-L_Fail:
-	mes "[初學者 修練場 註冊組員]";
-	mes "你不應該再這裡";
-	close2;
-	savepoint "prontera",273,354;
-	warp "prontera",273,354;
-	end;
 }
 
 //操作介面 教官
@@ -336,12 +312,14 @@ new_1-2,99,105,4	script	操作介面 教官	751,{
 			mes "我將以剛開始時的基本位置，";
 			mes "來為你做說明的";
 			next;
+			mes "[教官 克利斯]";
 			mes "首先在畫面的左上方，";
 			mes "會看到顯示著自己的名稱，";
 			mes "與等級的視窗，";
 			mes "當然也可以知道自己的經驗值提升了多少，";
 			mes "這個視窗我們稱為角色的^4d4dff基本訊息視窗^000000";
 			next;
+			mes "[教官 克利斯]";
 			mes "現在我們將為你提升經驗值，";
 			mes "請注意基本視窗中，";
 			mes "經驗值部份變化的情形，";
@@ -368,6 +346,7 @@ new_1-2,99,105,4	script	操作介面 教官	751,{
 			mes "都是開啟的狀態，";
 			mes "用來和別人聊天都會很方便的";
 			next;
+			mes "[教官 克利斯]";
 			mes "看右上方的話會有小地圖視窗，";
 			mes "小地圖視窗中會標示，";
 			mes "你現在位置以及組隊員，";
@@ -941,8 +920,7 @@ L_bye:
 
 new_1-2,118,108,4	script	卡普拉 職員	94,{
 	mes "[卡普拉 職員]";
-	mes "您好，";
-	mes "我是特別為了初學者們，";
+	mes "您好，我是特別為了初學者們，";
 	mes "從卡普拉公司被派遣到這邊來的，";
 	mes "我們卡普拉服務是，";
 	mes "負責大陸全部的物品流通，";
@@ -2111,33 +2089,71 @@ L_equip:
 }
 
 //Training Center Employee
-new_1-3,95,30,4	script	訓練所 人員#1	84,{
-	mes "[Hoffman]";
-	mes "Hey there~";
-	mes "I'm here to provide";
-	mes "you with a little instruction";
+new_1-3,95,30,4	script	訓練所 人員#1::NovTrai	84,{
+	mes "[普曼]";
+	mes "雖然只是初學者等級的魔物，";
+	mes "但是太輕敵的話還是會受重傷的，";
+	mes "請你要小心，而且有的時候，";
+	mes "還會出現主動攻擊的魔物，";
+	mes "請注意自身的安全，希望你能平安的通過考試";
 	next;
-	mes "[Hoffman]";
-	mes "These monsters are all weak";
-	mes "and easy to kill. But be careful,";
-	mes "a lot of them are aggressive";
-	mes "and out for blood!";
+	mes "[普曼]";
+	mes "認為這裡的魔物";
+	mes "太弱的玩家，我們有提供特別";
+	mes "的服務~!";
+	mes "可以將你傳送到有比較強的";
+	mes "魔物出現的地方喔";
 	next;
-	mes "[Hoffman]";
-	mes "But don't worry so much,";
-	mes "They're not impossible for";
-	mes "Novices. So would you";
-	mes "like to try?";
-	close;
+	mes "[普曼]";
+	mes "請問你要挑戰看看嗎?";
+	next;
+	set .@num,strnpcinfo(2);
+	setarray .@serv$,"挑戰較簡單的地區","挑戰適當的地區","挑戰較難的地區";
+	set .@serv$[.@num],"";
+	switch (select(.@serv$[0],.@serv$[1],.@serv$[2],"不想挑戰")) {
+	case 1:
+		mes "[普曼]";
+		mes "那麼我將為你傳送到魔物強度較弱的地區，";
+		mes "願你的前途與幸運同在...";
+		close2;
+		warp "new_1-3",96,21;
+		end;
+	case 2:
+		mes "[普曼]";
+		mes "那麼我將為你傳送到魔物強度適中的地區，";
+		mes "願你的前途與幸運同在...";
+		close2;
+		warp "new_"+rand(2,3)+"-3",96,21;
+		end;
+	case 3:
+		mes "[普曼]";
+		mes "看來你是個喜歡挑戰困難的人啊，";
+		mes "那裡的魔物可是很強的，請小心...";
+		close2;
+		warp "new_"+rand(4,5)+"-3",96,21;
+		end;
+	case 4:
+		mes "[普曼]";
+		mes "看來是不敢面對挑戰的人啊...";
+		mes "不過一點一點慢慢地進步，也沒有什麼不好的啦，";
+		mes "願你的前途與幸運同在...";
+		close;
+	}
+
 }
 
-new_1-3,96,174,4	script	檢查人員#1	85,{
+new_2-3,95,30,4	duplicate(NovTrai)	訓練所 人員#2	84
+new_3-3,95,30,4	duplicate(NovTrai)	訓練所 人員#3	84
+new_4-3,95,30,4	duplicate(NovTrai)	訓練所 人員#4	84
+new_5-3,95,30,4	duplicate(NovTrai)	訓練所 人員#5	84
+
+new_1-3,96,174,4	script	檢查人員#1::NovMan	85,{
 	mes "[奇曼]";
 	mes "嗯!";
 	mes "基本的戰鬥方式都練習完了吧?";
 	mes "要進行下一個課程了嗎?";
 	next;
-	if(select("是的:不要")==1){
+	if(select("是的:不要")==1) {
 		mes "[奇曼]";
 		mes "不管到了什麼地方，希望你都不要忘記在這邊做過的練習，";
 		mes "那麼祝你有個愉快的冒險吧";
@@ -2150,7 +2166,12 @@ new_1-3,96,174,4	script	檢查人員#1	85,{
 	close;
 }
 
-//Novice Instructor
+new_2-3,96,174,3	duplicate(NovMan)	檢查人員#2	85
+new_3-3,96,174,3	duplicate(NovMan)	檢查人員#3	85
+new_4-3,96,174,3	duplicate(NovMan)	檢查人員#4	85
+new_5-3,96,174,3	duplicate(NovMan)	檢查人員#5	85
+
+// 職業介紹
 new_1-4,91,22,4	script	初學者 教官	57,{
 	mes "[布路斯]";
 	mes "來到這裡";
@@ -2400,8 +2421,7 @@ new_1-4,100,29,4	script	最後的試練場	46,{
 	mes "第一，會有進行中可";
 	mes "獲得的恢復物品，";
 	mes "剛進仙境傳說世界裡，";
-	mes "應該會有很大的";
-	mes "幫助";
+	mes "應該會有很大的幫助";
 	next;
 	mes "[漢森]";
 	mes "第二，性向測驗結束後，會幫^A62A2A" +strcharinfo(0)+ "^000000 先生/小姐";
@@ -2480,111 +2500,114 @@ L_cancel:
 	mes "請選擇下面選項中你認為";
 	mes "較符合自己的詞彙";
 	next;
-	switch ( select("閱讀:鍛鍊:服務:冒險") ) {
-	case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
-	case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
-		set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 3:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 4:	set NOV_3_THIEF,NOV_3_THIEF+1;
+	switch ( select("唸書:運動:服務:暴力") ) {
+		case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
+		case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+			set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 3:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 4:	set NOV_3_THIEF,NOV_3_THIEF+1;
 	}
 	switch ( select("變化:保存") ) {
-	case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
-	case 2:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
+		case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
+		case 2:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
 	}
 	switch ( select("消費者:販賣者:生產者") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
-		set NOV_3_THIEF,NOV_3_THIEF+1;
-		set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+			set NOV_3_THIEF,NOV_3_THIEF+1;
+			set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	switch ( select("迅速:慎重") ) {
-	case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
+		case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
 	}
 	switch ( select("理論:經驗") ) {
-	case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
-	case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+		case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
+		case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
 	}
 	switch ( select("過去:現在:未來") ) {
-	case 1:	set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
-	case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
-		set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 3: set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+		case 1:	set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
+		case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
+			set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 3: set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	mes "[漢森]";
 	mes "以下的問題請以";
 	mes "'是'，'不是'回答";
 	next;
 	mes "[漢森]";
-	mes "To die with honor is better than to live with disgrace.";
+	mes "認為死寧願重於泰山";
+	mes "也不願輕於鴻毛";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
-	case 2:	set NOV_3_THIEF,NOV_3_THIEF+1;
-		set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
+		case 2:	set NOV_3_THIEF,NOV_3_THIEF+1;
+			set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
 	}
 	mes "[漢森]";
-	mes "You are often upset to see someone";
-	mes "who is better than you";
+	mes "看到別人成功，會很生氣";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 2: set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
+		case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 2: set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
 	}
 	mes "[漢森]";
-	mes "You don't mind exploring dangerous";
-	mes "places.";
+	mes "處於非常危險的地方時";
+	mes "會先到處走走";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
-	case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
+		case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	mes "[漢森]";
-	mes "You are a leader-type person.";
+	mes "在一群人中總是想要當指揮者，";
+	mes "任何事都想要站在前頭";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
-	case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
+		case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
 	}
 	mes "[漢森]";
-	mes "While exploring a dungeon, you";
-	mes "encountered a no-way out.";
-	mes "As you examined a wall beside you,";
-	mes "there was a button-looking stone";
-	mes "with a 'do not push' sign.";
+	mes "在探險密穴中遇到";
+	mes "堵塞的路，";
+	mes "仔細一看發現牆壁上寫著'推'的字，";
+	mes "字寫得有點模糊，";
+	mes "突出一個像按鈕的石頭";
 	next;
 	mes "[漢森]";
-	mes "You see the 'do not push' sign";
-	mes "and have an urge to push the";
-	mes "button. Do you push it?";
+	mes "看到寫著'推'的字樣";
+	mes "反而會想要用拉的";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+		case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
 	}
 	mes "[漢森]";
-	mes "You often see things that don't";
-	mes "exist";
+	mes "有時侯除了活著的生物之外，還會看到一些非現實生活中的其它生物";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+		case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	mes "[漢森]";
-	mes "You feel you can fly";
-	mes "when falling from a cliff.";
+	mes "從高處掉下來時，";
+	mes "感覺好像在飛翔";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+		case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	mes "[漢森]";
-	mes "Money talks. I can buy even human being if I want.";
+	mes "錢是世界上的一切，";
+	mes "認為只要有錢的話，";
+	mes "沒有買不到的東西，";
+	mes "甚至認為可以";
+	mes "買到人的心";
 	next;
 	switch ( select("是:不是") ) {
-	case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
+		case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 2:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
 	}
 	mes "[漢森]";
 	mes "這次稍微轉變一下";
@@ -2595,108 +2618,89 @@ L_cancel:
 	mes "最接近自己思考的答案";
 	next;
 	mes "[漢森]";
-	mes "As you check your tight";
-	mes "schedule....";
+	mes "看著緊湊的時間表會..";
 	next;
-	switch ( select("You feel like a robot.:You are proud and satisfied.:Schedule... what schedule?") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
-		set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
-		set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 3:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
-		set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
+	switch ( select("覺得自己很像機器而感到鬱悶:覺得有時間流程很好:不按照時間表去做，我是自由人!") ) {
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+			set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 2:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+			set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 3:	set NOV_3_ARCHER,NOV_3_ARCHER+1;
+			set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
 	}
 	mes "[漢森]";
-	mes "During window shopping, you found a";
-	mes "really interesting item in a store";
-	mes "and you're debating whether to buy";
-	mes "it or not.";
-	mes "Before you purchase an item,";
-	mes "first thing you do is...";
+	mes "當你走在市場時，";
+	mes "在店家發現相當";
+	mes "喜愛的物品，";
+	mes "激起了你想要購買的衝動，";
+	mes "當你在購買物品之前";
 	next;
-	switch ( select("Think about if you need it.:Check the price.:Buy it without thinking twice...!") ) {
-	case 1:	set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
-	case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 3:	set NOV_3_THIEF,NOV_3_THIEF+1;
+	switch ( select("看是否是需要的物品後再做判斷:先看看是多少錢:先買了再說...!") ) {
+		case 1:	set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
+		case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 3:	set NOV_3_THIEF,NOV_3_THIEF+1;
 	}
 	mes "[漢森]";
-	mes "You (____Fill in blank___) to compete";
-	mes "with other people.......";
+	mes "你對於跟許多人競爭";
+	mes "這件事.....";
 	next;
-	switch ( select("Don't mind...:Don't like...:Don't care...") ) {
-	case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 2:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 3:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
-		set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+	switch ( select("很喜歡:很討厭:不知道") ) {
+		case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 2:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 3:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
+			set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
 	}
 	mes "[漢森]";
-	mes "You're responsible for a task that";
-	mes "requires you to cooperate with many";
-	mes "people.";
-	mes "If you handle it by yourself, it";
-	mes "takes a long time with a lot of";
-	mes "effort.";
-	mes "But if you cooperate with others,";
-	mes "it will be simple and an enjoyable";
-	mes "task. You would...";
+	mes "必須要做自己很難承擔的某件事，";
+	mes "且自己做的話可能會做很久、很累，";
+	mes "但是很多人一起做的話，可以做得";
+	mes "又快又容易，";
+	mes "如果是你的話...";
 	next;
-	switch ( select("Handle it by myself even if it's hard.:Ask friends to help.") ) {
-	case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
-	case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
+	switch ( select("就算很累還是要一個人處理:會邀請週遭的人一起幫忙") ) {
+		case 1:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
+		case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;
 	}
 	mes "[漢森]";
-	mes "You happened to find a girl who";
-	mes "fainted on the street.";
-	mes "What would you do?";
+	mes "如果發現一位昏倒的'小姐'，";
+	mes "如果他需要你幫忙的話...";
 	next;
-	switch ( select("Carry her to a hospital.:Considder my priority before taking an action.:Just ignore it.") ) {
-	case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
-		set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
-	case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
-		set NOV_3_THIEF,NOV_3_THIEF+1;
-		set NOV_3_MERCHAN,NOV_3_MERCHAN+1;
+	switch ( select("先幫忙再說:視情況而定:跟自己不相關的事就置之不理") ) {
+		case 1:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;
+			set NOV_3_ARCHER,NOV_3_ARCHER+1;break;
+		case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+			set NOV_3_THIEF,NOV_3_THIEF+1;
+			set NOV_3_MERCHAN,NOV_3_MERCHAN+1;
 	}
 	mes "[漢森]";
-	mes "You happened to pick up";
-	mes "some 'clothing'";
-	mes "What would you do?";
+	mes "走路途中偶然撿到了'衣服'，";
+	mes "如果是你的話...";
 	next;
-	switch ( select("Check the brand.:Wonder who lost it.:Find the owner.:Leave it where it was.") ) {
-	case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 2:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
-	case 3:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 4:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
+	switch ( select("先確認是什麼的牌子:是誰的衣服呢?:拿了就走:放在原地不拿") ) {
+		case 1:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 2:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;break;
+		case 3:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 4:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;
 	}
 	mes "[漢森]";
-	mes "You happened to slip your tongue in";
-	mes "the middle of a conversation.";
-	mes "What would be your reaction?";
+	mes "聊天時遇到難為或尷尬的情況時...";
 	next;
-	switch ( select("Pretend it's a joke.:Change the subject.:Analyse it.:Apologise honestly.") ) {
-	case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
-	case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
-	case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
-	case 4:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
+	switch ( select("用開玩笑來緩和氣氛:轉個話題:追根究底問出原因:不管怎樣先道歉") ) {
+		case 1:	set NOV_3_THIEF,NOV_3_THIEF+1;break;
+		case 2:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
+		case 3:	set NOV_3_MAGICIAN,NOV_3_MAGICIAN+1;break;
+		case 4:	set NOV_3_ACOLYTE,NOV_3_ACOLYTE+1;
 	}
 	mes "[漢森]";
-	switch (Sex) {
-	case 0:	mes "You're on a trip with your beloved";
-		mes "one. She asks you to buy a";
-		mes "souvenir that's not particularly";
-		mes "needed.";
-		break;
-	case 1:	mes "You're on a trip with your beloved";
-		mes "one. He asks you to buy a";
-		mes "souvenir that's not particularly";
-		mes "needed.";
-	}
-	mes "What would you do?";
+	mes "當你的愛人向你要求買紀念品送他";
+	mes "不好看又沒用的紀念品時";
+	mes "你會....";
 	next;
-	switch ( select("Buy the item for her/him.:Say 'no'.:Promise to buy it next time.") ) {
-	case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
-	case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
-	case 3:	set NOV_3_THIEF,NOV_3_THIEF+1;
+	switch ( select("愛人的話絕對是對的:拒絕:說下次在買矇混過去") ) {
+		case 1:	set NOV_3_SWORDMAN,NOV_3_SWORDMAN+1;break;
+		case 2:	set NOV_3_MERCHANT,NOV_3_MERCHANT+1;break;
+		case 3:	set NOV_3_THIEF,NOV_3_THIEF+1;
 	}
 	mes "[漢森]";
 	mes "好~! 測驗到此為止，";
@@ -2738,20 +2742,20 @@ L_cancel:
 	set @JOB_WITH,NOV_3_SWORDMAN;
 L_loop1:
 	switch ( @JOB_NUMBER ) {
-	case 1:		set @JOB_WITH_C,NOV_3_ARCHER;break;
-	case 2:		set @JOB_WITH_C,NOV_3_THIEF;break;
-	case 3:		set @JOB_WITH_C,NOV_3_MAGICIAN;break;
-	case 4:		set @JOB_WITH_C,NOV_3_ACOLYTE;break;
-	default:	set @JOB_WITH_C,NOV_3_MERCHANT;
+		case 1:	set @JOB_WITH_C,NOV_3_ARCHER;break;
+		case 2:	set @JOB_WITH_C,NOV_3_THIEF;break;
+		case 3:	set @JOB_WITH_C,NOV_3_MAGICIAN;break;
+		case 4:	set @JOB_WITH_C,NOV_3_ACOLYTE;break;
+		default:	set @JOB_WITH_C,NOV_3_MERCHANT;
 	}
 	if (@JOB_WITH >= @JOB_WITH_C) goto L_loop2;
 	set @JOB_NUMBER_CHK,@JOB_NUMBER;
 	switch ( @JOB_NUMBER ) {
-	case 1:		set @JOB_WITH,NOV_3_ARCHER;break;
-	case 2:		set @JOB_WITH,NOV_3_THIEF;break;
-	case 3:		set @JOB_WITH,NOV_3_MAGICIAN;break;
-	case 4:		set @JOB_WITH,NOV_3_ACOLYTE;break;
-	default:	set @JOB_WITH,NOV_3_MERCHANT;
+		case 1:	set @JOB_WITH,NOV_3_ARCHER;break;
+		case 2:	set @JOB_WITH,NOV_3_THIEF;break;
+		case 3:	set @JOB_WITH,NOV_3_MAGICIAN;break;
+		case 4:	set @JOB_WITH,NOV_3_ACOLYTE;break;
+		default:	set @JOB_WITH,NOV_3_MERCHANT;
 	}
 L_loop2:
 	set @JOB_NUMBER,@JOB_NUMBER+1;
@@ -2759,7 +2763,6 @@ L_loop2:
 	mes "[漢森]";
 	switch ( @JOB_NUMBER_CHK ) {
 	case 0:	set @JOB_NAME$,"劍士";
-		mes "[漢森]";
 		mes "雖然看起來很單純又表達直接，";
 		mes "但對於自己的信念相當堅強，";
 		mes "很願意成為影響社會的人， ";
@@ -2771,11 +2774,10 @@ L_loop2:
 		mes "你的工作";
 		break;
 	case 1:	set @JOB_NAME$,"弓箭手";
-		mes "[漢森]";
 		mes "'平常都能夠接受並承擔";
 		mes "難過的情緒，";
 		mes "並努力去取得";
-		mes "別人的認同。'";
+		mes "別人的認同'";
 		next;
 		mes "[漢森]";
 		mes "'是個不願意過平凡的日子，而努力";
@@ -2785,7 +2787,6 @@ L_loop2:
 		mes "你的工作";
 		break;
 	case 2:	set @JOB_NAME$,"盜賊";
-		mes "[漢森]";
 		mes "'你致力於追求幸福的人生觀念，";
 		mes "不斷探索能夠讓你";
 		mes "滿足冒險的慾望，對人生有著";
@@ -2796,7 +2797,6 @@ L_loop2:
 		mes "給你適合 ^696969盜賊^000000 工作'";
 		break;
 	case 3:	set @JOB_NAME$,"魔法師";
-		mes "[漢森]";
 		mes "'不願意讓人家看起來覺得";
 		mes "自己不聰明，試圖要獨自";
 		mes "去理解所有的事情，";
@@ -2811,7 +2811,6 @@ L_loop2:
 		mes "你的工作";
 		break;
 	case 4:	set @JOB_NAME$,"服事";
-		mes "[漢森]";
 		mes "'心地善良，願意為別人著想，";
 		mes "親切的對待每一個人，";
 		mes "希望能夠成為";
@@ -2826,7 +2825,6 @@ L_loop2:
 		mes "的工作'";
 		break;
 	case 5:	set @JOB_NAME$,"商人";
-		mes "[漢森]";
 		mes "'具有很快瞭解別人心理的特性，";
 		mes "對大家所需求的感覺很敏銳，";
 		mes "有組織性和果斷力，";
@@ -2837,7 +2835,6 @@ L_loop2:
 		mes "^696969商人^000000的工作'";
 	}
 	next;
-	
 	mes "[漢森]";
 	mes "那麼你要選擇有關";
 	mes @JOB_NAME$+ "的職業嗎?";
@@ -2853,79 +2850,82 @@ L_loop2:
 		mes "幫你傳送到相關的村落";
 		next;
 		mes "^660000領取物品名細^000000";
-		switch( @JOB_NUMBER_CHK ) {
-		case 0:	mes "1 Falchion";
-			getitem 1104,1;
-			break;
-		case 1:	mes "1 Composite Bow";
-			getitem 1704,1;
-			break;
-		case 2:	mes "1 Main Gauche";
-			getitem 1207,1;
-			break;
-		case 3:	mes "1 Rod";
-			mes "1 Cutter";
-			getitem 1601,1;
-			getitem 1204,1;
-			break;
-		case 4:	mes "1 Mace";
-			getitem 1504,1;
-			break;
-		case 5:	mes "1 Battle Axe";
-			getitem 1351,1;
-		}
 		if( @JOB_NUMBER_CHK == 5 ){
-			mes "^0000304 Free Tickets for Kafra Storage";
-			mes "4 Free Tickets for Kafra Transportation";
-			mes "4 Free Tickets for the Cart Service";
+			mes "^000030倉庫 免費利用券 4張";
+			mes "倉庫 免費利用券 4張";
+			mes "手推車 免費利用券 4張";
 			getitem 7059,4;
 			getitem 7060,4;
 			getitem 7061,4;
-		}else{
-			mes "^0000305 Free Tickets for Kafra Storage";
-			mes "5 Free Tickets for Kafra Transportation";
+		} else {
+			mes "^000030倉庫 免費利用券 5張";
+			mes "傳送點 免費利用券 5張";
 			getitem 7059,5;
 			getitem 7060,5;
 		}
-		mes "^0000997 Phracons";
-		mes "10 Novices Red Potions^000000";
-		mes "^000030100 Zeny^000000";
+		switch(@JOB_NUMBER_CHK) {
+		case 0:	mes "圓月刀 1把";
+			getitem 1104,1;
+			break;
+		case 1:	mes "坎普茲弓 1把";
+			getitem 1704,1;
+			break;
+		case 2:	mes "笨拙短劍 1把";
+			getitem 1207,1;
+			break;
+		case 3:	mes "手杖 1把";
+			mes "卡特短劍 1把";
+			getitem 1601,1;
+			getitem 1204,1;
+			break;
+		case 4:	mes "鐵錘 1把";
+			getitem 1504,1;
+			break;
+		case 5:	mes "巨斧 1把";
+			getitem 1351,1;
+		}
+		mes "^000099強化武器金屬-級數一 7個";
 		getitem 1010,7;
-		getitem 569,10;
-		set Zeny,Zeny+100;
 		next;
 		mes "[漢森]";
-		mes "All the supplies have been given to";
-		mes "you. Please, check it again.";
-		mes "I will give a brief explanation";
-		mes "about these items.";
+		mes "請你確認一下是不是";
+		mes "已經拿到給你的物品了，";
+		mes "現在就為你簡單的說明";
+		mes "這些物品";
 		next;
 		mes "[漢森]";
-		mes "After you change your job,";
+		mes "首先倉庫和傳送點免費利用券，";
+		mes "可以向每個村落的";
+		mes "卡普拉服務人員要求提供服務，";
+		mes "就如同物品的名稱一樣，是可以免費";
+		mes "利用倉庫和傳送點的消費性物品";
+		next;
+		mes "[漢森]";
+		mes "而'Zeny'就是仙境傳說中使用的貨幣";
 		switch( @JOB_NUMBER_CHK ) {
 		case 0:
-			mes "you can use the 'Falchion'"; break;
+			mes "'圓月刀'則是在你轉職成劍士後，"; break;
 		case 1:
-			mes "you can use the 'Composite Bow'"; break;
+			mes "'坎普茲弓'則是在你轉職成弓箭手後，"; break;
 		case 2:
-			mes "you can use the 'Main Gauche'"; break;
+			mes "'笨拙短劍'則是在你轉職成盜賊後，"; break;
 		case 3:
-			mes "you can use either 'Rod' or 'Cutter'"; break;
+			mes "'手杖'和'卡特短劍'則是當你轉職成魔法師後，"; break;
 		case 4:
-			mes "you can use the 'Mace'"; break;
+			mes "'鐵錘'則是在你轉職成服事後，"; break;
 		case 5:	
-			mes "you can use the 'Battle Axe'";
+			mes "'巨斧'則是在你轉職成商人後，";
 		}
-		mes "instead of the Novice Knife";
-		mes "which I offered you before.";
+		mes "可以替代 '初學者笨拙短劍'";
+		mes "的武器，會事先在初學者修練場";
+		mes "中發給你的";
 		next;
 		mes "[漢森]";
-		mes "'Phracon' will be spent when";
-		mes "you refine Lv 1 weapons.";
-		mes "Some of the famous refiners";
-		mes "work only intowns.";
-		mes "After you change your job,";
-		mes "Visit one of them with Phracon.";
+		mes "'強化武器金屬-級數一'可以在鐵匠舖中，將武器等級1的武器，提高一個等級，";
+		mes "在某些村落裡有幾個很有名的鐵匠";
+		mes "專門幫人鑄造武器，";
+		mes "轉職後可以帶著強化金屬-級數一去找他們";
+		next;
 		callsub L_place;
 		next;
 		goto L_warp;
@@ -3040,20 +3040,18 @@ L_loop2:
 		}
 	}
 	mes "[漢森]";
-	mes @JOB_NAME$+" is your choise.";
+	mes "你選擇的是"+@JOB_NAME$;
 	callsub L_place;
 	next;
 	mes "[漢森]";
-	mes "After you receive all the";
-	mes "supplies, I will send you to";
-	mes "the associated town.";
+	mes "那麼給你一些需要的物品之後";
+	mes "幫你傳送到相關村落";
 	next;
-	mes "^882420Item Offer List";
-	mes "^0000301 Adventurer's Suit";
-	mes "^00009910 Novices Red Potions";
-	mes "^0000305 Free Tickets for Kafra Storage";
-	mes "^0000995 Free Tickets for Kafra Transportation";
-	mes "^000030100 Zeny^000000";
+	mes "^660000領取物品名細^000000";
+	mes "^000033倉庫 免費利用券 5張^000000";
+	mes "^000033傳送點 免費利用券 5張^000000";
+	mes "^000033冒險衣 1套^000000";
+	mes "^000099100 Zeny^000000";
 	getitem 7059,5;
 	getitem 7060,5;
 	getitem 2305,1;
@@ -3061,23 +3059,30 @@ L_loop2:
 	set Zeny,Zeny+100;
 	next;
 	mes "[漢森]";
-	mes "All the supplies have been given to";
-	mes "you. Please, check it again.";
-	mes "I will give a brief explanation";
-	mes "about these items.";
+	mes "請你確認一下是不是";
+	mes "已經拿到給你的物品了";
+	mes "現在就為你簡單的說明";
+	mes "這些物品";
 	next;
 	mes "[漢森]";
-	mes "'Zeny' is the current currency";
-	mes "within Ragnarok Online.";
-	mes "Later, you can use the";
-	mes "'Adventurer's Suit'";
-	mes "instead of the 'Novice Plate'";
-	mes "which I offered you before.";
+	mes "首先倉庫和傳送點免費利用券";
+	mes "可以向每個村落的";
+	mes "卡普拉服務人員要求提供服務，";
+	mes "就如同物品的名稱一樣，是可以免費";
+	mes "利用倉庫和傳送點的消費性物品";
+	next;
+	mes "[漢森]";
+	mes "冒險衣是當初學者";
+	mes "經過成長不再像是初學者時，";
+	mes "並且脫掉'初學者斗篷'的時候，";
+	mes "可以更換的新衣服， 冒險衣是";
+	mes "在初學者修練場所發給的";
 	next;
 L_warp:
 	mes "[漢森]";
-	mes "Good luck, ^A62A2A' "+strcharinfo(0)+" '^000000,";
-	mes "and farewell.";
+	mes "現在要出發了，";
+	mes "祝^A62A2A' "+strcharinfo(0)+" '^000000有個好運，";
+	mes "再見";
 	close2;
 	callsub L_cleararg;
 	switch( @JOB_NUMBER_CHK ) {
@@ -3101,45 +3106,37 @@ L_warp:
 	}
 	end;
 L_place:
-	mes "The town you will be sent to";
+	mes "將要為你傳送的村落";
 	switch( @JOB_NUMBER_CHK ) {
 	case 0:
-		mes "is 'Izlude'. The Swordsman";
-		mes "association is located in the";
-		mes "west side of the city.";
+		mes "叫'依斯魯得島'，";
+		mes "在村落西方有'劍士工會'，";
 		break;
 	case 1:
-		mes "is named 'Payon'.";
-		mes "The Archer association can be";
-		mes "found in the small village";
-		mes "to the north-east.";
+		mes "叫'斐揚'，";
+		mes "在村落東北方的小村子裡，";
+		mes "有'弓箭手工會'，";
 		break;
 	case 2:
-		mes "is called 'Morroc'.";
-		mes "The thief guild is in the";
-		mes "underground 1st floor of the";
-		mes "pyramid, which is North-west";
-		mes "of 'Morroc'.";
+		mes "叫'夢羅克'，";
+		mes "在村落西北邊的金字塔地下一樓，";
+		mes "有'道賊工會'，";
 		break;
 	case 3:
-		mes "is called 'Geffen'.";
-		mes "The Mage association is located";
-		mes "to the north-west of the city.";
+		mes "叫'吉芬'，";
+		mes "在村落的西北邊有";
+		mes "'魔法師工會'，";
 		break;
 	case 4:
-		mes "is called 'Prontera'.";
-		mes "The good father can be found";
-		mes "in the church located in the";
-		mes "north-east corner of 'Prontera'.";
+		mes "叫'普隆德拉'，";
+		mes "在村落的東北方有";
+		mes "'普隆德拉聖堂'，";
 		break;
 	case 5:
-		mes "is called 'Alberta'.";
-		mes "The Merchant association is";
-		mes "located in the south-western";
-		mes "section of the city.";
+		mes "叫'艾爾貝塔'，";
+		mes "在村落的西南方有'商人工會'，";
 	}
-	mes "Please remember this.";
-	mes "You'll now be teleported.";
+	mes "請參考一下吧!";
 	return;
 L_cleararg:
 	set NEW_MES_FLAG0,0;
@@ -3162,18 +3159,37 @@ L_cleararg:
 	return;
 }
 
-// Training Ground Mobs
+//初學者 修練場(new_1-3)
 new_1-3,0,0,0,0	monster	綠棉蟲	1184,5,0,0,0
 new_1-3,0,0,0,0	monster	波利	1002,10,0,0,0
 new_1-3,0,0,0,0	monster	蒼蠅	1011,10,0,0,0
 new_1-3,0,0,0,0	monster	瘋兔	1063,10,0,0,0
 new_1-3,0,0,0,0	monster	土波利	1113,10,0,0,0
-// Unsure about the following mobs
-new_1-3,0,0,0,0	monster	禿鷹	1009,2,0,0,0
-new_1-3,0,0,0,0	monster	樹精	1010,2,0,0,0
-new_1-3,0,0,0,0	monster	羅達蛙	1012,2,0,0,0
-new_1-3,0,0,0,0	monster	蛋殼小雞	1050,2,0,0,0
-new_1-3,0,0,0,0	monster	魔菇	1014,1,0,0,0
-new_1-3,0,0,0,0	monster	盜蟲	1051,1,0,0,0
-new_1-3,0,0,0,0	monster	蝗蟲	1052,1,0,0,0
-new_1-3,0,0,0,0	monster	浮勒盜蟲	1053,1,0,0,0
+
+//初學者 修練場(new_2-3)
+new_2-3,0,0,0,0	monster	綠棉蟲	1184,5,0,0,0
+new_2-3,0,0,0,0	monster	禿鷹	1009,10,0,0,0
+new_2-3,0,0,0,0	monster	樹精	1010,10,0,0,0
+new_2-3,0,0,0,0	monster	羅達蛙	1012,10,0,0,0
+new_2-3,0,0,0,0	monster	蛋殼小雞	1050,10,0,0,0
+
+//初學者 修練場(new_3-3)
+new_3-3,0,0,0,0	monster	綠棉蟲	1184,5,0,0,0
+new_3-3,0,0,0,0	monster	禿鷹	1009,10,0,0,0
+new_3-3,0,0,0,0	monster	樹精	1010,10,0,0,0
+new_3-3,0,0,0,0	monster	羅達蛙	1012,10,0,0,0
+new_3-3,0,0,0,0	monster	蛋殼小雞	1050,10,0,0,0
+
+//初學者 修練場(new_4-3)
+new_4-3,0,0,0,0	monster	綠棉蟲	1184,5,0,0,0
+new_4-3,0,0,0,0	monster	魔菇	1014,10,0,0,0
+new_4-3,0,0,0,0	monster	盜蟲	1051,10,0,0,0
+new_4-3,0,0,0,0	monster	蝗蟲	1052,10,0,0,0
+new_4-3,0,0,0,0	monster	盜蟲	1053,10,0,0,0
+
+//初學者 修練場(new_5-3)
+new_5-3,0,0,0,0	monster	綠棉蟲	1184,5,0,0,0
+new_5-3,0,0,0,0	monster	魔菇	1014,10,0,0,0
+new_5-3,0,0,0,0	monster	盜蟲	1051,10,0,0,0
+new_5-3,0,0,0,0	monster	蝗蟲	1052,10,0,0,0
+new_5-3,0,0,0,0	monster	盜蟲	1053,10,0,0,0
