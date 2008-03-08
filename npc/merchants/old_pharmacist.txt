@@ -59,12 +59,12 @@ alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
 			mes "滾出去!";
 			close;
 		}
-		set .@size,getarraysize(getarg(0));
+		set .@size,getarraysize(.@need);
 		for(set .@i,0; .@i<.@size; set .@i,.@i+1) {
-			set .@max[.@i],countitem(getelementofarray(getarg(0),.@i)) / getelementofarray(getarg(1),.@i);
+			set .@max[.@i],countitem(getelementofarray(.@need,.@i)) / getelementofarray(.@amount,.@i);
 		}
-		if(getarg(2))
-			set .@max[.@i],Zeny / getarg(2);
+		if(.@price)
+			set .@max[.@i],Zeny / .@price;
 		else
 			set .@size,.@size-1;
 		for(set .@i,0; .@i<.@size; set .@i,.@i+1) {
@@ -73,7 +73,6 @@ alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
 			else
 				deletearray .@max[1],1;
 		}
-		return .@max;
 		if(.@max==0) {
 			mes "[藥劑師爺爺]";
 			mes "做藥水連材料都沒帶!您空手來要 幹嗎! 真是傻瓜!";
@@ -162,22 +161,4 @@ alberta_in.gat,16,28,4	script	藥劑師爺爺	61,{
 		mes "真是奇怪的人,有話要說出來,幹嘛什麼也沒說就走過去了!";
 		close;
 	}
-}
-
-function	script	MathMax	{
-	set .@size,getarraysize(getarg(0));
-	for(set .@i,0; .@i<.@size; set .@i,.@i+1) {
-		set .@max[.@i],countitem(getelementofarray(getarg(0),.@i)) / getelementofarray(getarg(1),.@i);
-	}
-	if(getarg(2))
-		set .@max[.@i],Zeny / getarg(2);
-	else
-		set .@size,.@size-1;
-	for(set .@i,0; .@i<.@size; set .@i,.@i+1) {
-		if(.@max[0] > .@max[1])
-			deletearray .@max[0],1;
-		else
-			deletearray .@max[1],1;
-	}
-	return .@max;
 }
