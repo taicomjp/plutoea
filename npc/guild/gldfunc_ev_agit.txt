@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 攻城戰 開始與結束 腳本 - 
 //===================================
-// 版本：1.8
+// 版本：1.8c fix1
 //===================================
 
 
@@ -101,8 +101,8 @@ function	script	F_GuildBreak	{
 
 	killmonsterall .@map$;
 
-	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [] 公會佔領了",0;
-	disablenpc "卡普拉 職員#"+.@castle$;
+	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [] 工會佔領了",0;
+	disablenpc "卡普拉 職員::"+.@castle$;
 
 	SetCastleData .@map$,0,0;
 	return;
@@ -125,21 +125,21 @@ function	script	F_AgitBreak	{
 	SetCastleData .@map$, 3, .@Defence;
 
 	SetCastleData .@map$,1, .@GID;
-	MapAnnounce .@map$,"華麗金屬被破壞了",bc_map,0x00FF00;
-	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [" + GetGuildName(.@GID) + "] 公會佔領了",bc_all;
+	MapAnnounce .@map$,strcharinfo(0) + "華麗金屬被破壞了",bc_map,0x00FF00;
+	Announce "秘密基地 [" + GetCastleName(.@map$) + "]被 [" + GetGuildName(.@GID) + "] 工會佔領了",bc_all;
 	GetCastleData .@map$,0,"::OnRecvCastle"+.@castle$;
 
-	disablenpc "卡普拉 職員#"+.@castle$;
+	disablenpc "卡普拉 職員::"+.@castle$;
 
-	// Set data to be cleared from the castle
-	// If the new owning guild doesn't have have 
-	// Guardian Research erase all guardian data.
-	// Otherwise remove investment data and kafra.
-	if (getgdskilllv(.@GID,10002) == 0) set .@data,25;
-	else set .@data,9;
-
-	for( set .@i, 4; .@i <= .@data; set .@i, .@i+1 )
+	// remove investment data and kafra
+	for( set .@i, 4; .@i <= 9; set .@i, .@i+1 )
 		SetCastleData .@map$, .@i, 0;
+
+	// if the new guild doesn't have Guardian Research, erase guardians
+	if( getgdskilllv(.@GID,10002) == 0 )
+		for( set .@i, 10; .@i <= 17; set .@i, .@i+1 )
+			SetCastleData .@map$, .@i, 0;
+
 
 	return;
 }
@@ -151,8 +151,7 @@ function	script	F_AgitEnd	{
 	set .@castle$, getarg(1);
 
 	GvgOff .@map$;
-	// Disable the following if statment to keep empty
-	// castles from being aquired after after WoE ends.
+
 	if (GetCastleData(.@map$,1) == 0) return;
 	MapRespawnGuildID .@map$,GetCastleData(.@map$,1),4;
 	KillMonster .@map$,"Agit_"+.@castle$+"::OnAgitBreak";

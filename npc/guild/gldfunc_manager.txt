@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 攻城戰 公會監護人 腳本 - 
 //===================================
-// 版本：1.9c
+// 版本：1.9c fix2
 //===================================
 
 function	script	F_GldManager	{
@@ -12,25 +12,25 @@ function	script	F_GldManager	{
 
 	// Define the types of guardians on a per castle basis
 	// 1 - Soldier Guardian; 2 - Archer Guardian; 3 - Knight Guardian
-	// 艾爾帕蘭 (Luina)
+	// Aldebaran (Luina)
 	if (getarg(1) == "aldeg_cas01") setarray .@guardiantype[0],1,2,2,2,2,3,3,3;
 	if (getarg(1) == "aldeg_cas02") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
 	if (getarg(1) == "aldeg_cas03") setarray .@guardiantype[0],3,3,1,1,1,2,2,2;
 	if (getarg(1) == "aldeg_cas04") setarray .@guardiantype[0],2,2,2,1,1,1,3,3;
 	if (getarg(1) == "aldeg_cas05") setarray .@guardiantype[0],2,2,1,1,3,3,3,3;
-	// 吉芬 (Britoniah)
+	// Geffen (Britoniah)
 	if (getarg(1) == "gefg_cas01") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
 	if (getarg(1) == "gefg_cas02") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
 	if (getarg(1) == "gefg_cas03") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
 	if (getarg(1) == "gefg_cas04") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
 	if (getarg(1) == "gefg_cas05") setarray .@guardiantype[0],2,2,1,1,1,3,3,3;
-	// 斐揚 (Baulder)
+	// Payon (Baulder)
 	if (getarg(1) == "payg_cas01") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
 	if (getarg(1) == "payg_cas02") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
 	if (getarg(1) == "payg_cas03") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
 	if (getarg(1) == "payg_cas04") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
 	if (getarg(1) == "payg_cas05") setarray .@guardiantype[0],2,2,2,2,2,2,2,3;
-	// 普隆德拉 (Valkyrie Realms)
+	// Prontera (Valkyrie Realms)
 	if (getarg(1) == "prtg_cas01") setarray .@guardiantype[0],1,1,1,2,2,3,3,3;
 	if (getarg(1) == "prtg_cas02") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
 	if (getarg(1) == "prtg_cas03") setarray .@guardiantype[0],3,3,3,1,1,2,2,2;
@@ -66,14 +66,10 @@ function	script	F_GldManager	{
 		mes "["+getarg(0)+"]";
 		mes "現在向你報告秘密基地的狀況";
 		mes " ";
-		mes "　 現在商業發展度是^FF3322" + GetCastleData(getarg(1),2) + "^000000";
-		if (GetCastleData(getarg(1),4) > 0)
-			mes "　 ^0000ff- 在過去一天之內，投資了 " + GetCastleData(getarg(1),4) + " 次^000000";
-		next;
-		mes "["+getarg(0)+"]";
-		mes "　 現在的防禦度是^FF3322" + GetCastleData(getarg(1),3) + "^000000";
-		if (GetCastleData(getarg(1),5) > 0)
-			mes "　 ^0000ff- 在過去一天之內，投資了 " + GetCastleData(getarg(1),5) + " 次^000000";
+		mes "　 ^0000ff現在商業發展度是" + GetCastleData(getarg(1),2) + "^000000";
+		if (GetCastleData(getarg(1),4) > 0) mes "　 ^0000ff- 在過去一天之內，投資了 " + GetCastleData(getarg(1),4) + " 次^000000";
+		mes "　 ^0000ff現在的防禦度是" + GetCastleData(getarg(1),3) + "^000000";
+		if (GetCastleData(getarg(1),5) > 0) mes "　 ^0000ff- 在過去一天之內，投資了 " + GetCastleData(getarg(1),5) + " 次^000000";
 		mes " ";
 		mes "報告完畢";
 		return 0;
@@ -99,7 +95,7 @@ function	script	F_GldManager	{
 		mes "，一天可以投資兩次";
 		mes " ";
 		if (.@Economy == 100) {
-			mes "^ff0000目前商業發展度以經到達 100 % 了，你已經不需要再加入任何投資了^000000";
+			mes "^ff0000目前商業發展度以經是100了，你已經不需要再加入任何投資了^000000";
 			return 0;
 		}
 		if (GetCastleData(getarg(1),4) == 2) {
@@ -113,7 +109,7 @@ function	script	F_GldManager	{
 		else {
 			set @def_invest,@def_invest*4;
 			mes "現在你已經投資一次了...";
-			mes "還要再投資嗎? 還需要追加^FF0000" + @def_invest + "^000000";
+			mes "還要再投資嗎? 還需要追加^FF0000" + .@eco_invest + "^000000";
 			mes "金幣噢";
 		}
 		next;
@@ -160,7 +156,7 @@ function	script	F_GldManager	{
 		mes " ";
 		if (.@Defence == 100) {
 			mes " ";
-			mes "^ff0000目前防禦度以經到達 100 % 了，你已經不需要再加入任何投資了^000000";
+			mes "^ff0000目前防禦度以經是100了，你已經不需要再加入任何投資了^000000";
 			return 0;
 		}
 		if (GetCastleData(getarg(1),5) == 2) {
@@ -168,13 +164,13 @@ function	script	F_GldManager	{
 			return 0;
 		}
 		else if (GetCastleData(getarg(1),5) == 0) {
-			mes "現在需要的投資金額是 ^FF0000" + .@eco_invest + "^000000 金幣";
+			mes "現在需要的投資金額是 ^FF0000" + .@def_invest + "^000000 金幣";
 			mes "，請問你要投資嗎?";
 		}
 		else {
 			set @def_invest,@def_invest*4;
 			mes "現在你已經投資過一次了...";
-			mes "還要再投資嗎? 還需要追加^FF0000" + @def_invest + "^000000";
+			mes "還要再投資嗎? 還需要追加^FF0000" + .@def_invest + "^000000";
 			mes "金幣噢";
 		}
 		next;
@@ -213,9 +209,9 @@ function	script	F_GldManager	{
 			else                               set .@type$,"騎士 監護人";
 
 			if( guardianinfo(getarg(1),.@i,0) )
-				setarray .@name$[.@i], .@type$ + " - Implemented (" + guardianinfo(getarg(1),.@i,2) + "/" + guardianinfo(getarg(1),.@i,1) + ")";
+				setarray .@name$[.@i], .@type$ + " - 設置好了 (" + guardianinfo(getarg(1),.@i,2) + "/" + guardianinfo(getarg(1),.@i,1) + ")";
 			else
-				setarray .@name$[.@i], .@type$ + " - Not Implemented";
+				setarray .@name$[.@i], .@type$ + " - 沒設置";
 		}
 	
 		set .@menu$,.@name$[0]+":"+.@name$[1]+":"+.@name$[2]+":"+.@name$[3]+":"+.@name$[4]+":"+.@name$[5]+":"+.@name$[6]+":"+.@name$[7];
@@ -248,7 +244,9 @@ function	script	F_GldManager	{
 				return 0;
 			}
 			if (GetCastleData(getarg(1),@GDnum) == 1) {
-				mes "主人，那個位置的監護人已經設置了...";
+				mes "主人...";
+				mes "那監護人已經是主人設置的監護人了";
+				mes "，不能再設置了";
 				return 0;
 			}
 			if (Zeny < 10000) {
@@ -298,10 +296,10 @@ function	script	F_GldManager	{
 				break;
 			case 2:
 				mes "["+getarg(0)+"]";
-				mes "主人，我想我們應該要留下現在這位卡普拉服務人員，因為她已經竭盡所能地為我們服務了!";
+				mes "主人，我想我們應該要留下現在這位卡普拉職員，因為她已經竭盡所能地為我們服務了!";
 				return 0;
 			}	
-			disablenpc "卡普拉 職員#"+getarg(4);
+			disablenpc "卡普拉 職員::"+getarg(4);
 			SetCastleData getarg(1),9,0;
 			mes "["+getarg(0)+"]";
 			mes "....";
@@ -333,9 +331,9 @@ function	script	F_GldManager	{
 					return 0;
 				}
 				set Zeny,Zeny-10000;
-				enablenpc "卡普拉 職員#"+getarg(4);
+				enablenpc "卡普拉 職員::"+getarg(4);
 				SetCastleData getarg(1),9,1;
-				mes "成功的和卡普拉總公司簽訂契約了，您僱用了一位卡普拉服務人員!";
+				mes "成功的和卡普拉總公司簽訂契約了，您僱用了一位卡普拉職員!";
 				next;
 				cutin "kafra_01",2;
 				mes "[卡普拉 職員]";
@@ -343,7 +341,9 @@ function	script	F_GldManager	{
 				next;
 				cutin "kafra_01",255;
 				mes "["+getarg(0)+"]";
-				mes "雇用的卡普拉服務人員將有 ^5533FF1 個月的時間^000000 在此服務，時間到了之後必須重新簽訂契約!";
+				mes "雇用的卡普拉職員將有";
+				mes "^FF00001 個月的時間^000000 在此服務";
+				mes "，時間到了之後必須重新簽訂契約";
 				return 0;
 			}
 			mes "["+getarg(0)+"]";
