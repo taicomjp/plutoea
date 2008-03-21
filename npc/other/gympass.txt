@@ -1,0 +1,124 @@
+//========================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 重力聖人 腳本 -
+//========================
+//= 版本：TRO
+//========================
+
+prontrea,160,136,4	script	重力聖人#GymPass	899,{
+	mes "[聖人]";
+	mes "Oh~ 您好~";
+	mes "Me 是從那遙遠的重力城來到這裡的，";
+	mes "我叫做 重力聖人 噢";
+	next;
+	mes "[聖人]";
+	mes "Why 來到這裡的話!";
+	mes "因為這裡的人都太過於輕裝備攜帶物品啊，";
+	mes "所以就忍無可忍 咻~ 一聲";
+	mes "用重力跳躍來到這裡了 噢~";
+	next;
+	mes "[聖人]";
+	mes "So~ 要怎麼樣重裝備的";
+	mes "攜帶物品 噢!";
+	mes "只要給Me 帶來 '^FF0000健身房會員券^000000' 的話，";
+	mes "我會對你施展重力的魔法";
+	mes "讓你擴充200的攜帶量 噢!";
+	next;
+	mes "[聖人]";
+	mes "But! 有一點要小心 噢，";
+	mes "This~ 人們都太過脆弱了 噢，";
+	mes "So~ 對重力的魔法受 ^FF000010次^000000 以上的話";
+	mes "會受不了的 噢";
+	next;
+	mes "[聖人]";
+	mes "Hey~ 請問你要接受重力的魔法嗎?";
+	next;
+	switch(select("是的:不要:魔法已經消失不見了~")) {
+	case 1:
+		if (countitem(7776) == 0) {
+			mes "[聖人]";
+			mes "Boo~ 你沒有";
+			mes "'^FF0000健身房會員券^000000'啊!~";
+			mes "沒有的話 就不能使用重力的魔法 噢~";
+			close;
+		}
+		else if (getskilllv(681) >= 10) {
+			mes "[聖人]";
+			mes "Dude, I don't think we can";
+			mes "build up your item carrying";
+			mes "muscles anymore than that.";
+			mes "It's too dangerous for your";
+			mes "body if we even tried! C'mon,";
+			mes "I told you about the limits.";
+			close;
+		}
+		else {
+			mes "[聖人]";
+			mes "Oh, awesome, I see you";
+			mes "brought your Gym Pass.";
+			mes "Alright, just do what I do,";
+			mes "and try to feel the burn.";
+			mes "Ready? Let's do this.";
+			next;
+			specialeffect2 79;
+			next;
+			specialeffect2 372;
+			next;
+			specialeffect2 10;
+			next;
+			specialeffect2 62;
+			next;
+			skill 681,getskilllv(681)+1,0;
+			delitem 7776,1;
+			set gympassmemory,gympassmemory+1;
+			mes "[聖人]";
+			mes "There, you should be able";
+			mes "to carry more stuff with you.";
+			mes "Let's see, we can increase";
+			mes "your item carrying capacity";
+			mes "^FF00000" + gympasslimit + "^000000 more times if we continue";
+			mes "training together like this.";
+			close;
+		}
+	case 2:
+		mes "[聖人]";
+		mes "Oh~ 我已經失望 噢~";
+		mes "你太脆弱 噢";
+		close;
+	case 3:
+		if (getskilllv(681) == 0) {
+			mes "[聖人]";
+			mes "Uhh...";
+			mes "We didn't work out";
+			mes "together before.";
+			mes "I'm sure about that.";
+			close;
+		}
+		else {
+			mes "[聖人]";
+			mes "Ouh! 魔法已經消失掉了 噢!";
+			mes "It's 是副作用 噢~";
+			mes "But 不要擔心 噢~";
+			mes "Me 來為你解決 噢~";
+			next;
+			specialeffect2 79;
+			next;
+			specialeffect2 372;
+			next;
+			specialeffect2 10;
+			next;
+			specialeffect2 62;
+			next;
+			skill 681,gympassmemory,0;
+			mes "[聖人]";
+			mes "Oh! 消失掉的 "+ gympassmemory +"次魔法 已經回來了";
+			mes "噢~";
+			mes "Me 的魔法雖然有點不安定 但不會失敗";
+			mes "噢 ~";
+			mes "Again~ 感覺一下重力的魔法 噢~";
+			close;
+		}
+	}
+}

@@ -12,103 +12,91 @@
 // 1.0 First version. [MasterOfMuppets]
 //============================================================
 
-sec_in02,15,170,0	script	神兵利器任務服務人員	817,{
+sec_in02,15,170,0	script	神器任務服務人員	817,{
 
-	if(getgmlevel() > 98)
-	{
-	mes "[巴哈拉宮 服務人員]";
-	mes "歡迎使用神兵利器任務調整系統";
-	next;
-	  while(1)
-	  {
-	menu "檢查任務人數",s_Values,"調整任務人數",s_Change,"取消",-;
-	close;
-
-s_Change:
-	mes "[巴哈拉宮 服務人員]";
-	mes "你想調整哪一項任務?";
-	next;
-	menu "史雷普尼爾之靴$God1",-,"雷神腰帶$God2",s_2,"女神頸鏈$God3",s_3,"雷神之錘$God4",s_4;
-
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF史雷普尼爾之靴$God1^000000 現在的人數是 ^FF0000" + $God1 + "^000000.";
-	mes "你想調整至?";
-	mes "(輸入 101 為取消)";
-	next;
-	input @temp;
-	if(@temp == 101)goto s_Canceled;
-	if(@temp < 0 || @temp > 100)goto s_BadValue;
-	set $God1,@temp;
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF史雷普尼爾之靴$God1^000000 已經調整人數至 ^FF0000" + $God1 + "^000000.";
-	close;
-
-s_2:
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF雷神腰帶$God2^000000 現在的人數是 ^FF0000" + $God2 + "^000000.";
-	mes "你想調整至?";
-	mes "(輸入 101 為取消)";
-	next;
-	input @temp;
-	if(@temp == 101)goto s_Canceled;
-	if(@temp < 0 || @temp > 100)goto s_BadValue;
-	set $God2,@temp;
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF雷神腰帶$God2^000000 已經調整人數至 ^FF0000" + $God2 + "^000000.";
-	close;
-
-s_3:
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF女神頸鏈$God3^000000 現在的人數是 ^FF0000" + $God3 + "^000000.";
-	mes "你想調整至?";
-	mes "(輸入 101 為取消)";
-	next;
-	input @temp;
-	if(@temp == 101)goto s_Canceled;
-	if(@temp < 0 || @temp > 100)goto s_BadValue;
-	set $God3,@temp;
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF女神頸鏈$God3^000000 已經調整人數至 ^FF0000" + $God3 + "^000000.";
-	close;
-
-s_4:
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF雷神之錘$God4^000000 現在的人數是 ^FF0000" + $God4 + "^000000.";
-	mes "你想調整至?";
-	mes "(輸入 101 為取消)";
-	next;
-	input @temp;
-	if(@temp == 101)goto s_Canceled;
-	if(@temp < 0 || @temp > 100)goto s_BadValue;
-	set $God4,@temp;
-	mes "[巴哈拉宮 服務人員]";
-	mes "^0000FF雷神之錘$God4^000000 已經調整人數至 ^FF0000" + $God4 + "^000000.";
-	close;
-
-s_Canceled:
-	close;
-
-s_BadValue:
-	mes "[巴哈拉宮 服務人員]";
-	mes "請選擇輸入 0-100";
-	close;
-
-s_Values:
-	mes "[巴哈拉宮 服務人員]";
-	mes "現在各項任務人數為 :";
-	mes "^0000FF史雷普尼爾之靴$God1^000000 = ^FF0000" + $God1 + "^000000.";
-	mes "^0000FF雷神腰帶$God2^000000 = ^FF0000" + $God2 + "^000000.";
-	mes "^0000FF女神頸鏈$God3^000000 = ^FF0000" + $God3 + "^000000.";
-	mes "^0000FF雷神之錘$God4^000000 = ^FF0000" + $God4 + "^000000.";
-	next;
-	  }
+	if(getgmlevel() > 98) {
+		mes "[巴哈拉宮 服務人員]";
+		mes "歡迎使用神器任務調整系統";
+		next;
+		while(1) {
+			switch (select("檢查任務人數:調整任務人數:取消")) {
+			case 1:
+				mes "[巴哈拉宮 服務人員]";
+				mes "現在各項任務人數為 :";
+				mes "^0000FF史雷普尼爾之靴$God1^000000 = ^FF0000" + $God1 + "^000000.";
+				mes "^0000FF雷神腰帶$God2^000000 = ^FF0000" + $God2 + "^000000.";
+				mes "^0000FF女神頸鏈$God3^000000 = ^FF0000" + $God3 + "^000000.";
+				mes "^0000FF雷神之錘$God4^000000 = ^FF0000" + $God4 + "^000000.";
+				next;
+				break;
+			case 2:
+				mes "[巴哈拉宮 服務人員]";
+				mes "你想調整哪一項任務?";
+				next;
+				switch (select("史雷普尼爾之靴$God1:雷神腰帶$God2:女神頸鏈$God3:雷神之錘$God4")) {
+				case 1:
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF史雷普尼爾之靴$God1^000000 現在的人數是 ^FF0000" + $God1 + "^000000.";
+					mes "你想調整至?";
+					mes "(輸入 101 為取消)";
+					next;
+					input @temp;
+					if(@temp == 101) close;
+					if(@temp < 0 || @temp > 100) break;
+					set $God1,@temp;
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF史雷普尼爾之靴$God1^000000 已經調整人數至 ^FF0000" + $God1 + "^000000.";
+					close;
+				case 2:
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF雷神腰帶$God2^000000 現在的人數是 ^FF0000" + $God2 + "^000000.";
+					mes "你想調整至?";
+					mes "(輸入 101 為取消)";
+					next;
+					input @temp;
+					if(@temp == 101) close;
+					if(@temp < 0 || @temp > 100) break;
+					set $God2,@temp;
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF雷神腰帶$God2^000000 已經調整人數至 ^FF0000" + $God2 + "^000000.";
+					close;
+				case 3:
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF女神頸鏈$God3^000000 現在的人數是 ^FF0000" + $God3 + "^000000.";
+					mes "你想調整至?";
+					mes "(輸入 101 為取消)";
+					next;
+					input @temp;
+					if(@temp == 101) close;
+					if(@temp < 0 || @temp > 100) break;
+					set $God3,@temp;
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF女神頸鏈$God3^000000 已經調整人數至 ^FF0000" + $God3 + "^000000.";
+					close;
+				case 4:
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF雷神之錘$God4^000000 現在的人數是 ^FF0000" + $God4 + "^000000.";
+					mes "你想調整至?";
+					mes "(輸入 101 為取消)";
+					next;
+					input @temp;
+					if(@temp == 101) close;
+					if(@temp < 0 || @temp > 100) break;
+					set $God4,@temp;
+					mes "[巴哈拉宮 服務人員]";
+					mes "^0000FF雷神之錘$God4^000000 已經調整人數至 ^FF0000" + $God4 + "^000000.";
+					close;
+				}
+				mes "[巴哈拉宮 服務人員]";
+				mes "請選擇輸入 0-100";
+			case 3:
+			}
+			close;
+		}
+	} else {
+		mes "[巴哈拉宮 服務人員]";
+		mes "很抱歉，你沒有足夠的權利";
+		mes "使用本服務";
+		close;
 	}
-	else
-	{
-	mes "[巴哈拉宮 服務人員]";
-	mes "很抱歉，你沒有足夠的權利";
-	mes "使用本服務";
-	close;
-	}
-
 }
