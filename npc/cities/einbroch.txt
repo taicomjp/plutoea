@@ -92,19 +92,34 @@ function	script	Ein_Tower	{
 	mes "將可以利用瞭望台和";
 	mes "獲得新鮮蘋果的雙重享受呢";
 	next;
-	menu "我要使用一般的",s_Tower,"我要使用蘋果套餐",s_Apple,"取消",-;
-
-	mes "["+ @Tower_Name$ +"]";
-	mes "是的!!我知道了";
-	mes "如果您下次有使用";
-	mes "的機會.歡迎您再來";
-	close2;
-	return;
-	
-s_Tower:
-	if(Zeny < 10)goto s_NEnough;
-	set Zeny,Zeny - 10;
-s_Tower2:
+	switch (select("我要使用一般的:我要使用蘋果套餐:取消")) {
+	case 1:
+		if(Zeny < 10) {
+			mes "["+ @Tower_Name$ +"]";
+			mes "十分抱歉,你沒有帶夠資金.";
+			close;
+		}
+		set Zeny,Zeny-10;
+		break;
+	case 2:
+		if(Zeny < 20) {
+			mes "["+ @Tower_Name$ +"]";
+			mes "十分抱歉，你沒有帶夠資金.";
+			close;
+		}
+		set Zeny,Zeny - 20;
+		mes "["+ @Tower_Name$ +"]";
+		mes "這是新鮮的蘋果.請你慢用.";
+		next;
+		getitem 512,1;
+		break;
+	case 3:
+		mes "["+ @Tower_Name$ +"]";
+		mes "是的!!我知道了";
+		mes "如果您下次有使用";
+		mes "的機會.歡迎您再來";
+		close;
+	}
 	mes "["+ @Tower_Name$ +"]";
 	mes "感謝您的使用";
 	mes "首先在使用之前";
@@ -115,25 +130,9 @@ s_Tower2:
 	mes "你已經通過安檢了,";
 	mes "那麼我就直接";
 	mes "帶您到瞭望台囉";
-	next;
 	close2;
 	warp "einbroch",174,204;
-	return;
-	
-s_Apple:
-	if(Zeny < 20)goto s_NEnough;
-	set Zeny,Zeny - 20;
-	mes "["+ @Tower_Name$ +"]";
-	mes "這是新鮮的蘋果.請你慢用.";
-	next;
-	getitem 512,1;
-	goto s_Tower2;
-	
-s_NEnough:
-	mes "["+ @Tower_Name$ +"]";
-	mes "十分抱歉,你沒有帶夠資金.";
-	close2;
-	return;
+	end;
 }
 	
 einbroch,176,172,5	script	肯科	855,{
@@ -149,9 +148,8 @@ OnHide:
 OnUnhide:
 	misceffect 215;
 	end;
-
 }
-	
+
 einbroch,218,198,5	script	馬克	855,{
 	set @Tower_Name$,"馬克";
 	callfunc "Ein_Tower";
@@ -165,9 +163,8 @@ OnHide:
 OnUnhide:
 	misceffect 215;
 	end;
-
 }
-	
+
 einbroch,174,228,5	script	歐布魯	855,{
 	set @Tower_Name$,"歐布魯";
 	callfunc "Ein_Tower";
@@ -195,13 +192,12 @@ einbroch,175,196,5	script	莫裡	854,{
 	mes "請問你結束瞭望台的參觀,";
 	mes "要準備下去了嗎?";
 	next;
-	menu "是的,我要下去了.",s_Goback,"不是,我還要留在這參觀.",-;
-
-	mes "[莫裡]";
-	mes "是的!!我知道了,";
-	mes "祝您玩的愉快";
-	close;
-s_Goback:
+	if(select("是的,我要下去了.:不是,我還要留在這參觀.")==2) {
+		mes "[莫裡]";
+		mes "是的!!我知道了,";
+		mes "祝您玩的愉快";
+		close;
+	}
 	mes "[莫裡]";
 	mes "是的!!我知道了";
 	mes "我現在馬上把您";
@@ -330,34 +326,34 @@ einbroch,232,272,3	script	火車站職員::EinbrochTrain	852,{
 	mes "到艾音貝赫的車票價格是200 zeny.";
 	mes "你需要購買火車票嗎?";
 	next;
-	menu "是的.我要買.",s_Yes,"不,我還不用走.",-,"關於這裡的環境...",s_Enviroment;
-
-	mes "[職員]";
-	mes "好的.我知道了.希望你在艾音布羅克過得開心.";
-	close;
-s_Yes:
-	if(Zeny < 200)goto s_NEnough;
-	mes "[職員]";
-	mes "謝謝光臨";
-	mes "祝你旅途愉快";
-	close2;
-	set Zeny,Zeny - 200;
-	warp "einbech",43,215;
-	end;
-s_NEnough:
-	mes "[職員]";
-	mes "十分抱歉";
-	mes "你沒足夠的資金購買車票.";
-	close;
-s_Enviroment:
-	mes "[職員]";
-	mes "艾音布羅克的空氣污染是由於那些無恥的工廠做成的.";
-	next;
-	mes "[職員]";
-	mes "如果你在艾音布羅克聽到煙霧警告,";
-	mes "你最好馬上找個地方避難";
-	close;
-
+	switch (select("是的.我要買.:不,我還不用走.:關於這裡的環境...")) {
+	case 1:
+		if(Zeny < 200) {
+			mes "[職員]";
+			mes "十分抱歉";
+			mes "你沒足夠的資金購買車票.";
+			close;
+		}
+		mes "[職員]";
+		mes "謝謝光臨";
+		mes "祝你旅途愉快";
+		close2;
+		set Zeny,Zeny - 200;
+		warp "einbech",43,215;
+		end;
+	case 2:
+		mes "[職員]";
+		mes "好的.我知道了.希望你在艾音布羅克過得開心.";
+		close;
+	case 3:
+		mes "[職員]";
+		mes "艾音布羅克的空氣污染是由於那些無恥的工廠做成的.";
+		next;
+		mes "[職員]";
+		mes "如果你在艾音布羅克聽到煙霧警告,";
+		mes "你最好馬上找個地方避難";
+		close;
+	}
 OnHide:
 	specialeffect 16;
 	end;
@@ -566,17 +562,16 @@ ein_in01,68,209,4	script	卡休藍切	852,{
 	mes "這裡不是像你一般人可以進來的地方，";
 	mes "你並沒有來這裡的理由";
 	mes "請你盡快離開這裡！";
-	if(EinFactory > 0)goto L_work;
+	if(EinFactory > 0) {
+		next;
+		mes "[卡休藍切]";
+		mes "Oh? Mr. Zelmeto asked you to help out?";
+		mes "In that case excuse me.";
+		close;
+	}
 	close2;
 	warp "einbroch",179,63;
 	end;
-
-L_work:
-	next;
-	mes "[卡休藍切]";
-	mes "Oh? Mr. Zelmeto asked you to help out?";
-	mes "In that case excuse me.";
-	close;
 }
 
 ein_in01,113,211,3	script	塔因斯	851,{
