@@ -4,7 +4,7 @@
 // -------------------------------------------
 // - 腳本指令說明  -
 // ------------------------------------------
-//= 版本:3.16.20080229
+//= 版本:3.18.20080327
 //==========================
 
 這個檔案裡面記載著eAthena程式裡面，
@@ -286,7 +286,7 @@ prices for items in different shops.
 
 Since trunk r12264 you can alternatively use "cashshop" in place of "shop"
 to use the Cash Shop interface, allowing you to buy items with special points
-(Currently stored as account vars in global_reg #CASHPOINTS and #FREEPOINTS.)
+(Currently stored as account vars in global_reg #CASHPOINTS and #KAFRAPOINTS.)
 This type of shop will not allow you to sell items at it, you may only
 purchase items here. The layout used to define sale items still count, and
 "<price>" refers to how many points will be spent purchasing the them.
@@ -2862,7 +2862,7 @@ capacity, and 0 otherwise. It is important to see if a player can carry the
 items you expect to give them, failing to do that may open your script up to 
 abuse or create some very unfair errors.
 
-This fucntion, in addition to checking to see if the player is capable of
+This function, in addition to checking to see if the player is capable of
 holding a set amount of items, also ensures the player has room in their
 inventory for the item(s) they will be receciving.
 
@@ -6025,7 +6025,7 @@ invoking character.
 
 ---------------------------------------
 
-*homshuffle
+*homshuffle;
 
 This will recalculate the homunculus stats acording to its level, of the 
 current invoking character.
@@ -6071,5 +6071,42 @@ to proceed until all barricades are destroyed. This script would place and
 remove a nonwalkable row of cells after the barricade mobs.
 	
 ---------------------------------------
+
+*checkcell ("<map name>",<x>,<y>,<type>);
+
+This command will return 1 or 0, depending on whether the specified cell has
+the 'type' flag set or not. There are various types to check, all mimicking
+the server's cell_chk enumeration. The types can be found in db/const.txt.
+
+The meaning of the individual types can be confusing, so here's an overview:
+  - cell_chkwall/water/cliff
+    these check directly for the 'terrain component' of the specified cell
+  - cell_chkpass/reach/nopass/noreach
+    passable = not wall & not cliff, reachable = passable wrt. no-stacking mod
+  - cell_chknpc/basilica/landprotector/novending/nochat
+    these check for specific dynamic flags (their name indicates what they do)
+
+Example:
+
+	mes "Pick a destination map.";
+	input .@map$;
+	mes "Alright, now give me the coordinates.";
+	input .@x;
+	input .@y;
+	if( !checkcell(.@map$,.@x,.@y,cell_chkpass) )
+	{
+		mes "Can't warp you there, sorry!";
+		close;
+	}
+	else
+	{
+		mes "Ok, get ready...";
+		close2;
+		warp .@map$, .@x, .@y;
+		end;
+	}
+
+---------------------------------------
+
 Whew.
 That's about all of them.
