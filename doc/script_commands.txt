@@ -1,29 +1,137 @@
-//==========================
-// [­ß] The PlutoEA Project [¤ı]
-// http://opensvn.csie.org/PlutoEA
-// -------------------------------------------
-// - ¸}¥»«ü¥O»¡©ú  -
-// ------------------------------------------
-//= ª©¥»:3.18.20080327
-//==========================
+//===== Athena Doc ========================================
+//= eAthena Script Commands
+//===== Description =======================================
+//= A reference manual for the eAthena scripting language.
+//= Commands are sorted depending on their functionality.
+//===== Version ===========================================
+//= 3.19.20080407
+//=========================================================
+//= 1.0 - First release, filled will as much info as I could
+//=       remember or figure out, most likely there are errors,
+//=       and things I have missed out [Fredzilla]
+//= 1.1 - Added better discription for "getmapxy" (by Terminal Vertex & Z3R0)
+//= 1.2b- Added a description for getpartymember (by HappyDenn)
+//=       (+few spelling mistakes corrected)
+//= 2.0 - +79kb extra stuff and numerous corrections by 
+//=       Maeki Rika.
+//= 2.1 - Small but important corrections, more proofreading.
+//=       Some important discoveries in item functions, the 
+//=       secret of making VVS weapons with 'getitem2' and 
+//=       other news. (Rika again) +10kb :) 
+//= 2.2 - added getItemInfo description [Lupus]
+//= 2.3 - added plenty of info for recent (and not so) script commands I added
+//=       [Skotlex]
+//= 2.4 - Explained the upper parameter of jobchange. [Skotlex]
+//= 2.5 - Added pow, sqrt and distance. [Lance]
+//= 2.6 - Added setd and getd. [Lance]
+//= 2.7 - petstat command. [Lance]
+//= 2.7a- delitem2, countitems2 commands [Lupus]
+//= 2.7b- clone command [Skotlex]
+//= 2.7c- disguise / undisguise, query_sql commands [Lupus]
+//= 2.8 - Deleted a copy of the nude command. Added axtoi command (needing a
+//=       clearer explanation of atoi.Gave a better explanation of OnLabels
+//=       and modified monster explanation due that L_Label isn't working with
+//=       monster.
+//= 2.9.20061230 - Updated getitem and guardian. [FlavioJS]
+//= 2.10.20070101 - added sleep,sleep2,awake and updated the variables section.
+//=       [FlavioJS]
+//= 2.11.20070109 - removed the unused flag argument in guildskill, added an 
+//=       optional argument to setcart,setfalcon,setriding and other cleanups 
+//=       [FlavioJS]
+//= 2.12.20070201 - Added npcshopitem, npcshopadditem, npcshopdelitem and
+//=       npcshopattach [Skotlex]
+//= 3.00.20070208
+//=       - Explained Logical Bitwise Operators. 
+//=         Dj-Yhn contributed to AND (&) operator, rest by myself. [erKURITA]
+//=       - Added a resume of allowed variable and arrays scopes. [erKURITA]
+//=       - Re-organized the script commands, and grouped them depending
+//=         on what they do. [erKURITA]
+//=       - Added a packload of commands that were missing, 
+//=         and corrected some of the wrong ones [Dj-Yhn, erKURITA & Trancid]
+//= 3.01.20070209
+//=       Updated 'cutin' (removed lies, removed outdated bmp list) [ultramage]
+//=       Removed 'cutincard' since eA no longer implements it
+//= 3.02.20070209
+//=       Corrected/updated info on Xor/setd/getd/callfunc/callsub/return and 
+//=       updated some examples to use "better" code. [FlavioJS]
+//= 3.03.20070216
+//=       Expanded/clarified information on npc timers, added info about the
+//=       new attach flag for script commands startnpctimer/ stopnpctimer/ 
+//=       initnpctimer [Skotlex]
+//= 3.03.20070226
+//=       Updated makeitem and how to include " in strings [Lupus]
+//= 3.03.20070228
+//=       Added info on OnTimerQuit label to npctimer section. [Skotlex]
+//= 3.04.20070317
+//=       Removed all .gat refferences from the examples [Lupus]
+//= 3.04.20070330
+//=       Adjusted the 'itemskill' description due to recent change [ultramage]
+//= 3.04.20070409
+//=       Fixed the incorrect order of parameters in 'makeitem' [ultramage]
+//= 3.05.20070423
+//=       menu/select/prompt produce consistent results for grouped and empty 
+//=       options [FlavioJS]
+//= 3.05.20070819
+//=       Removed the messy 'unitdeadsit' command reference [ultramage]
+//= 3.05.20070823
+//=       Fixed typo in 'areamonster' description (missing argument) [ultramage]
+//= 3.06 20070909
+//=       Added 'gethominfo' description [Skotlex]
+//= 3.06.20070910
+//=       Added info about the new behavior of 'getexp' [ultramage]
+//= 3.07.20070915
+//=       Fixed 'duplicate' missing the target 'name' parameter! [ultramage]
+//= 3.08.20071018
+//=       Clarified how npc names work. [FlavioJS]
+//= 3.09.20071103
+//=       Added script function 'strnpcinfo' [ultramage]
+//= 3.10.20071122
+//=       Added setnpcdisplay. [FlavioJS]
+//= 3.10.20071211
+//=       Added query_logsql. [Skotlex]
+//= 3.11.20071215
+//=       Updated guardianinfo and get-/setcastledata [ultramage]
+//= 3.12.20071218
+//=       Corrected various mistakes mentioned in bugreport:373 [ultramage]
+//= 3.12.20071227
+//=       Corrected description of scope and npc variables. [FlavioJS]
+//= 3.13.20080104
+//=       Updated 'setcell' desc to match latest code changes [ultramage]
+//= 3.14.20080211
+//=       Updated 'input' (new arguments and return value). [FlavioJS]
+//= 3.15.20080227
+//=       Updated 'checkweight' description slightly. [L0ne_W0lf]
+//= 3.16.20080229
+//=       Updated 'Shop' NPC type description to include cashshop. [L0ne_W0lf]
+//=       Woopth. Fixed spelling. ;P Should be a bit clearer now. [L0ne_W0lf]
+//= 3.17.20080312
+//=       Corrected cashshop description. (#FREEPOINTS->#KAFRAPOINTS) [L0ne_W0lf]
+//= 3.18.20080327
+//=       Added documentation for the 'checkcell' command [ultramage]
+//= 3.19.20080407
+//=       Extended the behaviour of 'guardian'. [FlavioJS]
+//=========================================================
 
-³o­ÓÀÉ®×¸Ì­±°O¸üµÛeAthenaµ{¦¡¸Ì­±¡A
-¥Î¨Ó½s¼g¦U­Ó¸}¥»ªº»yªk«ü¥O¤Î¨ç¼Æ
+This document is a reference manual for all the scripting commands and functions 
+available in current eAthena SVN. It is not a simple tutorial. When people tell 
+you to "Read The F***ing Manual", they mean this.
 
 The information was mostly acquired through looking up how things actually work 
 in the source code of the server, which was written by many people over time, 
 and lots of them don't speak English and never left any notes - or are otherwise 
-not available for comments. ¦]¦¹¡A³o¸Ì©Ò¼gªº¤£¤@©w§¹¥ş¥¿½T
+not available for comments. As such, anything written in here might not be 
+correct, it is only correct to the best of our knowledge, which is limited.
 
-³o¤£¬O¬°·s¤â©Ò½s¼gªº¸}¥»±Ğ¾Ç¡A It's more of a reference for those who have at 
+This is not a place to teach you basic programming. This document will not teach 
+you basic programming by itself. It's more of a reference for those who have at 
 least a vague idea of what they want to do and want to know what tools they have 
 available to do it. We've tried to keep it as simple as feasible, but if you 
 don't understand it, getting a clear book on programming in general will help 
 better than yelling around the forum for help.
 
-»´·Lªº¾Ç²ß±q¤£·|§â§AªºÀYµ¹·dÃz
+A little learning never caused anyone's head to explode.
 
-µ²ºc
+Structure
 ---------
 
 The commands and functions are listed in no particular order:
@@ -429,9 +537,10 @@ nothing  - A permanent variable attached to the character, the default
            callsub/callfunc starts a new scope, returning from the function 
            ends it. When a scope ends, it's variables are converted to values 
            ('return .@var;' returns a value, not a reference).
-"#"      - ¥Ã¤[±b¸¹ÅÜ¼Æ
-           ¦btxtª©¡AÀx¦s¦b "save\accreg.txt"¡F¦bSQLª©«h¬O¦b'global_reg_value' ¥BÃş«¬¬°2
-
+"#"      - A permanent local account variable.
+           They are stored with all the account data in "save\accreg.txt" in
+           TXT versions and in the SQL versions in the 'global_reg_value'
+           table using type 2.
 "##"     - A permanent global account variable stored by the login server.
            They are stored in "save\account.txt" and in the SQL versions in the
            'global_reg_value' table, using type 1. The only difference you will
@@ -1050,7 +1159,7 @@ with other command, such as "if", but often used on it's own.
 Label:
 	mes "This will be seen";
 
-Note by FlavioJS: goto's are "evil" and should be avoided if possible (ò_?
+Note by FlavioJS: goto's are "evil" and should be avoided if possible (ò_ó)
 
 ---------------------------------------
 
@@ -1888,8 +1997,8 @@ This function returns the character ID of the invoking character's marriage
 partner, if any. If the invoking character is not married, it will return 0, 
 which is a quick way to see if they are married:
 
-    if (getpartnerid()) mes "§Ú¤£¯à·í§Aªº¤kªB¤Í!";
-    if (getpartnerid()) mes "§A¤w¸gµ²±B¤F!";
+    if (getpartnerid()) mes "I'm not going to be your girlfriend!";
+    if (getpartnerid()) mes "You're married already!";
 
 ---------------------------------------
 
@@ -1901,7 +2010,7 @@ If there is no such party ID, "null" will be returned.
 Lets say the ID of a party was saved as a global variable:
 
     // This would return the name of the party from the ID stored in a variable
-    mes "§Úª¾¹D§Aªº¶¤¥î¦WºÙ¬O "+getpartyname($@var)" ";
+    mes "You're in the '"+getpartyname($@var)"' party, I know!";
 
 ---------------------------------------
 
@@ -5407,12 +5516,17 @@ returns a guild id:
 
 ---------------------------------------
 
-*guardian "<map name>",<x>,<y>,"<name to show>",<mob id>,<amount>{,"<event label>"}{,<guardian index>};
+*guardian("<map name>",<x>,<y>,"<name to show>",<mob id>,<amount>{,"<event label>"}{,<guardian index>})
 
 This command is roughly equivalent to 'monster', but is meant to be used with 
 castle guardian monsters and will only work with them. It will set the guardian 
 characteristics up according to the castle's investment values and otherwise 
 set the things up that only castle guardians need.
+
+Since trunk r12524:
+Returns the id of the mob or 0 if an error occurred.
+When 'guardian index' isn't supplied it produces a temporary guardian.
+Temporary guardians are not saved with the castle and can't be accessed by guardianinfo.
 
 ---------------------------------------
 
@@ -5566,7 +5680,7 @@ memory of where the points are set whatsoever.
 This command will display a picture stored in the GRF file in the client for the 
 player. 
 
-The files are taken from '\data\texture\A_A£AII?AI«§\illust' directory in the 
+The files are taken from '\data\texture\A_A£AII’„AI«§\illust' directory in the 
 GRF file. Also it seems that card cutins from \cardbmp will work here as well. 
 Only bitmaps (images stored in the bitmap format) will actually get displayed. 
 The '.bmp' extension is optional. 

@@ -16,7 +16,6 @@ OnInit:
 	set $@mobcount, 0;	// current numbers of "mobsters"
 	set $@lhz_alert, 0;	// Alert on Lighthalzen(0 = off, 1 = on)
 	set $@i, 0;
-	
 	end;
 
 OnMinute00:
@@ -50,13 +49,12 @@ OnTimer10000:
 MakeMob:
 	if($@lhz_alert == 1) goto ChkEnd;
 	set $@mobcount, $@mob;
-	mapannounce "lighthalzen","治安維持局 : 由於目前村落治安不佳的緣故，請各位居民們注意安全，再說一次，請各位居民們要特別注意安全", 1;	
+	mapannounce "lighthalzen","治安維持局 : 由於目前村落治安不佳的緣故，請各位居民們注意安全，再說一次，請各位居民們要特別注意安全", 1;
 	for( set $@i, 0; $@i < $@mob; set $@i, $@i + 1 ) {
 		monster "lighthalzen",0,0,"流氓",1592,1,"AlertChk::OnMobKilled";
 	}
-
-	set $@lhz_alert, 1;	
-	set $@sneakguard, 2;   // Monsters will die after 5~10 min. (sneakAddSuber)
+	set $@lhz_alert, 1;
+	set $@sneakguard, 2;
 	setnpctimer 0;
 	end;
 	
@@ -69,16 +67,16 @@ ClearMob:
 	set $@sneakguard, 0;
 	setnpctimer 0;
 	end;
-		
+
 OnMobKilled:
 	set $@mobcount, $@mobcount - 1;
 	if($@mobcount == 0) goto ClearMob;
 	setnpctimer 0;
-	end;	
-	
-ChkEnd:	
+	end;
+
+ChkEnd:
 	setnpctimer 0;
-	end;	
+	end;
 }
 
 lighthalzen,267,200,3	script	警衛#lhz01	868,{
@@ -202,163 +200,189 @@ lighthalzen,341,224,4	script	彼士本	868,{
 		mes "你繼續走你的路吧";
 		close;
 	}
-	if (MISC_QUEST&512) goto L_DONE;
+	if (MISC_QUEST&512) {
+		mes "[彼士本]";
+		mes "噢~你都已經找到入口啦~";
+		mes "那我開始要";
+		mes "跟你講重點了，";
+		mes "以後你想再進入";
+		mes "那裡的話";
+		next;
+		mes "[彼士本]";
+		mes "只要到村落下方一點，";
+		mes "就可以看到";
+		mes "下水道的通路，進入那裡";
+		mes "就可以了";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "超噁心...";
+		next;
+		mes "[彼士本]";
+		mes "知道~ 我知道~";
+		mes "確實很噁心...";
+		mes "不過那是";
+		mes "唯一的通路啊，.";
+		mes "想要利用的話，";
+		mes "就別抱怨囉";
+		next;
+		mes "[彼士本]";
+		mes "那麼祝你旅途愉快，";
+		mes "注意安全囉~";
+		close;
+	}
 	if (piciburn == 7) goto L_10;
 	if (piciburn == 6) goto L_9;
 	if (piciburn == 5) goto L_6;
 	if (piciburn == 4) goto L_4;
 	if (piciburn == 3) goto L_3;
-	if (piciburn == 2) goto L_2;
-	if (piciburn == 1) goto L_1;
+	if (piciburn == 2) {
+		mes "[彼士本]";
+		mes "哼嗯..真是...";
+		mes "不能讓我專心...";
+		mes "真是個奇怪的朋友啊...";
+		mes "我有欠你";
+		mes "什麼嗎?";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "沒有啦，只是想...";
+		mes "隨便看看，";
+		mes "請問你在做什麼呢?";
+		next;
+		mes "[彼士本]";
+		mes "真是的...";
+		mes "若是能讓你看的話，";
+		mes "我就沒必要";
+		mes "這麼固執吧...";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你也知道自己固執啊~哈哈";
+		next;
+		mes "[彼士本]";
+		mes "你真是個怪胎啊...";
+		mes "你真的想在那邊";
+		mes "整天盯著我看嗎";
+		next;
+		mes "[彼士本]";
+		mes "...你很煩耶，";
+		mes "你到底想幹什麼?";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "我剛才不是問過了嘛，";
+		mes "問你在做什麼啊，";
+		mes "況且又在這種濕漉漉的地方";
+		next;
+		mes "[彼士本]";
+		mes "好吧...我知道啦...";
+		mes "那麼我就告訴你吧，";
+		mes "但一聽完就要馬上";
+		mes "消失在我眼前...";
+		next;
+		mes "[彼士本]";
+		mes "我呢，目前作一些";
+		mes "不法的事情...";
+		mes "你絕對不能";
+		mes "到處亂說喔...";
+		next;
+		mes "[彼士本]";
+		mes "我的工作是";
+		mes "製造一個";
+		mes "讓企業都市";
+		mes "-^FF0000研究員^000000-以外的人員，";
+		mes "可以任意通往";
+		mes "企業都市的研究員";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "-!!!研究所?!!!-";
+		mes "你是說真的可以";
+		mes "幫我進入那裡嗎?!!!";
+		next;
+		mes "[彼士本]";
+		mes "哦~ 喂你，";
+		mes "我剛才不是說過，";
+		mes "叫你聽完就要馬上消失啊，";
+		mes "我有沒有這樣說過~";
+		mes "你甚至還這麼大聲...";
+		mes "給我安靜點~!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "啊..哈哈...對不起，";
+		mes "我一聽到你說要幫把我送到";
+		mes "我想找的地方，我太興奮了";
+		next;
+		mes "[彼士本]";
+		mes "嗯? 你是說一直想進入";
+		mes "那裡啊?";
+		next;
+		mes "[彼士本]";
+		mes "嗯...";
+		mes "這樣我會很困擾...";
+		mes "以我的原則，像你這樣";
+		mes "初次見面又不可靠";
+		mes "的人是不會那麼輕易地";
+		mes "把方法告訴你的...";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "請你告訴我要怎麼做?";
+		mes "我要怎麼做你才會";
+		mes "把我送至研究所呢?";
+		next;
+		mes "[彼士本]";
+		mes "我只提供前往捷徑的";
+		mes "方法而已，";
+		mes "我可沒說要送至研究所喔";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "那不是一樣的意思嗎?";
+		next;
+		mes "[彼士本]";
+		mes "我是說只會協助你";
+		mes "取得進入研究所";
+		mes "條件的機會啦";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你的手腕很好嘛";
+		next;
+		mes "[彼士本]";
+		mes "嗯哈哈~";
+		mes "這只是小意思啦，";
+		mes "不過!!";
+		mes "我覺得還是不妥!!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "不妥什麼啦?";
+		mes "我都還沒開口哩";
+		next;
+		mes "[彼士本]";
+		mes "反正你會死纏著叫我";
+		mes "幫忙把你送至那裡不是嗎~!!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "嘿嘿....";
+		mes "竟然...被你猜到啦，";
+		mes "被你逮到了...";
+		mes "拜託你囉~~";
+		next;
+		mes "[彼士本]";
+		mes "你再三拜託也沒用啦~";
+		mes "不行就是不行~!!!";
+		set piciburn,piciburn+1;
+		close;
+	}
+	if (piciburn == 1) {
+		mes "[彼士本]";
+		mes "你這樣老是";
+		mes "盯著我看，";
+		mes "無法做事啊...";
+		mes "你就不能走開嗎?";
+		set piciburn,piciburn+1;
+		close;
+	}
 	mes "[彼士本]";
 	mes "嗯..什麼事...";
 	mes "我現在有事很忙";
 	mes "別來煩我...";
 	set piciburn,1;
 	close;
-
-L_1:
-	mes "[彼士本]";
-	mes "你這樣老是";
-	mes "盯著我看，";
-	mes "無法做事啊...";
-	mes "你就不能走開嗎?";
-	set piciburn,piciburn+1;
-	close;
-
-L_2:
-	mes "[彼士本]";
-	mes "哼嗯..真是...";
-	mes "不能讓我專心...";
-	mes "真是個奇怪的朋友啊...";
-	mes "我有欠你";
-	mes "什麼嗎?";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "沒有啦，只是想...";
-	mes "隨便看看，";
-	mes "請問你在做什麼呢?";
-	next;
-	mes "[彼士本]";
-	mes "真是的...";
-	mes "若是能讓你看的話，";
-	mes "我就沒必要";
-	mes "這麼固執吧...";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你也知道自己固執啊~哈哈";
-	next;
-	mes "[彼士本]";
-	mes "你真是個怪胎啊...";
-	mes "你真的想在那邊";
-	mes "整天盯著我看嗎";
-	next;
-	mes "[彼士本]";
-	mes "...你很煩耶，";
-	mes "你到底想幹什麼?";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "我剛才不是問過了嘛，";
-	mes "問你在做什麼啊，";
-	mes "況且又在這種濕漉漉的地方";
-	next;
-	mes "[彼士本]";
-	mes "好吧...我知道啦...";
-	mes "那麼我就告訴你吧，";
-	mes "但一聽完就要馬上";
-	mes "消失在我眼前...";
-	next;
-	mes "[彼士本]";
-	mes "我呢，目前作一些";
-	mes "不法的事情...";
-	mes "你絕對不能";
-	mes "到處亂說喔...";
-	next;
-	mes "[彼士本]";
-	mes "我的工作是";
-	mes "製造一個";
-	mes "讓企業都市";
-	mes "-^FF0000研究員^000000-以外的人員，";
-	mes "可以任意通往";
-	mes "企業都市的研究員";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "-!!!研究所?!!!-";
-	mes "你是說真的可以";
-	mes "幫我進入那裡嗎?!!!";
-	next;
-	mes "[彼士本]";
-	mes "哦~ 喂你，";
-	mes "我剛才不是說過，";
-	mes "叫你聽完就要馬上消失啊，";
-	mes "我有沒有這樣說過~";
-	mes "你甚至還這麼大聲...";
-	mes "給我安靜點~!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "啊..哈哈...對不起，";
-	mes "我一聽到你說要幫把我送到";
-	mes "我想找的地方，我太興奮了";
-	next;
-	mes "[彼士本]";
-	mes "嗯? 你是說一直想進入";
-	mes "那裡啊?";
-	next;
-	mes "[彼士本]";
-	mes "嗯...";
-	mes "這樣我會很困擾...";
-	mes "以我的原則，像你這樣";
-	mes "初次見面又不可靠";
-	mes "的人是不會那麼輕易地";
-	mes "把方法告訴你的...";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "請你告訴我要怎麼做?";
-	mes "我要怎麼做你才會";
-	mes "把我送至研究所呢?";
-	next;
-	mes "[彼士本]";
-	mes "我只提供前往捷徑的";
-	mes "方法而已，";
-	mes "我可沒說要送至研究所喔";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "那不是一樣的意思嗎?";
-	next;
-	mes "[彼士本]";
-	mes "我是說只會協助你";
-	mes "取得進入研究所";
-	mes "條件的機會啦";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你的手腕很好嘛";
-	next;
-	mes "[彼士本]";
-	mes "嗯哈哈~";
-	mes "這只是小意思啦，";
-	mes "不過!!";
-	mes "我覺得還是不妥!!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "不妥什麼啦?";
-	mes "我都還沒開口哩";
-	next;
-	mes "[彼士本]";
-	mes "反正你會死纏著叫我";
-	mes "幫忙把你送至那裡不是嗎~!!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "嘿嘿....";
-	mes "竟然...被你猜到啦，";
-	mes "被你逮到了...";
-	mes "拜託你囉~~";
-	next;
-	mes "[彼士本]";
-	mes "你再三拜託也沒用啦~";
-	mes "不行就是不行~!!!";
-	set piciburn,piciburn+1;
-	close;
-
 L_3:
 	mes "[" +strcharinfo(0) + "]";
 	mes "拜託啦";
@@ -597,42 +621,15 @@ L_warp1:
 L_warp2:
 	warp "lhz_cube",66,74;
 	end;
-
-L_DONE:
-	mes "[彼士本]";
-	mes "噢~你都已經找到入口啦~";
-	mes "那我開始要";
-	mes "跟你講重點了，";
-	mes "以後你想再進入";
-	mes "那裡的話";
-	next;
-	mes "[彼士本]";
-	mes "只要到村落下方一點，";
-	mes "就可以看到";
-	mes "下水道的通路，進入那裡";
-	mes "就可以了";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "超噁心...";
-	next;
-	mes "[彼士本]";
-	mes "知道~ 我知道~";
-	mes "確實很噁心...";
-	mes "不過那是";
-	mes "唯一的通路啊，.";
-	mes "想要利用的話，";
-	mes "就別抱怨囉";
-	next;
-	mes "[彼士本]";
-	mes "那麼祝你旅途愉快，";
-	mes "注意安全囉~";
-	close;
 }
 
 //--------------------------Box--------------------------
 
 lhz_cube,248,179,0	script	箱子#01	111,{
-	if (MISC_QUEST&512 || cubekey&64) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&64) {
+		mes "發現已獲得^FF0000斧頭^000000的箱子";
+		close;
+	}
 	mes "有放著斧頭的一個箱子";
 	next;
 	menu "拿走斧頭",L_1,"放著不理它",-;
@@ -642,109 +639,101 @@ L_1:
 	mes "已獲得了一把^FF0000斧頭^000000";
 	set cubekey,cubekey|64;
 	close;
-
-L_DONE:
-	mes "發現已獲得^FF0000斧頭^000000的箱子";
-	close;
 }
 
 //--------------------------Barrel--------------------------
 
 lhz_cube,237,183,0	script	桶	111,{
-	if (MISC_QUEST&512 || cubekey&1) goto L_DONE;
-	if (cubekey&128) goto L_2;
+	if (MISC_QUEST&512 || cubekey&1) {
+		mes "已獲得一把'^FF0000黃色鑰匙^000000'的箱子，";
+		mes "箱子裡面是空的";
+		close;
+	}
+	if (cubekey&128) {
+		mes "有發現數字板子的箱子";
+		next;
+		set @agree,0;
+		input @number;
+		if (num6 == @number) set @agree,@agree+1;
+		input @number;
+		if (num8 == @number) set @agree,@agree+1;
+		input @number;
+		if (num1 == @number) set @agree,@agree+1;
+		input @number;
+		if (num4 == @number) set @agree,@agree+1;
+		input @number;
+		if (num9 == @number) set @agree,@agree+1;
+		input @number;
+		if (num2 == @number) set @agree,@agree+1;
+		input @number;
+		if (num7 == @number) set @agree,@agree+1;
+		input @number;
+		if (num5 == @number) set @agree,@agree+1;
+		input @number;
+		if (num3 == @number) set @agree,@agree+1;
+		if (@agree == 9 && num1) {
+			mes "和機械噪音一起箱子被打開了，";
+			mes "箱子裡面有一把'黃色鑰匙'";
+			next;
+			mes "已獲得一把'^FF0000黃色鑰匙^000000";
+			set cubekey,cubekey|1;
+			close;
+		}
+		mes "箱子沒有任何反應";
+		close;
+	}
 	mes "發現看起來很弱的桶";
 	if ((cubekey&64) == 0) close;
 	next;
 	input @axe$;
-
-	if (@axe$ == "斧頭") goto L_1;
+	if (@axe$ == "斧頭") {
+		mes "用斧頭把桶砸掉，";
+		mes "桶裡面有一個放著，";
+		mes "適當的箱子";
+		next;
+		mes "箱子上面寫著，";
+		mes "1~9數字的板子";
+		set cubekey,cubekey|128;
+		close;
+	}
 	mes "桶沒有任何反應";
-	close;
-
-L_1:
-	mes "用斧頭把桶砸掉，";
-	mes "桶裡面有一個放著，";
-	mes "適當的箱子";
-	next;
-	mes "箱子上面寫著，";
-	mes "1~9數字的板子";
-	set cubekey,cubekey|128;
-	close;
-
-L_2:
-	mes "有發現數字板子的箱子";
-	next;
-	set @agree,0;
-	input @number;
-	if (num6 == @number) set @agree,@agree+1;
-	input @number;
-	if (num8 == @number) set @agree,@agree+1;
-	input @number;
-	if (num1 == @number) set @agree,@agree+1;
-	input @number;
-	if (num4 == @number) set @agree,@agree+1;
-	input @number;
-	if (num9 == @number) set @agree,@agree+1;
-	input @number;
-	if (num2 == @number) set @agree,@agree+1;
-	input @number;
-	if (num7 == @number) set @agree,@agree+1;
-	input @number;
-	if (num5 == @number) set @agree,@agree+1;
-	input @number;
-	if (num3 == @number) set @agree,@agree+1;
-	if (@agree == 9 && num1) goto L_3; //you can't enter correct numbers, till read them under that picture [Lupus]
-	mes "箱子沒有任何反應";
-	close;
-
-L_3:
-	mes "和機械噪音一起箱子被打開了，";
-	mes "箱子裡面有一把'黃色鑰匙'";
-	next;
-	mes "已獲得一把'^FF0000黃色鑰匙^000000";
-	set cubekey,cubekey|1;
-	close;
-
-L_DONE:
-	mes "已獲得一把'^FF0000黃色鑰匙^000000'的箱子，";
-	mes "箱子裡面是空的";
 	close;
 }
 
 //--------------------------Drawer--------------------------
 
 lhz_cube,242,201,0	script	抽屜	111,{
-	if (MISC_QUEST&512 || cubekey&32) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&32) {
+		mes "這裡是獲得^FF0000小手刀^000000的抽屜";
+		mes "抽屜裡面沒有任何東西";
+		close;
+	}
 	mes "被鎖住了打不開";
-	if (cubekey&2) goto L_1;
-	close;
-
-L_1:
-	next;
-	input @key$;
-	if (@key$ == "紅色鑰匙") goto L_2;
-	close;
-
-L_2:
-	mes "使用紅色鑰匙看看，";
-	mes "抽屜打開了，";
-	mes "打開的抽屜裡發現了'小手刀'";
-	next;
-	mes "已獲得了一把^FF0000小手刀^000000.";
-	set cubekey,cubekey|32;
-	close;
-
-L_DONE:
-	mes "這裡是獲得^FF0000小手刀^000000的抽屜";
-	mes "抽屜裡面沒有任何東西";
+	if (cubekey&2) {
+		next;
+		input @key$;
+		if (@key$ == "紅色鑰匙") {
+			mes "使用紅色鑰匙看看，";
+			mes "抽屜打開了，";
+			mes "打開的抽屜裡發現了'小手刀'";
+			next;
+			mes "已獲得了一把^FF0000小手刀^000000.";
+			set cubekey,cubekey|32;
+			close;
+		}
+		close;
+	}
 	close;
 }
 
 //--------------------------Documents--------------------------
 
 lhz_cube,237,198,0	script	一堆文件#lhz	111,{
-	if (MISC_QUEST&512 || cubekey&2) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&2) {
+		mes "這裡是獲得一把^FF0000紅色鑰匙^000000的地方，";
+		mes "有文件散落著滿地";
+		close;
+	}
 	mes "有很多文件混雜著散落一地";
 	next;
 	menu "翻一翻文件",L_1,"不理它",-;
@@ -756,11 +745,6 @@ L_1:
 	next;
 	mes "獲得了一把^FF0000紅色鑰匙^000000";
 	set cubekey,cubekey|2;
-	close;
-
-L_DONE:
-	mes "這裡是獲得一把^FF0000紅色鑰匙^000000的地方，";
-	mes "有文件散落著滿地";
 	close;
 }
 
@@ -1053,39 +1037,38 @@ L_DONE:
 	close;
 }
 
-//--------------------------Lamp--------------------------
-
 lhz_cube,244,203,0	script	電燈	111,{
-	if (MISC_QUEST&512 || cubekey&16) goto L_DONE;
-	if (cubekey&256) goto L_1;
+	if (MISC_QUEST&512 || cubekey&16) {
+		mes "發現一個砸碎的電燈";
+		close;
+	}
+	if (cubekey&256) {
+		mes "熄滅的電燈裡，裡面好像有什麼似的";
+		next;
+		if (select("放著不理它:把電燈砸碎後取出")==2) {
+			mes "把電燈砸碎後取出來一看，有一把'黑色鑰";
+			mes "匙'，";
+			next;
+			mes "已獲得一把'^FF0000黑色鑰匙^000000'";
+			set cubekey,cubekey|16;
+			close;
+		}
+		close;
+	}
 	mes "有一展閃亮的燈泡，";
 	mes "好像裡面有什麼似的，";
 	mes "太燙了沒有辦法用手去觸摸";
-	close;
-
-L_1:
-	mes "熄滅的電燈裡，裡面好像有什麼似的";
-	next;
-	menu "放著不理它",-,"把電燈砸碎後取出",L_2;
-	close;
-
-L_2:
-	mes "把電燈砸碎後取出來一看，有一把'黑色鑰";
-	mes "匙'，";
-	next;
-	mes "已獲得一把'^FF0000黑色鑰匙^000000'";
-	set cubekey,cubekey|16;
-	close;
-
-L_DONE:
-	mes "發現一個砸碎的電燈";
 	close;
 }
 
 //--------------------------Box--------------------------
 
 lhz_cube,248,193,0	script	箱子#02	111,{
-	if (MISC_QUEST&512 || countitem(2657) || @gotLPkey) goto L_DONE;
+	if (MISC_QUEST&512 || countitem(2657) || @gotLPkey) {
+		mes "打開的箱子在那邊，";
+		mes "箱子裡面什麼東西都沒有";
+		close;
+	}
 	mes "有3個特殊模樣洞的";
 	mes "箱子";
 	next;
@@ -1165,19 +1148,43 @@ L4_1:
 	set @gotLPkey,1;
 	getitem 2657,1;
 	close;
-
-L_DONE:
-	mes "打開的箱子在那邊，";
-	mes "箱子裡面什麼東西都沒有";
-	close;
 }
 
 //--------------------------Test tube--------------------------
 
 lhz_cube,224,197,0	script	實驗管	111,{
-	if (MISC_QUEST&512) goto L_DONE;
-	if (countitem(2657) > 0) goto L_3;
-	if (cubekey&32768) goto L_2;
+	if (MISC_QUEST&512) {
+		warp "lhz_cube",177,13;
+		end;
+	}
+	if (countitem(2657) > 0) {
+		mes "機械的前面有一個，薄的十字架型的洞";
+		next;
+		input @answer$;
+		if (@answer$ == "研究所進出卡片") {
+			mes "把'研究所進出卡片'插入到洞裡面，";
+			mes "在機械的內部形成了一個通往下面的樓梯";
+			next;
+			if (select("我要下去:我不要下去")==1) {
+				mes "連續著長長的樓梯";
+				set cubekey,0;	
+				set num1,0;	set num2,0;	set num3,0;	set num4,0;	set num5,0;
+				set num6,0;	set num7,0;	set num8,0;	set num9,0;
+				set piciburn,0;
+				set MISC_QUEST,MISC_QUEST|512;
+				close2;
+			}
+			close;
+		}
+		mes "沒有任何反應";
+		close;
+	}
+	if (cubekey&32768) {
+		mes "這裡是獲得'^FF0000橢圓形 模型^000000'的地方，";
+		mes "有如機械般的地板上有特殊的花紋，";
+		mes "感覺上地板會打開似的";
+		close;
+	}
 	mes "放著一個奇怪的棺木，";
 	mes "內部好像放著什麼東西似的，";
 	mes "下面板子上有可以插入，";
@@ -1185,54 +1192,18 @@ lhz_cube,224,197,0	script	實驗管	111,{
 	mes "可以進入薄板子的洞";
 	next;
 	input @key$;
-
-	if (cubekey&16 && (@key$ == "黑色鑰匙")) goto L_1;
+	if (cubekey&16 && (@key$ == "黑色鑰匙")) {
+		mes "放入黑色鑰匙扭轉後，";
+		mes "有奇怪的機械噪音和，";
+		mes "在機械前面的玻璃被開啟了，";
+		mes "裡面有一個橢圓形模樣的模型";
+		next;
+		mes "已獲得了一個'^FF0000橢圓形 模型^000000'";
+		set cubekey,cubekey|32768;
+		close;
+	}
 	mes "沒有任何反應";
 	close;
-
-L_1:
-	mes "放入黑色鑰匙扭轉後，";
-	mes "有奇怪的機械噪音和，";
-	mes "在機械前面的玻璃被開啟了，";
-	mes "裡面有一個橢圓形模樣的模型";
-	next;
-	mes "已獲得了一個'^FF0000橢圓形 模型^000000'";
-	set cubekey,cubekey|32768;
-	close;
-
-L_2:
-	mes "這裡是獲得'^FF0000橢圓形 模型^000000'的地方，";
-	mes "有如機械般的地板上有特殊的花紋，";
-	mes "感覺上地板會打開似的";
-	close;
-
-L_3:
-	mes "機械的前面有一個，薄的十字架型的洞";
-	next;
-	input @answer$;
-
-	if (@answer$ == "研究所進出卡片") goto L_4;
-	mes "沒有任何反應";
-	close;
-
-L_4:
-	mes "把'研究所進出卡片'插入到洞裡面，";
-	mes "在機械的內部形成了一個通往下面的樓梯";
-	next;
-	menu "我要下去",L4_1,"我不要下去",-;
-	close;
-
-L4_1:
-	mes "連續著長長的樓梯";
-	set cubekey,0;	
-	set num1,0;	set num2,0;	set num3,0;	set num4,0;	set num5,0;
-	set num6,0;	set num7,0;	set num8,0;	set num9,0;
-	set piciburn,0;
-	set MISC_QUEST,MISC_QUEST|512;
-	close2;
-L_DONE:
-	warp "lhz_cube",177,13;
-	end;
 }
 
 //============================================================
