@@ -3,14 +3,18 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.0-c
+//= 1.2-c
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 秀發茲發德 教國 Castle 1 (喜民)
 //===== Additional Comments: =================================
 //= 1.0 First Version [L0ne_W0lf]
-//= 1.0-c 照目前已知官方內容中文化 [笨冰]
+//= 1.1 Swaped an end for a close in eco investing. [L0ne_W0lf]
+//= 1.2 Fixed take-over lowering schg_cas04's eco. [L0ne_W0lf]
+//= 1.3 Fixed double message in defense investing. [L0ne_W0lf]
+//=     Corrected a minor typo in the guild steward.
+//= 1.3-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 schg_cas01,1,1,0	script	Manager#sch01_02	111,{
@@ -2192,7 +2196,7 @@ schg_cas01,247,305,3	script	管理人#sch01	55,{
 			if (Zeny < .@eco_invest) {
 				mes "[ 管理人 ]";
 				mes "主人,你沒有足夠的資金可以投資商業發展度";
-				close;
+				end;
 			}
 			set zeny,zeny-.@eco_invest;
 			SetCastleData "schg_cas01",4,GetCastleData("schg_cas01",4)+1;
@@ -2369,7 +2373,7 @@ OnStartArena:
 	// Lower castle Economy
 	set .@Economy,GetCastleData("schg_cas01",2) - 5;
 	if (.@Economy < 0) set .@Economy, 0;
-	SetCastleData "schg_cas04", 2, .@Economy;
+	SetCastleData "schg_cas01", 2, .@Economy;
 	// Lower Castle Defence
 	set .@Defence,GetCastleData("schg_cas01",3) - 5;
 	if (.@Defence < 0) set .@Defence, 0;

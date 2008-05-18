@@ -3,14 +3,20 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.0-c
+//= 1.5-c
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 秀發茲發德 教國 Castle 2 (安得郎克)
 //===== Additional Comments: =================================
 //= 1.0 First Version [L0ne_W0lf]
-//= 1.0-c 照目前已知官方內容中文化 [笨冰]
+//= 1.1 Fixed setcell range of first barricade. [L0ne_W0lf]
+//= 1.2 Fixed first Barricade being desotryable. [L0ne_W0lf]
+//= 1.3 Swaped an end for a close in eco investing. [L0ne_W0lf]
+//= 1.4 Fixed 3rd Control Device wasting supplies. [L0ne_W0lf]
+//= 1.5 Fixed double message in defense investing. [L0ne_W0lf]
+//=     Corrected a minor typo in the guild steward.
+//= 1.5-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 schg_cas02,1,1,0	script	Manager#sch02_02	111,{
@@ -1055,8 +1061,8 @@ OnDisable:
 
 schg_cas02,2,1,0	script	#sch02_RL00	-1,{
 OnEnable:
-	setcell "schg_cas02",290,98,209,105,cell_walkable,0;
-	setcell "schg_cas02",290,98,209,105,cell_shootable,0;
+	setcell "schg_cas02",290,98,290,105,cell_walkable,0;
+	setcell "schg_cas02",290,98,290,105,cell_shootable,0;
 	guardian "schg_cas02",290,98," ",1905,"#sch02_RL00::OnBarrierDestroyed"; //24;
 	guardian "schg_cas02",290,100," ",1905,"#sch02_RL00::OnBarrierDestroyed"; //25;
 	guardian "schg_cas02",290,102," ",1905,"#sch02_RL00::OnBarrierDestroyed"; //26;
@@ -1064,8 +1070,8 @@ OnEnable:
 	end;
 
 OnDisable:
-	setcell "schg_cas02",290,98,209,105,cell_walkable,1;
-	setcell "schg_cas02",290,98,209,105,cell_shootable,1;
+	setcell "schg_cas02",290,98,290,105,cell_walkable,1;
+	setcell "schg_cas02",290,98,290,105,cell_shootable,1;
 	killmonster "schg_cas02","#sch02_RL00::OnBarrierDestroyed";
 	end;
 
@@ -2131,7 +2137,7 @@ schg_cas02,105,378,3	script	管理人#sch02	55,{
 			if (Zeny < .@eco_invest) {
 				mes "[ 管理人 ]";
 				mes "主人,你沒有足夠的資金可以投資商業發展度";
-				close;
+				end;
 			}
 			set zeny,zeny-.@eco_invest;
 			SetCastleData "schg_cas02",4,GetCastleData("schg_cas02",4)+1;
