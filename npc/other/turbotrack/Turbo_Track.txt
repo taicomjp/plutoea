@@ -795,36 +795,40 @@ turbo_room,93,117,5	script	點數商品 介紹	125,{
 	}
 }
 
-turbo_room,106,117,3	script	Point Manager#tt	833,{
-	mes "[Turbo Track Point Manager]";
-	mes "Good day.";
-	mes "Did you enjoy your";
-	mes "time in Turbo Track?";
-	mes "How may I be of";
-	mes "assistance?";
+turbo_room,106,117,3	script	競速場地 點數管理#tt	833,{
+	mes "[競速場地 點數 服務人員]";
+	mes "您好，";
+	mes "今天的競賽還愉快嗎?";
+	mes "來，有什麼我可以幫你的嘛?";
 	next;
-	switch(select("Check Points:Convert Points:^660000Conversion Info^000000")) {
+	switch(select("確認 點數:轉換 點數")) {
 	case 1:
-		mes "[Turbo Track Point Manager]";
-		mes "" + strcharinfo(0) + ",";
-		mes "you currently have";
-		mes "" + tt_point + " Turbo Track Points";
-		mes "and " + arena_point + " Arena Points.";
+		mes "[競速場地 點數 服務人員]";
+		mes strcharinfo(0) +"的點數如下，";
+		mes "競速場地點數："+ tt_point +"點，";
+		mes "競技場點數："+ arena_point +"點";
+		next;
+		mes "[競速場地 點數 服務人員]";
+		mes "如果您願意的話，可將競技場點數轉換成";
+		mes "競速場地點數，";
+		mes "希望您在使用上做參考";
 		close;
 	case 2:
-		mes "[Turbo Track Point Manager]";
-		mes "" + strcharinfo(0) + ",";
-		mes "you currently have";
-		mes "" + tt_point + " Turbo Track Points";
-		mes "and " + arena_point + " Arena Points.";
+		mes "[競速場地 點數 服務人員]";
+		mes strcharinfo(0) +"的點數如下，";
+		mes "競速場地點數："+ tt_point +"點，";
+		mes "競技場點數："+ arena_point +"點";
 		next;
-		mes "[Turbo Track Point Manager]";
-		mes "Please choose from among the following Arena Point conversions. When converting more than";
-		mes "10 Arena Points at once, you";
-		mes "can only convert Arena Points";
-		mes "in ^4D4DFFmultiples of 10^000000.";
+		mes "[競速場地 點數 服務人員]";
+		mes "競技場地點數可換成競速場地點數，";
+		mes "比率是2：1，給我10點競技場點數，可獲得5點競速場地點數";
 		next;
-		switch(select("2 AP -> 1 TTP:4 AP -> 2 TTP:6 AP -> 3 TTP:8 AP -> 4 TTP:10 AP or more:Cancel")) {
+		mes "[競速場地 點數 服務人員]";
+		mes "請選擇８點以下，";
+		mes "假如你想要換算10點以上的點數時，請你";
+		mes "直接輸入要^4A4AFF換算成10單位幾倍^000000即可";
+		next;
+		switch(select("競技場2點 -> 競速場地1點:競技場4點 -> 競速場地2點:競技場6點 -> 競速場地3點:競技場8點 -> 競速場地4點:競技場點數10點單位:取消")) {
 		case 1:
 			callsub S_ExchangePoints,28999,2,1;
 		case 2:
@@ -834,20 +838,24 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 		case 4:
 			callsub S_ExchangePoints,28996,8,4;
 		case 5:
-			mes "[Turbo Track Point Manager]";
-			mes "Please enter the number of times you wish to convert 10 Arena Points into Turbo Track Points. The largest value you may enter";
-			mes "is 20. To cancel, enter '^3355FF0^000000.'";
+			mes "[競速場地 點數 服務人員]";
+			mes "競技場點數跟競速場地點數交換，^4A4AFF必須以10點為單位^000000";
+			mes "^4A4AFF能同時交換的競技場點數是，10點的20倍，也就是200點^000000";
+			next;
+			mes "[競速場地地 點數 服務人員]";
+			mes "那麼，請輸入要交換的倍數吧";
+			mes "要取消的話請輸入'0'";
 			next;
 			input .@input;
 			if (.@input == 0) {
-				mes "[Turbo Track Point Manager]";
+				mes "[競速場地 點數 服務人員]";
 				mes "You have";
 				mes "canceled";
 				mes "your request.";
 				close;
 			}
 			else if (.@input > 20) {
-				mes "[Turbo Track Point Manager]";
+				mes "[競速場地 點數 服務人員]";
 				mes "Your request exceeds";
 				mes "the maximum limit. Please";
 				mes "enter a value no greater than 20.";
@@ -859,13 +867,13 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 				set .@my_turbo_all,tt_point+.@want_point;
 				set .@my_arena_all,arena_point-.@want_point1;
 				if (.@my_turbo_all > 28999) {
-					mes "[Turbo Track Point Manager]";
+					mes "[競速場地 點數 服務人員]";
 					mes "Unfortunately, your Turbo Track Points will exceed the maximum limit if we proceed with point conversion. Please spend more";
 					mes "of your Turbo Track Points before using this service. Thank you.";
 					close;
 				}
 				if (.@my_arena_all < 0) {
-					mes "[Turbo Track Point Manager]";
+					mes "[競速場地 點數 服務人員]";
 					mes "I am sorry, but you do";
 					mes "not have enough Arena Points";
 					mes "to perform this Turbo Track";
@@ -873,7 +881,7 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 					close;
 				}
 				else {
-					mes "[Turbo Track Point Manager]";
+					mes "[競速場地 點數 服務人員]";
 					mes "You have converted";
 					mes "10 Arena Points into";
 					mes "Turbo Track Points " + .@input + " times.";
@@ -883,7 +891,7 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 					set arena_point,.@my_arena_all; //arena_point
 					set tt_point,.@my_turbo_all;
 					next;
-					mes "[Turbo Track Point Manager]";
+					mes "[競速場地 點數 服務人員]";
 					mes "" + strcharinfo(0) + ",";
 					mes "you now have";
 					mes "^00688B" + tt_point + "^000000 Turbo Track Points";
@@ -893,7 +901,7 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 				}
 			}
 		case 6:
-			mes "[Turbo Track Point Manager]";
+			mes "[競速場地 點數 服務人員]";
 			mes "You have";
 			mes "canceled";
 			mes "your request.";
@@ -908,13 +916,13 @@ turbo_room,106,117,3	script	Point Manager#tt	833,{
 
 S_ExchangePoints:
 	if (tt_point > getarg(0)) {
-		mes "[Turbo Track Point Manager]";
+		mes "[競速場地 點數 服務人員]";
 		mes "Unfortunately, your Turbo Track Points will exceed the maximum limit if we proceed with point conversion. Please spend more";
 		mes "of your Turbo Track Points before using this service. Thank you.";
 		close;
 	}
 	if (arena_point >= getarg(1)) {
-		mes "[Turbo Track Point Manager]";
+		mes "[競速場地 點數 服務人員]";
 		mes "As requested,";
 		mes "2 Arena Points";
 		mes "have been converted";
@@ -922,7 +930,7 @@ S_ExchangePoints:
 		set arena_point,arena_point-getarg(1);
 		set tt_point,tt_point+getarg(2);
 		next;
-		mes "[Turbo Track Point Manager]";
+		mes "[競速場地 點數 服務人員]";
 		mes "" + strcharinfo(0) + ",";
 		mes "you now have";
 		mes "^00688B" + tt_point + "^000000 Turbo Track Points";
@@ -931,7 +939,7 @@ S_ExchangePoints:
 		close;
 	}
 	else {
-		mes "[Turbo Track Point Manager]";
+		mes "[競速場地 點數 服務人員]";
 		mes "I'm sorry, but you do not have enough Arena Points. You need";
 		mes "at least 2 Arena Points in order";
 		mes "to use this service.";
@@ -940,135 +948,84 @@ S_ExchangePoints:
 }
 
 alde_gld,183,204,0	script	en_turbo	45,1,1,{
-OnTouch:
-	//set max_max_c,1201;
-	//if (max_max_c == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many items with you.";
-	//	mes "Please come back after";
-	//	mes "putting storing some of your";
-	//	mes "things using the Kafra Service.^000000";
-	//	close;
-	//}
-	set .@now_weight,MaxWeight-Weight;
-	if ((BaseJob == Job_Knight || BaseJob == Job_Crusader) && checkriding()) {
-		if (.@now_weight < 20000) {
-			mes "[Helper]";
-			mes "Peco Pecos are prohibited";
-			mes "in the Turbo Track Arena.";
-			mes "Please dismount from your";
-			mes "Peco Peco and you will receive";
-			mes "a Free Ticket for Peco Ride";
-			mes "for retrieving your Peco Peco.";
-			close2;
-			warp "alde_gld",183,199;
-			end;
-		}
-		else {
-			setriding 0;
-			getitem 7310,1; //Free_Peco_Ticket
-			warp "turbo_room",100,65;
-		}
+	if(checkriding()) {
+		mes "[競速場地 入場人員]";
+		mes "對不起，你的大嘴鳥請讓我們先領走";
+		mes "我們會給你'大嘴鳥免費使用券'，請稍候再使用";
+		close2;
+		setoption 0x0000;
+		getitem 7310,1;
 	}
-	else
-		warp "turbo_room",100,65;
+	warp "turbo_room",100,65;
 	end;
 }
 
-alde_gld,186,199,3	script	競速場地 指導員#Entran	845,{
-	mes "[Guide]";
-	mes "Welcome to";
-	mes "the Al De Baran";
-	mes "Turbo Track~";
+alde_gld,186,199,3	script	競速場地 入場人員#Entran	845,{
+	mes "[入場人員]";
+	mes "您好~ 歡迎您來到艾爾帕蘭競速場地競賽場";
 	next;
-	mes "[Guide]";
-	mes "Peco Pecos are prohibited inside the Turbo Track Arena. But anyone riding on a Peco Peco will receive a Free Peco Peco Mount Ticket at the Turbo Track Entrance and automatically dismount.";
+	mes "[入場人員]";
+	mes "艾爾帕蘭";
+	mes "競速場地競賽場，是禁止騎乘大嘴鳥入場的，";
+	mes "如果你在入口騎乘大嘴鳥時，會自動解除";
+	mes "另外我們會給你'大嘴鳥免費使用券'請你不要擔心";
 	next;
-	mes "[Guide]";
-	mes "Well then,";
-	mes "enjoy your time";
-	mes "in Turbo Track~!";
+	mes "[入場人員]";
+	mes "那麼請盡情享受競速場地的競賽吧~";
 	close;
 }
 
-alde_gld,181,199,5	script	Peco Peco Manager	845,{
-	mes "[Peco Peco Manager]";
-	if (BaseJob == Job_Knight || BaseJob == Job_Crusader) {
-		mes "Welcome, would you like";
-		mes "to retrieve your Peco Peco?";
-		mes "Please show me your Free";
-		mes "Ticket for Peco Ride. You";
-		mes "may also pay a rental fee";
-		mes "of 2,500 zeny.";
-		next;
-		switch(select("Use:Cancel")) {
-		case 1:
-			if (getskilllv(63) == 0) {
-				mes "[Peco Peco Manager]";
-				mes "I'm sorry, but you're";
-				mes "not eligible for this";
-				mes "service. Please go learn";
-				mes "the Peco Peco Ride skill first.";
+alde_gld,181,199,5	script	大嘴鳥 管理人員	845,{
+	mes "[大嘴鳥 管理人員]";
+	if (getskilllv(63) == 0) {
+		mes "感謝您來到艾爾帕蘭 競速場地競賽場~";
+		close;
+	}
+	mes "歡迎光臨~";
+	mes "在這裡可以領取大嘴鳥~";
+	mes "只要2,500Zeny或者持有'大嘴鳥免費使用券'就可以了";
+	mes "怎麼樣~?";
+	next;
+	switch(select("好的，我要乘坐大嘴鳥:還是不要了")) {
+	case 1:
+		if (checkriding()) {
+			mes "[大嘴鳥 管理人員]";
+			mes "你已經在乘坐大嘴鳥了~";
+			mes "請你再看看自己現在的樣子~";
+			close;
+		}
+		else {
+			if (countitem(7310) < 1 && Zeny < 2500) {
+				mes "[大嘴鳥 管理人員]";
+				mes "喔~你好像沒有使用券或足夠的金錢~";
+				mes "要使用服務的話，請按照標準價格哦~";
 				close;
 			}
 			else {
-				if (checkriding()) {
-					mes "[Peco Peco Manager]";
-					mes "You're already";
-					mes "mounted on a";
-					mes "Peco Peco.";
-					mes "Thank you~";
-					close;
-				}
-				else {
-					if (countitem(7310) < 1 && Zeny < 2500) {
-						mes "[Peco Peco Manager]";
-						mes "I'm sorry, but you";
-						mes "don't have a Free Ticket";
-						mes "for Peco Ride or 2,500 zeny.";
-						mes "to use the Peco rental service.";
-						close;
-					}
-					else {
-						if (countitem(7310) > 0)
-							delitem 7310,1; //Free_Peco_Ticket
-						else
-							set zeny,zeny-2500;
-						setriding;
-						mes "[Peco Peco Manager]";
-						mes "Thank you for";
-						mes "your patronage~";
-						close;
-					}
-				}
+				if (countitem(7310) > 0)
+					delitem 7310,1;
+				else
+					set zeny,zeny-2500;
+				setriding;
+				mes "[大嘴鳥 管理人員]";
+				mes "謝謝使用~";
+				close;
 			}
-		case 2:
-			mes "[Peco Peco Manager]";
-			mes "Are you going";
-			mes "back to race in";
-			mes "the Turbo Track?";
-			mes "Good luck!";
-			close;
 		}
-	}
-	else {
-		mes "Thank you for";
-		mes "visiting Al De Baran's";
-		mes "Turbo Track~";
+	case 2:
+		mes "[大嘴鳥 管理人員]";
+		mes "如果有空的話也請參加比賽吧~";
+		mes "希望你能獲勝~";
 		close;
 	}
 }
 
-alde_gld,178,180,0	script	Sign#TBT	837,{
-	mes "[Al De Baran Turbo Track]";
-	mes "This way...";
-	mes "to the Al De Baran";
-	mes "Turbo Track Arena!";
+alde_gld,178,180,0	script	標示牌#TBT	837,{
+	mes "[艾爾帕蘭 競速場地]";
+	mes "從這條路進去的話，就可以進入到艾爾帕蘭 競速場地";
 	next;
-	mes "[Al De Baran Turbo Track]";
-	mes "Turbo Track is";
-	mes "an arena where";
-	mes "participants compete to be the first to reach the Finish Line! Don't miss the chance to race against your friends!";
+	mes "[艾爾帕蘭 競速場地]";
+	mes "競速場地是要競爭到目的地為止，並通過各種路線的競賽場，";
+	mes "各種設備正在等著各位，請每樣都去試試看吧";
 	close;
 }
