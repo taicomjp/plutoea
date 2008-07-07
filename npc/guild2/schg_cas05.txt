@@ -49,6 +49,7 @@ OnAgitEnd:
 	if (GetCastleData("schg_cas05",1)) {
 		KillMonster "schg_cas05","管理人#sch05::OnStartArena";
 		donpcevent "Manager#sch05_02::Onreset";
+		donpcevent "管理人#sch05::Onstop";
 	}
 	end;
 
@@ -98,14 +99,17 @@ Onchange:
 	end;
 
 OnClock0001:
+	if (!GetCastleData("schg_cas05",1)) end;
+	killmonster "schg_cas05","Manager#sch05_02::OnTreasureDied";
+
+	setcastledata "schg_cas05",4,0;
+	setcastledata "schg_cas05",5,0;
+
 	set .@Treasure,GetCastleData("schg_cas05",2)/5+4;
 	if (.@Treasure) {
 		monster "schg_cas05",388,388,"寶物箱子",1942,1,"Manager#sch05_02::OnTreasureDied";
-		if (.@Treasure < 2) end;
 		monster "schg_cas05",388,389,"寶物箱子",1324,1,"Manager#sch05_02::OnTreasureDied";
-		if (.@Treasure < 3) end;
 		monster "schg_cas05",388,390,"寶物箱子",1942,1,"Manager#sch05_02::OnTreasureDied";
-		if (.@Treasure < 4) end;
 		monster "schg_cas05",387,390,"寶物箱子",1324,1,"Manager#sch05_02::OnTreasureDied";
 		if (.@Treasure < 5) end;
 		monster "schg_cas05",386,390,"寶物箱子",1942,1,"Manager#sch05_02::OnTreasureDied";

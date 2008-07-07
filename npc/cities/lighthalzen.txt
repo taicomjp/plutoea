@@ -593,80 +593,102 @@ lhz_in02,34,213,4	script	﹋#lhz	91,{
 }
 //Lucius
 lighthalzen,182,102,3	script	份份	866,{
-
-	mes "[份份]";
-	mes "Hello youngster~";
-	mes "Would you like to";
-	mes "make a donation";
-	mes "to help the hungry?";
-	next;
-	menu "Sure.",s_Sure,"No, thanks.",-;
-
-s_Cancel:
-	mes "[Lucius]";
-	mes "I understand. Still,";
-	mes "keep in mind that when";
-	mes "you give from your heart,";
-	mes "you will be rewarded tenfold.";
-	mes "Though I admit, the benefits";
-	mes "aren't always readily apparent.";
-	close;
-
-s_Sure:
-	mes "[Lucius]";
-	mes "Now, you can donate 1 to";
-	mes "30,000 zeny that will be used";
-	mes "to support the poor and feed";
-	mes "starving children. If you wish";
-	mes "to cancel, please enter '0'.";
-	next;
-	input @zenydonate;
-	mes "[Lucius]";
-	if(!@zenydonate)goto s_Cancel;
-	if(@zenydonate > 30000){
-		mes "I'm sorry but you can't";
-		mes "donate more than 30,000";
-		mes "zeny. Please choose another";
-		mes "number.";
-		close;
-	}
-	if(Zeny < @zenydonate){
-		mes "I'm sorry but you do";
-		mes "not have as much zeny";
-		mes "as you wish to donate.";
-		mes "Please come back when you";
-		mes "do!";
-		close;
-	}
-	set Zeny,Zeny - @zenydonate;
-	set $donatedzeny,$donatedzeny + @zenydonate;
-	mes "Thank you so much";
-	mes "for your " + @zenydonate + " zeny donation.";
-	mes "I promise that your money";
-	mes "will be put to good use in";
-	mes "benefiting the poor and needy.";
-	next;
-	mes "[Lucius]";
-	mes "So far, I've received";
-	mes "a total of " + $donatedzeny + " zeny in";
-	mes "donations. I'm glad to see";
-	mes "that there are still kinda and";
-	mes "generous people in the world.";
-	if($donatedzeny > 259999){
-		next;
+	if (Zeny < 90000) {
 		mes "[Lucius]";
-		mes "This should be enough";
-		mes "to send to the Poor Relief";
-		mes "Organization. Please accpet";
-		mes "this small gift as a token of";
-		mes "my gratitude, adventurer. Bless";
-		mes "you, youngster and take care.";
-		getitem 603,1;
-		getitem 12016,1;
-		set $donatedzeny,0;
+		mes "Hello youngster~";
+		mes "Would you like to";
+		mes "make a donation";
+		mes "to help the hungry?";
+		next;
+		if (select("Sure.:No, thanks.") == 1) {
+			mes "[Lucius]";
+			mes "Now, you can donate 1 to";
+			mes "30,000 zeny that will be used";
+			mes "to support the poor and feed";
+			mes "starving children. If you wish";
+			mes "to cancel, please enter ''0.''";
+			next;
+			input .@input;
+			if (.@input > 30000 || .@input < 0) {
+				mes "[Lucius]";
+				mes "Please enter a value";
+				mes "from 1 to 30,000 in";
+				mes "order to make a donation";
+				mes "to the needy, youngster.";
+				close;
+			}
+			else if (.@input == 0) {
+				mes "[Lucius]";
+				mes "How disappointing,";
+				mes "but I'm sure you have";
+				mes "your reasons. Well, when";
+				mes "you can afford to give to";
+				mes "the needy, you're welcome";
+				mes "to come back at any time.";
+				close;
+			}
+			mes "[Lucius]";
+			mes "Thank you so much";
+			mes "for your " + .@input + " zeny donation.";
+			mes "I promise that your money";
+			mes "will be put to good use in";
+			mes "benefiting the poor and needy.";
+			next;
+			if (Zeny < .@input) {
+				mes "[Lucius]";
+				mes "Still, I'm just a little";
+				mes "disappointed. An adventurer";
+				mes "like you should be donating";
+				mes "as much as you possibly can...";
+				close;
+			}
+			set zeny,zeny-.@input;
+			set $donatedzeny,$donatedzeny + .@input;
+			mes "[Lucius]";
+			mes "So far, I've received";
+			mes "a total of " + $donatedzeny + " zeny in";
+			mes "donations. I'm glad to see";
+			mes "that there are still kind and";
+			mes "generous people in the world.";
+			if ($donatedzeny > 260000) {
+				next;
+				mes "[Lucius]";
+				mes "This should be enough";
+				mes "to send to the Poor Relief";
+				mes "Organization. Please accept";
+				mes "this small gift as a token of";
+				mes "my gratitude, adventurer. Bless";
+				mes "you, youngster and take care.";
+				set $donatedzeny,0;
+				getitem 603,1; //Old_Blue_Box
+				getitem 12016,1; //Speed_Up_Potion
+			}
+			close;
+		}
+		mes "[Lucius]";
+		mes "I understand. Still,";
+		mes "keep in mind that when";
+		mes "you give from your heart,";
+		mes "you will be rewarded tenfold.";
+		mes "Though I admit, the benefits";
+		mes "aren't always readily apparent.";
+		close;
 	}
+	mes "[Lucius]";
+	mes "Hello youngster~";
+	mes "You seem to be fairly";
+	mes "well-off. Money is good";
+	mes "to have, but be careful not";
+	mes "to become obssessed with it.";
+	next;
+	mes "[Lucius]";
+	mes "When you have the chance,";
+	mes "please show your generosity";
+	mes "towards others who may be";
+	mes "much less fortunate than you.";
 	close;
 }
+
 //Merpi
 lighthalzen,123,212,4	script	チ	700,{
 

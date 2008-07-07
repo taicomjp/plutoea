@@ -49,6 +49,7 @@ OnAgitEnd:
 	if (GetCastleData("arug_cas04",1)) {
 		KillMonster "arug_cas04","管理人#aru04::OnStartArena";
 		donpcevent "Manager#aru04_02::Onreset";
+		donpcevent "管理人#aru04::Onstop";
 	}
 	end;
 
@@ -98,14 +99,17 @@ Onchange:
 	end;
 
 OnClock0001:
+	if (!GetCastleData("arug_cas04",1)) end;
+	killmonster "arug_cas04","Manager#aru04_02::OnTreasureDied";
+
+	setcastledata "arug_cas04",4,0;
+	setcastledata "arug_cas04",5,0;
+
 	set .@Treasure,GetCastleData("arug_cas04",2)/5+4;
 	if (.@Treasure) {
 		monster "arug_cas04",291,276,"寶物箱子",1946,1,"Manager#aru04_02::OnTreasureDied";
-		if (.@Treasure < 2) end;
 		monster "arug_cas04",292,276,"寶物箱子",1324,1,"Manager#aru04_02::OnTreasureDied";
-		if (.@Treasure < 3) end;
 		monster "arug_cas04",293,276,"寶物箱子",1946,1,"Manager#aru04_02::OnTreasureDied";
-		if (.@Treasure < 4) end;
 		monster "arug_cas04",294,276,"寶物箱子",1324,1,"Manager#aru04_02::OnTreasureDied";
 		if (.@Treasure < 5) end;
 		monster "arug_cas04",295,276,"寶物箱子",1946,1,"Manager#aru04_02::OnTreasureDied";

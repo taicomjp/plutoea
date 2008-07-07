@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.1
+//= 1.2
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: ========================================= 
@@ -12,6 +12,7 @@
 //===== Additional Comments: =================================
 //= 1.0 First version. [L0ne_W0lf]
 //= 1.1 Fixed small official bug. [L0ne_W0lf]
+//= 1.2 Fixed end timer not enabling warp. (bugreport:1682) [L0ne_W0lf]
 //============================================================
 
 turbo_room,72,132,3	script	Solo Mode#n1	124,{
@@ -855,7 +856,7 @@ OnTouch:
 
 turbo_n_1,232,14,0	script	cos_n_1_8	45,1,1,{
 OnTouch:
-	mapannounce "turbo_n_1","" + name +" has just passed the Invisible Maze! Speed up, you're getting closer to the finish!",bc_map,"0x70DBDB";
+	mapannounce "turbo_n_1","" + strcharinfo(0) +" has just passed the Invisible Maze! Speed up, you're getting closer to the finish!",bc_map,"0x70DBDB";
 	set .@move1,rand(1,3);
 	if (.@move1 == 1)
 		warp "turbo_n_1",307,52;
@@ -873,7 +874,7 @@ OnInit:
 OnTouch:
 	set $@end_time,gettimetick(0);
 	mapannounce "turbo_n_1","" + strcharinfo(0) +" has just arrived at the Finish Line! Congratulations!",bc_map,"0xFFFF00";
-	donpcevent "競速場地 指導員#Bro::Onwin_n1";
+	donpcevent "競速場地 指導員#Broadcast::Onwin_n1";
 	warp "turbo_n_1",384,161;
 	donpcevent "Guide#TBT_n_1::OnEnable";
 	donpcevent "Master#n1::OnDisable";
@@ -1088,7 +1089,7 @@ OnTimer56000:
 
 OnTimer60000:
 	disablenpc "Guide#TBT_n_1";
-	donpcevent "cos_n_1_end::Onreset";
+	enablenpc "cos_n_1_end";
 	enablenpc "Notice_Maker1#TBT_n_1";
 	enablenpc "Notice_Maker3#TBT_n_1";
 	enablenpc "Notice_Maker4#TBT_n_1";
@@ -1111,7 +1112,7 @@ OnInit:
 
 OnTouch:
 	mapannounce "turbo_n_1","" + strcharinfo(0) +" is now entering the Small Cave! " + strcharinfo(0) +" is now in the lead!",bc_map,"0xFFFF00";
-	donpcevent "競速場地 指導員#Bro::Onend_n1";
+	donpcevent "競速場地 指導員#Broadcast::Onend_n1";
 	disablenpc "Notice_Maker1#TBT_n_1";
 	end;
 }
