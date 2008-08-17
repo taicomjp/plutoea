@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 舞孃 轉職腳本 - 
 //===================================
-// 版本：3.2a
+// 版本：3.5
 //===================================
 
 comodo,180,153,4	script	斯諾特拉#1	90,{
@@ -309,9 +309,13 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 			setarray .@count[0], 2,5,20,10,1;
 			break;
 		}
-		set .@size, (getarraysize(.@item)-1); 
-		for( set .@i,0 ; .@i < .@size && countitem(.@item[.@i]) >= .@count[.@i] ; set .@i,.@i+1 );
-		if(.@i == .@size && Zeny > 9999) {  
+		set .@size, getarraysize(.@item);
+		for( set .@i, 0; .@i < .@size; set .@i,.@i+1 ) {
+			if( countitem(.@item[.@i]) < .@count[.@i] ) {
+				break;
+			}
+		}
+		if( .@i == .@size && Zeny > 9999 ) {
 			cutin "job_dancer_eir02",2;
 			mes "[耶伊樂]";
 			mes "啊，全部拿來了";
@@ -339,10 +343,10 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 			mes "請把這些東西帶來..";
 			mes "學費 ^CD688910,000元^000000,";
 			if (DANC_Q == 2) {
-				mes "^CD6889"+.@count[0]+"個"+getitemname(.@items[0])+"^000000、";
-				mes "^CD6889"+.@count[1]+"個"+getitemname(.@items[1])+"^000000、";
-				mes "^CD6889"+.@count[2]+"個"+getitemname(.@items[2])+"^000000以及";
-				mes "^CD6889"+.@count[3]+"個"+getitemname(.@items[3])+"^000000";
+				mes "^CD6889"+.@count[0]+"個"+getitemname(.@item[0])+"^000000、";
+				mes "^CD6889"+.@count[1]+"個"+getitemname(.@item[1])+"^000000、";
+				mes "^CD6889"+.@count[2]+"個"+getitemname(.@item[2])+"^000000以及";
+				mes "^CD6889"+.@count[3]+"個"+getitemname(.@item[3])+"^000000";
 			}
 			else if (DANC_Q == 3) {
 				mes "^CD6889"+.@count[0]+"個"+getitemname(.@item[0])+"^000000以及";
@@ -470,6 +474,7 @@ job_duncer,95,93,4	script	寶羅瓦珠#da	101,{
 			next;
 		}
 		switch(rand(1,3)) {
+		case 1:
 			mes "[寶羅瓦珠]";
 			mes "1.";
 			mes "舞孃的舞蹈'女神之吻'所增加的能力是?";
@@ -854,10 +859,10 @@ job_duncer,95,93,4	script	寶羅瓦珠#da	101,{
 job_duncer,32,154,1	script	舞孃考試接待員#dance	66,{
 OnInit:
 	waitingroom "等待室",20,"舞孃考試接待員#dance::OnStartArena",1;
+	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	disablewaitingroomevent;
 	disablenpc "dance#up";
 	disablenpc "dance#down";
 	disablenpc "dance#left";
@@ -866,10 +871,7 @@ OnStartArena:
 	donpcevent "dance#return::OnDisable";
 	warpwaitingpc "job_duncer",69,110,1;
 	donpcevent "寶羅瓦珠#dance_timer::OnEnable";
-	set .Dance_PID,$@warpwaitingpc[0];
-	if (attachrid(.Dance_PID) == 0) {
-		enablewaitingroomevent;
-	}
+	disablewaitingroomevent;
 	end;
 
 OnEnable:
@@ -1184,6 +1186,7 @@ OnTimer89000:
 	donpcevent "dance#return::OnEnable";
 	donpcevent "dance#poring::OnDisable";
 	stopnpctimer;
+	end;
 }
 
 job_duncer,69,110,0	script	dance#return	-1,1,4,{
@@ -1202,6 +1205,7 @@ OnDisable:
 OnEnable:
 	enablenpc "dance#return";
 	donpcevent "dance#return#2::OnEnable";
+	end;
 }
 
 job_duncer,66,110,0	script	dance#return#2	-1,1,1,{
@@ -1217,6 +1221,7 @@ OnDisable:
 OnEnable:
 	enablenpc "dance#return#2";
 	donpcevent "dance#return#3::OnEnable";
+	end;
 }
 
 job_duncer,72,110,0	script	dance#return#3	-1,1,1,{
@@ -1232,6 +1237,7 @@ OnDisable:
 OnEnable:
 	enablenpc "dance#return#3";
 	donpcevent "舞孃考試接待員#dance::OnEnable";
+	end;
 }
 
 // Dance Move Triggers
@@ -1262,6 +1268,8 @@ OnMyMobDead:
 
 OnDisable:
 	killmonsterall "job_duncer";
+	end;
+
 }
 
 // Backup Dancers

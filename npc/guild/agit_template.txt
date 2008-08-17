@@ -84,7 +84,7 @@ OnStartArena:
 	else if (strnpcinfo(2) == "gefg_cas03") { setarray .@emproom[0],244,166; }
 	else if (strnpcinfo(2) == "gefg_cas04") { setarray .@emproom[0],174,177; }
 	else if (strnpcinfo(2) == "gefg_cas05") { setarray .@emproom[0],194,184; }
-	else if (strnpcinfo(2) == "payg_cas01") { setarray .@emproom[0],138,138; }
+	else if (strnpcinfo(2) == "payg_cas01") { setarray .@emproom[0],139,139; }
 	else if (strnpcinfo(2) == "payg_cas02") { setarray .@emproom[0],38,25; }
 	else if (strnpcinfo(2) == "payg_cas03") { setarray .@emproom[0],268,264; }
 	else if (strnpcinfo(2) == "payg_cas04") { setarray .@emproom[0],270,28; }
@@ -242,7 +242,7 @@ OnRecvCastle:
 			monster strnpcinfo(2),0,0,"--ja--",1282,4;
 			monster strnpcinfo(2),0,0,"--ja--",1253,5;
 			// Set Emperium room spawn coordinates and spawn monsters.
-			if (strnpcinfo(2) == "payg_cas01") { setarray .@emproom[0],138,138; }
+			if (strnpcinfo(2) == "payg_cas01") { setarray .@emproom[0],139,139; }
 			else if (strnpcinfo(2) == "payg_cas02") { setarray .@emproom[0],38,25; }
 			else if (strnpcinfo(2) == "payg_cas03") { setarray .@emproom[0],268,264; }
 			else if (strnpcinfo(2) == "payg_cas04") { setarray .@emproom[0],270,28; }
@@ -511,6 +511,10 @@ OnRecvCastle:
 		if(.@Economy >= 65) set .@eco_invest,1280000;
 		if(.@Economy >= 76) set .@eco_invest,2560000;
 		if(.@Economy >= 88) set .@eco_invest,5120000;
+		//Double the cost of investing if you've already invested once.
+		if (GetCastleData(strnpcinfo(2),4)) {
+			set .@eco_invest,.@eco_invest*2;
+		}
 		mes "[ 管理人 " + .@name$ + " ]";
 		mes "提高商業發展度的話 ，在工會裡生產的物品數量會增加，為了以後著想的話，不能不投資啊";
 		mes " ";
@@ -561,6 +565,10 @@ OnRecvCastle:
 		if(.@Defence >= 65) set .@def_invest,2560000;
 		if(.@Defence >= 76) set .@def_invest,5120000;
 		if(.@Defence >= 88) set .@def_invest,10240000;
+		//Double the cost of investing if you've already invested once.
+		if (GetCastleData(strnpcinfo(2),5)) {
+			set .@def_invest,.@def_invest*2;
+		}
 		mes "[ 管理人 " + .@name$ + " ]";
 		mes "提高防禦程度的話 ，監護人和華麗金屬的耐久度會增加 ，考慮到往後的戰爭 ，不得不投資啊";
 		mes " ";
