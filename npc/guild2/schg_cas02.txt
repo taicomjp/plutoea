@@ -52,6 +52,7 @@ OnAgitEnd:
 	if (GetCastleData("schg_cas02",1)) {
 		KillMonster "schg_cas02","管理人#sch02::OnStartArena";
 		donpcevent "Manager#sch02_02::Onreset";
+		donpcevent "Steward#sch02::Onstop";
 	}
 	end;
 
@@ -102,7 +103,11 @@ Onchange:
 
 OnClock0001:
 	if (!GetCastleData("schg_cas02",1)) end;
-	killmonster "schg_cas02","Manager#sch02_02::OnMyTreasureDied";
+	killmonster "schg_cas02","Manager#sch02_02::OnTreasureDied";
+
+	setcastledata "schg_cas02",4,0;
+	setcastledata "schg_cas02",5,0;
+
 	set .@Treasure,GetCastleData("schg_cas02",2)/5+4;
 	if (.@Treasure) {
 		monster "schg_cas02",249,378,"寶物箱子",1939,1,"Manager#sch02_02::OnTreasureDied";
