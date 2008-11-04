@@ -1,5 +1,4 @@
 //id,range,hit,inf,element,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count,name,description
-//id,range,hit,inf,pl,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count
 // 01 技能ID
 // 02 射程 (複合技能使用時不會判斷射程,
 //           如果射程 < 5, 則使用基本的武器射程)
@@ -11,6 +10,7 @@
 //    0x01 - 無傷害
 //    0x02 - 擴散傷害
 //    0x04 - 擴散和分化傷害
+
 //    0x08 - Skill ignores caster's % damage cards (misc type always ignores)
 //    0x10 - Skill ignores elemental adjustments
 //    0x20 - 技能忽略目標的防禦 (misc type always ignores)
@@ -37,7 +37,8 @@
 //    0x0800- 僅公會可用技能 (and enemies if skill is offensive)
 //    0x1000- disable usage on enemies (for non-offensive skills).
 // 13 最大施放數量: 在(玩家允許施放數量)player_land_skill_limit/(魔物允許施放數量)monster_land_skill_limit
-//    在battle_athena.conf中啟動時,限制發動個數
+//    在battle_athena.conf中啟動時,
+//    限制發動個數
 // 14 技能類型 (none無, weapon武器, magic魔法, misc其他)
 // 15 強制彈開 (發動技能後目標強制彈開格數,比如:怒暴,雷鳴)
 // 16 名稱
@@ -165,7 +166,7 @@
 121,3,6,2,1,0x42,1,5,1,no,0,0x80,0,weapon,0,	HT_FREEZINGTRAP,霜凍陷阱
 122,3,6,2,4,0x42,1,5,1,no,0,0x80,0,misc,0,	HT_BLASTMINE,定時爆炸陷阱
 123,3,6,2,3,0x42,2,5,1,no,0,0x80,0,misc,0,	HT_CLAYMORETRAP,爆散陷阱
-124,2,6,32,0,0x1,0,1,1,no,0,0,0,misc,0,		HT_REMOVETRAP,陷阱移除
+124,3,6,32,0,0x1,0,1,1,no,0,0,0,misc,0,		HT_REMOVETRAP,陷阱移除
 125,3,6,2,0,0x1,0,1,1,no,0,0,0,misc,0,		HT_TALKIEBOX,陷阱探查
 126,0,0,0,0,0,0,10,0,no,0,0,0,weapon,0,		HT_BEASTBANE,動物殺手
 127,0,0,0,0,0,0,1,0,no,0,0,0,misc,0,		HT_FALCON,馴鷹術
@@ -643,7 +644,7 @@
 1003,0,0,0,0,0,0,1,0,no,0,0x1,0,weapon,0,	AS_SONICACCEL,超音速投擲
 1004,9,8,1,0,0x8,0,1,1,no,0,0x1,0,weapon,0,	AS_VENOMKNIFE,毒刃
 1005,1,6,1,0,0x1,0,1,1,no,0,0x1,0,weapon,0,	RG_CLOSECONFINE,緊密的約束
-1006,0,6,4,3,0,2,1,1,yes,0,0x1,0,magic,3,	WZ_SIGHTBLASTER,火狩 Blaster
+1006,0,6,4,3,0,2,1,1,yes,0,0x1,0,magic,3,	WZ_SIGHTBLASTER,火狩芽
 1007,0,6,4,0,0x1,0,10,0,no,0,0x1,0,none,0,	SA_CREATECON,元素肯貝特 製作
 1008,9,6,1,1,0x1,0,1,1,yes,0,0x1,0,magic,0,	SA_ELEMENTWATER,元素更換(水)
 1009,-9,6,1,0,0,0,1,1,no,0,0x1,0,weapon,3,	HT_PHANTASMIC,幻影箭
@@ -700,17 +701,17 @@
 8222,0,6,4,0,0x3,-1,5,1,yes,0,0,0,magic,0,	MER_MAGNIFICAT,Magnificat
 8223,0,6,4,0,0x1,0,10,1,no,0,0,0,weapon,0,	MER_QUICKEN,Two-Hand_Quicken
 8224,0,6,4,3,0x3,3,1,1,yes,0,0,0,magic,0,	MER_SIGHT,Sight
-8225,0,0,0,0,0x1,0,5,0,no,0,0,0,weapon,0,	MER_CRASH,Crash
-8226,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_REGAIN,Regain
-8227,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_TENDER,Tender
-8228,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_BENEDICTION,Benediction
-8229,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_RECUPERATE,Recuperate
-8230,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_MENTALCURE,Mental_Cure
-8231,0,0,0,0,0x1,0,1,0,no,0,0,0,magic,0,	MER_COMPRESS,Compress
-8232,9,6,1,0,1,0,10,1,no,0,0,0,none,0,	MER_PROVOKE,Provoke
-8233,0,6,4,0,0x1,0,1,1,no,0,0x1,0,weapon,0,	MER_AUTOBERSERK,Berserk
+8225,1,8,1,-1,0,0,5,3,no,0,0,0,weapon,0,	MER_CRASH,Crash
+8226,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_REGAIN,Regain
+8227,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_TENDER,Tender
+8228,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_BENEDICTION,Benediction
+8229,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_RECUPERATE,Recuperate
+8230,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_MENTALCURE,Mental_Cure
+8231,9,6,16,0,0x1,0,1,1,yes,0,0x1000,0,magic,0,	MER_COMPRESS,Compress
+8232,9,6,1,0,0x1,0,10,1,no,0,0,0,none,0,	MER_PROVOKE,Provoke
+8233,0,6,4,0,0x1,0,1,1,no,0,0,0,weapon,0,	MER_AUTOBERSERK,Berserk
 8234,9,6,1,0,0x1,0,10,1,yes,0,0,0,magic,0,	MER_DECAGI,Decrease_AGI
-8235,0,0,0,0,0,0,1,0,no,0,0,0,none,0,		MER_SCAPEGOAT,Scapegoat
+8235,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,		MER_SCAPEGOAT,Scapegoat
 8236,5,6,1,0,0x1,0,10,0,yes,0,0,0,magic,0,	MER_LEXDIVINA,Lex_Divina
 8237,9,6,1,0,0x1,0,1,1,yes,0,0,0,magic,0,	MER_ESTIMATION,Sense
 
