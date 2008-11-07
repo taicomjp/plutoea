@@ -13,12 +13,13 @@
 -	script	Agit_Event	-1,{
 	end;
 
-OnClock2100:	//開始時間 星期六(6)
-OnClock2300:	//結束時間 星期六(6)
+OnClock2100:	//開始時間 星期二、五
+OnClock2300:	//結束時間
 
 OnAgitInit:
 	// 開始時間檢查
-	if( (gettime(4)==6) && (gettime(3)>=21 && gettime(3)<23) ) {
+	if( (gettime(4)==2) && (gettime(3)>=21 && gettime(3)<23) ||
+	(gettime(4)==5) && (gettime(3)>=21 && gettime(3)<23) ) {
 		if (!agitcheck()) {
 			AgitStart;
 			callsub S_DisplayOwners;
@@ -27,7 +28,8 @@ OnAgitInit:
 	}
 
 	// 結束時間檢查
-	if ( (gettime(4)==6) && (gettime(3)==23) ) {
+	if ( (gettime(4)==2) && (gettime(3)==23) ||
+	(gettime(4)==5) && (gettime(3)>=21 && gettime(3)<23)) {
 		if (agitcheck()) {
 			AgitEnd;
 			callsub S_DisplayOwners;

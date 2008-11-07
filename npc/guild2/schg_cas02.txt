@@ -3,20 +3,11 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.5-c
+//= 1.8
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 秀發茲發德 教國 Castle 2 (安得郎克)
-//===== Additional Comments: =================================
-//= 1.0 First Version [L0ne_W0lf]
-//= 1.1 Fixed setcell range of first barricade. [L0ne_W0lf]
-//= 1.2 Fixed first Barricade being desotryable. [L0ne_W0lf]
-//= 1.3 Swaped an end for a close in eco investing. [L0ne_W0lf]
-//= 1.4 Fixed 3rd Control Device wasting supplies. [L0ne_W0lf]
-//= 1.5 Fixed double message in defense investing. [L0ne_W0lf]
-//=     Corrected a minor typo in the guild steward.
-//= 1.5-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 schg_cas02,1,1,0	script	Manager#sch02_02	111,{
@@ -33,8 +24,8 @@ OnRecvCastlesc02:
 	}
 	end;
 
-OnAgitStart:
-	if (agitcheck()) {
+OnAgitStart2:
+	if (agitcheck2()) {
 		MapRespawnGuildID "schg_cas02",GetCastleData("schg_cas02",1),2;
 		GvgOn "schg_cas02";
 		donpcevent "Manager#sch02_02::Onstart";
@@ -47,7 +38,7 @@ OnAgitStart:
 	}
 	end;
 
-OnAgitEnd:
+OnAgitEnd2:
 	GvgOff "schg_cas02";
 	if (GetCastleData("schg_cas02",1)) {
 		KillMonster "schg_cas02","管理人#sch02::OnStartArena";
@@ -88,7 +79,7 @@ Onreset:
 	donpcevent "控制裝置01#sch02::OnDisable";
 	donpcevent "控制裝置02#sch02::OnDisable";
 	donpcevent "控制裝置03#sch02::OnDisable";
-	if (agitcheck()) {
+	if (agitcheck2()) {
 		setarray $agit_sc02[0],0,0,1,1,1,0;
 	}
 	end;
@@ -177,7 +168,7 @@ schg_cas02,140,184,3	script	艾迪僕#sch02_01	868,{
 			close;
 		}
 		else {
-			if (agitcheck() == 0) {
+			if (agitcheck2() == 0) {
 				mes "[艾迪僕]";
 				mes "I am Endeef, guardian of";
 				mes "this stronghold. For now,";
@@ -737,7 +728,7 @@ schg_cas02,231,57,0	script	第1守護石#sch02	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -995,7 +986,7 @@ schg_cas02,335,231,0	script	第2守護石#sch02	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -1338,7 +1329,7 @@ schg_cas02,288,97,0	script	控制裝置01#sch02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1575,7 +1566,7 @@ schg_cas02,230,209,0	script	控制裝置02#sch02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1814,7 +1805,7 @@ schg_cas02,159,143,0	script	控制裝置03#sch02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -2341,7 +2332,7 @@ OnStartArena:
 	else if (.msg == 2) {
 		announce "秘密基地 [" + GetCastleName("schg_cas02") + "]的 '安得郎克'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all;
 		mapannounce "schg_cas02","華麗金屬已被破壞掉了",bc_map,"0x00FF00";
-		if (agitcheck()) {
+		if (agitcheck2()) {
 			donpcevent "Manager#sch02_02::Onreset";
 			initnpctimer;
 		}

@@ -3,14 +3,11 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.0-c
+//= 1.6
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 阿盧納貝茲 教國 Castle 1 (馬勒杜)
-//===== Additional Comments: =================================
-//= 1.0 First Version [L0ne_W0lf]
-//= 1.0-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 arug_cas01,1,1,0	script	Manager#aru01_02	111,{
@@ -27,8 +24,8 @@ OnRecvCastleAr01:
 	}
 	end;
 
-OnAgitStart:
-	if (agitcheck()) {
+OnAgitStart2:
+	if (agitcheck2()) {
 		MapRespawnGuildID "arug_cas01",GetCastleData("arug_cas01",1),2;
 		GvgOn "arug_cas01";
 		donpcevent "Manager#aru01_02::Onstart";
@@ -41,7 +38,7 @@ OnAgitStart:
 	}
 	end;
 
-OnAgitEnd:
+OnAgitEnd2:
 	GvgOff "arug_cas01";
 	if (GetCastleData("arug_cas01",1)) {
 		KillMonster "arug_cas01","管理人#aru01::OnStartArena";
@@ -82,7 +79,7 @@ Onreset:
 	donpcevent "控制裝置01#aru01::OnDisable";
 	donpcevent "控制裝置02#aru01::OnDisable";
 	donpcevent "控制裝置03#aru01::OnDisable";
-	if (agitcheck()) {
+	if (agitcheck2()) {
 		setarray $agit_ar01[0],0,0,1,1,1,0;
 	}
 	end;
@@ -171,7 +168,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 			close;
 		}
 		else {
-			if (agitcheck() == 0) {
+			if (agitcheck2() == 0) {
 				mes "[布雷依斯]";
 				mes "I am Brace, guardian of";
 				mes "this stronghold. For now,";
@@ -730,7 +727,7 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -989,7 +986,7 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -1059,8 +1056,7 @@ OnDisable:
 
 arug_cas01,2,1,0	script	#aru01_RL00	-1,{
 OnEnable:
-	setcell "arug_cas01",238,74,245,74,cell_walkable,0;
-	setcell "arug_cas01",238,74,245,74,cell_shootable,0;
+	setwall "arug_cas01",238,74,8,6,0,"aru01_RL00";
 	guardian "arug_cas01",239,73," ",1905,"#aru01_RL00::OnBarrierDestroyed"; //24;
 	guardian "arug_cas01",241,73," ",1905,"#aru01_RL00::OnBarrierDestroyed"; //25;
 	guardian "arug_cas01",243,73," ",1905,"#aru01_RL00::OnBarrierDestroyed"; //26;
@@ -1068,8 +1064,7 @@ OnEnable:
 	end;
 
 OnDisable:
-	setcell "arug_cas01",238,74,245,74,cell_walkable,1;
-	setcell "arug_cas01",238,74,245,74,cell_shootable,1;
+	delwall "aru01_RL00";
 	killmonster "arug_cas01","#aru01_RL00::OnBarrierDestroyed";
 	end;
 
@@ -1080,7 +1075,7 @@ OnBarrierDestroyed:
 arug_cas01,2,2,0	script	#aru01_RL01	-1,{
 OnEnable:
 	set .MyMobCount,6;
-	setcell "arug_cas01",239,53,246,53,cell_walkable,0;
+	setwall "arug_cas01",239,53,8,6,1,"aru01_RL01";
 	guardian "arug_cas01",239,55," ",1905,"#aru01_RL01::OnBarrierDestroyed"; //28;
 	guardian "arug_cas01",241,55," ",1905,"#aru01_RL01::OnBarrierDestroyed"; //29;
 	guardian "arug_cas01",243,55," ",1905,"#aru01_RL01::OnBarrierDestroyed"; //30;
@@ -1094,12 +1089,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[2],1;
 		mapannounce "arug_cas01","第1防禦線 被突破掉了",bc_map,"0x00ff00";
-		setcell "arug_cas01",239,53,246,53,cell_walkable,1;
+		delwall "aru01_RL01";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas01",239,53,246,53,cell_walkable,1;
+	delwall "aru01_RL01";
 	killmonster "arug_cas01","#aru01_RL01::OnBarrierDestroyed";
 	end;
 }
@@ -1107,7 +1102,7 @@ OnDisable:
 arug_cas01,2,3,0	script	#aru01_RL02	-1,{
 OnEnable:
 	set .MyMobCount,6;
-	setcell "arug_cas01",107,124,112,124,cell_walkable,0;
+	setwall "arug_cas01",107,124,6,6,1,"aru01_RL02";
 	guardian "arug_cas01",107,122," ",1905,"#aru01_RL02::OnBarrierDestroyed"; //34;
 	guardian "arug_cas01",109,122," ",1905,"#aru01_RL02::OnBarrierDestroyed"; //35;
 	guardian "arug_cas01",111,122," ",1905,"#aru01_RL02::OnBarrierDestroyed"; //36;
@@ -1121,12 +1116,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[3],1;
 		mapannounce "arug_cas01","第2防禦線 被突破掉了",bc_map,"0x00ff00";
-		setcell "arug_cas01",107,124,112,104,cell_walkable,1;
+		delwall "aru01_RL02";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas01",107,124,112,104,cell_walkable,1;
+	delwall "aru01_RL02";
 	killmonster "arug_cas01","#aru01_RL02::OnBarrierDestroyed";
 	end;
 }
@@ -1134,7 +1129,7 @@ OnDisable:
 arug_cas01,2,4,0	script	#aru01_RL03	-1,{
 OnEnable:
 	set .MyMobCount,4;
-	setcell "arug_cas01",84,171,91,171,cell_walkable,0;
+	setwall "arug_cas01",84,171,8,6,1,"aru01_RL03";
 	guardian "arug_cas01",84,170," ",1905,"#aru01_RL03::OnBarrierDestroyed"; //40;
 	guardian "arug_cas01",86,170," ",1905,"#aru01_RL03::OnBarrierDestroyed"; //41;
 	guardian "arug_cas01",88,170," ",1905,"#aru01_RL03::OnBarrierDestroyed"; //42;
@@ -1146,12 +1141,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[4],1;
 		mapannounce "arug_cas01","第3防禦線 被突破掉了!!",bc_map,"0x00ff00";
-		setcell "arug_cas01",84,171,91,171,cell_walkable,1;
+		delwall "aru01_RL03";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas01",84,171,91,171,cell_walkable,1;
+	delwall "aru01_RL03";
 	killmonster "arug_cas01","#aru01_RL03::OnBarrierDestroyed";
 	end;
 }
@@ -1332,7 +1327,7 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1569,7 +1564,7 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1808,7 +1803,7 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -2392,7 +2387,7 @@ OnStartArena:
 	else if (.msg == 2) {
 		announce "秘密基地 [" + GetCastleName("arug_cas01") + "]的 '馬勒杜'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all;
 		mapannounce "arug_cas01","華麗金屬已被破壞掉了",bc_map,"0x00FF00";
-		if (agitcheck()) {
+		if (agitcheck2()) {
 			donpcevent "Manager#aru01_02::Onreset";
 			initnpctimer;
 		}

@@ -3,17 +3,11 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.2-c
+//= 1.9
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 阿盧納貝茲 教國 Castle 2 (希樂)
-//===== Additional Comments: =================================
-//= 1.0 First Version [L0ne_W0lf]
-//= 1.1 Swaped an end for a close in eco investing. [L0ne_W0lf]
-//= 1.2 Fixed double message in defense investing. [L0ne_W0lf]
-//=     Corrected a minor typo in the guild steward.
-//= 1.2-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 arug_cas02,1,1,0	script	Manager#aru02_02	111,{
@@ -30,8 +24,8 @@ OnRecvCastleAr02:
 	}
 	end;
 
-OnAgitStart:
-	if (agitcheck()) {
+OnAgitStart2:
+	if (agitcheck2()) {
 		MapRespawnGuildID "arug_cas02",GetCastleData("arug_cas02",1),2;
 		GvgOn "arug_cas02";
 		donpcevent "Manager#aru02_02::Onstart";
@@ -44,7 +38,7 @@ OnAgitStart:
 	}
 	end;
 
-OnAgitEnd:
+OnAgitEnd2:
 	GvgOff "arug_cas02";
 	if (GetCastleData("arug_cas02",1)) {
 		KillMonster "arug_cas02","管理人#aru02::OnStartArena";
@@ -85,7 +79,7 @@ Onreset:
 	donpcevent "控制裝置01#aru02::OnDisable";
 	donpcevent "控制裝置02#aru02::OnDisable";
 	donpcevent "控制裝置03#aru02::OnDisable";
-	if (agitcheck()) {
+	if (agitcheck2()) {
 		setarray $agit_ar02[0],0,0,1,1,1,0;
 	}
 	end;
@@ -174,7 +168,7 @@ arug_cas02,38,259,5	script	佑呢麥斯#aru02_01	868,{
 			close;
 		}
 		else {
-			if (agitcheck() == 0) {
+			if (agitcheck2() == 0) {
 				mes "[佑呢麥斯]";
 				mes "I am Yumenes, guardian of";
 				mes "this stronghold. For now,";
@@ -576,7 +570,7 @@ OnGuardianStoneDied:
 	end;
 
 OnTimer300000:
-	donpcevent "第1守護石#aru02::OnGuardian";
+	donpcevent "第1守護石#aru02::OnEnable";
 	setarray $agit_ar02[0],2; //Global Variable
 	stopnpctimer;
 	end;
@@ -733,7 +727,7 @@ arug_cas02,33,168,0	script	第1守護石#aru02	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -834,7 +828,7 @@ OnGuardianStoneDied:
 	end;
 
 OnTimer300000:
-	donpcevent "第2守護石#aru02::OnGuardian";
+	donpcevent "第2守護石#aru02::OnEnable";
 	setarray $agit_ar02[1],2; //Global Variable
 	stopnpctimer;
 	end;
@@ -992,7 +986,7 @@ arug_cas02,245,168,0	script	第2守護石#aru02	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -1063,8 +1057,7 @@ OnDisable:
 // Barrier Summoners
 arug_cas02,2,1,0	script	#aru02_RL00	-1,{
 OnEnable:
-	setcell "arug_cas02",136,136,143,136,cell_walkable,0;
-	setcell "arug_cas02",136,136,143,136,cell_shootable,0;
+	setwall "arug_cas02",136,136,8,6,0,"aru02_RL00";
 	guardian "arug_cas02",137,137," ",1905,"#aru02_RL00::OnBarrierDestroyed"; //24;
 	guardian "arug_cas02",139,137," ",1905,"#aru02_RL00::OnBarrierDestroyed"; //25;
 	guardian "arug_cas02",141,137," ",1905,"#aru02_RL00::OnBarrierDestroyed"; //26;
@@ -1072,8 +1065,7 @@ OnEnable:
 	end;
 
 OnDisable:
-	setcell "arug_cas02",136,136,143,136,cell_walkable,1;
-	setcell "arug_cas02",136,136,143,136,cell_shootable,1;
+	delwall "aru02_RL00";
 	killmonster "arug_cas02","#aru02_RL00::OnBarrierDestroyed";
 	end;
 
@@ -1084,7 +1076,7 @@ OnBarrierDestroyed:
 arug_cas02,2,2,0	script	#aru02_RL01	-1,{
 OnEnable:
 	set .MyMobCount,6;
-	setcell "arug_cas02",150,223,161,223,cell_walkable,0;
+	setwall "arug_cas02",150,223,12,6,1,"aru02_RL01";
 	guardian "arug_cas02",151,222," ",1905,"#aru02_RL01::OnBarrierDestroyed"; //28;
 	guardian "arug_cas02",153,222," ",1905,"#aru02_RL01::OnBarrierDestroyed"; //29;
 	guardian "arug_cas02",155,222," ",1905,"#aru02_RL01::OnBarrierDestroyed"; //30;
@@ -1098,12 +1090,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar02[2],1;
 		mapannounce "arug_cas02","第1防禦線 被突破掉了",bc_map,"0x00ff00";
-		setcell "arug_cas02",150,223,161,223,cell_walkable,1;
+		delwall "aru02_RL01";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas02",150,223,161,223,cell_walkable,1;
+	delwall "aru02_RL01";
 	killmonster "arug_cas02","#aru02_RL01::OnBarrierDestroyed";
 	end;
 }
@@ -1111,7 +1103,7 @@ OnDisable:
 arug_cas02,2,3,0	script	#aru02_RL02	-1,{
 OnEnable:
 	set .MyMobCount,6;
-	setcell "arug_cas02",125,342,125,349,cell_walkable,0;
+	setwall "arug_cas02",125,342,8,0,1,"aru02_RL02";
 	guardian "arug_cas02",126,343," ",1905,"#aru02_RL02::OnBarrierDestroyed"; //34;
 	guardian "arug_cas02",126,345," ",1905,"#aru02_RL02::OnBarrierDestroyed"; //35;
 	guardian "arug_cas02",126,347," ",1905,"#aru02_RL02::OnBarrierDestroyed"; //36;
@@ -1125,12 +1117,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar02[3],1;
 		mapannounce "arug_cas02","第2防禦線 被突破掉了",bc_map,"0x00ff00";
-		setcell "arug_cas02",125,342,125,349,cell_walkable,1;
+		delwall "aru02_RL02";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas02",125,342,125,349,cell_walkable,1;
+	delwall "aru02_RL02";
 	killmonster "arug_cas02","#aru02_RL02::OnBarrierDestroyed";
 	end;
 }
@@ -1138,7 +1130,7 @@ OnDisable:
 arug_cas02,2,4,0	script	#aru02_RL03	-1,{
 OnEnable:
 	set .MyMobCount,4;
-	setcell "arug_cas02",38,314,49,314,cell_walkable,0;
+	setwall "arug_cas02",38,314,12,6,1,"aru02_RL03";
 	guardian "arug_cas02",40,315," ",1905,"#aru02_RL03::OnBarrierDestroyed"; //40;
 	guardian "arug_cas02",42,315," ",1905,"#aru02_RL03::OnBarrierDestroyed"; //41;
 	guardian "arug_cas02",44,315," ",1905,"#aru02_RL03::OnBarrierDestroyed"; //42;
@@ -1150,12 +1142,12 @@ OnBarrierDestroyed:
 	if (.MyMobCount == 0) {
 		setarray $agit_ar02[4],1;
 		mapannounce "arug_cas02","第3防禦線 被突破掉了!!",bc_map,"0x00ff00";
-		setcell "arug_cas02",38,314,49,314,cell_walkable,1;
+		delwall "aru02_RL03";
 	}
 	end;
 
 OnDisable:
-	setcell "arug_cas02",38,314,49,314,cell_walkable,1;
+	delwall "aru02_RL03";
 	killmonster "arug_cas02","#aru02_RL03::OnBarrierDestroyed";
 	end;
 }
@@ -1338,7 +1330,7 @@ arug_cas02,143,228,0	script	控制裝置01#aru02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1356,7 +1348,7 @@ arug_cas02,143,228,0	script	控制裝置01#aru02	111,{
 							donpcevent "#aru02_RL01::OnEnable";
 							disablenpc "控制裝置01#aru02";
 							mapannounce "arug_cas02","第 1 防禦線 重新建置成功了!",bc_map,"0x00ff00";
-							setarray $agit_ar01[2],0;
+							setarray $agit_ar02[2],0;
 							end;
 						}
 						else {
@@ -1575,7 +1567,7 @@ arug_cas02,118,356,0	script	控制裝置02#aru02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1814,7 +1806,7 @@ arug_cas02,56,308,0	script	控制裝置03#aru02	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -2258,7 +2250,7 @@ arug_cas02,303,341,3	script	管理人#aru02	55,{
 				mes "主人,我想我們應該要留下現在這位卡普拉職員,因為她已經竭盡所能地為我們服務了!";
 				close;
 			}
-			disablenpc "卡普拉 職員#arug_cas02";
+			disablenpc "卡普拉 職員#aru02";
 			SetCastleData "arug_cas02",9,0;
 			mes "[ 管理人 ]";
 			mes "卡普拉職員已經解雇了... 不過為了辛苦的會員著想,雇用卡普拉職員為上策啊";
@@ -2358,7 +2350,7 @@ OnStartArena:
 	else if (.msg == 2) {
 		announce "秘密基地 [" + GetCastleName("arug_cas02") + "]的 '希樂'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all;
 		mapannounce "arug_cas02","華麗金屬已被破壞掉了",bc_map,"0x00FF00";
-		if (agitcheck()) {
+		if (agitcheck2()) {
 			donpcevent "Manager#aru02_02::Onreset";
 			initnpctimer;
 		}
@@ -2385,6 +2377,7 @@ OnTimer10000:
 
 // Guild Kafra
 arug_cas02,354,326,3	script	卡普拉 職員#aru02	117,{
+	cutin "kafra_01",2;
 	set .@GID, GetCastleData("arug_cas02",1);
 	if (getcharid(2) == .@GID && getgdskilllv(.@GID,10001)) {
 		mes "[卡普拉 職員]";

@@ -3,17 +3,11 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.2-c
+//= 1.8 (1.7未更新)
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 阿盧納貝茲 教國 Castle 5 (巴拿迪斯)
-//===== Additional Comments: =================================
-//= 1.0 First Version [L0ne_W0lf]
-//= 1.1 Swaped an end for a close in eco investing. [L0ne_W0lf]
-//= 1.2 Fixed double message in defense investing. [L0ne_W0lf]
-//=     Corrected a minor typo in the guild steward.
-//= 1.2-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 arug_cas05,1,1,0	script	Manager#aru05_02	111,{
@@ -30,8 +24,8 @@ OnRecvCastlear05:
 	}
 	end;
 
-OnAgitStart:
-	if (agitcheck()) {
+OnAgitStart2:
+	if (agitcheck2()) {
 		MapRespawnGuildID "arug_cas05",GetCastleData("arug_cas05",1),2;
 		GvgOn "arug_cas05";
 		donpcevent "Manager#aru05_02::Onstart";
@@ -44,7 +38,7 @@ OnAgitStart:
 	}
 	end;
 
-OnAgitEnd:
+OnAgitEnd2:
 	GvgOff "arug_cas05";
 	if (GetCastleData("arug_cas05",1)) {
 		KillMonster "arug_cas05","管理人#aru05::OnStartArena";
@@ -85,7 +79,7 @@ Onreset:
 	donpcevent "控制裝置01#aru05::OnDisable";
 	donpcevent "控制裝置02#aru05::OnDisable";
 	donpcevent "控制裝置03#aru05::OnDisable";
-	if (agitcheck()) {
+	if (agitcheck2()) {
 		setarray $agit_ar05[0],0,0,1,1,1,0;
 	}
 	end;
@@ -174,7 +168,7 @@ arug_cas05,146,315,3	script	伊歐斯#aru05_01	868,{
 			close;
 		}
 		else {
-			if (agitcheck() == 0) {
+			if (agitcheck2() == 0) {
 				mes "[伊歐斯]";
 				mes "I am Eeos, guardian of";
 				mes "this stronghold. For now,";
@@ -576,7 +570,7 @@ OnGuardianStoneDied:
 	end;
 
 OnTimer300000:
-	donpcevent "第1守護石#aru05::OnGuardian";
+	donpcevent "第1守護石#aru05::OnEnable";
 	setarray $agit_ar05[0],2; //Global Variable
 	stopnpctimer;
 	end;
@@ -733,7 +727,7 @@ arug_cas05,65,171,0	script	第1守護石#aru05	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -834,7 +828,7 @@ OnGuardianStoneDied:
 	end;
 
 OnTimer300000:
-	donpcevent "第2守護石#aru05::OnGuardian";
+	donpcevent "第2守護石#aru05::OnEnable";
 	setarray $agit_ar05[1],2; //Global Variable
 	stopnpctimer;
 	end;
@@ -992,7 +986,7 @@ arug_cas05,212,149,0	script	第2守護石#aru05	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -1338,7 +1332,7 @@ arug_cas05,136,158,0	script	控制裝置01#aru05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1356,7 +1350,7 @@ arug_cas05,136,158,0	script	控制裝置01#aru05	111,{
 							donpcevent "#aru05_RL01::OnEnable";
 							disablenpc "控制裝置01#aru05";
 							mapannounce "arug_cas05","第 1 防禦線 重新建置成功了!",bc_map,"0x00ff00";
-							setarray $agit_ar01[2],0;
+							setarray $agit_ar05[2],0;
 							end;
 						}
 						else {
@@ -1575,7 +1569,7 @@ arug_cas05,135,212,0	script	控制裝置02#aru05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1814,7 +1808,7 @@ arug_cas05,134,266,0	script	控制裝置03#aru05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -2400,7 +2394,7 @@ OnStartArena:
 	else if (.msg == 2) {
 		announce "秘密基地 [" + GetCastleName("arug_cas05") + "]的 '巴拿迪斯'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all;
 		mapannounce "arug_cas05","華麗金屬已被破壞掉了",bc_map,"0x00FF00";
-		if (agitcheck()) {
+		if (agitcheck2()) {
 			donpcevent "Manager#aru05_02::Onreset";
 			initnpctimer;
 		}

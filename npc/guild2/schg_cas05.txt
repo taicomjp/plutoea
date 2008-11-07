@@ -3,17 +3,11 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.2-c
+//= 1.4
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
 //= WoE SE 秀發茲發德 教國 Castle 5 (思凱提樂尼)
-//===== Additional Comments: =================================
-//= 1.0 First Version [L0ne_W0lf]
-//= 1.1 Swaped an end for a close in eco investing. [L0ne_W0lf]
-//= 1.2 Fixed double message in defense investing. [L0ne_W0lf]
-//=     Corrected a minor typo in the guild steward.
-//= 1.2-c 照目前已知官方內容中文化 [笨冰]
 //============================================================
 
 schg_cas05,1,1,0	script	Manager#sch05_02	111,{
@@ -30,8 +24,8 @@ OnRecvCastlesc05:
 	}
 	end;
 
-OnAgitStart:
-	if (agitcheck()) {
+OnAgitStart2:
+	if (agitcheck2()) {
 		MapRespawnGuildID "schg_cas05",GetCastleData("schg_cas05",1),2;
 		GvgOn "schg_cas05";
 		donpcevent "Manager#sch05_02::Onstart";
@@ -44,7 +38,7 @@ OnAgitStart:
 	}
 	end;
 
-OnAgitEnd:
+OnAgitEnd2:
 	GvgOff "schg_cas05";
 	if (GetCastleData("schg_cas05",1)) {
 		KillMonster "schg_cas05","管理人#sch05::OnStartArena";
@@ -85,7 +79,7 @@ Onreset:
 	donpcevent "控制裝置01#sch05::OnDisable";
 	donpcevent "控制裝置02#sch05::OnDisable";
 	donpcevent "控制裝置03#sch05::OnDisable";
-	if (agitcheck()) {
+	if (agitcheck2()) {
 		setarray $agit_sc05[0],0,0,1,1,1,0;
 	}
 	end;
@@ -174,7 +168,7 @@ schg_cas05,123,306,3	script	蓋依茲#sch05_01	868,{
 			close;
 		}
 		else {
-			if (agitcheck() == 0) {
+			if (agitcheck2() == 0) {
 				mes "[蓋依茲]";
 				mes "I am Ef, guardian of";
 				mes "this stronghold. For now,";
@@ -733,7 +727,7 @@ schg_cas05,27,36,0	script	第1守護石#sch05	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -992,7 +986,7 @@ schg_cas05,208,75,0	script	第2守護石#sch05	844,{
 						close;
 					}
 					else {
-						if (agitcheck() == 0) {
+						if (agitcheck2() == 0) {
 							mes "因魔力互相的衝突";
 							mes "對守護石重新的形成失敗了";
 							close;
@@ -1338,7 +1332,7 @@ schg_cas05,124,52,0	script	控制裝置01#sch05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1575,7 +1569,7 @@ schg_cas05,128,157,0	script	控制裝置02#sch05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -1814,7 +1808,7 @@ schg_cas05,109,247,0	script	控制裝置03#sch05	111,{
 					mes "you're just about done";
 					mes "with repairing the gate.^000000";
 					next;
-					if (agitcheck() == 0) {
+					if (agitcheck2() == 0) {
 						mes "^3355FFUnfortunately, the Fortress";
 						mes "Gate can't be reconstructed:";
 						mes "the Emperium is no longer here.^000000";
@@ -2399,7 +2393,7 @@ OnStartArena:
 	else if (.msg == 2) {
 		announce "秘密基地 [" + GetCastleName("schg_cas05") + "]的 '思凱提樂尼'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all;
 		mapannounce "schg_cas05","華麗金屬已被破壞掉了",bc_map,"0x00FF00";
-		if (agitcheck()) {
+		if (agitcheck2()) {
 			donpcevent "Manager#sch05_02::Onreset";
 			initnpctimer;
 		}
