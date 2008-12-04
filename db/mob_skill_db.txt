@@ -1,13 +1,13 @@
-// Based on Aegis Episode 11.3
+// 未特別註明者皆基於 Aegis EP11.3所編寫
 //
 //MOB_ID,dummy value (info only),STATE,SKILL_ID,SKILL_LV,rate (10000 = 100%),casttime,delay,cancelable,target,condition type,condition value,val1,val2,val3,val4,val5,emotion
-//Example
+//範例
 //1001,Poring@施毒,attack,52,3,100,1500,10000,no,target,always,0,,,,,7
 //
 // 發動機率用於當這個技能達到發動條件後的機率
-// 延遲以毫秒為單位,防止魔物無休止的施放同一技能
+// 延遲以毫秒為單位，防止魔物無止盡的施放同一技能
 //
-//STATE:
+//狀態(STATE):
 // any (任何情況除了死亡) / idle (待機時) / walk (移動中) / dead (死亡時) /
 // loot (技能發動成功時) /attack (攻擊時) /
 // angry (跟 attack一樣, 但是尚未遭受攻擊角色) /
@@ -15,8 +15,8 @@
 // anytarget (attack+angry+chase+follow)
 //
 //目標: 魔物的技能施放於: target (目標) / self (自己) / friend (友方) / 
-// master / randomtarget (any enemy within skill's range)
-// (如果是地面技能,將按照特殊地
+// master / randomtarget (任何在技能範圍內的敵人)
+// (如果是地面技能，將按照特殊地
 // 形隨機分配目標形隨機分配目標):
 // around1 (圍繞自己3x3格的地區) / around2 (圍繞自己5x5格的地區) /
 // around3 (圍繞自己7x7格的地區) / around4 (圍繞自己9x9格的地區) /
@@ -24,15 +24,15 @@
 // around7 (圍繞目標7x7格的地區) / around8 (圍繞目標9x9格的地區) /
 // around (圍繞自己11x11格的地區)
 //
-// 發動條件: (條件數值因發動條件而異) 
-//	always			無視發動條件
-//	onspawn			when the mob spawns/respawns.
-//	myhpltmaxrate		魔物HP值降到一定比值(百分比:50=50%)時發動
+// 發動條件(condition type):  (條件數值因發動條件而異) 
+//	always			無條件
+//	onspawn		當魔物產生/再生時
+//	myhpltmaxrate	魔物HP降到一定百分比時發動
 //	myhpinrate		when the mob's hp is in a certain % range ('a condition value'
 //                is the lower cap, while 'a value 1' is the upper cap).
-//	mystatuson		魔物狀態改變時發動(比如皮裡恩發動隱匿後使用治癒術,或者魔物被暴風雪冰凍之類的時候)
+//	mystatuson		魔物狀態改變時發動(比如皮里恩發動隱匿後使用治癒術,或者魔物被暴風雪冰凍之類的時候)
 //	mystatusoff		魔物狀態恢復時發動
-//	friendhpltmaxrate	友方魔物HP值降到一定比值(百分比:50=50%)時發動
+//	friendhpltmaxrate	友方魔物HP值降到一定百分比時發動
 //	friendhpinrate		when the mob's friend's hp is in a certain % range (range
 //                   defined the same way as in myhpinrate)
 //	friendstatuson		友方魔物改變狀態時發動
@@ -42,14 +42,14 @@
 //	slavelt			護衛(BOSS帶的小怪)數量小於召喚數量時發動 
 //	slavele			護衛(BOSS帶的小怪)數量小於等於召喚數量時發動
 //	closedattacked		魔物處於混戰時發動 (無遠程攻擊)
-//	longrangeattacked	魔物遭受超遠距離攻擊時發動 (如弓之類的遠程武器)
+//	longrangeattacked	魔物遭受遠距離攻擊時發動 (如弓之類的遠程武器)
 //	skillused		魔物被使用指定技能時發動
 //	afterskill		魔物完成一個技能時發動
 //	casttargeted		魔物處於詠唱範圍內時發動
 //	rudeattacked		魔物遭受致命一擊時發動(應該是指類似阿修羅霸皇拳之類的技能)
 //
-// 當statuson(狀態改變)/statusoff(狀態恢復)系統開啟時,魔物可以針對玩家施展的技能(如:石化術)發動技能,來免除玩家技能效果
-//	anybad		處於任何狀態時發動
+// 當statuson(狀態改變)/statusoff(狀態恢復)系統開啟時，魔物可以針對玩家施展的技能(如:石化術)發動技能，來解除玩家技能效果
+//	anybad	處於任何狀態時發動
 //	stone		處於石化狀態時發動
 //	freeze		處於冰凍狀態時發動
 //	stun		處於昏眩狀態時發動
@@ -63,7 +63,7 @@
 //	sight		處於顯現狀態時發動
 
 1001,蠍子@火屬性攻擊,attack,186,1,2000,0,5000,yes,target,always,0,,,,,,
-1001,蠍子@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1001,蠍子@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1002,波利@表情符號,loot,197,1,2000,0,5000,yes,self,always,0,2,,,,,
 1002,波利@水屬性攻擊,attack,184,1,2000,0,5000,yes,target,always,0,,,,,,
 1004,蜂兵@單體攻擊,attack,158,2,500,0,5000,yes,target,always,0,,,,,,6
@@ -90,8 +90,8 @@
 1014,魔菇@挑釁,chase,194,1,200,0,5000,yes,target,always,0,,,,,,19
 1014,魔菇@睡眠攻擊,attack,182,1,500,0,5000,yes,target,always,0,,,,,,
 1014,魔菇@水屬性攻擊,attack,184,1,2000,0,5000,yes,target,always,0,,,,,,
-1015,腐屍@毒攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
-1015,腐屍@毒攻擊,angry,176,1,500,800,5000,no,target,always,0,,,,,,
+1015,腐屍@毒化攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
+1015,腐屍@毒化攻擊,angry,176,1,500,800,5000,no,target,always,0,,,,,,
 1015,腐屍@不死屬性攻擊,attack,347,1,2000,0,5000,yes,target,always,0,,,,,,
 1015,腐屍@不死屬性攻擊,angry,347,1,2000,0,5000,yes,target,always,0,,,,,,
 1016,邪骸弓箭手@二連矢,attack,46,1,500,1000,5000,no,target,always,0,,,,,,
@@ -115,7 +115,7 @@
 1023,獸人戰士@地屬性攻擊,angry,185,2,500,500,5000,no,target,always,0,,,,,,6
 1024,森靈@地屬性攻擊,attack,185,2,500,500,5000,no,target,always,0,,,,,,6
 1025,青蛇@地屬性攻擊,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,
-1025,青蛇@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1025,青蛇@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1026,僵屍@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1026,僵屍@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,1,0x3885,,,,
 1026,僵屍@無視體型攻擊,attack,179,2,500,1500,5000,no,target,always,0,,,,,,6
@@ -131,13 +131,13 @@
 1029,蛇女伊絲@暗屬性攻擊,attack,190,1,2000,0,5000,yes,target,always,0,,,,,,
 1029,蛇女伊絲@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1029,蛇女伊絲@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,6,0x3195,,,,
-1030,毒蛇@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1030,毒蛇@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1030,毒蛇@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1031,波波利@表情符號,loot,197,1,2000,0,5000,yes,self,always,0,2,,,,,
-1031,波波利@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1031,波波利@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1031,波波利@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1032,畢萊特@表情符號,loot,197,1,2000,0,5000,yes,self,always,0,2,,,,,
-1032,畢萊特@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1032,畢萊特@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1032,畢萊特@挑釁,chase,194,1,200,0,5000,yes,target,always,0,,,,,,19
 1033,長老樹精@火箭術,attack,19,3,500,1500,5000,yes,target,always,0,,,,,,
 1033,長老樹精@火箭術,chase,19,3,500,1500,5000,yes,target,always,0,,,,,,
@@ -155,10 +155,10 @@
 1035,赤蒼蠅@多段攻擊,angry,171,1,500,700,5000,no,target,always,0,,,,,,6
 1035,赤蒼蠅@表情符號,follow,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1035,赤蒼蠅@風屬性攻擊,angry,187,1,2000,0,5000,yes,target,always,0,,,,,,
-1036,綠腐屍@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
-1036,綠腐屍@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1036,綠腐屍@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1036,綠腐屍@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
 1037,黑蛇@連刺攻擊,attack,56,5,500,700,5000,no,target,always,0,,,,,,
-1037,黑蛇@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1037,黑蛇@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1037,黑蛇@毒屬性攻擊,attack,188,3,500,500,5000,no,target,always,0,,,,,,
 1038,俄塞里斯@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1038,俄塞里斯@瞬間移動,idle,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
@@ -166,7 +166,7 @@
 1038,俄塞里斯@NPC爆氣,attack,349,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
 1038,俄塞里斯@病毒散撥,attack,140,5,2000,0,5000,no,target,skillused,18,,,,,,
 1038,俄塞里斯@病毒散撥,attack,140,5,2000,0,5000,no,target,always,0,,,,,,
-1038,俄塞里斯@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1038,俄塞里斯@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1038,俄塞里斯@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
 1038,俄塞里斯@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1038,俄塞里斯@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
@@ -260,14 +260,14 @@
 1049,小雞@火屬性攻擊,attack,186,1,2000,0,5000,yes,target,always,0,,,,,,
 1050,蛋殼小雞@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,2,,,,,
 1050,蛋殼小雞@火屬性攻擊,attack,186,1,2000,0,5000,yes,target,always,0,,,,,,
-1051,盜蟲@Agility UP,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
-1051,盜蟲@Agility UP,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
+1051,盜蟲@敏捷提升,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
+1051,盜蟲@敏捷提升,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
 1052,蝗蟲@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,2,,,,,
 1052,蝗蟲@地屬性攻擊,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,
-1053,浮勒盜蟲@Agility UP,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
-1053,浮勒盜蟲@Agility UP,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
-1054,瑪勒盜蟲@Agility UP,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
-1054,瑪勒盜蟲@Agility UP,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
+1053,浮勒盜蟲@敏捷提升,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
+1053,浮勒盜蟲@敏捷提升,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
+1054,瑪勒盜蟲@敏捷提升,loot,350,1,1000,0,10000,yes,self,always,0,,,,,,
+1054,瑪勒盜蟲@敏捷提升,idle,350,1,0,0,10000,yes,self,always,0,,,,,,
 1055,摩卡@地屬性攻擊,attack,185,3,500,500,5000,no,target,always,0,,,,,,6
 1055,摩卡@單體攻擊,attack,158,3,500,0,5000,yes,target,always,0,,,,,,6
 1055,摩卡@範圍攻擊,attack,174,1,2000,0,5000,yes,target,attackpcge,2,,,,,,
@@ -295,7 +295,7 @@
 1059,蜂后@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1059,蜂后@瞬間移動,idle,26,1,500,0,5000,yes,self,always,0,,,,,,
 1059,蜂后@瞬間移動,walk,26,1,500,0,5000,yes,self,always,0,,,,,,
-1059,蜂后@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1059,蜂后@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1059,蜂后@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1059,蜂后@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1059,蜂后@範圍沉默,chase,663,5,10000,1000,20000,no,self,myhpltmaxrate,80,,,,,,32
@@ -308,7 +308,7 @@
 1059,蜂后@召喚小兵,attack,196,5,10000,700,10000,no,self,slavele,3,1604,,,,,
 1059,蜂后@召喚小兵,idle,196,5,10000,700,10000,no,self,slavele,3,1604,,,,,
 1059,蜂后@召喚小兵,idle,196,4,10000,0,0,no,self,onspawn,0,1156,,,,,
-1059,蜂后@Stop,attack,342,1,2000,0,15000,no,target,always,0,,,,,,6
+1059,蜂后@束縛之網,attack,342,1,2000,0,15000,no,target,always,0,,,,,,6
 1059,蜂后@雷鳴術,attack,84,28,2000,0,5000,yes,target,always,0,,,,,,
 1059,蜂后@雷鳴術,chase,84,28,2000,0,5000,yes,target,always,0,,,,,,
 1060,大腳熊@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
@@ -347,7 +347,7 @@
 1066,螃蟹@水屬性攻擊,attack,184,1,2000,0,5000,yes,target,always,0,,,,,,
 1066,螃蟹@自動防禦,chase,249,2,2000,0,300000,yes,self,longrangeattacked,,,,,,,
 1066,螃蟹@自動防禦,attack,249,2,500,0,300000,yes,self,always,0,,,,,,
-1067,卡那多斯@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,9
+1067,卡那多斯@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,9
 1067,卡那多斯@水屬性攻擊,attack,184,2,500,500,5000,no,target,always,0,,,,,,6
 1067,卡那多斯@自動防禦,attack,249,2,500,0,300000,yes,self,always,0,,,,,,
 1067,卡那多斯@自動防禦,chase,249,2,2000,0,300000,yes,self,longrangeattacked,,,,,,,
@@ -373,11 +373,11 @@
 1074,貝殼魔靈@水屬性攻擊,attack,184,1,2000,0,5000,yes,target,always,0,,,,,,
 1076,邪骸戰士@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,1,,,,,
 1076,邪骸戰士@不死屬性攻擊,attack,347,1,2000,0,5000,yes,target,always,0,,,,,,
-1077,毒魔菇@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,6
+1077,毒魔菇@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,6
 1077,毒魔菇@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1077,毒魔菇@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1077,毒魔菇@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,1,0x3885,,,,
-1077,毒魔菇@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,6
+1077,毒魔菇@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,6
 1077,毒魔菇@毒屬性攻擊,angry,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1077,毒魔菇@表情符號,follow,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1086,黃金蟲@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
@@ -447,11 +447,11 @@
 1092,流浪之狼@召喚小兵,idle,196,5,10000,2000,60000,no,self,slavele,3,1013,,,,,27
 1092,流浪之狼@召喚小兵,idle,196,5,10000,0,0,no,self,onspawn,0,1013,,,,,27
 1093,藍瘋兔@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-1093,藍瘋兔@SP減少攻擊（追加無視體型？）,attack,206,3,500,0,5000,yes,target,always,0,,,,,,6
+1093,藍瘋兔@SP減少攻擊,attack,206,3,500,0,5000,yes,target,always,0,,,,,,6
 1093,藍瘋兔@召喚小兵,idle,196,5,10000,2000,60000,no,self,slavele,3,1063,,,,,
 1093,藍瘋兔@召喚小兵,idle,196,8,10000,0,0,no,self,onspawn,0,1063,,,,,
 1094,蝸牛@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,19,,,,,
-1094,蝸牛@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,attackpcge,2,,,,,,9
+1094,蝸牛@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,attackpcge,2,,,,,,9
 1094,蝸牛@水屬性攻擊,attack,184,1,2000,0,5000,yes,target,always,0,,,,,,
 1095,白蟻@表情符號,loot,197,1,2000,0,5000,yes,self,always,0,19,,,,,
 1095,白蟻@地屬性攻擊,attack,185,2,500,500,5000,no,target,always,0,,,,,,
@@ -490,11 +490,11 @@
 1098,胡狼頭神@治癒術,chase,28,5,10000,500,5000,yes,self,myhpltmaxrate,20,,,,,,
 1098,胡狼頭神@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,
 1099,艾吉歐蜈蚣@病毒散撥,attack,140,1,500,1500,5000,no,target,always,0,,,,,,
-1099,艾吉歐蜈蚣@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1099,艾吉歐蜈蚣@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1099,艾吉歐蜈蚣@毒屬性攻擊,attack,188,2,500,500,5000,no,target,always,0,,,,,,
 1099,艾吉歐蜈蚣@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1099,艾吉歐蜈蚣@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,7,0x3795,,,,
-1100,艾斯蜘蛛@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1100,艾斯蜘蛛@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1100,艾斯蜘蛛@易燃之網,idle,405,1,3000,0,10000,yes,target,always,0,,,,,,
 1100,艾斯蜘蛛@易燃之網,attack,405,1,2000,0,10000,yes,target,always,0,,,,,,
 1100,艾斯蜘蛛@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
@@ -511,7 +511,7 @@
 1102,巫婆@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,30,,,,,
 1102,巫婆@SP吸收,attack,200,1,500,0,5000,yes,target,always,0,,,,,,30
 1102,巫婆@SP吸收,chase,200,1,500,0,5000,yes,target,always,0,,,,,,30
-1102,巫婆@Stop,attack,342,1,500,500,5000,no,target,always,0,,,,,,30
+1102,巫婆@束縛之網,attack,342,1,500,500,5000,no,target,always,0,,,,,,30
 1102,巫婆@沉默攻擊,attack,178,3,500,700,5000,no,target,always,0,,,,,,
 1103,刺蝟蟲@地屬性攻擊,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,
 1103,刺蝟蟲@單體攻擊,attack,158,5,500,0,5000,yes,target,always,0,,,,,,6
@@ -551,7 +551,7 @@
 1112,海盜之王@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1112,海盜之王@武器值最大化,attack,114,1,500,0,5000,no,self,always,0,,,,,,
 1112,海盜之王@武器值最大化,chase,114,1,500,0,5000,no,self,always,0,,,,,,
-1112,海盜之王@Agility UP,attack,350,10,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1112,海盜之王@敏捷提升,attack,350,10,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1112,海盜之王@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1112,海盜之王@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1112,海盜之王@必中攻擊,attack,172,5,500,0,20000,no,target,always,0,,,,,,
@@ -717,7 +717,7 @@
 1141,水母@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,6
 1141,水母@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,19,,,,,
 1141,水母@水屬性攻擊,attack,184,2,500,500,5000,no,target,always,0,,,,,,6
-1142,氣泡蟲@Run,idle,354,7,10000,0,30000,no,master,alchemist,,,,,,,
+1142,氣泡蟲@後退閃躲,idle,354,7,10000,0,30000,no,master,alchemist,,,,,,,
 1142,氣泡蟲@自爆,any,173,1,10000,3000,0,no,self,afterskill,354,,,,,,
 1142,氣泡蟲@自爆,idle,173,1,500,2000,5000,no,self,myhpltmaxrate,99,,,,,,
 1142,氣泡蟲@自爆,idle,173,1,10000,2000,5000,no,self,skillused,173,,,,,,
@@ -857,7 +857,7 @@
 1159,皮里恩@範圍石化,attack,666,5,10000,500,20000,no,self,myhpltmaxrate,80,,,,,,
 1159,皮里恩@破壞頭盔,attack,345,10,2000,0,5000,no,target,skillused,18,,,,,,
 1159,皮里恩@必中攻擊,chase,172,5,500,0,20000,no,target,always,0,,,,,,
-1159,皮里恩@SP減少攻擊（追加無視體型？）,attack,206,5,2000,0,5000,yes,target,always,0,,,,,,3
+1159,皮里恩@SP減少攻擊,attack,206,5,2000,0,5000,yes,target,always,0,,,,,,3
 1159,皮里恩@石化攻擊,chase,180,5,2000,500,5000,no,target,always,0,,,,,,3
 1159,皮里恩@召喚小兵,attack,196,6,10000,700,10000,no,self,slavele,3,1558,,,,,
 1159,皮里恩@召喚小兵,idle,196,6,10000,700,10000,no,self,slavele,3,1558,,,,,
@@ -896,14 +896,14 @@
 1169,邪骸礦工@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,1,,,,,
 1169,邪骸礦工@防禦無視攻擊,angry,170,1,500,500,5000,no,target,always,0,,,,,,
 1170,鬼女@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,28,,,,,
-1170,鬼女@Stop,attack,342,1,500,0,30000,yes,target,always,0,,,,,,9
+1170,鬼女@束縛之網,attack,342,1,500,0,30000,yes,target,always,0,,,,,,9
 1170,鬼女@自殺,attack,175,1,500,0,5000,yes,target,myhpltmaxrate,80,,,,,,
 1170,鬼女@水屬性攻擊,attack,184,3,500,500,5000,no,target,always,0,,,,,,6
-1174,瓢蟲@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,attackpcge,2,,,,,,19
+1174,瓢蟲@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,attackpcge,2,,,,,,19
 1174,瓢蟲@沉默攻擊,attack,178,2,500,700,5000,no,target,always,0,,,,,,
 1174,瓢蟲@風屬性攻擊,attack,187,1,2000,0,5000,yes,target,always,0,,,,,,
 1175,白鼠@暗屬性攻擊,attack,190,1,2000,0,5000,yes,target,always,0,,,,,,
-1175,白鼠@毒攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
+1175,白鼠@毒化攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
 1176,黑蟻@藥水投擲,attack,231,2,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,5
 1176,黑蟻@藥水投擲,attack,231,2,10000,500,5000,yes,self,myhpltmaxrate,30,,,,,,5
 1176,黑蟻@藥水投擲,chase,231,2,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,5
@@ -911,7 +911,7 @@
 1176,黑蟻@地屬性攻擊,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,
 1177,茲諾克@暗屬性攻擊,attack,190,3,500,500,5000,no,target,always,0,,,,,,6
 1177,茲諾克@表情符號,loot,197,1,2000,0,5000,yes,self,always,0,29,,,,,
-1177,茲諾克@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1177,茲諾克@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1178,傑洛米@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,19,,,,,
 1178,傑洛米@火屬性攻擊,attack,186,3,500,500,5000,no,target,always,0,,,,,,6
 1178,傑洛米@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
@@ -979,10 +979,10 @@
 1195,飛行魔書@單體攻擊,attack,158,3,500,0,5000,yes,target,always,0,,,,,,2
 1196,邪骸戰俘@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,
 1196,邪骸戰俘@範圍攻擊,attack,174,1,2000,0,5000,yes,target,attackpcge,2,,,,,,
-1197,腐屍戰俘@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1197,腐屍戰俘@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1197,腐屍戰俘@不死屬性攻擊,attack,347,2,500,500,5000,no,target,always,0,,,,,,
 1198,暗黑祭司@暗十字攻擊,attack,338,10,5000,0,10000,yes,target,always,0,,,,,,9
-1198,暗黑祭司@Undead Attribute Change,attack,348,5,1000,1000,30000,no,target,always,0,,,,,,9
+1198,暗黑祭司@不死屬性變化,attack,348,5,1000,1000,30000,no,target,always,0,,,,,,9
 1198,暗黑祭司@弓身彈影,chase,264,1,10000,0,5000,yes,target,skillused,18,,,,,,
 1198,暗黑祭司@暗之賜福,chase,202,5,500,800,30000,no,target,always,0,,,,,,9
 1198,暗黑祭司@暗屬性攻擊,attack,190,3,500,500,5000,yes,target,always,0,,,,,,
@@ -994,13 +994,13 @@
 1200,艾斯恩魔女@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,3
 1200,艾斯恩魔女@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,30,,,,,
 1200,艾斯恩魔女@必中攻擊,attack,172,3,500,1000,20000,no,target,always,0,,,,,,30
-1200,艾斯恩魔女@SP減少攻擊（追加無視體型？）,attack,206,3,500,0,5000,yes,target,always,0,,,,,,30
+1200,艾斯恩魔女@SP減少攻擊,attack,206,3,500,0,5000,yes,target,always,0,,,,,,30
 1200,艾斯恩魔女@召喚小兵,idle,196,3,10000,2000,60000,no,self,slavele,0,1257,,,,,
-1200,艾斯恩魔女@Stop,attack,342,1,500,0,30000,no,target,always,0,,,,,,3
+1200,艾斯恩魔女@束縛之網,attack,342,1,500,0,30000,no,target,always,0,,,,,,3
 1201,瑞比歐@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,4
-1201,瑞比歐@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,4
+1201,瑞比歐@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,4
 1201,瑞比歐@挑釁,chase,6,10,500,600,5000,no,target,always,0,,,,,,4
-1202,阿修羅狂戰士@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,29
+1202,阿修羅狂戰士@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,29
 1202,阿修羅狂戰士@無視體型攻擊,attack,179,3,500,1500,5000,no,target,always,0,,,,,,29
 1202,阿修羅狂戰士@風屬性攻擊,attack,187,2,500,500,5000,no,target,always,0,,,,,,29
 1203,弒神者@武器值最大化,attack,114,5,500,1000,5000,no,self,always,0,,,,,,
@@ -1043,10 +1043,10 @@
 1208,邪骸浪人@範圍攻擊,attack,174,1,2000,0,5000,yes,target,attackpcge,2,,,,,,
 1208,邪骸浪人@不死屬性攻擊,attack,347,3,500,500,5000,no,target,always,0,,,,,,
 1208,邪骸浪人@脅持,attack,219,1,500,0,5000,yes,target,always,0,,,,,,
-1209,藍鼠@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1209,藍鼠@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1209,藍鼠@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1211,伊特瓢蟲@火屬性攻擊,attack,186,2,500,500,5000,no,target,always,0,,,,,,
-1211,伊特瓢蟲@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,20,,,,,,9
+1211,伊特瓢蟲@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,20,,,,,,9
 1211,伊特瓢蟲@單體攻擊,attack,158,2,500,0,5000,yes,target,always,0,,,,,,
 1211,伊特瓢蟲@沉默攻擊,attack,178,3,500,700,5000,no,target,always,0,,,,,,
 1213,獸人戰士長@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
@@ -1086,17 +1086,17 @@
 1243,雪熊@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1243,雪熊@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,6,0x3695,,,,
 1243,雪熊@霸體,chase,8,1,5000,0,10000,yes,self,longrangeattacked,,,,,,,6
-//1244,Christmas Jakk@暗黑攻擊,attack,177,3,500,0,5000,yes,target,always,0,,,,,,
-//1244,Christmas Jakk@詛咒攻擊,attack,181,3,500,800,5000,no,target,always,0,,,,,,29
-//1244,Christmas Jakk@詛咒攻擊,chase,181,3,500,800,5000,no,target,always,0,,,,,,29
-//1244,Christmas Jakk@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,,,,,
-//1244,Christmas Jakk@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,2,,,,,
-//1244,Christmas Jakk@火屬性攻擊,attack,186,3,500,500,5000,no,target,always,0,,,,,,6
-//1245,Christmas Goblin@冰凍術,attack,15,5,500,1000,5000,yes,target,always,0,,,,,,
-//1245,Christmas Goblin@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
-//1245,Christmas Goblin@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,18,,,,,
-//1245,Christmas Goblin@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,2,0x3695,,,,
-//1245,Christmas Goblin@風屬性攻擊,attack,187,2,500,500,5000,no,target,always,0,,,,,,
+//1244,聖誕南瓜先生@暗黑攻擊,attack,177,3,500,0,5000,yes,target,always,0,,,,,,
+//1244,聖誕南瓜先生@詛咒攻擊,attack,181,3,500,800,5000,no,target,always,0,,,,,,29
+//1244,聖誕南瓜先生@詛咒攻擊,chase,181,3,500,800,5000,no,target,always,0,,,,,,29
+//1244,聖誕南瓜先生@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,,,,,
+//1244,聖誕南瓜先生@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,2,,,,,
+//1244,聖誕南瓜先生@火屬性攻擊,attack,186,3,500,500,5000,no,target,always,0,,,,,,6
+//1245,聖誕哥布靈@冰凍術,attack,15,5,500,1000,5000,yes,target,always,0,,,,,,
+//1245,聖誕哥布靈@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
+//1245,聖誕哥布靈@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,18,,,,,
+//1245,聖誕哥布靈@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,2,0x3695,,,,
+//1245,聖誕哥布靈@風屬性攻擊,attack,187,2,500,500,5000,no,target,always,0,,,,,,
 1246,甜餅人@冰箭術,attack,14,3,500,1500,5000,yes,target,always,0,,,,,,21
 1246,甜餅人@冰箭術,chase,14,3,500,1500,5000,yes,target,always,0,,,,,,21
 1246,甜餅人@表情符號,walk,197,1,2000,0,5000,yes,self,always,0,2,,,,,
@@ -1108,8 +1108,8 @@
 1247,邪惡老公公@瞬間移動,attack,26,1,1000,0,5000,yes,self,always,0,,,,,,29
 1247,邪惡老公公@瞬間移動,idle,26,1,1000,0,5000,yes,self,always,0,,,,,,29
 1247,邪惡老公公@瞬間移動,chase,26,1,1000,0,5000,yes,self,always,0,,,,,,29
-1247,邪惡老公公@Run,attack,354,1,10000,0,0,yes,self,always,0,,,,,,29
-1247,邪惡老公公@Run,chase,354,1,10000,0,0,yes,self,always,0,,,,,,29
+1247,邪惡老公公@後退閃躲,attack,354,1,10000,0,0,yes,self,always,0,,,,,,29
+1247,邪惡老公公@後退閃躲,chase,354,1,10000,0,0,yes,self,always,0,,,,,,29
 1248,玩具士兵@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,24
 1248,玩具士兵@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,27,,,,,
 1249,邪惡禮盒@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
@@ -1156,7 +1156,7 @@
 1252,卡崙@範圍冰凍,chase,664,5,10000,1000,20000,no,self,always,,,,,,,36
 1252,卡崙@範圍冰凍,attack,664,5,10000,1000,20000,no,self,always,,,,,,,36
 1252,卡崙@破壞武器,attack,343,10,500,0,30000,no,target,always,0,,,,,,6
-1252,卡崙@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1252,卡崙@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1252,卡崙@暴風雪,chase,89,10,2000,0,5000,no,target,always,0,,,,,,
 1252,卡崙@暴風雪,attack,89,10,2000,0,5000,no,target,always,0,,,,,,
 1252,卡崙@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
@@ -1170,7 +1170,7 @@
 1253,蝙蝠弓箭手@衝鋒箭,attack,148,1,500,0,5000,yes,target,always,0,,,,,,
 1253,蝙蝠弓箭手@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1253,蝙蝠弓箭手@暗黑攻擊,attack,177,5,500,0,5000,yes,target,always,0,,,,,,
-1253,蝙蝠弓箭手@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,9
+1253,蝙蝠弓箭手@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,9
 1253,蝙蝠弓箭手@風屬性攻擊,attack,187,1,2000,0,5000,yes,target,always,0,,,,,,
 1254,奈吉鳥@多段攻擊,attack,171,2,500,700,5000,no,target,always,0,,,,,,6
 1254,奈吉鳥@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
@@ -1184,11 +1184,11 @@
 1256,單眼蟲@偽裝,chase,135,1,2000,200,5000,yes,self,always,0,,,,,,
 1256,單眼蟲@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,
 1256,單眼蟲@暗屬性攻擊,attack,190,1,2000,0,5000,yes,target,always,0,,,,,,
-1256,單眼蟲@毒攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
+1256,單眼蟲@毒化攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
 1257,邪惡使者@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,2
 1257,邪惡使者@暗屬性攻擊,attack,190,1,2000,0,5000,yes,target,always,0,,,,,,
 1258,弓箭哥布靈@表情符號,chase,197,1,2000,0,5000,yes,self,always,0,16,,,,,
-1258,弓箭哥布靈@毒攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
+1258,弓箭哥布靈@毒化攻擊,attack,176,1,500,800,5000,no,target,always,0,,,,,,
 1258,弓箭哥布靈@毒屬性攻擊,attack,188,2,500,500,5000,no,target,always,0,,,,,,
 1259,獅鷲獸@連刺攻擊,attack,56,10,500,700,5000,no,target,always,0,,,,,,6
 1259,獅鷲獸@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,6
@@ -1264,7 +1264,7 @@
 1271,鱷魚人@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x91,,,,
 1272,黑暗之王@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1272,黑暗之王@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
-1272,黑暗之王@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1272,黑暗之王@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1272,黑暗之王@火焰之壁,chase,18,10,2000,500,5000,no,target,always,0,,,,,,
 1272,黑暗之王@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1272,黑暗之王@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
@@ -1348,7 +1348,7 @@
 1291,狂暴惡靈@無影之牙,chase,137,5,2000,0,5000,yes,target,always,0,,,,,,
 1291,狂暴惡靈@詛咒攻擊,attack,181,5,500,800,5000,no,target,always,0,,,,,,29
 1291,狂暴惡靈@詛咒攻擊,chase,181,5,500,800,5000,no,target,always,0,,,,,,29
-1291,狂暴惡靈@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,29
+1291,狂暴惡靈@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,29
 1292,狂暴小惡魔@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1292,狂暴小惡魔@暗之賜福,attack,202,2,500,800,5000,no,target,always,0,,,,,,29
 1292,狂暴小惡魔@暗屬性攻擊,attack,190,1,2000,0,5000,yes,target,always,0,,,,,,
@@ -1393,7 +1393,7 @@
 1297,狂暴木乃伊@暗之賜福,attack,202,3,500,800,5000,no,target,always,0,,,,,,7
 1298,腐屍首領@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1298,腐屍首領@騎乘攻擊,attack,57,5,500,1000,5000,no,target,always,0,,,,,,
-1298,腐屍首領@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1298,腐屍首領@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1298,腐屍首領@召喚小兵,idle,196,2,10000,2000,60000,no,self,slavele,0,1036,,,,,
 1299,哥布靈首領@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1299,哥布靈首領@武器值最大化,attack,114,5,500,1000,5000,no,self,always,0,,,,,,27
@@ -1402,7 +1402,7 @@
 1299,哥布靈首領@召喚小兵,attack,196,5,10000,2000,60000,no,self,slavele,2,1122,1123,1124,1125,1126,27
 1299,哥布靈首領@召喚小兵,idle,196,5,10000,2000,60000,no,self,slavele,2,1122,1123,1124,1125,1126,27
 1300,狂暴綠棉蟲@石化攻擊,attack,180,5,500,500,5000,no,target,always,0,,,,,,
-1300,狂暴綠棉蟲@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
+1300,狂暴綠棉蟲@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
 1300,狂暴綠棉蟲@沉默攻擊,attack,178,3,500,700,5000,no,target,always,0,,,,,,
 1301,狂暴小土人@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1301,狂暴小土人@金錢攻擊,attack,42,9,500,800,5000,no,target,always,0,,,,,,8
@@ -1423,15 +1423,15 @@
 1303,狂暴蜂兵@風屬性攻擊,attack,187,2,500,500,5000,no,target,always,0,,,,,,6
 1304,狂暴蜘蛛@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1304,狂暴蜘蛛@無影之牙,chase,137,5,2000,0,5000,yes,target,always,0,,,,,,
-1304,狂暴蜘蛛@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
-1304,狂暴蜘蛛@Stop,attack,342,1,500,0,30000,yes,target,always,0,,,,,,
+1304,狂暴蜘蛛@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
+1304,狂暴蜘蛛@束縛之網,attack,342,1,500,0,30000,yes,target,always,0,,,,,,
 1304,狂暴蜘蛛@表情符號,chase,197,1,200,0,5000,yes,self,always,0,19,0x81,,,,
 1304,狂暴蜘蛛@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,9,0x3795,,,,
 1304,狂暴蜘蛛@召喚小兵,idle,196,2,10000,2000,60000,no,self,slavele,0,1100,,,,,
 1305,狂暴蜈蚣@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1305,狂暴蜈蚣@病毒散撥,attack,140,1,500,1500,5000,no,target,always,0,,,,,,
-1305,狂暴蜈蚣@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
-1305,狂暴蜈蚣@Stop,attack,342,1,500,500,5000,no,target,always,0,,,,,,
+1305,狂暴蜈蚣@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
+1305,狂暴蜈蚣@束縛之網,attack,342,1,500,500,5000,no,target,always,0,,,,,,
 1305,狂暴蜈蚣@召喚小兵,idle,196,2,10000,2000,60000,no,self,slavele,0,1099,,,,,
 1306,狂暴大腳熊@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1306,狂暴大腳熊@地屬性攻擊,attack,185,1,2000,0,5000,yes,target,always,0,,,,,,
@@ -1480,7 +1480,7 @@
 1312,烏龜將軍@武器值最大化,attack,114,5,500,0,30000,no,self,always,0,,,,,,
 1312,烏龜將軍@武器值最大化,chase,114,5,500,0,30000,no,self,always,0,,,,,,
 1312,烏龜將軍@水球術,chase,86,10,10000,500,5000,no,target,skillused,18,,,,,,
-1312,烏龜將軍@Agility UP,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
+1312,烏龜將軍@敏捷提升,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
 1312,烏龜將軍@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1312,烏龜將軍@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1312,烏龜將軍@地屬性攻擊,attack,185,5,2000,0,5000,no,target,always,0,,,,,,6
@@ -1611,13 +1611,13 @@
 1372,魔羌@無視體型攻擊,attack,179,3,500,1500,5000,no,target,always,0,,,,,,6
 1373,死靈騎士@緩速術,chase,30,10,2000,0,60000,no,target,always,0,,,,,,
 1373,死靈騎士@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1373,Lord of the Dead@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+//1373,死靈騎士@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1373,死靈騎士@地獄審判,chase,662,10,10000,1000,10000,no,self,always,0,,,,,,36
 1373,死靈騎士@地獄審判,attack,662,10,10000,1000,10000,no,self,always,0,,,,,,36
 1373,死靈騎士@騎乘攻擊,attack,57,20,2000,500,5000,no,target,always,0,,,,,,
 1373,死靈騎士@暗聖靈召喚,chase,340,10,2000,0,5000,yes,target,always,0,,,,,,
-1373,死靈騎士@Undead Attribute Change,attack,348,1,2000,0,5000,no,target,always,0,,,,,,
-1373,死靈騎士@Agility UP,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
+1373,死靈騎士@不死屬性變化,attack,348,1,2000,0,5000,no,target,always,0,,,,,,
+1373,死靈騎士@敏捷提升,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
 1373,死靈騎士@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1373,死靈騎士@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1373,死靈騎士@暗十字審判,attack,339,10,1000,700,5000,no,self,myhpltmaxrate,30,,,,,,
@@ -1770,13 +1770,13 @@
 1389,德古拉男爵@地獄審判,chase,662,10,10000,500,20000,no,self,myhpltmaxrate,80,,,,,,36
 1389,德古拉男爵@地獄審判,attack,662,10,10000,500,20000,no,self,myhpltmaxrate,80,,,,,,36
 1389,德古拉男爵@無影之牙,chase,137,5,2000,0,5000,yes,target,always,0,,,,,,
-1389,德古拉男爵@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1389,德古拉男爵@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1389,德古拉男爵@HP吸收,attack,199,1,3000,0,0,yes,target,always,0,,,,,,
 1389,德古拉男爵@SP吸收,chase,200,1,3000,0,0,yes,target,always,0,,,,,,
 1389,德古拉男爵@弓身彈影,chase,264,1,2000,200,5000,yes,target,always,0,,,,,,
 1389,德古拉男爵@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1389,德古拉男爵@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
-1389,德古拉男爵@Undead Attribute Change,attack,348,1,2000,0,5000,no,target,always,0,,,,,,9
+1389,德古拉男爵@不死屬性變化,attack,348,1,2000,0,5000,no,target,always,0,,,,,,9
 1389,德古拉男爵@Invisible,attack,353,1,2000,200,5000,yes,self,always,0,,,,,,
 1389,德古拉男爵@Invisible,idle,353,1,2000,200,5000,yes,self,always,0,,,,,,
 1389,德古拉男爵@Invisible,chase,353,1,2000,200,5000,yes,self,always,0,,,,,,
@@ -1799,90 +1799,90 @@
 1392,直升機哥布靈@自爆,attack,173,1,500,2000,5000,no,self,myhpltmaxrate,50,,,,,,23
 1393,木乃伊@多段攻擊,angry,171,1,500,700,5000,no,target,always,0,,,,,,
 1393,木乃伊@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,
-//1395,Wind Crystal@地震術,chase,90,5,4000,0,0,no,target,always,0,,,,,,0
-//1395,Wind Crystal@地震術,chase,90,5,10000,0,0,no,target,skillused,18,,,,,,0
-//1395,Wind Crystal@地震術,attack,90,5,4000,0,0,no,target,always,0,,,,,,0
-//1395,Wind Crystal@崩裂術,chase,91,5,2000,0,5000,no,target,always,0,,,,,,21
-//1395,Wind Crystal@崩裂術,chase,91,5,10000,0,5000,no,target,skillused,18,,,,,,21
-//1395,Wind Crystal@崩裂術,attack,91,5,2000,0,5000,no,target,always,0,,,,,,21
-//1395,Wind Crystal@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
-//1395,Wind Crystal@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1395,Wind Crystal@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1395,Wind Crystal@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
-//1395,Wind Crystal@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
-//1395,Wind Crystal@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
-//1395,Wind Crystal@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
-//1395,Wind Crystal@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
-//1395,Wind Crystal@地屬性攻擊,attack,185,5,2000,0,5000,yes,target,always,0,,,,,,
-//1395,Wind Crystal@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1395,Wind Crystal@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1395,Wind Crystal@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1395,Wind Crystal@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1395,Wind Crystal@破壞頭盔,attack,345,10,2000,0,5000,no,target,always,0,,,,,,29
-//1396,Earth Crystal@雷擊術,chase,20,5,2000,0,5000,no,target,always,0,,,,,,0
-//1396,Earth Crystal@雷擊術,chase,20,5,4000,0,5000,no,target,skillused,18,,,,,,0
-//1396,Earth Crystal@雷鳴術,chase,84,10,2000,500,5000,no,target,always,0,,,,,,0
-//1396,Earth Crystal@雷鳴術,chase,84,10,10000,500,5000,no,target,skillused,18,,,,,,0
-//1396,Earth Crystal@雷鳴術,attack,84,10,2000,500,5000,no,target,always,0,,,,,,0
-//1396,Earth Crystal@怒雷強擊,chase,85,10,2000,500,5000,no,target,always,0,,,,,,21
-//1396,Earth Crystal@怒雷強擊,chase,85,10,10000,500,5000,no,target,skillused,18,,,,,,21
-//1396,Earth Crystal@怒雷強擊,attack,85,10,2000,500,5000,no,target,always,0,,,,,,21
-//1396,Earth Crystal@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1396,Earth Crystal@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1396,Earth Crystal@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
-//1396,Earth Crystal@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
-//1396,Earth Crystal@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
-//1396,Earth Crystal@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
-//1396,Earth Crystal@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
-//1396,Earth Crystal@風屬性攻擊,attack,187,5,2000,0,5000,yes,target,always,0,,,,,,
-//1396,Earth Crystal@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1396,Earth Crystal@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1396,Earth Crystal@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1396,Earth Crystal@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1396,Earth Crystal@破壞鎧甲,attack,344,10,2000,0,5000,no,target,always,0,,,,,,6
-//1397,Fire Crystal@火箭術,chase,19,5,2000,0,5000,no,target,always,0,,,,,,0
-//1397,Fire Crystal@火箭術,chase,19,5,4000,0,5000,no,target,skillused,18,,,,,,0
-//1397,Fire Crystal@火球術,chase,17,20,4000,0,0,no,target,always,0,,,,,,0
-//1397,Fire Crystal@火球術,chase,17,20,10000,0,0,no,target,skillused,18,,,,,,0
-//1397,Fire Crystal@火球術,attack,17,10,4000,0,0,no,target,always,0,,,,,,0
-//1397,Fire Crystal@隕石術,chase,83,10,2000,500,5000,no,target,always,0,,,,,,21
-//1397,Fire Crystal@隕石術,chase,83,10,10000,500,5000,no,target,skillused,18,,,,,,21
-//1397,Fire Crystal@隕石術,attack,83,10,2000,500,5000,no,target,always,0,,,,,,21
-//1397,Fire Crystal@火之獵殺,attack,81,10,1000,1000,5000,no,self,always,0,,,,,,
-//1397,Fire Crystal@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1397,Fire Crystal@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1397,Fire Crystal@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
-//1397,Fire Crystal@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
-//1397,Fire Crystal@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
-//1397,Fire Crystal@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
-//1397,Fire Crystal@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
-//1397,Fire Crystal@火屬性攻擊,attack,186,5,2000,0,5000,yes,target,always,0,,,,,,
-//1397,Fire Crystal@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1397,Fire Crystal@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1397,Fire Crystal@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1397,Fire Crystal@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1397,Fire Crystal@破壞武器,attack,343,10,2000,0,5000,no,target,always,0,,,,,,18
-//1398,Water Crystal@冰箭術,chase,14,5,2000,0,5000,no,target,always,0,,,,,,0
-//1398,Water Crystal@冰箭術,chase,14,5,4000,0,5000,no,target,skillused,18,,,,,,0
-//1398,Water Crystal@水球術,chase,86,10,2000,500,5000,no,target,always,0,,,,,,0
-//1398,Water Crystal@水球術,chase,86,10,10000,500,5000,no,target,skillused,18,,,,,,0
-//1398,Water Crystal@水球術,attack,86,10,2000,500,5000,no,target,always,0,,,,,,0
-//1398,Water Crystal@暴風雪,chase,89,10,2000,500,5000,no,target,always,0,,,,,,21
-//1398,Water Crystal@暴風雪,chase,89,10,10000,500,5000,no,target,skillused,18,,,,,,21
-//1398,Water Crystal@暴風雪,attack,89,10,2000,500,5000,no,target,always,0,,,,,,21
-//1398,Water Crystal@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1398,Water Crystal@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
-//1398,Water Crystal@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
-//1398,Water Crystal@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
-//1398,Water Crystal@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
-//1398,Water Crystal@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
-//1398,Water Crystal@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
-//1398,Water Crystal@水屬性攻擊,attack,184,5,2000,0,5000,yes,target,always,0,,,,,,
-//1398,Water Crystal@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1398,Water Crystal@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
-//1398,Water Crystal@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1398,Water Crystal@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-//1398,Water Crystal@破壞盾牌,attack,346,10,2000,0,5000,no,target,always,0,,,,,,2
+//1395,風元素@地震術,chase,90,5,4000,0,0,no,target,always,0,,,,,,0
+//1395,風元素@地震術,chase,90,5,10000,0,0,no,target,skillused,18,,,,,,0
+//1395,風元素@地震術,attack,90,5,4000,0,0,no,target,always,0,,,,,,0
+//1395,風元素@崩裂術,chase,91,5,2000,0,5000,no,target,always,0,,,,,,21
+//1395,風元素@崩裂術,chase,91,5,10000,0,5000,no,target,skillused,18,,,,,,21
+//1395,風元素@崩裂術,attack,91,5,2000,0,5000,no,target,always,0,,,,,,21
+//1395,風元素@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
+//1395,風元素@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1395,風元素@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1395,風元素@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
+//1395,風元素@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
+//1395,風元素@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
+//1395,風元素@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
+//1395,風元素@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
+//1395,風元素@地屬性攻擊,attack,185,5,2000,0,5000,yes,target,always,0,,,,,,
+//1395,風元素@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1395,風元素@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1395,風元素@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1395,風元素@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1395,風元素@破壞頭盔,attack,345,10,2000,0,5000,no,target,always,0,,,,,,29
+//1396,地元素@雷擊術,chase,20,5,2000,0,5000,no,target,always,0,,,,,,0
+//1396,地元素@雷擊術,chase,20,5,4000,0,5000,no,target,skillused,18,,,,,,0
+//1396,地元素@雷鳴術,chase,84,10,2000,500,5000,no,target,always,0,,,,,,0
+//1396,地元素@雷鳴術,chase,84,10,10000,500,5000,no,target,skillused,18,,,,,,0
+//1396,地元素@雷鳴術,attack,84,10,2000,500,5000,no,target,always,0,,,,,,0
+//1396,地元素@怒雷強擊,chase,85,10,2000,500,5000,no,target,always,0,,,,,,21
+//1396,地元素@怒雷強擊,chase,85,10,10000,500,5000,no,target,skillused,18,,,,,,21
+//1396,地元素@怒雷強擊,attack,85,10,2000,500,5000,no,target,always,0,,,,,,21
+//1396,地元素@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1396,地元素@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1396,地元素@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
+//1396,地元素@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
+//1396,地元素@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
+//1396,地元素@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
+//1396,地元素@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
+//1396,地元素@風屬性攻擊,attack,187,5,2000,0,5000,yes,target,always,0,,,,,,
+//1396,地元素@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1396,地元素@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1396,地元素@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1396,地元素@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1396,地元素@破壞鎧甲,attack,344,10,2000,0,5000,no,target,always,0,,,,,,6
+//1397,火元素@火箭術,chase,19,5,2000,0,5000,no,target,always,0,,,,,,0
+//1397,火元素@火箭術,chase,19,5,4000,0,5000,no,target,skillused,18,,,,,,0
+//1397,火元素@火球術,chase,17,20,4000,0,0,no,target,always,0,,,,,,0
+//1397,火元素@火球術,chase,17,20,10000,0,0,no,target,skillused,18,,,,,,0
+//1397,火元素@火球術,attack,17,10,4000,0,0,no,target,always,0,,,,,,0
+//1397,火元素@隕石術,chase,83,10,2000,500,5000,no,target,always,0,,,,,,21
+//1397,火元素@隕石術,chase,83,10,10000,500,5000,no,target,skillused,18,,,,,,21
+//1397,火元素@隕石術,attack,83,10,2000,500,5000,no,target,always,0,,,,,,21
+//1397,火元素@火之獵殺,attack,81,10,1000,1000,5000,no,self,always,0,,,,,,
+//1397,火元素@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1397,火元素@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1397,火元素@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
+//1397,火元素@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
+//1397,火元素@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
+//1397,火元素@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
+//1397,火元素@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
+//1397,火元素@火屬性攻擊,attack,186,5,2000,0,5000,yes,target,always,0,,,,,,
+//1397,火元素@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1397,火元素@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1397,火元素@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1397,火元素@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1397,火元素@破壞武器,attack,343,10,2000,0,5000,no,target,always,0,,,,,,18
+//1398,水元素@冰箭術,chase,14,5,2000,0,5000,no,target,always,0,,,,,,0
+//1398,水元素@冰箭術,chase,14,5,4000,0,5000,no,target,skillused,18,,,,,,0
+//1398,水元素@水球術,chase,86,10,2000,500,5000,no,target,always,0,,,,,,0
+//1398,水元素@水球術,chase,86,10,10000,500,5000,no,target,skillused,18,,,,,,0
+//1398,水元素@水球術,attack,86,10,2000,500,5000,no,target,always,0,,,,,,0
+//1398,水元素@暴風雪,chase,89,10,2000,500,5000,no,target,always,0,,,,,,21
+//1398,水元素@暴風雪,chase,89,10,10000,500,5000,no,target,skillused,18,,,,,,21
+//1398,水元素@暴風雪,attack,89,10,2000,500,5000,no,target,always,0,,,,,,21
+//1398,水元素@沉默攻擊,chase,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1398,水元素@沉默攻擊,attack,178,5,2000,0,5000,no,target,always,0,,,,,,
+//1398,水元素@霸體,chase,8,7,10000,0,20000,yes,self,longrangeattacked,,,,,,,
+//1398,水元素@加速術,chase,29,1,5000,3000,120000,no,self,myhpltmaxrate,50,,,,,,
+//1398,水元素@雙手劍攻擊速度增加,attack,60,10,5000,3000,300000,no,self,myhpltmaxrate,20,,,,,,
+//1398,水元素@緩速術,chase,30,1,1000,0,10000,yes,target,always,0,,,,,,
+//1398,水元素@HP吸收,attack,199,1,2000,0,5000,yes,target,myhpltmaxrate,20,,,,,,
+//1398,水元素@水屬性攻擊,attack,184,5,2000,0,5000,yes,target,always,0,,,,,,
+//1398,水元素@暗屬性變化,chase,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1398,水元素@暗屬性變化,attack,168,1,10000,0,300000,yes,self,myhpltmaxrate,50,,,,,,
+//1398,水元素@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1398,水元素@瞬間移動,walk,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+//1398,水元素@破壞盾牌,attack,346,10,2000,0,5000,no,target,always,0,,,,,,2
 1399,巴風特@瞬間移動,idle,26,1,2000,0,0,yes,self,always,0,,,,,,20
 1399,巴風特@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1399,巴風特@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
@@ -1912,7 +1912,7 @@
 1401,火忍西怒畢@狂擊,attack,5,5,500,0,5000,yes,target,always,0,,,,,,
 1401,火忍西怒畢@後退迴避,attack,150,1,10000,500,3600000,no,self,myhpltmaxrate,10,,,,,,
 1402,牛蛙@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,7,,,,,
-1402,牛蛙@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1402,牛蛙@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1402,牛蛙@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1403,武士火槍兵@火屬性攻擊,attack,186,3,500,500,5000,no,target,always,0,,,,,,7
 1404,米雅畢@暗黑攻擊,attack,177,3,500,0,5000,yes,target,always,0,,,,,,7
@@ -1970,7 +1970,7 @@
 1416,妖仙女@治癒術,idle,28,3,10000,500,5000,yes,self,myhpltmaxrate,30,,,,,,2
 1416,妖仙女@治癒術,chase,28,3,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,2
 1416,妖仙女@治癒術,chase,28,3,10000,500,5000,yes,self,myhpltmaxrate,30,,,,,,2
-1416,妖仙女@Stop,attack,342,1,500,0,30000,no,target,always,0,,,,,,6
+1416,妖仙女@束縛之網,attack,342,1,500,0,30000,no,target,always,0,,,,,,6
 1416,妖仙女@魔法效果解除,attack,289,5,0,0,5000,yes,target,always,0,,,,,,
 1417,拉鍊熊@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,6
 1417,拉鍊熊@無視體型攻擊,attack,179,2,500,1500,5000,no,target,always,0,,,,,,6
@@ -1986,7 +1986,7 @@
 1418,墨蛇君@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1418,墨蛇君@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1418,墨蛇君@暗之賜福,attack,202,5,2000,800,5000,no,target,always,0,,,,,,29
-1418,墨蛇君@Stop,attack,342,1,10000,0,15000,yes,target,always,0,,,,,,2
+1418,墨蛇君@束縛之網,attack,342,1,10000,0,15000,yes,target,always,0,,,,,,2
 1418,墨蛇君@召喚小兵,attack,196,5,10000,700,10000,no,self,slavele,2,1531,1531,1564,,,
 1418,墨蛇君@召喚小兵,idle,196,5,10000,700,10000,no,self,slavele,2,1531,1531,1564,,,
 1418,墨蛇君@怒爆,attack,7,20,2000,0,5000,yes,self,attackpcge,2,,,,,,
@@ -2009,13 +2009,13 @@
 1422,赤蒼蠅@HP吸收,attack,199,1,500,0,5000,yes,target,always,0,,,,,,
 1422,赤蒼蠅@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,
 1422,赤蒼蠅@風屬性攻擊,attack,187,1,2000,0,5000,yes,target,always,0,,,,,,
-1423,綠腐屍@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
-1423,綠腐屍@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1423,綠腐屍@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1423,綠腐屍@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1424,黑蛇@連刺攻擊,angry,56,5,500,700,5000,no,target,always,0,,,,,,
-1424,黑蛇@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1424,黑蛇@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
 1424,黑蛇@毒屬性攻擊,angry,188,3,500,500,5000,no,target,always,0,,,,,,
 1424,黑蛇@連刺攻擊,attack,56,5,500,700,5000,no,target,always,0,,,,,,
-1424,黑蛇@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1424,黑蛇@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1424,黑蛇@毒屬性攻擊,attack,188,3,500,500,5000,no,target,always,0,,,,,,
 1425,人魚@水屬性攻擊,angry,184,3,500,500,5000,no,target,always,0,,,,,,
 1425,人魚@沉默之術,follow,76,5,500,1000,5000,yes,target,always,0,,,,,,
@@ -2035,19 +2035,19 @@
 1427,夢魘@詛咒攻擊,attack,181,3,500,800,5000,no,target,always,0,,,,,,
 1427,夢魘@SP減少攻擊,attack,159,1,500,800,5000,no,target,always,0,,,,,,
 1427,夢魘@念屬性攻擊,attack,191,5,500,0,5000,yes,target,always,0,,,,,,
-1428,毒魔菇@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1428,毒魔菇@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
 1428,毒魔菇@毒屬性攻擊,angry,188,1,2000,0,5000,yes,target,always,0,,,,,,
-1428,毒魔菇@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1428,毒魔菇@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1428,毒魔菇@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1429,艾吉歐蜈蚣@病毒散撥,angry,140,1,500,1500,5000,no,target,always,0,,,,,,
-1429,艾吉歐蜈蚣@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1429,艾吉歐蜈蚣@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
 1429,艾吉歐蜈蚣@毒屬性攻擊,angry,188,2,500,500,5000,no,target,always,0,,,,,,
 1429,艾吉歐蜈蚣@病毒散撥,attack,140,1,500,1500,5000,no,target,always,0,,,,,,
-1429,艾吉歐蜈蚣@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1429,艾吉歐蜈蚣@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1429,艾吉歐蜈蚣@毒屬性攻擊,attack,188,2,500,500,5000,no,target,always,0,,,,,,
-1430,艾絲蜘蛛@毒攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
+1430,艾絲蜘蛛@毒化攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
 1430,艾絲蜘蛛@毒屬性攻擊,angry,188,1,2000,0,5000,yes,target,always,0,,,,,,
-1430,艾絲蜘蛛@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1430,艾絲蜘蛛@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1430,艾絲蜘蛛@毒屬性攻擊,attack,188,1,2000,0,5000,yes,target,always,0,,,,,,
 1431,小巴風特@暗之賜福,angry,202,1,500,800,5000,no,target,always,0,,,,,,
 1431,小巴風特@暗屬性攻擊,angry,190,2,500,500,5000,no,target,always,0,,,,,,
@@ -2362,30 +2362,30 @@
 1479,邪骸戰俘@範圍攻擊,angry,174,1,2000,0,5000,yes,target,always,0,,,,,,
 1479,邪骸戰俘@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,
 1479,邪骸戰俘@範圍攻擊,attack,174,1,2000,0,5000,yes,target,always,0,,,,,,
-1480,腐屍戰俘@毒攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
-1480,腐屍戰俘@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
+1480,腐屍戰俘@毒化攻擊,angry,176,3,500,800,5000,no,target,always,0,,,,,,
+1480,腐屍戰俘@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,
 1481,朽魔@石化攻擊,angry,180,3,500,500,5000,no,target,always,0,,,,,,
 1481,朽魔@風屬性攻擊,angry,187,1,2000,0,5000,yes,target,always,0,,,,,,
 1481,朽魔@石化攻擊,attack,180,3,500,500,5000,no,target,always,0,,,,,,
 1481,朽魔@風屬性攻擊,attack,187,1,2000,0,5000,yes,target,always,0,,,,,,
 1482,艾絲恩魔女@音速投擲,angry,136,10,500,800,5000,no,target,always,0,,,,,,
 1482,艾絲恩魔女@必中攻擊,angry,172,3,500,1000,20000,no,target,always,0,,,,,,
-1482,艾絲恩魔女@SP減少攻擊（追加無視體型？）,angry,206,3,500,0,5000,yes,target,always,0,,,,,,
+1482,艾絲恩魔女@SP減少攻擊,angry,206,3,500,0,5000,yes,target,always,0,,,,,,
 1482,艾絲恩魔女@挑釁,follow,6,10,500,600,5000,no,target,always,0,,,,,,
 1482,艾絲恩魔女@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,
 1482,艾絲恩魔女@必中攻擊,attack,172,3,500,1000,20000,no,target,always,0,,,,,,
-1482,艾絲恩魔女@SP減少攻擊（追加無視體型？）,attack,206,3,500,0,5000,yes,target,always,0,,,,,,
+1482,艾絲恩魔女@SP減少攻擊,attack,206,3,500,0,5000,yes,target,always,0,,,,,,
 1482,艾絲恩魔女@挑釁,chase,6,10,500,600,5000,no,target,always,0,,,,,,
 1483,瑞比歐@音速投擲,angry,136,10,500,800,5000,no,target,always,0,,,,,,
-1483,瑞比歐@毒攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
+1483,瑞比歐@毒化攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
 1483,瑞比歐@挑釁,follow,6,5,500,600,5000,no,target,always,0,,,,,,
 1483,瑞比歐@音速投擲,attack,136,10,500,800,5000,no,target,always,0,,,,,,
-1483,瑞比歐@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1483,瑞比歐@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1483,瑞比歐@挑釁,chase,6,5,500,600,5000,no,target,always,0,,,,,,
-1484,阿修羅狂戰士@毒攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
+1484,阿修羅狂戰士@毒化攻擊,angry,176,2,500,800,5000,no,target,always,0,,,,,,
 1484,阿修羅狂戰士@無視體型攻擊,angry,179,3,500,1500,5000,no,target,always,0,,,,,,
 1484,阿修羅狂戰士@風屬性攻擊,angry,187,2,500,500,5000,no,target,always,0,,,,,,
-1484,阿修羅狂戰士@毒攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
+1484,阿修羅狂戰士@毒化攻擊,attack,176,2,500,800,5000,no,target,always,0,,,,,,
 1484,阿修羅狂戰士@無視體型攻擊,attack,179,3,500,1500,5000,no,target,always,0,,,,,,
 1484,阿修羅狂戰士@風屬性攻擊,attack,187,2,500,500,5000,no,target,always,0,,,,,,
 1485,弒神者@武器值最大化,follow,114,5,500,1000,5000,no,self,always,0,,,,,,
@@ -2450,7 +2450,7 @@
 1492,元靈武士@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1492,元靈武士@瞬間移動,idle,26,1,5000,1000,5000,yes,self,myhpltmaxrate,20,,,,,,
 1492,元靈武士@騎乘攻擊,attack,57,20,2000,500,5000,no,target,always,0,,,,,,
-1492,元靈武士@Agility UP,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,9
+1492,元靈武士@敏捷提升,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,9
 1492,元靈武士@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
 1492,元靈武士@雙手劍攻擊速度增加,attack,60,20,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
 1492,元靈武士@破壞鎧甲,attack,344,10,2000,0,5000,no,target,always,0,,,,,,
@@ -2472,13 +2472,13 @@
 1492,元靈武士@治癒術,idle,28,11,10000,0,10000,yes,self,myhpltmaxrate,50,,,,,,
 1493,森林妖姬@治癒術,idle,28,9,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,2
 1493,森林妖姬@治癒術,attack,28,9,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,2
-1493,森林妖姬@Stop,attack,342,1,500,0,30000,yes,target,always,0,,,,,,3
+1493,森林妖姬@束縛之網,attack,342,1,500,0,30000,yes,target,always,0,,,,,,3
 1493,森林妖姬@地屬性攻擊,attack,185,3,500,500,5000,no,target,always,0,,,,,,
 1493,森林妖姬@幻視,chase,207,1,500,500,5000,yes,target,always,0,,,,,,
 1493,森林妖姬@幻視,attack,207,1,500,500,5000,yes,target,always,0,,,,,,
 1494,巨象甲蟲@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,
 1494,巨象甲蟲@地屬性攻擊,attack,185,2,500,500,5000,no,target,always,0,,,,,,6
-1494,巨象甲蟲@一定時間、非移動非反擊(DEF100),attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,19
+1494,巨象甲蟲@防禦堅硬化,attack,201,1,2000,0,5000,yes,self,myhpltmaxrate,30,,,,,,19
 1495,石炮火樹@火屬性攻擊,attack,186,2,500,500,5000,no,target,always,0,,,,,,6
 1495,石炮火樹@單體攻擊,attack,158,2,500,0,5000,yes,target,always,0,,,,,,6
 1497,機木人@治癒術,idle,28,1,2000,0,5000,yes,self,always,0,,,,,,
@@ -2490,10 +2490,10 @@
 1499,伍坦戰士@怒爆,attack,7,5,500,500,5000,no,self,always,0,,,,,,
 1500,苗娃佩瑞絲@詛咒攻擊,attack,181,3,500,800,5000,no,target,always,0,,,,,,9
 1500,苗娃佩瑞絲@石化攻擊,attack,180,3,500,500,5000,no,target,always,0,,,,,,9
-1500,苗娃佩瑞絲@毒攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,9
+1500,苗娃佩瑞絲@毒化攻擊,attack,176,3,500,800,5000,no,target,always,0,,,,,,9
 1500,苗娃佩瑞絲@詛咒攻擊,chase,181,3,500,800,5000,no,target,always,0,,,,,,9
 1500,苗娃佩瑞絲@石化攻擊,chase,180,3,500,500,5000,no,target,always,0,,,,,,9
-1500,苗娃佩瑞絲@毒攻擊,chase,176,3,500,800,5000,no,target,always,0,,,,,,9
+1500,苗娃佩瑞絲@毒化攻擊,chase,176,3,500,800,5000,no,target,always,0,,,,,,9
 1502,魔王波利@治癒術,idle,28,11,10000,0,2000,yes,self,always,0,,,,,,4
 1502,魔王波利@治癒術,walk,28,11,10000,0,2000,yes,self,always,0,,,,,,4
 1502,魔王波利@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
@@ -2588,13 +2588,13 @@
 1513,狐仙@藥水投擲,idle,231,4,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,2
 1513,狐仙@藥水投擲,attack,231,4,10000,500,10000,yes,self,always,0,,,,,,2
 1513,狐仙@藥水投擲,idle,231,4,10000,500,10000,yes,self,always,0,,,,,,2
-1514,舞獅@Agility UP,loot,350,1,10000,0,10000,yes,self,always,0,,,,,,18
-1514,舞獅@Agility UP,idle,350,1,0,0,10000,yes,self,always,0,,,,,,18
+1514,舞獅@敏捷提升,loot,350,1,10000,0,10000,yes,self,always,0,,,,,,18
+1514,舞獅@敏捷提升,idle,350,1,0,0,10000,yes,self,always,0,,,,,,18
 1514,舞獅@表情符號,idle,197,1,10000,0,3000,yes,self,always,0,22,,,,,
 1514,舞獅@表情符號,attack,197,1,10000,0,3000,yes,self,always,0,19,,,,,
 1514,舞獅@表情符號,chase,197,1,10000,0,3000,yes,self,always,0,6,,,,,
 1515,卡崙寶寶@冰凍術,chase,15,10,2000,0,5000,yes,target,always,0,,,,,,6
-1515,卡崙寶寶@SP減少攻擊（追加無視體型？）,attack,206,3,2000,0,5000,yes,target,always,0,,,,,,6
+1515,卡崙寶寶@SP減少攻擊,attack,206,3,2000,0,5000,yes,target,always,0,,,,,,6
 1516,米糕@進化,attack,193,2,50,5000,5000,no,self,always,0,1516,,,,,
 1517,豹皮怪@遠距離攻擊,chase,160,1,2000,0,5000,yes,target,always,0,,,,,,24
 1517,豹皮怪@防禦無視攻擊,attack,170,1,500,500,5000,yes,target,always,0,,,,,,6
@@ -2607,7 +2607,7 @@
 1518,白素貞@範圍睡眠,attack,668,5,10000,700,25000,no,self,myhpltmaxrate,80,,,,,,
 1518,白素貞@水球術,chase,86,3,2000,1000,5000,no,target,always,0,,,,,,
 1518,白素貞@水球術,attack,86,5,1000,0,5000,yes,target,always,0,,,,,,
-1518,白素貞@Stop,attack,342,1,2000,500,15000,no,target,always,0,,,,,,6
+1518,白素貞@束縛之網,attack,342,1,2000,500,15000,no,target,always,0,,,,,,6
 1518,白素貞@瞬間移動,idle,26,1,1000,0,30000,yes,self,always,0,,,,,,
 1518,白素貞@召喚小兵,idle,196,3,10000,0,5000,no,self,slavele,1,1519,,,,,
 1518,白素貞@召喚小兵,attack,196,3,10000,0,5000,no,self,slavele,1,1519,,,,,
@@ -2618,20 +2618,20 @@
 1519,小青@施毒,attack,52,10,1000,0,5000,yes,target,always,0,,,,,,6
 1520,肉粽怪@自動防禦,idle,249,10,10000,0,300000,yes,self,always,0,,,,,,
 1520,肉粽怪@自殺,attack,175,1,10000,4000,0,no,target,myhpltmaxrate,50,,,,,,
-//1566,Wraith Dead@緩速術,chase,30,9,500,1000,5000,no,target,always,0,,,,,,29
-//1566,Wraith Dead@無影之牙,chase,137,5,2000,0,5000,yes,target,always,0,,,,,,
-//1566,Wraith Dead@詛咒攻擊,attack,181,5,500,800,5000,no,target,always,0,,,,,,29
-//1566,Wraith Dead@詛咒攻擊,chase,181,5,500,800,5000,no,target,always,0,,,,,,29
-//1566,Wraith Dead@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,29
+//1566,狂暴惡靈@緩速術,chase,30,9,500,1000,5000,no,target,always,0,,,,,,29
+//1566,狂暴惡靈@無影之牙,chase,137,5,2000,0,5000,yes,target,always,0,,,,,,
+//1566,狂暴惡靈@詛咒攻擊,attack,181,5,500,800,5000,no,target,always,0,,,,,,29
+//1566,狂暴惡靈@詛咒攻擊,chase,181,5,500,800,5000,no,target,always,0,,,,,,29
+//1566,狂暴惡靈@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,29
 1555,苗娃佩瑞絲@變成獸人面孔,idle,333,1,10000,0,0,yes,target,masterattacked,,,,,,,
 1575,噬人花@變成獸人面孔,idle,333,1,10000,0,0,yes,target,masterattacked,,,,,,,
 1579,海葵@變成獸人面孔,idle,333,1,10000,0,0,yes,target,masterattacked,,,,,,,
-//1580,Incubus@暗黑攻擊,attack,177,5,500,0,5000,yes,target,always,0,,,,,,
-//1580,Incubus@暗屬性攻擊,attack,190,2,500,500,5000,no,target,always,0,,,,,,
-//1580,Incubus@暗聖靈召喚,attack,340,9,500,700,5000,no,target,always,0,,,,,,29
-//1580,Incubus@暗聖靈召喚,chase,340,9,500,700,5000,no,target,always,0,,,,,,29
-//1580,Incubus@SP減少攻擊,attack,159,3,500,800,5000,no,target,always,0,,,,,,14
-//1580,Incubus@SP減少攻擊,chase,159,3,500,800,5000,no,target,always,0,,,,,,14
+//1580,惡魔侍者@暗黑攻擊,attack,177,5,500,0,5000,yes,target,always,0,,,,,,
+//1580,惡魔侍者@暗屬性攻擊,attack,190,2,500,500,5000,no,target,always,0,,,,,,
+//1580,惡魔侍者@暗聖靈召喚,attack,340,9,500,700,5000,no,target,always,0,,,,,,29
+//1580,惡魔侍者@暗聖靈召喚,chase,340,9,500,700,5000,no,target,always,0,,,,,,29
+//1580,惡魔侍者@SP減少攻擊,attack,159,3,500,800,5000,no,target,always,0,,,,,,14
+//1580,惡魔侍者@SP減少攻擊,chase,159,3,500,800,5000,no,target,always,0,,,,,,14
 1582,惡魔波利@召喚小兵,attack,196,7,10000,2000,10000,no,self,slavele,3,1595,1595,1595,1433,,6
 1582,惡魔波利@召喚小兵,idle,196,7,10000,2000,10000,no,self,slavele,3,1595,1595,1595,1433,,6
 1582,惡魔波利@暗聖靈召喚,chase,340,5,3000,700,0,no,target,always,0,,,,,,32
@@ -2639,7 +2639,7 @@
 1582,惡魔波利@暗屬性攻擊,attack,190,2,2000,0,5000,no,target,always,0,,,,,,6
 1582,惡魔波利@緩速術,chase,30,1,2000,1000,5000,no,target,always,0,,,,,,29
 1583,塔奧群卡@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-1583,塔奧群卡@Agility UP,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,9
+1583,塔奧群卡@敏捷提升,attack,350,5,10000,0,120000,yes,self,myhpltmaxrate,30,,,,,,9
 1583,塔奧群卡@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1583,塔奧群卡@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1583,塔奧群卡@破壞鎧甲,attack,344,10,2000,0,5000,no,target,always,0,,,,,,
@@ -2672,8 +2672,8 @@
 1589,曼陀羅魔花@變成獸人面孔,idle,333,1,10000,0,0,yes,target,masterattacked,,,,,,,
 1590,邪惡向日葵@治癒術,idle,28,9,10000,500,5000,yes,friend,friendhpltmaxrate,90,,,,,,
 1590,邪惡向日葵@變成獸人面孔,idle,333,1,10000,0,0,yes,target,masterattacked,,,,,,,
-1609,年獸@Agility UP,loot,350,1,10000,0,10000,yes,self,always,0,,,,,,18
-1609,年獸@Agility UP,idle,350,1,0,0,10000,yes,self,always,0,,,,,,18
+1609,年獸@敏捷提升,loot,350,1,10000,0,10000,yes,self,always,0,,,,,,18
+1609,年獸@敏捷提升,idle,350,1,0,0,10000,yes,self,always,0,,,,,,18
 1609,年獸@表情符號,idle,197,1,10000,0,3000,yes,self,always,0,22,,,,,
 1609,年獸@表情符號,attack,197,1,10000,0,3000,yes,self,always,0,19,,,,,
 1609,年獸@表情符號,chase,197,1,10000,0,3000,yes,self,always,0,6,,,,,
@@ -2713,7 +2713,7 @@
 1618,溫古力安特@召喚小兵,idle,196,3,10000,700,30000,no,self,slavele,0,1625,,,,,
 1619,三葉鐵甲蟲@光之障壁,attack,25,1,500,0,5000,yes,self,longrangeattacked,,,,,,,18
 1619,三葉鐵甲蟲@地屬性攻擊,attack,185,2,1000,0,5000,yes,target,always,0,,,,,,
-1619,三葉鐵甲蟲@一定時間、非移動非反擊(DEF100),attack,201,1,2000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
+1619,三葉鐵甲蟲@防禦堅硬化,attack,201,1,2000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
 1620,廢氣魔@自爆,attack,173,1,500,2000,5000,no,self,myhpltmaxrate,50,,,,,,23
 1620,廢氣魔@自爆,chase,173,1,500,2000,5000,no,self,myhpltmaxrate,50,,,,,,23
 1620,廢氣魔@自爆,attack,173,1,500,2000,5000,no,self,skillused,173,,,,,,23
@@ -2723,7 +2723,7 @@
 1621,毒液魔@自爆,attack,173,1,500,2000,5000,no,self,myhpltmaxrate,50,,,,,,23
 1621,毒液魔@自爆,chase,173,1,500,2000,5000,no,self,myhpltmaxrate,50,,,,,,23
 1621,毒液魔@自爆,attack,173,1,500,2000,5000,no,self,skillused,173,,,,,,23
-1621,毒液魔@毒攻擊,attack,176,3,1000,800,5000,no,target,always,0,,,,,,
+1621,毒液魔@毒化攻擊,attack,176,3,1000,800,5000,no,target,always,0,,,,,,
 1621,毒液魔@暗黑攻擊,attack,177,3,500,0,5000,yes,target,always,0,,,,,,6
 1621,毒液魔@暗黑攻擊,chase,177,3,500,0,5000,yes,target,always,0,,,,,,6
 1622,玩偶熊@自爆,attack,173,1,1000,2000,10000,no,self,attackpcge,3,,,,,,23
@@ -2734,7 +2734,7 @@
 1622,玩偶熊@魔法效果解除,attack,289,1,50,500,10000,no,target,always,0,,,,,,6
 1622,玩偶熊@,attack,474,1,10000,0,30000,yes,self,always,0,7,,,,,
 1622,玩偶熊@表情符號,idle,197,1,10000,0,30000,yes,self,always,0,23,,,,,
-1623,RSX-0806@Agility UP,chase,350,5,2000,0,60000,no,self,always,0,,,,,,6
+1623,RSX-0806@敏捷提升,chase,350,5,2000,0,60000,no,self,always,0,,,,,,6
 1623,RSX-0806@NPC爆氣,attack,349,5,2000,0,60000,no,self,always,0,,,,,,6
 1623,RSX-0806@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1623,RSX-0806@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
@@ -2756,9 +2756,9 @@
 1624,廢鐵暖爐@範圍攻擊,attack,174,1,1000,500,5000,yes,target,attackpcge,2,,,,,,9
 1625,三葉鐵甲蟲@光之障壁,attack,25,1,500,0,5000,yes,self,longrangeattacked,,,,,,,18
 1625,三葉鐵甲蟲@地屬性攻擊,attack,185,2,1000,0,5000,yes,target,always,0,,,,,,
-1625,三葉鐵甲蟲@一定時間、非移動非反擊(DEF100),attack,201,1,2000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
+1625,三葉鐵甲蟲@防禦堅硬化,attack,201,1,2000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
 1626,暗黑祭司@暗十字攻擊,attack,338,10,5000,0,10000,yes,target,always,0,,,,,,9
-1626,暗黑祭司@Undead Attribute Change,attack,348,5,1000,1000,30000,no,target,always,0,,,,,,9
+1626,暗黑祭司@不死屬性變化,attack,348,5,1000,1000,30000,no,target,always,0,,,,,,9
 1626,暗黑祭司@弓身彈影,chase,264,1,10000,0,5000,yes,target,skillused,18,,,,,,
 1626,暗黑祭司@暗之賜福,chase,202,5,500,800,30000,no,target,always,0,,,,,,9
 1626,暗黑祭司@暗十字審判,attack,339,5,2000,2000,30000,no,self,attackpcge,2,,,,,,9
@@ -2794,7 +2794,7 @@
 1630,白素貞@範圍睡眠,attack,668,5,10000,700,25000,no,self,myhpltmaxrate,80,,,,,,
 1630,白素貞@水球術,chase,86,3,2000,1000,5000,no,target,always,0,,,,,,
 1630,白素貞@水球術,attack,86,5,1000,0,5000,yes,target,always,0,,,,,,
-1630,白素貞@Stop,attack,342,1,2000,500,15000,no,target,always,0,,,,,,6
+1630,白素貞@束縛之網,attack,342,1,2000,500,15000,no,target,always,0,,,,,,6
 1630,白素貞@瞬間移動,idle,26,1,1000,0,30000,yes,self,always,0,,,,,,
 1630,白素貞@召喚小兵,idle,196,3,10000,0,5000,no,self,slavele,1,1631,,,,,
 1630,白素貞@召喚小兵,attack,196,3,10000,0,5000,no,self,slavele,1,1631,,,,,
@@ -2836,7 +2836,7 @@
 1635,闇●十字刺客@心靈震波,chase,379,10,2000,0,5000,yes,target,always,,,,,,,
 1635,闇●十字刺客@黑暗瞬間,attack,406,10,2000,0,10000,yes,self,always,,,,,,,
 1635,闇●十字刺客@施毒,attack,52,10,1000,0,10000,yes,target,always,,,,,,,
-1635,闇●十字刺客@Agility UP,attack,350,5,2000,0,100000,yes,self,always,,,,,,,
+1635,闇●十字刺客@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,,,,,,,
 1635,闇●十字刺客@音速投擲,attack,136,5,2000,0,5000,yes,target,always,,,,,,,6
 1635,闇●十字刺客@無影之牙,chase,137,5,2000,0,0,yes,target,always,,,,,,,
 1635,闇●十字刺客@病毒散撥,idle,140,1,2000,0,50000,yes,randomtarget,always,,,,,,,29
@@ -2893,8 +2893,8 @@
 1638,闇●神射手@衝鋒箭,attack,148,1,2000,0,3000,yes,target,always,0,,,,,,6
 1638,闇●神射手@NPC爆氣,attack,349,5,2000,0,100000,yes,self,always,0,,,,,,
 1638,闇●神射手@NPC爆氣,attack,349,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
-1638,闇●神射手@Agility UP,idle,350,5,10000,0,35000,yes,self,always,0,,,,,,
-1638,闇●神射手@Agility UP,attack,350,5,2000,0,25000,yes,self,always,0,,,,,,
+1638,闇●神射手@敏捷提升,idle,350,5,10000,0,35000,yes,self,always,0,,,,,,
+1638,闇●神射手@敏捷提升,attack,350,5,2000,0,25000,yes,self,always,0,,,,,,
 1638,闇●神射手@銳利射擊,attack,382,5,2000,500,1500,no,target,always,0,,,,,,
 1638,闇●神射手@滑動陷阱,idle,115,5,2000,0,60000,yes,around2,always,0,,,,,,
 1638,闇●神射手@滑動陷阱,attack,115,5,500,0,5000,yes,around2,always,0,,,,,,
@@ -2968,8 +2968,8 @@
 1641,十字刺客 艾勒梅斯@Invisible,attack,353,1,2000,0,30000,yes,self,always,0,,,,,,
 1641,十字刺客 艾勒梅斯@必中攻擊,attack,172,10,2000,0,15000,yes,target,always,0,,,,,,
 1641,十字刺客 艾勒梅斯@施毒,attack,52,10,1000,0,10000,yes,target,always,0,,,,,,
-1641,十字刺客 艾勒梅斯@Agility UP,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
-1641,十字刺客 艾勒梅斯@Agility UP,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
+1641,十字刺客 艾勒梅斯@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
+1641,十字刺客 艾勒梅斯@敏捷提升,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
 1641,十字刺客 艾勒梅斯@音速投擲,attack,136,10,2000,0,5000,yes,target,always,0,,,,,,6
 1641,十字刺客 艾勒梅斯@音速投擲,attack,136,10,3000,0,0,yes,target,myhpltmaxrate,30,,,,,,6
 1641,十字刺客 艾勒梅斯@無影之牙,chase,137,5,2000,0,0,yes,target,always,0,,,,,,
@@ -3027,8 +3027,8 @@
 1644,神射手 迪文@衝鋒箭,attack,148,1,2000,0,3000,yes,target,always,0,,,,,,6
 1644,神射手 迪文@NPC爆氣,attack,349,5,2000,0,100000,yes,self,always,0,,,,,,
 1644,神射手 迪文@NPC爆氣,attack,349,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
-1644,神射手 迪文@Agility UP,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
-1644,神射手 迪文@Agility UP,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
+1644,神射手 迪文@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
+1644,神射手 迪文@敏捷提升,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
 1644,神射手 迪文@銳利射擊,attack,382,5,2000,500,1500,no,target,always,0,,,,,,
 1644,神射手 迪文@地雷陷阱,idle,116,5,2000,0,60000,yes,around3,always,0,,,,,,5
 1644,神射手 迪文@地雷陷阱,attack,116,5,500,0,5000,yes,around3,always,0,,,,,,5
@@ -3102,8 +3102,8 @@
 1647,闇●十字刺客 艾勒梅斯@Invisible,attack,353,1,2000,0,30000,yes,self,always,0,,,,,,
 1647,闇●十字刺客 艾勒梅斯@必中攻擊,attack,172,10,2000,0,15000,yes,target,always,0,,,,,,
 1647,闇●十字刺客 艾勒梅斯@施毒,attack,52,10,1000,0,10000,yes,target,always,0,,,,,,
-1647,闇●十字刺客 艾勒梅斯@Agility UP,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
-1647,闇●十字刺客 艾勒梅斯@Agility UP,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
+1647,闇●十字刺客 艾勒梅斯@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
+1647,闇●十字刺客 艾勒梅斯@敏捷提升,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
 1647,闇●十字刺客 艾勒梅斯@音速投擲,attack,136,10,2000,0,5000,yes,target,always,0,,,,,,6
 1647,闇●十字刺客 艾勒梅斯@音速投擲,attack,136,10,3000,0,0,yes,target,myhpltmaxrate,30,,,,,,6
 1647,闇●十字刺客 艾勒梅斯@無影之牙,chase,137,5,2000,0,0,yes,target,always,0,,,,,,
@@ -3193,8 +3193,8 @@
 1650,闇●神射手 迪文@衝鋒箭,attack,148,1,2000,0,3000,yes,target,always,0,,,,,,6
 1650,闇●神射手 迪文@NPC爆氣,attack,349,5,2000,0,100000,yes,self,always,0,,,,,,
 1650,闇●神射手 迪文@NPC爆氣,attack,349,5,2000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
-1650,闇●神射手 迪文@Agility UP,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
-1650,闇●神射手 迪文@Agility UP,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,0,,,,,
+1650,闇●神射手 迪文@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
+1650,闇●神射手 迪文@敏捷提升,attack,350,5,2000,0,25000,yes,self,myhpltmaxrate,30,0,,,,,
 1650,闇●神射手 迪文@爆散陷阱,idle,123,5,2000,0,10000,yes,around2,always,0,,,,,,5
 1650,闇●神射手 迪文@爆散陷阱,attack,123,5,500,0,5000,yes,target,always,0,,,,,,5
 1650,闇●神射手 迪文@睡魔陷阱,idle,119,5,2000,0,10000,yes,around2,always,0,,,,,,5
@@ -3253,7 +3253,7 @@
 1653,闇●盜賊@施毒,attack,52,9,10000,1000,1000,no,target,skillused,52,,,,,,
 1653,闇●盜賊@投擲石頭,chase,152,1,4000,0,3000,yes,target,always,0,,,,,,
 1653,闇●盜賊@毒屬性攻擊,attack,188,3,500,0,5000,yes,target,always,0,,,,,,
-1653,闇●盜賊@毒攻擊,attack,176,5,1000,800,5000,no,target,always,0,,,,,,
+1653,闇●盜賊@毒化攻擊,attack,176,5,1000,800,5000,no,target,always,0,,,,,,
 1653,闇●盜賊@表情符號,idle,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
 1653,闇●盜賊@表情符號,attack,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
 1653,闇●盜賊@表情符號,chase,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
@@ -3324,7 +3324,7 @@
 1659,盜賊 特麗絲@施毒,attack,52,9,10000,1000,1000,no,target,skillused,52,,,,,,
 1659,盜賊 特麗絲@投擲石頭,chase,152,1,4000,0,3000,yes,target,always,0,,,,,,
 1659,盜賊 特麗絲@毒屬性攻擊,attack,188,3,1000,0,5000,yes,target,always,0,,,,,,
-1659,盜賊 特麗絲@毒攻擊,attack,176,5,1000,800,5000,no,target,always,0,,,,,,
+1659,盜賊 特麗絲@毒化攻擊,attack,176,5,1000,800,5000,no,target,always,0,,,,,,
 1659,盜賊 特麗絲@表情符號,idle,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
 1659,盜賊 特麗絲@表情符號,attack,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
 1659,盜賊 特麗絲@表情符號,chase,197,1,10000,0,5000,yes,self,skillused,28,15,,,,,
@@ -3506,7 +3506,7 @@
 1689,嫦娥@光耀之堂,attack,70,10,2000,0,10000,yes,self,always,0,,,,,,18
 1689,嫦娥@水球術,chase,86,3,2000,1000,5000,yes,target,always,0,,,,,,
 1689,嫦娥@水球術,attack,86,5,1000,0,5000,yes,target,always,0,,,,,,
-1689,嫦娥@Stop,attack,342,1,2000,500,15000,yes,target,always,0,,,,,,6
+1689,嫦娥@束縛之網,attack,342,1,2000,500,15000,yes,target,always,0,,,,,,6
 1689,嫦娥@瞬間移動,idle,26,1,1000,0,30000,yes,self,always,0,,,,,,
 1689,嫦娥@召喚小兵,idle,196,4,10000,0,5000,yes,self,slavele,2,1690,,,,,
 1689,嫦娥@召喚小兵,attack,196,4,10000,0,5000,yes,self,slavele,2,1690,,,,,
@@ -3520,7 +3520,7 @@
 1691,克萊本@防禦無視攻擊,attack,170,1,500,500,5000,no,target,always,0,,,,,,19
 1691,克萊本@無視體型攻擊,attack,179,1,500,0,5000,no,target,always,0,,,,,,6
 
-//skills based on info from official servers
+//基於iRO編寫
 1692,微風@光之盾,attack,205,1,1000,0,5000,yes,self,longrangeattacked,,,,,,,29
 1692,微風@光之盾,chase,205,1,500,0,5000,yes,self,longrangeattacked,,,,,,,29
 1692,微風@防禦無視攻擊,attack,170,1,1000,500,5000,no,target,always,0,,,,,,6
@@ -3560,7 +3560,7 @@
 1697,藍色等離子體@水球術,attack,86,3,500,1500,5000,no,target,always,0,,,,,,
 1697,藍色等離子體@水屬性攻擊,attack,184,3,1000,0,5000,yes,target,always,0,,,,,,21
 
-// Thanatos Tower Mobs
+// 達納托斯之塔
 1698,死亡魔書@範圍攻擊,attack,174,1,1000,0,5000,yes,target,attackpcge,2,,,,,,
 1698,死亡魔書@HP吸收,attack,199,1,500,0,5000,yes,target,always,0,,,,,,2
 1698,死亡魔書@單體攻擊,attack,158,3,500,0,5000,yes,target,always,0,,,,,,36
@@ -3608,7 +3608,7 @@
 1704,達納托斯的憎恨@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1704,達納托斯的憎恨@暗屬性攻擊,attack,190,5,500,500,5000,no,target,always,0,,,,,,36
 1704,達納托斯的憎恨@單體攻擊,attack,158,3,500,0,5000,yes,target,always,0,,,,,,36
-1704,達納托斯的憎恨@Stop,attack,342,1,500,500,5000,no,target,always,0,,,,,,
+1704,達納托斯的憎恨@束縛之網,attack,342,1,500,500,5000,no,target,always,0,,,,,,
 1704,達納托斯的憎恨@暗屬性變化,attack,168,1,1000,0,5000,no,self,always,0,,,,,,
 1704,達納托斯的憎恨@NPC爆氣,attack,349,5,2000,0,50000,yes,self,always,0,,,,,,
 1704,達納托斯的憎恨@NPC爆氣,attack,349,5,2000,0,10000,yes,self,myhpltmaxrate,40,,,,,,6
@@ -3620,8 +3620,8 @@
 1705,達納托斯的絕望@念屬性攻擊,attack,191,5,500,0,5000,yes,target,always,0,,,,,,21
 1705,達納托斯的絕望@火之獵殺,attack,81,20,1000,0,10000,yes,target,attackpcge,2,,,,,,
 1705,達納托斯的絕望@怪物互擊,attack,62,4,1000,0,10000,yes,target,always,0,,,,,,
-1705,達納托斯的絕望@Agility UP,attack,350,5,1000,0,60000,yes,self,always,0,,,,,,
-1705,達納托斯的絕望@Agility UP,attack,350,5,2000,0,10000,yes,self,myhpltmaxrate,30,,,,,,
+1705,達納托斯的絕望@敏捷提升,attack,350,5,1000,0,60000,yes,self,always,0,,,,,,
+1705,達納托斯的絕望@敏捷提升,attack,350,5,2000,0,10000,yes,self,myhpltmaxrate,30,,,,,,
 1705,達納托斯的絕望@挑釁,attack,6,5,500,0,5000,yes,target,always,0,,,,,,29
 1705,達納托斯的絕望@挑釁,chase,6,5,1000,0,5000,yes,target,always,0,,,,,,29
 1706,達納托斯的悲哀@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
@@ -3674,7 +3674,7 @@
 1709,達納托斯的憎恨@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1709,達納托斯的憎恨@暗屬性攻擊,attack,190,5,500,500,5000,no,target,always,0,,,,,,36
 1709,達納托斯的憎恨@單體攻擊,attack,158,3,500,0,5000,yes,target,always,0,,,,,,36
-1709,達納托斯的憎恨@Stop,attack,342,1,500,500,5000,no,target,always,0,,,,,,
+1709,達納托斯的憎恨@束縛之網,attack,342,1,500,500,5000,no,target,always,0,,,,,,
 1709,達納托斯的憎恨@暗屬性變化,attack,168,1,1000,0,5000,no,self,always,0,,,,,,
 1709,達納托斯的憎恨@NPC爆氣,attack,349,5,2000,0,50000,yes,self,always,0,,,,,,
 1709,達納托斯的憎恨@NPC爆氣,attack,349,5,2000,0,10000,yes,self,myhpltmaxrate,40,,,,,,6
@@ -3686,8 +3686,8 @@
 1710,達納托斯的絕望@念屬性攻擊,attack,191,5,500,0,5000,yes,target,always,0,,,,,,21
 1710,達納托斯的絕望@火之獵殺,attack,81,20,1000,0,10000,yes,target,attackpcge,2,,,,,,
 1710,達納托斯的絕望@怪物互擊,attack,62,5,1000,0,10000,yes,target,always,0,,,,,,
-1710,達納托斯的絕望@Agility UP,attack,350,5,1000,0,60000,yes,self,always,0,,,,,,
-1710,達納托斯的絕望@Agility UP,attack,350,5,2000,0,10000,yes,self,myhpltmaxrate,30,,,,,,
+1710,達納托斯的絕望@敏捷提升,attack,350,5,1000,0,60000,yes,self,always,0,,,,,,
+1710,達納托斯的絕望@敏捷提升,attack,350,5,2000,0,10000,yes,self,myhpltmaxrate,30,,,,,,
 1710,達納托斯的絕望@挑釁,attack,6,10,500,0,5000,yes,target,always,0,,,,,,29
 1710,達納托斯的絕望@挑釁,chase,6,10,1000,0,5000,yes,target,always,0,,,,,,29
 1711,達納托斯的悲哀@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
@@ -3712,7 +3712,7 @@
 1712,達納托斯的苦惱@治癒術,chase,28,9,1000,0,5000,yes,friend,friendhpltmaxrate,70,,,,,,3
 1712,達納托斯的苦惱@治癒術,chase,28,9,1000,0,5000,yes,self,myhpltmaxrate,70,,,,,,3
 
-// Abyss Lake
+// 深淵之湖
 1713,俄希托斯@火屬性攻擊,attack,186,6,500,500,5000,no,target,always,0,,,,,,
 1713,俄希托斯@防禦無視攻擊,attack,170,1,1000,500,5000,no,target,always,0,,,,,,
 1713,俄希托斯@無視體型攻擊,attack,179,5,1000,1500,5000,no,target,always,0,,,,,,
@@ -3736,7 +3736,7 @@
 1715,諾博斯@單體攻擊,attack,158,2,500,0,5000,no,target,always,0,,,,,,
 1715,諾博斯@HP吸收,attack,199,1,500,0,5000,yes,target,always,0,,,,,,37
 1716,灰俄希托斯@風屬性攻擊,attack,187,6,500,500,5000,no,target,always,0,,,,,,
-1716,灰俄希托斯@Stop,attack,342,1,500,500,5000,no,target,always,0,,,,,,
+1716,灰俄希托斯@束縛之網,attack,342,1,500,500,5000,no,target,always,0,,,,,,
 1716,灰俄希托斯@雷擊術,idle,20,8,2000,1000,5000,yes,randomtarget,always,0,,,,,,
 1716,灰俄希托斯@雷擊術,chase,20,8,1000,1000,5000,yes,target,always,0,,,,,,32
 1716,灰俄希托斯@雷擊術,attack,20,8,1000,1000,5000,yes,target,always,0,,,,,,
@@ -3801,7 +3801,7 @@
 1720,三頭龍@透明化,chase,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1721,龍蛋@進化,idle,193,1,100,2000,5000,no,self,myhpltmaxrate,99,1715,1718,,,,
 
-// Kiel dungeon
+// 機械人形工廠
 1733,齊爾@怒爆,chase,7,5,2500,0,3000,yes,self,always,0,,,,,,
 1733,齊爾@怒爆,attack,7,5,2500,0,3000,yes,self,always,0,,,,,,
 1733,齊爾@暗之障壁,idle,12,10,1000,0,5000,yes,self,always,0,,,,,,
@@ -3909,8 +3909,8 @@
 1751,蘭特克力斯@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1751,蘭特克力斯@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
 1751,蘭特克力斯@NPC爆氣,chase,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
-1751,蘭特克力斯@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
-1751,蘭特克力斯@Agility UP,chase,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
+1751,蘭特克力斯@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
+1751,蘭特克力斯@敏捷提升,chase,350,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
 1751,蘭特克力斯@脈衝攻擊,attack,661,5,2000,0,30000,yes,self,always,0,,,,,,32
 1751,蘭特克力斯@聖母之祈福,chase,361,5,10000,0,100000,yes,self,myhpltmaxrate,60,,,,,,
 1751,蘭特克力斯@聖母之祈福,attack,361,5,10000,0,100000,yes,self,myhpltmaxrate,60,,,,,,
@@ -3934,9 +3934,9 @@
 1752,皮影魔@暗屬性攻擊,attack,190,5,1000,0,5000,yes,target,always,0,,,,,,9
 1752,皮影魔@召喚小兵,attack,196,1,100,0,3600000,no,self,slavele,0,1762,,,,,
 1753,彩色皮影魔@卸除鎧甲,attack,217,3,500,0,30000,yes,target,always,0,,,,,,2
-1753,彩色皮影魔@毒攻擊,attack,176,5,1000,0,5000,yes,target,always,0,,,,,,
+1753,彩色皮影魔@毒化攻擊,attack,176,5,1000,0,5000,yes,target,always,0,,,,,,
 1753,彩色皮影魔@暗屬性攻擊,attack,190,5,1000,0,5000,yes,target,always,0,,,,,,2
-1753,彩色皮影魔@Undead Attribute Change,attack,348,2,500,0,30000,yes,target,always,0,,,,,,2
+1753,彩色皮影魔@不死屬性變化,attack,348,2,500,0,30000,yes,target,always,0,,,,,,2
 1753,彩色皮影魔@火焰之壁,chase,18,5,2000,500,5000,yes,target,always,0,,,,,,2
 1753,彩色皮影魔@召喚小兵,attack,196,1,100,0,3600000,no,self,slavele,0,1761,,,,,
 1754,褐方體惡魔@治癒術,attack,28,9,5000,500,5000,no,friend,friendhpltmaxrate,30,,,,,,18
@@ -4001,9 +4001,9 @@
 1761,皮影魔@詛咒攻擊,attack,181,5,1000,0,5000,yes,target,always,0,,,,,,
 1761,皮影魔@暗屬性攻擊,attack,190,5,1000,0,5000,yes,target,always,0,,,,,,9
 1762,彩色皮影魔@卸除鎧甲,attack,217,3,500,0,30000,yes,target,always,0,,,,,,2
-1762,彩色皮影魔@毒攻擊,attack,176,5,1000,0,5000,yes,target,always,0,,,,,,
+1762,彩色皮影魔@毒化攻擊,attack,176,5,1000,0,5000,yes,target,always,0,,,,,,
 1762,彩色皮影魔@暗屬性攻擊,attack,190,5,1000,0,5000,yes,target,always,0,,,,,,2
-1762,彩色皮影魔@Undead Attribute Change,attack,348,2,500,0,30000,yes,target,always,0,,,,,,2
+1762,彩色皮影魔@不死屬性變化,attack,348,2,500,0,30000,yes,target,always,0,,,,,,2
 1762,彩色皮影魔@火焰之壁,chase,18,5,2000,500,5000,yes,target,always,0,,,,,,2
 1763,褐方體惡魔@雷爆術,attack,21,4,500,1500,10000,no,target,always,0,,,,,,
 1763,褐方體惡魔@雷爆術,chase,21,4,500,1500,10000,no,target,always,0,,,,,,
@@ -4185,8 +4185,8 @@
 1779,水晶龍@霜凍之術,attack,88,10,5000,0,20000,yes,self,always,0,,,,,,
 1779,水晶龍@NPC爆氣,attack,349,5,2000,0,100000,yes,self,always,0,,,,,,
 1779,水晶龍@NPC爆氣,attack,349,5,10000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
-1779,水晶龍@Agility UP,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
-1779,水晶龍@Agility UP,attack,350,5,10000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
+1779,水晶龍@敏捷提升,attack,350,5,2000,0,100000,yes,self,always,0,,,,,,
+1779,水晶龍@敏捷提升,attack,350,5,10000,0,25000,yes,self,myhpltmaxrate,30,,,,,,
 1779,水晶龍@治癒術,idle,28,11,10000,0,10000,yes,self,myhpltmaxrate,50,,,,,,
 1780,吃人草@HP吸收,attack,199,1,1000,0,5000,yes,randomtarget,always,0,,,,,,
 1780,吃人草@長矛刺擊,attack,58,5,500,800,5000,no,randomtarget,always,0,,,,,,6
@@ -4211,7 +4211,7 @@
 1783,迦利@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1783,迦利@召喚小兵,attack,196,3,10000,1000,30000,no,self,slavele,3,1794,,,,,
 1783,迦利@召喚小兵,idle,196,3,10000,1000,30000,no,self,slavele,3,1794,,,,,
-1784,石頭波利@一定時間、非移動非反擊(DEF100),attack,201,1,1000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
+1784,石頭波利@防禦堅硬化,attack,201,1,1000,1000,5000,no,self,myhpltmaxrate,25,,,,,,9
 1784,石頭波利@狂擊,attack,5,3,500,0,5000,yes,target,always,0,,,,,,
 1785,阿特羅斯@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
 1785,阿特羅斯@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
@@ -4312,7 +4312,7 @@
 1813,三頭龍@怒雷強擊,attack,85,10,2500,500,2000,no,target,always,,,,,,,
 1813,三頭龍@多段攻擊,attack,171,6,2500,700,5000,no,target,always,,,,,,,24
 1813,三頭龍@病毒散撥,attack,140,10,3500,1500,5000,no,target,always,,,,,,,
-1813,三頭龍@SP減少攻擊（追加無視體型？）,attack,206,5,4000,0,2000,yes,target,always,,,,,,,39
+1813,三頭龍@SP減少攻擊,attack,206,5,4000,0,2000,yes,target,always,,,,,,,39
 1813,三頭龍@雙手劍攻擊速度增加,attack,60,10,5000,0,120000,yes,self,myhpltmaxrate,80,,,,,,27
 1813,三頭龍@NPC爆氣,attack,349,5,10000,0,25000,yes,self,myhpltmaxrate,60,,,,,,3
 1814,月夜貓@治癒術,attack,28,9,10000,0,5000,no,self,myhpltmaxrate,50,,,,,,21
@@ -4335,7 +4335,7 @@
 1814,月夜貓@魔法效果解除,attack,289,5,500,500,5000,no,target,always,0,,,,,,6
 1814,月夜貓@魔法效果解除,chase,289,5,500,500,5000,no,target,always,0,,,,,,6
 
-//Thor Volcano
+//托爾火山
 1829,劍士監護人魔物@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1829,劍士監護人魔物@反射盾,idle,252,10,10000,0,300000,yes,self,always,,,,,,,
 1829,劍士監護人魔物@投擲長矛攻擊,chase,59,5,10000,0,5000,yes,target,always,,,,,,,
@@ -4477,9 +4477,9 @@
 1840,黃金野豬@泥沼地,chase,92,2,2000,0,5000,yes,target,always,,,,,,,
 1840,黃金野豬@脈衝攻擊,attack,661,1,500,0,10000,yes,self,always,,,,,,,32
 
-//Cursed Abbey
+//被詛咒的修道院
 1864,屠殺腐屍@暗黑攻擊,attack,177,5,500,0,5000,yes,target,always,0,,,,,,
-1864,屠殺腐屍@毒攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
+1864,屠殺腐屍@毒化攻擊,attack,176,5,500,800,5000,no,target,always,0,,,,,,
 1864,屠殺腐屍@音速投擲,attack,136,5,1000,800,5000,no,target,always,0,,,,,,
 1864,屠殺腐屍@多段攻擊,attack,171,1,500,700,5000,no,target,always,0,,,,,,
 1865,襤褸腐屍@暗黑攻擊,attack,177,5,500,0,5000,yes,target,always,0,,,,,,
@@ -4488,14 +4488,14 @@
 1865,襤褸腐屍@箭雨,attack,47,3,500,0,5000,yes,target,always,0,,,,,,
 1866,地獄貴賓狗@治癒術,idle,28,1,10000,0,5000,yes,self,always,0,,,,,,
 1866,地獄貴賓狗@音速投擲,attack,136,3,500,500,5000,no,target,always,0,,,,,,36
-1866,地獄貴賓狗@Run,attack,354,1,10000,0,0,yes,self,myhpltmaxrate,30,,,,,,26
-1866,地獄貴賓狗@Run,chase,354,1,10000,0,0,yes,self,myhpltmaxrate,30,,,,,,26
+1866,地獄貴賓狗@後退閃躲,attack,354,1,10000,0,0,yes,self,myhpltmaxrate,30,,,,,,26
+1866,地獄貴賓狗@後退閃躲,chase,354,1,10000,0,0,yes,self,myhpltmaxrate,30,,,,,,26
 1867,惡耗女妖@詛咒攻擊,chase,181,1,1000,800,5000,yes,target,always,0,,,,,,6
 1867,惡耗女妖@範圍詛咒,attack,677,1,500,800,5000,no,self,always,0,,,,,,
 1867,惡耗女妖@致命性傷害,attack,673,2,500,0,5000,yes,target,always,0,,,,,,
 1867,惡耗女妖@暗聖靈召喚,chase,340,9,2000,0,5000,yes,target,always,0,,,,,,
 1867,惡耗女妖@暗聖靈召喚,attack,340,9,2000,0,5000,yes,target,always,0,,,,,,
-//1867,Banshee@吸血鬼的禮物,attack,679,1,500,0,5000,yes,self,always,0,,,,,,
+//1867,惡耗女妖@吸血鬼的禮物,attack,679,1,500,0,5000,yes,self,always,0,,,,,,
 1867,惡耗女妖@暗屬性攻擊,attack,190,3,1000,0,5000,yes,target,always,0,,,,,,21
 1867,惡耗女妖@暗耀之堂,attack,670,1,500,0,5000,yes,target,always,0,,,,,,
 1867,惡耗女妖@表情符號,chase,197,1,1000,0,5000,yes,self,always,0,7,0x81,,,,
@@ -4505,7 +4505,7 @@
 1868,惡耗女妖@致命性傷害,attack,673,2,500,0,5000,yes,target,always,0,,,,,,
 1868,惡耗女妖@暗聖靈召喚,chase,340,9,2000,0,5000,yes,target,always,0,,,,,,
 1868,惡耗女妖@暗聖靈召喚,attack,340,9,2000,0,5000,yes,target,always,0,,,,,,
-//1868,Banshee@吸血鬼的禮物,attack,679,1,500,0,5000,yes,self,always,0,,,,,,
+//1868,惡耗女妖@吸血鬼的禮物,attack,679,1,500,0,5000,yes,self,always,0,,,,,,
 1868,惡耗女妖@暗屬性攻擊,attack,190,3,1000,0,5000,yes,target,always,0,,,,,,21
 1868,惡耗女妖@表情符號,chase,197,1,1000,0,5000,yes,self,always,0,7,0x81,,,,
 1868,惡耗女妖@表情符號,idle,197,1,2000,0,5000,yes,self,always,0,NEED_EMO,0x3095,,,,
@@ -4540,7 +4540,7 @@
 1870,行妖術者@暗屬性攻擊,attack,190,3,2000,0,5000,yes,target,always,0,,,,,,
 1870,行妖術者@暗聖靈召喚,chase,340,5,2000,0,5000,yes,target,always,0,,,,,,
 1870,行妖術者@暗聖靈召喚,attack,340,5,2000,0,5000,yes,target,always,0,,,,,,
-1870,行妖術者@Undead Attribute Change,attack,348,1,500,500,6000000,no,target,always,0,,,,,,9
+1870,行妖術者@不死屬性變化,attack,348,1,500,500,6000000,no,target,always,0,,,,,,9
 1870,行妖術者@黑暗氣息,attack,658,1,500,0,5000,yes,target,always,0,,,,,,
 1870,行妖術者@龍威恐懼,attack,659,2,500,0,10000,yes,self,myhpltmaxrate,50,,,,,,
 1870,行妖術者@隕石術,chase,83,3,3000,500,10000,no,target,skillused,18,,,,,,
@@ -4561,7 +4561,7 @@
 1871,墮落大神官 悉潘@暗十字審判,attack,339,10,500,1300,5000,no,self,always,0,,,,,,
 1871,墮落大神官 悉潘@聖十字審判,chase,254,10,500,1000,5000,no,self,always,0,,,,,,
 1871,墮落大神官 悉潘@聖十字審判,attack,254,10,500,1000,5000,no,self,always,0,,,,,,
-//1871,Falling Bishop@吸血鬼的禮物,attack,679,2,500,0,5000,yes,self,always,0,,,,,,
+//1871,墮落大神官 悉潘@吸血鬼的禮物,attack,679,2,500,0,5000,yes,self,always,0,,,,,,
 1871,墮落大神官 悉潘@詠唱減緩,chase,672,5,2000,300,30000,no,self,always,0,,,,,,36
 1871,墮落大神官 悉潘@詠唱減緩,attack,672,5,2000,800,30000,no,self,always,0,,,,,,36
 1871,墮落大神官 悉潘@暗耀之堂,attack,670,10,10000,1000,600000,no,target,myhpltmaxrate,44,,,,,,
@@ -4605,11 +4605,11 @@
 1873,詛咒蠅@地獄審判,attack,662,5,10000,700,15000,no,self,always,0,,,,,,
 1873,詛咒蠅@地獄審判,chase,662,5,10000,700,15000,no,self,always,0,,,,,,
 1873,詛咒蠅@放逐,attack,674,1,100,1000,30000,no,target,always,0,,,,,,
-//1873,Beelzebub@吸血鬼的禮物,attack,679,10,10000,1000,10000,no,self,myhpltmaxrate,70,,,,,,47
-1873,詛咒蠅@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,60,,,,,,
-1873,詛咒蠅@Agility UP,chase,350,5,10000,0,30000,yes,self,myhpltmaxrate,60,,,,,,
-1874,詛咒蠅王@Run,attack,354,1,10000,0,0,yes,self,myhpltmaxrate,1,,,,,,26
-1874,詛咒蠅王@Run,chase,354,1,10000,0,0,yes,self,myhpltmaxrate,1,,,,,,26
+//1873,詛咒蠅@吸血鬼的禮物,attack,679,10,10000,1000,10000,no,self,myhpltmaxrate,70,,,,,,47
+1873,詛咒蠅@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,60,,,,,,
+1873,詛咒蠅@敏捷提升,chase,350,5,10000,0,30000,yes,self,myhpltmaxrate,60,,,,,,
+1874,詛咒蠅王@後退閃躲,attack,354,1,10000,0,0,yes,self,myhpltmaxrate,1,,,,,,26
+1874,詛咒蠅王@後退閃躲,chase,354,1,10000,0,0,yes,self,myhpltmaxrate,1,,,,,,26
 1874,詛咒蠅王@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1874,詛咒蠅王@治癒術,idle,28,9,10000,0,2000,yes,self,myhpltmaxrate,99,,,,,,
 1874,詛咒蠅王@透明化,attack,352,1,10000,0,15000,yes,self,always,0,,,,,,
@@ -4641,7 +4641,7 @@
 //1874,詛咒蠅王@範圍吸魂,attack,680,7,1000,500,5000,no,self,myhpltmaxrate,50,,,,,,42
 1875,王的屍體@HP吸收,attack,199,1,2000,0,5000,yes,target,always,0,,,,,,
 
-// Moscovia
+// 莫斯科比亞
 1880,樹林哥布靈@治癒術,idle,28,9,10000,3000,5000,yes,friend,friendhpltmaxrate,50,,,,,,
 1880,樹林哥布靈@治癒術,idle,28,9,5000,500,5000,yes,self,myhpltmaxrate,40,,,,,,19
 1880,樹林哥布靈@噴濺攻擊,attack,174,1,3000,0,5000,yes,target,attackpcge,2,,,,,,0
@@ -4650,19 +4650,19 @@
 1881,雷斯@弓身彈影,chase,264,1,2000,500,5000,no,target,always,0,,,,,,
 1881,雷斯@連鎖攻擊,attack,171,2,3000,700,5000,no,target,always,0,,,,,,
 1881,雷斯@出血攻擊,attack,660,3,2000,0,3000,yes,target,always,0,,,,,,32
-1881,雷斯@施毒,attack,176,2,1000,0,5000,yes,target,always,0,,,,,,
+1881,雷斯@毒化攻擊,attack,176,2,1000,0,5000,yes,target,always,0,,,,,,
 1882,芭芭亞卡@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,0,,,,,,
 1882,芭芭亞卡@水球術,chase,86,1,5000,1000,5000,no,target,always,0,,,,,,
 1882,芭芭亞卡@連鎖攻擊,attack,171,1,2000,0,5000,yes,target,always,0,,,,,,
 1882,芭芭亞卡@水球術,attack,86,2,2000,3000,5000,yes,target,always,0,,,,,,19
 1883,樹林女巫@表情,idle,197,1,2000,0,5000,yes,self,always,0,7,,,,,
-1883,樹林女巫@NPC_MAGICALATTACK,chase,192,1,2000,800,5000,no,target,always,0,,,,,,
-1883,樹林女巫@NPC_POISON,attack,176,2,2000,800,5000,yes,target,always,0,,,,,,
+1883,樹林女巫@魔轉攻擊,chase,192,1,2000,800,5000,no,target,always,0,,,,,,
+1883,樹林女巫@毒化攻擊,attack,176,2,2000,800,5000,yes,target,always,0,,,,,,
 1883,樹林女巫@水球術,attack,86,3,2000,3000,5000,yes,target,always,0,,,,,,19
-1883,樹林女巫@NPC_CURSEATTACK,attack,181,2,1000,800,5000,no,target,always,0,,,,,,29
+1883,樹林女巫@詛咒攻擊,attack,181,2,1000,800,5000,no,target,always,0,,,,,,29
 1884,森林妖精@表情,idle,197,1,2000,0,5000,yes,self,always,0,2,,,,,
 1884,森林妖精@治癒術,idle,28,5,10000,2000,5000,yes,friend,friendhpltmaxrate,50,,,,,,19
-1884,森林妖精@WZ_EARTHSPIKE,chase,90,2,5000,0,10000,yes,target,always,0,,,,,,
+1884,森林妖精@地震術E,chase,90,2,5000,0,10000,yes,target,always,0,,,,,,
 1884,森林妖精@地屬性攻擊,attack,185,2,3000,0,5000,yes,target,always,0,,,,,,
 1884,森林妖精@沉默攻擊,attack,178,2,2000,2000,10000,yes,target,always,0,,,,,,36
 1885,青冠龍@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,0,,,,,,
@@ -4673,178 +4673,178 @@
 1885,青冠龍@呼叫小兵,attack,352,1,10000,0,15000,yes,self,always,0,,,,,,
 1885,青冠龍@呼叫小兵,chase,352,1,5000,0,15000,yes,self,always,0,,,,,,
 1885,青冠龍@呼叫小兵,idle,352,1,10000,0,15000,yes,self,always,0,,,,,,
-1885,青冠龍@WZ_METEOR,attack,83,11,5000,1500,5000,no,target,myhpltmaxrate,50,,,,,,6
+1885,青冠龍@隕石術,attack,83,11,5000,1500,5000,no,target,myhpltmaxrate,50,,,,,,6
 1885,青冠龍@火球術,chase,17,9,10000,0,5000,yes,target,always,0,,,,,,
 1885,青冠龍@火球術,attack,17,20,5000,0,5000,yes,target,always,0,,,,,,
 1885,青冠龍@敏捷提升,attack,350,5,3000,0,120000,yes,self,myhpltmaxrate,30,,,,,,6
-1885,青冠龍@KN_TWOHANDQUICKEN,attack,60,20,5000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
-1885,青冠龍@NPC_POWERUP,attack,349,5,6000,0,5000,yes,self,myhpltmaxrate,30,,,,,,6
-1885,青冠龍@WZ_HEAVENDRIVE,chase,91,5,5000,0,5000,yes,target,always,0,,,,,,
-1885,青冠龍@SM_MAGNUM,attack,7,20,5000,0,5000,yes,self,always,0,,,,,,
+1885,青冠龍@雙手劍攻擊速度增加,attack,60,20,5000,0,30000,yes,self,myhpltmaxrate,30,,,,,,6
+1885,青冠龍@力量提升,attack,349,5,6000,0,5000,yes,self,myhpltmaxrate,30,,,,,,6
+1885,青冠龍@崩裂術,chase,91,5,5000,0,5000,yes,target,always,0,,,,,,
+1885,青冠龍@怒爆,attack,7,20,5000,0,5000,yes,self,always,0,,,,,,
 1885,青冠龍@沉默攻擊,attack,178,5,1000,700,5000,no,target,always,0,,,,,,
-1885,青冠龍@NPC_MENTALBREAKER,chase,159,5,500,800,25000,no,target,always,0,,,,,,
-1885,青冠龍@WZ_HEAVENDRIVE,attack,91,5,5000,500,25000,no,target,always,0,,,,,,
+1885,青冠龍@心神喪失,chase,159,5,500,800,25000,no,target,always,0,,,,,,
+1885,青冠龍@崩裂術,attack,91,5,5000,500,25000,no,target,always,0,,,,,,
 1885,青冠龍@沉默攻擊,chase,178,5,5000,700,25000,no,target,always,0,,,,,,
 1885,青冠龍@泥沼地,attack,92,5,5000,700,5000,no,target,always,0,,,,,,
 1886,森林妖精的靈魂@表情,idle,197,1,2000,0,5000,yes,self,always,0,2,,,,,
 1886,森林妖精的靈魂@治癒術,idle,28,9,10000,1000,5000,yes,friend,friendhpltmaxrate,50,,,,,,19
-1886,森林妖精的靈魂@WZ_EARTHSPIKE,chase,90,4,5000,0,10000,yes,target,always,0,,,,,,
+1886,森林妖精的靈魂@地震術E,chase,90,4,5000,0,10000,yes,target,always,0,,,,,,
 1886,森林妖精的靈魂@地屬性攻擊,attack,185,4,3000,0,5000,yes,target,always,0,,,,,,
 1886,森林妖精的靈魂@沉默攻擊,attack,178,4,2000,2000,10000,yes,target,always,0,,,,,,36
 //
-1891,蘭特克力斯@治癒術,idle,28,11,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,3
-1891,蘭特克力斯@治癒術,attack,28,11,10000,500,10000,yes,friend,friendhpltmaxrate,60,,,,,,3
-1891,蘭特克力斯@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
-1891,蘭特克力斯@音速投擲,attack,136,10,2000,0,5000,yes,target,always,0,,,,,,
-1891,蘭特克力斯@聖屬性攻擊,attack,189,10,2000,500,5000,no,target,always,0,,,,,,
-1891,蘭特克力斯@騎乘攻擊,attack,57,20,1000,0,5000,yes,target,always,0,,,,,,
-1891,蘭特克力斯@破壞鎧甲,attack,344,10,500,0,5000,yes,target,always,0,,,,,,
-1891,蘭特克力斯@雷鳴術,attack,84,28,100,2000,5000,yes,target,always,0,,,,,, 
+1891,巴基力 蘭特克力斯@治癒術,idle,28,11,10000,500,5000,yes,friend,friendhpltmaxrate,60,,,,,,3
+1891,巴基力 蘭特克力斯@治癒術,attack,28,11,10000,500,10000,yes,friend,friendhpltmaxrate,60,,,,,,3
+1891,巴基力 蘭特克力斯@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
+1891,巴基力 蘭特克力斯@音速投擲,attack,136,10,2000,0,5000,yes,target,always,0,,,,,,
+1891,巴基力 蘭特克力斯@聖屬性攻擊,attack,189,10,2000,500,5000,no,target,always,0,,,,,,
+1891,巴基力 蘭特克力斯@騎乘攻擊,attack,57,20,1000,0,5000,yes,target,always,0,,,,,,
+1891,巴基力 蘭特克力斯@破壞鎧甲,attack,344,10,500,0,5000,yes,target,always,0,,,,,,
+1891,巴基力 蘭特克力斯@雷鳴術,attack,84,28,100,2000,5000,yes,target,always,0,,,,,, 
 
-1894,Pouring@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,0,,,,,,
-1894,Pouring@瞬間移動,idle,26,1,5000,0,5000,yes,self,rudeattacked,0,,,,,,
-1894,Pouring@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,0,,,,,,
-1894,Pouring@暴風雪,chase,89,10,2000,0,5000,no,target,always,0,,,,,,
-1894,Pouring@暴風雪,attack,89,10,2000,0,5000,no,target,always,0,,,,,,
-1894,Pouring@水球術,attack,86,10,10000,500,5000,no,target,always,0,,,,,,
-1894,Pouring@水球術,chase,86,10,10000,500,5000,no,target,always,0,,,,,,
+1894,活動波利@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,0,,,,,,
+1894,活動波利@瞬間移動,idle,26,1,5000,0,5000,yes,self,rudeattacked,0,,,,,,
+1894,活動波利@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,0,,,,,,
+1894,活動波利@暴風雪,chase,89,10,2000,0,5000,no,target,always,0,,,,,,
+1894,活動波利@暴風雪,attack,89,10,2000,0,5000,no,target,always,0,,,,,,
+1894,活動波利@水球術,attack,86,10,10000,500,5000,no,target,always,0,,,,,,
+1894,活動波利@水球術,chase,86,10,10000,500,5000,no,target,always,0,,,,,,
 
 1904,炸彈波利@自爆,attack,173,2,10000,3000,0,no,self,always,0,,,,,,
 1904,炸彈波利@自爆,chase,173,2,10000,3000,0,no,self,always,0,,,,,,
 
-// Satan Morroc (Based on information from Future Wiki)
-1916,Satan Morroc@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
-1916,Satan Morroc@治癒術,idle,28,9,10000,0,2000,yes,self,myhpltmaxrate,99,,,,,,
-1916,Satan Morroc@召喚小兵,attack,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
-1916,Satan Morroc@召喚小兵,idle,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
-1916,Satan Morroc@召喚小兵,idle,196,4,10000,0,0,no,self,onspawn,0,1922,1923,1924,1925,,
-1916,Satan Morroc@地元素領域,attack,288,3,5000,0,5000,yes,target,always,,,,,,,
-1916,Satan Morroc@冰凍術,chase,15,10,6000,1000,10000,no,target,always,,,,,,,
-1916,Satan Morroc@雷鳴術,attack,84,28,3000,1000,10000,no,target,always,0,,,,,,
-1916,Satan Morroc@雷鳴術,chase,84,28,3000,1000,10000,no,target,always,0,,,,,,
-1916,Satan Morroc@地裂術,chase,653,5,1000,100,30000,no,self,always,,,,,,,
-1916,Satan Morroc@地裂術,attack,653,5,1000,100,30000,no,self,always,,,,,,,
-1916,Satan Morroc@龍威恐懼,attack,659,2,500,0,10000,yes,self,always,,,,,,,
-1916,Satan Morroc@@WZ_METEOR,attack,83,11,5000,500,2000,no,target,always,0,,,,,,
-1916,Satan Morroc@@WZ_METEOR,chase,83,11,5000,500,2000,no,target,always,0,,,,,,
-1916,Satan Morroc@地獄審判,chase,662,5,5000,800,10000,no,self,always,0,,,,,,
-1916,Satan Morroc@地獄審判,attack,662,5,5000,800,10000,no,self,always,0,,,,,,
-1916,Satan Morroc@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
-1916,Satan Morroc@火箭術,chase,19,10,3000,1000,10000,no,target,always,0,,,,,,
-1916,Satan Morroc@火箭術,attack,19,10,3000,1000,10000,no,target,always,0,,,,,,
-1916,Satan Morroc@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
-1916,Satan Morroc@脈衝攻擊,attack,661,5,2000,500,5000,no,self,always,0,,,,,,7
-1916,Satan Morroc@範圍睡眠,attack,668,5,2000,500,5000,no,self,always,0,,,,,,2
-1916,Satan Morroc@範圍沉默,attack,663,5,2000,500,5000,no,self,always,0,,,,,,9
-1916,Satan Morroc@範圍石化,attack,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
-1916,Satan Morroc@範圍石化,chase,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
-1916,Satan Morroc@放逐,attack,674,1,1000,1000,10000,no,self,always,,,,,,,
-1916,Satan Morroc@破壞盾牌,attack,346,10,2000,0,5000,yes,target,always,0,,,,,,
-1916,Satan Morroc@暗耀之堂,attack,670,10,10000,1000,600000,no,target,myhpltmaxrate,75,,,,,,
-1916,Satan Morroc@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
-1916,Satan Morroc@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
+// 魔王夢羅克 (以Future Wiki內的資料為基礎編寫)
+1916,魔王夢羅克@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
+1916,魔王夢羅克@治癒術,idle,28,9,10000,0,2000,yes,self,myhpltmaxrate,99,,,,,,
+1916,魔王夢羅克@召喚小兵,attack,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
+1916,魔王夢羅克@召喚小兵,idle,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
+1916,魔王夢羅克@召喚小兵,idle,196,4,10000,0,0,no,self,onspawn,0,1922,1923,1924,1925,,
+1916,魔王夢羅克@地元素領域,attack,288,3,5000,0,5000,yes,target,always,,,,,,,
+1916,魔王夢羅克@冰凍術,chase,15,10,6000,1000,10000,no,target,always,,,,,,,
+1916,魔王夢羅克@雷鳴術,attack,84,28,3000,1000,10000,no,target,always,0,,,,,,
+1916,魔王夢羅克@雷鳴術,chase,84,28,3000,1000,10000,no,target,always,0,,,,,,
+1916,魔王夢羅克@地裂術,chase,653,5,1000,100,30000,no,self,always,,,,,,,
+1916,魔王夢羅克@地裂術,attack,653,5,1000,100,30000,no,self,always,,,,,,,
+1916,魔王夢羅克@龍威恐懼,attack,659,2,500,0,10000,yes,self,always,,,,,,,
+1916,魔王夢羅克@隕石術,attack,83,11,5000,500,2000,no,target,always,0,,,,,,
+1916,魔王夢羅克@隕石術,chase,83,11,5000,500,2000,no,target,always,0,,,,,,
+1916,魔王夢羅克@地獄審判,chase,662,5,5000,800,10000,no,self,always,0,,,,,,
+1916,魔王夢羅克@地獄審判,attack,662,5,5000,800,10000,no,self,always,0,,,,,,
+1916,魔王夢羅克@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
+1916,魔王夢羅克@火箭術,chase,19,10,3000,1000,10000,no,target,always,0,,,,,,
+1916,魔王夢羅克@火箭術,attack,19,10,3000,1000,10000,no,target,always,0,,,,,,
+1916,魔王夢羅克@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
+1916,魔王夢羅克@脈衝攻擊,attack,661,5,2000,500,5000,no,self,always,0,,,,,,7
+1916,魔王夢羅克@範圍睡眠,attack,668,5,2000,500,5000,no,self,always,0,,,,,,2
+1916,魔王夢羅克@範圍沉默,attack,663,5,2000,500,5000,no,self,always,0,,,,,,9
+1916,魔王夢羅克@範圍石化,attack,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
+1916,魔王夢羅克@範圍石化,chase,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
+1916,魔王夢羅克@放逐,attack,674,1,1000,1000,10000,no,self,always,,,,,,,
+1916,魔王夢羅克@破壞盾牌,attack,346,10,2000,0,5000,yes,target,always,0,,,,,,
+1916,魔王夢羅克@暗耀之堂,attack,670,10,10000,1000,600000,no,target,myhpltmaxrate,75,,,,,,
+1916,魔王夢羅克@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
+1916,魔王夢羅克@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 // MVP
-1917,Satan Morroc@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
-1917,Satan Morroc@治癒術,idle,28,9,10000,0,2000,yes,self,myhpltmaxrate,99,,,,,,
-1917,Satan Morroc@召喚小兵,attack,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
-1917,Satan Morroc@召喚小兵,idle,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
-1917,Satan Morroc@召喚小兵,idle,196,4,10000,0,0,no,self,onspawn,0,1922,1923,1924,1925,,
-1917,Satan Morroc@地元素領域,attack,288,3,5000,0,5000,yes,target,always,,,,,,,
-1917,Satan Morroc@冰凍術,chase,15,10,6000,1000,10000,no,target,always,,,,,,,
-1917,Satan Morroc@雷鳴術,attack,84,28,3000,1000,10000,no,target,always,0,,,,,,
-1917,Satan Morroc@雷鳴術,chase,84,28,3000,1000,10000,no,target,always,0,,,,,,
-1917,Satan Morroc@地裂術,chase,653,5,1000,100,30000,no,self,always,,,,,,,
-1917,Satan Morroc@地裂術,attack,653,5,1000,100,30000,no,self,always,,,,,,,
-1917,Satan Morroc@龍威恐懼,attack,659,2,500,0,10000,yes,self,always,,,,,,,
-1917,Satan Morroc@@WZ_METEOR,attack,83,11,5000,500,2000,no,target,always,0,,,,,,
-1917,Satan Morroc@@WZ_METEOR,chase,83,11,5000,500,2000,no,target,always,0,,,,,,
-1917,Satan Morroc@地獄審判,chase,662,5,5000,800,10000,no,self,always,0,,,,,,
-1917,Satan Morroc@地獄審判,attack,662,5,5000,800,10000,no,self,always,0,,,,,,
-1917,Satan Morroc@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
-1917,Satan Morroc@火箭術,chase,19,10,3000,1000,10000,no,target,always,0,,,,,,
-1917,Satan Morroc@火箭術,attack,19,10,3000,1000,10000,no,target,always,0,,,,,,
-1917,Satan Morroc@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
-1917,Satan Morroc@脈衝攻擊,attack,661,5,2000,500,5000,no,self,always,0,,,,,,7
-1917,Satan Morroc@範圍睡眠,attack,668,5,2000,500,5000,no,self,always,0,,,,,,2
-1917,Satan Morroc@範圍沉默,attack,663,5,2000,500,5000,no,self,always,0,,,,,,9
-1917,Satan Morroc@範圍石化,attack,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
-1917,Satan Morroc@範圍石化,chase,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
-1917,Satan Morroc@放逐,attack,674,1,1000,1000,10000,no,self,always,,,,,,,
-1917,Satan Morroc@破壞盾牌,attack,346,10,2000,0,5000,yes,target,always,0,,,,,,
-1917,Satan Morroc@暗耀之堂,attack,670,10,10000,1000,600000,no,target,myhpltmaxrate,75,,,,,,
-1917,Satan Morroc@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
-1917,Satan Morroc@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
+1917,魔王夢羅克@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
+1917,魔王夢羅克@治癒術,idle,28,9,10000,0,2000,yes,self,myhpltmaxrate,99,,,,,,
+1917,魔王夢羅克@召喚小兵,attack,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
+1917,魔王夢羅克@召喚小兵,idle,196,4,10000,700,10000,no,self,slavele,1,1918,1919,1920,1921,,
+1917,魔王夢羅克@召喚小兵,idle,196,4,10000,0,0,no,self,onspawn,0,1922,1923,1924,1925,,
+1917,魔王夢羅克@地元素領域,attack,288,3,5000,0,5000,yes,target,always,,,,,,,
+1917,魔王夢羅克@冰凍術,chase,15,10,6000,1000,10000,no,target,always,,,,,,,
+1917,魔王夢羅克@雷鳴術,attack,84,28,3000,1000,10000,no,target,always,0,,,,,,
+1917,魔王夢羅克@雷鳴術,chase,84,28,3000,1000,10000,no,target,always,0,,,,,,
+1917,魔王夢羅克@地裂術,chase,653,5,1000,100,30000,no,self,always,,,,,,,
+1917,魔王夢羅克@地裂術,attack,653,5,1000,100,30000,no,self,always,,,,,,,
+1917,魔王夢羅克@龍威恐懼,attack,659,2,500,0,10000,yes,self,always,,,,,,,
+1917,魔王夢羅克@隕石術,attack,83,11,5000,500,2000,no,target,always,0,,,,,,
+1917,魔王夢羅克@隕石術,chase,83,11,5000,500,2000,no,target,always,0,,,,,,
+1917,魔王夢羅克@地獄審判,chase,662,5,5000,800,10000,no,self,always,0,,,,,,
+1917,魔王夢羅克@地獄審判,attack,662,5,5000,800,10000,no,self,always,0,,,,,,
+1917,魔王夢羅克@石化術,attack,16,10,2000,0,5000,no,target,always,0,,,,,,
+1917,魔王夢羅克@火箭術,chase,19,10,3000,1000,10000,no,target,always,0,,,,,,
+1917,魔王夢羅克@火箭術,attack,19,10,3000,1000,10000,no,target,always,0,,,,,,
+1917,魔王夢羅克@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,30,,,,,,
+1917,魔王夢羅克@脈衝攻擊,attack,661,5,2000,500,5000,no,self,always,0,,,,,,7
+1917,魔王夢羅克@範圍睡眠,attack,668,5,2000,500,5000,no,self,always,0,,,,,,2
+1917,魔王夢羅克@範圍沉默,attack,663,5,2000,500,5000,no,self,always,0,,,,,,9
+1917,魔王夢羅克@範圍石化,attack,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
+1917,魔王夢羅克@範圍石化,chase,666,5,10000,500,15000,no,self,myhpltmaxrate,80,,,,,,
+1917,魔王夢羅克@放逐,attack,674,1,1000,1000,10000,no,self,always,,,,,,,
+1917,魔王夢羅克@破壞盾牌,attack,346,10,2000,0,5000,yes,target,always,0,,,,,,
+1917,魔王夢羅克@暗耀之堂,attack,670,10,10000,1000,600000,no,target,myhpltmaxrate,75,,,,,,
+1917,魔王夢羅克@透明化,attack,352,1,10000,0,30000,yes,self,always,0,,,,,,
+1917,魔王夢羅克@透明化,idle,352,1,10000,0,30000,yes,self,always,0,,,,,,
 
 //Standard Mobs
-1918,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1918,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1918,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,self,myhpltmaxrate,99,,,,,,
 1918,Morroc's Shadow@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1918,Morroc's Shadow@瞬間移動,idle,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
 1918,Morroc's Shadow@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
 1918,Morroc's Shadow@詠唱減緩,attack,672,5,10000,0,30000,yes,self,always,,,,,,,
 1918,Morroc's Shadow@脈衝攻擊,attack,661,5,2000,0,30000,yes,self,always,,,,,,,
-1918,Morroc's Shadow@@KN_TWOHANDQUICKEN,attack,60,20,10000,0,120000,yes,self,myhpltmaxrate,25,,,,,,
-1918,Morroc's Shadow@@NPC_MAGICMIRROR,attack,671,1,10000,0,60000,yes,self,always,0,,,,,,
+1918,Morroc's Shadow@雙手劍攻擊速度增加,attack,60,20,10000,0,120000,yes,self,myhpltmaxrate,25,,,,,,
+1918,Morroc's Shadow@魔術之鏡,attack,671,1,10000,0,60000,yes,self,always,0,,,,,,
 1918,Morroc's Shadow@暗十字審判,attack,339,10,1000,700,5000,no,self,always,,,,,,,
 1918,Morroc's Shadow@魔法效果解除,chase,289,5,10000,0,30000,yes,target,always,0,,,,,,
 
-1919,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1919,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1919,Morroc's Shadow@HP吸收,chase,199,1,1000,0,5000,yes,target,always,0,,,,,,
 1919,Morroc's Shadow@範圍出血,chase,665,4,5000,300,15000,yes,self,always,,,,,,,
 1919,Morroc's Shadow@地裂術,chase,653,5,10000,500,50000,no,self,myhpltmaxrate,20,,,,,,6
 1919,Morroc's Shadow@怒爆,attack,7,10,2000,0,5000,no,self,always,0,,,,,,
 
-1920,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1920,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1920,Morroc's Shadow@致命性傷害,attack,673,3,1000,0,10000,no,target,always,0,,,,,,
 1920,Morroc's Shadow@治癒術,any,28,5,5000,0,600,yes,self,myhpltmaxrate,60,,,,,,
 1920,Morroc's Shadow@SP吸收,attack,200,1,1000,0,5000,yes,target,always,0,,,,,,
 1920,Morroc's Shadow@範圍沉默,attack,663,5,1000,0,20000,no,self,myhpltmaxrate,50,,,,,,
 
-1921,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1921,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1921,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,friend,friendhpltmaxrate,99,,,,,,
 1921,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,self,myhpltmaxrate,99,,,,,,
 1921,Morroc's Shadow@聖母之祈福,idle,361,5,5000,1000,10000,no,self,always,,,,,,,
 1921,Morroc's Shadow@聖母之祈福,idle,361,5,5000,1000,10000,no,friend,always,,,,,,,
 
 // No EXP/Drops
-1922,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1922,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1922,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,self,myhpltmaxrate,99,,,,,,
 1922,Morroc's Shadow@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1922,Morroc's Shadow@瞬間移動,idle,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
 1922,Morroc's Shadow@瞬間移動,walk,26,1,5000,0,5000,yes,self,rudeattacked,,,,,,,
 1922,Morroc's Shadow@詠唱減緩,attack,672,5,10000,0,30000,yes,self,always,,,,,,,
 1922,Morroc's Shadow@脈衝攻擊,attack,661,5,2000,0,30000,yes,self,always,,,,,,,
-1922,Morroc's Shadow@@KN_TWOHANDQUICKEN,attack,60,20,10000,0,120000,yes,self,myhpltmaxrate,80,,,,,,
-1922,Morroc's Shadow@@NPC_MAGICMIRROR,attack,671,1,10000,0,60000,yes,self,always,0,,,,,,
+1922,Morroc's Shadow@雙手劍攻擊速度增加,attack,60,20,10000,0,120000,yes,self,myhpltmaxrate,80,,,,,,
+1922,Morroc's Shadow@魔術之鏡,attack,671,1,10000,0,60000,yes,self,always,0,,,,,,
 1922,Morroc's Shadow@暗十字審判,attack,339,10,1000,700,5000,no,self,always,,,,,,,
 1922,Morroc's Shadow@魔法效果解除,chase,289,5,10000,0,30000,yes,target,always,0,,,,,,
 1922,Morroc's Shadow@放逐,attack,674,1,1000,1000,10000,no,self,always,,,,,,,
 1922,Morroc's Shadow@怒雷強擊,idle,85,20,10000,1000,10000,no,randomtarget,always,0,,,,,,
 1922,Morroc's Shadow@雷鳴術,attack,84,28,3000,1000,10000,no,target,always,0,,,,,,
 
-1923,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1923,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1923,Morroc's Shadow@召喚小兵,attack,196,6,10000,700,10000,no,self,always,0,1937,,,,,
 1923,Morroc's Shadow@HP吸收,chase,199,1,1000,0,5000,yes,target,always,0,,,,,,
 1923,Morroc's Shadow@範圍出血,chase,665,4,5000,300,15000,yes,self,always,,,,,,,
 1923,Morroc's Shadow@地裂術,chase,653,5,10000,200,10000,no,self,myhpltmaxrate,80,,,,,,6
 1923,Morroc's Shadow@怒爆,attack,7,10,2000,0,5000,no,self,always,0,,,,,,
 
-1924,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1924,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1924,Morroc's Shadow@致命性傷害,attack,673,4,1000,0,10000,no,target,always,0,,,,,,
 1924,Morroc's Shadow@治癒術,any,28,5,5000,0,600,yes,self,myhpltmaxrate,60,,,,,,
 1924,Morroc's Shadow@SP吸收,attack,200,1,1000,0,5000,yes,target,always,0,,,,,,
 1924,Morroc's Shadow@範圍沉默,attack,663,5,1000,0,20000,no,self,always,,,,,,,
 
-1925,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,target,longrangeattacked,0,,,,,,
+1925,Morroc's Shadow@光之障壁,idle,25,1,10000,0,1000,yes,self,longrangeattacked,0,,,,,,
 1925,Morroc's Shadow@聖母之祈福,idle,361,5,10000,1000,10000,no,friend,always,,,,,,,
 1925,Morroc's Shadow@聖母之祈福,idle,361,5,10000,1000,10000,no,self,always,,,,,,,
 1925,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,friend,friendhpltmaxrate,99,,,,,,
 1925,Morroc's Shadow@治癒術,any,28,11,10000,0,600,yes,self,myhpltmaxrate,99,,,,,,
 
-1937,Constant@自爆,any,173,1,10000,1000,10000,no,self,always,0,,,,,,
-1937,Constant@自爆,any,173,1,2000,1000,10000,no,self,always,0,,,,,,
+1937,恆量魔@自爆,any,173,1,10000,1000,10000,no,self,always,0,,,,,,
+1937,恆量魔@自爆,any,173,1,2000,1000,10000,no,self,always,0,,,,,,
 
-// Endless Tower (Based on information from Future Wiki)
+// 無限之塔 (以Future Wiki內的資料為基礎編寫)
 1956,夜勝魔@瞬間移動,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,
 1956,夜勝魔@防禦無視攻擊,attack,170,1,2000,0,5000,yes,target,always,,,,,,,
 1956,夜勝魔@音速投擲,attack,136,10,2000,0,5000,yes,target,always,,,,,,,
@@ -4880,11 +4880,10 @@
 1957,Entweihen@隕石術,attack,83,11,5000,1000,10000,no,randomtarget,myhpltmaxrate,50,,,,,,
 1957,Entweihen@暴風雪,attack,89,10,5000,1000,10000,no,randomtarget,myhpltmaxrate,50,,,,,,
 1957,Entweihen@魔法效果解除,attack,289,5,1000,0,30000,yes,randomtarget,always,0,,,,,,
-1957,Entweihen@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,80,,,,,,9
+1957,Entweihen@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,80,,,,,,9
 1957,Entweihen@NPC爆氣,attack,349,5,10000,0,30000,yes,self,myhpltmaxrate,50,,,,,,
 1957,Entweihen@魔法攻擊,attack,192,1,2000,0,5000,yes,randomtarget,myhpltmaxrate,70,,,,,,
 1957,Entweihen@暗之賜福,attack,202,10,2000,0,10000,no,randomtarget,myhpltmaxrate,50,,,,,,9
-1957,Entweihen@召喚小兵,idle,196,2,10000,0,0,no,self,onspawn,0,1008,,,,,
 1957,Entweihen@放逐,attack,674,1,1000,1000,10000,no,self,myhpltmaxrate,60,,,,,,
 1957,Entweihen@防禦無視攻擊,attack,170,1,500,500,5000,no,randomtarget,always,0,,,,,,6
 1957,Entweihen@光之盾,attack,205,1,500,0,30000,yes,self,longrangeattacked,,,,,,,29
@@ -4897,7 +4896,7 @@
 1957,Entweihen@治癒術,idle,28,11,5000,0,10000,yes,friend,friendhpltmaxrate,99,,,,,,
 1957,Entweihen@治癒術,attack,28,11,2000,0,10000,yes,friend,friendhpltmaxrate,99,,,,,,
 
-1958,Entweihen Ghost@Agility UP,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,80,,,,,,
+1958,Entweihen Ghost@敏捷提升,attack,350,5,10000,0,30000,yes,self,myhpltmaxrate,80,,,,,,
 1958,Entweihen Ghost@雷爆術,attack,21,5,1000,800,7000,no,randomtarget,always,0,,,,,,
 1958,Entweihen Ghost@崩裂術,attack,91,5,1000,500,7000,no,randomtarget,always,0,,,,,,
 1958,Entweihen Ghost@聖靈召喚,attack,13,10,1000,0,7000,no,randomtarget,always,0,,,,,,
