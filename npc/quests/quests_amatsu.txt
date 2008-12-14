@@ -2,567 +2,777 @@
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // ---------------------------------
-// - 摩摩塔樂 任務腳本 - 
+// - 天津地區 任務腳本 - 
 //===================================
 // 版本：1.2
 //===================================
 
-amatsu.gat,223,235,4	script	Publisher	763,{
-	if (event_momo > 4) goto Lfin;
-	if ((event_momo >= 1) && (event_momo <= 4)) goto Lget;
-	mes "[Publisher]";
-	mes "Hello~~!!";
-	mes "Our ^00B6FFScroll Publishing Company^000000";
-	mes "is professionally publishing";
-	mes "tales.";
-	next;
-	mes "[Publisher]";
-	mes "We established";
-	mes "^3366FFMomotaro Field Trip^000000";
-	mes "to celebrate ^00B6FF<Momotaro Story>^000000";
-	mes "selling over a million copies.";
-	next;
-	mes "[Publisher]";
-	mes "Become Momotaro and eliminate";
-	mes "Dokebis, just like in the story!";
-	mes "There will also be rewards.";
-	next;
-	menu "What is Momotaro Story?!",-,"I want to try!",L1,"I'm busy right now...",L2;
-		mes "[Publisher]";
-		mes "Eh~!? How can you not know about";
-		mes "Momotaro? Don't they have this";
-		mes "tale in Rune-Midgard?? Well...";
-		mes "Let me tell you the story.";
-		next;
-		mes "[Publisher]";
-		mes "Long ago, there lived an old";
-		mes "married couple. They were happy,";
-		mes "but didn't have any children.";
-		next;
-		mes "[Publisher]";
-		mes "One day, while old lady was doing";
-		mes "the laundry, she found a humongous";
-		mes "peach. She cut it in half and...";
-		mes "'Poof!' There was a baby inside!";
-		next;
-		mes "[Publisher]";
-		mes "The old man and lady were shocked.";
-		mes "They decided to adopt that baby,";
-		mes "and give him their love...";
-		next;
-		mes "[Publisher]";
-		mes "That baby grew so fast, like that";
-		mes "beanstalk from 'Jack and";
-		mes "Beanstalk' and became a strong boy";
-		mes "in only a few days.";
-		next;
-		mes "[Publisher]";
-		mes "That's boy's name was...";
-		mes "<Momotaro>!!!";
-		mes "Momotaro traveled to eliminate";
-		mes "dokebis that were harassing";
-		mes "the towners.";
-		next;
-		mes "[Publisher]";
-		mes "He became friends with";
-		mes "^3151FFYoyo, Picky, and Desert Wolf^000000";
-		mes "and eliminated all of the Dokebis.";
-		mes "then he lived happily ever after";
-		mes "with the old couple.";
-		next;
-		mes "[Publisher]";
-		mes "How was it?";
-		mes "Great, right?";
-		mes "I mean, this story sold a million";
-		mes "copies!";
+amatsu,223,236,3	script	出版社職員#ama	763,{
+	if (checkweight(1201,1) == 0) {
+		mes "- Wait a moment!! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please store some items into your Kafra storage -";
+		mes "- and try again. -";
 		close;
-L1:
-		mes "[Publisher]";
-		mes "Yay-! You look excited!";
-		mes "You'll be ready to go soon.";
-		mes "Please fill out this registration";
-		mes "card.";
+	}
+	if (event_momo < 2) {
+		mes "[出版社職員]";
+		mes "您好~!!";
+		mes "在村落裡代代相傳下來的故事";
+		mes "我們，專!門!地!";
+		mes "把它收集下來做為  ^009CFF長袍出版社^000000裡";
 		next;
-		mes "[Publisher]";
-		mes ".................";
-		mes "......Mm.....Let's see.....";
-		mes ".............Good!";
-		mes "Alright, then!";
-		mes "Let it begin~~~!!!!!!!!!";
-		mes "<Momotaro Field Trip>~!";
-		close2;
-		warp "ama_test",52,35;
-		end;
-L2:
-		mes "[Publisher]";
-		mes "Eh?";
-		mes "...But there are sweet rewards";
-		mes "waiting...";
-		close;
-Lget:
-	mes "[Publisher]";
-	mes "How was it? Did you enjoy the event?";
-	mes "I hope the arrangements at the event hall allowed you to spend an enjoyable time there.";
-	next;
-	if (event_momo >= 1 && event_momo < 4)
-	{
-		switch(rand(1,10))
-		{
-		case 1: getitem 622,1; break; //rainbow carrot
-		case 2: getitem 627,1; break; //sweet milk
-		case 3: getitem 629,1; break; //singing flower
-		case 4: getitem 632,1; break; //fatty chubby earthworm
-		case 5: getitem 623,1; break; //earthworm the dude
-		case 6: getitem 619,1; break; //unripe apple
-		case 7: getitem 621,1; break; //bitter herb
-		case 8: getitem 620,1; break; //orange juice
-		case 9: getitem 625,1; break; //rusty iron
-		case 10: getitem 624,1; break; //rotten fish
+		mes "[出版社職員]";
+		mes "不分男女老少的熱門故事";
+		mes "^009CFF<摩摩塔樂 故事>^000000";
+		mes "為了出版，百 萬 本!紀念而設立了";
+		mes "^3163FF摩摩塔樂 體驗館^000000";
+		next;
+		mes "[出版社職員]";
+		mes "親自成為故事裡的摩摩塔樂";
+		mes "打倒土人，";
+		mes "並領取禮物吧~~";
+		next;
+		switch (select("什麼是摩摩塔樂 故事?:我想試試看!:我很忙所以..")) {
+		case 1:
+			mes "[出版社職員]";
+			mes "!? 竟然不知道摩摩塔樂 故事";
+			mes "真是一位對流行很遲鈍的人啊~";
+			mes "那麼由我來講給你聽吧";
+			next;
+			mes "[出版社職員]";
+			mes "從前從前有一對老夫婦，";
+			mes "這對夫婦雖然感情很好，";
+			mes "不過膝下沒有子女";
+			next;
+			mes "[出版社職員]";
+			mes "不過有一天，";
+			mes "老太太在洗衣服時，";
+			mes "在江上發現了一個大大的桃子，";
+			mes "立刻打撈桃子並且帶回家";
+			mes "老伯伯把它剝成一半...";
+			mes "結果有個小嬰兒從裡面，蹦!";
+			mes "的一聲出現了";
+			next;
+			mes "[出版社職員]";
+			mes "老伯伯跟老太太雖然嚇了一跳，";
+			mes "不過馬上把嬰兒當作自己的孩子，";
+			mes "並感到非常高興";
+			next;
+			mes "[出版社職員]";
+			mes "那小孩跟傑克與魔豆的故事一樣，";
+			mes "成長的非常快，";
+			mes "不久之後成為了，";
+			mes "力氣很大的壯士";
+			next;
+			mes "[出版社職員]";
+			mes "那個小孩的名字就叫，";
+			mes "<摩摩塔樂 >!!!";
+			mes "摩摩塔樂，他當時為了擊毀，";
+			mes "欺負村民的土人";
+			mes "而開始旅行了";
+			next;
+			mes "[出版社職員]";
+			mes "途中所遇到的^3163FF溜溜猴，小雞，沙漠之狼^000000";
+			mes "當作伙伴，結果";
+			mes "擊毀了土人，";
+			mes "與老伯伯和老太太";
+			mes "過著幸福的生活~";
+			next;
+			mes "[出版社職員]";
+			mes "怎麼樣? 值得賣出百萬本吧?";
+			close;
+		case 2:
+			if (BaseLevel > 29) {
+				mes "[出版社職員]";
+				mes "咿呀-! 是位活力充沛的人啊!";
+				mes "連我的體力，也變的活力充沛啊!!";
+				mes "那麼請填寫這張申請書吧";
+				next;
+				mes "[出版社職員]";
+				mes "...............";
+				mes ".....嗯....讓我看看....";
+				mes "..........很好!";
+				mes "好! 那麼";
+				mes "<摩摩塔樂 體驗館>!!";
+				mes "出發啊啊啊啊啊~~~!!!!!!!!!";
+				close2;
+				warp "ama_test",52,35;
+				end;
+			}
+			mes "[出版社職員]";
+			mes "Hmm~";
+			mes "Why don't you train yourself more";
+			mes "and come back?";
+			close;
+		case 3:
+			mes "[出版社職員]";
+			mes "Eh?";
+			mes "...But there are sweet rewards waiting...";
+			close;
 		}
 	}
-
-//Am Mut successful finish unknown
-	if (event_momo == 4)
-	{
-		switch(rand(1,10))
-		{
-		case 1: getitem 659,1; break; //her heart
-		case 2: getitem 633,1; break; //sweet potato
-		case 3: getitem 634,1; break; //tropical banana
-		case 4: getitem 639,1; break; //armlet of obedience
-		case 5: getitem 636,1; break; //no recipient
-		case 6: getitem 628,1; break; //well-dried bone
-		case 7: getitem 637,1; break; //old broom
-		case 8: getitem 635,1; break; //orc trophy
-		case 9: getitem 626,1; break; //monster juice
-		case 10: getitem 641,1; break; //contract in shadow
-		}
+	else if (event_momo == 4) {
+		mes "[出版社職員]";
+		mes "Ah~ What nice weather!";
+		mes "This is the perfect weather to do some reading.";
+		close;
 	}
-	set event_momo,5;
-	mes "[Publisher]";
-	mes "Well then, I will give you a small present which I have prepared.";
-	mes "May the legend be widely loved also in the future......";
-	close;
-Lfin:
-	mes "[Publisher]";
-	mes "We have a nice weather today, don't we...... It is a perfect day to dry the futon.";
-	close;
+	else if (event_momo > 1) {
+		mes "[出版社職員]";
+		mes "How was it? Did you have fun?";
+		mes "I hope you had a good time";
+		mes "during the field trip.";
+		mes " ";
+		mes " ";
+		next;
+		mes "[出版社職員]";
+		mes "This is your reward for you.";
+		mes "Please continue to enjoy stories~";
+		mes " ";
+		if (event_momo == 3) {
+			set event_momo,4;
+			set .@gift_1,rand(1,10);
+			if (.@gift_1 == 1) {
+				getitem 659,1; //Heart_Of_Her
+			}
+			if (.@gift_1 == 2) {
+				getitem 633,1; //Baked_Yam
+			}
+			if (.@gift_1 == 3) {
+				getitem 634,1; //Tropical_Banana
+			}
+			if (.@gift_1 == 4) {
+				getitem 639,1; //Armlet_Of_Obedience
+			}
+			if (.@gift_1 == 5) {
+				getitem 636,1; //No_Recipient
+			}
+			if (.@gift_1 == 6) {
+				getitem 628,1; //Well_Dried_Bone
+			}
+			if (.@gift_1 == 7) {
+				getitem 637,1; //Old_Broom
+			}
+			if (.@gift_1 == 8) {
+				getitem 635,1; //Horror_Of_Tribe
+			}
+			if (.@gift_1 == 9) {
+				getitem 626,1; //Monster_Juice
+			}
+			if (.@gift_1 == 10) {
+				getitem 641,1; //Contracts_In_Shadow
+			}
+		}
+		else {
+			set event_momo,4;
+			set .@gift_2,rand(1,10);
+			if (.@gift_2 == 1) {
+				getitem 622,1; //Rainbow_Carrot
+			}
+			if (.@gift_2 == 2) {
+				getitem 627,1; //Sweet_Milk
+			}
+			if (.@gift_2 == 3) {
+				getitem 629,1; //Singing_Flower
+			}
+			if (.@gift_2 == 4) {
+				getitem 632,1; //Fatty_Chubby_Earthworm
+			}
+			if (.@gift_2 == 5) {
+				getitem 623,1; //Earthworm_The_Dude
+			}
+			if (.@gift_2 == 6) {
+				getitem 619,1; //Unripe_Apple
+			}
+			if (.@gift_2 == 7) {
+				getitem 621,1; //Bitter_Herb
+			}
+			if (.@gift_2 == 8) {
+				getitem 620,1; //Orange_Juice
+			}
+			if (.@gift_2 == 9) {
+				getitem 625,1; //Lusty_Iron
+			}
+			if (.@gift_2 == 10) {
+				getitem 624,1; //Rotten_Fish
+			}
+		}
+		close;
+	}
 }
-//=====================================================================
-ama_test.gat,50,44,4	script	Event Hall Staff	109,{
-	mes "[Satoshi]";
-	mes "Welcome to <Momotaro Field Trip>";
-	next;
-	mes "[Satoshi]";
-	mes "I'm Satoshi who is in charge of the";
-	mes "waiting room in <Momotaro Field";
-	mes "Trip>.";
-	next;
-	mes "[Satoshi]";
-	mes "Originally, I was working for the";
-	mes "publishing company, but we lacked";
-	mes "workers for the Field Trip...";
-	mes "But working here is much better!";
-	mes "Now I just watch people trying to";
-	mes "accomplish the mission. Heh hehe~";
-	next;
-	mes "[Satoshi]";
-	mes "..............";
-	mes "Just kidding";
-	mes "^111111*Wipes away sweat*^000000";
-	next;
-	mes "[Satoshi]";
-	mes "Well, let me explain";
-	mes "about the rules in the Field Trip";
-	next;
-	mes "[Satoshi]";
-	mes "First of all...Did you hear";
-	mes "about the story from the";
-	mes "publisher?";
-	next;
-	menu "Yes",L1,"No",-;
-		mes "[Satoshi]";
+	
+ama_test,52,44,3	script	Assistant#ama	109,{
+	if (event_momo == 0) {
+		mes "[撒陀悉]";
+		mes "Welcome to <Momotaro Field Trip>";
+		mes " ";
+		next;
+		mes "[撒陀悉]";
+		mes "I'm 撒陀悉 who is in charge of the waiting room in <Momotaro Field Trip>.";
+		next;
+		mes "[撒陀悉]";
+		mes "Originally, I was working for the publishing company, but we lacked workers for the Field Trip...";
+		mes "But working here is much better!";
+		mes "Now I just watch people trying to accomplish the mission. Heh hehe~";
+		next;
+		mes "[撒陀悉]";
+		mes "................";
+		mes "Just kidding";
+		mes "*Wipes away sweat*";
+		next;
+		mes "[撒陀悉]";
+		mes "Well, let me explain";
+		mes "about the rules in the Field Trip.";
+		mes " ";
+		next;
+		mes "[撒陀悉]";
+		mes "First of all...Did you hear";
+		mes "about the story from the publisher?";
+		next;
+		if (select("Yes:No") == 1) {
+			mes "[撒陀悉]";
+			mes "Hehe...Good.";
+			mes "Momotaro Story is our";
+			mes "pride. It's the best story EVER.";
+			mes "Hahahah!!!";
+			next;
+			mes "[撒陀悉]";
+			mes "...Hmmhmm.";
+			next;
+			mes "[撒陀悉]";
+			mes "The Field Trip is simple.";
+			mes "Go inside and eliminate";
+			mes "Dokebis bravely!!!";
+			mes "Just like Momotaro!!!";
+			mes "Understand? Bravely!!!";
+			next;
+			mes "[撒陀悉]";
+			mes "In addition, there are three";
+			mes "things you need to know.";
+			next;
+			mes "[撒陀悉]";
+			mes "First....";
+			mes "You can't come back once you clear the field trip. Keep that in mind.";
+			next;
+			mes "[撒陀悉]";
+			mes "Secondly....";
+			mes "Q-pet is prohibited";
+			mes "inside of the field trip.";
+			mes "If you are with a pet,";
+			mes "please change it to egg status.";
+			next;
+			mes "[撒陀悉]";
+			mes "And finally...";
+			mes "One person can be on the";
+			mes "field trip for 6 minutes.";
+			next;
+			mes "[撒陀悉]";
+			mes "Well then, please";
+			mes "wait your turn";
+			mes "in the waiting room.";
+			mes "Good luck in fighting!!";
+			close;
+		}
+		mes "[Assistant]";
 		mes "Eh? You can't just";
 		mes "skip the story";
-		mes "when you enter the field";
-		mes "trip! I can't allow you to";
-		mes "do that as a Momotaro's";
-		mes "fan!!!";
+		mes "when you enter field trip!!";
+		mes "I can't allow you to do that";
+		mes "as Momotaro's fan!!!";
 		next;
-		mes "[Satoshi]";
+		mes "[Assistant]";
 		mes "Please listen to the story";
 		mes "from the publisher.";
 		mes "Thank you.";
 		mes "Bye~~";
-		close2;
-		warp "amatsu.gat",223,230;
+		next;
+		warp "amatsu",223,230;
 		end;
-L1:
-		mes "[Satoshi]";
-		mes "Hehe...Good.";
-		mes "Momotaro's Story is our";
-		mes "pride. It's the best story EVER.";
-		mes "Hahaha!!!";
+	}
+	else if (event_momo == 1) {
+		mes "[撒陀悉]";
+		mes "Oh my...Are you alright?";
+		mes "I thought it was entertaining but maybe it was too hard for you?";
 		next;
-		mes "[Satoshi]";
-		mes "...Hmmhmm.";
+		mes "[撒陀悉]";
+		mes "Now what are you going to do?";
+		mes "Do you want to go in again?";
 		next;
-		mes "[Satoshi]";
-		mes "The Field Trip is simple.";
-		mes "Go inside and eliminate";
-		mes "Dokebis bravely!!!";
-		mes "Just like Momotaro!!!";
-		mes "Understand? Bravely!!!";
+		if (select("Yes:No, I want to go back") == 1) {
+			mes "[撒陀悉]";
+			mes "The more effort you put into this, the sweeter victory will taste.";
+			mes "Good luck in fighting!";
+			close;
+		}
+		mes "[撒陀悉]";
+		mes "Well, I guess the reality of the situation is that you just can't fulfill the role of Momotaro...";
+		mes "Still, don't be depressed.";
 		next;
-		mes "[Satoshi]";
-		mes "In addition, there are three";
-		mes "things you need to know.";
+		mes "[撒陀悉]";
+		mes "I think you've gained enough experience from the field trip.";
 		next;
-		mes "[Satoshi]";
-		mes "First....";
-		mes "You can't come back once you clear";
-		mes "the field trip. Keep that in mind.";
+		mes "[Assistant]";
+		mes "If you hear a good story,";
+		mes "Please, contact our";
+		mes "publishing company.";
+		mes "Bye-";
+		close2;
+		percentheal 100,0;
+		set event_momo,0;
+		warp "amatsu",223,230;
+		end;
+	}
+	else if (event_momo == 2) {
+		mes "[撒陀悉]";
+		mes "Woohoo~ Congratulations!!";
+		mes "You were so great!";
 		next;
-		mes "[Satoshi]";
-		mes "Secondly...";
-		mes "Q-pet is prohibited";
-		mes "inside of the field trip.";
-		mes "if you are with a pet,";
-		mes "please change it to egg status.";
-		next;
-		mes "[Satoshi]";
-		mes "And finally...";
-		mes "One person can be on the";
-		mes "field trip for 6 minutes.";
-		next;
-		mes "[Satoshi]";
-		mes "Well then, Please";
-		mes "wait for you turn";
-		mes "in the waitiSng room.";
-		mes "Good luck in fighting!!";
-		close;
+		mes "[撒陀悉]";
+		mes "It is time to say good bye.";
+		mes "If you hear a good story,";
+		mes "Please, contact our";
+		mes "publishing company.";
+		mes "Bye-";
+		close2;
+		percentheal 100,0;
+		warp "amatsu",223,230;
+		end;
+	}
+	mes "[撒陀悉]";
+	mes "Woohoo~ Congratulations!!";
+	mes "You were so great!!";
+	mes "Even though your finish was kind of weak...";
+	next;
+	mes "[撒陀悉]";
+	mes "It is time to say good bye.";
+	mes "If you hear a good story,";
+	mes "Please, contact our";
+	mes "publishing company.";
+	mes "Bye-";
+	close2;
+	warp "amatsu",223,230;
+	end;
+
 OnInit:
-	waitingroom "Event Hall Waiting Room",1,"Event Hall Staff::OnMax";
-OnInitCopy:
-	enablewaitingroomevent "Event Hall Staff";
-	areawarp "ama_test.gat",30,78,68,120,"amatsu.gat",223,230;
-	disablenpc "Manager#Momotaro";
-	enablenpc "Grandpa#Momotaro";
-	enablenpc "Grandma#Momotaro";
-	donpcevent "#MomotaroTimer::OnStopTimer";
-	killmonsterall "ama_test.gat";
+	waitingroom "Waiting Exhibit.",10,"Assistant#ama::OnStartArena",1;
+	enablewaitingroomevent "Assistant#ama";
 	end;
-OnMax:
-	warpwaitingpc "ama_test.gat",51,85;
-	disablewaitingroomevent "Event Hall Staff";
-	disablenpc "Manager#Momotaro";
-	enablenpc "Grandpa#Momotaro";
-	enablenpc "Grandma#Momotaro";
-	donpcevent "#MomotaroActivator::OnMomoInit";
+
+OnStartArena:
+	disablenpc "Coach#ama";
+	disablenpc "Am Mut::Onreset";
+	donpcevent "Dokebi#ez::Onreset";
+	donpcevent "Dokebi#hd::Onreset";
+	enablenpc "Grandma#ama1";
+	enablenpc "Grandpa#ama";
+	warpwaitingpc "ama_test",50,83;
+	donpcevent "Timer#ama::OnEnable";
+	disablewaitingroomevent "Assistant#ama";
+	end;
+
+Onreset:
+	enablewaitingroomevent "Assistant#ama";
 	end;
 }
 
-ama_test.gat,1,1,0	script	#MomotaroTimer	-1,{
-OnStartTimer:
-	initnpctimer;
-	end;
-OnTimer180000:
-	if(!isloggedin($MomotaroRID))goto s_Cleanup;
-	mapannounce "ama_test.gat","Timer: 3 Minutes left.",8;
-	end;
-OnTimer300000:
-	if(!isloggedin($MomotaroRID))goto s_Cleanup;
-	mapannounce "ama_test.gat","Timer: 1 Minute left.",8;
-	end;
-OnTimer360000:
-	if(!isloggedin($MomotaroRID))goto s_Cleanup;
-	mapannounce "ama_test.gat","Timer: Beep- Beep- Beep- Time's up.",8;
-OnTimer362500:
-	areawarp "ama_test.gat",30,78,68,120,"amatsu.gat",223,230;
-	goto s_Cleanup;
-
-
-OnTimer20000:
-OnTimer40000:
-OnTimer60000:
-OnTimer80000:
-OnTimer100000:
-OnTimer120000:
-OnTimer140000:
-OnTimer160000:
-OnTimer200000:
-OnTimer220000:
-OnTimer240000:
-OnTimer260000:
-OnTimer280000:
-OnTimer320000:
-OnTimer340000:
-	if(!isloggedin($MomotaroRID))goto s_Cleanup;
-	end;
-
-OnCleanUp:
-s_Cleanup:
-	stopnpctimer;
-	set $Momotaro,0;
-	set $MomoDokebi,0;
-	set $MomoDokebi2,0;
-	set $MomotaroRID,0;
-	mapannounce "ama_test.gat","The current player has exited. The waiting room will now open again.",8;
-	disablenpc "Manager#Momotaro";
-	donpcevent "Event Hall Staff::OnInitCopy";
-	end;
-
-OnStopTimer:
-	stopnpctimer;
-	end;
-
+ama_test,34,25,0	script	Hanako chan#ama	-1,2,2,{
+OnTouch:
+	mes "[Hanako chan]";
+	mes ".......Eeeeheeheehee";
+	mes ".....................";
+	next;
+	mes "[Hanako chan]";
+	mes "..Eeeeheeheeheeheeheehee";
+	mes "..........................";
+	next;
+	mes "[Hanako chan]";
+	mes "......................";
+	mes "...Want red toilet paper....";
+	mes ".....or bl-ue toilet paper.... ";
+	close;
 }
+	
+ama_test,49,93,4	script	Grandpa#ama	766,{
+	end;
 
-ama_test.gat,51,85,0	script	#MomotaroActivator	139,1,1,{
-	if($Momotaro)end;
-	set $Momotaro,1;
-	set $MomotaroRID,getcharid(3);
-	areaannounce "ama_test.gat",30,78,68,120,"Timer: The Timer has been activated. You have 6 minutes. Annihilate the monsters in time!",8;
-	donpcevent "#MomotaroTimer::OnStartTimer";
-	mes "[Grandpa]";
+OnInit:
+	disablenpc "Grandpa#ama";
+	end;
+}
+	
+ama_test,50,93,4	script	Grandma#ama1	761,10,10,{
+	end;
+
+OnInit:
+	disablenpc "Grandma#ama1";
+	end;
+
+OnTouch:
+	mes "[Grandma]";
 	mes "Arrrk!!!";
 	next;
 	mes "[Grandma]";
-	mes "Honey!! Someone hacked my account";
-	mes "and stole my equipment!!";
+	mes "Honey!! Someone hacked my account and stole my equipment!! ";
 	next;
 	mes "[Grandpa]";
-	mes "Hmm. The Chief said the Dokebi";
-	mes "earned 20 million zeny by hacking";
-	mes "other's accounts...";
+	mes "Hmm. The Chief said Dokebi earned 20 million zeny by hacking others' accounts...";
 	next;
 	mes "[Grandma]";
-	mes "Dohhhhhhh!!!!";
+	mes "Dohhhhhhh!!!! ";
 	next;
 	mes "[Grandpa]";
-	mes "...Huh I've heard that somewhere";
-	mes "before....";
+	mes "....Huh I've heard that somewhere.. ..... ";
 	next;
 	mes "[Grandpa]";
 	mes "Anyway, Momotaro...";
 	next;
 	mes "[Grandpa]";
-	mes "As you know, since we towners spends";
-	mes "our time sitting and chatting,";
-	mes "we can't kill Dokebis because we're";
-	mes "low levels, so...Please do it for";
-	mes "us.";
+	mes "As you know, since we towners spend our time sitting and chatting,";
+	mes "we can't kill Dokebis because we're low level, so...Please do it for us. ";
 	next;
 	mes "[Grandma]";
 	mes "Momotaro...";
 	mes "I really wanted to give you";
-	mes "a handmade ^3151FFYummiest Red Poiton in";
-	mes "the whole world^000000 ...but...";
+	mes "a handmade ^3163FFYummiest Red Potion in the whole world^000000 ...but...";
 	mes ".....I failed to make them ....";
 	next;
 	mes "[Grandma]";
-	mes "...I'm sorry. I should have been";
-	mes "leveling up before...^111111*Sob*";
+	mes "...I'm sorry. I should have been leveling up before...*Sob*";
 	next;
 	mes "[Grandma & Grandpa]";
 	mes "So...Do me this favor, kid~";
 	close2;
-	initnpctimer;
+	set event_momo,1;
+	if (countitem(9010) > 0 || countitem(9005) > 0 || countitem(9016) > 0) {
+		disablenpc "Grandpa#ama";
+		disablenpc "Grandma#ama1";
+		donpcevent "Dokebi#ez::OnEnable";
+	}
+	else {
+		disablenpc "Grandpa#ama";
+		disablenpc "Grandma#ama1";
+		donpcevent "Dokebi#hd::OnEnable";
+	}
+	end;
+}
+	
+ama_test,34,15,0	script	Dokebi#ez	-1,{
+OnInit:
+	disablenpc "Dokebi#ez";
 	end;
 
-OnTimer5000:
-	stopnpctimer;
-	set $MomoDokebi,0;
-	set $MomoDokebi2,0;
-	disablenpc "Grandpa#Momotaro";
-	disablenpc "Grandma#Momotaro";
-	monster "ama_test.gat",47,101,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",51,101,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",55,101,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",55,97,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",55,93,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",53,91,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",49,91,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",45,96,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
-	monster "ama_test.gat",45,99,"Dokebi",1110,1,"mobcount#momotaro::OnMobDead";
+OnEnable:
+	enablenpc "Dokebi#ez";
+	set .MyMobs,9;
+	monster "ama_test",45,95,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",45,99,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",47,101,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",51,101,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",55,101,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",55,97,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",55,93,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",53,91,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	monster "ama_test",49,91,"Dokebi",1110,1,"Dokebi#ez::OnMyMobDead";
+	end;
+
+Onreset:
+	killmonster "ama_test","Dokebi#ez::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set .MyMobs,.MyMobs-1;
+	if (.MyMobs < 1) {
+		mapannounce "ama_test","I...I will be baaaack~~~~!!!",bc_map;
+		enablenpc "Coach#ama";
+		set event_momo,2;
+	}
+	else {
+		set .@dokebi_tel,rand(1,4);
+		if (.@dokebi_tel == 1) {
+			mapannounce "ama_test","!!IT'S A RAID!!!! RUN!!",bc_map;
+		}
+		else if (.@dokebi_tel == 2) {
+			mapannounce "ama_test"," Ow, Ouch!!! ",bc_map;
+		}
+		else if (.@dokebi_tel == 3) {
+			mapannounce "ama_test"," But I didn't even do anything Baaad~!!",bc_map;
+		}
+		else if (.@dokebi_tel == 4) {
+			mapannounce "ama_test"," I'm sorry~~ Waaaaah~~ ",bc_map;
+		}
+	}
+	end;
+}
+	
+ama_test,34,16,0	script	Dokebi#hd	-1,{
+OnInit:
+	disablenpc "Dokebi#hd";
+	end;
+
+OnEnable:
+	enablenpc "Dokebi#hd";
+	set .MyMobs,9;
+	monster "ama_test",45,95,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",45,99,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",47,101,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",51,101,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",55,101,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",55,97,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",55,93,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",53,91,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	monster "ama_test",49,91,"Dokebi",1110,1,"Dokebi#hd::OnMyMobDead";
+	end;
+
+Onreset:
+	killmonster "ama_test","Dokebi#hd::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set .MyMobs,.MyMobs-1;
+	if (.MyMobs < 1) {
+		mapannounce "ama_test"," I will be baaaack~~~~!!!",bc_map;
+		enablenpc "Coach#ama";
+		set event_momo,2;
+	}
+	else {
+		set .@dokebi_tel,rand(1,4);
+		if (.@dokebi_tel == 1) {
+			mapannounce "ama_test","!! IT'S A RAID!!!! RUN!!",bc_map;
+		}
+		if (.@dokebi_tel == 2) {
+			mapannounce "ama_test"," Ow, Ouch!!! ",bc_map;
+		}
+		if (.@dokebi_tel == 3) {
+			mapannounce "ama_test"," But I didn't even do anything Baaaaad~!",bc_map;
+		}
+		if (.@dokebi_tel == 4) {
+			mapannounce "ama_test"," I'm sorry~~! Waaaaah~~ ",bc_map;
+		}
+	}
+	end;
+}
+	
+ama_test,50,100,3	script	Coach#ama	762,15,15,{
+	mes "[Coach]";
+	mes "Hoho~ Good.";
+	mes "I've been watching you in the VIP room. You were really something.";
+	mes "I was truly amazed.";
+	next;
+	mes "[Coach]";
+	mes "I thought you were really";
+	mes "Momotaro in the story!";
+	mes "Hohohoho...";
+	next;
+	switch(select("Well, well. It is nothing~:It was boring.")) {
+	case 1:
+		mes "[Coach]";
+		mes "...Hohoho..";
+		mes "Don't be so proud of yourself.";
+		mes "When I was young like you,";
+		mes "I squashed Dokebi with";
+		mes "my little finger. Hohoho~";
+		next;
+		mes "[Coach]";
+		mes "..............";
+		mes "...Don't give me that look.";
+		mes "I was just joking. Hmmhmm.";
+		next;
+		mes "[Coach]";
+		mes "Now, the Momotaro story is over.";
+		mes "You can get your reward when you talk to the Publisher lady you saw first.";
+		next;
+		mes "[Coach]";
+		mes "Don't lose your high self-esteem";
+		mes "in the future. Farewell.";
+		close2;
+		donpcevent "Timer#ama::OnDisable";
+		warp "amatsu",223,230;
+		disablenpc "Coach#ama";
+		donpcevent "Assistant#ama::Onreset";
+		end;
+	case 2:
+		mes "[Coach]";
+		mes ".....!!!!!!";
+		mes "....Hohohoho..";
+		mes "You're pretty funny.";
+		mes "Alright, hot stuff.";
+		mes "Do you want to listen to my proposal?";
+		next;
+		mes "[Coach]";
+		mes "At this point I'm supposed to send you back...BUT!";
+		mes "I really want to know";
+		mes "what you are capable of. Hehe~";
+		mes "Hohoho~";
+		next;
+		mes "[Coach]";
+		mes "So, I will give you a chance.";
+		mes "But if you fail,";
+		mes "^3163FFyou can't take this challenge.^000000";
+		mes "Also, this mission will be pretty hard.";
+		next;
+		if (select("Nah.. I'm good.:Bring it on, foo'!") == 1) {
+			mes "[Coach]";
+			mes "Hoho~I understand...";
+			mes "You must be exhausted from the previous battle. It would have been a grand battle, though...";
+			next;
+			mes "[Coach]";
+			mes "Now, the Momotaro story is over.";
+			mes "You can get your reward";
+			mes "when you talk to";
+			mes "the Publisher lady you first spoke to.";
+			next;
+			mes "[Coach]";
+			mes "Don't lose your high self-esteem";
+			mes "in the future. Farewell.";
+			next;
+			warp "amatsu",223,230;
+			disablenpc "Coach#ama";
+			donpcevent "Timer#ama::OnDisable";
+			donpcevent "Assistant#ama::Onreset";
+			end;
+		}
+		mes "[Coach]";
+		mes "Hohoho~ I like your attitude.";
+		mes "Now, this is the last battle!";
+		mes "Show me what you got.";
+		mes "I'm looking forward to this.";
+		percentheal 70,0;
+		disablenpc "Coach#ama";
+		donpcevent "Am Mut#ama::OnEnable";
+		close;
+	}
+
+OnInit:
+	disablenpc "Coach#ama";
+	end;
+
+OnTouch:
+	mes "[Coach]";
+	mes "Boom bam Boooom!!!";
+	mes "Tada~~~ !";
+	close;
+}
+	
+ama_test,34,17,0	script	Am Mut#ama	-1,{
+OnInit:
+	disablenpc "Am Mut#ama";
+	end;
+
+OnEnable:
+	enablenpc "Am Mut#ama";
+	set .MyMobs,.MyMobs-1;
+	monster "ama_test",35,102,"Am Mut",1301,1,"Am Mut#ama::OnMyMobDead";
+	monster "ama_test",40,91,"Am Mut",1301,1,"Am Mut#ama::OnMyMobDead";
+	monster "ama_test",56,108,"Am Mut",1301,1,"Am Mut#ama::OnMyMobDead";
+	end;
+
+Onreset:
+	killmonster "ama_test","Am Mut#ama::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set .MyMobs,.MyMobs-1;
+	if (.MyMobs < 1) {
+		enablenpc "Coach#after";
+	}
+	else {
+		set .@am_mut_tel,rand(1,3);
+		if (.@am_mut_tel == 1) {
+			mapannounce "ama_test"," Augh!! I, I made mistake...!",bc_map;
+		}
+		if (.@am_mut_tel == 2) {
+			mapannounce "ama_test"," Ugh...How could I lose?!... ",bc_map;
+		}
+		if (.@am_mut_tel == 3) {
+			mapannounce "ama_test"," Mommmmy~~!!!",bc_map;
+		}
+	}
+	end;
+}
+	
+ama_test,50,100,3	script	Coach#after	762,5,5,{
 	end;
 
 OnInit:
-	set $Momotaro,0;
-	set $MomoDokebi,0;
-	set $MomoDokebi2,0;
-	set $MomotaroRID,0;
+	disablenpc "Coach#after";
 	end;
 
-}
-
-ama_test.gat,49,95,4	script	Grandpa#Momotaro	766,{
-
-	mes "[Grandpa]";
-	mes "Zzzzzz......";
+OnTouch:
+	mes "[Coach]";
+	mes "( Clap- Clap- Clap- )";
 	close;
-}
-
-ama_test.gat,51,95,4	script	Grandma#Momotaro	761,{
-
-	mes "[Grandma]";
-	mes "Oh....!?";
-	close;
-
-}
-
-ama_test.gat,50,100,4	script	Manager#Momotaro	762,{
-
-	if (event_momo >= 4) goto LSecondFin;
-	mes "[Manager]";
-	mes "Hoho, you did it...... I'm the manager here...... You are not an ordinary person, right? You did very well.";
+	end;
+	mes "[Coach]";
+	mes "Hohoho~ You are really something.";
+	mes "You've got the moves, kiddo.";
+	mes "I'll give you that.";
 	next;
-	mes "[Manager]";
-	mes "The Momotaro from the legend appears in this world!";
-	mes "Hohohohoho!";
-	next;
-	menu "Is there some extra?",L1,"Thanks for nothing......",L2;
-L1:
-	mes "[Manager]";
-	mes "Hohoho......";
-	mes "This is maybe not really recomending......";
-	mes "I think in your current condition the small demons can twirl you lightly around their fingers.";
-	mes "......Hohoho......";
-	next;
-	mes "[Manager]";
-	mes "......";
-	mes "Just a joke.";
-	next;
-	mes "[Manager]";
-	mes "Well then, you enjoyed the Momotaro Event Hall?";
-	mes "Talk to the staff member, that you have met first, about our premium presents. He will give you some.";
-	next;
-	mes "[Manager]";
-	mes "Whatever you encounter, never loose that strong spirit!";
+	mes "[Coach]";
+	mes "Well, time's up so...";
+	mes "Let me show you the exit.";
+	mes "I had a great time...";
+	mes "Don't forget to get your reward~";
 	close2;
-	set $Momotaro,0;
-	set $MomoDokebi,0;
-	set $MomoDokebi2,0;
-	set $MomotaroRID,0;
-	set event_momo,1;
-	donpcevent "Event Hall Staff::OnInitCopy";
-	warp "amatsu.gat",223,230;
-	disablenpc "Manager#Momotaro";
-	end;
-L2:
-	mes "[Manager]";
-	mes "!!!!!";
-	mes "......Ho...Hohoho......";
-	mes "You are an amusing fellow......";
-	mes "Well...... One little suggestion from me to you.";
-	next;
-	mes "[Manager]";
-	mes "Normally I would just kick you out, but...... I would like to see your true capabilities... Hohoho.";
-	mes "As if I would look at my own young self. Hohohoho.";
-	next;
-	mes "[Manager]";
-	mes "What do you think? I will give this one nonrecurring chance. It is the challenge of ^3355ffSecond Grade^000000 which is not officially available......";
-	mes "But I warn you, this one will be difficult.";
-	next;
-	menu "Na, it is enough",L2_1,"I take the challenge",L2_2;
-L2_1:
-	mes "[Manager]";
-	mes "Hoho......";
-	mes "You got tired from the last fight?";
-	mes "Well, ok...... Did you enjoy the Momotaro Event Hall? Talk to the staff member, that you have met first, about our premium presents. She will give you some.";
-	next;
-	mes "[Manager]";
-	mes "Whatever you encounter, never loose that strong spirit!";
-	next;
-	set event_momo,2;
-	goto LWarpOut;
-L2_2:
-	mes "[Manager]";
-	mes "Hohoho, You like it more and more, right? This will be the last decisive battle. Show your power without regrets!";
-	initnpctimer;
-	close;
-OnTimer5000:
-	stopnpctimer;
-	if(!isloggedin($MomotaroRID)){ donpcevent "#MomotaroTimer::OnCleanUp"; end; }
-	attachrid($MomotaroRID);
-	monster "ama_test.gat",35,103,"Am Mut",1301,1,"mobcount2#momotaro::OnMobDead";
-	monster "ama_test.gat",56,111,"Am Mut",1301,1,"mobcount2#momotaro::OnMobDead";
-	monster "ama_test.gat",40,91,"Am Mut",1301,1,"mobcount2#momotaro::OnMobDead";
-	misceffect 16;
 	set event_momo,3;
-	disablenpc "Manager#Momotaro";
+	warp "amatsu",223,230;
+	disablenpc "Coach#after";
+	donpcevent "Assistant#ama::Onreset";
+	donpcevent "Timer#ama::OnDisable";
 	end;
-LSecondFin:
-	mes "[Manager]";
-	mes "You are really strong... Wasn't it thrilling? Momotaro Event Hall can be really enjoyable, right?";
-	mes "Ok now, talk to the staff member, that you have met first, about our premium presents. She will give you some.";
-	close2;	
-	set event_momo,4;
-LWarpOut:
-	mes "[Manager]";
-	mes "Whatever you encounter, never loose that strong spirit!";
-	close2;
-	set $Momotaro,0;
-	set $MomoDokebi,0;
-	set $MomoDokebi2,0;
-	set $MomotaroRID,0;
-	warp "amatsu.gat",223,230;
-	donpcevent "Event Hall Staff::OnInitCopy";
-	disablenpc "Manager#Momotaro";
-	end;
-OnStart:
-	misceffect 215;
-	if(!isloggedin($MomotaroRID)){ donpcevent "#MomotaroTimer::OnCleanUp"; end; }
-	attachrid($MomotaroRID);
-	mes "[Manager]";
-	mes "Hohoho......";
-	close;
-
 }
-//=======================================MobCount===============================-
-ama_test.gat,0,1,0	script	mobcount#momotaro	-1,{
-OnMobDead:
-	if ($MomoDokebi >= 8) goto Lfin;
-	set $MomoDokebi,$MomoDokebi+1;
-	attachrid($MomotaroRID);
-	set @mobrand,rand(4);
-	if (@mobrand == 1) goto Lrand2;
-	if (@mobrand == 2) goto Lrand3;
-	if (@mobrand == 3) goto Lrand4;
-Lrand1:
-	areaannounce "ama_test.gat",30,78,68,120,"Dokebi: I'm sorry~~! Waaaaah~~",8;detachrid;end;
-Lrand2:
-	areaannounce "ama_test.gat",30,78,68,120,"Dokebi: !! IT'S A RAID!!!! RUN!!",8;detachrid;end;
-Lrand3:
-	areaannounce "ama_test.gat",30,78,68,120,"Dokebi: But I didn't even do anything baaaaad~!",8;detachrid;end;
-Lrand4:
-	areaannounce "ama_test.gat",30,78,68,120,"Dokebi: Ow, Ouch!!!",8;detachrid;end;
-Lfin:
-	areaannounce "ama_test.gat",30,78,68,120,"Dokebi: I will be baaack~~~~!!!",8;
-	initnpctimer;
-	end;
-OnTimer5000:
-	donpcevent "mobcount2#momotaro::OnTimer5000";
+	
+ama_test,34,18,0	script	Timer#ama	-1,{
+OnInit:
+	disablenpc "Timer#ama";
 	end;
 
-}
-//=======================================MobCount2==============================-
-ama_test.gat,50,101,0	script	mobcount2#momotaro	-1,{
-OnMobDead:
-	if ($MomoDokebi2 == 2) goto Lfin;
-	set $MomoDokebi2,$MomoDokebi2+1;
-	areaannounce "ama_test.gat",30,78,68,120,"Am Mut: Ow, Ouch!!!",8;end;
-Lfin:
-	areaannounce "ama_test.gat",30,78,68,120,"Am Mut: I'm sorry~~! Waaaaah~~",8;
-	set event_momo,4;
+OnEnable:
+	enablenpc "Timer#ama";
 	initnpctimer;
 	end;
-OnTimer5000:
+OnDisable:
 	stopnpctimer;
-	enablenpc "Manager#Momotaro";
-	donpcevent "Manager#Momotaro::OnStart";
 	end;
 
+OnTimer1000:
+	mapannounce "ama_test"," The Timer has been activated. You have 6 minutes. Annihilate the monsters in time! ",bc_map;
+	end;
+
+OnTimer181000:
+	mapannounce "ama_test"," 3 minutes left. ",bc_map;
+	end;
+
+OnTimer301000:
+	mapannounce "ama_test"," 1 minute left. ",bc_map;
+	end;
+OnTimer361000:
+	mapannounce "ama_test","Beep- Beep- Beep- Time over.",bc_map;
+	end;
+
+OnTimer361500:
+	enablenpc "backwarp#ama";
+	end;
+
+OnTimer362000:
+	disablenpc "backwarp#ama";
+	end;
+
+OnTimer362500:
+	donpcevent "Assistant#ama::Onreset";
+	donpcevent "Timer#ama::OnDisable";
+	end;
+}
+	
+ama_test,50,100,0	script	backwarp#ama	-1,25,25,{
+OnInit:
+	disablenpc "backwarp#ama";
+	end;
+
+OnTouch:
+	warp "amatsu",115,95;
+	end;
 }
 
 //=====================================================================
