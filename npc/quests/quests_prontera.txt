@@ -107,77 +107,80 @@ prt_fild05,270,212,5	script	地下水道 管理兵	105,{
 // 學士帽任務
 //============================================================ 
 prt_in,38,108,3	script	教授	53,{
-	if(countitem("Illusion_Flower") > 0 && countitem("Hinalle") > 0 && countitem("Aloe") > 0 && countitem("Ment") > 0) {
+	if ((countitem(710) > 0) && (countitem(703) > 0) && (countitem(704) > 0) && (countitem(708) > 0)) {
 		mes "[教授]";
 		mes "我的天啊.. 手上拿著的花是..";
 		next;
-		switch(select("給他看花","給他花","取消")) {
-			case 1:
+		switch(select("給他看花:給他花:取消")) {
+		case 1:
+			mes "[教授]";
+			mes "那.. 那是 .. 我尋尋覓覓的四種花沒錯..";
+			mes "你可以把花給我嗎?...";
+			next;
+			mes "[教授]";
+			mes "如果你願意給我的話...我...我就把我最重視的東西給你。";
+			close;
+		case 2:
+			if ((countitem(710) > 0) && (countitem(703) > 0) && (countitem(704) > 0) && (countitem(708) > 0)) {
+				delitem 710,1;  //Illusion_Flower
+				delitem 703,1;  //Hinalle
+				delitem 704,1;  //Aloe
+				delitem 708,1;  //Ment
+				getitem 5012,1;	//學士帽
 				mes "[教授]";
-				mes "那.. 那是 .. 我尋尋覓覓的四種花沒錯..";
-				mes "你可以把花給我嗎?...";
+				mes "真是太感謝你了，從小到大這是我第一次感到人情的溫暖。";
 				next;
 				mes "[教授]";
-				mes "如果你願意給我的話...我...我就把我最重視的東西給你。";
+				mes "我就照約定把我最重視的東西給你。";
+				mes "這是我畢業的時候所戴過的帽子，裡面載滿了我求學時期的回憶。";
+				mes "請你收下..希望你也跟我一樣珍惜它。";
 				close;
-			case 2:
-				if(countitem("Illusion_Flower") > 0 && countitem("Hinalle") > 0 && countitem("Aloe") > 0 && countitem("Ment") > 0) {
-					delitem "Illusion_Flower",1;
-					delitem "Hinalle",1;
-					delitem "Aloe",1;
-					delitem "Ment",1;
-					getitem "Ph.D_Hat",1;
-					mes "[教授]";
-					mes "真是太感謝你了，從小到大這是我第一次感到人情的溫暖。";
-					next;
-					mes "[教授]";
-					mes "我就照約定把我最重視的東西給你。";
-					mes "這是我畢業的時候所戴過的帽子，裡面載滿了我求學時期的回憶。";
-					mes "請你收下..希望你也跟我一樣珍惜它。";
-					close;
-				}
-					mes "[教授]";
-					mes "... 仔細一看這並不是我所要尋找的花...";
-					mes "哈哈... 都怪我眼睛昏花，沒看清楚...";
-					close;
-			case 3:
+			} else {
+				mes "[教授]";
+				mes "... 仔細一看這並不是我所要尋找的花...";
+				mes "哈哈... 都怪我眼睛昏花，沒看清楚...";
 				close;
 			}
+		case 3:
+			close;
+		}
+	} else {
+		mes "[教授]";
+		mes "這花... 很美。對吧?";
+		next;
+		if(select("繼續對話:取消")==1) {
+			mes "[教授]";
+			mes "年輕的時候我很少和同伴一起出去玩，幾乎都埋頭苦讀。";
+			mes "雖然有點可惜，但是...我並不後悔。托那時候的福我才能完成那麼高等的教育，要不然我也不會有今日的成就。";
+			next;
+			mes "[教授]";
+			mes "不過說實話... 沒什麼朋友還是令我感到相當的悲傷。";
+			mes "讀書讀到厭煩的時候.. 連個可以聽我說話跟我談心的朋友都沒有。";
+			mes "值得慶幸的是，後來我終於找到我這輩子最真心的朋友了。";
+			next;
+			mes "[教授]";
+			mes "當我走進花園裡，看到那一朵朵盛開的美麗花朵的那一瞬間...";
+			mes "我突然感受到自己與花朵有著相同的命運，於是我將花朵當作我的摯友。";
+			next;
+			mes "[教授]";
+			mes "對其他人來說花朵可能就只是花朵而已..但是對我來說，它給了我相當大的力量。";
+			mes "我能夠有今天的成就..可以說都是因為有它的陪伴。";
+			next;
+			mes "[教授]";
+			mes "所以.. 我最近.. 很想報答那些贈與我花的朋友。";
+			mes "我們村莊做了很多有關花的研究..甚至還想佈置出一個充滿花的地方，朝世界邁進。";
+			next;
+			mes "[教授]";
+			mes "所以.. 我們需要很多很多的花...";
+			mes "因為我不太常出門.. 所以要找尋是相當的困難的。";
+			mes "如果你可以為我找到^3355FF幻想花^000000 與 ^3355FF西納雷花^000000 還有 ^3355FF蘆薈^000000 跟 ^3355FF曼特花^000000... 這些花的話，我就把我最重視的東西給你...";
+			close;
+		} else {
+			mes "[教授]";
+			mes "總有一天我一定會用很多很多的花朵來佈置一個美麗無比的地方。";
+			close;
+		}
 	}
-	mes "[教授]";
-	mes "這花... 很美。對吧?";
-	next;
-	if(select("繼續對話","取消")==1) {
-		mes "[教授]";
-		mes "年輕的時候我很少和同伴一起出去玩，幾乎都埋頭苦讀。";
-		mes "雖然有點可惜，但是...我並不後悔。托那時候的福我才能完成那麼高等的教育，要不然我也不會有今日的成就。";
-		next;
-		mes "[教授]";
-		mes "不過說實話... 沒什麼朋友還是令我感到相當的悲傷。";
-		mes "讀書讀到厭煩的時候.. 連個可以聽我說話跟我談心的朋友都沒有。";
-		mes "值得慶幸的是，後來我終於找到我這輩子最真心的朋友了。";
-		next;
-		mes "[教授]";
-		mes "當我走進花園裡，看到那一朵朵盛開的美麗花朵的那一瞬間...";
-		mes "我突然感受到自己與花朵有著相同的命運，於是我將花朵當作我的摯友。";
-		next;
-		mes "[教授]";
-		mes "對其他人來說花朵可能就只是花朵而已..但是對我來說，它給了我相當大的力量。";
-		mes "我能夠有今天的成就..可以說都是因為有它的陪伴。";
-		next;
-		mes "[教授]";
-		mes "所以.. 我最近.. 很想報答那些贈與我花的朋友。";
-		mes "我們村莊做了很多有關花的研究..甚至還想佈置出一個充滿花的地方，朝世界邁進。";
-		next;
-		mes "[教授]";
-		mes "所以.. 我們需要很多很多的花...";
-		mes "因為我不太常出門.. 所以要找尋是相當的困難的。";
-		mes "如果你可以為我找到^3355FF幻想花^000000 與 ^3355FF西納雷花^000000 還有 ^3355FF蘆薈^000000 跟 ^3355FF曼特花^000000... 這些花的話，我就把我最重視的東西給你...";
-		close;
-	}
-	mes "[教授]";
-	mes "總有一天我一定會用很多很多的花朵來佈置一個美麗無比的地方。";
-	close;
 }
 
 // 建國神話任務
@@ -196,24 +199,19 @@ prontera,248,212,3	script	看似忙碌的 少年#prt	706,3,3,{
 			next;
 			if (select("問他看看吧?:不理他") == 1) {
 				mes "["+strcharinfo(0)+"]";
-				mes "Say, what seems";
-				mes "to be the problem?";
+				mes "你好?";
 				next;
 				mes "[看似忙碌的 少年]";
 				mes ".........?";
 				next;
 				mes "[看似忙碌的 少年]";
+				mes "啊啊- 你是!上次那位無禮的冒失鬼";
 				if (sex) {
-					mes "Ack! You're that clumsy";
-					mes "dude who made me drop";
+					mes "叔叔!";
 				}
 				else {
-					mes "Ack! You're that ditzy";
-					mes "chick who made me drop";
+					mes "阿姨!";
 				}
-				mes "all of those books earlier!";
-				mes "Wait, you ditched me before,";
-				mes "so why act all concerned now?";
 				Emotion e_gasp;
 			}
 			else {
@@ -222,29 +220,18 @@ prontera,248,212,3	script	看似忙碌的 少年#prt	706,3,3,{
 				close;
 			}
 			next;
-			select("Well, I, um...");
+			select("什麼?");
 			mes "[看似忙碌的 少年]";
 			if (sex) {
-				mes "Yeah... A real";
-				mes "man wouldn't have";
-				mes "ditched back then";
-				mes "without helping me.";
-				mes "You're a real creepo,";
-				mes "you know that?";
+				mes "哈哈-不過，如果是一般有禮的紳士的話，";
+				mes "撞到別人後就應該幫忙撿起東西不是嗎? 我實在感到很荒唐";
 			}
 			else {
-				mes "Yeah... If you were";
-				mes "a graceful and considerate";
-				mes "lady, you woulda helped me";
-				mes "out before. I'm right, huh?";
+				mes "哈哈-不過，如果是一般有禮的淑女的話，";
+				mes "撞到別人後就應該幫忙撿起東西不是嗎? 我實在感到很荒唐";
 			}
 			next;
-			mes "^3355FFYou instinctively";
-			mes "kick over one of the";
-			mes "piles of books next";
-			mes "to the young boy.";
-			mes "You couldn't help it:";
-			mes "it was a natural reflex!^000000";
+			mes "^3355FF- 你把堆疊在少年旁邊的書用腳踢開 -!^000000";
 			next;
 			Specialeffect 180; //EF_HITDARK
 			Emotion e_omg;
@@ -252,16 +239,11 @@ prontera,248,212,3	script	看似忙碌的 少年#prt	706,3,3,{
 			next;
 			Emotion e_omg;
 			mes "[看似忙碌的 少年]";
-			mes "Ack! Those books...!";
-			mes "It took me so long to";
-			mes "stack all of those!";
+			mes "媽呀! 你這是幹什麼啦!!我好不容易疊好的!";
 			next;
 			mes "["+strcharinfo(0)+"]";
-			mes "Oh no, what a mess!";
-			mes "Here, let me help you";
-			mes "arrange these nicely";
-			mes "out of the bottom of";
-			mes "my freakin' heart.";
+			mes "弟弟沒關係嗎?小心，沒有受傷嗎?來，";
+			mes "我已把掉落的書 都撿好了，下次要小心一點喔~";
 			Emotion e_lv,1;
 			next;
 			mes "[看似忙碌的 少年]";
@@ -507,43 +489,31 @@ yuno,311,195,3	script	歷史學家#prt01	754,{
 		close;
 	}
 	else if (prt_curse == 3) {
-		mes "^3355FFAs you approached, this";
-		mes "歷史學家 suddenly closed";
-		mes "the book that he was reading,";
-		mes "looked to the heavens and";
-		mes "let out a deep breath in a vain";
-		mes "attempt to relieve his tension.^000000";
+		mes "^3355FF-在圖書館前面的長椅角邊倚靠著身體的男子，把拿在手上的書大略翻閱後，";
+ 		mes "將封面闔上並抬起頭來，開始用極其皺眉哭臉的表情弄亂頭髮-^000000";
 		next;
 		mes "[歷史學家]";
-		mes "GRRRRRRRRR!";
-		mes "Where are my books?!";
+		mes "咳嗚嗚嗚嗚嗚嗚嗚嗚!!!";
 		Emotion e_ag;
 		next;
-		select("Are you alright?");
+		select("請問是什麼事情呢?");
 		mes "[歷史學家]";
-		mes "Er? Oh. I'm sorry you";
-		mes "had to see that. I'm just";
-		mes "extremely upset. You see,";
-		mes "I'm expecting a delivery of";
-		mes "research books from Prontera,";
-		mes "but they haven't arrived yet.";
+		mes "我有向普隆德拉委託出借書籍，雖人約定的時間已經過了很久，但是挑夫尚未到達";
 		next;
 		mes "[歷史學家]";
-		mes "In fact, the delivery boy is";
-		mes "very late. This will delay my";
-		mes "research considerably since";
-		mes "I cannot proceed without more";
-		mes "new material to study.";
+		mes "沒有那些書的話，我就無法繼續做研究，這該怎麼辦呢?根據徹底的考證，再加以研究分析，";
+		mes "這是我們歷史學家們的職責所在不是嗎，年輕人";
+		next;
+		mes "[歷史學家]";
+		mes "不過，可以作為我研究後盾的資料遲遲不到，我實在感到著急又忐忑不安啊";
 		next;
 		if (countitem(7431) > 0) {
-			select("Excuse me, but what's your name?");
+			select("請問你的大名是?");
 			mes "[歷史學家]";
-			mes "Hm? I'm Karlomoff, the";
-			mes "1st scholar of the Rekenber";
-			mes "Historical Research Group.";
-			mes "Did you need something, or";
-			mes "were you looking around here";
-			mes "for somebody in particular?";
+			mes "你就叫我^3355FF卡羅莫夫^000000吧，我是雷根貝勒歷史研究會所屬的第一把交椅學者呢";
+			next;
+			mes "[歷史學家]";
+			mes "可是.. 你又是誰啊?";
 			next;
 		}
 		else {
@@ -576,39 +546,30 @@ yuno,311,195,3	script	歷史學家#prt01	754,{
 			mes "Now hurry, I need to research!";
 			close;
 		}
-		select("Right, I brought your books.");
+		select("我把資料都帶來了");
 		mes "[歷史學家]";
-		mes "What? But you're not the";
-		mes "delivery boy. Well, let me see";
-		mes "the books you've brought. Hm...";
-		mes "Just as I thought: the Rune-";
-		mes "Midgarts Kingdom has a great";
-		mes "wealth of ancient information.";
+		mes "噢噢! 你就是!!趕快把書交給我";
+		next;
+		mes "- 卡羅莫夫就如同餓壞的野獸般把拿在你手上的書籍搶走後，埋首用心的看書 -";
 		next;
 		mes "[歷史學家]";
-		mes "Ah, thank you so much for";
-		mes "bringing these. However, by";
-		mes "your mode of dress, I can tell";
-		mes "that you are an adventurer.";
-		mes "What happened to the delivery boy that was supposed to bring these?";
+		mes "沒錯.. 就是這個，果然是名副其實的像悠久傳統的盧恩--米德加茲王國一樣蘊藏著許多情報";
 		next;
 		mes "[歷史學家]";
-		mes "..........?";
-		mes "Afraid to ride the Airship?";
-		mes "Motion sickness? Well, that's";
-		mes "quite understandable. The poor";
-		mes "boy should have contacted me";
-		mes "about that beforehand.";
+		mes "辛苦你了，雖然晚了些，那我就不要太苛責你了";
 		next;
 		mes "[歷史學家]";
-		mes "Goodness, it's been ";
-		mes "a while since I've had";
-		mes "a visitor. Would you like";
-		mes "to stay and chat for a bit?";
-		mes "Just give me a minute to get";
-		mes "a cool drink of water first~";
+		mes "我聽說一般幫忙跑腿的人，都是些家境不好的小孩們為主，可是我看你既不像是家境貧困，又不像是個小孩子啊";
+		next;
+		mes "- 你向卡羅莫夫闡述代理跑腿的經過 -";
+		next;
+		mes "[歷史學家]";
+		mes "哼嗯，原來如此，如果事先跟我講說不能搭飛空艇就好了啊..算了，反正我已經拿到書了";
+		next;
+		mes "[歷史學家]";
+		mes "總之，難得跟你相遇，我們聊一下如何呢?我很喜歡聊天，我翹首盼望的書等了太久也累了，我去喝口水再來";
 		set prt_curse,4;
-		delitem 7431,1; //Books
+		delitem 7431,1; //堆疊的書
 		close;
 	}
 	else if (prt_curse == 4) {
@@ -2858,19 +2819,9 @@ prt_church,16,114,4	script	祭司 班波#tomb	60,{
 prt_church,19,111,5	script	#prince1	887,{
 	if (prt_curse == 19) {
 		mes "[祭司 班波]";
-		mes "This is the body of";
-		mes "the king's first son, the";
-		mes "crown prince. Just as it has";
-		mes "happened for generations,";
-		mes "the curse took the life of";
-		mes "the first born prince...";
+		mes "這是陛下的第一位王子，和別的第一位王子一樣，都是因詛咒而死";
 		next;
-		mes "^3355FFBeneath one of the";
-		mes "prince's sleeves, you";
-		mes "notice a dark mark. Upon";
-		mes "pulling up the sleeve, you";
-		mes "note that the mark resembles";
-		mes "the scales of a serpent.^000000";
+		mes "^3355FF- 繡著高雅刺繡的袖口尾端處瞥見黑色的紋身，稍微拉開一點袖口後，皮膚上那水汪汪般的紋路清晰可見 -^000000";
 		set prt_curse,20;
 		close;
 	}
