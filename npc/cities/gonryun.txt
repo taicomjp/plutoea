@@ -1,31 +1,15 @@
-// ±X±[«°¥«¸}¥»
-// 
-// ¤¤¤å¤Æ§@ªÌ:		¤£©ú
-// 
-// ¤¤¤åª©¥»½s¸¹:	20041119.0.2
-//
-//============================================================
-//===== eAthena Script ======================================= 
-//= Gonryun Town
-//===== By: ================================================== 
-//= x[tsk], KarLaeda
-//===== Current Version: ===================================== 
-//= 1.4
-//===== Compatible With: ===================================== 
-//= eAthena 1.0
-//===== Description: ========================================= 
-//
-//===== Additional Comments: ================================= 
-// May be missing npc's and dialogue.
-//= 1.1 Fixed Typo’s [Nexon]
-//= 1.2 Removed Duplicates [Silent]
-//= 1.3 Max NPC Name is 23 [Toms]
-//= 1.3a Removed temp NPC plugs due Broken Sword quest [Lupus]
-//= 1.4 Added missing NPC [KarLaeda]
-//============================================================
+//===========================================
+// [­ß] The PlutoEA Project [¤ý]
+// http://opensvn.csie.org/PlutoEA
+// ------------------------------------------
+// - ±X±[ «°Âí¸}¥» -
+// ------------------------------------------
+// ª©¥» 1.5
+//===========================================
 
-//Event¥¼½Õ¬d(¹L©ó½ÆÂø)
-alberta,245,69,4	script	±X±[«Å¶Ç¨Ï¦Ú#01	776,{
+// Kunlun Transportation
+//============================================================ 
+alberta,245,69,4	script	±X±[«Å¶Ç¨Ï¦Ú#gon	776,{
 	mes "[¥Ë¦Ê»¨]";
 	mes "±z¦n,§Ú·QÁÜ½Ð¤j®a,";
 	mes "¨Ó¨ì§Úªº¬G¶m±X±[,";
@@ -34,9 +18,8 @@ alberta,245,69,4	script	±X±[«Å¶Ç¨Ï¦Ú#01	776,{
 	mes "¬°¶Q»«­ÌªA°È,";
 	mes "¬O§Úªº¤jºa©¯";
 	next;
-	menu "¸ß°Ý¦³Ãö±X±[ªº¨Æ±¡",M_1,"¥h±X±[",M_2,"¨ú®ø",M_End;
-
-	M_1:
+	switch (select("¸ß°Ý¦³Ãö±X±[ªº¨Æ±¡:¥h±X±[:¨ú®ø")) {
+	case 1:
 		mes "[¥Ë¦Ê»¨]";
 		mes "§Ú­Ì±X±[¬O­Ó¥i¥H,";
 		mes "Åý¤j³°ªº®È«È¨É¨ü³Ì´Î";
@@ -64,13 +47,8 @@ alberta,245,69,4	script	±X±[«Å¶Ç¨Ï¦Ú#01	776,{
 		mes "¸ò§Ú»¡¤@Án§a,¯à°÷¬°¤j³°ªº¶Q»«­ÌªA°È,";
 		mes "¬O§Ú³Ì¤jªºÅw³ß";
 		next;
-	M_End:
-		mes "[¥Ë¦Ê»¨]";
-		mes "¦pªG¥H«á·Q­n¹L¥hªº¸Ü,";
-		mes "½Ð¨Ó§ä§Ú§a,¯à°÷¬°¤j³°ªº¶Q»«­ÌªA°È,";
-		mes "¬O§Ú³Ì¤jªºÅw³ß";
-		close;
-	M_2:
+		break;
+	case 2:
 		mes "[¥Ë¦Ê»¨]";
 		mes "¨º»ò,°¨¤W´N¥Xµo§a,";
 		mes "§Ú­Ì»Ý­n¤@ÂI¥h±X±[";
@@ -78,416 +56,86 @@ alberta,245,69,4	script	±X±[«Å¶Ç¨Ï¦Ú#01	776,{
 		mes "·í±z¦^µ{ªº®É­Ô,";
 		mes "§Ú­Ì·|§K¶O±µ«Ýªº";
 		next;
+		if(select("¥Xµo!:¨ú®ø")==2)
+			break;
 		mes "[¥Ë¦Ê»¨]";
-		mes "¨º»ò,¥i¥H¥Xµo¤F¶Ü?";
+		mes "·Ç³Æ¦n­n¥XµoÅo!";
 		next;
-		menu "¥Xµo¡I",-,"¨ú®ø",M_End;
-
+		if(Zeny<10000) {
 			mes "[¥Ë¦Ê»¨]";
-			mes "·Ç³Æ¦n­n¥XµoÅo!";
-			next;
-			if (Zeny < 10000){
-				mes "[¥Ë¦Ê»¨]";
-				mes "«Ü©êºp,±z­n·Ç³Æ¦n";
-				mes "®È¦æ®É©Ò»Ý­nªº";
-				mes "10,000 ¿ú¹ô,½Ð¦A½T»{¤@¤U";
-				mes "±z©ÒÄâ±aªº¿ú¹ô,";
-				mes "ÁÂÁÂ";
-				close;
-			}
-			set Zeny,Zeny-10000;
-			warp "gon_fild01",258,82;
-			end;
+			mes "«Ü©êºp,±z­n·Ç³Æ¦n";
+			mes "®È¦æ®É©Ò»Ý­nªº";
+			mes "10,000 ¿ú¹ô,½Ð¦A½T»{¤@¤U";
+			mes "±z©ÒÄâ±aªº¿ú¹ô,";
+			mes "ÁÂÁÂ";
+			close;
+		}
+		set Zeny,Zeny-10000;
+		warp "gon_fild01",258,82;
+		end;
+	case 3:
+	}
+	mes "[¥Ë¦Ê»¨]";
+	mes "¦pªG¥H«á·Q­n¹L¥hªº¸Ü,";
+	mes "½Ð¨Ó§ä§Ú§a,¯à°÷¬°¤j³°ªº¶Q»«­ÌªA°È,";
+	mes "¬O§Ú³Ì¤jªºÅw³ß";
+	close;
 }
 
-//===============================================================================
-
-gon_fild01,255,79,6	script	±X±[«Å¶Ç¨Ï¦Ú#02	776,{
+gon_fild01,255,79,6	script	±X±[«Å¶Ç¨Ï¦Ú#gon2	776,{
 	mes "[¥Ë¦Ê»¨]";
-	mes "¬O§_¦³­Ó´r§Öªº®È³~¤F©O¡H¨º»ò";
-	mes "²{¦bÀ³¸Ó¬O­n¦^¥hªº®É­Ô¤F§a¡I";
+	mes "¬O§_¦³­Ó´r§Öªº®È³~¤F©O?¨º»ò";
+	mes "²{¦bÀ³¸Ó¬O­n¦^¥hªº®É­Ô¤F§a!";
 	mes "©¹ªð¤j³°ªº²î²{¦b¤w¸g·Ç³Æ¦n¤F";
 	next;
-	menu "¦^¦ãº¸¨©¶ð",-,"¨ú®ø",M_End;
-
+	switch (select("¦^¦ãº¸¨©¶ð:¨ú®ø")) {
+	case 1:
 		mes "[¥Ë¦Ê»¨]";
-		mes "¨º»ò¥XµoÅo¡I";
+		mes "¨º»ò¥XµoÅo!";
 		close2;
 		warp "alberta",243,67;
 		end;
-	M_End:
+	case 2:
 		mes "[¥Ë¦Ê»¨]";
-		mes "¨º»ò½Ð§A¦AºCºCªº³}§a¡I";
+		mes "¨º»ò½Ð§A¦AºCºCªº³}§a!";
 		mes "¦b±X±[ÁÙ¦³«Ü¦h";
 		mes "§A¨S¦³¥h¹Lªº¦a¤è©O";
 		close;
+	}
 }
 
-//===============================================================================
-
-gon_fild01,187,239,4	script	±X±[«Å¶Ç¨Ï¦Ú#03	776,{
+gon_fild01,187,239,7	script	±X±[«Å¶Ç¨Ï¦Ú#gon3	776,{
 	mes "[±i¼áÀs]";
 	mes "½Ð©¹¤W¨«¹L¥h´N¥i¥H¤F";
 	mes "¯u§Æ±æ§A¯à°÷¦b±X±[";
 	mes "»s³y«Ü¦h¬ü¦nªº¦^¾Ð";
-	mes "¦A¦^¥h¡K";
+	mes "¦A¦^¥h..";
 	close;
 }
 
-//===============================================================================
-
-gonryun,153,64,0	script	±X±[«Å¶Ç¨Ï¦Ú#04	776,{
+gonryun,153,64,7	script	±X±[«Å¶Ç¨Ï¦Ú#gon4	776,{
 	mes "[±i¼áÀs]";
 	mes "§Æ±æ¦b±X±[¦³­Ó´r§Öªº¤@¤Ñ¡A";
 	mes "®È¹Cµ²§ô¤Fªº¸Ü¡A";
 	mes "§Ú­Ì·|¿Ë¦Û¤Þ¾É¨ìªð©¹¤j³°ªº²î";
 	next;
-	menu "¦^¨ì´ä¤f",-,"¨ú®ø",M_End;
-
+	if (select("¦^¨ì´ä¤f:¨ú®ø") == 1) {
 		mes "[±i¼áÀs]";
-		mes "¥XµoÅo¡I";
+		mes "¥XµoÅo!";
 		close2;
 		warp "gon_fild01",258,82;
 		end;
-	M_End:
-		mes "[±i¼áÀs]";
-		mes "¨º»ò½Ð§A¦AºCºCªº³}§a¡I";
-		mes "¦b±X±[ÁÙ¦³«Ü¦h";
-		mes "§A¨S¦³¥h¹Lªº¦a¤è©O";
-		close;
-}
-
-//===============================================================================
-//Inn
-//===============================================================================
-
-gon_in,153,35,4	script	¥D¤H	702,{
-	if ((event_gonryun == 1) || (event_gonryun == 2)) goto LStart2;
-	if (event_gonryun == 3) goto LStart3;
-	if (event_gonryun == 4) goto LStart4;
-	if (event_gonryun == 98) goto LStartend;
-	if (event_gonryun == 99) goto Lend;
-	mes "[Å]ÆQ©Ð]";
-	mes "«zªü..ªì¦¸¨£­±°Ú,";
-	mes "¬O±q¥~¦a¨Óªº¶Ü?";
-	mes "³Ìªñ§Ú­Ì§ø¸¨¸Ì";
-	mes "¦h¤F«Ü¦h¥~¦a¤H,¦]¬°³o¼Ë¤H¤â¤£°÷";
-	mes "¯uÁV¿|";
-	next;
-	mes "[Å]ÆQ©Ð]";
-	mes "­ü§r§r «ç»ò¹ï«È¤HÁ¿³o¨Ç°Ç,";
-	mes "¦³»Ý­n¤°»ò»Ý­nªº¶Ü?";
-	next;
-	menu "°s",L1,"¤£»Ý­n",L2;
-L1:
-	mes "[Å]ÆQ©Ð]";
-	mes "³o«ç»ò¿ì°Ú¡K";
-	mes "³Ìªñ«È¤H¶V¨Ó¶V¦h¤F";
-	mes "«OºÞªº°s¤]³£¨S¦³¤F";
-	mes "«È¤H«o·U·U¨Ó·U¦h©O";
-	mes "³o¯u¬OÁV¿|°Ú¡K";
-	close;
-L2:
-	mes "[Å]ÆQ©Ð]";
-	mes "¨º»ò¦n¦nªºª±§a¡A";
-	mes "¤U¦¸¦A¨Ó³á";
-	close;
-LStart2:
-	mes "[Å]ÆQ©Ð]";
-	mes "­ü§r¡I§A¦³Å¥»¡¶Ü¡H";
-	mes "¬Q¤Ñ§øªø®a¸Ì¾D¤p°½¤F";
-	mes "³Ìªñ¤v¸g±`±`¾D¤p°½¡A";
-	mes "©Ò¥H·P¨ì¤£¦w¡K¡K";
-	next;
-	mes "[Å]ÆQ©Ð]";
-	mes "³s§øªø®a³£¾D¤p°½ªº¸Ü¡A";
-	mes "¹³§Ú­Ì³oºØ¥­¥Á­n«ç»ò¿ì©O¡K";
-	mes "°Ú¡K©êºp¡A¤£¸Ó¹ï«È¤H";
-	mes "»¡¨Ç©_©Çªº¸Ü¡A";
-	mes "ª±±o´r§Ö¤@ÂI§a¡I¨þ¨þ";
-	set event_gonryun,2;
-	close;
-LStart3:
-	mes "[Å]ÆQ©Ð]";
-	mes "­ü§r ¬O§A§ì¨ì¤p°½ªº°Ú¡A";
-	mes "¯u¬O¤j©¯°Ú¡A¨þ¨þ¨þ";
-	mes "²{¦b¥Í·N·|¤ñ¸û¦nÂI¤F§a¡A";
-	mes "°Ú¡A¨º±o¥ý·Ç³Æ¯Ê³fªº°s°Ú";
-	next;
-	mes "[Å]ÆQ©Ð]";
-	mes "¨º­Ó ³·¾W¥ý¥Í³Ü§¹¤§«á¡A";
-	mes "¤S¨S¤°»ò¥Í·N©Ò¥H´N¨S¦³¸É°s";
-	mes "¨º»ò¤U¦¸¦A¨Óª±§a";
-	mes "§Ú·|¦n¦nªº©Û«Ý§Aªº¡A¨þ¨þ¨þ";
-	set event_gonryun,4;
-	close;
-LStart4:
-	mes "[Å]ÆQ©Ð]";
-	mes "³Ìªñ§ø¸¨ªº®ðª^«ÜÁV¿|§a¡H";
-	mes "­n»°§Ö§ì¨ì¤p°½¤~¦æ¡K";
-	close;
-LStartend:
-	mes "[Å]ÆQ©Ð]";
-	mes "°Ú ¬O«È¤H°Ú¡A";
-	mes "Å¥»¡§A­nÀ°§U§øªø°Ú¡H";
-	mes "¤@©w­nÀ°¦£§ì¨ì¨º­Ó¤p°½¡A";
-	mes "¹ê¦b¤Ó¤£¦w¤F";
-	next;
-	mes "[Å]ÆQ©Ð]";
-	mes "°Ú ¦³¬Ý¨ì¨º­Ó¤H¶Ü¡A";
-	mes "´N­w¦b®à¤Wªº¨º­Ó¤H¡A";
-	mes "¨º­Ó¤H¦n¹³ª¾¹D¦³Ãö¬Q¤Ñ";
-	mes "¨º¤p°½ªº¨Æ±¡¡A¬Q±ß";
-	mes "³Ü¾K¤§«á ­üËç¡K";
-	close;
-
-Lend:
-	mes "[Å]ÆQ©Ð]";
-	mes "³Ìªñ§ø¸¨ªº®ðª^«ÜÁV¿|§a¡H";
-	mes "­n»°§Ö§ì¨ì¤p°½¤~¦æ¡K";
-	close;
-}
-
-//===============================================================================
-gonryun,139,142,0	script	¤Ö¤k#gon	772,{
-	if (event_gonryun == 99) goto Lend;
-	emotion 9;
-	mes "[¥v®¦¾å]";
-	mes ".............";
-	mes "¦]¬°³Ìªñ§ø¸¨¸Ìªº«È¤H";
-	mes "ÅÜ¦h¤F¦Ó·P¨ì§Ö¼Ö¡A¬ðµM®a¸Ì¾D¤p°½";
-	mes "´NÅÜªº¤£´r§Ö¤F";
-	close;
-Lend:
-	mes "[¥v®¦¾å]";
-	mes "¼K¼K¡K¡K";
-	mes "³Ìªñ¦n¤F«Ü¦h";
-	mes "§ø¸Ì¦h¤F«Ü¦h´r§Öªº¨Æ";
-	mes "«Ü¦h«È¤H¡A³Q°½ªºªF¦è";
-	mes "¤]³£§ä¨ì¤F¡A¼K¼K¡K¡K";
-	mes "°Ú¡ãÀ°§Ú§ä¨ìªF¦èªº¨º¦ì¡A";
-	mes "¤@©w«Ü«Ó§a¡H";
-	close;
-}
-
-//===============================================================================
-
-gon_in,18,27,4	script	°ü¤H	771,{
-	mes "[©|ªá¿P]";
-	mes "¨þ¨þ¨þ¨þ¨þ¨þ";
-	mes "³o¬O½Ö§r¡A³o¤£¬O±q¥~¦a¨Óªº";
-	mes "¶Q»«¶Ü¡A¨þ¨þ";
-	next;
-	menu "±z¦n",-,"§øªø¦b¨º¸Ì?",M_End;
-
-		mes "[©|ªá¿P]";
-		mes "§A¦n¡A";
-		mes "¯u¬O«Ü¤[³£¨S¦³«È¤H¨Ó°Ú";
-		mes "©Ò¥H¨S¤°»òªF¦è¥i¥H©Û«Ý";
-		mes "¤£¹L¦n¦nªºª±ª±¦A¦^¥h§a¡I¨þ¨þ¨þ";
-		close;
-	M_End:
-		mes "[©|ªá¿P]";
-		mes "§Ú®a¨º¤f¤l¦b¼Ó¤W";
-		if (Sex == 0) goto LWoman;
-		mes "§A¤]ªøªºÆZ«Óªº¹À¡A";
-		mes "¤£¹LÁÙ¬O¤ñ¤£¤W§Ú®a¨º¤f¤l";
-		mes "¨þ¨þ¨þ¨þ¨þ";
-		close;
-	LWoman:
-		mes "§Aªøªºº¡½å²Qªº¹À¡A";
-		mes "¤£¹L©M§Ú¤ñ°_¨Ó¡A¥u®t§Ú¤@ÂIÂI°Õ";
-		mes "§Æ±æ§AÅ¥¨ì³o¼Ë¤£·|¤¶·N¡A¨þ¨þ¨þ¨þ";
-		close;
-}
-
-//===============================================================================
-
-gonryun,119,111,4	script	­û¥Û ¤d	89,{
-	mes "[­û¥Û ¤d]";
-	mes "³o¸Ìªº§øªø¬O­Ó«Ü¶}©ñªº¤H";
-	mes "¤£¹L´N¬O¦]¬°¥L¨º¶}©ñªº©Ê®æ";
-	mes "¤]¬O¦³¤H¤£³ßÅwªº¡A³á¶â¡K";
-	next;
-	mes "[­û¥Û ¤d]";
-	mes "¤£¹L¦]¬°¥L¡A¦Ó¨Ï§Ú­Ì§ø¸¨";
-	mes "ÅÜ±o¶}©ñ¬O¥ó¤£¿ùªº¨Æ°Ú¡K";
-	mes "¤£¹L§Æ±æ¤£­n¦³µLÍùÀY";
-	mes "ªº¤H¥X²{";
-	close;
-}
-
-//===============================================================================
-
-gonryun,237,225,4	script	©µ³ì §t	776,{
-	if(event_gonryun_1 == 2) goto L_START;
-	if(countitem(1201) > 0 && event_gonryun_1 == 1) goto L_START;
-	mes "[©µ³ì §t]";
-	mes "³á°Ú... ³o­n«ç»ò¿ì©O!";
-	mes "©~µM§â§Ú­«­nªº";
-	mes "µu¼C§Ë±¼¤F! ³á°Ú°Ú°Ú";
-	next;
-	mes "[©µ³ì §t]";
-	mes "·Q­n¤U¥h¡A";
-	mes "¥i¬O«Ü©ÈÅ]ª«";
-	mes "©Ò¥H¤S¤£´±¤U¥h... ­üËç! ·Ð¦º¤F!";
-//°²³]Ä²µo¨Æ¥ó¬°¤U
-	set event_gonryun_1, 1;
-	close;
-
-L_START:
-	mes "[©µ³ì §t]";
-	mes "¶ã¶ã¶ã¡K«ç»ò¿ì©O¡K¶â¡H";
-	mes "§A§ä§Ú¦³¤°»ò¨Æ±¡¶Ü¡H";
-	mes "°Ú°Ú¡H";
-	next;
-	mes "[©µ³ì §t]";
-	mes "¡K°Ú¡I¨º¡A¨ºµu¼C¬O§Ú";
-	mes "¦b³o¸Ì±¼ªº¯ª¥ýªºµu¼C¡I¡I";
-	mes "³o­Ó¬O¦b­þ¸Ìµo²{ªº¡H";
-	next;
-	mes "[©µ³ì §t]";
-	mes "¨Æ¹ê¤W¨º¬O§Ú¦b³o¸Ì¡A";
-	mes "¤£¤p¤ß±¼¦b¦a¤Wªº";
-	mes "¯ª¥ýªº¿ò²£¡AÁöµM¬O";
-	mes "µó¤Wªº«K©y³fµu¼C";
-	mes "¤£¹L¹ï§Ú¨Ó»¡¬O";
-	mes "«Ü­«­nªº¶Ç®a¤§Ä_";
-	next;
-	mes "[©µ³ì §t]";
-	mes "­n¤£­n§â¨ºµu¼C";
-	mes "¥æµ¹§Ú©O¡H";
-	next;
-	menu "¥æµ¹¥L",L_ROOT_1,"¤£¥æµ¹¥L",L_ROOT_2;
-
-	L_ROOT_1:
-		mes "[©µ³ì §t]";
-		mes "¼Ú¼Ú¡IÁÂÁÂ";
-		mes "ÁöµM·LÁ¡¤FÂI¡A";
-		mes "¤£¹L½Ð¦¬¤U³o­Ó§a¡I";
-		mes "³o¬O§Ú±`±`·R¥ÎªºÃÄ³á";
-		getitem 505, 2;
-		next;
-		mes "[©µ³ì §t]";
-		mes "¯uªºÁÂÁÂ§A¡A¦pªG¤£¬O§Aªº¸Ü¡A";
-		mes "§Ú¤@©w·|³Q¯ª¥ý½|¦º¡A«¢«¢«¢";
-		set event_gonryun_1, 2;
-		close;
-	L_ROOT_2:
-		mes "[©µ³ì §t]";
-		mes "§â¤H®aªº¶Ç®a¤§Ä_¡K¶ã¶ã¡I";
-		mes "´cÅ]¡I¼»¥¹¡I¸VÃ~¡I³L°C¡I";
-		mes "§Ú·|«ë§Aªº³á³á³á³á³á¡I";
-		close;
-L_START2:
-		mes "[©µ³ì §t]";
-		mes "¶â¡A³o¼Ë·Q¤]¬O¡A";
-		mes "¾F©~¤j¤H¤]¤£ª¾¹D¬°¤F¤°»ò¨Æ±¡¡A";
-		mes "¤@ª½¦b·Ð´o¤¤¡A¤£¹L³o¤]¤£¬O§Ú";
-		mes "¥i¥H¤z¹wªº¨Æ¡C";
-		close;
-}
-
-//===============================================================================
-
-gonryun,51,101,4	script	Gaiysonchoru	778,{
-	mes "[Gaiysonchoru]";
-	emotion e_swt;
-	mes "..............";
-	next;
-	mes "[Gaiysonchoru]";
-	mes "Well......... I'm worried.";
-	next;
-	mes "[Gaiysonchoru]";
-	mes "So very worried.";
-	close;
-}
-
-//===============================================================================
-
-gonryun,237,226,3	script	YunKyoHam#gn	776,{
-	mes "[YunKyoHam]";
-	if (nakha < 2) {
-		mes "Oh no~ Holy cow!";
-		mes "Can't believe I dropped";
-		mes "my valuable knife! ahhhhhh.";
-		if (baselevel >= 20) {
-			next;
-			if (nakha == 0) set nakha,1;
-			mes "[YunKyoHam]";
-			mes "I need to go down to get it";
-			mes "but...the monsters..";
-			mes "I am so scared..  What should I do!";
-		}
-	} else if (nakha == 2) {
-		mes "ehhhh.. what should I do..";
-		mes "got any business to";
-		mes "take care of?";
-		mes "hmm?";
-		if (countitem(1201) < 1) close;
-		next;
-		mes "[YunKyoHam]";
-		mes "uk! that...that knife";
-		mes "is my ancestor's knife that";
-		mes "I dropped from here.";
-		mes "Where did you get it?";
-		next;
-		mes "[YunKyoHam]";
-		mes "I dropped that knife from";
-		mes "here and it belongs to my";
-		mes "ancestor's property. It sure is";
-		mes "a cheap knife,";
-		mes "but really valuable to me";
-		mes "and my family.";
-		next; 
-		mes "[YunKyoHam]";
-		mes "Would you hand that";
-		mes "knife to me?";
-		next;
-		if (select("give.:ignore.") == 2 || countitem(1201) < 1) {
-			mes "[YunKyoHam]";
-			mes "Huk! my family heiloom!!";
-			mes "You Evil! Satan! Animal! Hode";
-			mes "My curse shall be on his head!!!";
-			close;
-		}
-		mes "[YunKyoHam]";
-		mes "ohoh! Thank you!";
-		mes "Take these potions.";
-		mes "They are not expensive";
-		mes "but my favorites.";
-		set nakha,3;
-		delitem 1201, 1; // Knife
-		getitem 505,2; // Blue_Potion
-		next;
-		mes "[YunKyoHam]";
-		mes "You kept my family";
-		mes "treasure safe. Thank you!!";
-		mes "hahaha";
-	} else {
-		mes "next.. I heard my neighbor";
-		mes "is worrying about something";
-		mes "these days.. well, I got my";
-		mes "own business to take care of.";
 	}
+	mes "[±i¼áÀs]";
+	mes "¨º»ò½Ð§A¦AºCºCªº³}§a!";
+	mes "¦b±X±[ÁÙ¦³«Ü¦h";
+	mes "§A¨S¦³¥h¹Lªº¦a¤è©O";
 	close;
 }
 
-gon_fild01,245,257,0	script	lost knife#gn	139,1,1,{
-	if (nakha == 1) {
-		set nakha, 2;
-		mes "-something is hidden underneath the sand dunes-";
-		mes " ";
-		mes "-You have found an -";
-		mes "-undefined knife.-";
-		close2;
-		getitem 1201, 1; // Knife
-		end;
-	}
-}
-
-//===============================================================================
-gonryun,200,82,3	script	¦¨ªQ ·P	774,{
+// Generic Kunlun NPCs
+//============================================================ 
+gonryun,200,82,3	script	¦¨ªQ ·P#gon	774,{
 	mes "[¦¨ªQ ·P]";
 	mes "¼y¯¬¬¡°Ê¯u¬O§Ö¼Ö·¥¤F¡A";
 	mes "©Ò¥H§Ú¦n³ßÅw¦n³ßÅw¡A";
@@ -496,7 +144,7 @@ gonryun,200,82,3	script	¦¨ªQ ·P	774,{
 	close;
 }
 
-gonryun,268,88,4	script	­ã©Y ¨}	776,{
+gonryun,268,88,4	script	­ã©Y ¨}#gon	776,{
 	mes "[­ã©Y ¨}]";
 	mes "§Ú­Ì¬O¿W¥ßªº¥Á±Ú¡A";
 	mes "¦]¸r¼}³oºØ³Q¯¬ºÖªº°ê¤g¡A";
@@ -504,28 +152,26 @@ gonryun,268,88,4	script	­ã©Y ¨}	776,{
 	mes "¤Ï¦Ó¾Ô³Ó";
 	next;
 	mes "[­ã©Y ¨}]";
-	mes "§Ú¬Û«H¡A³Ó§Qªº³Íºq¡I";
-	mes "¨º¬O§Ú­Ì¦­¤Wªº¤é¥X¡I";
+	mes "§Ú¬Û«H¡A³Ó§Qªº³Íºq!";
+	mes "¨º¬O§Ú­Ì¦­¤Wªº¤é¥X!";
 	close;
 }
 
-gonryun,118,111,5	script	Wonsuk Chen#gn	89,{
-	mes "[Wonsuk Chen]";
-	mes "A chieft of this town is";
-	mes "an open-hearted man.";
-	mes "But I heard that there are some";
-	mes "people who don't like his character. hmm..";
+gonryun,118,111,5	script	­û¥Û ¤d#gon	89,{
+	mes "[­û¥Û ¤d]";
+	mes "³o¸Ìªº§øªø¬O­Ó«Ü¶}©ñªº¤H";
+	mes "¤£¹L´N¬O¦]¬°¥L¨º¶}©ñªº©Ê®æ";
+	mes "¤]¬O¦³¤H¤£³ßÅwªº¡A³á¶â..";
 	next;
-	mes "[Wonsuk Chen]";
-	mes "Well, I like my town. Chief's efforts";
-	mes "make our town way better. I just hope";
-	mes "I don't get to see some dummies";
-	mes "around the town anymore.";
+	mes "[­û¥Û ¤d]";
+	mes "¤£¹L¦]¬°¥L¡A¦Ó¨Ï§Ú­Ì§ø¸¨";
+	mes "ÅÜ±o¶}©ñ¬O¥ó¤£¿ùªº¨Æ°Ú..";
+	mes "¤£¹L§Æ±æ¤£­n¦³µLÍùÀY";
+	mes "ªº¤H¥X²{";
 	close;
 }
 
-//===============================================================================
-gonryun,181,161,4	script	ª³¬Ã ¾G	773,{
+gonryun,181,161,4	script	ª³¬Ã ¾G#gon	773,{
 	mes "[ª³¬Ã ¾G]";
 	mes "§Ú­Ì±X±[ªº¨k¥Í¡A";
 	mes "¥þ³¡³£«Ü¦³¤O¦Ó¥Bºë¤O©ô²±¡A";
@@ -537,12 +183,11 @@ gonryun,181,161,4	script	ª³¬Ã ¾G	773,{
 	mes "¬Û¹ïªº¤k¥Í¡A";
 	mes "¤£¨¬¤~·|³o¼Ë¡A";
 	mes "¤£ª¾¹D§Ú³o¨à¤l¯à¤£¯à";
-	mes "°ù±o¨ì¦Ñ±C¡K©I»ï";
+	mes "°ù±o¨ì¦Ñ±C..©I»ï";
 	close;
 }
 
-//===============================================================================
-gonryun,113,135,6	script	¦uªù¤H	780,{
+-	script	GateKeeper#gon	-1,{
 	mes "[¦uªù¤H]";
 	mes "Åwªï¥úÁ{¡A³o¸Ì¬O";
 	mes "»â¾É±X±[ªº";
@@ -559,196 +204,104 @@ gonryun,113,135,6	script	¦uªù¤H	780,{
 	mes "¯¬§A¦³­Ó´r§Öªº³X°Ý";
 	close;
 }
-//===============================================================================
-gonryun,113,127,6	script	¦uªù¤H#gon	780,{
-	mes "[¦uªù¤H]";
-	mes "Åwªï¥úÁ{¡A³o¸Ì¬O";
-	mes "»â¾É±X±[ªº";
-	mes "¥vÆA¤åªº¦í¦v";
-	next;
-	mes "[¦uªù¤H]";
-	mes "À³¸Ó¤£·|¦³¨ººØ¨Æ¡A";
-	mes "¤£¹L¸U¤@°µ¤@¨ÇÁà´cªº¨Æ±¡¡A";
-	mes "§Ú­Ì·|·í³õ¨ë§A";
-	next;
-	mes "[¦uªù¤H]";
-	mes "À³¸Ó¤£·|¦³¨ººØ¨Æµo¥Í";
-	mes "¤£­n¤Ó¾á¤ß¡A";
-	mes "¯¬§A¦³­Ó´r§Öªº³X°Ý";
-	close;
-}
+gonryun,113,135,6	duplicate(GateKeeper#gon)	¦uªù¤H#gon	780
+gonryun,113,127,6	duplicate(GateKeeper#gon)	¦uªù¤H#gon2	780
 
-gon_in,73,82,5	script	SungChul Ki#gn	778,{
-	mes "[SungChul Ki]";
-	if (nakha != 3) {
-		mes "............";
+gon_in,73,82,5	script	¦¨­õ °ò#gon	778,{
+	switch (nakha) {
+	case 3:
+		set cha,1;
+		mes "[¦¨­õ °ò]";
+		mes "§Ú¥s¦¨­õ °ò";
+		mes "¬ã¨sµÛ¦n¦Yªº¯ù";
+		mes "¬O¯ù¬ã¨s¤H­û";
+		mes "¬°¤F»s§@¦n¦Yªº¯ù";
+		mes "©é©R¡A¥¿¦b§V¤O";
 		next;
-		mes "[SungChul Ki]";
-		mes "puuuuu....This sure is";
-		mes "something to worry about.";
+		mes "[¦¨­õ °ò]";
+		mes "­ó..¥i¬O¡Aªñ¨Ó";
+		mes "¬ã¨s¨S¦³µo®i";
+		mes "¤°»ò¹º®É¥NªºªF¦è";
+		mes "¥²­n,¤£¹L..";
+		next;
+		mes "[¦¨­õ °ò]";
+		mes "°µ¤°»ò¡A¯ù";
+		mes "¦³¦n¦Y¦a¯à³o¼Ëªº¶Ç¨¥";
+		mes "³o­Ó¨º­Ó¦a...¡B";
+		mes "¤°»ò?µh­W";
+		close;
+	default:
+		mes "[¦¨­õ °ò]";
+		mes ".........";
+		next;
+		mes "[¦¨­õ °ò]";
+		mes "©I»ï.....";
+		mes "¯u¥O¤H¾á¤ß°Ú¡A¾á¤ß";
 		close;
 	}
-	set cha, 1;
-	mes "SungChul Ki is my name.";
-	mes "I am a great tea maker.";
-	mes "I give all my efforts";
-	mes "in making tasty tea";
-	mes "night and day.";
-	next;
-	mes "[SungChul Ki]";
-	mes "hu...but I haven't make any";
-	mes "great tea lately.";
-	mes "I need some special";
-	mes "ingredients...";
-	next;
-	mes "[SungChul Ki]";
-	mes "There's a rumor says with snake,";
-	mes "it's possible to make great tea.";
-	mes "But where can I find and how can";
-	mes "I catch one? that's not possible.";
-	mes "hmm...";
-	close;
-
-//	no idea what should happen after you started the quest...
-//	if ((v[cha] == 1) & (v[°Ç?È¯] > 0))
-//		mes "[SungChul Ki]"
-//		mes "...À_? ¹ì? Àâ_Æ_- _ª¿?
-//		mes "¹°°ÇÀÌ¶ó°í? ÈåÀ_..."
-//		mes "¿ØÁö ¸ð¸_°Ô ÁÁ_Æº¸ÀÌ_Â°?"
-//		mes "ÀÌ¸R Áàº¸°Ô. ÇÑ¹ø Â÷¸¦"
-//		mes "¸¸÷é_îº¸°Ú_?"
-//		next;
-//		mes "................................"
-//		next;
-//		mes "................................"
-//		next;
-//		mes "................................"
-//		next;
-//	endif
-//
-//
-//
 }
 
-//==============ÃàÁ¦ °ü¸RÀÎ================
-//npc "gon_in" "È_ÀÌ _? 4_M_TWMIDMAN 101 21 3 5 5
-//OnClick:
-//	mes "[È_ÀÌ _º]"
-//	mes "ÈÞ¿ì... °ÆÁ¤ÀÌ+?"
-//	mes "____ ÀÌ¹ø¿¡÷÷ ÃàÁ¦¸¦ ¹úÀÏ"
-//	mes "Å¸ÀÌ¹ÖÀÌ ¿Ô_Â÷_ _îÂî÷?
-//	mes "ÀÏÀÎÁö ÀüÇô ÃàÁ¦ÁØºñ°¡"
-//	mes "÷ÇÁö_Ê_Ò_?.."
-//	next;
-//	mes "[È_ÀÌ _º]"
-
-gon_in,173,27,2	script	¾}«L §d	774,{
+gon_in,173,27,2	script	¾}«L §d#gon	774,{
 	mes "[¾}«L §d]";
-	mes "ªGµM¡K§Ú³o¦~ÄÖ¨Ó¨ì°s©±¡A";
+	mes "ªGµM..§Ú³o¦~ÄÖ¨Ó¨ì°s©±¡A";
 	mes "¤]¤£½æ§Ú°s°Ú¡A";
 	mes "¬Ý¤j¤H³£«Ü·|³Ü¡A";
-	mes "¯u¦n©_¬O¤°»ò¨ý¹D°Ú¡K­ü";
+	mes "¯u¦n©_¬O¤°»ò¨ý¹D°Ú..­ü";
 	next;
 	mes "[¾}«L §d]";
 	mes "¤£¹L¥¿¦b¶}µo¹³§Ú³o¼Ëªº¤p«Ä¤l¡A";
 	mes "¤]¥i¥H¶¼¥Îªº¬ü¨ý¯ù¡A";
-	mes "¤£ª¾¹D¡K¨º¬O¤°»ò®É­Ô¡A";
+	mes "¤£ª¾¹D..¨º¬O¤°»ò®É­Ô¡A";
 	mes "·Q¨ì­n³Ü¬ü¨ýªº¯ù®É¡A";
 	mes "¯uªº¦n¿³¾Ä³á";
 	close;
 }
 
-gonryun,163,60,4	script	Gonryun Guide	780,{
-	mes "[Wonchi Ha]";
-	mes "Come to Gonryun where passion";
-	mes "and energy overflows. You can feel liveliness";
-	mes "just by walking around!";
-	next;
-	mes "[Wonchi Ha]";
-	mes "I am responsible to help you";
-	mes "with any questions you may have.";
-	mes "so please feel free to ask any";
-	next;
-	switch(select("resident of Chief:Tool Dealer:Weapon Dealer:Armor Dealer:wine shop")){
-	case 1:
-		viewpoint 1,109,131,1,0xFF3355;
-		mes "[Wonchi Ha]";
-		mes "In your minimap";
-		mes "Head to ^FF3355+^000000";
-		mes "You'll get to a resident of chief.";
-		mes "Enjoy your trip in";
-		mes "lovely Gonryun!";
-		break;
-	case 2:
-		viewpoint 1,147,82,2,0xCE6300;
-		mes "[Wonchi Ha]";
-		mes "In your minimap";
-		mes "Head to ^CE6300+^000000";
-		mes "You'll get to a Tool Dealer.";
-		mes "Enjoy your trip in";
-		mes "lovely Gonryun!";
-		break;
-	case 3:
-		viewpoint 1,174,104,3,0x55FF33;
-		mes "[Wonchi Ha]";
-		mes "In your minimap";
-		mes "Head to ^55FF33+^000000";
-		mes "You'll get to a Weapon Dealer.";
-		mes "Enjoy your trip in";
-		mes "lovely Gonryun!";
-		break;
-	case 4:
-		viewpoint 1,173,84,4,0x3355FF;
-		mes "[Wonchi Ha]";
-		mes "In your minimap";
-		mes "Head to ^3355FF+^000000";
-		mes "You'll get to an Armor Dealer.";
-		mes "Enjoy your trip in";
-		mes "lovely Gonryun!";
-		break;
-	case 5:
-		viewpoint 1,215,114,5,0xFFFFFF;
-		mes "[Wonchi Ha]";
-		mes "In your minimap";
-		mes "Head to ^FFFFFF+^000000";
-		mes "You'll get to a wine shop.";
-		mes "Enjoy your trip in";
-		mes "lovely Gonryun!";
-		break;
+gonryun,166,196,3	script	Soldier#gon	780,{
+	switch (b_sword) {
+	default:
+		mes "[«z¾}¼Ú]";
+		mes "§Aª¾¹D¶Ü?";
+		mes "³o¸Ì¥»¨Ó¬O¯¨°ó¡A";
+		mes "¤£ª¾¦ó®É¶}©l¤@¨ÇµLªkµn¥Pªº¯«¥P";
+		mes "¶}©l¦û¤F¦ì¤l¡AÅÜ¦¨¤FÅ]ª«ªº";
+		mes "±_¥Þ¡A¦]¦¹¯¨°ó¤]³Q¯î¼o¤F..";
+		if (b_sword > 9) {
+			next;
+			mes "[«z¾}¼Ú]";
+			mes "²½³þÀ³¸Ó§Ö­n¶}©l¤F";
+			mes "¦ý¬OÁ`Ä±±o©Ç©Çªº";
+		}
+		close;
+	case 7:
+	case 8:
+	case 9:
+		mes "[«z¾}¼Ú]";
+		mes "¬Q±ß¨º»ò§n";
+		mes "¬O¦]¬°¤p°½¦b§ø¤l¸Ì";
+		next;
+		mes "[«z¾}¼Ú]";
+		mes "°Ú~~!Ãø¹D¤p°½¥h¹L¯¨°ó¤F";
+		next;
+		mes "[«z¾}¼Ú]";
+		mes "¤p°½ªº³t«×«Ü§Ö";
+		mes "¹³­·¤@¼Ë";
+		close;
 	}
-	close;
 }
 
-gonryun,166,196,4	script	¤h§L#gon	780,{
-	mes "[«z¾}¼Ú]";
-	mes "§Aª¾¹D¶Ü¡H";
-	mes "³o¸Ì¥»¨Ó¬O¯¨°ó¡A";
-	mes "¤£ª¾¦ó®É¶}©l¤@¨ÇµLªkµn¥Pªº¯«¥P¡C";
-	mes "¶}©l¦û¤F¦ì¤l¡AÅÜ¦¨¤FÅ]ª«ªº";
-	mes "±_¥Þ¡A¦]¦¹¯¨°ó¤]³Q¯î¼o¤F¡K";
-	close;
-//Event¤¤
-	next;
-	mes "[«z¾}¼Ú]";
-	mes "????¡B²½??©l??????¡C";
-	mes "???¡B????¤µ¦^?¡B???";
-	mes "???????¡C¤µ??¡B";
-	mes "???¨Æ?????????¡C";
-	close;
-}
-
-gonryun,169,71,4	script	¤¶²Ð¤H­û	770,{
+gonryun,169,71,4	script	¤¶²Ð¤H­û#gon	770,{
 	mes "[§õ³ß±Ó]";
 	mes "Åwªï¥úÁ{¡A";
 	mes "¶i¨Ó§ø¸¨¤§«e¡A";
-	mes "¦³¦n¦nªº³}§ø¸¨ªº¤U¤è¶Ü¡H";
+	mes "¦³¦n¦nªº³}§ø¸¨ªº¤U¤è¶Ü?";
 	mes "§ø¥~ªº«Ø¿vª«¬O§Ú­Ì¡A";
 	mes "³o¦¸»s³yªººë¤ß¤§§@";
 	next;
 	mes "[§õ³ß±Ó]";
 	mes "¬°¤F¨Ï¤@²´¬Ý²M¡A";
-	mes "¿c®¦¡K¦Ì¼w¥[¯÷¤ý°êªº³£¥«";
-	mes "¦Ó»s§@ªº¤p¼Ò«¬¡K";
+	mes "¿c®¦..¦Ì¼w¥[¯÷¤ý°êªº³£¥«";
+	mes "¦Ó»s§@ªº¤p¼Ò«¬..";
 	mes "¦]¬°§Ú­Ì«Ü¤[¨S¦³»P";
 	mes "¥~­±¥æ¬y¡AÁöµM«Ü²Ö";
 	mes "¤£¹L¬O«Ü»{¯u»s§@ªº";
@@ -756,512 +309,5 @@ gonryun,169,71,4	script	¤¶²Ð¤H­û	770,{
 	mes "[§õ³ß±Ó]";
 	mes "¨C­Ó¨¤¸¨¨ì³B³£¨«¨«¬Ý¬Ýªº¸Ü¡A";
 	mes "·|µo²{«Ü¦h«Ü¬üªº­·´º";
-	close;
-}
-
-//===============================================================================
-gon_in,165,16,4	script	¹³¬O±J¾Kªº¤H	748,{
-	if (event_gonryun == 4) goto Levent;
-	if (event_gonryun == 98) goto Leventend;
-	emotion 19;
-	mes "[³·¾W]";
-	mes "³á³á §Úªº­G¡K";
-	mes "ªGµM¬Q¤Ñ¤£À³¸Ó³Ü¤Ó¦h¡K";
-	mes "³á¡K³á³á³á³á³á³á³á³á";
-	close;
-Levent:
-	mes "[³·¾W]";
-	mes "³á³á §Úªº­G¡K";
-	mes "½Ö¥i¥H±aµ¹§Ú";
-	mes "¸Ñ°sªºªF¦è´N¦n¤F¡K³á³á¡K";
-	if (countitem(506) < 1) close;
-	mes "¶â¡H§A¡K¥i¥Hµ¹§Ú§A¨­¤Wªº";
-	mes "^00ff00ºñ¦âÃÄ¤ô^000000¶Ü¡H";
-	mes "§Úªº°©«Üµh°Ú";
-	next;
-	menu "¤£µ¹¥L",L1,"µ¹¥L",L2;
-L1:
-	mes "[³·¾W]";
-	mes "³á³á¡K";
-	mes "¯uªº¤£µ¹§Ú¶Ü¡H";
-	next;
-	menu "¯uªº¤£µ¹¥L",L1_1,"µ¹¥L",L2;
-	L1_1:
-		mes "[³·¾W]";
-		mes "¶ã¶ã¡K§Ö¨«¶}°Õ¡A";
-		mes "§A³o­Ó¤H¡K¡K¡K";
-		set event_gonryun,98;
-		close;
-L2:
-	delitem 506,1;
-	mes "[³·¾W]";
-	mes "¨þ¶â¡KÁÂÁÂ§A¡A";
-	mes "²{¦bÁ`ºâ±o±Ï¤F¡A";
-	mes "°Ú¡A¤£¹L§A¦n¹³¦³¤°»ò¸Ü­nÁ¿¶Ü";
-	next;
-	menu "Å¥»¡§øªø®a¾D¤p°½¤F",-,"¨ì©³³Ü¤F¦h¤Ö¡K",L2_1,"¨S¤°»ò¨Æ",L2_2;
-	mes "°Ú ¨º­Ó¹À¡A";
-	mes "¶â¡A´N¬O¬Q±ß¦b³o¸Ì";
-	mes "³Ü°s®É¡A·Q­n¸Ñ°s";
-	mes "´N¼È®É¥X¥h¤F¤@¤U¡A";
-	mes "©ó¬OÅ¥¨ì«Ü§nªºÁn­µ¡A";
-	mes "¬Ý¬Ý©P³ò´Nµo²{§øªø®a";
-	next;
-	mes "[³·¾W]";
-	mes "ªþªñ«G«Gªº¡H";
-	mes "©Ò¥H´N¬Ý¬Ýµo¥Í¤F¤°»ò¨Æ";
-	mes "±µ¤U¨Ó´N¬Ý¨ì¡Aªþªñ«Î³»¤W¦³­Ó";
-	mes "·|°ÊªºªF¦è";
-	mes "«¦¡ã¤@¤U´N®ø¥¢¤F";
-	next;
-	menu "©¹­þ¸Ì¨«¤F©O¡H",-,"¥i¯à¬O¿ß§a",L2_0_1;
-		mes "[³·¾W]";
-		mes "¶â¡H";
-		mes "¶â¡K§Ú¬Ý¬Ý";
-		mes "±q¨º¸Ì¥X¨Ó¦A©¹¨º¸Ì®ø¥¢";
-		mes "¸H¸H©À¡K";
-		next;
-		mes "¥L¼È®É¸H¸H©À¤F¤@¤U";
-		mes "¡K¡K¡K¡K";
-		next;
-		mes "[³·¾W]";
-		mes "°Ú ³o¼Ë°Ú";
-		mes "¨º¸Ì°Ú¡A©¹¯¨°ó¨º¸Ì";
-		mes "®ø¥¢¤F¡A¤£ª¾¹D¬O¤H¡AÁÙ¬O¿ß";
-		mes "¬Ý¨ÓÅé®æÆZ¤jªº¡A";
-		mes "À³¸Ó¤£¬O¤H§a";
-		next;
-		mes "[³·¾W]";
-		mes "¨º»òÁÙ¦³¨ä¥¦ªººÃ°Ý¶Ü";
-		mes "µ¹§A°Ý¦n¤F¡Aºâ¬O³øµª§Aµ¹ªºÃÄ";
-		next;
-		menu "¤w¸g¨¬°÷¤F",L2_0_0_1,"¤£­n¦A³Ü°s¤F",L2_0_0_2,"¤U¦¸§a",-;
-			mes "[³·¾W]";
-			mes "¦n§a¡A¤U¦¸¦pªG¦³ºÃ°Ýªº¸Ü¡A¦A¨Ó§a";
-			//set event_gonryun,?;
-			close;
-L2_0_0_1:
-		mes "¥¼½Õ?";
-		close;
-L2_0_0_2:
-		mes "¥¼½Õ?";
-		close;
-L2_0_1:
-		mes "¥¼½Õ?";
-		close;
-L2_1:
-		mes "¥¼½Õ?";
-		close;
-L2_2:
-		mes "¥¼½Õ?";
-		close;
-Leventend:
-	emotion 32;
-	mes "[³·¾W]";
-	mes "¶ã¶ã¡K¨«¶}°Õ¡A";
-	mes "¯u¨S¤H±¡¨ý";
-	mes "­ü§r¡K";
-	close;
-
-Lnotsure:
-	mes "[³·¾W]";
-	mes "¨º»ò¦n¦nªº§ä§ä¬Ý§a¡A";
-	mes "§øªøªº¼~·T®ø¥¢«á¡A";
-	mes "§Ú­Ì§ø¸¨¤~·|¥­¦w¤£¬O¶Ü";
-	close;
-}
-
-//===============================================================================
-gon_in,17,93,4	script	§øªø	775,{
-if (event_gonryun == 2) goto Levent;
-if (event_gonryun == 3) goto LStart2;
-	if (event_gonryun == 89) goto LStartend;
-	if (event_gonryun == 98) goto Lfinal;
-	if (event_gonryun == 99) goto Lfinal2;
-	mes "[¥vÆA¤å]";
-	mes "¶â¡K¡K";
-	next;
-	mes "[¥vÆA¤å]";
-	mes "°Ú¡AÅwªï¥úÁ{¡A";
-	mes "§Ú¬O³o­Ó§ø¸¨ªº§øªø";
-	mes "§Ú¥s¥vÆA¤å¡A";
-	mes "Åwªï§A¨Ó¨ì±X±[";
-	next;
-	mes "[¥vÆA¤å]";
-	mes "¨Æ¹ê¤W³o¸Ì¨ì¥Ø«e¬°¤î¡A»P¨ä¥L¦a¤è¨S¤°»ò¨Ó©¹";
-	mes "¤£¹L¨ì³Ìªñ¤~³z¹L¡A¦ãº¸¨©¶ð¦³ÂI©¹¨Ó¤§«á¡A";
-	mes "¶}©l±µ¦¬¤@¨Ç¥~¦a¤H";
-	next;
-	mes "[¥vÆA¤å]";
-	mes "¨Æ¹ê¤W¤§«e¡A³o¸Ì¬O¤Ó©t¥ß¤F¡A";
-	mes "©Ò¥H³o¸Ìªº¤H¡A¹ï¥~¦a¤H¨Ã¨S¦³¤°»ò¦n·P";
-	next;
-	mes "[¥vÆA¤å]";
-	mes "³Ìªñªºªv¦w¤£¬O«Ü¦n";
-	mes "¤£¹L¬JµM¨Ó¤F´N¦n¦nª±§a¡I";
-//	set event_gonryun,1;
-	close;
-Levent:
-	mes "[¥vÆA¤å]";
-	mes "°Ú¡A¬O§A°Ú¡K";
-	mes "¹ï³o§ø¸¨ÁÙº¡·N¶Ü";
-	mes "§A¤]À³¸Óª¾¹D¡A";
-	mes "³Ìªñ³o§ø¸¨¸Ìªº®ðª^¤£¬O«Ü¦n";
-	next;
-	menu "ÁÙ¤£¿ù°Õ",-,"Å¥»¡¦³¾D¤p°½¡K",L1;
-		mes "[¥vÆA¤å]";
-		mes "¨º´N¦n¤F¡A­n¤p¤ß¤p°½¡K";
-		mes "°Ú¡KÁÙ¦³¤£­n³Q§ø¥Á°Q¹½³á";
-		close;
-	L1:
-		mes "[¥vÆA¤å]";
-		mes "¡K¶â¡A§A¤]¤w¸gÅ¥»¡¤F¡A";
-		mes "¨Æ¹ê¤W¬Q±ß¦³¾D¤p°½¡A";
-		mes "¦Ò»¡³Ìªñ¤p°½³£«Ü²sÃÝ¡A";
-		mes "©Ò¥H¥[±j¤FÄµ½Ã";
-		next;
-		menu "¡K¡K¡K¡K¡K",L1_1,"§A³Q°½¤°»ò¤F©O",L1_2,"¦³¨S¦³¤H¨ü¶Ë¡H",L1_3;
-		L1_1:
-			mes "[¥vÆA¤å]";
-			mes "´N³o¼Ë°Ú¡A";
-			mes "¦pªG¦³¥iºÃªº¤Hªº¸Ü¡A";
-			mes "½Ð³qª¾§Ú§a";
-			set event_gonryun,3;
-			close;
-L1_2:
-			mes "[¥vÆA¤å]";
-			mes "¨º­Ó©O¡K";
-			mes "¶â¡K";
-			mes "³Q°½ªº¬O¤@§â¼C¡A";
-			mes "¨º¥i¬O§Ú®a¥@¥@¥N¥N";			
-			mes "¶Ç¤U¨Óªº®aÄ_";
-			next;
-			mes "[¥vÆA¤å]";
-			mes "©Ò¥H­n§ä¨ì¨º§â¼C¡A";
-			mes "­n§Ú¿Ë¦Û¥h§ä¡A";
-			mes "¤£¹L§Ú¹ê¦b¤Ó¦h¨Æ¤F¡A";
-			mes "¨­¬°¤@­Ó§ø¸¨ªº­ºªø¡A";
-			next;
-			mes "©Ò­n³B²zªº¨Æ¬Û·í¦h";
-			mes "©Ò¥H¥¿¦b·Ð´o¤¤¡A";
-Lconfuse:
-			mes "[¥vÆA¤å]";
-			mes "³o¥ó¨Æ±¡¤w¸gÅÜ¦¨¤j³Â·Ð¤F";
-			next;
-			menu "§Æ±æ§A¯à§ä¨ì",L1_2_1,"§Ú¥i¥HÀ°¦£¶Ü¡H",L1_2_2;
-			L1_2_1:
-				mes "[¥vÆA¤å]";
-				mes "¯uªº«Ü·PÁÂ§Aªº¦w¼¢";
-				mes "¦pªG¦³Ä_¼Cªº®ø®§ªº¸Ü¡A";
-				mes "½Ð³qª¾§Ú§a";
-				set event_gonryun,89;
-				close;
-
-			L1_2_2:
-				mes "[¥vÆA¤å]";
-				mes "«z~¥i¥HÀ°§Ú¶Ü¡H";
-				mes "¦Û±q§Ú­Ì§ø¸¨¶}©ñ¤§«á¡A";
-				mes "¬°¤FÀ³¥I¥~¦a¨Óªº¤H¡A";
-				mes "§ø¸Ìªº¤H³£ÅÜ±o«Ü¦£¡A";
-				mes "¦pªG§AÀ°§Ú§ä¨ì¼Cªº¸Ü¡A";
-				mes "§Ú¤@©w·|³øµª§Aªº";
-				set event_gonryun,3;
-				close;
-L1_3:
-			mes "[¥vÆA¤å]";
-			mes "­ü¡I¦n¦b¨S¦³¤H¦]¦¹¦Ó¨ü¶Ë";
-			mes "¤£¹L­«­nªºÄ_¼C«o³Q°½¨«¤F";
-			next;
-			mes "[¥vÆA¤å]";
-			mes "¯ª¥ý¥@¥N¬Û¶ÇªºÄ_ª«¡A§Ú¯uªº·Q";
-			mes "¿Ë¦Û¥h´M§ä¡A¤£¹L¦]¬°§Ú¬O§øªøªº¨­¥÷";
-			mes "¨S¦³¿ìªk¥h§@³o¥ó¨Æ";
-			next;
-			goto Lconfuse;
-LStart2:
-	mes "[¥vÆA¤å]";
-	mes "¬Ý¨ÓÁÙ¨S§ä¨ì°Ú";
-	mes "¤£­n¤Ó«j±j°Ú¡A";
-	mes "§Y¨Ï§O¤Hªº­n¨D«Ü­«­n¡A";
-	mes "¦Û¤wªº¨­Åé¤~¬O³Ì­«­nªº";
-	close;
-Lfinal:
-	mes "[¥vÆA¤å]";
-	mes "¶â¡K§¹¥þ§ä¤£¨ì²ª¸ñ¶Ü¡H";
-	mes "µL½×¦p¥i¡A";
-	mes "ÁÂÁÂ§AªºÀ°¦£";
-	next;
-	getitem 504,1;
-	set event_gonryun,99;
-	mes "[¥vÆA¤å]";
-	mes "´N§â³o·í§@¬O¨¯­W¶O¥Î§a¡A";
-	mes "¨º»ò¦n¦nªº³}§a¡I";
-	close;
-Lfinal2:
-	mes "[¥vÆA¤å]";
-	mes "²{¦b§ø¤l¸Ì¤w¸g¥­ÀR³\¦h¤F";
-	close;
-LStartend:
-	mes "[¥vÆA¤å]";
-	mes "²{¦b§ø¤l¸Ì¤w¸g¥­ÀR³\¦h¤F";
-	mes "³o³£­n·PÁÂ§A¡C";
-	close;
-
-Lnotsure:
-	mes "[¥vÆA¤å]";
-	mes "³á ¦³§ä¨ì¥¦ªº²ª¸ñ°Ú¡H";
-	mes "¨º´NÄ~Äò³Â·Ð§A¤F¡A";
-	mes "°Ú ³o¬O§Ú­Ì®a¤¤ªºÆFÃÄ¡A";
-	mes "À³¸Ó·|¦³À°§Uªº";
-	getitem 504,3;
-//	set event_gonryun, ?;
-	close;
-
-Lnotsure2:
-	mes "[¥vÆA¤å]";
-	mes "¨º´N¥æµ¹§A¤F¡A";
-	mes "°½¨«ªº¨º­Ó¤H¤]¨ü¤F¶Ë¡A";
-	mes "©Ò¥H¤£·|¶]±o«Ü»·";
-//	set event_gonryun, ?;
-	close;	
-}
-
-//===============================================================================
-gonryun,100,241,0	script	©_©Çªº¨k¤H	733,{
-	emotion 9;
-	mes "[¥ª¶Â]";
-	mes "°Ú¶â¡K";
-	mes "²{¦b«Ü¦£½Ð¤U¦¸¦A¨Ó";
-	close;
-}
-
-//===============================================================================
-
-gon_fild01,242,257,4	script	#Drop1	111,{
-	if(event_gonryun_1 != 1) goto L_NotFound;
-	mes "³o¸Ì·PÄ±«ç»ò©Ç©Çªº©O";
-	mes "°Ú°Ú¡I³o­Ó¬O¡K";
-	mes "µo²{¦³¤@§âµu¼C®I¦b¤g¸Ì";
-	getitem 1201, 1;
-	close;
-L_NotFound:
-	close;
-}
-
-//===============================================================================
-gon_in,73,82,4	script	¦¨­õ °ò	778,{
-	mes "[¦¨­õ °ò]";
-	mes "¡K¡K¡K¡K¡K¡K";
-	next;
-	mes "[¦¨­õ °ò]";
-	mes "©I»ï......";
-	mes "¯u¥O¤H¾á¤ß°Ú¡A¾á¤ß";
-	close;
-}
-
-//????Drop¦a==============================================================
-//µo°Ê±ø¥ó???ÀÇ¬N¡BD?³¡??§Q?²¾°Ê????¨Æ¡C¸Ô²Ó¤£©ú
-gon_dun01,130,184,0	script	¡@#F1-1	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun01,138,256,0	script	¡@#F1-2	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun01,164,53,0	script	¡@#F1-3	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun01,191,159,0	script	¡@#F1-4	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun01,202,25,0	script	¡@#F1-5	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun02,24,105,0	script	¡@#F2-1	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun02,150,74,0	script	¡@#F2-2	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun02,249,38,0	script	¡@#F2-3	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun02,248,129,0	script	¡@#F2-4	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun02,265,200,0	script	¡@#F2-5	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun03,10,075,0	script	¡@#F3-1	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun03,14,162,0	script	¡@#F3-2	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun03,68,211,0	script	¡@#F3-3	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun03,169,189,0	script	¡@#F3-4	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//===============================================================================
-gon_dun03,198,101,0	script	¡@#F3-5	111,{
-//if (µo°Ê±ø¥ó) goto Lsucsess;
-	close;
-Lsucsess:
-	mes "¨ú±o^ff0000´Ý¼C^000000";
-	mes "§øªøªº®a¶Ç¤§¼Cªº¸H¤ù";
-//set Flag
-	close;
-}
-//¢²F¦ºÀe======================================================================
-gon_dun03,63,221,0	script	©_©Çªº«ÍÅé	111,{
-	mes "¦a¤Wµo²{¤@¨ã©_©Çªº«ÍÅé";
-	mes "¶â¡I¤W­±¦n¹³¦³¤@±i¯Èªº¼Ë¤l";
-	next;
-	menu "§Ú­n¬Ý",L1,"¤£²z¥L",-;
-		mes "¤Ó¤£¦N§Q¤F";
-		mes "»°§ÖÂ÷¶}§a¡K";
-		close;
-L1:
-		mes "¬Ý°_¨Ó¦ü¥G¬O«Ü¥j¦Ñ";
-		mes "¤W­±¶Â¦âªº¦rÅé¦n¹³¬O¥Î¦å¼gªº";
-		mes "¼g¨Ç¤°»ò©O¡K¡K";
-		next;
-		mes "^ff0000¯u¬O ¨Ó¡K¨ì³o¸Ì ¹ê¡K°Ú";
-		mes "¥vÆA¡K¨S¦³³Q¨º³Ã¥ë¡K¡K";
-		mes "¥´±Ñ¡K";
-		mes "³Ø³Ø ¡K¼Ëªº¡A¨º³Ã¥ë¡K¡K§éÂ_";
-		mes "ªº¦a¤è¡K¡K3¡K¡K´M§ä¡K¡K";
-		mes "¥Î³o­Ó¡K¡K^000000";
-		next;
-		mes "¦]¬°¬O¥Î¦å¨Ó®Ñ¼g¡A¦å¸ñ®ø¥¢«á";
-		mes "¦³¨Ç­«ÂI³£µLªk«O¯d¤U¨Ó";
-		close;
-}
-//Yuno¤kÂå¥Í======================================================================
-yuno_in01,99,101,4	script	¤kÂå¥Í	744,{
-	mes "[]";
-	mes "½Ö¡H";
-	mes "§Ú²{¦b¯uªº«Ü¦£¡A¦pªG¨S¦³§Oªº¨Æ";
-	mes "½Ð§AÂ÷¶}¦n¶Ü¡H";
-	close;
-OnArea:
-	mes "[]";
-	mes "^ff0000³o¸Ì¬O¨p¤Hªº¦a¤è¡I¡I";
-	mes "½Ð¥ß¨èÂ÷¶}¡I¡I^000000";
-	next;
-	warp "yuno",246,143;
-	end;
-}
-yuno_in01,99,101,4	script	¤kÂå¥Í#area	139,6,6,{
-	doevent "¤kÂå¥Í::OnArea";
-	end;
-}
-//==============================================================================
-prontera,275,86,0	script	«C¦~#gon	97,{
-	mes "[Â§]";
-	mes "¨­Åé¦n¤£µÎªA";
-	mes "À³¸Ó¨ìÂå°|¥h¬Ý¬Ý";
-	next;
-	mes "[Â§]";
-	mes "¦Û¤wªº¨­ÅéÁÙ¬O­n¦Û¤v";
-	mes "¦n¦nªº·ÓÅU¡A¤~·|°·±d¡I";
 	close;
 }
