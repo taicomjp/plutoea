@@ -1,15 +1,22 @@
-//========================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// -----------------------------------------
-// - 精煉 腳本 -
-//========================
+//===== eAthena Script ======================================= 
+//= Refining NPCs
+//===== By: ==================================================
+//= 笨冰
+//===== Current Version: =====================================
+//= 2.9 (Release-20081219-2230)
+//===== Compatible With: =====================================
+//= eAthena 13405
+//===== Description: =========================================
+//= Refining NPCs and Metal Salesmen.
+//===== Additional Comments: =================================
 //= 2.8a Small bugfix. (bugreport:2418) [Paradox924X]
 //= 2.8c 繁體中文版完全重新翻譯，對照TRO
 //=      加入夢羅克、斐揚、普隆德拉、里希塔樂鎮精鍊NPC四種對話
 //=      里希塔樂鎮精鍊二級武器為特殊費用(2000金幣) [笨冰]
 //= 2.8c+0.1 加入艾音布羅克精鍊專屬對話，修正2.8c小部份錯誤 [笨冰]
-//=========================================================
+//= 2.8c+0.2 變更夢羅克修理工位置(EP12) [笨冰]
+//= 2.9 修正未裝備精鍊列表訊息 [笨冰]
+//============================================================
 
 //=========================================================
 // Christopher: Geffen Blacksmith
@@ -662,8 +669,28 @@ function	script	refinemain1	{
 	mes "我可以為你鍛治裝置項目中的物品。";
 	mes "你想要鍛治裝置項目中的哪一項物品呢?";
 	next;
-	set .@i,select(getequipname(1),getequipname(2),getequipname(3),getequipname(4),getequipname(5),
-				getequipname(6),getequipname(7),getequipname(8),getequipname(9),getequipname(10));
+	if (getequipisequiped(1) == 0) set .@strRetPart1$,"頭-[無法裝置]";
+	else set .@strRetPart1$,getequipname(1);
+	if (getequipisequiped(2) == 0) set .@strRetPart2$,"全身-[無法裝置]";
+	else set .@strRetPart2$,getequipname(2);
+	if (getequipisequiped(3) == 0) set .@strRetPart3$,"左手-[無法裝置]";
+	else set .@strRetPart3$,getequipname(3);
+	if (getequipisequiped(4) == 0) set .@strRetPart4$,"右手-[無法裝置]";
+	else set .@strRetPart4$,getequipname(4);
+	if (getequipisequiped(5) == 0) set .@strRetPart5$,"外袍-[無法裝置]";
+	else set .@strRetPart5$,getequipname(5);
+	if (getequipisequiped(6) == 0) set .@strRetPart6$,"鞋子-[無法裝置]";
+	else set .@strRetPart6$,getequipname(6);
+	if (getequipisequiped(7) == 0) set .@strRetPart7$,"裝飾品1-[無法裝置]";
+	else set .@strRetPart7$,getequipname(7);
+	if (getequipisequiped(8) == 0) set .@strRetPart8$,"裝飾品2-[無法裝置]";
+	else set .@strRetPart8$,getequipname(8);
+	if (getequipisequiped(9) == 0) set .@strRetPart9$,"頭2-[無法裝置]";
+	else set .@strRetPart9$,getequipname(9);
+	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
+	else set .@strRetPart10$,getequipname(10);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
+				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -808,8 +835,28 @@ function	script	refinemain2	{
 	mes "既然來了就別多說廢話，拿出你要鍛治的裝備來吧!";
 	mes "";
 	next;
-	set .@i,select(getequipname(1),getequipname(2),getequipname(3),getequipname(4),getequipname(5),
-				getequipname(6),getequipname(7),getequipname(8),getequipname(9),getequipname(10));
+	if (getequipisequiped(1) == 0) set .@strRetPart1$,"頭-[無法裝置]";
+	else set .@strRetPart1$,getequipname(1);
+	if (getequipisequiped(2) == 0) set .@strRetPart2$,"全身-[無法裝置]";
+	else set .@strRetPart2$,getequipname(2);
+	if (getequipisequiped(3) == 0) set .@strRetPart3$,"左手-[無法裝置]";
+	else set .@strRetPart3$,getequipname(3);
+	if (getequipisequiped(4) == 0) set .@strRetPart4$,"右手-[無法裝置]";
+	else set .@strRetPart4$,getequipname(4);
+	if (getequipisequiped(5) == 0) set .@strRetPart5$,"外袍-[無法裝置]";
+	else set .@strRetPart5$,getequipname(5);
+	if (getequipisequiped(6) == 0) set .@strRetPart6$,"鞋子-[無法裝置]";
+	else set .@strRetPart6$,getequipname(6);
+	if (getequipisequiped(7) == 0) set .@strRetPart7$,"裝飾品1-[無法裝置]";
+	else set .@strRetPart7$,getequipname(7);
+	if (getequipisequiped(8) == 0) set .@strRetPart8$,"裝飾品2-[無法裝置]";
+	else set .@strRetPart8$,getequipname(8);
+	if (getequipisequiped(9) == 0) set .@strRetPart9$,"頭2-[無法裝置]";
+	else set .@strRetPart9$,getequipname(9);
+	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
+	else set .@strRetPart10$,getequipname(10);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
+				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -954,8 +1001,28 @@ function	script	refinemain3	{
 	mes "任何東西都能鍛治的鐵匠高手~";
 	mes "你想要鍛治什麼項目呢?";
 	next;
-	set .@i,select(getequipname(1),getequipname(2),getequipname(3),getequipname(4),getequipname(5),
-				getequipname(6),getequipname(7),getequipname(8),getequipname(9),getequipname(10));
+	if (getequipisequiped(1) == 0) set .@strRetPart1$,"頭-[無法裝置]";
+	else set .@strRetPart1$,getequipname(1);
+	if (getequipisequiped(2) == 0) set .@strRetPart2$,"全身-[無法裝置]";
+	else set .@strRetPart2$,getequipname(2);
+	if (getequipisequiped(3) == 0) set .@strRetPart3$,"左手-[無法裝置]";
+	else set .@strRetPart3$,getequipname(3);
+	if (getequipisequiped(4) == 0) set .@strRetPart4$,"右手-[無法裝置]";
+	else set .@strRetPart4$,getequipname(4);
+	if (getequipisequiped(5) == 0) set .@strRetPart5$,"外袍-[無法裝置]";
+	else set .@strRetPart5$,getequipname(5);
+	if (getequipisequiped(6) == 0) set .@strRetPart6$,"鞋子-[無法裝置]";
+	else set .@strRetPart6$,getequipname(6);
+	if (getequipisequiped(7) == 0) set .@strRetPart7$,"裝飾品1-[無法裝置]";
+	else set .@strRetPart7$,getequipname(7);
+	if (getequipisequiped(8) == 0) set .@strRetPart8$,"裝飾品2-[無法裝置]";
+	else set .@strRetPart8$,getequipname(8);
+	if (getequipisequiped(9) == 0) set .@strRetPart9$,"頭2-[無法裝置]";
+	else set .@strRetPart9$,getequipname(9);
+	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
+	else set .@strRetPart10$,getequipname(10);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
+				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -1114,8 +1181,28 @@ function	script	refinemain4	{
 	mes " 哈哈.. 我可以幫你鍛冶所有的物品，";
 	mes " 哈哈....";
 	next;
-	set .@i,select(getequipname(1),getequipname(2),getequipname(3),getequipname(4),getequipname(5),
-				getequipname(6),getequipname(7),getequipname(8),getequipname(9),getequipname(10));
+	if (getequipisequiped(1) == 0) set .@strRetPart1$,"頭-[無法裝置]";
+	else set .@strRetPart1$,getequipname(1);
+	if (getequipisequiped(2) == 0) set .@strRetPart2$,"全身-[無法裝置]";
+	else set .@strRetPart2$,getequipname(2);
+	if (getequipisequiped(3) == 0) set .@strRetPart3$,"左手-[無法裝置]";
+	else set .@strRetPart3$,getequipname(3);
+	if (getequipisequiped(4) == 0) set .@strRetPart4$,"右手-[無法裝置]";
+	else set .@strRetPart4$,getequipname(4);
+	if (getequipisequiped(5) == 0) set .@strRetPart5$,"外袍-[無法裝置]";
+	else set .@strRetPart5$,getequipname(5);
+	if (getequipisequiped(6) == 0) set .@strRetPart6$,"鞋子-[無法裝置]";
+	else set .@strRetPart6$,getequipname(6);
+	if (getequipisequiped(7) == 0) set .@strRetPart7$,"裝飾品1-[無法裝置]";
+	else set .@strRetPart7$,getequipname(7);
+	if (getequipisequiped(8) == 0) set .@strRetPart8$,"裝飾品2-[無法裝置]";
+	else set .@strRetPart8$,getequipname(8);
+	if (getequipisequiped(9) == 0) set .@strRetPart9$,"頭2-[無法裝置]";
+	else set .@strRetPart9$,getequipname(9);
+	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
+	else set .@strRetPart10$,getequipname(10);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
+				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -1270,8 +1357,28 @@ function	script	refinemain5	{
 	mes "["+getarg(0)+"]";
 	mes "嘿嘿嘿，我知道你的企圖心，你是來找我鍛冶的吧?今天挑戰一次緊張刺激又危險的東西吧";
 	next;
-	set .@i,select(getequipname(1),getequipname(2),getequipname(3),getequipname(4),getequipname(5),
-				getequipname(6),getequipname(7),getequipname(8),getequipname(9),getequipname(10));
+	if (getequipisequiped(1) == 0) set .@strRetPart1$,"頭-[無法裝置]";
+	else set .@strRetPart1$,getequipname(1);
+	if (getequipisequiped(2) == 0) set .@strRetPart2$,"全身-[無法裝置]";
+	else set .@strRetPart2$,getequipname(2);
+	if (getequipisequiped(3) == 0) set .@strRetPart3$,"左手-[無法裝置]";
+	else set .@strRetPart3$,getequipname(3);
+	if (getequipisequiped(4) == 0) set .@strRetPart4$,"右手-[無法裝置]";
+	else set .@strRetPart4$,getequipname(4);
+	if (getequipisequiped(5) == 0) set .@strRetPart5$,"外袍-[無法裝置]";
+	else set .@strRetPart5$,getequipname(5);
+	if (getequipisequiped(6) == 0) set .@strRetPart6$,"鞋子-[無法裝置]";
+	else set .@strRetPart6$,getequipname(6);
+	if (getequipisequiped(7) == 0) set .@strRetPart7$,"裝飾品1-[無法裝置]";
+	else set .@strRetPart7$,getequipname(7);
+	if (getequipisequiped(8) == 0) set .@strRetPart8$,"裝飾品2-[無法裝置]";
+	else set .@strRetPart8$,getequipname(8);
+	if (getequipisequiped(9) == 0) set .@strRetPart9$,"頭2-[無法裝置]";
+	else set .@strRetPart9$,getequipname(9);
+	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
+	else set .@strRetPart10$,getequipname(10);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
+				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -1617,7 +1724,7 @@ alberta_in,31,65,4	script	修理工#alb	86,{
 	end;
 }
 
-morocc_in,71,41,4	script	修理工#moc	99,{
+moc_ruins,107,94,4	script	修理工#moc	99,{
 	callfunc "repairmain","修理工";
 	end;
 }
@@ -1685,7 +1792,7 @@ function	script	repairmain	{
 		mes "嗯嗯... 你所擁有的物品中";
 		mes "受損的是 " + .@checkitem + "吧？";
 		mes "修理一樣是 5000 金幣..";
-		mes "全部修理要" + .@totalcost + "金幣";
+		mes "全部修理要" + .@totalcost + "金幣!";
 		mes "你要修理嗎?";
 		next;
 		switch(select("是:否")) {
