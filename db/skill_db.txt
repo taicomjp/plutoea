@@ -1,45 +1,42 @@
 //id,range,hit,inf,element,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count,name,description
-//id,range,hit,inf,pl,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count
 // 01 技能ID
-// 02 射程 (複合技能使用時不會判斷射程,
-//           如果射程 < 5, 則使用基本的武器射程)
-// 03 命中 (8- 多重命中, 6- 單次命中)
-// 04 技能發動方式 (0- 被動, 1- 敵人, 2- 地面, 4- 自己, 16- 友方, 32- 陷阱)
-// 05 技能屬性 (0- 無屬性, 1- 水屬性, 2- 地屬性, 3- 火屬性, 4- 風屬性, 5- 毒屬性,
-//             6- 聖屬性, 7- 暗屬性, 8- 念屬性, 9- 不死屬性, -1- 使用武器屬性)
+// 02 射程 (複合技能使用時不會判斷射程，如果射程 < 5，則使用基本的武器射程)
+// 03 命中 (8- 多重命中，6- 單次命中)
+// 04 技能發動方式 (0- 被動，1- 敵人，2- 地面，4- 自己，16- 友方，32- 陷阱)
+// 05 技能屬性 (0- 無屬性，1- 水屬性，2- 地屬性，3- 火屬性, 4- 風屬性，5- 毒屬性,
+//             6- 聖屬性，7- 暗屬性，8- 念屬性，9- 不死屬性，-1- 使用武器屬性)
 // 06 技能類型 (技能傷害類型):
 //    0x01 - 無傷害
-//    0x02 - 擴散傷害
-//    0x04 - 擴散和分化傷害
-//    0x08 - Skill ignores caster's % damage cards (misc type always ignores)
-//    0x10 - Skill ignores elemental adjustments
-//    0x20 - 技能忽略目標的防禦 (misc type always ignores)
-//    0x40 - Skill ignores target's flee (magic type always ignores)
-//    0x80 - 技能忽略目標的防禦卡片
-// 07 擴散/效果射程 (設置-1為全螢幕)
+//    0x02 - 範圍傷害
+//    0x04 - 範圍和傷害分散
+//    0x08 - 技能無視傷害+%卡片 (特殊類型通常都無視傷害+%卡片)
+//    0x10 - 技能無視攻擊屬性
+//    0x20 - 技能無視防禦 (特殊類型通常都無視防禦)
+//    0x40 - 技能無視迴避率 (通常魔法攻擊都是無視迴避率)
+//    0x80 - 技能無視防禦-%卡片
+// 07 範圍/效果射程 (設置-1為全螢幕)
 // 08 最高等級
-// 09 連擊次數 (正數時傷害隨連擊增加
-//    負數時只會顯示連擊次數而不會增加總傷害)
-// 10 詠唱取消 (設置為1可以取消. 設置為0無法取消)
+// 09 連擊次數 (正數時傷害隨連擊增加，負數時只會顯示連擊次數而不會增加總傷害)
+// 10 詠唱中斷 (設置為1可以被中斷，設置為0不可中斷)
 // 11 詠唱防禦減少率
 // 12 技能發動方式 (技能信息 2):
 //    0x0001- 任務技能
-//    0x0002- npc 技能
+//    0x0002- 魔物技能
 //    0x0004- 結婚技能
-//    0x0008- 氣力球(需要蓄氣的)技能
+//    0x0008- 氣彈(蓄氣)技能
 //    0x0010- 公會技能
 //    0x0020- 歌舞技能
 //    0x0040- 合體技能
 //    0x0080- 陷阱(能夠被發現)
 //    0x0100- 自用技能
-//    0x0200- 不能對自己使用的技能(假如技能發動方式 = 4, 自動選擇目標技能)
+//    0x0200- 不能對自己使用的技能(假如技能發動方式 = 4，自動選擇目標技能)
 //    0x0400- 僅組隊可用技能 (and enemies if skill is offensive)
 //    0x0800- 僅公會可用技能 (and enemies if skill is offensive)
 //    0x1000- disable usage on enemies (for non-offensive skills).
 // 13 最大施放數量: 在(玩家允許施放數量)player_land_skill_limit/(魔物允許施放數量)monster_land_skill_limit
 //    在battle_athena.conf中啟動時,限制發動個數
-// 14 技能類型 (none無, weapon武器, magic魔法, misc其他)
-// 15 強制彈開 (發動技能後目標強制彈開格數,比如:怒暴,雷鳴)
+// 14 技能類型 (none無，weapon武器，magic魔法，misc特殊)
+// 15 擊退 (發動技能後目標擊退格數，比如：怒暴、雷鳴)
 // 16 名稱
 // 17 描述
 1,0,0,0,0,0,0,9,0,no,0,0,0,none,0,		NV_BASIC,基本技能
@@ -237,7 +234,7 @@
 193,0,0,4,0,0x1,0,10,1,no,0,0x2,0,none,0,	NPC_METAMORPHOSIS,變態
 194,0,0,4,0,0x1,0,10,1,no,0,0x2,0,none,0,	NPC_PROVOCATION,挑撥
 195,0,6,4,0,0x50,0,10,1,no,0,0x2,0,misc,0,	NPC_SMOKING,吸煙
-196,0,0,4,0,0x1,0,10,1,no,0,0x2,0,magic,0,	NPC_SUMMONSLAVE,召喚小兵
+196,0,0,4,0,0x1,0,10,1,no,0,0x2,0,magic,0,	NPC_SUMMONSLAVE,召喚奴隸
 197,0,0,4,0,0x1,0,10,1,no,0,0x2,0,none,0,	NPC_EMOTION,表情符號
 198,0,0,4,0,0x1,0,10,1,no,0,0x2,0,magic,0,	NPC_TRANSFORMATION,變形
 199,9,6,1,7,0x40,0,1,1,no,0,0x2,0,weapon,0,	NPC_BLOODDRAIN,HP吸收
@@ -393,7 +390,7 @@
 349,0,6,4,0,0x1,0,10,0,no,0,0x2,0,weapon,0,	NPC_POWERUP,力量提升
 350,0,6,4,0,0x1,0,10,0,no,0,0x2,0,none,0,	NPC_AGIUP,敏捷提升
 351,0,0,0,0,0x1,0,1,0,no,0,0x2,0,none,0,		NPC_SIEGEMODE,圍攻模式
-352,2,0,4,0,0x1,0,1,0,no,0,0x2,0,none,0,		NPC_CALLSLAVE,呼叫小兵
+352,2,0,4,0,0x1,0,1,0,no,0,0x2,0,none,0,		NPC_CALLSLAVE,召回奴隸
 353,0,0,0,0,0x1,0,1,0,no,0,0x2,0,none,0,		NPC_INVISIBLE,潛行
 354,2,6,4,0,0x1,0,20,0,no,0,0x2,0,misc,0,	NPC_RUN,後退閃躲
 355,0,6,4,0,0x1,0,5,1,no,0,0,0,weapon,0,		LK_AURABLADE,靈氣劍
@@ -600,11 +597,11 @@
 662,0,6,4,-1,0x2,14,10,1,no,0,0x2,0,weapon,0,	NPC_HELLJUDGEMENT,地獄審判
 663,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDESILENCE,範圍沉默
 664,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDEFREEZE,範圍冰凍
-665,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDEBLEEDING,Wide 出血攻擊
+665,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDEBLEEDING,範圍出血
 666,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDESTONE,範圍石化
 667,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDECONFUSE,範圍混亂
 668,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_WIDESLEEP,範圍睡眠
-669,0,6,4,3,0x3,5,1,1,no,0,0x2,0,magic,0,	NPC_WIDESIGHT,Wide 火狩
+669,0,6,4,3,0x3,5,1,1,no,0,0x2,0,magic,0,	NPC_WIDESIGHT,範圍瞄準
 670,9,6,2,7,0x91,0,10,1,no,0,0x2,0,magic,0,	NPC_EVILLAND,暗耀之堂
 671,0,6,4,0,0x1,0,5,1,no,0,0x2,0,magic,0,	NPC_MAGICMIRROR,魔術之鏡
 672,0,6,4,0,0x3,2:5:8:11:14,5,1,no,0,0x2,0,none,0,	NPC_SLOWCAST,詠唱減緩
@@ -643,7 +640,7 @@
 1003,0,0,0,0,0,0,1,0,no,0,0x1,0,weapon,0,	AS_SONICACCEL,超音速投擲
 1004,9,8,1,0,0x8,0,1,1,no,0,0x1,0,weapon,0,	AS_VENOMKNIFE,毒刃
 1005,1,6,1,0,0x1,0,1,1,no,0,0x1,0,weapon,0,	RG_CLOSECONFINE,緊密的約束
-1006,0,6,4,3,0,2,1,1,yes,0,0x1,0,magic,3,	WZ_SIGHTBLASTER,火狩芽
+1006,0,6,4,3,0,2,1,1,yes,0,0x1,0,magic,3,	WZ_SIGHTBLASTER,火狩 Blaster
 1007,0,6,4,0,0x1,0,10,0,no,0,0x1,0,none,0,	SA_CREATECON,元素肯貝特 製作
 1008,9,6,1,1,0x1,0,1,1,yes,0,0x1,0,magic,0,	SA_ELEMENTWATER,元素更換(水)
 1009,-9,6,1,0,0,0,1,1,no,0,0x1,0,weapon,3,	HT_PHANTASMIC,幻影箭
