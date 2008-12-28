@@ -1,97 +1,117 @@
-// 克魔島 -- 各種物品製作腳本
-// 
-// 重整作者:		Dino9021
-// 
-// 中文版本編號:	20041213.0.1
-//
-// 原始腳本:		不明
-//
-//============================================================
-
+//===================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 克魔島 任務腳本 - 
+//===================================
+//= 中文版本編號：20041213.0.1
+//===================================
+// 重整作者: Dino9021；後半段腳本待改寫為新版
+//===================================
 
 // 克魔島 髮箍姊姊
 comodo,228,159,4	script	髮箍姊姊	700,{
 	mes "[髮箍姊姊]";
-	mes "唉呦唉呦~ 那邊~";
-	if(Sex) {
-		mes "那位很適合髮箍的先生~";
-		mes "要不要試著製作髮箍呢? 呼呼~";
-	}
-	else {
-		mes "那位很適合髮箍的小姐~";
-		mes "要不要試著製作髮箍呢? 呼呼~";
-	}
+	mes "你好～";
+	mes "要不要試著製作髮箍呢? 呼呼~";
 	next;
 	mes "[髮箍姊姊]";
 	mes "只要帶簡單的材料來~";
 	mes "我會幫你製作，很炫的髮箍給你~";
 	mes "選選看吧~";
 	next;
-	switch(select("十字架髮圈:燈泡髮圈:條紋髮帶:藍色髮帶")) {
-	case 1:	
-		callsub L_select,1,2608,1,7069,500,0,0,5036; //Cross Band (1) = Rosary (1) + Destroyed Armor (500)
+	switch (select("十字架髮圈:燈泡髮圈:條紋髮帶:藍色髮帶")) {
+	case 1:
+		setarray .@need,2608,7069;
+		setarray .@amount,1,500;
+		set .@gain,5038;
+		break;
 	case 2:
-		callsub L_select,2,2233,1,746,20,0,0,5034; //Bulb Band (1) = Circlet (1) + Glass Bead (20)
+		setarray .@need,2233,746;
+		setarray .@amount,1,20;
+		set .@gain,5034;
+		break;
 	case 3:
-		callsub L_select,3,1099,1499,0,0,0,0,5049; //Stripe Band (1) = Worn Out Prison Uniform (1500)
+		set .@need,1099;
+		set .@amount,1500;
+		set .@gain,5049;
+		break;
 	case 4:
-		callsub L_select,4,2211,1,978,1,7003,299,5052; //Blue hair band (1) = Bandana (1) + Cobaltblue Dyestuffs (1) + Anolian Skin (300)
+		setarray .@need,2211,978,7003;
+		setarray .@amount,1,1,300;
+		set .@gain,5052;
+		break;
 	}
-L_select:
+	for(set .@i,0; .@i<getarraysize(.@need); set .@i,.@i+1) {
+		if(countitem(.@need[.@i]) < .@amount[.@i]) {
+			mes "[髮箍姊姊]";
+			mes "嗯~ 你選擇了" +getitemname(.@gain)+ "啊!";
+			mes "需要幾種材料，請你準備一下吧~";
+			next;
+			mes "[髮箍姊姊]";
+			switch(@menu) {
+			case 1:
+				mes "為了製作十字架髮圈需要...";
+				mes "^3355FF幸運珠鏈^000000 1 個";
+				mes "^3355FF破裂的鎧甲一角^000000 500 個";
+				break;
+			case 2:
+				mes "為了製作燈泡髮圈需要...";
+				mes "^3355FF頭箍^000000 1 個";
+				mes "^3355FF玻璃珠^000000 20 個";
+				break;
+			case 3:
+				mes "為了製作條紋髮帶需要...";
+				mes "^3355FF老舊犯人服^000000 1500 個";
+				break;
+			case 4:
+				mes "為了製作藍色髮帶需要...";
+				mes "^3355FF方頭巾^000000 1 個";
+				mes "^3355FF藍色染料^000000 1 個";
+				mes "^3355FF虎蜥皮^000000 300 個";
+				break;
+			}
+			mes "總共需要這些";
+			next;
+			mes "[髮箍姊姊]";
+			mes "帶這些材料來的話，馬上幫你做!";
+			close;
+		}
+	}
 	mes "[髮箍姊姊]";
-	if((getarg(0) == 1 && countitem(2608) > 0 && countitem(7069) > 499) ||
-	   (getarg(0) == 2 && countitem(2233) > 0 && countitem(746) > 19) || 
-	   (getarg(0) == 3 && countitem(1099) > 1499) ||
-	   (getarg(0) == 4 && countitem(2211) > 0 && countitem(978) > 0 && countitem(7003) > 299)) {
-		mes "嗯~ 你選擇了"+getitemname(getarg(7))+"啊?";
-		mes "你已經帶這些材料來，我馬上幫你做~";
-		next;
-		if(getarg(0) != 3) {
-			mes "[髮箍姊姊]";
-			mes "But, before I make, can you check that Items are sure?";
-			mes "If it is forged item or monster cards is applied, then it is waste of item.";
-			next;
-		}
+	mes "嗯~ 你選擇了" +getitemname(.@gain)+ "啊!";
+	mes "材料帶來了嗎";
+	next;
+	mes "[髮箍姊姊]";
+	mes "注意!";
+	mes "如果你的物品被精練過";
+	mes "或者插有卡片";
+	mes "我一樣會收走";
+	mes "所以請注意放在倉庫裡";
+	next;
+	mes "[髮箍姊姊]";
+	mes "帶這些材料來的話，馬上幫你做~";
+	mes "嗚呼~ 辛苦了~";
+	next;
+	if(select("不要:好的")==1) {
 		mes "[髮箍姊姊]";
-		mes "It's better to bring only just requested item";
-		mes "Did you check? Then let's make it. ok?";
-		next;
-		if(select("No.:Yes.") == 1) {
-			mes "[髮箍姊姊]";
-			mes "Yes, Yes, Put other stuffs to storage~";
-			mes "See you soon~";
-			close;
-		}
-			mes "[髮箍姊姊]";
-			mes "^3355FFHm. Piece of cake^000000";
-			next;
-			delitem getarg(1),getarg(2);
-			if(getarg(3) != 0) delitem getarg(3),getarg(4);
-			if(getarg(5) != 0) delitem getarg(5),getarg(6);
-			mes "[Hair Ornament Girl]";
-			mes "祝賀你！我已經成功的做好了...";
-			mes "歡迎再來.";
-			getitem getarg(7),1;
-			close;
-	}
-		mes "嗯~ 你選擇了"+getitemname(getarg(7))+"啊?";
-		mes "需要幾種材料，請你準備一下吧~";
-		next;
-		mes "[髮箍姊姊]";
-		mes "為了製作"+getitemname(getarg(7))+"需要...";
-		mes "^3355FF"+getitemname(getarg(1))+"^000000 "+getarg(2)+" 個";
-		if(getarg(3) > 0) mes "^3355FF"+getitemname(getarg(3))+"^000000 "+getarg(4)+" 個";
-		if(getarg(5) > 0) mes "^3355FF"+getitemname(getarg(5))+"^000000 "+getarg(6)+" 個";
-		mes "總共需要這些?";
-		next;
-		mes "[髮箍姊姊]";
-		mes "帶這些材料來的話，馬上幫你做~";
-		mes "嗚呼~ 辛苦了~";
+		mes "嗯，怎麼拉";
+		mes "小孩子早點回家睡覺去～";
 		close;
+	}
+	mes "^4169E1叮叮噹噹^000000";
+	next;
+	for(set .@i,0; .@i<getarraysize(.@need); set .@i,.@i+1) {
+		delitem .@need[.@i],.@amount[.@i];
+	}
+	getitem .@gain,1;
+	mes "[髮箍姊姊]";
+	mes "祝賀你!我已經成功的做好了...";
+	close;
 }
 	
 //克魔島 旅行者
-comodo.gat,273,137,3	script	旅行者#com	702,{
+comodo,273,137,3	script	旅行者#com	702,{
 	mes "[愛子 瑪莉]";
 	mes "我是周遊很多地方，專門收集人們故事的人";
 	mes "偶爾也學做特別東西的方法";
@@ -101,205 +121,170 @@ comodo.gat,273,137,3	script	旅行者#com	702,{
 	mes "到目前為止，有些材料取得不易，有太多";
 	mes "東西都沒做過";
 	next;
-	menu "礦坑安全帽",Case1,"包袱帽",Case2,"破產之哀",Case3,"歌劇之魂假面",Case4;
-Case1:
+	switch (select("礦坑安全帽:包袱帽:破產之哀:歌劇之魂假面")) {
+	case 1:
+		mes "[愛子 瑪莉]";
+		mes "礦坑安全帽...";
+		mes "那是在吉芬某個礦場上，聽說過的事情.";
+		mes "你也知道礦場裡太暗了，";
+		mes "隨時需要頭燈的";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "在黑暗的地方是不可能，拿著燈工作的";
+		mes "也常常收到魔物們的襲擊.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "不過有一天，某位礦工，將自己的安全帽";
+		mes "改裝...";
+		mes "因此可以用雙手工作，同時可看清前方，";
+		mes "那就是礦坑安全帽.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "要製作礦坑安全帽，需要幾種材料.";
+		mes "^3355FF安全帽^000000 1 個";
+		mes "^3355FF蠟燭頭飾^000000 1 個";
+		mes "^3355FF水晶鏡子^000000 1 個";
+		mes "^3355FF鋼鐵^000000 25 個";
+		next;
+		if(countitem(5009) >= 1 && countitem(5028) >= 1 && countitem(999) >= 25 && countitem(747) >= 1) {
+			mes "[愛子 瑪莉]";
+			mes "祝賀你！我已經成功的做好了...";
+			mes "這是^3355FF礦坑安全帽^000000，請拿好了!";
+			next;
+			delitem 5009,1;
+			delitem 5028,1;
+			delitem 999,25;
+			delitem 747,1;
+			getitem 5031,1;
+			close;
+		}
+		break;
+	case 2:
+		mes "[愛子 瑪莉]";
+		mes "包袱帽...";
+		mes "那是在艾爾貝塔，某個地方聽說過的事情";
+		mes "...";
+		mes "商人們總是將貨物放在手推車上，開";
+		mes "設露天商店.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "可是在東方某一個國家裡，用特別的方法";
+		mes "在搬運東西";
+		mes "那就是叫，包袱帽的東西.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "將貨物打包好放在頭上，";
+		mes "很小心的維持平衡走路.";
+		mes "就是用這種方式，讓雙手空空的方便搬東西";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "要製作包袱帽，需要幾種材料.";
+		mes "^3355FF透明的布^000000 150 個";
+		mes "^3355FF枯木汁^000000 100 個";
+		mes "^3355FF藍色染料^000000 1 個";
+		next;
+		if(countitem(1059) >= 150 && countitem(907) >= 100 && countitem(978) >= 1) {
+			mes "[愛子 瑪莉]";
+			mes "祝賀你！我已經成功的做好了...";
+			mes "這是^3355FF包袱帽^000000，請拿好了!";
+			next;
+			delitem 1059,150;
+			delitem 907,100;
+			delitem 978,1;
+			getitem 5023,1;
+			close;
+		}
+		break;
+	case 3:
+		mes "[愛子 瑪莉]";
+		mes "破產之哀...";
+		mes "這是從夢羅克傳下來的，傳說中商人的故事.";
+		mes "誠實的工作及生活的這位商人，某天與壞";
+		mes "人工會產生了對立.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "對於賣斷物資為業的壞人工會，";
+		mes "誠實的商人成了他們的絆腳石.";
+		mes "所以他們擾亂物價...襲擊露天商店等，";
+		mes "欺負誠實的商人.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "因此那商人失去了所有東西...";
+		mes "僅剩下手推車上的幾件貨物.";
+		mes "他含著淚水，用盡心思...";
+		mes "製作了將自己情況公佈於世的物品.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "那就是... 破產之哀.";
+		mes "讓看到的人產生同情心，";
+		mes "使人們買他的東西... 不過，";
+		mes "傳說畢竟是傳說啊...";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "要製作破產之哀，需要幾種材料.";
+		mes "^3355FF頭箍^000000 1 個";
+		mes "^3355FF黃金^000000 1 個";
+		mes "^3355FF鋼鐵^000000 20 個";
+		mes "^3355FF柔毛^000000 80 個";
+		mes "^3355FF粘稠液體^000000 800 個";
+		next;
+		if(countitem(2233) >= 1 && countitem(969) >= 1 && countitem(999) >= 20 && countitem(949) >= 80 && countitem(938) >= 800) {
+			mes "[愛子 瑪莉]";
+			mes "祝賀你！我已經成功的做好了...";
+			mes "這是^3355FF破產之哀^000000，請拿好了!";
+			next;
+			delitem 2233,1;
+			delitem 969,1;
+			delitem 999,20;
+			delitem 949,80;
+			delitem 938,800;
+			getitem 5021,1;
+			close;
+		}
+		break;
+	case 4:
+		mes "[愛子 瑪莉]";
+		mes "歌劇之魂假面...";
+		mes "這故事是在艾爾帕蘭聽到的.";
+		mes "談過單純戀情，一位男子的故事...";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "歌劇院裡面的幽靈...";
+		mes "有一位喜愛的美麗女歌手的男人...";
+		mes "因為他有一幅醜陋的面孔，";
+		mes "必須要用面具遮著臉隱藏著過日子.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "這男子雖然深愛著女歌手，";
+		mes "但不能現身於她面前.";
+		mes "不過，因為他暗地裡幫忙她...";
+		mes "最後因此現出原形.";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "不管怎樣，歌劇幽靈帶的面具，有原來他";
+		mes "帶的面具.";
+		mes "和其它舞會面具，在形狀上稍微有點不同";
+		mes "...";
+		next;
+		mes "[愛子 瑪莉]";
+		mes "要製作歌劇之魂假面，需要幾種材料.";
+		mes "^3355FF舞會面具^000000 1 個";
+		mes "^3355FF蛇髮^000000 50 個";
+		next;
+		if(countitem(2281) >= 1 && countitem(1048) >= 50) {
+			mes "[愛子 瑪莉]";
+			mes "祝賀你！我已經成功的做好了...";
+			mes "這是^3355FF歌劇之魂假面^000000，請拿好了!";
+			next;
+			delitem 2281,1;
+			delitem 1048,50;
+			getitem 5043,1;
+			close;
+		}
+		break;
+	}
 	mes "[愛子 瑪莉]";
-	mes "礦坑安全帽...";
-	mes "那是在吉芬某個礦場上，聽說過的事情.";
-	mes "你也知道礦場裡太暗了，";
-	mes "隨時需要頭燈的";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "在黑暗的地方是不可能，拿著燈工作的";
-	mes "也常常收到魔物們的襲擊.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "不過有一天，某位礦工，將自己的安全帽";
-	mes "改裝...";
-	mes "因此可以用雙手工作，同時可看清前方，";
-	mes "那就是礦坑安全帽.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "要製作礦坑安全帽，需要幾種材料.";
-	mes "^3355FF安全帽^000000 1 個";
-	mes "^3355FF蠟燭頭飾^000000 1 個";
-	mes "^3355FF水晶鏡子^000000 1 個";
-	mes "^3355FF鋼鐵^000000 25 個";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "只要把材料準備好的話，";
-	mes "我會試著幫你做做看";
-	mes "那麼... 祝你旅途愉快囉...";
-	if(countitem(5009) < 1) goto Case1NOT;
-	if(countitem(5028) < 1) goto Case1NOT;
-	if(countitem(747) < 1) goto Case1NOT;
-	if(countitem(999) < 25) goto Case1NOT;
-	next;
-	mes "[愛子 瑪莉]";
-	mes "祝賀你！我已經成功的做好了...";
-	mes "這是^3355FF礦坑安全帽^000000。請拿好了!";
-	delitem	5009,1;
-	delitem	5028,1;
-	delitem	747,1;
-	delitem	999,25;
-	getitem	5031,1;
-	close;
-Case1NOT:
-	next;
-	mes "[愛子 瑪莉]";
-	mes "快去收集吧...";
-	close;
-Case2:
-	mes "[愛子 瑪莉]";
-	mes "包袱帽...";
-	mes "那是在艾爾貝塔，某個地方聽說過的事情";
-	mes "...";
-	mes "商人們總是將貨物放在手推車上，開";
-	mes "設露天商店.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "可是在東方某一個國家裡，用特別的方法";
-	mes "在搬運東西";
-	mes "那就是叫，包袱帽的東西.";
-	next;
-	mes "將貨物打包好放在頭上，很小心的維持平";
-	mes "衡走路.";
-	mes "就是用這種方式，讓雙手空空的方便搬東";
-	mes "西";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "要製作包袱帽，需要幾種材料.";
-	mes "^3355FF透明的布^000000 150 個";
-	mes "^3355FF枯木汁^000000 100 個";
-	mes "^3355FF藍色染料^000000 1 個";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "只要把材料準備好的話，";
-	mes "我會試著幫你做做看";
-	mes "那麼... 祝你旅途愉快囉...";
-	if(countitem(1059) < 150) goto Case2NOT;
-	if(countitem(907) < 100) goto Case2NOT;
-	if(countitem(978) < 1) goto Case2NOT;
-	next;
-	mes "[愛子 瑪莉]";
-	mes "祝賀你！我已經成功的做好了...";
-	mes "這是^3355FF包袱帽^000000。請拿好了!";
-	delitem	1059,150;
-	delitem	907,100;
-	delitem	978,1;
-	getitem	5023,1;
-	close;
-Case2NOT:
-	next;
-	mes "[愛子 瑪莉]";
-	mes "快去收集吧...";
-	close;
-Case3:
-	mes "[愛子 瑪莉]";
-	mes "破產之哀...";
-	mes "這是從夢羅克傳下來的，傳說中商人的故";
-	mes "事.";
-	mes "誠實的工作及生活的這位商人，某天與壞";
-	mes "人公會產生了對立.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "對於賣斷物資為業的壞人公會，";
-	mes "誠實的商人成了他們的絆腳石.";
-	mes "所以他們擾亂物價...襲擊露天商店等，";
-	mes "欺負誠實的商人.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "因此那商人失去了所有東西...";
-	mes "僅剩下手推車上的幾件貨物.";
-	mes "他含著淚水，用盡心思...";
-	mes "製作了將自己情況公佈於世的物品.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "那就是... 破產之哀.";
-	mes "讓看到的人產生同情心，";
-	mes "使人們買他的東西... 不過，";
-	mes "傳說畢竟是傳說啊...";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "要製作破產之哀，需要幾種材料.";
-	mes "^3355FF頭箍^000000 1 個";
-	mes "^3355FF黃金^000000 1 個";
-	mes "^3355FF鋼鐵^000000 20 個";
-	mes "^3355FF柔毛^000000 80 個";
-	mes "^3355FF粘稠液體^000000 800 個";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "只要把材料準備好的話，";
-	mes "我會試著幫你做做看";
-	mes "那麼... 祝你旅途愉快囉...";
-	if(countitem(2233) < 1) goto Case3NOT;
-	if(countitem(969) < 1) goto Case3NOT;
-	if(countitem(999) < 20) goto Case3NOT;
-	if(countitem(949) < 80) goto Case3NOT;
-	if(countitem(938) < 800) goto Case3NOT;
-	next;
-	mes "[愛子 瑪莉]";
-	mes "祝賀你！我已經成功的做好了...";
-	mes "這是^3355FF破產之哀^000000。請拿好了!";
-	delitem	2233,1;
-	delitem	969,1;
-	delitem	999,20;
-	delitem	949,80;
-	delitem	938,800;
-	getitem	5021,1;
-	close;
-Case3NOT:
-	next;
-	mes "[愛子 瑪莉]";
-	mes "快去收集吧...";
-	close;
-Case4:
-	mes "[愛子 瑪莉]";
-	mes "歌劇之魂假面...";
-	mes "這故事是在艾爾帕蘭聽到的.";
-	mes "談過單純戀情，一位男子的故事...";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "歌劇院裡面的幽靈...";
-	mes "有一位喜愛的美麗女歌手的男人...";
-	mes "因為他有一幅醜陋的面孔，";
-	mes "必須要用面具遮著臉隱藏著過日子.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "這男子雖然深愛著女歌手，";
-	mes "但不能現身於她面前.";
-	mes "不過，因為他暗地裡幫忙她...";
-	mes "最後因此現出原形.";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "不管怎樣，歌劇幽靈帶的面具，有原來他";
-	mes "帶的面具.";
-	mes "和其它舞會面具，在形狀上稍微有點不同";
-	mes "...";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "要製作歌劇之魂假面，需要幾種材料.";
-	mes "^3355FF舞會面具^000000 1 個";
-	mes "^3355FF蛇發^000000 50 個";
-	next;
-	mes "[愛子 瑪莉]";
-	mes "只要把材料準備好的話，";
-	mes "我會試著幫你做做看";
-	mes "那麼... 祝你旅途愉快囉...";
-	if(countitem(2281) < 1) goto Case4NOT;
-	if(countitem(1048) < 50) goto Case4NOT;
-	next;
-	mes "[愛子 瑪莉]";
-	mes "祝賀你！我已經成功的做好了...";
-	mes "這是^3355FF歌劇之魂假面^000000。請拿好了!";
-	delitem	2281,1;
-	delitem	1048,50;
-	getitem	5043,1;
-	close;
-Case4NOT:
-	next;
-	mes "[愛子 瑪莉]";
-	mes "快去收集吧...";
+	mes "快去收集材料吧...";
 	close;
 }
 
@@ -307,7 +292,7 @@ Case4NOT:
 //			Chief Quest (Doomed Swords Part 1)
 //============================================================================//
 //=======================================================
-comodo.gat,206,310,4	script	露營族 青年	48,{
+comodo,206,310,4	script	露營族 青年	48,{
 	if(dmdswrd_Q == 1) goto L_1;
 	if(dmdswrd_Q == 2) goto L_2;
 	if(dmdswrd_Q == 3) goto sL_2;
@@ -445,7 +430,7 @@ L_3:
 }
 
 //=======================================================
-comodo.gat,204,310,4	script	露營族 青年#com	98,{
+comodo,204,310,4	script	露營族 青年#com	98,{
 	if(dmdswrd_Q == 3) goto L_1;
 	if(dmdswrd_Q == 4 || dmdswrd_Q==5) goto L_2;
 L_0:
@@ -498,7 +483,7 @@ L_2:
 }
 
 //=======================================================
-comodo.gat,209,314,4	script	露營族 少年#com2	82,{
+comodo,209,314,4	script	露營族 少年#com2	82,{
 	if(dmdswrd_Q==2 || dmdswrd_Q==3) goto L_1;
 	if(dmdswrd_Q == 4 || dmdswrd_Q==5) goto L_2;
 
@@ -542,7 +527,7 @@ L_2:
 }
 
 //=======================================================
-comodo.gat,209,305,4	script	露營族 小姐	70,{
+comodo,209,305,4	script	露營族 小姐	70,{
 	mes "[愛默藍漢它斯]";
 	mes "盧哈,清理一下你的杯子,我幫你倒點喝的.";
 	next;
@@ -614,7 +599,7 @@ comodo.gat,209,305,4	script	露營族 小姐	70,{
 
 
 // Chief's House =========================================================//
-cmd_in02.gat,32,140,4	script	村長#cmd	49,{
+cmd_in02,32,140,4	script	村長#cmd	49,{
 	if(dmdswrd_Q == 1) goto L_1;
 	if(dmdswrd_Q == 2) goto sL_1;
 	if(dmdswrd_Q == 3) goto L_2;
@@ -728,7 +713,7 @@ L_2:
 //============================================================================//
 
 //=======================================================
-comodo.gat,88,97,4	script	起司專家	109,{
+comodo,88,97,4	script	起司專家	109,{
 	if(dmdswrd_Q == 7) goto sL_2;
 	mes "[杜魯那]";
 	mes "我聽說這的芝士很棒.我每次都會來拜訪一下,我想要一些這裡著名的芝士.";
@@ -817,7 +802,7 @@ M_Menu:
 }
 
 //=======================================================
-comodo.gat,164,291,2	script	克魔島居民	73,{
+comodo,164,291,2	script	克魔島居民	73,{
 	if(dmdswrd_Q == 7) goto L_1;
 	if(dmdswrd_Q == 8) goto L_2;
 
@@ -849,7 +834,7 @@ L_2:
 }
 
 //=======================================================
-comodo.gat,169,284,4	script	克魔島居民#com	99,{
+comodo,169,284,4	script	克魔島居民#com	99,{
 	mes "[戚致理]";
 	if(dmdswrd_Q == 8) goto L_1;
 	if(dmdswrd_Q == 9) goto L_2;
@@ -877,7 +862,7 @@ L_2:
 }
 
 //=======================================================
-comodo.gat,163,280,4	script	克魔島酒鬼	55,{
+comodo,163,280,4	script	克魔島酒鬼	55,{
 	mes "[馬卡芻]";
 	if(dmdswrd_Q == 9) goto L_1;
 	if(dmdswrd_Q == 10) goto L_2;
@@ -918,7 +903,7 @@ L_2:
 }
 
 //======================================================
-cmd_in02.gat,189,99,4	script	賭博場賭徒	85,{
+cmd_in02,189,99,4	script	賭博場賭徒	85,{
 	if(dmdswrd_Q == 10) goto L_1;
 	if(dmdswrd_Q == 11) goto L_2;
 	if(Class == Job_Novice) goto L_Nov;
@@ -971,7 +956,7 @@ L_2:
 }
 
 //=======================================================
-comodo.gat,187,153,4	script	呼啦圈太太	701,{
+comodo,187,153,4	script	呼啦圈太太	701,{
 	mes "[赫拉麗絲]";
 	if(dmdswrd_Q == 11) goto L_1;
 	if(dmdswrd_Q == 12) goto L_2;
@@ -1093,7 +1078,7 @@ L_4:
 }
 
 //=========================================================
-beach_dun3.gat,30,220,4	script	Wizard 修練的魔法師	704,{
+beach_dun3,30,220,4	script	Wizard 修練的魔法師	704,{
 	mes "[尼基日保蘭]";
 	if(dmdswrd_Q == 12) goto L_1;
 	if(dmdswrd_Q == 13) goto L_2;
@@ -1258,7 +1243,7 @@ L_2:
 	L_LowLvl:
 		mes "^3355FF~ 因為無法接受所以暈倒 ~^000000";
 		next;
-		warp "beach_dun3.gat",32,214;
+		warp "beach_dun3",32,214;
 		doevent "Wizard 尼基日保蘭::OnFainted";
 		end;
 
