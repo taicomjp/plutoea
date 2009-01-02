@@ -4,32 +4,34 @@
 // ---------------------------------
 // - 夢羅克 地區任務腳本 - 
 //===================================
-// 版本：2.1
+// 版本：2.4
 //===================================
 //= * 停止標誌頭飾製作任務
 //= * 望遠鏡製作任務
 //= * 魔王夢羅克/洲際衛隊 任務
 //===================================
+//= 2.4 Implemented Ep. 12.1 Continental Guard Quest. [L0ne_W0lf]
+//=     Moved Dandelion's Request to a it's own file.
+//=     Added support NPCs required to finish Gaebolg quest.
+//===================================
 
 //停止標誌頭飾製作任務
-moc_ruins,113,181,4	script	斯泰爾	89,{
+moc_ruins,114,181,4	script	斯泰爾	89,{
 	mes "[斯泰爾]";
-	mes "歡迎光臨，歡迎您來到以製作^3355FF' 停止標誌頭飾 '^000000 聞名的斯泰爾家族商店";
+	mes "歡迎光臨。歡迎您來到以製作^3355FF' 停止標誌頭飾 '^000000 聞名的斯泰爾家族商店。";
 	next;
-	mes "[斯泰爾]";
 	mes "不知道您是否聽過我們的家族史..";
-	mes "我們家遠早在以馬車為主要交通工具時代就開始製作交通號志牌，至今已經有兩百五十年的歷史了";
-	mes "近來我們常接到一些專門訂購^3355FF' 停止標誌頭飾 '^000000 的訂單，現在流行將它拿來當裝飾品";
+	mes "我們家遠早在以馬車為主要交通工具時代就開始製作交通號誌牌，至今已經有兩百五十年的歷史了。";
+	mes "近來我們常接到一些專門訂購^3355FF' 停止標誌頭飾 '^000000 的訂單，現在流行將它拿來當裝飾品。";
 	next;
-	switch( select( "訂購^3355FF' 停止標誌頭飾 '^000000:結束對話")) {
+	switch( select( "訂購^3355FF' 停止標誌頭飾 '^000000。","結束對話。")) {
 	case 1:
-		mes "[斯泰爾]";
 		mes "由擁有兩百五十年悠久歷史的家族所製作的^3355FF' 停止標誌頭飾 '^000000發展出來的裝飾品..";
-		mes "有承襲著交通標誌牌傳統技術，令人眼睛為之一亮且堅固耐用";
-		mes "相信一定不會使訂購的顧客失望";
+		mes "有承襲著交通標誌牌傳統技術，令人眼睛為之一亮且堅固耐用。";
+		mes "相信一定不會使訂購的顧客失望。";
 		next;
 		mes "訂購^3355FF' 停止標誌頭飾'^000000 需要花費您^3355FF' 現金 91100 金幣 '^000000 與 ..";
-		mes "^3355FF' 木頭 50 塊 '^000000 還有 ^3355FF' 黑色染料 1 桶 '^000000";
+		mes "^3355FF' 木頭 50 塊 '^000000 還有 ^3355FF' 黑色染料 1 桶 '^000000 。";
 		next;
 		if(countitem(1019) > 49 && countitem(983) > 0 && Zeny > 91099) {
 			delitem 1019,50;
@@ -43,68 +45,84 @@ moc_ruins,113,181,4	script	斯泰爾	89,{
 		}
 		mes "[斯泰爾]";
 		mes "您所準備的材料不足喔?";
-		mes "請您再確認一下";
+		mes "請您再確認一下。";
 		close;
 	case 2:
 		mes "[斯泰爾]";
-		mes "感謝您向斯泰爾家族訂購商品，";
-		mes "祝您事事順心";
+		mes "感謝您向斯泰爾家族訂購商品。";
+		mes "祝您事事順心。";
 		close;
 	}
 }
 
 
 //望遠鏡製作任務
-moc_ruins,118,176,4	script	鍊金術士	64,5,5,{
-	mes "[瑪利斯]";
-	mes "哈哈 - 又來了一個新客戶了";
-	mes "慢著！我必須先和你談談！你是來製作魔法眼鏡的，是嗎？";
+moc_ruins,118,176,4	script	煉金術公會	64,{
+	mes "[波立歐吉娜]";
+	mes "哈哈哈 - 又有顧客上門來啦！";
+	mes "我知道你要說什麼。";
+	mes "你是為了魔法眼鏡而來的對吧 ?";
 	next;
-	switch(select( "魔法眼鏡是什麼？:我是來製作望眼鏡的:不理他")) {
+	switch(select( "什麼叫做魔法眼鏡?","製作魔法眼鏡。","跳過。")) {
 	case 1:
-		mes "[瑪利斯]";
-		mes "嗯！準確的說，它應該稱為 ^3355FF'望遠鏡'^000000! 一種鏡片可以幫助你看遠端的東西！";
+		mes "[波立歐吉娜]";
+		mes "是的 ！ 它的正式名稱應該是 ' ^3355FF望遠鏡^000000 ' ！";
+		mes "外型是長桶狀，裡頭";
+		mes "有好幾個玻璃片相疊在一起！";
+		mes "它是利用光線反射的作用";
+		mes "來看清楚在遠方的東西";
+		mes "近看的話是看不清楚的！";
 		next;
-		mes "[瑪利斯]";
-		mes "當他放再你眼睛前面時可以幫助你清楚的看倒遠方！";
+		mes "[波立歐吉娜]";
+		mes "覺得如何? 很棒吧?！";
+		mes "阿哈哈哈哈！";
+		mes ". . . . .";
+		mes ".. 怎麼 ?你看起來好像不太相信的樣子?";
+		mes "我說的可是真的！！";
 		next;
-		mes "[瑪利斯]";
-		mes "............... 那是什麼？你似乎對我說的話不感興趣！我不認為你瞭解我剛剛在說什麼";
-		next;
-		mes "[瑪利斯]";
-		mes "喲！別這樣嘛！我說的這個東西可是很酷的！";
+		mes "[波立歐吉娜]";
+		mes "把製作望遠鏡所需要的東西";
+		mes "一個一個記下來 ..";
+		mes "^3355FF旋轉鏡片^000000 一個！ ^3355FF鋼鐵^000000 一百片！ 還有，費用是 ^3355FF50000 金幣^000000 ！";
 		close;
 	case 2:
 		if (countitem(2243) > 0 && countitem(999) > 99 && Zeny > 49999) {
-			mes "[瑪利斯]";
+			mes "[波立歐吉娜]";
 			mes "好！希望這副眼鏡能夠給你帶來更多的快樂";
 			next;
 			delitem 2243,1;
 			delitem 999, 100;
 			set Zeny,Zeny-50000;
 			next;
-			mes "[瑪利斯]";
-			mes "這就是了！雙眼望遠鏡！";
+			mes "[波立歐吉娜]";
+			mes "這就是了！魔法眼鏡！";
 			getitem 2296,1;
 			next;
-			mes "[瑪利斯]";
+			mes "[波立歐吉娜]";
 			mes "但是，我必須先說明......";
 			mes "不要用它來看你不該看的東西哦！哈哈哈哈！！...";
 			close;
 		}
-		mes "嗯！我看看，對不起，你沒有把需要的東西帶來！";
-		mes "你忘記我和你說的嗎？需要^3355FF1副旋轉眼鏡、100個鋼鐵和50000Zeny^000000，我才可以幫你改裝成望眼鏡";
+		mes "[波立歐吉娜]";
+		mes "不夠 ！ 不夠 ！ 不夠啊　！！";
+		mes "你怎麼可以對在塵世大陸上最頂尖的煉金者";
+		mes "那麼不敬！";
+		mes "真是太過分了！！";
 		close;
 	case 3:
-		mes "[瑪利斯]";
-		mes "嘿！ 在你面前的人是瑪利斯，鍊金術士中的佼佼者！你不理我？來啊，讓你見識見識我的厲害！";
+		mes "[波立歐吉娜]";
+		mes "喂喂喂喂！";
+		mes "你這像是對";
+		mes "在塵世大陸遠近馳名";
+		mes "的光學大師波立歐吉娜－我本人";
+		mes "應該說的話嗎 ? 說啊 ?！";
 		close;
 	}
 }
 
 // Morroc Assassin Guild Bar
 // ============================================================
-morocc,43,108,5	script	Sharp-Looking Kid#dan_07	82,{
+morocc,43,108,5	script	銳利印象的少年#dan_07	82,{
 	if (BaseClass == Job_Assassin) {
 		mes "[Jack]";
 		mes "In spite of the chaotic mess in their town, ";
@@ -121,9 +139,9 @@ morocc,43,108,5	script	Sharp-Looking Kid#dan_07	82,{
 			close;
 		}
 		else {
-			mes "[Jack]";
-			mes "Hey, what are you peeking at?";
-			mes "Don't you have better things to do? You'd better go to the shelter and save your ass.";
+			mes "[傑]";
+			mes "你看什麼呢?";
+			mes "你最好趕快離開這裡去安全的地方吧?";
 			close;
 		}
 	}
@@ -136,14 +154,14 @@ OnTouch:
 		end;
 	}
 	else {
-		mes "[Jack]";
-		mes "Wait, that's the restricted area....";
+		mes "[傑克]";
+		mes "啊! 那裏不是任何人可以進........";
 		mes "......";
-		mes "Oh, well.";
+		mes "去的啦";
 		next;
-		mes "[Jack]";
-		mes "Things have changed.";
-		mes "Just do whatever you want!";
+		mes "[傑克]";
+		mes "情況今非昔比了，";
+		mes "你隨便吧!";
 		close2;
 		warp "que_job01",9,94;
 		end;
@@ -235,17 +253,15 @@ OnTouch:
 			}
 		}
 		else {
-			mes "[Master]";
-			mes "Not at all.";
-			mes "Make sure that this";
-			mes "one isn't allowed";
-			mes "to enter.";
+			mes "[黎泰倫]";
+			mes "喂你，那裡不是像你這種傢伙可以進入的地方，";
+			mes "嗨- 大師! 這傢伙是你准許的嗎?";
 			next;
-			mes "[Litheron]";
-			mes "You heard the man.";
-			mes "You better retreat";
-			mes "from this place while";
-			mes "you still have legs...";
+			mes "[大師]";
+			mes "不是，不是他";
+			next;
+			mes "[黎泰倫]";
+			mes "說不是你喔";
 			close2;
 			warp "que_job01",85,77;
 			end;
@@ -255,24 +271,21 @@ OnTouch:
 
 que_job01,65,50,0	warp	que_job01#05	2,2,que_job01,84,77
 
-que_job01,81,79,5	script	Idle Knight#dan_08	733,{
-	mes "[Litheron]";
-	mes "What's the matter?";
-	mes "Oh, I see... You're";
-	mes "probably wondering why";
-	mes "a Knight like me is in a";
-	mes "secret Assassin's pub.";
+que_job01,81,79,5	script	玩樂的 騎士#dan_08	733,{
+	mes "[黎泰倫]";
+	mes "什麼? 你說騎士在這裡幹什麼嗎?";
+	mes "難道騎士就不能來這裡嗎?";
 	if (BaseClass == Job_Knight) {
 		mes "What about you, huh?";
 	}
 	next;
-	mes "[Litheron]";
-	mes "You know.. I just came to take a short breather. This whole restoration work is killing me.";
-	mes "It's almost impossible to spot a place for a little drink these days, if you know what I mean.";
+	mes "[黎泰倫]";
+	mes "我啊，因重建工作累垮而暫時來休息一下而已，";
+	mes "你以為能偷偷喝一杯的地方很多嗎?";
 	close;
 }
 
-que_job01,82,95,3	script	Bar Master#moc_main01	46,{
+que_job01,82,95,3	script	酒吧 大師#moc_main01	46,{
 	if (checkweight(908,200) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -306,14 +319,14 @@ que_job01,82,95,3	script	Bar Master#moc_main01	46,{
 		mes "What do you wanna drink?";
 	}
 	next;
-	switch(select("Order a Drink:Ask About Mission:Cancel")) {
+	switch(select("我要點:訊問有關任務方面的事情:取消")) {
 	case 1:
-		mes "[Master]";
-		mes "In this place, I only serve two drinks.";
-		mes "You want a Tropical Sograt or";
-		mes "a Vermilion on the Beach?";
+		mes "[大師]";
+		mes "熱帶蘇格拉特飲料、";
+		mes "朱紅色海灘飲料，";
+		mes "你要點哪一個呢?";
 		next;
-		switch(select("Tropical Sograt:Vermilion on the Beach:Do you offer any free drinks?")) {
+		switch(select("熱帶蘇格拉特飲料:朱紅色海灘飲料:沒有免費的嗎?")) {
 		case 1:
 			if (checkweight(908,200) == 0) {
 				mes "[Master]";
@@ -419,13 +432,10 @@ que_job01,82,95,3	script	Bar Master#moc_main01	46,{
 						close;
 					}
 					else {
-						mes "[Master]";
-						mes "For Assassins, I charge";
-						mes "800 zeny, but for you, I'm";
-						mes "gonna charge 1,000. No";
-						mes "hard feelings, but you're";
-						mes "already lucky to be here.";
-						mes "Hey, enjoy your drink~";
+						mes "[大師]";
+						mes "在這給你，";
+						mes "雖然主要成份是果汁，";
+						mes "不過不要過量的飲用啊";
 						set zeny,zeny-1000;
 						getitem 12113,1; //Vermilion_The_Beach
 						close;
@@ -433,13 +443,9 @@ que_job01,82,95,3	script	Bar Master#moc_main01	46,{
 				}
 			}
 		case 3:
-			mes "[Master]";
-			mes "What are you...?";
-			mes "I just told you";
-			mes "I only serve two";
-			mes "drinks. If you want";
-			mes "water, you oughtta";
-			mes "go someplace else.";
+			mes "[大師]";
+			mes ".........";
+			mes "出去";
 			close;
 		}
 	case 2:
@@ -504,18 +510,16 @@ que_job01,82,95,3	script	Bar Master#moc_main01	46,{
 				close;
 			}
 			else {
-				mes "[Master]";
-				mes "Mission...?";
-				mes "Come on, what are";
-				mes "you talking about?";
-				mes "Stop talking crazy and";
-				mes "order something to drink.";
+				mes "[大師]";
+				mes "什麼任務? 你在說什麼?";
+				mes "我跟你無話可說，";
+				mes "你點東西吧";
 				close;
 			}
 		}
 	case 3:
-		mes "[Master]";
-		mes "Hmmm.";
+		mes "[大師]";
+		mes "哼嗯";
 		close;
 	}
 }
@@ -803,58 +807,51 @@ yuno_in04,180,106,3	script	Reading Girl#moc_girl1	73,{
 	close;
 }
 
-morocc_in,46,125,5	script	Assistant#moc_ex1	729,{
-	mes "[Sephit]";
-	mes "I've always believed in Satan..";
-	mes "Haah... Guess it's good to be living, after all.";
+morocc_in,46,125,5	script	首席助理#moc_ex1	729,{
+	mes "[賽皮特]";
+	mes "我相信世界上有魔王的存在..";
+	mes "哈.. 人還是需要活久一點";
 	next;
-	mes "[Sephit]";
-	mes "Who would've thought to actually see the Satan while alive.....?";
+	mes "[賽皮特]";
+	mes "沒想到能在同個時代看到魔王.....";
 	close;
 }
 
-que_job01,70,84,1	script	Girl#moc_ex002	882,{
-	mes "[Girl]";
-	mes "Oh, the world.. the world is doomed..";
-	mes "-sobbing-";
-	mes "Nothing seems to be working now..";
+que_job01,70,84,1	script	少女#moc_ex002	882,{
+	mes "[少女]";
+	mes "這世界.. 到底是怎麼一回事，";
+	mes "嗚嗚..";
+	mes "怎麼沒一件事是順利的";
 	emotion e_sob;
 	next;
 	mes "["+ strcharinfo(0) +"]";
-	mes "....Tsk..tsk...";
-	mes "Good heavens.. I can't believe this young girl's drinking with sadness....";
+	mes "....嘖嘖...";
+	mes "年紀輕輕的就會借酒澆愁....";
 	close;
 }
 
-// 洲際衛隊 警衛兵 任務
+// Continental Guard Quest
 // ============================================================
-moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
+moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::MocConGuard	707,3,3,{
 	if ((rebirth_moc_edq == 0) && (rebirth_moc_edq < 4)) {
 		mes "[洲際衛隊 警衛兵]";
-		mes "這裡是禁止一般人進出的地方，";
-		mes "這裡非常危險請勿在這附近走動";
+		mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 		next;
 		switch(select("取消對話:詢問怎麼回事")) {
 		case 1:
 			close;
 		case 2:
 			mes "[洲際衛隊 警衛兵]";
-			mes "你還不知道嗎?";
-			mes "封印在夢羅克村落的魔王夢羅克復活了";
+			mes "你還不知道嗎? 封印在夢羅克村落的魔王夢羅克復活了";
 			next;
 			mes "[洲際衛隊 警衛兵]";
-			mes "魔當魔王夢羅克魔復活之後移動至蘇克拉";
-			mes "特沙漠附近去了，然而那附近的沙漠就成";
-			mes "了魔王的總部";
+			mes "當魔王夢羅克魔復活之後移動至蘇克拉特沙漠附近去了，然而那附近的沙漠就成了魔王的總部";
 			next;
 			mes "[洲際衛隊 警衛兵]";
-			mes "目前夢羅克村落因魔王復活的影響，遭受";
-			mes "到難以復建的極大傷害";
+			mes "目前夢羅克村落因魔王復活的影響，遭受到難以復建的極大傷害";
 			next;
 			mes "[洲際衛隊 警衛兵]";
-			mes "普隆德拉 王國的";
-			mes "奉普隆德拉王國的詔令，目前不隸屬於夢";
-			mes "羅克討伐大隊的平民則全面禁止出入該處";
+			mes "普隆德拉 王國的奉普隆德拉王國的詔令，目前不隸屬於夢羅克討伐大隊的平民則全面禁止出入該處";
 			next;
 			mes "[洲際衛隊 警衛兵]";
 			mes "細節方面請你親自去詢問在夢羅克村落負";
@@ -865,9 +862,7 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 				close;
 			case 2:
 				mes "[洲際衛隊 警衛兵]";
-				mes "你是問洲際衛隊的位置嗎?";
-				mes "洲際衛隊目前駐紮在夢羅克村落中央的營";
-				mes "地上";
+				mes "你是問洲際衛隊的位置嗎? 洲際衛隊目前駐紮在夢羅克村落中央的營地上";
 				next;
 				mes "[洲際衛隊 警衛兵]";
 				mes "你願意的話我可以送你過去...";
@@ -875,8 +870,7 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 				switch(select("不用了:麻煩你了")) {
 				case 1:
 					mes "[洲際衛隊 警衛兵]";
-					mes "不用嗎?...";
-					mes "那麼路上小心，建議你趕快離開這裡";
+					mes "不用嗎?... 那麼路上小心，建議你趕快離開這裡";
 					close;
 				case 2:
 					mes "[洲際衛隊 警衛兵]";
@@ -890,8 +884,7 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 	}
 	else if ((rebirth_moc_edq > 3) && (rebirth_moc_edq < 8)) {
 		mes "[洲際衛隊 警衛兵]";
-		mes "這裡是禁止一般人進出的地方，";
-		mes "這裡非常危險請勿在這附近走動";
+		mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 		next;
 		switch(select("取消對話:為了調查要去原野:前往夢羅克的現場")) {
 		case 1:
@@ -913,25 +906,20 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 					mes "......";
 					next;
 					mes "[洲際衛隊 警衛兵]";
-					mes "確認過了，你是洲際衛隊的隊員，祝你順";
-					mes "利地完達任務吧";
+					mes "確認過了，你是洲際衛隊的隊員，祝你順利地完達任務吧";
 					next;
 					mes "[洲際衛隊 警衛兵]";
-					mes "在立即送你到原野，回來時可透過原野入";
-					mes "口處的傳送點，就能重新回到這裡來了";
+					mes "在立即送你到原野，回來時可透過原野入口處的傳送點，就能重新回到這裡來了";
 					close2;
 					warp "moc_fild21",38,193;
 					end;
 				}
 				else if ((.@onlinemembers < 2) && (countitem(7826) > 0)) {
 					mes "[洲際衛隊 警衛兵]";
-					mes "確認過了，你是洲際衛隊的隊員，剛好有";
-					mes "來自巴祿隊長的特別命令，我來唸給你聽";
+					mes "確認過了，你是洲際衛隊的隊員，剛好有來自巴祿隊長的特別命令，我來唸給你聽";
 					next;
 					mes "[洲際衛隊 警衛兵]";
-					mes "因為這裡是極度危險的地帶，所以嚴禁隊";
-					mes "員們的單獨調查行為，下令務必遵守編組";
-					mes "2人以上後才能行動";
+					mes "'因為這裡是極度危險的地帶，所以嚴禁隊員們的單獨調查行為，下令務必遵守編組2人以上後才能行動'";
 					next;
 					mes "[洲際衛隊 警衛兵]";
 					mes "請回現場後找隊員們組隊後再來吧";
@@ -939,7 +927,7 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 				}
 				else if (countitem(7826) < 1) {
 					mes "[洲際衛隊 警衛兵]";
-					mes "Only members of the 洲際衛隊 警備兵s with 洲際衛隊 警備兵 Certificates are allowed to proceed beyond this point.";
+					mes "Only members of the Continental Guards with Continental Guard Certificates are allowed to proceed beyond this point.";
 					close;
 				}
 				else {
@@ -964,9 +952,9 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 	}
 	else if (rebirth_moc_edq == 8) {
 		mes "[洲際衛隊 警衛兵]";
-		mes "Ah, you're an adventurer working for the 洲際衛隊 警備兵. Nice to meet you. Feel free to ask me if you need my assistance.";
+		mes "Ah, you're an adventurer working for the Continental Guard. Nice to meet you. Feel free to ask me if you need my assistance.";
 		next;
-		switch(select("取消對話:為了調查要去原野:前往夢羅克的現場")) {
+		switch(select("為了調查要去原野:前往夢羅克的現場:取消對話")) {
 		case 1:
 			getpartymember(getcharid(1));
 			set .@partymembercount,$@partymembercount;
@@ -983,25 +971,20 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 				mes "......";
 				next;
 				mes "[洲際衛隊 警衛兵]";
-				mes "確認過了，你是洲際衛隊的隊員，祝你順";
-				mes "利地完達任務吧";
+				mes "確認過了，你是洲際衛隊的隊員，祝你順利地完達任務吧";
 				next;
 				mes "[洲際衛隊 警衛兵]";
-				mes "在立即送你到原野，回來時可透過原野入";
-				mes "口處的傳送點，就能重新回到這裡來了";
+				mes "在立即送你到原野，回來時可透過原野入口處的傳送點，就能重新回到這裡來了";
 				close2;
 				warp "moc_fild22",38,193;
 				end;
 			}
 			else if ((.@onlinemembers < 2) && (countitem(7826) > 0)) {
 				mes "[洲際衛隊 警衛兵]";
-				mes "確認過了，你是洲際衛隊的隊員，剛好有";
-				mes "來自巴祿隊長的特別命令，我來唸給你聽";
+				mes "確認過了，你是洲際衛隊的隊員，剛好有來自巴祿隊長的特別命令，我來唸給你聽";
 				next;
 				mes "[洲際衛隊 警衛兵]";
-				mes "因為這裡是極度危險的地帶，所以嚴禁隊";
-				mes "員們的單獨調查行為，下令務必遵守編組";
-				mes "2人以上後才能行動";
+				mes "'因為這裡是極度危險的地帶，所以嚴禁隊員們的單獨調查行為，下令務必遵守編組2人以上後才能行動'";
 				next;
 				mes "[洲際衛隊 警衛兵]";
 				mes "請回現場後找隊員們組隊後再來吧";
@@ -1009,7 +992,7 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 			}
 			else if (countitem(7826) < 1) {
 				mes "[洲際衛隊 警衛兵]";
-				mes "Only members of the 洲際衛隊 警衛兵s with 洲際衛隊 警衛兵 Certificates are allowed to proceed beyond this point.";
+				mes "Only members of the Continental Guards with Continental Guard Certificates are allowed to proceed beyond this point.";
 				close;
 			}
 			else {
@@ -1032,99 +1015,95 @@ moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 //OnTouch2:
 OnTouch:
 	mes "[洲際衛隊 警衛兵]";
-	mes "這裡是禁止一般人進出的地方，";
-	mes "這裡非常危險請勿在這附近走動";
+	mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 	close;
 	end;
 }
 
-moc_fild20,354,174,3	duplicate(警衛兵)	洲際衛隊 警衛兵#02	707,3,3
-moc_fild20,38,174,5	duplicate(警衛兵)	洲際衛隊 警衛兵#03	707,3,3
-moc_fild20,38,183,5	duplicate(警衛兵)	洲際衛隊 警衛兵#04	707,3,3
-moc_fild20,189,21,7	duplicate(警衛兵)	洲際衛隊 警衛兵#05	707,3,3
-moc_fild20,200,21,7	duplicate(警衛兵)	洲際衛隊 警衛兵#06	707,3,3
-moc_fild20,203,336,5	duplicate(警衛兵)	洲際衛隊 警衛兵#07	707,3,3
-moc_fild20,215,336,3	duplicate(警衛兵)	洲際衛隊 警衛兵#08	707,3,3
+moc_fild20,354,174,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#02	707,3,3
+moc_fild20,38,174,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#03	707,3,3
+moc_fild20,38,183,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#04	707,3,3
+moc_fild20,189,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#05	707,3,3
+moc_fild20,200,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#06	707,3,3
+moc_fild20,203,336,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#07	707,3,3
+moc_fild20,215,336,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#08	707,3,3
 
-prontera,164,304,3	script	夢羅克洲際衛隊傳令兵#01::傳令兵	997,3,3,{
+prontera,164,304,3	script	夢羅克洲際衛隊傳令兵#01::ConMessenger	997,3,3,{
 	set .@area$,strnpcinfo(2);
 	if (.@area$ == "01") { set .@area$,"普隆德拉"; }
 	else if (.@area$ == "02") { set .@area$,"吉芬"; }
 	else if (.@area$ == "03") { set .@area$,"斐揚"; }
 	else if (.@area$ == "04") { set .@area$,"艾爾貝塔"; }
 	else if (.@area$ == "05") { set .@area$,"艾爾帕蘭"; }
-	mes "[洲際衛隊 傳令兵]";
 	if (BaseLevel > 79) {
 		mes "[洲際衛隊 傳令兵]";
-		mes "你是"+ strcharinfo(0) +"啊，這是分秒必爭的緊急事件，";
-		mes "所以我就講重點吧";
+		mes "你是"+ strcharinfo(0) +"啊，這是分秒必爭的緊急事件，所以我就講重點吧";
 		next;
 		mes "[洲際衛隊 傳令兵]";
-		mes "我是從夢羅克洲際衛隊總部派到普隆德拉";
-		mes "的傳令兵，我是來傳話給像你"+ strcharinfo(0) +"這樣有";
-		mes "聲望的各位冒險家們";
+		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "的傳令兵，我是來傳話給像你"+ strcharinfo(0) +"這樣有聲望的各位冒險家們";
 		next;
 		select("夢羅克洲際衛隊總部是怎麼一回事啊?");
+		mes "[洲際衛隊 傳令兵]";
+		mes "時間不多了，那我就簡單扼要的向你說明吧";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "魔王夢羅克... 已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克... 就是那個魔王夢羅克";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "受此影響現在夢羅克村落與附近地區瞬間成了廢墟";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "簡直是千瘡百孔... 有過之而不及，現在夢羅克周圍呈現一片死寂";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩 米德加茲王宮與全區傳達這項消息";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "當然更重要的是如今迫切需要像"+ strcharinfo(0) +"一樣出色的冒險家們的幫忙，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "詳細內容去詢問我們洲際衛隊的隊長吧! 他正等候著"+ strcharinfo(0) +"您呢";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "討伐大隊的總部是... 目前設在夢羅克中央宮廷附近的臨時哨所上";
+		close;
 	}
 	else {
-		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "";
-		mes "的傳令兵，我是來緊急警告盧恩";
-		mes "米德加茲全部的人";
+		mes "[洲際衛隊 傳令兵]";
+		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "的傳令兵，我是來緊急警告盧恩 米德加茲全部的人";
 		next;
 		select("夢羅克洲際衛隊總部是怎麼一回事啊?");
+		mes "[洲際衛隊 傳令兵]";
+		mes "時間不多了那我就簡單扼要的向你說明吧";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "魔王夢羅克... 已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克... 就是那個魔王夢羅克";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "受此影響現在夢羅克村落與附近地區瞬間成了廢墟";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "簡直是千瘡百孔... 有過之而不及，現在夢羅克周圍呈現一片死寂";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩 米德加茲王宮與全區傳達這項消息";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "當然更重要的是如今迫切需要這裏所有優秀冒險家們的協助，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "目前夢羅克村落因受到魔王復活的影響，都市約 7成以上嚴重的損壞";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "周圍鄰近的沙漠因魔王夢羅克和牠的幻影，以及強大魔物的出現，逐漸變成死地了... 你要多多保重";
+		close;
 	}
-	mes "[洲際衛隊 傳令兵]";
-	mes "時間不多了，那我就簡單扼要的向你說明吧";
-	next;
-	mes "[洲際衛隊 傳令兵]";
-	mes "魔王夢羅克...";
-	mes "已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克...";
-	mes "就是那個夢羅克";
-	next;
-	mes "[洲際衛隊 傳令兵]";
-	mes "受此影響，現在夢羅村落與附近地區瞬間成了廢墟";
-	next;
-	mes "[洲際衛隊 傳令兵]";
-	mes "簡直是千瘡百孔...";
-	mes "有過之而無不及，現在夢羅克周圍呈現一片死寂";
-	next;
-	mes "[洲際衛隊 傳令兵]";
-	mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩";
-	mes "米德加茲王國與全區傳達這項消息";
-	next;
-	mes "[洲際衛隊 傳令兵]";
-	if (BaseLevel > 79) {
-		mes "[洲際衛隊 傳令兵]";
-		mes "當然更重要的是如今迫切需要像"+ strcharinfo(0) +"一樣";
-		mes "出色的冒險家們的幫忙，為了再次封印夢";
-		mes "羅克...";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "詳細內容去詢問我們洲際衛隊的隊長吧!";
-		mes "他正等候著"+ strcharinfo(0) +"您呢";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "討伐大隊的總部是...";
-		mes "目前設在夢羅克中央宮廷附近的臨時哨所";
-		mes "上";
-	} 
-	else {
-		mes "當然最重要的是如今迫切需要這裡所有優秀的冒險家們的協助，為了再次封印夢羅克...";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "目前夢羅克村落因受到魔王復活的影響，都是約 7成以上嚴重的損壞";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "周圍鄰近的沙漠音魔王夢羅克和牠的幻影，以及強大魔物的出現，逐漸變成死地了... 你要多多保重";
-	}
-	close;
 
 OnTouch:
 	if (BaseLevel > 79) {
 		mes "[洲際衛隊 傳令兵]";
 		mes "請問你是... "+ strcharinfo(0) +"嗎?";
-		mes "正確的話請你先聽我說完，這是非常重要";
-		mes "的事情";
+		mes "正確的話請你先聽我說完，這是非常重要的事情";
 		next;
 		mes "[洲際衛隊 傳令兵]";
 		mes "事態緊急，請務必先聽我說";
@@ -1133,10 +1112,10 @@ OnTouch:
 	end;
 }
 
-geffen,128,90,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#02	997,3,3
-payon,200,113,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#03	997,3,3
-alberta,127,64,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#04	998,3,3
-aldebaran,135,128,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#05	998,3,3
+geffen,128,90,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#02	997,3,3
+payon,200,113,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#03	997,3,3
+alberta,127,64,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#04	998,3,3
+aldebaran,135,128,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#05	998,3,3
 
 morocc,176,103,3	script	洲際衛隊 行政官	754,{
 	if (rebirth_moc_edq > 3) {
@@ -1147,34 +1126,26 @@ morocc,176,103,3	script	洲際衛隊 行政官	754,{
 		mes "嗯...";
 		next;
 		mes "[洲際衛隊 行政官]";
-		mes "目前還沒有新消息...";
-		mes "祝你順利達成任務，報告完畢";
+		mes "目前還沒有新消息... 祝你順利達成任務，報告完畢";
 		close;
 	}
 	else if (rebirth_moc_edq == 0) {
 		mes "[洲際衛隊 行政官]";
-		mes "我是負責夢羅克討伐大隊中央的諮詢官，";
-		mes "請問有事嗎?";
+		mes "我是負責夢羅克討伐大隊中央的咨詢官，請問有事嗎?";
 		next;
 		switch(select("這裡是什麼地方呢?:我來報名:詢問村落的現況")) {
 		case 1:
 			mes "[洲際衛隊 行政官]";
-			mes "這裡是負責遍布於大陸各地勇猛的冒險家";
-			mes "們，為了阻止魔王夢羅克而聚集報名洲際";
-			mes "衛隊的地方";
+			mes "這裡是負責遍佈於大陸各地勇猛的冒險家們，為了阻止魔王夢羅克而聚集報名洲際衛隊的地方";
 			next;
 			mes "[洲際衛隊 行政官]";
-			mes "你也知道魔王的復活讓盧恩";
-			mes "米德加茲王國與這大陸所面臨的危機是有";
-			mes "直接的關係";
+			mes "你也知道魔王的復活讓盧恩 米德加茲王國與這大陸所面臨的危機是有直接的關係";
 			next;
 			mes "[洲際衛隊 行政官]";
-			mes "奉王國之命有意消滅魔王而招集洲際衛";
-			mes "隊，目前正如火如荼的進行阻止魔王的各";
-			mes "項準備";
+			mes "奉王國之命有意消滅魔王而招集的洲際衛隊，目前正如火如荼的進行阻止魔王的各項準備";
 			next;
 			mes "[洲際衛隊 行政官]";
-			mes "如果你也是收到詔令或是對自己的實力有信心的冒險家的話，請你現在報名以維護這次大陸的和平吧";
+			mes "如果你也是受到詔令或是對自己的實力有信心的冒險家的話，請你現在報名以維護這大陸的和平吧";
 			close;
 		case 2:
 			if (BaseLevel > 79) {
@@ -1185,40 +1156,37 @@ morocc,176,103,3	script	洲際衛隊 行政官	754,{
 				mes "Let me process your application immediately. Please wait.";
 				next;
 				mes "[洲際衛隊 行政官]";
-				mes "Now please go speak to 隊長 巴祿 of the 洲際衛隊 警備兵. You can find him in the center.";
+				mes "Now please go speak to Chief Balrog of the Continental Guard. You can find him in the center.";
 				set rebirth_moc_edq,1;
 				//getquest(3050),1;
+				close;
 			}
 			else {
 				mes "[洲際衛隊 行政官]";
-				mes "雖高度肯定你的意志...";
-				mes "但也有不能單靠意志就可以解決的事情";
+				mes "雖高度肯定你的意志... 但也有不能單靠意志就可以解決的事情";
 				next;
 				mes "[洲際衛隊 行政官]";
-				mes "魔王夢羅克比你遭遇過的任何魔物都強大，更有生命的危險";
+				mes "魔王夢羅克比你遭遇過的任何魔物都強大，更有性命的危險";
 				next;
 				mes "[洲際衛隊 行政官]";
-				mes "請先請你顧好自己的安全和性命吧";
+				mes "現在請你先顧好自己的安全和性命吧";
+				close;
 			}
-			close;
 		case 3:
 			mes "[洲際衛隊 行政官]";
-			mes "狀況很不理想，你也知道村落已遭受嚴重";
-			mes "傷害，連帶這附近也非常危險了";
+			mes "狀況很不理想，你也知道村落已遭受嚴重傷害，連帶這附近也非常危險了";
 			next;
 			mes "[洲際衛隊 行政官]";
-			mes "雖然王國下詔令後陸陸續續各地的冒險家";
-			mes "們和勇士們都聚集到討伐大隊下...";
-			mes "但是力量仍不足以抵禦強大的魔王";
+			mes "雖然王國下詔令後陸陸續續各地的冒險家們和勇士們都聚集到討伐大隊下... 但是力量仍不足以抵禦強大的魔王";
 			next;
 			mes "[洲際衛隊 行政官]";
-			mes "在這附近請盡可能的聽從我們指示，更注意自身的安全以免遭遇不測";
+			mes "在這附近請儘可能的聽從我們的指示，更注意自身的安全以免遭遇不測";
 			close;
 		}
 	}
 	else {
 		mes "[洲際衛隊 行政官]";
-		mes "Your application already has been registered. Please go speak to 隊長 巴祿.";
+		mes "Your application already has been registered. Please go speak to Chief Balrog.";
 		close;
 	}
 }
@@ -1226,10 +1194,10 @@ morocc,176,103,3	script	洲際衛隊 行政官	754,{
 morocc,159,113,3	script	隊長 巴祿	752,{
 	if (rebirth_moc_edq == 0) {
 		mes "[隊長 巴祿]";
-		mes "年輕人你不幸在這非常時期來到了夢羅克，我是被派來阻止魔王夢羅克復活的洲際衛隊隊長 巴祿.";
+		mes "年輕人你不幸在這非常時期來到了夢羅克，我是被派來阻止魔王夢羅克復活的洲際衛隊隊長巴祿";
 		next;
 		mes "[隊長 巴祿]";
-		mes "我實在太忙了，無法一一像你這樣的冒險家說明，請你去找這附近的其他人吧";
+		mes "我實在太忙了無法一一向你這樣的冒險家說明，請你去找這附近的其他人吧";
 		next;
 		mes "[隊長 巴祿]";
 		mes "我目前正忙於挑選要加入我們洲際衛隊的新血人才";
@@ -1237,12 +1205,12 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 	}
 	else if (rebirth_moc_edq == 1) {
 		mes "[隊長 巴祿]";
-		mes "You've come here at a bad time, but it's nice to meet you. I'm 洲際衛隊 警備兵 隊長 巴祿. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
+		mes "You've come here at a bad time, but it's nice to meet you. I'm Continental Guard Chief Balrog. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
 		next;
 		mes "[隊長 巴祿]";
 		mes "It looks like you have business with me. Please make it brief since I don't have a lot of time on my hands. There's lots of things I need to take care of...";
 		next;
-		switch(select("Ask about 洲際衛隊 警備兵s:I want to join the 洲際衛隊 警備兵.:End Conversation")) {
+		switch(select("Ask about Continental Guards:I want to join the Continental Guard.:End Conversation")) {
 		case 1:
 			mes "[隊長 巴祿]";
 			mes "The damage that Satan Morroc's resurrection has caused is obvious just by taking a look around this area.";
@@ -1255,14 +1223,14 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "I've no doubt that if left unchecked, Satan Morroc will take over the entire Midgart Continent. We've got to stop him right now before the entire world suffers.";
 			next;
 			mes "[隊長 巴祿]";
-			mes "That's why the kingdom has ordered us elite soldiers to form the 洲際衛隊 警備兵, and recruit reputable adventurers around the world so that we can make a united stand against Satan Morroc.";
+			mes "That's why the kingdom has ordered us elite soldiers to form the Continental Guard, and recruit reputable adventurers around the world so that we can make a united stand against Satan Morroc.";
 			next;
 			mes "[隊長 巴祿]";
 			mes "Of course, it'll be incredibly difficult... We'll need to make sacrifices... I'm not even sure if we can win. Still, the fate of the world is at stake, and we've got to do something. Dark times have truly fallen upon us...";
 			close;
 		case 2:
 			mes "[隊長 巴祿]";
-			mes "Huh? Do you want to join us and volunteer for the 洲際衛隊 警備兵?";
+			mes "Huh? Do you want to join us and volunteer for the Continental Guard?";
 			next;
 			if (BaseLevel > 79) {
 				mes "[隊長 巴祿]";
@@ -1314,7 +1282,7 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 							mes "Huh? You want a chance to prove yourself?";
 							next;
 							mes "[" + strcharinfo(0) + "]";
-							mes "Yes, I'll do whatever it takes to join the 洲際衛隊 警備兵!";
+							mes "Yes, I'll do whatever it takes to join the Continental Guard!";
 							next;
 							mes "[隊長 巴祿]";
 							mes "Hmm...";
@@ -1323,7 +1291,7 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 							mes "Interesting. You have my attention. Alright, I guess it's only fair that I acknowledge your strength if you can handle something for me.";
 							next;
 							mes "[隊長 巴祿]";
-							mes "The 洲際衛隊 警備兵 has been on full alert around this village and the desert. We need to be prepared in case Satan Morroc storms our defenses.";
+							mes "The Continental Guard has been on full alert around this village and the desert. We need to be prepared in case Satan Morroc storms our defenses.";
 							next;
 							mes "[隊長 巴祿]";
 							mes "Soldiers need firewood to keep the bonfires burning all night, but we've been suffering a firewood shortage.";
@@ -1381,7 +1349,7 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "Anyways, thank you for bringing the Live Coals. I guess you're stronger than I thought.";
 			next;
 			mes "[" + strcharinfo(0) + "]";
-			mes "Now will you let me join the 洲際衛隊 警備兵?";
+			mes "Now will you let me join the Continental Guard?";
 			next;
 			mes "[隊長 巴祿]";
 			mes "No, gathering these flames is a piece of cake compared to what we're going to do.";
@@ -1393,7 +1361,7 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "I didn't think you would accept me so easily. I'm ready. Ask me whatever you want.";
 			next;
 			mes "[隊長 巴祿]";
-			mes "Ah, I've got an idea. Now, because this is an allied operation, we've accepted some mercenary soldiers from the Schwaltzvalt Republic to join the 洲際衛隊 警備兵.";
+			mes "Ah, I've got an idea. Now, because this is an allied operation, we've accepted some mercenary soldiers from the Schwaltzvalt Republic to join the Continental Guard.";
 			next;
 			mes "[隊長 巴祿]";
 			mes "These mercenaries have never seen the desert, and they're having trouble carrying out operations in the heat, dry air, and sandstorms. It's not their fault, but they could use a little help since they're out of their element.";
@@ -1457,13 +1425,13 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "What's this?";
 			next;
 			mes "[隊長 巴祿]";
-			mes "You'd know if you read it. It's a certificate that proves that you're a member of the 洲際衛隊 警備兵. I admit that I'm impressed by your skills and gumption.";
+			mes "You'd know if you read it. It's a certificate that proves that you're a member of the Continental Guard. I admit that I'm impressed by your skills and gumption.";
 			next;
 			mes "[隊長 巴祿]";
-			mes "Welcome to the 洲際衛隊 警備兵, my friend. Are you ready to risk your life for the sake of peace in the world?";
+			mes "Welcome to the Continental Guard, my friend. Are you ready to risk your life for the sake of peace in the world?";
 			next;
 			mes "[隊長 巴祿]";
-			mes "Your mission from here on will be simple, but extremely difficult: you will join the rest of the 洲際衛隊 警備兵 to keep Satan Morroc from fully reviving its true power.";
+			mes "Your mission from here on will be simple, but extremely difficult: you will join the rest of the Continental Guard to keep Satan Morroc from fully reviving its true power.";
 			next;
 			mes "[隊長 巴祿]";
 			mes "My soldiers are risking their lives to fight Morroc's doppelgangers and underlings in order to make it safer for their comrades to travel to Morroc's lair.";
@@ -1483,59 +1451,40 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 	}
 	else if (rebirth_moc_edq == 4) {
 		mes "[隊長 巴祿]";
-		mes "原來如此...";
-		mes "好像是我沒有仔細向你說明這附近的現況";
-		mes "... 你想聽嗎?";
+		mes "原來如此... 好像是我沒有仔細向你說明這附近的現況... 你想聽嗎?";
 		next;
 		switch(select("我想聽聽看:我不想聽")) {
 		case 1:
 			mes "[隊長 巴祿]";
-			mes "我要告訴你的是身為洲際衛隊隊員，對抗";
-			mes "魔王夢羅克時應該要知道的情報";
+			mes "我要告訴你的是身為洲際衛隊隊員，對抗魔王夢羅克時應該要知道的情報";
 			next;
 			mes "[隊長 巴祿]";
-			mes "你還記得這事態發展之前的夢羅克嗎?";
-			mes "當然我想你之前也許未曾來過...";
+			mes "你還記得這事態發展之前的夢羅克嗎? 當然我想你之前也許未曾來過...";
 			next;
 			mes "[隊長 巴祿]";
-			mes "你也知道目前夢羅克城內的各入口和通往";
-			mes "其他村落的外圍原野皆有我們洲際衛隊管";
-			mes "控中";
+			mes "你也知道目前夢羅克城內的各入口和通往其他村落的外圍原野皆有我們洲際衛隊管控中";
 			next;
 			mes "[隊長 巴祿]";
-			mes "理由除了是因魔王的復活，讓目前在蘇克";
-			mes "拉特沙漠上出沒的魔物增加了危險性...";
-			mes "但還有其他原因";
+			mes "理由除了是因魔王的復活，讓目前在蘇克拉特沙漠上出沒的魔物增加了危險性... 但還有其他原因";
 			next;
 			mes "[隊長 巴祿]";
-			mes "魔王夢羅克的強大力量引起了時空次元的";
-			mes "龜裂，雖然目前只影響到這附近而已...";
-			mes "但早晚會波及到其他地方";
+			mes "魔王夢羅克的強大力量引起了時空次元的龜裂，雖然目前只影響到這附近而已... 但早晚會波及到其他地方";
 			next;
 			mes "[隊長 巴祿]";
-			mes "因受時空次元的龜裂，使現在的夢羅克沙";
-			mes "漠都變形，甚至有些地方憑空消失的異常";
-			mes "現象";
+			mes "因受時空次元的龜裂，使現在的夢羅克沙漠都變形，甚至有些地方憑空消失的異常現象";
 			next;
 			mes "[隊長 巴祿]";
-			mes "另外歸順於魔王勢力的強大魔物們與魔王";
-			mes "的幻影們繼續大量出現，造成嚴重的威脅";
+			mes "另外歸順於魔王勢力的強大魔物們與魔王的幻影們繼續大量出現，造成嚴重的威脅";
 			next;
 			mes "[隊長 巴祿]";
-			mes "其實你也可以親自去證實...";
-			mes "我們所得到的情報舊這些了，更詳細的你";
-			mes "去問洲際衛隊行政官吧";
+			mes "其實你也可以親自去證實... 我們所得到的情報舊這些了，更詳細的你去問洲際衛隊行政官吧";
 			next;
 			mes "[隊長 巴祿]";
-			mes "別忘了這大陸的未來掌握在我們的手裡，";
-			mes "請你全力以赴去阻止魔王，我說完了";
+			mes "別忘了這大陸的未來掌握在我們的手裡，請你全力以赴去阻止魔王，我說完了";
 			close;
 		case 2:
 			mes "[隊長 巴祿]";
-			mes "是嗎? 知道了...";
-			mes "那麼去跟隊員們專心完成任務吧，如果我";
-			mes "們不能壓制魔王的話，這大陸也就沒未來";
-			mes "了";
+			mes "是嗎? 知道了... 那麼去跟隊員們專心完成任務吧，如果我們不能壓制魔王的話，這大陸也就沒未來了";
 			close;
 		}
 	}
@@ -1577,7 +1526,7 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "Our researchers might be able to learn some important new facts from this piece of skin... We need to learn all we can about that monster if peace is to be possible in our world's future.";
 			next;
 			mes "[隊長 巴祿]";
-			mes "Once again, I thank you for your distinguished service on behalf of the 洲際衛隊 警備兵 and the Rune-Midgarts Kingdom. I'll report your great achievement to His Majesty right away.";
+			mes "Once again, I thank you for your distinguished service on behalf of the Continental Guard and the Rune-Midgarts Kingdom. I'll report your great achievement to His Majesty right away.";
 			next;
 			delitem 7820,1; //Morroc_Skin
 			getexp 2000000,0;
@@ -1587,21 +1536,21 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 			mes "[隊長 巴祿]";
 			mes "I've prepared a few things to give as a reward for you. Let's see... I have three items. Which one do you like to receive?";
 			next;
-			switch(select("1. Seal of 洲際衛隊 警備兵:2. Morroc Charm Stone:3. Morroc Ring")) {
+			switch(select("1. Seal of Continental Guard:2. Morroc Charm Stone:3. Morroc Ring")) {
 			case 1:
 				mes "[隊長 巴祿]";
-				mes "The Seal of 洲際衛隊 警備兵 is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
+				mes "The Seal of Continental Guard is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
 				next;
 				mes "[隊長 巴祿]";
 				mes "The accessory's options are: ^0000FF MHP+50, +3% Attack Speed^000000.";
 				next;
 				mes "[隊長 巴祿]";
-				mes "Do you really want the Seal of 洲際衛隊 警備兵?";
+				mes "Do you really want the Seal of Continental Guard?";
 				next;
 				switch(select("1. Yes.:2. No.")) {
 				case 1:
 					mes "[隊長 巴祿]";
-					mes "Great, then I'll reward you with the Seal of 洲際衛隊 警備兵. Congratulations.";
+					mes "Great, then I'll reward you with the Seal of Continental Guard. Congratulations.";
 					next;
 					getitem 2730,1; //Morroc_Seal
 					set rebirth_moc_edq,8;
@@ -1699,21 +1648,21 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 		mes "[隊長 巴祿]";
 		mes "I've prepared a few things to give as a reward for you. Let's see... I have three items. Which one do you like to receive?";
 		next;
-		switch(select("1. Seal of 洲際衛隊 警備兵:2. Morroc Charm Stone:3. Morroc Ring")) {
+		switch(select("1. Seal of Continental Guard:2. Morroc Charm Stone:3. Morroc Ring")) {
 		case 1:
 			mes "[隊長 巴祿]";
-			mes "The Seal of 洲際衛隊 警備兵 is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
+			mes "The Seal of Continental Guard is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
 			next;
 			mes "[隊長 巴祿]";
 			mes "The accessory's options are: ^0000FF MHP+50, +3% Attack Speed^000000.";
 			next;
 			mes "[隊長 巴祿]";
-			mes "Do you really want the Seal of 洲際衛隊 警備兵?";
+			mes "Do you really want the Seal of Continental Guard?";
 			next;
 			switch(select("1. Yes.:2. No.")) {
 			case 1:
 				mes "[隊長 巴祿]";
-				mes "Great, then I'll reward you with the Seal of 洲際衛隊 警備兵. Congratulations.";
+				mes "Great, then I'll reward you with the Seal of Continental Guard. Congratulations.";
 				next;
 				getitem 2730,1; //Morroc_Seal
 				set rebirth_moc_edq,8;
@@ -1811,13 +1760,13 @@ morocc,159,113,3	script	隊長 巴祿	752,{
 	}
 	else {
 		mes "[隊長 巴祿]";
-		mes "You've come here at a bad time, but it's nice to meet you. I'm 洲際衛隊 警備兵 隊長 巴祿. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
+		mes "You've come here at a bad time, but it's nice to meet you. I'm Continental Guard Chief Balrog. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
 		next;
 		mes "[隊長 巴祿]";
-		mes "I'm sorry, but I'm too busy checking through all these applications for future 洲際衛隊 警備兵s to greet you adventurers one by one.";
+		mes "I'm sorry, but I'm too busy checking through all these applications for future Continental Guards to greet you adventurers one by one.";
 		next;
 		mes "[隊長 巴祿]";
-		mes "Listen, it might be more helpful if you talk to some other people first. I'm sure one of the other 洲際衛隊 警備兵s or our messengers will be better equipped to help you out.";
+		mes "Listen, it might be more helpful if you talk to some other people first. I'm sure one of the other Continental Guards or our messengers will be better equipped to help you out.";
 		close;
 	}
 }
@@ -1866,24 +1815,20 @@ OnDisable:
 moc_fild21,178,239,0	script	黑暗之徒#edq	844,1,1,{
 	if (((rebirth_moc_edq == 4) || (rebirth_moc_edq == 7)) && ($@re_moc == 1)) {
 		set $@re_moc,2;
-		mes "望著無法形容的巨大黑暗時空的縫隙處，";
-		mes "被那壓迫感驚嚇而不自主的向後退了幾步";
+		mes "望著無法形容的巨大黑暗時空的縫隙處，被那壓迫感驚嚇而不自主的向後退了幾步";
 		next;
-		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感";
-		mes "覺到強烈的陰森氣息";
+		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感覺到強烈的陰森氣息";
 		next;
 		mes "[" + strcharinfo(0) + "]";
 		mes "嗚... 嗚嗚";
 		close2;
-		donpcevent "黑暗之徒#edq::OnEnable";
+		donpcevent "Satan Summon#edq::OnEnable";
 		end;
 	}
 	else {
-		mes "望著無法形容的巨大黑暗時空的縫隙處，";
-		mes "被那壓迫感驚嚇而不自主的後退了幾步";
+		mes "望著無法形容的巨大黑暗時空的縫隙處，被那壓迫感驚嚇而不自主的後退了幾步";
 		next;
-		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感";
-		mes "覺到強烈的陰森氣息";
+		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感覺到強烈的陰森氣息";
 		close;
 	}
 
@@ -1985,6 +1930,6 @@ OnTimer5415000:
 	stopnpctimer;
 	killmonster "moc_fild21","Satan Summon#edq::OnMyMobDead";
 	set $@re_moc,0;
-	donpcevent "Satan Summon#edq::OnDisable";
+	donpcevent "Satan Summon#edq::OnDiable";
 	end;
 }
