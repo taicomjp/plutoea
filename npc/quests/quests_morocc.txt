@@ -10,10 +10,6 @@
 //= * 望遠鏡製作任務
 //= * 魔王夢羅克/洲際衛隊 任務
 //===================================
-//= 2.4 Implemented Ep. 12.1 Continental Guard Quest. [L0ne_W0lf]
-//=     Moved Dandelion's Request to a it's own file.
-//=     Added support NPCs required to finish Gaebolg quest.
-//===================================
 
 //停止標誌頭飾製作任務
 moc_ruins,114,181,4	script	斯泰爾	89,{
@@ -24,7 +20,7 @@ moc_ruins,114,181,4	script	斯泰爾	89,{
 	mes "我們家遠早在以馬車為主要交通工具時代就開始製作交通號誌牌，至今已經有兩百五十年的歷史了。";
 	mes "近來我們常接到一些專門訂購^3355FF' 停止標誌頭飾 '^000000 的訂單，現在流行將它拿來當裝飾品。";
 	next;
-	switch( select( "訂購^3355FF' 停止標誌頭飾 '^000000。","結束對話。")) {
+	switch( select( "訂購^3355FF' 停止標誌頭飾 '^000000。:結束對話。")) {
 	case 1:
 		mes "由擁有兩百五十年悠久歷史的家族所製作的^3355FF' 停止標誌頭飾 '^000000發展出來的裝飾品..";
 		mes "有承襲著交通標誌牌傳統技術，令人眼睛為之一亮且堅固耐用。";
@@ -63,7 +59,7 @@ moc_ruins,118,176,4	script	煉金術公會	64,{
 	mes "我知道你要說什麼。";
 	mes "你是為了魔法眼鏡而來的對吧 ?";
 	next;
-	switch(select( "什麼叫做魔法眼鏡?","製作魔法眼鏡。","跳過。")) {
+	switch(select( "什麼叫做魔法眼鏡?:製作魔法眼鏡。:跳過。")) {
 	case 1:
 		mes "[波立歐吉娜]";
 		mes "是的 ！ 它的正式名稱應該是 ' ^3355FF望遠鏡^000000 ' ！";
@@ -830,9 +826,9 @@ que_job01,70,84,1	script	少女#moc_ex002	882,{
 	close;
 }
 
-// Continental Guard Quest
+// 洲際衛隊 / 魔王夢羅克任務
 // ============================================================
-moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::MocConGuard	707,3,3,{
+moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::警衛兵	707,3,3,{
 	if ((rebirth_moc_edq == 0) && (rebirth_moc_edq < 4)) {
 		mes "[洲際衛隊 警衛兵]";
 		mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
@@ -1020,84 +1016,80 @@ OnTouch:
 	end;
 }
 
-moc_fild20,354,174,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#02	707,3,3
-moc_fild20,38,174,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#03	707,3,3
-moc_fild20,38,183,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#04	707,3,3
-moc_fild20,189,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#05	707,3,3
-moc_fild20,200,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#06	707,3,3
-moc_fild20,203,336,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#07	707,3,3
-moc_fild20,215,336,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#08	707,3,3
+moc_fild20,354,174,3	duplicate(警衛兵)	洲際衛隊 警衛兵#02	707,3,3
+moc_fild20,38,174,5	duplicate(警衛兵)	洲際衛隊 警衛兵#03	707,3,3
+moc_fild20,38,183,5	duplicate(警衛兵)	洲際衛隊 警衛兵#04	707,3,3
+moc_fild20,189,21,7	duplicate(警衛兵)	洲際衛隊 警衛兵#05	707,3,3
+moc_fild20,200,21,7	duplicate(警衛兵)	洲際衛隊 警衛兵#06	707,3,3
+moc_fild20,203,336,5	duplicate(警衛兵)	洲際衛隊 警衛兵#07	707,3,3
+moc_fild20,215,336,3	duplicate(警衛兵)	洲際衛隊 警衛兵#08	707,3,3
 
-prontera,164,304,3	script	夢羅克洲際衛隊傳令兵#01::ConMessenger	997,3,3,{
+prontera,164,304,3	script	夢羅克洲際衛隊傳令兵#01::傳令兵	997,3,3,{
 	set .@area$,strnpcinfo(2);
 	if (.@area$ == "01") { set .@area$,"普隆德拉"; }
 	else if (.@area$ == "02") { set .@area$,"吉芬"; }
 	else if (.@area$ == "03") { set .@area$,"斐揚"; }
 	else if (.@area$ == "04") { set .@area$,"艾爾貝塔"; }
 	else if (.@area$ == "05") { set .@area$,"艾爾帕蘭"; }
+	mes "[洲際衛隊 傳令兵]";
 	if (BaseLevel > 79) {
-		mes "[洲際衛隊 傳令兵]";
-		mes "你是"+ strcharinfo(0) +"啊，這是分秒必爭的緊急事件，所以我就講重點吧";
+		mes "你是"+ strcharinfo(0) +"啊，這是分秒必爭的緊急事件，";
+		mes "所以我就講重點吧";
 		next;
 		mes "[洲際衛隊 傳令兵]";
-		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "的傳令兵，我是來傳話給像你"+ strcharinfo(0) +"這樣有聲望的各位冒險家們";
-		next;
-		select("夢羅克洲際衛隊總部是怎麼一回事啊?");
-		mes "[洲際衛隊 傳令兵]";
-		mes "時間不多了，那我就簡單扼要的向你說明吧";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "魔王夢羅克... 已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克... 就是那個魔王夢羅克";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "受此影響現在夢羅克村落與附近地區瞬間成了廢墟";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "簡直是千瘡百孔... 有過之而不及，現在夢羅克周圍呈現一片死寂";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩 米德加茲王宮與全區傳達這項消息";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "當然更重要的是如今迫切需要像"+ strcharinfo(0) +"一樣出色的冒險家們的幫忙，為了再次封印夢羅克...";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "詳細內容去詢問我們洲際衛隊的隊長吧! 他正等候著"+ strcharinfo(0) +"您呢";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "討伐大隊的總部是... 目前設在夢羅克中央宮廷附近的臨時哨所上";
-		close;
+		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "";
+		mes "的傳令兵，我是來傳話給像你"+ strcharinfo(0) +"這樣有";
+		mes "聲望的各位冒險家們";
 	}
 	else {
-		mes "[洲際衛隊 傳令兵]";
-		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "的傳令兵，我是來緊急警告盧恩 米德加茲全部的人";
-		next;
-		select("夢羅克洲際衛隊總部是怎麼一回事啊?");
-		mes "[洲際衛隊 傳令兵]";
-		mes "時間不多了那我就簡單扼要的向你說明吧";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "魔王夢羅克... 已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克... 就是那個魔王夢羅克";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "受此影響現在夢羅克村落與附近地區瞬間成了廢墟";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "簡直是千瘡百孔... 有過之而不及，現在夢羅克周圍呈現一片死寂";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩 米德加茲王宮與全區傳達這項消息";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "當然更重要的是如今迫切需要這裏所有優秀冒險家們的協助，為了再次封印夢羅克...";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "目前夢羅克村落因受到魔王復活的影響，都市約 7成以上嚴重的損壞";
-		next;
-		mes "[洲際衛隊 傳令兵]";
-		mes "周圍鄰近的沙漠因魔王夢羅克和牠的幻影，以及強大魔物的出現，逐漸變成死地了... 你要多多保重";
-		close;
+		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "";
+		mes "的傳令兵，我是來緊急警告盧恩";
+		mes "米德加茲全部的人";
 	}
+	next;
+	select("夢羅克洲際衛隊總部是怎麼一回事啊?");
+	mes "[洲際衛隊 傳令兵]";
+	mes "時間不多了，那我就簡單扼要的向你說明吧";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "魔王夢羅克...";
+	mes "已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克...";
+	mes "就是那個夢羅克";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "受此影響，現在夢羅村落與附近地區瞬間成了廢墟";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "簡直是千瘡百孔...";
+	mes "有過之而無不及，現在夢羅克周圍呈現一片死寂";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩";
+	mes "米德加茲王國與全區傳達這項消息";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	if (BaseLevel > 79) {
+		mes "當然更重要的是如今迫切需要像"+ strcharinfo(0) +"一樣";
+		mes "出色的冒險家們的幫忙，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "詳細內容去詢問我們洲際衛隊的隊長吧!";
+		mes "他正等候著"+ strcharinfo(0) +"您呢";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "討伐大隊的總部是...";
+		mes "目前設在夢羅克中央宮廷附近的臨時哨所上";
+	} 
+	else {
+		mes "當然最重要的是如今迫切需要這裡所有優秀的冒險家們的協助，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "目前夢羅克村落因受到魔王復活的影響，都是約 7成以上嚴重的損壞";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "周圍鄰近的沙漠音魔王夢羅克和牠的幻影，以及強大魔物的出現，逐漸變成死地了... 你要多多保重";
+	}
+	close;
 
 OnTouch:
 	if (BaseLevel > 79) {
@@ -1112,10 +1104,10 @@ OnTouch:
 	end;
 }
 
-geffen,128,90,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#02	997,3,3
-payon,200,113,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#03	997,3,3
-alberta,127,64,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#04	998,3,3
-aldebaran,135,128,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#05	998,3,3
+geffen,128,90,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#02	997,3,3
+payon,200,113,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#03	997,3,3
+alberta,127,64,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#04	998,3,3
+aldebaran,135,128,3	duplicate(傳令兵)	夢羅克洲際衛隊傳令兵#05	998,3,3
 
 morocc,176,103,3	script	洲際衛隊 行政官	754,{
 	if (rebirth_moc_edq > 3) {
@@ -1930,6 +1922,6 @@ OnTimer5415000:
 	stopnpctimer;
 	killmonster "moc_fild21","Satan Summon#edq::OnMyMobDead";
 	set $@re_moc,0;
-	donpcevent "Satan Summon#edq::OnDiable";
+	donpcevent "Satan Summon#edq::OnDisable";
 	end;
 }
