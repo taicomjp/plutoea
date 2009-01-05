@@ -4,7 +4,7 @@
 //= A reference manual for the eAthena scripting language.
 //= Commands are sorted depending on their functionality.
 //===== Version ===========================================
-//= 3.34.20081111
+//= 3.25.20081220
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
@@ -124,8 +124,10 @@
 //=       Adjusted the 'getequipname' description to match src [ultramage]
 //= 3.23.20080909
 //=       Added WoE SE related commands. [L0ne_W0lf]
-//= 3.34.20081111
+//= 3.24.20081111
 //=       Changed the error behaviour of delitem/delitem2/Zeny. [FlavioJS]
+//= 3.25.20081220
+//=       Extended the behaviour of duplicates (warps/shops/cashshops). [FlavioJS]
 //=========================================================
 
 This document is a reference manual for all the scripting commands and functions 
@@ -375,15 +377,6 @@ triggered. It may contain commands and function calls, descriptions of which
 compose most of this document. It has to be in curly brackets, unlike elsewhere 
 where we use curly brackets, these do NOT signify an optional parameter.
 
-** Define an NPC duplicate.
-
-<map name>,<x>,<y>,<facing>%TAB%duplicate(<label>)%TAB%<name>%TAB%<sprite id>
-<map name>,<x>,<y>,<facing>%TAB%duplicate(<label>)%TAB%<name>%TAB%<sprite id>,<triggerX>,<triggerY>
-
-This will duplicate an NPC referred to by 'label'. The duplicate runs the same 
-code as the source NPC, but has its own name, location, facing, sprite ID and
-trigger area (in other words, the duplicate does not 'inherit' any of these).
-
 ** Define a 'floating' NPC object.
 
 -%TAB%script%TAB%<NPC Name>%TAB%-1,{<code>}
@@ -393,8 +386,9 @@ normally mean it's pointless since it can't do anything, but there are
 exceptions, mostly related to running scripts at specified time, which is what 
 these floating NPC objects are for. More on that below.
 
-** Define a shop NPC.
+** Define a shop/cashshop NPC.
 
+-%TAB%shop%TAB%<NPC Name>%TAB%<sprite id>,<itemid>:<price>{,<itemid>:<price>...}
 <map name>,<x>,<y>,<facing>%TAB%shop%TAB%<NPC Name>%TAB%<sprite id>,<itemid>:<price>{,<itemid>:<price>...}
 
 This will define a shop NPC, which, when triggered (which can only be done by 
@@ -414,6 +408,21 @@ to use the Cash Shop interface, allowing you to buy items with special points
 This type of shop will not allow you to sell items at it, you may only
 purchase items here. The layout used to define sale items still count, and
 "<price>" refers to how many points will be spent purchasing the them.
+
+** Define an warp/shop/cashshop/NPC duplicate.
+
+warp: <map name>,<x>,<y>,<facing>%TAB%duplicate(<label>)%TAB%<NPC Name>%TAB%<spanx>,<spany>
+shop/cashshop/npc: -%TAB%duplicate(<label>)%TAB%<NPC Name>%TAB%<sprite id>
+shop/cashshop/npc: <map name>,<x>,<y>,<facing>%TAB%duplicate(<label>)%TAB%<NPC Name>%TAB%<sprite id>
+npc: -%TAB%duplicate(<label>)%TAB%<NPC Name>%TAB%<sprite id>,<triggerX>,<triggerY>
+npc: <map name>,<x>,<y>,<facing>%TAB%duplicate(<label>)%TAB%<NPC Name>%TAB%<sprite id>,<triggerX>,<triggerY>
+
+This will duplicate an warp/shop/cashshop/NPC referred to by 'label'.
+Warp duplicates inherit the target location.
+Shop/cashshop duplicates inherit the item list.
+NPC duplicates inherit the script code.
+The rest (name, location, facing, sprite ID, span/trigger area)
+is obtained from the definition of the duplicate (not inherited).
 
 ** Define a function object
 
@@ -1184,7 +1193,7 @@ with other command, such as "if", but often used on it's own.
 Label:
 	mes "This will be seen";
 
-Note by FlavioJS: goto's are "evil" and should be avoided if possible (Ú_Û)
+Note by FlavioJS: goto's are "evil" and should be avoided if possible (Ú_?
 
 ---------------------------------------
 
@@ -3827,7 +3836,7 @@ this really cause.
 
 ---------------------------------------
 
-* getnameditem <item name|item id>,<Character name|character ID>;
+*getnameditem <item name|item id>,<Character name|character ID>;
 
 -Note: there's a total of 4 possible combinations of this command.
 E.g: item name and character name, or with character id, etc...
@@ -4538,7 +4547,7 @@ Example(s):
 	
 ---------------------------------------
 
-* pcblockmove <id>,<option>;
+*pcblockmove <id>,<option>;
 
 Prevents the given ID from moving when the option != 0, 0 enables the ID to move again.
 ID should be able to be GID of a monster/npc or AID from a character.
@@ -4742,7 +4751,7 @@ the homunculus must be on at least 91000/100000 intimacy with it's owner.
 
 ---------------------------------------
 
-* unitwalk <GID>,<x>,<y>;
+*unitwalk <GID>,<x>,<y>;
 * unitwalk <GID>,<mapid>;
 
 This is one command, but can be used in two ways. If only the first argument is given,
@@ -4762,12 +4771,12 @@ Example(s):
 
 ---------------------------------------
 
-* unitkill <GID>;
-* unitwarp <GID>,<Mapname>,<x>,<y>;
-* unitattack <GID>,<Target ID>;
-* unitstop <GID>;
-* unittalk <GID>,<Text>;
-* unitemote <GID>,<Emote>;
+*unitkill <GID>;
+*unitwarp <GID>,<Mapname>,<x>,<y>;
+*unitattack <GID>,<Target ID>;
+*unitstop <GID>;
+*unittalk <GID>,<Text>;
+*unitemote <GID>,<Emote>;
 
 Okay, these commands should be fairly self explaining.
 For the emotions, you can look in db/const.txt for prefixes with e_
@@ -5147,7 +5156,7 @@ labels can take over handling for relatively the buying of items from the shop
 and selling the items to a shop. Via these labels you can customize the way an item
 is bought or sold by a player. 
 
-In the OnBuyItem, two arrays are set (@bought_nameid and @bough_quantity), which
+In the OnBuyItem, two arrays are set (@bought_nameid and @bought_quantity), which
 hold information about the name id (item id) sold and the amount sold of it. Same 
 goes for the OnSellItem label, only the variables are named different 
 (@sold_nameid and @sold_quantity). An example on a shop comes with eAthena, and 
@@ -5650,7 +5659,7 @@ memory of where the points are set whatsoever.
 This command will display a picture stored in the GRF file in the client for the 
 player. 
 
-The files are taken from '\data\texture\A_A£AIèIíÑAI´ß\illust' directory in the 
+The files are taken from '\data\texture\A_A£AIèI?AI´ß\illust' directory in the 
 GRF file. Also it seems that card cutins from \cardbmp will work here as well. 
 Only bitmaps (images stored in the bitmap format) will actually get displayed. 
 The '.bmp' extension is optional. 
