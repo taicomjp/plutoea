@@ -1,26 +1,16 @@
-//===== eAthena Script ======================================= 
-//= Refining NPCs
-//===== By: ==================================================
-//= 笨冰
-//===== Current Version: =====================================
-//= 2.9 (Release-20081219-2230)
-//===== Compatible With: =====================================
-//= eAthena 13405
-//===== Description: =========================================
-//= Refining NPCs and Metal Salesmen.
-//===== Additional Comments: =================================
-//= 2.8a Small bugfix. (bugreport:2418) [Paradox924X]
-//= 2.8c 繁體中文版完全重新翻譯，對照TRO
-//=      加入夢羅克、斐揚、普隆德拉、里希塔樂鎮精鍊NPC四種對話
-//=      里希塔樂鎮精鍊二級武器為特殊費用(2000金幣) [笨冰]
-//= 2.8c+0.1 加入艾音布羅克精鍊專屬對話，修正2.8c小部份錯誤 [笨冰]
-//= 2.8c+0.2 變更夢羅克修理工位置(EP12) [笨冰]
-//= 2.9 修正未裝備精鍊列表訊息 [笨冰]
-//============================================================
+//===================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 精鍊相關 腳本 -
+//===================================
+//= 版本：2.9
+//= 中文化維護：笨冰
+//===================================
 
-//=========================================================
-// Christopher: Geffen Blacksmith
-//=========================================================
+//===================================
+// 克里斯多福，鍛治相關物品販賣
+//===================================
 geffen_in,110,172,0	script	克里斯多福#1	63,{
 	mes "[克里斯多福]";
 	mes "歡迎您來到克里斯多福鐵匠鋪。";
@@ -378,7 +368,7 @@ geffen_in,110,172,0	script	克里斯多福#1	63,{
 }
 
 //=========================================================
-// Paul Spanner: Einbroch Blacksmith Supplier
+// 福 斯培諾，艾音布羅克版的克里斯多福
 //=========================================================
 ein_in01,38,29,0	script	福 斯培諾	63,{
 	if (checkweight(1201,1) == 0) {
@@ -624,7 +614,7 @@ ein_in01,38,29,0	script	福 斯培諾	63,{
 }
 
 //=====================================================================================
-// Weapon/Armor Refiners
+// 武器／防具精鍊師
 //=====================================================================================
 prt_in,63,60,4	script	忽克連	85,{
 	callfunc "refinemain1","忽克連",21,23;
@@ -656,7 +646,7 @@ lhz_in02,282,20,7	script	福樂	869,{
 }
 
 //============================================================
-//= Main Refiner Function
+//= 主要函式
 //============================================================
 //= To allow auto safe refining/multiple refining set the
 //= second argument to '1' in the function call.
@@ -687,8 +677,7 @@ function	script	refinemain1	{
 	else set .@strRetPart9$,getequipname(9);
 	if (getequipisequiped(10) == 0) set .@strRetPart10$,"頭3-[無法裝置]";
 	else set .@strRetPart10$,getequipname(10);
-	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,
-				.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
+	set .@i,select(.@strRetPart1$,.@strRetPart2$,.@strRetPart3$,.@strRetPart4$,.@strRetPart5$,.@strRetPart6$,.@strRetPart7$,.@strRetPart8$,.@strRetPart9$,.@strRetPart10$);
 	mes "["+getarg(0)+"]";
 	if(getequipisequiped(.@i)==0) {
 		switch(.@i) {
@@ -1172,7 +1161,7 @@ function	script	refinemain3	{
 	close;
 }
 
-// 里希塔樂鎮專屬方程式，精練二等級武器費用是2000金幣(特殊的黑金鍛鍊，跟其它城市不同)
+// 里希塔樂鎮專屬函式，精練二等級武器費用是2000金幣(特殊的黑金鍛鍊，跟其它城市不同)
 function	script	refinemain4	{
 	mes "["+getarg(0)+"]";
 	mes " 哈哈... 你想要鍛冶啊?";
@@ -1350,7 +1339,7 @@ function	script	refinemain4	{
 	close;
 }
 
-// 艾音布羅克專屬方程式
+// 艾音布羅克專屬函式
 function	script	refinemain5	{
 	mes "["+getarg(0)+"]";
 	mes "嘿嘿嘿，我知道你的企圖心，你是來找我鍛冶的吧?今天挑戰一次緊張刺激又危險的東西吧";
