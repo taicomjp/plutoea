@@ -8,7 +8,7 @@
 //===================================
 
 aldeba_in,223,167,3	script	特傑雷諾	709,{
-	if(Upper == 1) {
+	if(Upper) {
 		mes "[特傑雷諾]";
 		mes "你已經是優秀的，初學者俱樂部成員之一了，";
 		mes "沒有什麼不知的，";
@@ -285,6 +285,7 @@ aldebaran,54,238,5	script	卡普拉 職員::kaf_sn	117,{
 	mes "反正，社論就說到這裡!";
 	mes "請問你要使用出租手推車嗎?";
 	mes "出租費用是1900金幣";
+	next;
 	if(select("我要使用:我不要使用")==1) {
 		mes "[卡普拉 職員]";
 		mes "啊，在這裡有一點注意事項";
@@ -304,34 +305,25 @@ aldebaran,54,238,5	script	卡普拉 職員::kaf_sn	117,{
 				mes "[卡普拉 職員]";
 				mes "唔...看來你的錢不夠喔.";
 				close;
-				}
-			if(checkcart() == 1) {
+			}
+			if(checkcart()) {
 				mes "[卡普拉 職員]";
 				mes "顧客你已經裝備手推車了";
 				close;
-				}
-			if(getskilllv(39)==0) {
-				set Zeny,Zeny-1900;
-				mes "[卡普拉 職員]";
-				mes "謝謝您的使用，";
-				mes "雖然是不合法的服務";
-				mes "不過我是到目前為止，";
-				mes "為各位所服務的卡普拉~";
-				close;
-				}
 			}
-			set Zeny,Zeny-1900;
-			setcart;
 			mes "[卡普拉 職員]";
 			mes "謝謝您的使用，";
 			mes "雖然是不合法的服務";
 			mes "不過我是到目前為止，";
 			mes "為各位所服務的卡普拉~";
+			set RESRVPTS, RESRVPTS + 190;
+			set zeny,zeny-1900;
+			if (getskilllv("MC_PUSHCART")) setcart;
 			close;
 		}
+	}
 	mes "[卡普拉 職員]";
 	mes "那麼下一次有機會的話，";
 	mes "再來利用吧";
 	close;
-
 }

@@ -1,570 +1,389 @@
-//===== eAthena Script ======================================= 
-//= Quest NPCs related to Umbala
-//===== By: ================================================== 
-//= sabernet09 & eAthena Team
-//===== Current Version: ===================================== 
-//= 1.8
-//===== Compatible With: ===================================== 
-//= eAthena 7.15 +
-//===== Description: ========================================= 
-//= Umbalian Language Quest, Umbala Skeletal Gate Quest,
-//= Umbala Event, Create Essence/Dismantle Stone
-//	Phase1.Learning the Language
-//	1	(Elder)First discussion
-//	2	(Elder)Asking about learning the language
-//	3	(Elder)Final step (understanding NPC speech)
-//	------------------------------------------
-//	Phase2.Create Essence/Dismantle Stone
-//	4	(Shaman)Get permission to speak with her from the chief
-//	5	(Elder)Ask about conditions needed to be fulfilled to get permission
-//	6	(Elder)Get permission
-//	7	(Shaman)Use the shaman to create essences and dismantle elemental stones.
-//===== Additional Comments: ================================= 
-//= fixed by x[tsk], Lupus, PoW
-//= Quest completion is now registered
-//= 1.1 fixed Poporing Egg ID -> Poring Egg, fixed condition
-//= 1.2-1.6 fixed some Umbalian Language quests [Lupus]
-//= 1.7 Moved Umbala Event, Create Essence/Dismantle Stone, and Skeletal Gate from npc/cities/umbala.txt [Evera]
-//= 1.7a Removed all custom quests to custom folder [Lupus]
-//= 1.8 Added official chance of failure to Create Essence/Dismantle Stone [Lupus]
-//============================================================ 
+//====================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 汶巴拉 地區任務腳本 - 
+//====================================
+// 版本：2.2a
+//====================================
+//= * 語言學習任務
+//= * 骷髏門小任務
+//= * 屬性石任務
+//====================================
 
-
-//========================================================================================================================\\
-//                       Little Quest NPC to enter the dungeon
-//========================================================================================================================\\
-umbala,65,253,4	script	古樹守護者	752,{ 
-	mes "[古樹守護者]"; 
-	mes "給我站住, 陌生人, 這裡是古樹的入口!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "我不能讓你進入, 你看上去太虛弱了!"; 
-	next; 
-L_MENU:
-	menu "談談這樹",-, "打聽汶巴拉的情況",M_TALKUMB, "進入洞穴",M_DUN, "離開",M_Leave; 
-
-	mes "[古樹守護者]"; 
-	mes "這樹是我們文明的象徵!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "但是近來一些怪物在攻擊古樹"; 
-	mes "它們在慢慢的殺死我們的古樹...就像一種毒藥...從內部散發出來.."; 
-	next; 
-	goto L_MENU;
-M_TALKUMB: 
-	mes "[古樹守護者]"; 
-	mes "我們的小鎮沒有多少訪客.."; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "大多數的人找不到這裡或者害怕我們!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "所以我們越來越不受歡迎, 就因為這些可惡的野獸!"; 
-	next; 
-	menu "什麼野獸?",- ,"離開",M_Leave; 
-
-	mes "[古樹守護者]"; 
-	mes "受詛咒的狼人!!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "他在我們村子周圍徘徊一到晚上就殺害我們的士兵!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "Hey...如果你可以消滅那該死的怪物!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "我可以讓你進去!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "從此以後我們又可以安寧的生活了, 得謝謝你啊!"; 
-	next; 
-	mes "[古樹守護者]"; 
-	mes "你可以進去了!"; 
-	set umbdun,1;
-	close; 
-M_DUN: 
-	mes "[古樹守護者]"; 
-	if(umbdun != 1) mes "我們不會讓虛弱的人們隨意進入的!";
-	if(umbdun != 1) close;
-	mes "來吧, 無畏的勇士!"; 
-	warp "um_dun01",42,30; 
-M_Leave:  
-	close; 
+//====================================
+// 語言學習任務
+//====================================
+um_in,39,122,5	script	雨檀族 酋長	784,{
+	switch(event_umbala) {
+	case 0:
+		mes "[卡樂喀坦]";
+		mes "呵呵，是人類啊，應該是第一次";
+		mes "來到雨檀族村落吧? 不管是誰";
+		mes "只要是第一次來的人類族，";
+		mes "大部分都是那種臉";
+		next;
+		mes "[卡樂喀坦]";
+		mes "我是卡樂喀坦，是雨檀族的酋長";
+		mes "村子裡的所有事情都由我來決定，";
+		mes "能夠與我溝通都是因為，";
+		mes "有一次進入這村子裡的";
+		mes "一個人類族探險家的功勞";
+		next;
+		mes "[卡樂喀坦]";
+		mes "很久之前的事了... 不知道";
+		mes "現在又跑去哪探險了，";
+		mes "托他的福學了很多人類的語言和文化，";
+		mes "之外也學了各種";
+		mes "東西...";
+		next;
+		mes "[卡樂喀坦]";
+		mes "在那之後我也教人類，";
+		mes "學我們雨檀族的語言，";
+		mes "不過，不會隨便告訴";
+		mes "任何人... 如果是壞人";
+		mes "學會我們的語言，";
+		mes "可能會對我們種族";
+		mes "有很大的危險";
+		next;
+		mes "[卡樂喀坦]";
+		mes "如果你也想學的話，";
+		mes "先去努力的瞭解些雨檀族";
+		mes "的文化吧，就算是語言不通，";
+		mes "也可以充分的感覺到";
+		mes "服裝或面貌，以及生活之類的";
+		next;
+		mes "[卡樂喀坦]";
+		mes "有了想要學習的心裡打算之後";
+		mes "再來找我吧，雖然外表也很重要，";
+		mes "不過不要忘記，";
+		mes "心裡的決心才是更重要的...";
+		set event_umbala,1;
+		close;
+	case 1:
+		mes "[卡樂喀坦]";
+		mes "歐，人類的後代啊，村子裡";
+		mes "都逛過了嗎? 很好奇";
+		mes "你的感想是如何呢，";
+		mes "也有第一次看過人類的雨檀族，";
+		mes "所以也許會嚇到";
+		mes "而躲起來";
+		next;
+		mes "[卡樂喀坦]";
+		mes "不過又有什麼事情來找";
+		mes "我了呢? 逛村子看起來";
+		mes "應該沒什麼問題，有什麼";
+		mes "困難的事情嗎?";
+		next;
+		switch (select("想要學習雨檀族的語言:汶巴巴 汶巴巴?:沒什麼事情")) {
+		case 1:
+			if(getequipid(1) != getequipid(9) && getequipid(1) != getequipid(10) && getequipid(9)==getequipid(10)) {
+				mes "[卡樂喀坦]";
+				mes "帥氣的面具啊，我們雨檀族";
+				mes "都喜歡面具，隱藏著自己";
+				mes "原來的臉和表情，我們";
+				mes "對於顯露自己臉給別人看，";
+				mes "都有著很多的想法";
+				next;
+				mes "[卡樂喀坦]";
+				mes "所以呢，平時都戴著面具";
+				mes "跟別的朋友們聊天，";
+				mes "帶著面具反而";
+				mes "更能夠傳達真實的心，";
+				mes "這是我們所相信的";
+				next;
+				mes "[卡樂喀坦]";
+				mes "如果是你的話蠻有學";
+				mes "我們語言的價值，好吧，";
+				mes "已經答應過的教你說跟寫，";
+				mes "不過人類族聽了 '雨檀語' 之後";
+				mes "為了學習必須要準備";
+				mes "幾種東西...";
+				next;
+				mes "[卡樂喀坦]";
+				mes "對了，需要紙，";
+				mes "我也是學習人類族的語言時，";
+				mes "跟人類拿了張紙才開始";
+				mes "學語言的，去準備吧，";
+				mes "^3377FF油紙^000000 10張，";
+				mes "^3377FF光滑的紙^000000 5張";
+				next;
+				mes "[卡樂喀坦]";
+				mes "再來，還有兩種，需要";
+				mes "用什麼寫在紙上... 對了，";
+				mes "^3377FF墨汁^000000 1個，";
+				mes "^3377FF羽毛^000000 1個";
+				mes "等全部準備好了再教你";
+				set event_umbala,2;
+				close;
+			}
+			mes "[卡樂喀坦]";
+			mes "你好像還不太瞭解，";
+			mes "我們雨檀族啊...";
+			mes "不能因為文化不同及語言不通";
+			mes "的理由，而放棄想要努力";
+			mes "學習的心";
+			next;
+			mes "[卡樂喀坦]";
+			mes "對，連那種表情也會變成";
+			mes "雨檀族所害怕的對象，";
+			mes "真正重要的並沒有傳達，";
+			mes "而有時候以顯露的外表";
+			mes "來判斷所有的一切";
+			next;
+			mes "[卡樂喀坦]";
+			mes "再去逛逛吧，還有，";
+			mes "想學語言的話要知道，";
+			mes "用什麼方式說跟聽，";
+			mes "還有差不多準備好了的話，";
+			mes "再來找我吧";
+			next;
+			mes "[卡樂喀坦]";
+			mes "總之我的面具怎麼樣呢? ";
+			mes "是今年雨檀族最流行的...";
+			mes "有沒有很酷呢? 嗯? 嗯?";
+			close;
+		case 2:
+			mes "[卡樂喀坦]";
+			mes "哈哈，只是模仿聲音";
+			mes "是不能傳達任何意義的，";
+			mes "所謂的語言不就是為了傳達想法，";
+			mes "而大家所定的約定嗎?";
+			mes "你不這樣覺得嗎?";
+			next;
+			mes "[卡樂喀坦]";
+			mes "有時人類族好像忘了";
+			mes "那種約定的意義而";
+			mes "過生活，真是遺憾，";
+			mes "儘管是同類的人種，";
+			mes "竟然還需要翻譯啊...";
+			next;
+			mes "[卡樂喀坦]";
+			mes "如果對我們的雨檀族還有";
+			mes "興趣的話，再努力的試著去瞭解吧，";
+			mes "還有等你定下心之後";
+			mes "再來找我吧，";
+			mes "不是聲音，我會教你真正的意義";
+			close;
+		case 3:
+			mes "[卡樂喀坦]";
+			mes "無所適事的也不錯啊，";
+			mes "不過定下一個目標，";
+			mes "再去旅行會更有意義，";
+			mes "而且會牢牢記在心裡的";
+			close;
+		}
+	case 2:
+		if(countitem(7151)>=10 && countitem(7111)>=5 && countitem(1024)>=1 && countitem(916)>=1) {
+			mes "[卡樂喀坦]";
+			mes "好吧，看來都準備好了啊...";
+			mes "那麼現在開始教你，";
+			mes "通過這過程之後你也可以，";
+			mes "跟我們雨檀族對話了";
+			next;
+			mes "[卡樂喀坦]";
+			mes "...........";
+			next;
+			mes "[卡樂喀坦]";
+			mes "...........";
+			mes "................";
+			next;
+			mes "[卡樂喀坦]";
+			mes "...........";
+			mes "................";
+			mes ".....................";
+			next;
+			mes "[卡樂喀坦]";
+			mes "好，結束了，把目前煩悶";
+			mes "的心情甩掉，偶而也跟";
+			mes "其他雨檀族人們聊聊天吧，";
+			mes "聊天是很重要的";
+			delitem 7151,10;
+			delitem 7111,5;
+			delitem 1024,1;
+			delitem 916,1;
+			set event_umbala,3;
+			next;
+			mes "[卡樂喀坦]";
+			mes "那麼，如果有別的事情";
+			mes "再來找我吧，";
+			mes "我會全心全意的幫你";
+		}
+		else {
+			mes "[卡樂喀坦]";
+			mes "看來還沒準備好啊...";
+			mes "是不是忘記需要";
+			mes "的東西了呢? 再講一次，";
+			mes "不要忘記一定要帶過來喔";
+			next;
+			mes "[卡樂喀坦]";
+			mes "^3377FF油紙^000000 10張，";
+			mes "^3377FF光滑的紙^000000 5張，";
+			mes "^3377FF墨汁^000000 1個，";
+			mes "^3377FF羽毛^000000 1個，";
+			mes "等全部準備好了再教你";
+		}
+		close;
+	default:　　//3,6,7
+		mes "[卡樂喀坦]";
+		mes "還有什麼事情要找我嗎?";
+		mes "需要的話我也想為你介紹，";
+		mes "村子裡的環境，不過以我的立場，";
+		mes "是絕對不能離開這位子的";
+		next;
+		mes "[卡樂喀坦]";
+		mes "領導一個部落，";
+		mes "並不是那麼簡單的事，";
+		mes "如果你站在我的立場的話，";
+		mes "多多少少會諒解的，";
+		mes "自己去逛逛吧";
+		close;
+	case 4:
+		mes "[卡樂喀坦]";
+		mes "看來對普初恰樂坦";
+		mes "有什麼要求啊，不一定要";
+		mes "有我的允許也可以啊... ";
+		mes "如果他有那樣說的話，";
+		mes "我也得為他準備些什麼了";
+		next;
+		mes "[卡樂喀坦]";
+		mes "不需要很多東西，";
+		mes "只要有一個你們";
+		mes "人類族的面具就好了...";
+		mes "面具的話普初恰樂坦也應該會";
+		mes "相當的滿足，對吧?";
+		next;
+		mes "[卡樂喀坦]";
+		mes "^3377FF笑臉面具^000000 1個，";
+		mes "對雨檀族來說收到面具";
+		mes "可以說是最大的光榮，";
+		mes "我代替收下這就叫做，";
+		mes "薩滿教僧的特殊情況，請你瞭解";
+		set event_umbala,5;
+		close;
+	case 5:
+		if(countitem(2278)) {
+			mes "[卡樂喀坦]";
+			mes "呵呵，好像帶來了";
+			delitem 2278,1;
+			set event_umbala,6;
+			next;
+			mes "[卡樂喀坦]";
+			mes "我會通知他說答應幫你了，";
+			mes "去找他聊聊吧，";
+			mes "我也不知道他會給你人類族，";
+			mes "什麼樣的幫助，不過那能力";
+			mes "肯定會是個很大的幫助";
+		}
+		else {
+			mes "[卡樂喀坦]";
+			mes "^3377FF笑臉面具^000000 1個，";
+			mes "對雨檀族來說收到面具";
+			mes "可以說是最大的光榮，";
+			mes "我代替收下這就叫做，";
+			mes "薩滿教僧的特殊情況，請你諒解";
+		}
+		close;
+	}
 }
 
-//==============================================================================
-//骷髏門
-//==============================================================================
+//====================================
+// 骷髏門
+//====================================
 umbala,221,193,1	script	 #骷髏門	111,{
-	if(event_umbala==7) goto LwarpNoText;
-	set @ryumon,0;
+	if (event_umbala == 7) {
+		warp "um_in",32,71;
+		end;
+	}
 	mes "^3355FF門旁有著長相看起來";
 	mes "令人不悅的骷髏，門鎖的";
 	mes "緊緊的所以無法進去，";
 	mes "感覺到裡面有人的動靜，";
 	mes "看來好像有人在^000000";
 	next;
-	menu "詳細的觀察骷髏",-,"結束",Lend;
-		mes "^3355FF白骷髏的兩眼空空的，";
-		mes "仔細看看可以看到有個，";
-		mes "魔力礦石般大的";
-		mes "磨碎痕跡，對面的柱子上";
-		mes "也有骷髏，那種痕跡";
-		mes "不太容易找得到^000000";
-		next;
-		mes "看到^3355FF左眼孔了，";
+	if(select("詳細的觀察骷髏:結束")==2) {
+		mes "^3355FF要敲打一個打不開的門，";
+		mes "認為是一件很難的事情，所以";
+		mes "就決定要放棄走過去了^000000";
+		close;
+	}
+	mes "^3355FF白骷髏的兩眼空空的，";
+	mes "仔細看看可以看到有個，";
+	mes "魔力礦石般大的";
+	mes "磨碎痕跡，對面的柱子上";
+	mes "也有骷髏，那種痕跡";
+	mes "不太容易找得到^000000";
+	next;
+	setarray .@id,0,717,715,716;
+	for(set .@i,0; .@i<2; set .@i,.@i+1) {
+		set .@eye$,(.@i==0)? "左": "右";
+		mes "看到^3355FF" +.@eye$+ "眼孔了，";
 		mes "要怎麼辦呢?^000000";
 		next;
-		menu "不動它",-,"放入藍色魔力礦石",L1_2,"放入黃色魔力礦石",L1_3,"放入紅色魔力礦石",L1_4;
-			mes "^3355FF把左眼孔放著不動^000000";
-			next;
-			goto LRight;
-		L1_2:
-			//Blue
-			if(countitem(717) < 1) goto L1_2_e;//Items: 藍色魔力礦石
-				mes "把持有的^3355FF藍色魔力礦石";
-				mes "插在骷髏的左眼孔裡^000000";
-				next;
-				delitem 717,1;//Items: 藍色魔力礦石
-				getitem 717,1;//Items: 藍色魔力礦石
-				set @ryumon,1;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto LRight;
-		L1_3:
-			//Yellow
-			if(countitem(715) < 1) goto L1_3_e;//Items: 黃色魔力礦石
-				mes "把持有的^3355FF黃色魔力礦石";
-				mes "插在骷髏的左眼孔裡^000000";
-				next;
-				delitem 715,1;//Items: 黃色魔力礦石
-				getitem 715,1;//Items: 黃色魔力礦石
-				set @ryumon,2;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto LRight;
-		L1_4:
-			//Red
-			if(countitem(716) < 1) goto L1_4_e;//Items: 紅色魔力礦石
-				mes "把持有的^3355FF紅色魔力礦石";
-				mes "插在骷髏的左眼孔裡^000000";
-				next;
-				delitem 716,1;//Items: 紅色魔力礦石
-				getitem 716,1;//Items: 紅色魔力礦石
-				set @ryumon,3;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto LRight;
-			L1_2_e:
-				mes "現在所攜帶的物品裡一個^3355FF藍色魔力礦石";
-				goto L1_e;
-			L1_3_e:
-				mes "現在所攜帶的物品裡一個^3355FF黃色魔力礦石";
-				goto L1_e;
-			L1_4_e:
-				mes "現在所攜帶的物品裡一個^3355FF紅色魔力礦石";
-			L1_e:
+		set .@j,select("不動它:放入藍色魔力礦石:放入黃色魔力礦石:放入紅色魔力礦石")-1;
+		if(.@j==0) {
+			mes "^3355FF把" +.@eye$+ "眼孔放著不動^000000";
+		}
+		else {
+			if(countitem(.@id[.@j])<1) {
+				mes "現在所攜帶的物品裡一個^3355FF" +getitemname(.@id[.@j])+ "";
 				mes "都沒有，沒辦法";
-				mes "只好把左眼孔放著不動^000000";
+				mes "只好把" +.@eye$+ "眼孔放著不動^000000";
+			}
+			else {
+				mes "把持有的^3355FF" +getitemname(.@id[.@j])+ "";
+				mes "插在骷髏的" +.@eye$+ "眼孔裡^000000";
+				delitem .@id[.@j],1;
 				next;
-	LRight:
-		mes "看到^3355FF右眼孔了，";
-		mes "要怎麼辦呢?^000000";
+				set .@result,(.@i==0)? .@j: .@result+.@j*10;
+				mes "^3355FF魔力礦石發出滾動的聲音，";
+				mes "透過骷髏的嘴裡出來了^000000";
+				getitem .@id[.@j],1;
+			}
+		}
 		next;
-		menu "不動它",-,"放入藍色魔力礦石",L2_2,"放入黃色魔力礦石",L2_3,"放入紅色魔力礦石",L2_4;
-			mes "^3355FF把右眼孔放著不動^000000";
-			next;
-			goto Lfin;
-		L2_2:
-			//Blue
-			if(countitem(717) < 1) goto L2_2_e;//Items: 藍色魔力礦石
-				mes "把持有的^3355FF藍色魔力礦石";
-				mes "插在骷髏的右眼孔裡^000000";
-				next;
-				delitem 717,1;//Items: 藍色魔力礦石
-				getitem 717,1;//Items: 藍色魔力礦石
-				set @ryumon,@ryumon+10;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto Lfin;
-		L2_3:
-			//Yellow
-			if(countitem(715) < 1) goto L2_3_e;//Items: 黃色魔力礦石
-				mes "把持有的^3355FF黃色魔力礦石";
-				mes "插在骷髏的右眼孔裡^000000";
-				next;
-				delitem 715,1;//Items: 黃色魔力礦石
-				getitem 715,1;//Items: 黃色魔力礦石
-				set @ryumon,@ryumon+20;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto Lfin;
-		L2_4:
-			//Red
-			if(countitem(716) < 1) goto L2_4_e;//Items: 紅色魔力礦石
-				mes "把持有的^3355FF紅色魔力礦石";
-				mes "插在骷髏的右眼孔裡^000000";
-				next;
-				delitem 716,1;//Items: 紅色魔力礦石
-				getitem 716,1;//Items: 紅色魔力礦石
-				set @ryumon,@ryumon+30;
-				mes "^3355FF魔力礦石發出滾動的聲音，";
-				mes "透過骷髏的嘴裡出來了^000000";
-				next;
-				goto Lfin;
-			L2_2_e:
-				mes "現在所攜帶的物品裡一個^3355FF藍色魔力礦石";
-				goto L2_e;
-			L2_3_e:
-				mes "現在所攜帶的物品裡一個^3355FF黃色魔力礦石";
-				goto L2_e;
-			L2_4_e:
-				mes "現在所攜帶的物品裡一個^3355FF紅色魔力礦石";
-			L2_e:
-				mes "都沒有，沒辦法";
-				mes "只好把右眼孔放著不動^000000";
-				next;
-			Lfin:
-				mes "^3355FF..........^000000";
-				next;
-				mes "^3355FF...................";
-				mes ".....................^000000";
-				next;
-				mes "^3355FF.......................";
-				mes ".........................";
-				mes ".........................^000000";
-				next;
-				if(event_umbala < 6) goto LSecondCheck;
-					if(@ryumon == 33) goto Lwarp;
-				LSecondCheck:
-				if(event_umbala >= 6) goto LNewEnd;
-					if(@ryumon == 13) goto Lwarp;
-					LNewEnd:
-						mes "^3355FF沒有發生任何事情，";
-						mes "感覺上骷髏在笑，";
-						mes "不過認為就是心情上的關係吧^000000";
-						close;
-				Lwarp:
-					mes "^3355FF在骷髏的空眼孔裡";
-					mes "有著吱喀的聲音，門就";
-					mes "打開了，在門打開來的同時，";
-					mes "不知不覺中我的腳步已經";
-					mes "走向建築物裡面了^000000";
-					next;
-				LwarpNoText:
-					warp "um_in",32,71;
-					close;
-Lend:
-	mes "^3355FF要敲打一個打不開的門，";
-	mes "認為是一件很難的事情，所以";
-	mes "就決定要放棄走過去了^000000";
+	}
+	mes "^3355FF................^000000";
+	next;
+	mes "^3355FF.......................";
+	mes ".......................^000000";
+	next;
+	mes "^3355FF.......................";
+	mes ".......................";
+	mes ".......................^000000";
+	next;
+	if((event_umbala<6 && .@result==33) || (event_umbala>=6 && .@result==13)) {
+		mes "^3355FF在骷髏的空眼孔裡";
+		mes "有著吱喀的聲音，門就";
+		mes "打開了，在門打開來的同時，";
+		mes "不知不覺中我的腳步已經";
+		mes "走向建築物裡面了^000000";
+		close2;
+		warp "um_in",32,71;
+		end;
+	}
+	mes "^3355FF沒有發生任何事情，";
+	mes "感覺上骷髏在笑，";
+	mes "不過認為就是心情上的關係吧^000000";
 	close;
 }
 
-//==============================================================================
-//汶巴拉 事件 - 學習語言
-//==============================================================================
-um_in,39,122,5	script	雨檀族 酋長	784,{
-	if(event_umbala == 1) goto LStart2;	
-	if(event_umbala == 2) goto LStart3;
-	if(event_umbala == 3) goto LStart4;
-	if(event_umbala == 4) goto LStart5;
-	if(event_umbala == 5) goto LStart6;
-	if(event_umbala == 6) goto LStart4;
-	if(event_umbala == 7) goto LStart4;
-	mes "[卡樂喀坦]";
-	mes "呵呵，是人類啊，應該是第一次";
-	mes "來到雨檀族村落吧? 不管是誰";
-	mes "只要是第一次來的人類族，";
-	mes "大部分都是那種臉";
-	next;
-	mes "[卡樂喀坦]";
-	mes "我是卡樂喀坦，是雨檀族的酋長";
-	mes "村子裡的所有事情都由我來決定，";
-	mes "能夠與我溝通都是因為，";
-	mes "有一次進入這村子裡的";
-	mes "一個人類族探險家的功勞";
-	next;
-	mes "[卡樂喀坦]";
-	mes "很久之前的事了... 不知道";
-	mes "現在又跑去哪探險了，";
-	mes "托他的福學了很多人類的語言和文化，";
-	mes "之外也學了各種";
-	mes "東西...";
-	next;
-	mes "[卡樂喀坦]";
-	mes "在那之後我也教人類，";
-	mes "學我們雨檀族的語言，";
-	mes "不過，不會隨便告訴";
-	mes "任何人... 如果是壞人";
-	mes "學會我們的語言，";
-	mes "可能會對我們種族";
-	mes "有很大的危險";
-	next;
-	mes "[卡樂喀坦]";
-	mes "如果你也想學的話，";
-	mes "先去努力的瞭解些雨檀族";
-	mes "的文化吧，就算是語言不通，";
-	mes "也可以充分的感覺到";
-	mes "服裝或面貌，以及生活之類的";
-	next;
-	mes "[卡樂喀坦]";
-	mes "有了想要學習的心裡打算之後";
-	mes "再來找我吧，雖然外表也很重要，";
-	mes "不過不要忘記，";
-	mes "心裡的決心才是更重要的...";
-	set event_umbala,1;
-	close;
-LStart2:
-	mes "[卡樂喀坦]";
-	mes "歐，人類的後代啊，村子裡";
-	mes "都逛過了嗎? 很好奇";
-	mes "你的感想是如何呢，";
-	mes "也有第一次看過人類的雨檀族，";
-	mes "所以也許會嚇到";
-	mes "而躲起來";
-	next;
-	mes "[卡樂喀坦]";
-	mes "不過又有什麼事情來找";
-	mes "我了呢? 逛村子看起來";
-	mes "應該沒什麼問題，有什麼";
-	mes "困難的事情嗎?";
-	next;
-	menu "想要學習雨檀族的語言",-,"汶巴巴 汶巴巴?",L2,"沒什麼事情",L3;
-		if ((getequipisequiped(9)>0) && (getequipisequiped(10)>0)) goto L1_mask;
-		mes "[卡樂喀坦]";
-		mes "你好像還不太瞭解，";
-		mes "我們雨檀族啊...";
-		mes "不能因為文化不同及語言不通";
-		mes "的理由，而放棄想要努力";
-		mes "學習的心";
-		next;
-		mes "[卡樂喀坦]";
-		mes "對，連那種表情也會變成";
-		mes "雨檀族所害怕的對象，";
-		mes "真正重要的並沒有傳達，";
-		mes "而有時候以顯露的外表";
-		mes "來判斷所有的一切";
-		next;
-		mes "[卡樂喀坦]";
-		mes "再去逛逛吧，還有，";
-		mes "想學語言的話要知道，";
-		mes "用什麼方式說跟聽，";
-		mes "還有差不多準備好了的話，";
-		mes "再來找我吧";
-		next;
-		mes "[卡樂喀坦]";
-		mes "總之我的面具怎麼樣呢? ";
-		mes "是今年雨檀族最流行的...";
-		mes "有沒有很酷呢? 嗯? 嗯?";
-		close;
-	L1_mask:
-		mes "[卡樂喀坦]";
-		mes "帥氣的面具啊，我們雨檀族";
-		mes "都喜歡面具，隱藏著自己";
-		mes "原來的臉和表情，我們";
-		mes "對於顯露自己臉給別人看，";
-		mes "都有著很多的想法";
-		next;
-		mes "[卡樂喀坦]";
-		mes "所以呢，平時都戴著面具";
-		mes "跟別的朋友們聊天，";
-		mes "帶著面具反而";
-		mes "更能夠傳達真實的心，";
-		mes "這是我們所相信的";
-		next;
-		mes "[卡樂喀坦]";
-		mes "如果是你的話蠻有學";
-		mes "我們語言的價值，好吧，";
-		mes "已經答應過的教你說跟寫，";
-		mes "不過人類族聽了 '雨檀語' 之後";
-		mes "為了學習必須要準備";
-		mes "幾種東西...";
-		next;
-		mes "[卡樂喀坦]";
-		mes "對了，需要紙，";
-		mes "我也是學習人類族的語言時，";
-		mes "跟人類拿了張紙才開始";
-		mes "學語言的，去準備吧，";
-		mes "^3377FF油紙^000000 10張，";
-		mes "^3377FF光滑的紙^000000 5張";
-		next;
-		mes "[卡樂喀坦]";
-		mes "再來，還有兩種，需要";
-		mes "用什麼寫在紙上... 對了，";
-		mes "^3377FF墨汁^000000 1個，";
-		mes "^3377FF羽毛^000000 1個";
-		mes "等全部準備好了再教你";
-		set event_umbala,2;
-		close;
-	L2:
-		mes "[卡樂喀坦]";
-		mes "哈哈，只是模仿聲音";
-		mes "是不能傳達任何意義的，";
-		mes "所謂的語言不就是為了傳達想法，";
-		mes "而大家所定的約定嗎?";
-		mes "你不這樣覺得嗎?";
-		next;
-		mes "[卡樂喀坦]";
-		mes "有時人類族好像忘了";
-		mes "那種約定的意義而";
-		mes "過生活，真是遺憾，";
-		mes "儘管是同類的人種，";
-		mes "竟然還需要翻譯啊...";
-		next;
-		mes "[卡樂喀坦]";
-		mes "如果對我們的雨檀族還有";
-		mes "興趣的話，再努力的試著去瞭解吧，";
-		mes "還有等你定下心之後";
-		mes "再來找我吧，";
-		mes "不是聲音，我會教你真正的意義";
-		close;
-	L3:
-		mes "[卡樂喀坦]";
-		mes "無所適事的也不錯啊，";
-		mes "不過定下一個目標，";
-		mes "再去旅行會更有意義，";
-		mes "而且會牢牢記在心裡的";
-		close;
-LStart3:
-	if ((countitem(7151)>=10) && (countitem(7111)>=5) && (countitem(1024)>=1) && (countitem(916)>=1)) goto Lchkok;//Items: Oiled Paper, String Paper, Squid Ink, Feather of Birds,
-	mes "[卡樂喀坦]";
-	mes "看來還沒準備好啊...";
-	mes "是不是忘記需要";
-	mes "的東西了呢? 再講一次，";
-	mes "不要忘記一定要帶過來喔";
-	next;
-	mes "[卡樂喀坦]";
-	mes "^3377FF油紙^000000 10張，";
-	mes "^3377FF光滑的紙^000000 5張，";
-	mes "^3377FF墨汁^000000 1個，";
-	mes "^3377FF羽毛^000000 1個，";
-	mes "等全部準備好了再教你";
-	close;
-Lchkok:
-	delitem 7151,10;//Items: 油紙
-	delitem 7111,5;//Items: 光滑的紙
-	delitem 1024,1;//Items: 墨汁
-	delitem 916,1;//Items: 羽毛
-	mes "[卡樂喀坦]";
-	mes "好吧，看來都準備好了啊...";
-	mes "那麼現在開始教你，";
-	mes "通過這過程之後你也可以，";
-	mes "跟我們雨檀族對話了";
-	next;
-	mes "[卡樂喀坦]";
-	mes "..............";
-	next;
-	mes "[卡樂喀坦]";
-	mes "..............";
-	mes ".....................";
-	next;
-	mes "[卡樂喀坦]";
-	mes "..............";
-	mes ".....................";
-	mes "............................";
-	next;
-	mes "[卡樂喀坦]";
-	mes "好，結束了，把目前煩悶";
-	mes "的心情甩掉，偶而也跟";
-	mes "其他雨檀族人們聊聊天吧，";
-	mes "聊天是很重要的";
-	set event_umbala,3;
-	next;
-	mes "[卡樂喀坦]";
-	mes "那麼，如果有別的事情";
-	mes "再來找我吧，";
-	mes "我會全心全意的幫你";
-	close;
-LStart4:
-//fin
-	mes "[卡樂喀坦]";
-	mes "還有什麼事情要找我嗎?";
-	mes "需要的話我也想為你介紹，";
-	mes "村子裡的環境，不過以我的立場，";
-	mes "是絕對不能離開這位子的";
-	next;
-	mes "[卡樂喀坦]";
-	mes "領導一個部落，";
-	mes "並不是那麼簡單的事，";
-	mes "如果你站在我的立場的話，";
-	mes "多多少少會諒解的，";
-	mes "自己去逛逛吧";
-	close;
-LStart5:
-	mes "[卡樂喀坦]";
-	mes "看來對普初恰樂坦";
-	mes "有什麼要求啊，不一定要";
-	mes "有我的允許也可以啊... ";
-	mes "如果他有那樣說的話，";
-	mes "我也得為他準備些什麼了";
-	next;
-	mes "[卡樂喀坦]";
-	mes "不需要很多東西，";
-	mes "只要有一個你們";
-	mes "人類族的面具就好了...";
-	mes "面具的話普初恰樂坦也應該會";
-	mes "相當的滿足，對吧?";
-	next;
-	mes "[卡樂喀坦]";
-	mes "^3377FF笑臉面具^000000 1個，";
-	mes "對雨檀族來說收到面具";
-	mes "可以說是最大的光榮，";
-	mes "我代替收下這就叫做，";
-	mes "薩滿教僧的特殊情況，請你瞭解";
-	set event_umbala,5;
-	close;
-LStart6:
-	if(countitem(2278) > 0) goto Lsmileok;//Items: 笑臉面具
-	mes "[卡樂喀坦]";
-	mes "^3377FF笑臉面具^000000 1個，";
-	mes "對雨檀族來說收到面具";
-	mes "可以說是最大的光榮，";
-	mes "我代替收下這就叫做，";
-	mes "薩滿教僧的特殊情況，請你諒解";
-	close;
-Lsmileok:
-	delitem 2278,1;//Items: 笑臉面具
-	mes "[卡樂喀坦]";
-	mes "歐呵，帶來了啊! 沒錯，一直以來";
-	mes "想要擁有的面具，";
-	mes "就是這個，當然，這面具";
-	mes "以後要當禮物送給";
-	mes "普初恰樂坦... 呵呵";
-	set event_umbala,6;
-	next;
-	mes "[卡樂喀坦]";
-	mes "我會通知他說答應幫你了，";
-	mes "去找他聊聊吧，";
-	mes "我也不知道他會給你人類族，";
-	mes "什麼樣的幫助，不過那能力";
-	mes "肯定會是個很大的幫助";
-	close;
-}
-
-
-//==============================================================================
-//汶巴拉 事件 - 屬性分解結合
-//==============================================================================
+//================================
+// 屬性石任務
+//================================
 um_in,44,71,2	script	雨檀族 薩滿	782,{
-
 	switch(event_umbala) {
-	default:	
+	default:
 		mes "[?????]";
-		mes "汶巴汶巴 汶巴巴 雨檀汶巴 汶巴";
-		mes "汶巴 汶巴汶巴 呼 汶巴 汶巴巴..";
-		mes "汶巴巴汶巴 汶巴巴 汶巴巴 汶巴";
-		mes "汶巴巴 汶巴巴 汶巴汶巴巴 汶巴";
-		mes "呼 汶巴 汶巴";
-		next;
+		mes "巴汶巴汶巴巴汶巴巴巴";
+		mes "汶巴汶巴…";
+		mes "汶巴巴汶巴巴巴汶";
+		mes "巴巴汶巴汶巴汶汶汶";
+		mes "汶巴汶巴巴汶...";
+		close2;
 		warp "umbala",217,186;
-		close;
-	case 3:	
+		end;
+	case 3:
 		mes "[普初恰樂坦]";
 		mes "沒想到人類會來到，";
 		mes "我們雨檀族的村落..";
@@ -623,23 +442,20 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 		set event_umbala,7;
 		close;
 	case 7:
-		mes "[普初恰樂坦]";
-		mes "需要幫助的人類啊...";
-		mes "雖然不知道我的能力對你";
-		mes "有沒有幫助，不過我還是會幫你的";
-		next;
-		mes "[普初恰樂坦]";
-		mes "那麼，你需要什麼呢?";
-		mes "屬性的結合，屬性的分解...";
-		mes "結合的話需要自然物，";
-		mes "分解的話需要屬性石";
+		break;
 	}
-	
+	mes "[普初恰樂坦]";
+	mes "需要幫助的人類啊...";
+	mes "雖然不知道我的能力對你";
+	mes "有沒有幫助，不過我還是會幫你的";
 	next;
-
-	set .@need,0;
-
-	switch (select("屬性的結合","屬性的分解","結束")) {
+	mes "[普初恰樂坦]";
+	mes "那麼，你需要什麼呢?";
+	mes "屬性的結合，屬性的分解...";
+	mes "結合的話需要自然物，";
+	mes "分解的話需要屬性石";
+	next;
+	switch (select("屬性的結合:屬性的分解:結束")) {
 	case 1:
 		mes "[普初恰樂坦]";
 		mes "屬性的結合...";
@@ -647,7 +463,7 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 		mes "地，水，火，風... 講出";
 		mes "你現在所需要的屬性吧";
 		next;
-		switch (select("地屬性","水屬性","火屬性","風屬性")) {
+		switch (select("地屬性:水屬性:火屬性:風屬性")) {
 			case 1:
 				if(countitem(947)<15) {
 					mes "[普初恰樂坦]";
@@ -739,10 +555,10 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 		}
 		mes "[普初恰樂坦]";
 		switch(.@need) {
-			case 946: mes "把那些蝸牛殼放在這沸騰的鍋裡，";		break;
-			case 904: mes "把那些蠍子尾巴放在這沸騰的鍋裡，";	break;
-			case 947: mes "把那些硬角放在這沸騰的鍋裡，";		break;
-			default: mes "把那些彩色昆蟲外殼放在這沸騰的鍋裡，";	break;
+			case 946: mes "把那些蝸牛殼放在這沸騰的鍋裡，"; break;
+			case 904: mes "把那些蠍子尾巴放在這沸騰的鍋裡，"; break;
+			case 947: mes "把那些硬角放在這沸騰的鍋裡，"; break;
+			default: mes "把那些彩色昆蟲外殼放在這沸騰的鍋裡，"; break;
 		}
 		mes "開始念神聖的咒語，";
 		mes "要記住你所說的數字，";
@@ -755,27 +571,9 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 		mes "Datuha Ombabalaka! Umba! Si!";
 		mes "Sunutaba Abulumba! Umba! Si!";
 		next;
-		mes "[普初恰樂坦]";
-		if(countitem(.@need)<.@amount){
-			mes "You're An Amba HacK0R!";
-			mes "I'm clearing your mind!";
-			//we reset the whole quest for the hacker			
-			set event_umbala,0;
-			emotion e_swt,1;
-			close;
-		}
 		delitem .@need,.@amount;
-//		if(!rand(10)){
-//			getitem 910,1; //合成失敗取得加勒結晶1個
-//			mes "Your inner power has failed";
-//			mes "to convert these objects";
-//			mes "from nature into elemental essence...";
-//			next;
-//			mes "[Putsuchiritan]";
-//			mes "Purify your mind and try again.";
-//       		close;
-//		}
 		getitem .@gain,1;
+		mes "[普初恰樂坦]";
 		mes "你想要的屬性原石在這裡，";
 		mes "只是從原本存在的東西";
 		mes "中所製成的，好好的";
@@ -788,7 +586,7 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 		mes "地，水，火，風...";
 		mes "講出你現在所需要的屬性吧";
 		next;
-		switch (select("地屬性","水屬性","火屬性","風屬性")) {
+		switch (select("地屬性:水屬性:火屬性:風屬性")) {
 			case 1:
 				if(countitem(997)==0) {
 					mes "[普初恰樂坦]";
@@ -851,62 +649,17 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 			close;
 		}
 		mes "[普初恰樂坦]";
-		mes "Also, my power is strong";
-		mes "enough to break more than";
-		mes "stone at once. How many of";
-		mes "them would you like me to";
-		mes "work on? Yet, I don't intend";
-		mes "to work on more than 10.";
-		next;
-		input .@want;
-		if(.@want <= 0)
-		{
-			mes "[Putsuchiritan]";
-			mes "If you don't wish my help at the moment,";
-			mes "that's fine.  When you do, please come";
-			mes "by again.";
-			close;
-		}
-		if(.@want > 10)
-		{
-			mes "[Putsuchiritan]";
-			mes "I'm not responsible of what";
-			mes "can happen if I work on";
-			mes "more than 10 stones at once.";
-			mes "I don't even want to try.";
-			close;
-		}
-		if(countitem(.@need) < .@want)
-		{
-			mes "[Putsuchiritan]";
-			mes "I can't dismantle something";
-			mes "that doesn't even exist. Please";
-			mes "come back when you'll have the";
-			mes "number of stones you want me to";
-			mes "break.";
-			close;
-		}
-		mes "[普初恰樂坦]";
 		switch(.@need) {
-			case 997: mes "將為你所帶來的大地之天意，";	break;
-			case 995: mes "將為你所帶來的大洋神秘，";	break;
-			case 994: mes "將為你所帶來的火焰之心，";	break;
-			case 996: mes "將為你所帶來的粗暴狂風，";	break;
+			case 997: mes "將為你所帶來的大地之天意，"; 	break;
+			case 995: mes "將為你所帶來的大洋神秘，"; 	break;
+			case 994: mes "將為你所帶來的火焰之心，"; 	break;
+			case 996: mes "將為你所帶來的粗暴狂風，"; 	break;
 		}
 		mes "轉變成在結合之前的樣子，";
 		mes "從1到9中選一個，";
 		mes "你喜歡的數位，";
 		mes "如果不想要屬性的分解的話";
 		mes "就選擇0";
-		if(.@want > 1)
-		{
-			next;
-			mes "[Putsuchiritan]";
-			mes "Choose well your number.";
-			mes "It will affect my potential";
-			mes "and your spirit for all the";
-			mes "stones at once.";
-		}
 		while(1) {
 			next;
 			input .@num;
@@ -924,20 +677,11 @@ um_in,44,71,2	script	雨檀族 薩滿	782,{
 			}
 			break;
 		}
-L_Dismantle:
-		set .@num,rand(1,10);	//官方隨機數量
-		if(.@num == 1)
-			set .@num,10;
-		else if(.@num == 2 || .@num == 3)
-			set .@num,8;
-		else if(.@num < 7)
-			set .@num,7;
-		else
-			set .@num,6;
-		set .@want,.@want -1;
-		set .@result,.@result + .@num;
-		set .@delete,.@delete +1;
-		if(.@want) goto L_Dismantle;
+		set .@num,.@num+rand(5);
+		if(.@num>10)
+			set .@num,.@num-10;
+		if(.@num<5)
+			set .@num,.@num+5;
 		mes "[普初恰樂坦]";
 		mes "把這屬性石放在地上，";
 		mes "開始念神聖的咒語，";
@@ -952,24 +696,8 @@ L_Dismantle:
 		mes "Ombaludu Zan Kunu! Umba! Ku!";
 		mes "Kum Tum Lakulakun! Umba! Ha!";
 		next;
-		mes "[普初恰樂坦]";
-		if(countitem(.@need)<.@delete){
-			mes "You're An Amba HacK0R!";
-			mes "I'm clearing your mind!";
-			//we reset the whole quest for the hacker			
-			set event_umbala,0;
-			emotion e_swt,1;
-			close;
-		}
-		if(checkweight(.@gain,.@result) != 1)
-		{
-			mes "You are overweight.";
-			mes "Please clear your inventory";
-			mes "or make some empty slots.";
-			close;
-		}
-		delitem .@need,.@delete;
-		getitem .@gain,.@result;
+		delitem .@need,1;
+		getitem .@gain,.@num;
 		mes "[普初恰樂坦]";
 		mes "你想要的屬性原石在這裡，";
 		mes "只是從原本存在的東西";

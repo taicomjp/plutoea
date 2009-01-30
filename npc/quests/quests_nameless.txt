@@ -40,14 +40,14 @@
 //============================================================
 
 
-// Nameless Island and Cursed Monestary Access Quest
+// 無名島進入任務
 //============================================================
-airplane_01,95,61,3	script	QuestTrigger#Aru	-1,3,3,{
+airplane_01,95,61,3	script	觸發#Aru	-1,3,3,{
 	end;
 
 OnTouch:	
 	if ((prt_curse == 36 || prt_curse == 45 || prt_curse == 56 || prt_curse == 61) && (aru_monas < 1)) {
-		hideoffnpc "Agent#Aru";
+		hideoffnpc "情報員#Aru";
 		mes "[????]";
 		mes "你是"+strcharinfo(0)+"嗎?";
 		mes "我正在等你呢，";
@@ -56,16 +56,16 @@ OnTouch:
 		mes "請盡快去教堂一趟";
 		close2;
 		set aru_monas,1;
-		hideonnpc "Agent#Aru";
+		hideonnpc "情報員#Aru";
 	}
 	end;
 }
 
-airplane_01,95,61,3	script	Agent#Aru	899,5,5,{
+airplane_01,95,61,3	script	情報員#Aru	899,5,5,{
 	end;
 
 OnInit:
-	hideonnpc "Agent#Aru";
+	hideonnpc "情報員#Aru";
 	end;
 }
 
@@ -82,17 +82,16 @@ cmd_in02,174,89,7	script	平凡的男人#pc1	97,{
 	}
 	else if (aru_monas == 2) {
 		mes "[拉樂希司]";
-		mes "Argh, I lost at this game";
-		mes "so many times that I've";
-		mes "completely lost track!";
-		mes "I've got to win sometime...";
+		mes "哎呦呦...";
+		mes "我到底輸了多少啊...";
+		mes "嗚嗚嗚...";
 		next;
-		select("Excuse me.");
+		select("請..請問...");
 		mes "[拉樂希司]";
 		mes "Oh! Uh... Hmm...";
 		mes "How may I help you?";
 		next;
-		select ("^6B8E23Priest Bamph^000000 sent me.");
+		select ("我是受^6B8E23班夫祭司^000000之託而來的");
 		mes "[拉樂希司]";
 		mes "Oh, I see. I apologize";
 		mes "if my screaming and yelling";
@@ -130,12 +129,12 @@ cmd_in02,111,52,3	script	平凡的男人#pc2	97,{
 	}
 	else if (aru_monas == 3) {
 		mes "[拉樂希司]";
-		mes "Good, no one should be";
-		mes "able to hear us from here.";
-		mes "After I sent a message to";
-		mes "the place, I found some";
-		mes "new information that should";
-		mes "really help my investigation.";
+		mes "在這裡就不用擔心隔牆";
+		mes "有耳了，嗯... 我事先知會";
+		mes "王宮後並繼續調查的結果，";
+		mes "發現了重大情報，";
+		mes "因此調查時間可以";
+		mes "縮短了";
 		next;
 		mes "[拉樂希司]";
 		mes "I learned that two details";
@@ -194,12 +193,10 @@ ra_in01,308,59,1	script	服務生#Aru	930,{
 		if (aru_monas == 6) {
 			next;
 			mes "[服務生]";
-			mes "What would you like";
-			mes "to order? Or... If I'm";
-			mes "not mistaken, you're";
-			mes "here for something else?";
+			mes "你是來用餐嗎?";
+			mes "還是有其它事情?";
 			next;
-			if (select("I'd like to order.:Yes, I've come for another reason.") == 1) {
+			if (select("我要用餐:我要辦事") == 1) {
 				mes "[服務生]";
 				mes "Sure, no problem.";
 				mes "Did you come alone?";
@@ -455,12 +452,10 @@ ve_in,78,314,5	script	保安官#Aru	945,{
 	}	
 	else if (aru_monas == 10) {
 		mes "[阿爾哈瑪]";
-		mes "I thought I told you";
-		mes "that you weren't allowed";
-		mes "to come in here. Why do";
-		mes "you keep coming back?";
+		mes "我說過這裡禁止進入啊，";
+		mes "你到底有何事老是進出呢?";
 		next;
-		if (select("I'm sorry.:I want to know about the smugglers.") == 1) {
+		if (select("對不起:不久前被逮捕的可疑人是?") == 1) {
 			mes "[阿爾哈瑪]";
 			mes "It's fine. Just leave,";
 			mes "and don't come back";
@@ -617,12 +612,10 @@ ve_in,81,296,3	script	士兵#Aru	946,{
 	}
 	else if (aru_monas == 9) {
 		mes "[西姆斯]";
-		mes "Hm? Oh, the magistrate";
-		mes "gave you the brush-off?";
-		mes "Well, he hasn't really been";
-		mes "himself ever since we arrested";
-		mes "those ^32CD32smugglers coming from";
-		mes "the south^000000 a few months ago.";
+		mes "幾個月從前^32CD32南邊有可疑人物";
+		mes "企圖偷渡上岸時被逮捕^000000，";
+		mes "由於是自己的管轄範圍，所以保安官";
+		mes "在處理這件事情";
 		next;
 		mes "[西姆斯]";
 		mes "Once we reported the arrest";
@@ -663,7 +656,7 @@ ve_in,81,296,3	script	士兵#Aru	946,{
 	else {
 		mes "[西姆斯]";
 		mes "Nice day, isn't it?";
-		close;		
+		close;
 	}
 }
 
@@ -679,12 +672,11 @@ ra_temple,165,57,5	script	尼樂研大神官#ss	915,{
 	}
 	cutin "ra_gwoman",2;
 	mes "[尼樂研大神官]";
-	mes "So you wanted to talk to me?";
-	mes "I'm pretty tired right now, but";
-	mes "I can spare a moment or two.";
-	mes "What would you like to ask?";
+	mes "你是想跟我聊天喔!";
+	mes "只是我現在有點疲倦，希望能長話短說..";
+	mes "那您到底想說什麼事呢?";
 	next;
-	switch(select("Ask About Veins Smugglers:As About 傑德")) {
+	switch(select("有關在菲音斯被捕的人士:關於傑德的事情")) {
 	case 1:
 		if (aru_monas == 12) {
 			mes "[尼樂研]";
@@ -1611,12 +1603,11 @@ nameless_i,212,184,0	script	#aru_clue1	-1,2,3,{
 
 OnTouch:
 	if (aru_monas == 17) {
-		mes "^3355FFThe village is totally";
-		mes "silent, as if all life had";
-		mes "abandoned it. You look";
-		mes "around and see that something";
-		mes "was here a few hours ago, but";
-		mes "it's somewhere else now.^000000";
+		mes "村子裡好像沒有任何生命般的";
+		mes "安靜，但是仔細觀察的話，";
+		mes "可以發現在幾小時前，";
+		mes "有過東西的痕跡，";
+		mes "他們似乎移往某處了";
 		next;
 		mes "^3355FFWhatever it was,";
 		mes "it definitely wasn't";
@@ -1632,11 +1623,9 @@ nameless_in,21,176,0	script	#aru_clue2	-1,2,2,{
 
 OnTouch:
 	if (aru_monas == 17) {
-		mes "^3355FFThere are traces of";
-		mes "humans around here,";
-		mes "along with some kind";
-		mes "of creature that you";
-		mes "can't clearly identify.^000000";
+		mes "這裡有人生活過的痕跡，";
+		mes "但是另外還發現了其它";
+		mes "痕跡，該痕跡感覺不好";
 		close;
 	}
 	end;
@@ -1647,26 +1636,22 @@ nameless_i,129,218,0	script	#aru_clue3	-1,4,3,{
 
 OnTouch:
 	if (aru_monas == 17) {
-		mes "^3355FFA strange scent strikes";
-		mes "you as you enter this field of";
-		mes "grass. A few ^32CD32animal corpses^3355FF";
-		mes "are strewn around the ground.^000000";
+		mes "這草原散發著奇妙的氣味，";
+		mes "還發現了幾隻^32CD32動物屍體^000000";
 		close;
 	}
 	end;
 }
 
-nameless_i,127,207,0	script	Dead Crow#Aru	111,{
+nameless_i,127,207,0	script	烏鴉的屍體#Aru	111,{
 	if (aru_monas < 17) { 
 		mes "^3355FFThere is a dead crow on the ground.";
 		close;
 	}
 	else if (aru_monas == 17) {
-		mes "^3355FFThe sight of this ^32CD32dead";
-		mes "crow^3355FF makes you feel";
-		mes "uneasy for some reason.^000000";
+		mes "有隻可疑的^32CD32烏鴉屍體^000000";
 		next;
-		if (select("Ignore:Investigate") == 1) {
+		if (select("不要管牠:仔細觀察") == 1) {
 			mes "^3355FFYou decide not to touch";
 			mes "the animal's carcass.^000000";
 			close;
@@ -1850,7 +1835,7 @@ OnTouch:
 	if(aru_monas == 20) {
 		hideoffnpc "拉樂希司#Aru3";
 		mes "[" +strcharinfo(0)+ "]";
-		mes "What the hell...!?";
+		mes "這到底是....";
 		next;
 		mes "[拉樂希司]";
 		mes "So... This is the";
@@ -1922,7 +1907,7 @@ nameless_n,259,218,3	script	拉樂希司#Boat1	97,{
 	close;
 }
 
-abbey02,224,70,0	script	Book#Aru	111,{
+abbey02,224,70,0	script	書#Aru	111,{
 	if (checkweight(7766,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -1959,7 +1944,7 @@ abbey02,224,70,0	script	Book#Aru	111,{
 	}
 }
 
-abbey03,232,233,4	script	Man#Aru	956,{
+abbey03,232,233,4	script	倒臥的男子#Aru	956,{
 	if (aru_monas < 22) {
 		mes "^3355FFYou find a man lying on";
 		mes "the floor, wearing torn";
@@ -1971,29 +1956,23 @@ abbey03,232,233,4	script	Man#Aru	956,{
 		close;
 	}
 	if (aru_monas == 22) {
-		mes "^3355FFYou find a man lying on";
-		mes "the floor, wearing torn";
-		mes "yet luxurious clothing.";
-		mes "He doesn't seem to be";
-		mes "breathing at all...^000000.";
+		mes "有位穿著體面的男子";
+		mes "倒臥在地上，";
+		mes "原以為死了，但把耳朵靠過去";
+		mes "看有沒有呼吸，結果還在喘息著";
 		next;
-		mes "^3355FFYou bring your ears more";
-		mes "closely to his mouth: it";
-		mes "seems that he really is";
-		mes "still barely alive.^000000";
-		next;
-		if (select("Touch Him:Ignore Him") == 1) {
+		if (select("動一下男子:不管他") == 1) {
 			mes "["+strcharinfo(0)+"]";
 			mes "This man...";
 			mes "He's so familiar";
 			mes "for some reason.";
 			next;
-			mes "^3355FFAs you touch him, the";
-			mes "man suddenly jumps";
-			mes "up with a crazed yowl.^000000";
+			mes "輕輕碰一下那個男子，";
+			mes "結果男子呻吟一下後";
+			mes "就起來了.";
 			initnpctimer;
-			hideonnpc "Man#Aru";
-			monster "abbey03",232,232,"Dead King",1875,1,"Man#Aru::OnMyMobDead";
+			hideonnpc "倒臥的男子#Aru";
+			monster "abbey03",232,232,"王的屍體",1875,1,"倒臥的男子#Aru::OnMyMobDead";
 			close;
 		}
 		mes "^3355FFYou don't feel";
@@ -2008,18 +1987,18 @@ abbey03,232,233,4	script	Man#Aru	956,{
 
 OnMyMobDead:
 	stopnpctimer;
-	hideoffnpc "Dead Man#Aru";
-	donpcevent "Dead Man#Aru::OnEnable";
+	hideoffnpc "王的屍體#Aru";
+	donpcevent "王的屍體#Aru::OnEnable";
 	end;
 
 OnTimer300000:
 	stopnpctimer;
-	hideonnpc "Dead Man#Aru";
-	hideoffnpc "Man#Aru";
+	hideonnpc "王的屍體#Aru";
+	hideoffnpc "倒臥的男子#Aru";
 	end;
 }
 
-abbey03,232,232,4	script	Dead Man#Aru	956,{
+abbey03,232,232,4	script	王的屍體#Aru	956,{
 	if (checkweight(7766,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -2042,8 +2021,8 @@ abbey03,232,232,4	script	Dead Man#Aru	956,{
 		mes "this man is...!";
 		set aru_monas,23;
 		getitem 7726,1; //Token_of_King
-		hideonnpc "Dead Man#Aru";
-		hideoffnpc "Man#Aru";
+		hideonnpc "王的屍體#Aru";
+		hideoffnpc "倒臥的男子#Aru";
 		stopnpctimer;
 		close;
 	}
@@ -2054,7 +2033,7 @@ OnEnable:
 	end;
 
 OnInit:
-	hideonnpc "Dead Man#Aru";
+	hideonnpc "王的屍體#Aru";
 	end;
 }
 
@@ -2105,7 +2084,7 @@ ra_temple,168,54,3	script	Sippie#ss	917,{
 	}
 }
 
-// Peace to the Arunafeltz
+// 阿盧納貝茲教國的和平
 //============================================================
 moc_ruins,77,167,3	script	異國商人#aru1	880,{
 	if (aru_vol == 27) {
@@ -2174,10 +2153,9 @@ moc_ruins,77,167,3	script	異國商人#aru1	880,{
 		}
 		else if (aru_em == 7) {
 			mes "[異國商人]";
-			mes "*Pant Pant*";
-			mes "*Sweat*";
+			mes "呼嗚、呼嗚...";
 			next;
-			switch(select("Give Fruit Wine:Quietly Watch Him")) {
+			switch(select("把水果酒交給商人:靜觀其變")) {
 			case 1:
 				mes "[異國商人]";
 				mes "Oh, thank you! This";
@@ -6205,28 +6183,8 @@ OnInit:
 // Z 集團 任務
 //============================================================ 
 prontera,150,326,0	script	懸賞通緝公告#edq	111,{
-	if (zdan_edq == 0) {
-		mes "=========公布通緝令=========";
-		mes "普隆德拉王國保安隊要公開";
-		mes "通緝以下嫌犯";
-		mes "　";
-		mes "^0000ff路易 龐 希勒肯斯^000000的男性、";
-		mes "^0000ff瑪莎 海倫緹貞^000000的女性、";
-		mes "^0000ff凱蒂^000000的小貓";
-		next;
-		mes "被稱為Z集團的3人組集團，";
-		mes "有竊取國家物品、詐欺、敗壞風氣、偽造文書等罪嫌";
-		next;
-		mes "=========公布通緝令=========";
-		mes "逮捕上述通緝人物或";
-		mes "找回被竊走的王國禁書'禁止的神秘術書'的人";
-		mes "將會重重有賞";
-		mes "　";
-		mes "　　-普隆德拉王國保安隊長-";
-		set zdan_edq,1;
-		close;
-	}
-	else if (zdan_edq > 18) {
+	switch (zdan_edq) {
+	case 19:
 		mes "[保安隊長]";
 		mes "Ever since you captured";
 		mes "the Z Gang, crime has gone";
@@ -6240,46 +6198,38 @@ prontera,150,326,0	script	懸賞通緝公告#edq	111,{
 		mes "When that happens, I hope";
 		mes "we can count on you again.";
 		close;
-	}
-	else {
+	default:
 		mes "=========公布通緝令=========";
-		mes "Please report any information";
-		mes "regarding these criminals to";
-		mes "the Rune-Midgarts Kingdom's";
-		mes "Homeland Security Office.";
-		next;
-		mes "=========公布通緝令=========";
+		mes "普隆德拉王國保安隊要公開";
+		mes "通緝以下嫌犯";
+		mes "　";
 		mes "^0000ff路易 龐 希勒肯斯^000000的男性、";
 		mes "^0000ff瑪莎 海倫緹貞^000000的女性、";
 		mes "^0000ff凱蒂^000000的小貓";
 		next;
-		mes "=========公布通緝令=========";
-		mes "These infamous members";
-		mes "of the Z Gang are suspected";
-		mes "of stealing national treasure,";
-		mes "committing fraud, forgery,";
-		mes "and promoting overall";
-		mes "depravity and immorality.";
+		mes "被稱為Z集團的3人組集團，";
+		mes "有竊取國家物品、詐欺、敗壞風氣、偽造文書等罪嫌";
 		next;
-		mes "=========公布通緝令=========";
-		mes "Anyone that captures";
-		mes "the listed criminals will";
-		mes "be rewarded with the Book";
-		mes "of Forbidden Mystery, one";
-		mes "of the kingdom's treasures.";
-		close;
+		mes "逮捕上述通緝人物或";
+		mes "找回被竊走的王國禁書'禁止的神秘術書'的人";
+		mes "將會重重有賞";
+		mes "　";
+		mes "　　-普隆德拉王國保安隊長-";
+		if (zdan_edq) end; close;
+		else set zdan_edq,1; close;
 	}
-
-//OnInit:
-//	enablenpc "Wanted Notice#edq";
-//	end;
+/*
+OnInit:
+	enablenpc "懸賞通緝公告#edq";
+	end;
+*/
 
 OnEnable:
-	enablenpc "Wanted Notice#edq";
+	enablenpc "懸賞通緝公告#edq";
 	end;
 
 OnDisable:
-	disablenpc "Wanted Notice#edq";
+	disablenpc "懸賞通緝公告#edq";
 	end;
 }
 
@@ -6311,9 +6261,9 @@ prontera,148,326,3	script	保安隊長#edq	734,{
 		mes "regarding the Z Gang.";
 		next;
 		mes "[保安隊長]";
-		mes "There are three members:";
-		mes "路易 龐 希勒肯斯 a.k.a.";
-		mes "陸易, 瑪莎 海倫緹貞 a.k.a.";
+		mes "該組織的成員如下:";
+		mes "路易 龐 希勒肯斯";
+		mes "陸易, 瑪莎 海倫緹貞";
 		mes "瑪莎, and 凱蒂 a.k.a.";
 		mes "凱蒂 must be captured!";
 		set zdan_edq,2;
@@ -6321,13 +6271,18 @@ prontera,148,326,3	script	保安隊長#edq	734,{
 	}
 	if ((zdan_edq == 1) && (BaseLevel < 70)) {
 		mes "[保安隊長]";
-		mes "Oh, were you interested";
-		mes "in pursuing the criminals";
-		mes "listed in the Wanted notice?";
-		mes "I'm sorry, but you're not";
-		mes "ready for that kind of task...";
-		mes "But I encourge you to train!";
-		mes "Thank you.";
+		mes "嗯... 你也是看到通緝令後";
+		mes "過來的嗎? 呵呵... 你真是";
+		mes "優秀的青年啊";
+		next;
+		mes "[保安隊長]";
+		mes "不過以你的實力，還不足以";
+		mes "對付那些兇神惡煞的";
+		mes "惡徒們...";
+		next;
+		mes "[保安隊長]";
+		mes "請你再去磨練提升實力後，一同";
+		mes "協助剷除威脅王國的惡勢力吧";
 		close;
 	}
 	if (zdan_edq == 2) {
@@ -6387,32 +6342,29 @@ prontera,148,326,3	script	保安隊長#edq	734,{
 				break;
 			case 2:
 				mes "[保安隊長]";
-				mes "瑪莎 海倫緹貞 is the";
-				mes "second daughter of Alberta's";
-				mes "Hertizan family. No one knows";
-				mes "why she ran away from home";
-				mes "at the age of twenty.";
+				mes "瑪莎 海倫緹貞是艾爾貝塔的海倫緹貞";
+				mes "商團的次女，聽說約20歲時離家";
+				mes "出走後，就與家裡斷絕了";
+				mes "關係... 真是讓人為難啊...";
 				next;
 				mes "[保安隊長]";
-				mes "瑪莎 handles the Z Gang's";
-				mes "finances. It's a shame that";
-				mes "such a talented merchant";
-				mes "has stooped to thievery. ";
+				mes "他不愧是海倫緹貞商團的出身，";
+				mes "因善於經濟手腕，所以負責組織的";
+				mes "資金體系... 真是...";
+				mes "這對家族有負面影響";
 				break;
 			case 3:
 				mes "[保安隊長]";
-				mes "We initially believed";
-				mes "that 凱蒂 was just";
-				mes "陸易 and 瑪莎's pet";
-				mes "cat... But it's actually a";
-				mes "master criminal. Approach";
-				mes "it with extreme caution!";
+				mes "凱蒂的特別之處是牠非人類";
+				mes "而是一隻小貓，剛開始";
+				mes "調查時以為只是路易和瑪莎的";
+				mes "寵物，但根據多項資料顯示，";
+				mes "牠有單獨犯罪的嫌疑";
 				next;
 				mes "[保安隊長]";
-				mes "That's all I know about";
-				mes "that animal. The true";
-				mes "nature of 凱蒂 is";
-				mes "shrouded in mystery.";
+				mes "對於這隻動物，由於尚未掌握到";
+				mes "任何情報，因此無法提供你更多";
+				mes "情報而感到不好意思";
 				break;
 			case 4:
 				mes "[保安隊長]";
@@ -6428,12 +6380,11 @@ prontera,148,326,3	script	保安隊長#edq	734,{
 			}
 			next;
 			mes "[保安隊長]";
-			mes "而王國也尚未掌握更多情報";
+			mes "由於王國也尚未掌握更多情報";
 			mes "而焦慮當中，所以我們需要";
 			mes "像你這樣年輕有為的力量，";
 			mes "我很期待你的表現";
 			close;
-
 		case 3:
 			mes "[保安隊長]";
 			mes "呼.. 最近他們成為王國上下";
@@ -6497,12 +6448,13 @@ prontera,148,326,3	script	保安隊長#edq	734,{
 		getexp 1000000,0;
 		close;
 	}
-	mes "[保安隊長]";
-	mes "All those that oppose";
-	mes "the peace and safety of";
-	mes "our kingdom will not be";
-	mes "spared the fury of our";
-	mes "righteous swords!";
+	mes "[王國的保安隊長]";
+	mes "擾亂王國安定和治安的";
+	mes "惡徒們...";
+	mes "都會被我和勇猛的騎士團所一掃而空";
+	next;
+	mes "[維持王國治安的士兵]";
+	mes "喔耶!!!!!!!";
 	close;
 }
 
