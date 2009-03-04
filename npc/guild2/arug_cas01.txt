@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.8
+//= 1.9
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
@@ -96,6 +96,19 @@ OnClock0001:
 	if (!GetCastleData("arug_cas01",1)) end;
 	killmonster "arug_cas01","Manager#aru01_02::OnTreasureDied";
 
+	if (GetCastleData("arug_cas01",4)) {
+		set .@Economy,GetCastleData("arug_cas01",2);
+		SetCastleData "arug_cas01",2,.@Economy + GetCastleData("arug_cas01",4) + (rand(2) && getgdskilllv(.@GID,10014));
+		if (GetCastleData("arug_cas01",2) > 100) SetCastleData "arug_cas01",2,100;
+		setcastledata "arug_cas01",4,0;
+	}
+	if (GetCastleData("arug_cas01",5)) {
+		set .@Defence,GetCastleData("arug_cas01",3);
+		SetCastleData "arug_cas01",3,.@Defence + GetCastleData("arug_cas01",5);
+		if (GetCastleData("arug_cas01",3) > 100) SetCastleData "arug_cas01",3,100;
+		setcastledata "arug_cas01",5,0;
+	}
+
 	set .@Treasure,GetCastleData("arug_cas01",2)/5+4;
 	if (.@Treasure) {
 		monster "arug_cas01",251,369,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
@@ -142,16 +155,6 @@ OnClock0001:
 		monster "arug_cas01",257,364,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 24) end;
 		monster "arug_cas01",258,364,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
-	}
-	if (GetCastleData("arug_cas01",4)) {
-		set .@Economy,GetCastleData("arug_cas01",2);
-		SetCastleData "arug_cas01",2,.@Economy + GetCastleData("arug_cas01",4) + (.@Economy<99 && rand(2) && getgdskilllv(.@GID,10014));
-		setcastledata "arug_cas01",4,0;
-	}
-	if (GetCastleData("arug_cas01",5)) {
-		set .@Defence,GetCastleData("arug_cas01",3);
-		SetCastleData "arug_cas01",3,.@Defence + GetCastleData("arug_cas01",5);
-		setcastledata "arug_cas01",5,0;
 	}
 	end;
 

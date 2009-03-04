@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 2.0
+//= 2.1
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
@@ -96,6 +96,19 @@ OnClock0001:
 	if (!GetCastleData("schg_cas02",1)) end;
 	killmonster "schg_cas02","Manager#sch02_02::OnTreasureDied";
 
+	if (GetCastleData("schg_cas02",4)) {
+		set .@Economy,GetCastleData("schg_cas02",2);
+		SetCastleData "schg_cas02",2,.@Economy + GetCastleData("schg_cas02",4) + (rand(2) && getgdskilllv(.@GID,10014));
+		if (GetCastleData("schg_cas02",2) > 100) SetCastleData "schg_cas02",2,100;
+		setcastledata "schg_cas02",4,0;
+	}
+	if (GetCastleData("schg_cas02",5)) {
+		set .@Defence,GetCastleData("schg_cas02",3);
+		SetCastleData "schg_cas02",3,.@Defence + GetCastleData("schg_cas02",5);
+		if (GetCastleData("schg_cas02",3) > 100) SetCastleData "schg_cas02",3,100;
+		setcastledata "schg_cas02",5,0;
+	}
+
 	set .@Treasure,GetCastleData("schg_cas02",2)/5+4;
 	if (.@Treasure) {
 		monster "schg_cas02",249,378,"寶物箱子",1939,1,"Manager#sch02_02::OnTreasureDied";
@@ -142,16 +155,6 @@ OnClock0001:
 		monster "schg_cas02",252,270,"寶物箱子",1939,1,"Manager#sch02_02::OnTreasureDied";
 		if (.@Treasure < 24) end;
 		monster "schg_cas02",253,370,"寶物箱子",1324,1,"Manager#sch02_02::OnTreasureDied";
-	}
-	if (GetCastleData("schg_cas02",4)) {
-		set .@Economy,GetCastleData("schg_cas02",2);
-		SetCastleData "schg_cas02",2,.@Economy + GetCastleData("schg_cas02",4) + (.@Economy<99 && rand(2) && getgdskilllv(.@GID,10014));
-		setcastledata "schg_cas02",4,0;
-	}
-	if (GetCastleData("schg_cas02",5)) {
-		set .@Defence,GetCastleData("schg_cas02",3);
-		SetCastleData "schg_cas02",3,.@Defence + GetCastleData("schg_cas02",5);
-		setcastledata "schg_cas02",5,0;
 	}
 	end;
 
