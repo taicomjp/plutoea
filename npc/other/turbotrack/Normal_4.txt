@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.1
+//= 1.3
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: ========================================= 
@@ -12,9 +12,13 @@
 //===== Additional Comments: =================================
 //= 1.0 First version. [L0ne_W0lf]
 //= 1.1 Fixed small official bug. [L0ne_W0lf]
+//= 1.2 Replaced effect numerics with constants. [L0ne_W0lf]
+//= 1.3 Fixed a little mistake [akrus]
 //============================================================
 
 turbo_room,77,135,3	script	Normal mode - 4 person	124,{
+	end;
+
 OnInit:
 	waitingroom "Normal mode - 4 person",60,"Normal mode - 4 person::OnStartArena",4;
 	//SetFeeZeny 1000
@@ -815,7 +819,7 @@ OnInit:
 OnTouch:
 	mapannounce "turbo_n_4","" + strcharinfo(0) +" has just arrived at the Finish Line! Congratulations!",bc_map,"0xFFFF00";
 	set $ttnames$[1],strcharinfo(0);
-	donpcevent "競速場地 指導員#Bro::Onwin_n4";
+	donpcevent "TBT_Guide#Broadcast::Onwin_n4";
 	warp "turbo_n_4",384,161;
 	donpcevent "Winner Helper#TBT_n_4::OnEnable";
 	donpcevent "Master#n4::OnDisable";
@@ -855,7 +859,7 @@ turbo_n_4,384,167,1	script	Winner Helper#TBT_n_4	47,{
 			mes "You are ranked as";
 			mes "the top player for";
 			mes "winning the most games!";
-			donpcevent "競速場地 指導員#Bro::Onnew_top1";
+			donpcevent "TBT_Guide#Broadcast::Onnew_top1";
 			if (tt_rank == 29999) {
 				if ($ttnames$[7] == "Breezy Havana") {
 					set $ttnames$[7],strcharinfo(0);
@@ -879,7 +883,7 @@ turbo_n_4,384,167,1	script	Winner Helper#TBT_n_4	47,{
 			mes "You've ranked Second";
 			mes "among the Top Five Players";
 			mes "who've won the most games!";
-			donpcevent "競速場地 指導員#Bro::Onnew_top2";
+			donpcevent "TBT_Guide#Broadcast::Onnew_top2";
 			if (tt_rank == 29999) {
 				if ($ttnames$[7] == "Breezy Havana") {
 					set $ttnames$[7],strcharinfo(0);
@@ -903,7 +907,7 @@ turbo_n_4,384,167,1	script	Winner Helper#TBT_n_4	47,{
 			mes "You've ranked Third";
 			mes "among the Top Five Players";
 			mes "who've won the most games!";
-			donpcevent "競速場地 指導員#Bro::Onnew_top3";
+			donpcevent "TBT_Guide#Broadcast::Onnew_top3";
 			if (tt_rank == 29999) {
 				if ($ttnames$[7] == "Breezy Havana") {
 					set $ttnames$[7],strcharinfo(0);
@@ -927,7 +931,7 @@ turbo_n_4,384,167,1	script	Winner Helper#TBT_n_4	47,{
 			mes "You've ranked Fourth";
 			mes "among the Top Five Players";
 			mes "who've won the most games!";
-			donpcevent "競速場地 指導員#Bro::Onnew_top4";
+			donpcevent "TBT_Guide#Broadcast::Onnew_top4";
 			if (tt_rank == 29999) {
 				if ($ttnames$[7] == "Breezy Havana") {
 					set $ttnames$[7],strcharinfo(0);
@@ -951,7 +955,7 @@ turbo_n_4,384,167,1	script	Winner Helper#TBT_n_4	47,{
 			mes "You've ranked Fifth";
 			mes "among the Top Five Players";
 			mes "who've won the most games!";
-			donpcevent "競速場地 指導員#Bro::Onnew_top5";
+			donpcevent "TBT_Guide#Broadcast::Onnew_top5";
 			if (tt_rank == 29999) {
 				if ($ttnames$[7] == "Breezy Havana") {
 					set $ttnames$[7],strcharinfo(0);
@@ -1185,7 +1189,7 @@ OnInit:
 
 OnTouch:
 	mapannounce "turbo_n_4","" + strcharinfo(0) +" is now entering the Small Cave! " + strcharinfo(0) +" is now in the lead!",bc_map,"0xFFFF00";
-	donpcevent "競速場地 指導員#Bro::Onend_n4";
+	donpcevent "TBT_Guide#Broadcast::Onend_n4";
 	disablenpc "Notice_Maker1#TBT_n_4";
 	end;
 }
@@ -1236,7 +1240,7 @@ turbo_n_4,253,364,0	duplicate(Warp_n_4)	Warp#n_4_7	-1,2,2,{
 
 turbo_n_4,307,55,0	script	trap_n4#F1::TurboTrap_n4	139,1,1,{
 OnTouch:
-	specialeffect 106; //"trap_n4#F1" EF_BLASTMINEBOMB
+	specialeffect EF_BLASTMINEBOMB;
 	set .@HitTrap,10;
 	if (.@HitTrap > 0 && .@HitTrap < 4)
 		percentheal -1,0;
@@ -1291,7 +1295,7 @@ turbo_n_4,332,36,0	duplicate(TurboTrap_n4)	trap_n4#F41	139,1,1
 
 turbo_n_4,336,56,0	script	trap_n4#F42::TurboTrap_n4_2	-1,1,1,{
 OnTouch:
-	specialeffect 108; //"trap_n4#F42" EF_FREEZING
+	specialeffect EF_FREEZING;
 	set .@HitTrap,10;
 	if (.@HitTrap > 0 && .@HitTrap < 4)
 		percentheal -1,0;
