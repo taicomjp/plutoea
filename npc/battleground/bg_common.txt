@@ -1,5 +1,5 @@
 // ==============================================================================
-// BattleGround System - Common NPCs
+// 戰場系統 - 指令 NPCs
 // ==============================================================================
 
 // MapFlags
@@ -10,9 +10,9 @@ bat_room	mapflag	nowarpto
 bat_room	mapflag	nobranch
 bat_room	mapflag	nopenalty
 bat_room	mapflag	noteleport
-bat_room	mapflag	nosave	SavePoint
+//bat_room	mapflag	nosave	SavePoint
 
-// BattleGround Warper - Entrance
+// 戰場傳送人員 - 進入
 // *********************************************************************
 
 payon,189,104,3	script	馬樂戰場 募兵官::BatRecruit	728,{
@@ -43,7 +43,7 @@ moc_ruins,75,162,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit4	728
 aldebaran,146,109,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit5	728
 lighthalzen,153,86,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit6	728
 
-// BattleGround Warper - Exit
+// 戰場傳送人員 - 離開
 // *********************************************************************
 
 bat_room,148,150,4	script	空間移動師#戰場	124,{
@@ -56,7 +56,6 @@ bat_room,148,150,4	script	空間移動師#戰場	124,{
 		mes "需要服務時歡迎隨時來找我";
 		close;
 	}
-
 	set .@spoint$, getsavepoint(0);
 	if (.@spoint$ == "prontera") set .@sname$,"普隆德拉";
 	if (.@spoint$ == "morocc") set .@sname$,"夢羅克";
@@ -93,32 +92,129 @@ bat_room,148,150,4	script	空間移動師#戰場	124,{
 	end;
 }
 
-// Kafra
+// 卡普拉服務人員
 // *********************************************************************
 bat_room,148,147,4	script	卡普拉 職員::kaf_bat	861,{
 	cutin "kafra_09",2;
-	callfunc "F_Kafra",0,2,1,150,0;
+	mes "[卡普拉 職員]";
+	mes "歡迎光聯，我們隨時會提供熱誠的卡普拉服務，";
+	mes "請問需要什麼服務呢?";
+	next;
+	switch(select("使用倉庫服務:使用手推車服務:結束")) {
+		case 1:
+			if (basicskillcheck() && getskilllv(1) < 6) {
+				mes "[卡普拉 職員]";
+				mes "抱歉客官，";
+				mes "若要使用倉庫的話，初學者技能等級要超過6以上";
+				close2;
+				cutin "", 255;
+				end;
+			}
+			else {
+				if (Zeny < 800) {
+					mes "[卡普拉 職員]";
+					mes "客官您支付的金幣不足，";
+					mes "倉庫使用費是40金幣";
+					close2;
+					cutin "",255;
+					end;
+				}
+				mes "[卡普拉 職員]";
+				mes "我要準備打開倉庫了，";
+				mes "謝謝惠顧";
+				close2;
+				set zeny,zeny-40;
+				openstorage;
+				cutin "", 255;
+				end;
+			}
+			break;
+		case 2:
+			if (BaseClass != Job_Merchant) {
+				mes "[卡普拉 職員]";
+				mes "很抱歉，";
+				mes "手推車是商人與鐵匠的專屬服務.";
+				close2;
+				cutin "", 255;
+				end;
+			}
+			else if (checkcart() == 1) {
+				mes "[卡普拉 職員]";
+				mes "你正在使用著手推車";
+				close2;
+				cutin "", 255;
+				end;
+			}
+			else {
+				mes "[卡普拉 職員]";
+				mes "手推車的使用費用是800金幣，";
+				mes "請問你要使用嗎?";
+				next;
+				switch(select("使用:取消")) {
+				case 1:
+					if (Zeny < 800) {
+						mes "[卡普拉 職員]";
+						mes "客官您支付的金幣不足，";
+						mes "手推車的使用費是800金幣，";
+						close2;
+						cutin "",255;
+						end;
+					}
+					set zeny,zeny-800;
+					setcart;
+					cutin "", 255;
+					close;
+				case 2:
+					cutin "", 255;
+					close;
+				}
+			}
+		case 3:
+			mes "[卡普拉 職員]
+			mes "我們卡普拉服務秉持著一貫熱誠又專業的心，提供大家最優質和專業的服務，歡迎隨時利用，";
+			mes "謝謝惠顧";
+			close;
+	}
 }
 
-// General Guillaume
+// 將軍 吉永 馬樂羅
 // *********************************************************************
 bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 	cutin "bat_kiyom2",2;
 	mes "[吉永 馬樂羅]";
 	mes "有勇氣的冒險家喔，我們需要你的過人才能";
 	next;
-	select("關於戰鬥的理由:關於克勒亞 馬樂羅");
-	cutin "bat_kiyom1",2;
-	mes "[吉永 馬樂羅]";
-	mes "我們尊崇的陛下，麻勒薛 馬樂羅 7世健康亮起紅燈了，";
-	mes "陛下從我們 9名王子中，已表明我和克勒亞擇一來繼承王位";
-	next;
-	mes "[吉永 馬樂羅]";
-	mes "不過一山不容二虎! 唯有在父王所指定的戰場上獲勝者才能統治國家";
-	next;
-	mes "[吉永 馬樂羅]";
-	mes "這不僅是我們的戰場而已，國家未來的命運取決於戰鬥的結果，";
-	mes "我要以將軍的名譽來證明，能夠保護國家來自外部威脅的人，只有我辦得到而已";
+	if(select("關於戰鬥的理由:關於克勒亞 馬樂羅")==1) {
+		cutin "bat_kiyom1",2;
+		mes "[吉永 馬樂羅]";
+		mes "我們尊崇的陛下，麻勒薛 馬樂羅 7世健康亮起紅燈了，";
+		mes "陛下從我們 9名王子中，已表明我和克勒亞擇一來繼承王位";
+		next;
+		mes "[吉永 馬樂羅]";
+		mes "不過一山不容二虎! 唯有在父王所指定的戰場上獲勝者才能統治國家";
+		next;
+		mes "[吉永 馬樂羅]";
+		mes "這不僅是我們的戰場而已，國家未來的命運取決於戰鬥的結果，";
+		mes "我要以將軍的名譽來證明，能夠保護國家來自外部威脅的人，只有我辦得到而已";
+	}
+	else {
+		cutin "bat_kiyom1",2;
+		mes "[吉永 馬樂羅]";
+		mes "第五王子克勒亞 馬樂羅目前擔任馬樂的內政官員，";
+		mes "難道國家的情勢、地位只要坐在辦公桌上就可以處裡嗎?";
+		next;
+		mes "[吉永 馬樂羅]";
+		mes "再加上什麼和平政策?";
+		mes "哈哈!";
+		mes "他應該不知道為了維持和平的社會，需要留下多少的血淚吧";
+		next;
+		mes "[吉永 馬樂羅]";
+		mes "他只不過是個井底之蛙而已，";
+		mes "不過把馬樂交給憧憬和平的傻小子克勒亞";
+		next;
+		mes "[吉永 馬樂羅]";
+		mes "他那安逸的思想會讓國家更貧苦，讓百姓變軟弱，漸漸成為鄰近國家併吞的食物，擁有小土地的馬樂能夠有今天的繁榮，都是靠強大軍力作後盾的關係";
+	}
 	next;
 	if( select("我願與你並肩作戰:結束對話") == 2 )
 	{
@@ -142,37 +238,57 @@ bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 	end;
 }
 
-// General Croix
+// 克勒亞 馬樂羅
 // *********************************************************************
-bat_room,160,140,3	script	克勒亞 馬樂羅	416,{
+bat_room,160,141,3	script	克勒亞 馬樂羅	416,{
 	cutin "bat_crua1",2;
-	mes "[Prince Croix]";
-	mes "Wise adventurer, why don't you lend us your power for victory?";
+	mes "[克勒亞 馬樂羅]";
+	mes "有智慧的冒險家喔，願意助我門一輩之力嗎?";
 	next;
-	cutin "bat_crua2",2;
-	mes "[Prince Croix]";
-	mes "I do not wish to shed blood, but I have no choice but to fight for the possibility of peace and for the sake of my people.";
+	if(select("關於戰鬥的理由:關於吉永 馬樂羅")==1) {
+		cutin "bat_crua2",2;
+		mes "[克勒亞 馬樂羅]";
+		mes "馬樂的偉大國王麻勒薛 馬樂羅 7世之龍體欠安的關係，";
+		mes "陛下已下旨希望把馬樂的未來交給第3王子吉永 馬樂羅將軍或其他王子中一位";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "雖說戰鬥對身為馬樂將軍的吉永 馬樂羅比較有利，不過事情是沒有絕對的，";
+		mes "我一定要從戰鬥中獲勝，好讓百姓們遠離戰爭的災難之中";
+	}
+	else {
+		cutin "bat_crua2",2;
+		mes "[克勒亞 馬樂羅]";
+		mes "第3王子吉永 馬樂羅是馬樂的將軍，";
+		mes "握有強大兵力之馬樂國將軍，他的戰鬥指揮能力和武藝就不用多說了";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "但是依賴馬樂軍力的人之中也有反對人士，";
+		mes "那真是百姓們所希望的嗎?";
+		mes "一直以來馬樂的百姓們深受戰爭的蹂躡，再好的利刃也有折斷的一天";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "我不希望再看到血流成河的情景，所以我這次當任不讓";
+	}
 	next;
-	mes "[Prince Croix]";
-	mes "General Guillaume may have an advantage in this battle as he is the great general of Maroll, but that doesn't automatically mean he'll win. I want to win this battle so that I can grant a better future for my people.";
-	next;
-	if( select("Yes, I want to join you!:End Conversation") == 2 )
+	if( select("我願與你並肩作戰:結束對話") == 2 )
 	{
-		mes "[Prince Croix]";
-		mes "For Maroll!";
+		mes "[克勒亞 馬樂羅]";
+		mes "為了馬樂!";
 		close2;
 		cutin "",255;
 		end;
 	}
-	mes "[Prince Croix]";
-	mes "Thank you so much. I feel like I can win with the help of adventurers like you. Now, please go downstairs and join your comrades in sharpening their skills to fight the enemy!";
+	mes "[克勒亞 馬樂羅]";
+	mes "你真是很牢靠的人，";
+	mes "好!";
+	mes "請往下走，可靠又武功高強的戰士們正在等著你呢";
 	set Bat_Team,2;
 	close2;
 	cutin "",255;
 	end;
 }
 
-// Time calculation Function
+// 時間計算方程式
 // *********************************************************************
 function	script	Time2Str	{
 	set .@Time_Left, getarg(0) - gettimetick(2);
@@ -207,7 +323,7 @@ function	script	Time2Str	{
 	
 	return .@Time$;
 }
-/*
+
 // 吉本 陣營騎士 - Tierra Valley
 // *********************************************************************
 bat_room,159,178,5	script	吉本 陣營騎士#1	417,{
@@ -467,7 +583,7 @@ bat_room,172,121,1	script	Tierra Valley Officer#4	414,{
 	warp "bat_room",85,77;
 	end;
 }
-*/
+
 // Guillaune Knight - Flavius
 // *********************************************************************
 bat_room,151,178,5	script	吉本 陣營騎士#3	417,{
@@ -530,11 +646,13 @@ bat_room,148,178,5	script	瀑拉畢烏斯 傭兵行政官#1	418,{
 	}
 	if( BaseLevel < 80 )
 	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
+		mes "雖然很佩服你的勇氣願意加入吉永軍，去對抗克勒亞軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
 		close;
 	}
 
-	mes "Good luck!";
+	mes "你已經做好參戰的完全準備了!";
+	mes "快去讓克勒亞軍嚐嚐我門的厲害吧，";
+	mes "今天可以盡情吶喊我們吉永軍勝利了!";
 	close2;
 	warp "bat_room",253,94;
 	end;
@@ -561,6 +679,7 @@ bat_room,151,121,1	script	克勒亞 陣營騎士#3	413,{
 	next;
 	mes "[克勒亞 陣營騎士]";
 	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧!";
+	close;
 }
 
 // 瀑拉畢烏斯 傭兵行政官 - Croix
@@ -601,20 +720,36 @@ bat_room,148,121,1	script	瀑拉畢烏斯 傭兵行政官#2	414,{
 	}
 	if( BaseLevel < 80 )
 	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
+		mes "雖然很佩服你的勇氣願意加入克勒亞軍，去對抗吉永軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
 		close;
 	}
 
-	mes "Good luck!";
+	mes "你已經做好參戰的完全準備了!";
+	mes "快去讓吉永軍嚐嚐我門的厲害吧，";
+	mes "今天可以盡情吶喊我們克勒亞軍勝利了!";
 	close2;
 	warp "bat_room",253,77;
 	end;
 }
-/*
+
 // Guillaune Knight - Flavius
 // *********************************************************************
 bat_room,167,178,5	script	吉本 陣營騎士#4	417,{
-
+	mes "[Guillaume Knight]";
+	mes "The objective of the Flavius Battle is to score 2 points before your enemy by destryoing theur crystal.";
+	next;
+	mes "[Guillaume Knight]";
+	mes "The crystals for both armies are protected by special barricades that cannot be destroyed by direct attacks.";
+	next;
+	mes "[Guillaume Knight]";
+	mes "But they can be removed by destroying the Guardians that protect the enemy army base.";
+	next;
+	mes "[Guillaume Knight]";
+	mes "The crystals are immune to every type of skill; your physical attacks are the only choice for destroying your enemy's crystal.";
+	next;
+	mes "[Guillaume Knight]";
+	mes "Are you ready for battle? Then apply with the recruiter next to me!";
+	close;
 }
 
 // 瀑拉畢烏斯 傭兵行政官er - Guillaume
@@ -728,7 +863,7 @@ bat_room,164,121,1	script	瀑拉畢烏斯 傭兵行政官#4	414,{
 	warp "bat_room",57,77;
 	end;
 }
-*/
+
 // 吉本 陣營騎士 - KvM
 // *********************************************************************
 bat_room,143,178,5	script	吉本 陣營騎士#5	417,{
@@ -1172,15 +1307,15 @@ bat_room,253,90,0	warp	bat30	2,2,bat_room,154,149
 bat_room,253,220,0	warp	bat31	2,2,bat_room,154,149
 bat_room,253,211,0	warp	bat32	2,2,bat_room,154,149
 
-// Badges Repairman
+// 戰場修理工(台灣版本沒有)
 // *********************************************************************
-/*
+
 bat_room,138,144,5	script	修理工#戰場	99,{
 	callfunc "repairmain","修理工";
 	end;
 }
-*/
-// Badges Exchange
+
+// 戰場物品交換(改編台灣版本)
 // *********************************************************************
 
 bat_room,160,150,3	script	艾倫德克	109,{
@@ -1188,98 +1323,2491 @@ bat_room,160,150,3	script	艾倫德克	109,{
 	mes "請問您持有透過戰場所獲得的徽章嗎?";
 	mes "我負責的是換成特攻徽章和勇猛徽章物品的工作";
 	next;
-	switch( select("Check the Catalog","Exchange Bravery Badges","Exchange Valor Badges","Exchange Heroism Badges","Hmm, nothing I guess.") )
-	{
+	switch(select("換成徽章:查看目錄")) {
 		case 1:
-			mes "[Erundek]";
-			mes "We have many items, so please take a look and purchase deliberately.";
+			mes "[艾倫德克]";
+			mes "請問您要看哪一種呢?";
+			mes "各物品的詳細功能，請參考 ^3131FF目錄^000000";
+			next;
+			switch(select("武器:防具:裝飾品:消耗性物品")) {
+				case 1:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF武器^000000，";
+					mes "需要徽章的武器，共有以下幾種";
+					mes "分成^3131FF勇猛徽章專用是(勇)^000000，^3131FF特攻徽章專用是(特)^000000，提供您參考";
+					next;
+					switch(select("短劍/單手劍/雙手劍/雙手槍:手杖/鈍器/雙手斧/風魔翼飛鏢:弓/拳刃/樂器/鞭子:書籍/拳套:左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器")) {
+						case 1:
+							mes "[艾倫德克]";
+							mes "我們所準備的 ^3131FF短劍/單手劍/雙手劍/雙手槍^000000，共有以下幾種物品";
+							next;
+							switch(select("刺客的大馬士革短劍(勇):刺客的大馬士革短劍(特):劍士的厚刃劍(勇):劍士的厚刃劍(特):突襲隊長的亞藍斯之劍(勇):突襲隊長的亞藍斯之劍(特):突襲隊長的長矛:突襲隊長的騎士長矛")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF刺客的大馬士革短劍(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+										case 1:
+											mes "[艾倫德克]";
+											mes "您要再看看一下嗎?";
+											close;
+										case 2:
+											mes "[艾倫德克]";
+											mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(勇)^000000嗎?";
+											next;
+											switch(select("要:不要")){
+												case 1:
+													if(countitem(7828)<100){
+														mes "[艾倫德克]";
+														mes "交換所需的徽章數量不足呢";
+														close;
+													}else{
+														mes "[艾倫德克]";
+														mes "謝謝光臨";
+														close2;
+														getitem 13036,1;
+														delitem 7828,100;
+														end;
+													}
+												case 2:
+													mes "[艾倫德克]";
+													mes "您要再看看一下嗎?";
+													close;
+											}
+									}
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF刺客的大馬士革短劍(特)^000000";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13037,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}	
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF劍士的厚刃劍(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+														mes "[艾倫德克]";
+														mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13410,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF劍士的厚刃劍(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13411,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+											}
+									}
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF突襲隊長的亞藍斯之劍(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF突襲隊長的亞藍斯之劍(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1183,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 6:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF突襲隊長的亞藍斯之劍(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF突襲隊長的亞藍斯之劍(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1184,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 7:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF突襲隊長的長矛^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF突襲隊長的長矛^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1425,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 8:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF突襲隊長的騎士長矛^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF突襲隊長的騎士長矛^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1482,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+							}
+						case 2:
+							mes "[艾倫德克]";
+							mes "艾倫德克 : 我們所準備的 ^3131FF手杖/鈍器/雙手斧/風魔翼飛鏢^000000，共有以下幾種物品";
+							next;
+							switch(select("魔法師的魔杖(勇):魔法師的魔杖(特):強力的恢復手杖:迅速的恢復手杖:鬥士的日星錘(勇):鬥士的日星錘(特):狂戰士的巨斧(勇):狂戰士的巨斧(特):戰鬥風魔翼飛鏢(勇):戰鬥風魔翼飛鏢(特)")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF魔法師的魔杖(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF魔法師的魔杖(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1632,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF魔法師的魔杖(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF魔法師的戰杖(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1633,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF強力的恢復手杖^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF強力的恢復手杖^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1634,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF迅速的恢復手杖^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF迅速的恢復手杖^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1635,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF鬥士的日星錘(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF鬥士的日星錘(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1542,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 6:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF鬥士的日星錘(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "^FF0000特攻徽章 100個^000000來購買 ^3131FF鬥士的日星錘(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1543,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 7:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF狂戰士的巨斧(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF狂戰士的巨斧(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1379,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 8:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF狂戰士的巨斧(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF狂戰士的巨斧(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1380,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 9:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥風魔翼飛鏢(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF戰鬥風魔翼飛鏢(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13305,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 10:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥風魔翼飛鏢(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF戰鬥風魔翼飛鏢(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13306,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+							}
+						case 3:
+							mes "[艾倫德克]";
+							mes "我們所準備的 ^3131FF弓/拳刃/樂器/鞭子^000000，共有以下幾種物品";
+							next;
+							switch(select("戰鬥十字弓(勇):戰鬥十字弓(特):屠殺的拳刃(勇):屠殺的拳刃(特):戰場的吉他(勇):戰場的吉他(特):戰鬥細刃鞭子(勇):戰鬥細刃鞭子(特)")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥十字弓(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF戰鬥十字弓(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1738,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥十字弓(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF戰鬥十字弓(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1739,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF屠殺的拳刃(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "^FF0000勇猛徽章 100個^000000來購買 ^3131FF屠殺的拳刃(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1279,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF屠殺的拳刃(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "^FF0000特攻徽章 100個^000000來購買 ^3131FF屠殺的拳刃(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1280,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰場的吉他(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF戰場的吉他(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1923,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 6:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰場的吉他(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF戰場的吉他(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1924,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 7:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥細刃鞭子(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF戰鬥細刃鞭子(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1977,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 8:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥細刃鞭子(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF戰鬥細刃鞭子(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1978,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+							}
+						case 4:
+							mes "[艾倫德克]";
+							mes "我們所準備的 ^3131FF書籍/拳套^000000，共有以下幾種物品";
+							next;
+							switch(select("孫子兵法(勇):孫子兵法(特):鬥士的戰鬥昇龍拳套(勇):鬥士的戰鬥昇龍拳套(特)")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF孫子兵法(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF孫子兵法(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1574,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF孫子兵法(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF孫子兵法(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1575,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF鬥士的戰鬥昇龍拳套(勇)^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF鬥士的戰鬥昇龍拳套(勇)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1823,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF鬥士的戰鬥昇龍拳套(特)^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF鬥士的戰鬥昇龍拳套(特)^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 1824,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+							}
+						case 5:
+							mes "[艾倫德克]";
+							mes "我們所準備的 ^3131FF左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器^000000，共有以下幾種物品";
+							next;
+							switch(select("破壞性的左輪手槍:快速的布林其來福槍:暴力的格林機關槍:敏銳的霰彈槍:暴力的榴彈發射器")) {
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF破壞性的左輪手槍^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF破壞性的左輪手槍^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13108,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF快速的布林其來福槍^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF快速的布林其來福槍^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13171,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF暴力的格林機關槍^000000，";
+									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF暴力的格林機關槍^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7828)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13172,1;
+													delitem 7828,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF敏銳的霰彈槍^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000勇特攻徽章 100個^000000來購買 ^3131FF敏銳的霰彈槍^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13173,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF暴力的榴彈發射器^000000，";
+									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									switch(select("不交換:交換")){
+									case 1:
+										mes "[艾倫德克]";
+										mes "您要再看看一下嗎?";
+										close;
+									case 2:
+										mes "[艾倫德克]";
+										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF暴力的榴彈發射器^000000嗎?";
+										next;
+										switch(select("要:不要")){
+											case 1:
+												if(countitem(7829)<100){
+													mes "[艾倫德克]";
+													mes "交換所需的徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 13174,1;
+													delitem 7829,100;
+													end;
+												}
+											case 2:
+												mes "[艾倫德克]";
+												mes "您要再看看一下嗎?";
+												close;
+										}
+									}
+							}
+					}
+				case 2:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF防具^000000，";
+					mes "需要徽章的防具，共有以下幾種";
+					next;
+					switch(select("披肩類/靴子:鎧甲")){
+						case 1:
+							switch(select("司令官的_斗篷:指揮官的斗篷:保安官的斗篷:戰鬥重靴:軍靴:戰鬥短靴")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF司令官的_斗篷^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2538,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2538,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF指揮官的斗篷^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2539,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2539,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF保安官的斗篷^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2540,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2540,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥重靴^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2435,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2435,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF軍靴^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2436,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2436,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 6:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF戰鬥短靴^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 50個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF50個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2437,1;
+													delitem 7828,50;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<50){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2437,1;
+													delitem 7829,50;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+							}
+						case 2:
+							switch(select("突襲隊長的鋼鐵鎧甲:精銳工兵的鎧甲:刺客的外袍:魔法師的戰鬥外袍:醫護兵的外袍:精銳弓兵的外套:精銳射手的外套")){
+								case 1:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF突襲隊長的鋼鐵鎧甲^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2376,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2376,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 2:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF精銳工兵的鎧甲^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2377,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2377,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 3:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF刺客的外袍^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2378,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2378,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 4:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF魔法師的戰鬥外袍^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2379,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2379,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 5:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF醫護兵的外袍^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2380,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2380,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 6:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF精銳弓兵的外套^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2381,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2381,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+								case 7:
+									mes "[艾倫德克]";
+									mes "您選的是^3131FF精銳射手的外套^000000，";
+									mes "此物品需要 ^FF0000勇猛或是特攻徽章 80個^000000，";
+									mes "請問您要交換嗎?";
+									next;
+									if(select("不交換:交換")==2){
+										mes "[艾倫德克]";
+										mes "請問您要與哪一種徽章交換呢?";
+										mes "交換所需的數量是 ^3131FF80個^000000";
+										next;
+										switch(select("勇猛徽章:特攻徽章:取消交換")){
+											case 1:
+												if(countitem(7828)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的勇猛徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2382,1;
+													delitem 7828,80;
+													end;
+												}
+											case 2:
+												if(countitem(7829)<80){
+													mes "[艾倫德克]";
+													mes "交換所需的特攻徽章數量不足呢";
+													close;
+												}else{
+													mes "[艾倫德克]";
+													mes "謝謝光臨";
+													close2;
+													getitem 2382,1;
+													delitem 7829,80;
+													end;
+												}
+											case 3:
+												mes "[艾倫德克]";
+												mes "您已經取消交換了";
+												close;
+										}
+									}
+									mes "[艾倫德克]";
+									mes "您要再看看一下嗎?";
+									close;
+							}
+					}
+				case 3:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF裝飾品^000000，";
+					mes "需要徽章的武功勳章，共分為以下幾種職業系列";
+					next;
+					switch(select("神槍手:劍士/拳聖:盜賊:服事:魔法師:弓箭手:商人")){
+						case 1:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF保安官勳章^000000，";
+							mes "這是神槍手專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2733,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2733,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 2:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是劍士系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2720,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2720,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 3:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是盜賊系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2721,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2721,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 4:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是服事系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2722,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2722,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 5:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是魔法師系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2723,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2723,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 6:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是弓箭手系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2724,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2724,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 7:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF戰功勳章^000000，";
+							mes "這是商人系列專用物品，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 500個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF500個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2725,1;
+											delitem 7828,500;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<500){
+											mes "[艾倫德克]";
+											mes "交換所需的特攻徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 2725,1;
+											delitem 7829,500;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+					}
+				case 4:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF消耗性物品^000000，";
+					mes "需要徽章的消耗性物品，共有以下幾種";
+					next;
+					switch(select("救命丹(紅):救命丹(黃):軍備乾糧A:軍備乾糧B:軍備乾糧C")) {
+						case 1:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF救命丹(紅)^000000，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 10個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF10個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12269,1;
+											delitem 7828,10;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12269,1;
+											delitem 7829,10;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 2:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF救命丹(黃)^000000，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 10個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF10個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12270,1;
+											delitem 7828,10;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12270,1;
+											delitem 7829,10;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 3:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF軍備乾糧A^000000，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 5個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF5個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<5){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12271,1;
+											delitem 7828,5;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<5){
+											mes "[艾倫德克]";
+											mes "交換所需的徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12271,1;
+											delitem 7829,5;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 4:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF軍備乾糧B^000000，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 10個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF10個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12272,1;
+											delitem 7828,10;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12272,1;
+											delitem 7829,10;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						case 5:
+							mes "[艾倫德克]";
+							mes "您選的是^3131FF軍備乾糧C^000000，";
+							mes "此物品需要 ^FF0000勇猛或是特攻徽章 10個^000000，";
+							mes "請問您要交換嗎?";
+							next;
+							if(select("不交換:交換")==2){
+								mes "[艾倫德克]";
+								mes "請問您要與哪一種徽章交換呢?";
+								mes "交換所需的數量是 ^3131FF10個^000000";
+								next;
+								switch(select("勇猛徽章:特攻徽章:取消交換")){
+									case 1:
+										if(countitem(7828)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的勇猛徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12273,1;
+											delitem 7828,10;
+											end;
+										}
+									case 2:
+										if(countitem(7829)<10){
+											mes "[艾倫德克]";
+											mes "交換所需的徽章數量不足呢";
+											close;
+										}else{
+											mes "[艾倫德克]";
+											mes "謝謝光臨";
+											close2;
+											getitem 12273,1;
+											delitem 7829,10;
+											end;
+										}
+									case 3:
+										mes "[艾倫德克]";
+										mes "您已經取消交換了";
+										close;
+								}
+							}
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+					}
+			}
+		case 2:
+			mes "[艾倫德克]";
+			mes "我們備有相當豐富的物品，請慢慢瀏覽後仔細的挑選吧";
 			close2;
 			Readbook 11010,1;
 			end;
-		case 5:
-			mes "[Erundek]";
-			mes "As you wish.";
-			mes "See you later.";
-			close;
-		case 2: // Bravery Badges
-			mes "[Erundek]";
-			mes "So you want to exchange ^0000FFBravery Badges^000000 from the Battle of Tierra Valley.";
-			mes "What kind of item do you want to exchange?";
-			next;
-			deletearray .@Item_DB[0],127;
-			set .@Badge, 7828;
-
-			switch( select("Weapons:Garment:Footgear:Armor:Accesory") )
-			{
-				case 1: setarray .@Item_DB[0],13036,13411,1425,1632,1634,1543,1924,1978,1574,1824,1183,1380,13305,1279,1739,13108,13172; set .@Value, 100; break;
-				case 2: setarray .@Item_DB[0],2538,2539,2540; set .@Value, 50; break;
-				case 3: setarray .@Item_DB[0],2435,2436,2437; set .@Value, 50; break;
-				case 4: setarray .@Item_DB[0],2376,2377,2378,2379,2380,2381,2382; set .@Value, 80; break;
-				case 5: setarray .@Item_DB[0],2720,2721,2722,2723,2724,2725,2733; set .@Value, 500; break;
-			}
-			
-			break;
-		case 3: // Valor Badges
-			mes "[Erundek]";
-			mes "So you want to exchange ^FF0000Valor Badges^000000 from the Battle of Flavius.";
-			mes "What kind of item do you want to exchange?";
-			next;
-			deletearray .@Item_DB[0],127;
-			set .@Badge, 7829;
-
-			switch( select("Weapons:Garment:Footgear:Armor:Accesory") )
-			{
-				case 1: setarray .@Item_DB[0],13037,13410,1633,1635,1542,1923,1977,1575,1823,1184,1482,1379,13306,1280,1738,13171,13173,13174; set .@Value, 100; break;
-				case 2: setarray .@Item_DB[0],2538,2539,2540; set .@Value, 50; break;
-				case 3: setarray .@Item_DB[0],2435,2436,2437; set .@Value, 50; break;
-				case 4: setarray .@Item_DB[0],2376,2377,2378,2379,2380,2381,2382; set .@Value, 80; break;
-				case 5: setarray .@Item_DB[0],2720,2721,2722,2723,2724,2725,2733; set .@Value, 500; break;
-			}
-			
-			break;
-		case 4: // Heroism Badge
-			mes "[Erundek]";
-			mes "So you want to exchange ^FFA500Heroism Badges^000000 from the Battle of Kriger Von Midgard.";
-			mes "This shop is not available at the moment.";
-			close;
 	}
-	
-	mes "[Erundek]";
-	mes "What item do you want to exchange?";
-	mes "If you are not sure, check the catalog.";
-	next;
-
-	set .@Menu$, "";
-	set .@Count, getarraysize(.@Item_DB);
-	for( set .@i, 0; .@i < .@Count; set .@i, .@i + 1 )
-		set .@Menu$, .@Menu$ + getitemname(.@Item_DB[.@i]) + ":";
-
-	set .@Item_ID, .@Item_DB[select(.@Menu$) - 1];
-
-	mes "[Erundek]";
-	mes "Would you like to exchange ^FF0000" + .@Value + " " + getitemname(.@Badge) + "^000000 for a ^0000FF" + getitemname(.@Item_ID) + "^000000?";
-	next;
-	mes "Remember, Battleground Reward Items are ^FF0000Character Bound^000000.";
-	mes "Are you sure you want this item?";
-	next;
-	
-	if( select("Yes:No") == 2 )
-	{
-		mes "[Erundek]";
-		mes "Do you need more time to check the items?";
-		close;
-	}
-	
-	if( countitem(.@Badge) < .@Value )
-	{
-		mes "[Erundek]";
-		mes "Im sorry, but you don't have enough badges to exchange.";
-		close;
-	}
-	
-	delitem .@Badge,.@Value;
-	getitem .@Item_ID,1;
-	mes "[Erundek]";
-	mes "Thank you for exchanging.";
-	close;
 }
