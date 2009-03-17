@@ -3,7 +3,7 @@
 //===== By: ================================================== 
 //= SinSloth
 //===== Current Version: ===================================== 
-//= 1.7+(0.1)
+//= 1.8
 //===== Compatible With: ===================================== 
 //= eAthena
 //===== Description: ========================================= 
@@ -17,8 +17,10 @@
 //= 1.5 Fixed missing close2 in 雷貝依勒布 多. [L0ne_w0lf]
 //= 1.6 Corrected mismatched variables. [L0ne_W0lf]
 //= 1.7 Replaced effect numerics with constants. [Samuray22]
+//= 1.8 Corrected how exp reward is applied. [L0ne_W0lf]
 //= +(0.1) 修正與 庫阿克 多倫 對話時，拿巴風特娃娃沒有反應的問題
 //=        變更語言，繁體中文-台灣 [笨冰]
+//= +(0.2) 中文化史靴任務低於50人時，雷貝依勒布 多的對話 [笨冰]
 //============================================================
 
 prt_castle,44,151,0	script	雷貝依勒布 多	56,{
@@ -54,87 +56,110 @@ prt_castle,44,151,0	script	雷貝依勒布 多	56,{
 	}
 	if ($God1 < 50) {
 		mes "[雷貝依勒布 多]";
-		mes "We are Crusaders that have";
-		mes "been training in preparation";
-		mes "for the Holy War that is to come.";
+		mes "我們是十字軍，是追隨奧丁的旨意為聖戰做準備的人，";
+		mes "就像千年前也是那樣，總有一天魔族們會重新來討伐的，";
 		next;
 		mes "[雷貝依勒布 多]";
-		mes "As our forefathers have";
-		mes "done a thousand years ago, we shall vanquish the hordes of Demons when the day comes.";
+		mes "你，對於正在準備聖戰的我們有什麼疑問，";
+		mes "就盡管開口問我吧";
 		next;
 		mes "[雷貝依勒布 多]";
-		mes "If you have any questions about Crusaders, feel free to ask me.";
-		mes "I may be too old and weak for fighting, but I will spread our message as much as I can.";
+		mes "我，雷貝依勒布，已上了年級雖然是個微弱的存在，";
+		mes "但是一直到我死的那一刻為止，我會不停地宣導世人為聖戰做神聖的準備的";
 		next;
-		switch(select("What is Holy Cross?:What is Grand Cross?:What is Sacrifice?:What is 魔法鐵鏈?")) {
+		switch(select("有關聖十字攻擊?:有關聖十字審判?:有關犧牲?:有關魔法鐵鍊?")) {
 		case 1:
 			mes "[雷貝依勒布 多]";
-			mes "Holy Cross is the first manifestation of a Crusader's faith. By making the sign of the cross, Crusader's can inflict a holy attack on their enemies.";
+			mes "有關聖十字攻擊是，發揮自己具體信任的第一個階段，";
+			mes "用武器神聖的十字架，畫向敵人，增加對神的信任，";
+			mes "很自然地我們的信任會實現，所做的攻擊具有聖屬性，";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "Monsters that are weak against holiness, particularly the Undead, will be blinded by the light of the Holy Cross. All they can do is wait for holy judgment.";
+			mes "對於聖屬性沒有免疫力者，以及違抗神的旨意者，像是不死系";
+			mes "會限入黑暗狀態，看不見任何東西，只能等待神的審判來臨";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "Based on our latest research,";
-			mes "the Holy Cross can inflict 4.5 times more damage than a normal attack once it is mastered.";
+			mes "根據前輩們十字軍，使用聖十字攻擊的結果，依據一般的統計，";
+			mes "最終攻擊效率比普通一般攻擊效率，有4.5 倍的效果";
 			break;
 		case 2:
 			mes "[雷貝依勒布 多]";
-			mes "Grand Cross...!";
-			mes "The righteous fury of God is";
-			mes "given form in this destructive skill.";
+			mes "聖十字審判! 那是神的震怒!";
+			mes "神的審判!";
+			mes "對於違反神的旨意的人，神足以以震怒的心來吞沒他們，";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "God grants us his power so that";
-			mes "we may punish the forces of evil, and one's rage is embodied in a giant crucifix of power.";
+			mes "我們看到了神的旨意，這足以抓取我們微弱的身體，";
+			mes "對於違反神的旨意的人，會給予審判的力量";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "The power of the crucifix of light can damage the enemy three times. Each strike will have five times the strength of your normal attacks.";
+			mes "只要是把違抗神的旨意的人，消滅的心極度增加的話，";
+			mes "神的震怒可用我們微弱的身體來承受";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "However, when Crusaders use Grand Cross, they must exercise extreme caution. The human body is too weak to fully embrace the will of God.";
+			mes "十字軍身體居放的神的震怒，以巨大的十字架具體化形成，";
+			mes "並且將神的旨意告訴所有接觸到十字架的人";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "Therefore, using this skill, will cause the Crusader to suffer from damage. However, this damage can";
-			mes "be reduced to half with Faith.";
+			mes "'居放在微弱身體的我的震怒，會把周邊所有的東西全滅，那十字架的力量等於把你混合成5次的力量一樣，重複3次以上也不會有不足的地方'";
+			next;
+			mes "[雷貝依勒布 多]";
+			mes "這句話的意思是，5倍的攻擊力可做3次的攻擊，";
+			mes "不過，有一點要注意，就是承受神的震怒。要實現的話，對我們的身體來說太微弱了";
+			next;
+			mes "[雷貝依勒布 多]";
+			mes "所以說，對使用聖十字審判的施展者，對自己的肉體也同樣的會受到傷害力，";
+			mes "我們把這個是對神的一片忠誠的信任，把他化為最小，可把傷害力減低一半";
+			next;
+			mes "[雷貝依勒布 多]";
+			mes "即使是這樣，在巨大神的震怒面前，我們的肉體是太微弱了...";
 			break;
 		case 3:
 			mes "[雷貝依勒布 多]";
-			mes "In practicing what we preach, Crusaders choose to protect";
-			mes "others by bearing the suffering of their fellow man.";
+			mes "以犧牲，信任為基石，做聖戰的準備，這些就是我們十字軍最重要的信念";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "The Sacrifice skill allows Crusaders to keep their comrades safe from harm by receiving the damage that was intended for them.";
+			mes "而其中，犧牲可以說是十字軍最能表現出為他人奉獻，實踐對神的旨意所表現出的行動";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "It is the greatest demonstration of faith,";
-			mes "as well as of love for your comrades. Such an attitude is essential for a servant of God!";
+			mes "對十字軍來說，在犧牲裡放上自己的心，為了要保護的人，把他的心增幅的話，";
+			mes "將倍保護的人所遭遇的所有痛苦，轉移到自己的身上";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "However, if the people you want to protect stray away from you, you cannot use the Sacrifice skill for them unless they are close to you again.";
+			mes "這就是犧牲，這才是追隨神的旨意者，應該要擁有的情操!";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "As you visualize the suffering of those you want to protect, you'll never hesitate to sacrifice yourself.";
+			mes "不過...距離太遙遠，想要被保護的人看不見的話，";
+			mes "強烈的回想被保護的人圖像，若不能把心增幅的話...";
+			mes "缺點就是不能使用把痛苦轉移到自己身上的犧牲技能";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "Thank you, God, for granting me with the power to protect my people.";
+			mes "犧牲!!就是感覺附近想要保護者的氣息與體溫，那溫暖的感覺並且強烈的想像其所受的痛苦，";
+			mes "再將其痛苦轉移到自己身上的技能，這就是準備聖戰者最真誠的情操!";
+			next;
+			mes "[雷貝依勒布 多]";
+			mes "真是太感謝您賜與我們，保護我所愛的人，以及愛我保護所有人的能力，";
+			mes "啊啊...我敬愛的神啊!!";
 			break;
 		case 4:
 			mes "[雷貝依勒布 多]";
-			mes "魔法鐵鏈 is the essence of 雷神腰帶 which I have been researching.";
+			mes "所謂魔法鐵鍊是，本人正在研究製造雷神腰帶的必要要素，";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "It's the only binding strong enough that will allow a human to wear Megingjard around his waist.";
+			mes "為了要配帶雷神腰帶這個神級物品，這是一定要需要的材料";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "Although I can no longer fight, I've been studying how to create Gleipnir for years. I will be more than willing to create it for you if you can bring me...";
+			mes "假如你帶來，";
 			next;
 			mes "[雷貝依勒布 多]";
-			mes "^0000FF4 Cat Tread^000000,";
-			mes "^0000FF5 Woman's Moustache^000000,";
-			mes "^0000FF4 Root of Stone^000000,";
-			mes "^0000FF3 Sputum of Bird^000000 and";
-			mes "^0000FF3 Sinew of Bear^000000.";
+			mes "^0000FF貓腳步聲音 4個^000000和";
+			mes "^0000FF女人的鬍鬚 5個^000000，";
+			mes "^0000FF石頭的根 4個^000000，";
+			mes "^0000FF鳥的口水 3個^000000，";
+			mes "^0000FF熊的筋 3個^000000";
+			next;
+			mes "[雷貝依勒布 多]";
+			mes "的話，不管什麼時候我都可以幫你製作的";
 			break;
 		}
 	}
