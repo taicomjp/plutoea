@@ -4,37 +4,38 @@
 // -------------------------------------------
 // - 牛奶商人 腳本 -
 // ------------------------------------------
-// 版本：1.3 [蝴蝶君]
+// 版本：1.3
 //=========================
 
-prontera,73,140,0	script	牛奶商人	86,{
+prontera,73,140,0	script	牛奶商人#prt	86,{
 	mes "[牛奶商人]";
-	mes "只要你有一個空瓶子和15個金幣，就可以到我這裡來換取一瓶牛奶，怎麼樣，想換嗎？";
+	mes "若收集帶來空瓶的話，只要付15";
+	mes "金錢可買到牛奶 1瓶!!";
 	next;
-	if (select("幫我把所有空瓶都換成牛奶:不了，謝謝") == 1) {
-		if (countitem(713) <= 0) {
-			mes "[牛奶商人]";
-			mes "對不起，你沒有足夠的空瓶子。";
+	if (select("全部交換 空瓶.:放棄.") == 1) {
+		if (countitem(713)) {
+			set .@bottles,countitem(713);
+			set .@total_weight,.@bottles * 50;
+			set .@total_cost,.@bottles * 15;
+			set .@now_weight,maxweight-weight;
+			if (zeny < .@Total_cost) {
+				mes "[牛奶商人]";
+				mes "換取一瓶牛奶需要20個金幣，你至少要有" + .@total_cost + "金幣！";
+				close;
+			}
+			if (.@now_weight < .@total_weight) {
+				mes "[牛奶商人]";
+				mes "你必須先拿掉一些東西，因為你會負重";
+				close;
+			}
+			set zeny,zeny-.@total_cost;
+			delitem 713,.@bottles; //空瓶
+			getitem 519,.@bottles; //牛奶
 			close;
 		}
-		set .@bottles,countitem(713);
-		set .@total_weight,.@bottles * 50;
-		set .@total_cost,.@bottles * 15;
-		set .@now_weight,maxweight-weight;
-		if (zeny < .@Total_cost) {
-			mes "[牛奶商人]";
-			mes "換取一瓶牛奶需要20個金幣，你至少要有" + .@total_cost + "金幣！";
-			close;
-		}
-		if (.@now_weight < .@total_weight) {
-			mes "[牛奶商人]";
-			mes "你必須先拿掉一些東西，因為你會負重";
-			close;
-		}
-		set zeny,zeny-.@total_cost;
-		delitem 713,.@bottles; //空瓶
-		getitem 519,.@bottles; //牛奶
-		close;
+		mes "[牛奶商人]";
+		mes "那，歡迎來有空瓶的顧客!!";
+		mes "....沒有人嗎?";
 	}
 	close;
 }
