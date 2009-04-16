@@ -1,22 +1,23 @@
-//===== eAthena Script ======================================= 
+//===== eAthena Script =======================================
 //= Archer Class Tutorial and Job Specific Quest
-//===== By: ================================================== 
+//===== By: ==================================================
 //= Fix up by Jukka
-//===== Current Version: ===================================== 
-//= 1.5
-//===== Compatible With: ===================================== 
+//===== Current Version: =====================================
+//= 1.6
+//===== Compatible With: =====================================
 //= eAthena SVN (Testet in Trunk 88xx)
-//===== Description: ========================================= 
+//===== Description: =========================================
 //=
-//===== Additional Comments: ================================= 
+//===== Additional Comments: =================================
 //= 1.0 Fully working
 //= 1.1 optimized [Lupus] 1.2 fixed Weight check
 //=	TODO: Test, Add correct misceffects numbers
-//= 1.3 Moved 卡巴克 大師 (overlapped Phantasmic Arrow
+//= 1.3 Moved Master Kavaruk (overlapped Phantasmic Arrow
 //=	Skill quest NPC) [Lupus]
 //= 1.4 Fixed experience gains to match upcoming rate adjustments. [SinSloth]
 //= 1.5 Fixed bad NPC header data to comply with rev. 11603. [L0ne_W0lf]
-//============================================================ 
+//= 1.6 Fixed infinate loop. (bugreport:2393) [L0ne_W0lf]
+//============================================================
 
 
 //=================================================Bard 傑弟====================================================
@@ -1145,6 +1146,7 @@ pay_arche,84,139,3	script	西滋諾	727,{
 	mes "呀- 啊- !!";
 	mes "二連矢- !!!";
 	//misceffect EF_HIT2;
+	donpcevent "#靶子::OnHit2";
 	next;
 	mes "[西滋諾]";
 	mes "所謂的弓箭手，就是";
@@ -1312,6 +1314,7 @@ pay_arche,84,139,3	script	西滋諾	727,{
 						mes "anything else that";
 						mes "you want to ask me?";
 						next;
+						set .@exitwhile,1;
 						break;
 					}
 				}
@@ -1354,7 +1357,14 @@ pay_arche,84,139,3	script	西滋諾	727,{
 }
 
 //=================================================Target====================================================
-pay_arche,76,135,3	script	Target#Target	111,{ end; }
+pay_arche,76,135,3	script	#靶子	111,{
+	end;
+OnHit2:
+	misceffect EF_HIT2;
+	sleep2 200;
+	misceffect EF_HIT2;
+	end;
+}
 
 //=================================================Acolyte====================================================
 mjolnir_11,27,223,3	script	Acolyte#tu	95,{
