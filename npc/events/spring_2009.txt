@@ -1,14 +1,14 @@
-//========================
+//==========================================
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // -----------------------------------------
 // - TRO 2009 迎春活動 -
-//========================
-//= 版本：1.6 [笨冰]
-//========================
+//==========================================
+//= 版本：1.7 [笨冰]
+//==========================================
 
 //----------------------------------------------------------
-// 時間控制項
+//時間控制項
 //----------------------------------------------------------
 pay_arche,1,1,0	script	08spring_timer	-1,{
 OnInit:
@@ -20,14 +20,15 @@ OnEventPy:
 	enablenpc "花樹#08spring_py02";
 	set $@08springevent,1;
 	donpcevent "花樹#08spring_py02::OnUnhide";
-	sleep2 1830000;
+	sleep2 1800100;
 	set $@08springevent,0;
 	donpcevent "花樹#08spring_py02::OnHide";
 	disablenpc "花樹#08spring_py02";
-	sleep2 rand(10800000,21600000);
+	sleep2 5400000;
 	goto OnEventPy;
 	end;
 OnEventPr:
+	sleep2 5400000;
 	enablenpc "花樹#08spring_prb01";
 	enablenpc "花樹#08spring_prb02";
 	enablenpc "花樹#08spring_prb03";
@@ -37,7 +38,7 @@ OnEventPr:
 	donpcevent "花樹#08spring_prb02::OnUnhide";
 	donpcevent "花樹#08spring_prb03::OnUnhide";
 	donpcevent "花樹#08spring_prb04::OnUnhide";
-	sleep2 1300000;
+	sleep2 1800100;
 	set $@08seventpr,0;
 	donpcevent "花樹#08spring_prb01::OnHide";
 	donpcevent "花樹#08spring_prb02::OnHide";
@@ -47,12 +48,11 @@ OnEventPr:
 	disablenpc "花樹#08spring_prb02";
 	disablenpc "花樹#08spring_prb03";
 	disablenpc "花樹#08spring_prb04";
-	sleep2 rand(7200000,10800000);
 	goto OnEventPr;
 	end;
 }
 //----------------------------------------------------------
-// 花樹
+//花樹
 //----------------------------------------------------------
 prontera,172,294,0	script	花樹#08spring_pr01	111,{
 	if ($@08seventpr) {
@@ -231,31 +231,27 @@ OnEffect:
 //----------------------------------------------------------
 //掉落櫻花樹枝
 //----------------------------------------------------------
-//每二至三小時，有二十至三十分鐘的時間會隨機掉落櫻花樹枝
+//每一小時三十分鐘，有三十分鐘的時間會隨機掉落櫻花樹枝(普隆得拉)
 //----------------------------------------------------------
 prontera,172,294,0	script	花樹#08spring_prb01	-1,{
 	end;
 OnMake:
 	makeitem 12310,1,"prontera",172,290;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	makeitem 12310,1,"prontera",169,294;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	makeitem 12310,1,"prontera",169,294;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	makeitem 12310,1,"prontera",172,297;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	makeitem 12310,1,"prontera",172,297;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	sleep2 100000;
-	donpcevent "花樹#08spring_pr01::OnEffect";
-	makeitem 12310,1,"prontera",169,294;
+	set .@make,1;
+	while(1) {
+		sleep2 120000;
+		set .@make,.@make+1;
+		donpcevent "花樹#08spring_pr01::OnEffect";
+		set .@m1,rand(2);
+		if (.@m1) {
+			set .@m2,rand(3);
+			if (.@m2==1) makeitem 12310,1,"prontera",169,294;
+			if (.@m2==2) makeitem 12310,1,"prontera",172,297;
+			else makeitem 12310,1,"prontera",172,290;
+		}
+		break;
+	if (.@make==16)	end;
+	}
 	end;
 OnUnhide:
 	donpcevent "花樹#08spring_pr01::OnEffect";
@@ -269,26 +265,22 @@ OnHide:
 prontera,172,282,0	script	花樹#08spring_prb02	-1,{
 	end;
 OnMake:
-	makeitem 12310,1,"prontera",169,282;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	makeitem 12310,1,"prontera",169,282;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
 	makeitem 12310,1,"prontera",172,279;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	makeitem 12310,1,"prontera",172,285;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	makeitem 12310,1,"prontera",172,285;
-	sleep2 100000;
-	donpcevent "花樹#08spring_pr02::OnEffect";
-	makeitem 12310,1,"prontera",169,282;
+	set .@make,1;
+	while(1) {
+		sleep2 120000;
+		set .@make,.@make+1;
+		donpcevent "花樹#08spring_pr02::OnEffect";
+		set .@m1,rand(2);
+		if (.@m1) {
+			set .@m2,rand(3);
+			if (.@m2==1) makeitem 12310,1,"prontera",169,282;
+			if (.@m2==2) makeitem 12310,1,"prontera",172,279;
+			else makeitem 12310,1,"prontera",172,285;
+		}
+		break;
+	if (.@make==16)	end;
+	}
 	end;
 OnUnhide:
 	donpcevent "花樹#08spring_pr02::OnEffect";
@@ -303,25 +295,21 @@ prontera,139,282,0	script	花樹#08spring_prb03	-1,{
 	end;
 OnMake:
 	makeitem 12310,1,"prontera",140,279;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	makeitem 12310,1,"prontera",140,284;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	makeitem 12310,1,"prontera",140,279;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	makeitem 12310,1,"prontera",140,284;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	makeitem 12310,1,"prontera",142,281;
-	sleep2 100000;
-	donpcevent "花樹#08spring_pr03::OnEffect";
-	makeitem 12310,1,"prontera",142,281;
+	set .@make,1;
+	while(1) {
+		sleep2 120000;
+		set .@make,.@make+1;
+		donpcevent "花樹#08spring_pr03::OnEffect";
+		set .@m1,rand(2);
+		if (.@m1) {
+			set .@m2,rand(3);
+			if (.@m2==1) makeitem 12310,1,"prontera",140,284;
+			if (.@m2==2) makeitem 12310,1,"prontera",142,281;
+			else makeitem 12310,1,"prontera",172,285;
+		}
+		break;
+	if (.@make==16)	end;
+	}
 	end;
 OnUnhide:
 	misceffect EF_MAPPILLAR2;
@@ -337,24 +325,21 @@ prontera,139,294,0	script	花樹#08spring_prb04	-1,{
 	end;
 OnMake:
 	makeitem 12310,1,"prontera",137,294;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	makeitem 12310,1,"prontera",139,290;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	makeitem 12310,1,"prontera",140,297;
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	sleep2 180000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	makeitem 12310,1,"prontera",140,297;
-	sleep2 100000;
-	donpcevent "花樹#08spring_pr04::OnEffect";
-	makeitem 12310,1,"prontera",139,290;
+	set .@make,1;
+	while(1) {
+		sleep2 120000;
+		set .@make,.@make+1;
+		donpcevent "花樹#08spring_pr04::OnEffect";
+		set .@m1,rand(2);
+		if (.@m1) {
+			set .@m2,rand(3);
+			if (.@m2==1) makeitem 12310,1,"prontera",137,294;
+			if (.@m2==2) makeitem 12310,1,"prontera",139,290;
+			else makeitem 12310,1,"prontera",140,297;
+		}
+		break;
+	if (.@make==16)	end;
+	}
 	end;
 OnUnhide:
 	donpcevent "花樹#08spring_pr04::OnEffect";
@@ -364,7 +349,11 @@ OnHide:
 	misceffect 16;
 	end;
 }
-
+//----------------------------------------------------------
+//掉落櫻花樹枝
+//----------------------------------------------------------
+//每三小時，有三十分鐘的時間會隨機掉落櫻花樹枝(斐揚)
+//----------------------------------------------------------
 pay_arche,76,136,0	script	花樹#08spring_py02	-1,{
 	end;
 OnMake:
@@ -456,9 +445,9 @@ OnHide:
 	end;
 }
 //----------------------------------------------------------
-// 裴雷斯
+//裴雷斯
 //----------------------------------------------------------
-// 斐揚的花樹發光時，將無法對話
+//斐揚的花樹發光時，將無法對話
 //----------------------------------------------------------
 pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 	if ($@08springevent) {
