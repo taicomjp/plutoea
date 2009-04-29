@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 騎士 轉職腳本 - 
 //===================================
-// 版本：2.7
+// 版本：2.8
 //===================================
 
 prt_in,88,101,4	script	普隆德拉 騎士團長#knt	56,{
@@ -1156,24 +1156,24 @@ job_knt,89,106,4	script	騎士 文強#knt2	733,{
 	}
 }
 
-job_knt,89,106,4	script	騎士 文強#knt3	733,{
+job_knt,89,106,4	script	騎士 文強#knt	733,{
 OnInit:
-	disablenpc "騎士 文強#knt3";
-	waitingroom "轉職考試等待室",20,"騎士 文強#knt3::OnStartArena",1;
+	disablenpc "騎士 文強#knt";
+	waitingroom "轉職考試等待室",20,"騎士 文強#knt::OnStartArena",1;
+	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	set $@KntUsers, getareausers("job_knt", 24, 126, 63, 165);
-	set $@KntUsers, $@KntUsers + getareausers("job_knt", 24, 32, 63, 71);
-	set $@KntUsers, $@KntUsers + getareausers("job_knt", 124, 132, 163, 171);
-	if($@KntUsers > 0) end;
-
-	if ((getwaitingroomstate(33)) == 0) end;
 	killmonster "job_knt", "Knight1::OnMyMobDead";
 	killmonster "job_knt", "Knight2::OnMyMobDead";
 	killmonster "job_knt", "Knight3::OnMyMobDead";
 	warpwaitingpc "job_knt",43,146;
 	donpcevent "Knight1::OnEnable";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
 	end;
 }
 
@@ -1230,7 +1230,9 @@ OnTimer181000:
 	end;
 
 OnTimer182000:
-	donpcevent "騎士 文強#knt3::OnEnable";
+	stopnpctimer;
+	donpcevent "Knight1::OnDisable";
+	donpcevent "騎士 文強#knt::OnStart";
 	end;
 }
 
@@ -1289,8 +1291,9 @@ OnTimer181000:
 	end;
 
 OnTimer182000:
+	stopnpctimer;
 	donpcevent "Knight2::OnDisable";
-	donpcevent "騎士 文強#knt3::OnEnable";
+	donpcevent "騎士 文強#knt::OnStart";
 	end;
 }
 
@@ -1334,7 +1337,7 @@ OnMyMobDead:
 		set KNIGHT_Q,8;
 		warp "prt_in",80,100;
 		donpcevent "Knight3::OnDisable";
-		donpcevent "騎士 文強#knt3::OnEnable";
+		donpcevent "騎士 文強#knt::OnStart";
 		stopnpctimer;
 	}
 	end;
@@ -1348,7 +1351,9 @@ OnTimer181000:
 	end;
 
 OnTimer182000:
-	donpcevent "騎士 文強#knt3::OnEnable";
+	stopnpctimer;
+	donpcevent "Knight3::OnDisable";
+	donpcevent "騎士 文強#knt::OnStart";
 	end;
 }
 

@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 獵人 轉職腳本 - 
 //===================================
-// 版本：3.0
+// 版本：3.4
 //===================================
 
 // 在舊獵人工會的公告板
@@ -50,15 +50,15 @@ hu_in01,386,373,4	script	獵人工會人員#hnt	727,{
 		close;
 	}
 	if (BaseJob == Job_Archer && JobLevel < 40) {
-			mes "[獵人工會人員]";
-			mes "喂...對弓使用不夠熟練啊...";
-			mes "至少，要累積到了成為獵人應有的弓箭手的鍛鍊水平啊";
-			next;
-			mes "[獵人工會人員]";
-			mes "請再努力鍛鍊一下啊";
-			mes "正確的轉職調件為職業等級40或以上才行";
-			mes "當然超過這個水平也是沒有問題的喔";
-			mes "那麼期待下次的見面吧";
+		mes "[獵人工會人員]";
+		mes "喂...對弓使用不夠熟練啊...";
+		mes "至少，要累積到了成為獵人應有的弓箭手的鍛鍊水平啊";
+		next;
+		mes "[獵人工會人員]";
+		mes "請再努力鍛鍊一下啊";
+		mes "正確的轉職調件為職業等級40或以上才行";
+		mes "當然超過這個水平也是沒有問題的喔";
+		mes "那麼期待下次的見面吧";
 		close;
 	}
 	else if (BaseJob == Job_Hunter) {
@@ -151,7 +151,6 @@ hu_in01,386,373,4	script	獵人工會人員#hnt	727,{
 				mes "[獵人 雪霖]";
 				mes "那麼，現在開始面試吧~";
 				next;
-L_AskQuestions:
 				if (select("現在就開始吧:等一下再來做好了") == 1) {
 					mes "[獵人 雪霖]";
 					mes "那麼，現在會先和你聊一下天，";
@@ -163,6 +162,7 @@ L_AskQuestions:
 					mes "以及為什麼要當獵人的原因而已的，";
 					mes "所以不用太緊張的";
 					next;
+			L_AskQuestions:
 					mes "[獵人 雪霖]";
 					mes "那麼，要開始囉";
 					next;
@@ -990,7 +990,7 @@ OnTouch:
 			mes "我會幫你送回斐揚的";
 			mes "希望下次再見";
 			mes "不要忘了存檔吧";
-			donpcevent "轉職考試等待室#hnt::OnDisable";
+			//donpcevent "轉職考試等待室#hnt::OnStart";
 			close2;
 			set HNTR_Q,13;
 			savepoint "payon",104,99;
@@ -1012,17 +1012,17 @@ job_hunte,178,38,1	script	轉職考試等待室#hnt	66,{
 
 OnInit:
 	waitingroom "轉職考試等待室", 10,"轉職考試等待室#hnt::OnStartArena",1;
+	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	set $@HntUsers, getareausers("job_hunte", 50, 64, 129, 143);
-	if ($@HntUsers > 0) end;			// stops the rest of the script from running if there is somebody taking the test
-
-	if ((getwaitingroomstate(33)) == 0) end;			// stops the rest of the script from running if there is no one in the 轉職考試等待室
-	killmonsterall "job_hunte";
 	warpwaitingpc "job_hunte", 90, 67;
 	donpcevent "Manager#hnt::OnEnable";
-	donpcevent "開關#hnt::OnDisable";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
 	end;
 }
 
@@ -1032,17 +1032,18 @@ OnInit:
 	end;
 
 OnEnable:
+	donpcevent "開關#hnt::OnDisable";
 	enablenpc "Manager#hnt";
 	set .MyMobs,6;
-	// Target Mosnters
+	initnpctimer;
+	// 正確
 	monster "job_hunte",67,80,"轉職考試專用怪獸",1015,1,"Manager#hnt::OnMyMobDead";
 	monster "job_hunte",114,78,"轉職考試專用怪獸",1015,1,"Manager#hnt::OnMyMobDead";
 	monster "job_hunte",89,127,"轉職考試專用怪獸",1002,1,"Manager#hnt::OnMyMobDead";
 	monster "job_hunte",53,73,"轉職考試專用怪獸",1041,1,"Manager#hnt::OnMyMobDead";
 	monster "job_hunte",125,70,"轉職考試專用怪獸",1016,1,"Manager#hnt::OnMyMobDead";
 	monster "job_hunte",90,92,"轉職考試專用怪獸",1015,1,"Manager#hnt::OnMyMobDead";
-	initnpctimer;
-	// Decoy Monsters
+	// 擾亂用
 	monster "job_hunte",85,100,"轉職考試專用怪物",1016,1,"Manager#hnt::OnMyMobDead2";
 	monster "job_hunte",72,102,"轉職考試專用怪物",1041,1,"Manager#hnt::OnMyMobDead2";
 	monster "job_hunte",108,103,"轉職考試專用怪物",1015,1,"Manager#hnt::OnMyMobDead2";
@@ -1076,27 +1077,31 @@ OnEnable:
 	end;
 
 OnMyMobDead:
+	set .MyMobs,.MyMobs-1;
 	if (.MyMobs < 3) {
 		mapannounce "job_hunte","考試監督: 很好，太棒了注意陷阱去找地圖中央的按鈕吧!",bc_map;
 		set HNTR_Q,14;
 		donpcevent "開關#hnt::OnEnable";
 		donpcevent "Manager#hnt::OnDisable";
 	}
-	else
+	else {
 		mapannounce "job_hunte","考試監督: 很好，就是這樣",bc_map;
 		set .MyMobs,.MyMobs-1;
+	}
 	end;
 
 OnMyMobDead2:
 	mapannounce "job_hunte",strcharinfo(0)+ "!! 唉呀，真不小心，重來吧",bc_map;
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
-	donpcevent "轉職考試等待室#hnt::OnDisable";
-	donpcevent "Manager#hnt::OnDisable";
+	donpcevent "Manager#hnt::OnReset";
+	donpcevent "轉職考試等待室#hnt::OnStart";
 	end;
 
-OnDisable:
+OnReset:
 	stopnpctimer;
+
+OnDisable:
 	killmonsterall "job_hunte";
 	disablenpc "Manager#hnt";
 	end;
@@ -1170,9 +1175,8 @@ OnTimer195000:
 	end;
 
 OnTimer197000:
-	donpcevent "Manager#hnt::OnDisable";
-	donpcevent "轉職考試等待室#hnt::OnDisable";
-	stopnpctimer;
+	donpcevent "Manager#hnt::OnReset";
+	donpcevent "轉職考試等待室#hnt::OnStart";
 	end;
 }
 
@@ -1187,7 +1191,7 @@ OnTouch:
 		mes "^3355FF脫離出口已經打開^000000";
 		close2;
 		mapannounce "job_hunte"," ## 打開了脫離出口 ## ",bc_map;
-		donpcevent "exit#hnttest::OnEnable";
+		enablenpc "exit#hnttest";
 		end;
 	case 2:
 		mes "^3355FF取消了操作^000000";
@@ -1200,12 +1204,13 @@ OnTouch:
 		close2;
 		set HNTR_Q,13;
 		warp "job_hunte",176,22;
-		donpcevent "轉職考試等待室#hnt::OnDisable";
+		donpcevent "Manager#hnt::OnReset";
+		donpcevent "轉職考試等待室#hnt::OnStart";
 		end;
 	}
 
 OnDisable:
-	donpcevent "exit#hnttest::OnDisable";
+	disablenpc "exit#hnttest";
 	disablenpc "開關#hnt";
 	end;
 
@@ -1219,16 +1224,9 @@ OnInit:
 	disablenpc "exit#hnttest";
 	end;
 
-OnEnable:
-	enablenpc "exit#hnttest";
-	end;
-
-OnDisable:
-	disablenpc "exit#hnttest";
-	end;
-
 OnTouch:
-	donpcevent "轉職考試等待室#hnt::OnDisable";
+	donpcevent "Manager#hnt::OnReset";
+	donpcevent "轉職考試等待室#hnt::OnStart";
 	set HNTR_Q,16;
 	savepoint "payon",104,99;
 	if (rand(1))
@@ -1242,8 +1240,8 @@ job_hunte,52,140,0	script	1-1::HntTrap	-1,0,1,{
 OnTouch:
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
-	donpcevent "轉職考試等待室#hnt::OnDisable";
-	donpcevent "Manager#hnt::OnDisable";
+	donpcevent "Manager#hnt::OnReset";
+	donpcevent "轉職考試等待室#hnt::OnStart";
 	end;
 }
 
@@ -1351,7 +1349,7 @@ job_hunte,55,120,0	duplicate(HntTrap)	23-6	-1,0,0
 job_hunte,66,120,0	duplicate(HntTrap)	24-1	-1,0,0
 job_hunte,66,121,0	duplicate(HntTrap)	24-2	-1,0,0
 job_hunte,67,120,0	duplicate(HntTrap)	24-3	-1,0,0
-job_hunte,67,121,0	duplicate(HntTrap)	24-4	-1,0,0	
+job_hunte,67,121,0	duplicate(HntTrap)	24-4	-1,0,0
 job_hunte,114,118,0	duplicate(HntTrap)	25-1	-1,0,0
 job_hunte,114,119,0	duplicate(HntTrap)	25-2	-1,0,0
 job_hunte,115,118,0	duplicate(HntTrap)	25-3	-1,0,0
@@ -1478,8 +1476,8 @@ OnTouch:
 	mapannounce "job_hunte",strcharinfo(0) + ", has failed me! Go back to where you started!",bc_map;
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
-	donpcevent "轉職考試等待室#hnt::OnDisable";
-	donpcevent "Manager#hnt::OnDisable";
+	donpcevent "Manager#hnt::OnReset";
+	donpcevent "轉職考試等待室#hnt::OnStart";
 	end;
 }
 

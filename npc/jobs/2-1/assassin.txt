@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 刺客 轉職腳本 - 
 //===================================
-// 版本：2.9
+// 版本：3.1b
 //===================================
 
 in_moc_16,19,33,1	script	工會人員#asn	55,{
@@ -614,7 +614,7 @@ OnTouch:
 
 in_moc_16,19,154,0	script	無名者	-1,8,2,{
 OnTouch:
-	if (ASSIN_Q2 < 1) {
+	if (ASSIN_Q2 < 3) {
 		mes "[無名者]";
 		mes "嗯...是客人嗎";
 		mes "呵呵...你東張西望也是沒用的";
@@ -788,9 +788,9 @@ OnTouch:
 					mes "那麼我們開始考試吧";
 					mes "是選擇題";
 					next;
-					break;
 				}
 				set ASSIN_Q2,3;
+				break;
 			}
 		}
 		mes "[無名者]";
@@ -1098,19 +1098,19 @@ in_moc_16,21,165,2	script	轉職服務人員#ASNTEST	725,{
 OnInit:
 	disablenpc "轉職服務人員#ASNTEST";
 	waitingroom "轉職考試等待室",10,"轉職服務人員#ASNTEST::OnStartArena",1;
+	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	set $@SinUsers, getareausers("in_moc_16", 60, 136, 93, 177);
-	set $@SinUsers, $@SinUsers + getareausers("in_moc_16", 64, 46, 111, 105);
-	if ($@SinUsers > 0) end;		// stops the rest of the script from running if there is somebody taking the test
-
-	if ((getwaitingroomstate(33)) == 0) end;		// stops the rest of the script from running if there is no one in the waiting room
-	killmonsterall "in_moc_16";
 	warpwaitingpc "in_moc_16", 66, 151;
 	donpcevent "監考官#ASNTEST::OnEnable";
 	donpcevent "門衛#ASN::OnDisable";
 	set getvariableofnpc(.DisableTraps,"監考官#ASNTEST"),0;
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
 	end;
 }
 
@@ -1207,13 +1207,9 @@ OnTouch:
 }
 
 in_moc_16,1,1,0	script	監考官#ASNTEST	-1,{
-OnInit:
-	disablenpc "監考官#ASNTEST";
 	end;
 
 OnEnable:
-	mapannounce "in_moc_16","lol?",bc_map;
-	enablenpc "監考官#ASNTEST";
 	set .MyMobs,6;
 	// Target mobs
 	monster "in_moc_16",62,161,"轉職考試用樣本",1002,1,"監考官#ASNTEST::OnMyMobDead";
@@ -1260,32 +1256,40 @@ OnEnable:
 	initnpctimer;
 	end;
 
-OnDisable:
-	killmonsterall "in_moc_16";
-	disablenpc "監考官#ASNTEST";
+OnReset:
+	killmonster "in_moc_16","監考官#ASNTEST::OnMyMobDead";
+	killmonster "in_moc_16","監考官#ASNTEST::OnMyMobDead2";
+	stopnpctimer;
+	donpcevent "轉職服務人員#ASNTEST::OnStart";
+	end;
+
+OnResetmob:
+	killmonster "in_moc_16","監考官#ASNTEST::OnMyMobDead";
+	killmonster "in_moc_16","監考官#ASNTEST::OnMyMobDead2";
 	stopnpctimer;
 	end;
 
 OnMyMobDead:
 	set .MyMobs,.MyMobs-1;
 	if (.MyMobs < 1) {
-		mapannounce "in_moc_16","You seem to be doing quite well. Keep it up!",bc_map;
+		mapannounce "in_moc_16","情況還不錯啊，繼續保持!",bc_map;
 		set ASSIN_Q,3;
 		donpcevent "timestopper#1::OnEnable";
 		donpcevent "門衛#ASN::OnEnable";
-		donpcevent "監考官#ASNTEST::OnDisable";
+		donpcevent "監考官#ASNTEST::OnResetmob";
 		set .DisableTraps,1;
 		stopnpctimer;
 	}
-	else
+	else {
 		mapannounce "in_moc_16","很好!就是這樣!",bc_map;
+	}
 	end;
 
 OnMyMobDead2:
 	mapannounce "in_moc_16",strcharinfo(0) + "! 錯啦錯啦! 重來吧!",bc_map;
 	set ASSIN_Q,2;
 	warp "in_moc_16",19,161;
-	donpcevent "監考官#ASNTEST::OnDisable";
+	donpcevent "監考官#ASNTEST::OnReset";
 	end;
 
 OnTimer1000:
@@ -1342,9 +1346,12 @@ OnTimer185000:
 	//set ASSIN_Q,2;
 	end;
 
-OnTimer187000:
+OnTimer186000:
 	areawarp "in_moc_16",60,136,93,177,"in_moc_16",19,161;
-	donpcevent "監考官#ASNTEST::OnDisable";
+	end;
+
+OnTimer187000:
+	donpcevent "監考官#ASNTEST::OnReset";
 	end;
 }
 
@@ -1354,7 +1361,8 @@ OnTouch:
 		mapannounce "in_moc_16",strcharinfo(0) + ", 掉到陷阱中了!",bc_map;
 		set ASSIN_Q,2;
 		warp "in_moc_16",19,161;
-		donpcevent "監考官#ASNTEST::OnDisable";
+		donpcevent "監考官#ASNTEST::OnResetmob";
+		donpcevent "轉職服務人員#ASNTEST::OnStart";
 	}
 	end;
 }
@@ -1465,6 +1473,7 @@ OnEnable:
 
 OnDisable:
 	disablenpc "門衛#ASN";
+	end;
 }
 
 in_moc_16,3,3,0	script	timestopper#1	-1,{
@@ -1479,6 +1488,14 @@ OnTimer187000:
 
 OnDisable:
 	stopnpctimer;
+	end;
+
+OnMyMobDead:
+	mapannounce "in_moc_16","嘿! 我是怎麼跟你說的啊! 不要殺死任何魔物!",bc_map;
+	set ASSIN_Q,3;
+	warp "in_moc_16",87,102;
+	killmonsterall "in_moc_16";
+	end;
 }
 
 in_moc_16,89,98,1	script	丹驖#ASNTEST	118,5,1,{
@@ -1514,31 +1531,26 @@ OnTouch:
 			set ASSIN_Q3,0;
 			savepoint "in_moc_16",18,14;
 			warp "in_moc_16",18,14;
+			donpcevent "轉職服務人員#ASNTEST::OnStart";
 			end;
 		}
 	}
-	else {
-		mes "[丹驖]";
-		mes "我是負責這次考試的'但丁'";
-		mes "這個考試的目的是要評估你的迴避能力";
-		next;
-		mes "[丹驖]";
-		mes "適當地使用隱匿也是可以的";
-		next;
-		mes "[丹驖]";
-		mes "目的是到在入口正對面的'帕勒卡迪'那裡";
-		mes "要在眾多的魔物身邊通過一直到對面，不要打倒怪物啊";
-		next;
-		mes "[丹驖]";
-		mes "在途中昏倒或是逃跑出來的話，都會被送回起點這裡";
-		mes "那麼現在就開始吧祝你好運";
-		close2;
-		set ASSIN_Q,4;
-	}
-	donpcevent "丹驖#ASNTEST::OnTestMode";
-	end;
-
-OnTestMode:
+	mes "[丹驖]";
+	mes "我是負責這次考試的'但丁'";
+	mes "這個考試的目的是要評估你的迴避能力";
+	next;
+	mes "[丹驖]";
+	mes "適當地使用隱匿也是可以的";
+	next;
+	mes "[丹驖]";
+	mes "目的是到在入口正對面的'帕勒卡迪'那裡";
+	mes "要在眾多的魔物身邊通過一直到對面，不要打倒怪物啊";
+	next;
+	mes "[丹驖]";
+	mes "在途中昏倒或是逃跑出來的話，都會被送回起點這裡";
+	mes "那麼現在就開始吧祝你好運";
+	close2;
+	set ASSIN_Q,4;
 	monster "in_moc_16",81,77,"木乃伊",1041,1,"丹驖#ASNTEST::OnMyMobDead";
 	monster "in_moc_16",82,77,"木乃伊",1041,1,"丹驖#ASNTEST::OnMyMobDead";
 	monster "in_moc_16",83,77,"木乃伊",1041,1,"丹驖#ASNTEST::OnMyMobDead";
@@ -1570,14 +1582,8 @@ OnTestMode:
 	monster "in_moc_16",99,65,"海葵",1068,1,"丹驖#ASNTEST::OnMyMobDead";
 	end;
 
-OnMyMobDead:
-	mapannounce "in_moc_16","嘿! 我是怎麼跟你說的啊! 不要殺死任何魔物!",bc_map;
-	set ASSIN_Q,3;
-	warp "in_moc_16",87,102;
-	killmonsterall "in_moc_16";
-	end;
-
 OnDisable:
+	donpcevent "轉職服務人員#ASNTEST::OnStart";
 	killmonsterall "in_moc_16";
 	end;
 }
@@ -1630,6 +1636,7 @@ OnTouch:
 
 OnDisable:
 	mapannounce "in_moc_16","...下一個應試者，可以進來了...",bc_map;
+	end;
 }
 
 in_moc_16,149,80,4	script	工會會長#ASN2	106,1,1,{
@@ -1993,22 +2000,18 @@ OnTouch:
 		case 8:
 			mes "[工會會長]";
 			mes "雖然你一心想著要復仇，不過我希望那也會鍛鍊你的身心";
-			next;
 			break;
 		case 9:
 			mes "[工會會長]";
 			mes "雖然你想要獲得財富，我還是希望你能達成自己的心願";
-			next;
 			break;
 		case 10:
 			mes "[工會會長]";
 			mes "環遊世界嗎? 別忘了帶些土產來送我啊";
-			next;
 			break;
 		case 11:
 			mes "[工會會長]";
 			mes "你看起來對刺客的了解不是很深，";
-			next;
 			break;
 		case 12:
 			mes "[工會會長]";
@@ -2017,29 +2020,25 @@ OnTouch:
 			next;
 			mes "[工會會長]";
 			mes "雖然目前我不太信任你，不過我會給你機會";
-			next;
 			break;
 		case 13:
 			mes "[工會會長]";
 			mes "即使你被表面上刺客迷戀，我相信你遲早將意識到刺客工作的真正的價值";
-			next;
 			break;
 		case 14:
 			mes "[工會會長]";
 			mes "擁有良好技能稀有人們中的一個，我希望你遲早將意識到精神的紀律的重要性";
-			next;
 			break;
 		case 15:
 			mes "[工會會長]";
 			mes "遲早，你將找到你能奉獻自己的一個新目標...";
-			next;
 			break;
 		case 16:
 			mes "[工會會長]";
 			mes "我知道有些人只在意自己身體上的鍛鍊";
 			mes "但我知道你跟他們是不同的";
-			next;
 		}
+		next;
 		if (ASSIN_Q3 == 1 && BaseJob == Job_Thief && ASSIN_Q > 6 && ASSIN_Q < 17) {
 			set ASSIN_Q,17;
 			set ASSIN_Q3,2;
@@ -2055,22 +2054,22 @@ OnTouch:
 			case 1:
 				mes "[工會會長]";
 				mes "拳刃嗎來希望你能夠善用它!";
-				getitem 1251,1; //Jur_
+				getitem 1251,1; //拳刃
 				break;
 			case 2:
 				mes "[工會會長]";
 				mes "卡塔勒拳刃!這是我最喜歡的武器呢拿走吧雖然看起來有點舊了，但是應該很好用的";
-				getitem 1253,1; //Katar_
+				getitem 1253,1; //卡塔勒拳刃
 				break;
 			case 3:
 				mes "[工會會長]";
 				mes "嗯是想用雙刀嗎...笨拙短劍來，這個給你";
-				getitem 1208,1; //Main_Gauche_
+				getitem 1208,1; //笨拙短劍
 				break;
 			case 4:
 				mes "[工會會長]";
 				mes "長柄短劍...以前我覺得有了它就會覺得很驕傲的呢...好好善用吧";
-				getitem 1220,1; //Gladius_
+				getitem 1220,1; //長柄短劍
 			}
 			next;
 		}
@@ -2124,7 +2123,7 @@ OnTouch:
 		end;
 	}
 }
-				
+
 in_moc_16,186,81,1	script	輔助人員#asn	55,1,1,{
 	mes "[輔助人員 馬洛畢斯]";
 	mes "我跟轉職考試的事情無關";
