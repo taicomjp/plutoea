@@ -30,8 +30,8 @@ OnMinute40:
 OnMinute45:
 OnMinute50:
 OnMinute55:
-	if($@lhz_alert == 0) set $@sneakguard, $@sneakguard + rand(1,3);
-	if($@lhz_alert == 1) set $@sneakguard, $@sneakguard - 1;  // Monsters will die after 5~10 min. (sneakAddSuber)
+	if ($@lhz_alert == 0) set $@sneakguard, $@sneakguard + rand(1,3);
+	if ($@lhz_alert == 1) set $@sneakguard, $@sneakguard - 1;  // Monsters will die after 5~10 min. (sneakAddSuber)
 	end;
 }
 
@@ -41,13 +41,13 @@ OnInit:
 	end;
 
 OnTimer10000:
-	if($@sneakguard >= $@threshold) goto MakeMob;
-	if($@sneakguard == 0) goto ClearMob;  // Monsters will die after 5~10 min. (sneakAddSuber)
+	if ($@sneakguard >= $@threshold) goto MakeMob;
+	if ($@sneakguard == 0) goto ClearMob;  // Monsters will die after 5~10 min. (sneakAddSuber)
 	setnpctimer 0;
 	end;
 	
 MakeMob:
-	if($@lhz_alert == 1) goto ChkEnd;
+	if ($@lhz_alert == 1) goto ChkEnd;
 	set $@mobcount, $@mob;
 	mapannounce "lighthalzen","治安維持局: 由於目前村落治安不佳的緣故，請各位居民們注意安全，再說一次，請各位居民們要特別注意安全", 1;
 	for( set $@i, 0; $@i < $@mob; set $@i, $@i + 1 ) {
@@ -59,7 +59,7 @@ MakeMob:
 	end;
 	
 ClearMob:
-	if($@lhz_alert == 0) goto ChkEnd;
+	if ($@lhz_alert == 0) goto ChkEnd;
 	set $@mobcount, 0;
 	mapannounce "lighthalzen","治安維持局: 我們治安維持局經過一番努力後，終於把村落的異議份子都處決了，各位居民們可以放心了", 1;	
 	killmonster "lighthalzen","AlertChk::OnMobKilled";
@@ -70,7 +70,7 @@ ClearMob:
 
 OnMobKilled:
 	set $@mobcount, $@mobcount - 1;
-	if($@mobcount == 0) goto ClearMob;
+	if ($@mobcount == 0) goto ClearMob;
 	setnpctimer 0;
 	end;
 
@@ -80,7 +80,7 @@ ChkEnd:
 }
 
 lighthalzen,267,200,3	script	警衛#lhz01	868,{
-	if(countitem(7350)>0) {
+	if (countitem(7350)>0) {
 		mes "[警衛]";
 		mes "你是誰!...嗯?有通行證啊，";
 		mes "失禮了，你的舉止行為";
@@ -91,7 +91,7 @@ lighthalzen,267,200,3	script	警衛#lhz01	868,{
 		warp "lighthalzen",303,229;
 		end;
 	}
-	else if($@lhz_alert == 1) {
+	else if ($@lhz_alert == 1) {
 		mes "[警衛]";
 		mes "最近有太多人";
 		mes "偷渡至對面，";
@@ -102,7 +102,7 @@ lighthalzen,267,200,3	script	警衛#lhz01	868,{
 		close;
 	}
 	else if ((gettime(2)>00 && gettime(2)<10) || (gettime(2)>30 && gettime(2)<40)) {
-		if(rand(1,10) < 2) {
+		if (rand(1,10) < 2) {
 			mes "[警衛]";
 			mes "喂喂!你想去哪裡啊!";
 			mes "不能允許陌生人";
@@ -123,7 +123,7 @@ lighthalzen,267,200,3	script	警衛#lhz01	868,{
 		warp "lighthalzen",303,229;
 		end;
 	}
-	else if(rand(1,10) < 2) {
+	else if (rand(1,10) < 2) {
 		mes "-警衛暫時在";
 		mes " 混水摸魚，就趁現在";
 		mes " 快步偷溜過去吧-";
@@ -135,7 +135,7 @@ lighthalzen,267,200,3	script	警衛#lhz01	868,{
 }
 
 lighthalzen,294,223,7	script	Guard#lhz02	868,{
-	if(countitem(7350)>0) {
+	if (countitem(7350)>0) {
 		mes "[警衛]";
 		mes "你是誰!...嗯?有通行證啊，";
 		mes "失禮了，你的舉止行為";
@@ -146,7 +146,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 		warp "lighthalzen",260,199;
 		end;
 	}
-	if($@lhz_alert == 1) {
+	if ($@lhz_alert == 1) {
 		mes "[警衛]";
 		mes "最近有太多人";
 		mes "偷渡至對面，";
@@ -156,8 +156,8 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 		mes "唉... 總之問題不小啊";
 		close;
 	}
-	if((gettime(2)>00 && gettime(2)<10) || (gettime(2)>30 && gettime(2)<40)) {
-		if(rand(1,10) < 2) {
+	if ((gettime(2)>00 && gettime(2)<10) || (gettime(2)>30 && gettime(2)<40)) {
+		if (rand(1,10) < 2) {
 			mes "[警衛]";
 			mes "喂喂!你想去哪裡啊!";
 			mes "像你這樣可疑的人，";
@@ -178,7 +178,7 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 		warp "lighthalzen",264,200;
 		end;
 	}
-	else if(rand(1,10) < 2) {
+	else if (rand(1,10) < 2) {
 		mes "-警衛暫時在";
 		mes " 混水摸魚，就趁現在";
 		mes " 快步偷溜過去吧-";
@@ -189,11 +189,9 @@ lighthalzen,294,223,7	script	Guard#lhz02	868,{
 	}
 }
 
-//============================================================
-// 淺入任務
-//============================================================
-
-//--------------------------彼士本--------------------------
+//============================
+//  潛入任務
+//============================
 
 lighthalzen,341,224,4	script	彼士本	868,{
 	if (BaseLevel < 60){
@@ -201,493 +199,441 @@ lighthalzen,341,224,4	script	彼士本	868,{
 		mes "............";
 		close;
 	}
-	if (MISC_QUEST&512) goto L_DONE;
-	if (piciburn == 7) goto L_10;
-	if (piciburn == 6) goto L_9;
-	if (piciburn == 5) goto L_6;
-	if (piciburn == 4) goto L_4;
-	if (piciburn == 3) goto L_3;
-	if (piciburn == 2) goto L_2;
-	if (piciburn == 1) goto L_1;
-	mes "[彼士本]";
-	mes "嗯..什麼事...";
-	mes "我現在有事很忙，";
-	mes "別來煩我...";
-	set piciburn,1;
-	close;
-
-L_1:
-	mes "[彼士本]";
-	mes "你這樣老是盯著我看，";
-	mes "無法做事啊...";
-	mes "你就不能走開嗎?";
-	set piciburn,piciburn+1;
-	close;
-
-L_2:
-	mes "[彼士本]";
-	mes "哼嗯..真是...";
-	mes "不能讓我專心...";
-	mes "真是個奇怪的朋友啊...";
-	mes "我有欠你什麼嗎?";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "沒有啦，";
-	mes "只是想...隨便看看，";
-	mes "請問你在做什麼呢?";
-	next;
-	mes "[彼士本]";
-	mes "真是的...";
-	mes "若是能讓你看的話，";
-	mes "我就沒必要這麼固執吧...";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你也知道自己固執啊~哈哈";
-	next;
-	mes "[彼士本]";
-	mes "你真是個怪胎啊...";
-	mes "你真的想在那邊整天盯著我看嗎";
-	next;
-	mes "[彼士本]";
-	mes "...你很煩耶，";
-	mes "你到底想幹什麼?";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "我剛才不是問過了嘛，";
-	mes "問你在做什麼啊，";
-	mes "況且又在這種濕漉漉的地方";
-	next;
-	mes "[彼士本]";
-	mes "好吧...";
-	mes "我知道啦...";
-	mes "那麼我就告訴你吧，";
-	mes "但一聽完就要馬上消失在我眼前...";
-	next;
-	mes "[彼士本]";
-	mes "我呢，目前作一些不法的事情...";
-	mes "你絕對不能到處亂說喔...";
-	next;
-	mes "[彼士本]";
-	mes "我的工作是";
-	mes "製造一個讓企業都市-^FF0000研究所^000000-以外的人員，";
-	mes "可以任意通往企業都市的研究員";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "-!!!研究所?!!!-";
-	mes "你是說真的可以幫我進入那裡嗎?!!!";
-	next;
-	mes "[彼士本]";
-	mes "哦~ 喂你，我剛才不是說過，";
-	mes "叫你聽完就要馬上消失啊，";
-	mes "我有沒有這樣說過~";
-	mes "你甚至還這麼大聲...給我安靜點~!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "啊..哈哈...對不起，";
-	mes "我一聽到你說要幫把我送到我想去到地方，";
-	mes "我太興奮了";
-	next;
-	mes "[彼士本]";
-	mes "嗯? 你是說一直想進入那裡啊?";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "是的，但是我現在不能進去...";
-	next;
-	mes "[彼士本]";
-	mes "嗯...這樣我會很困擾...";
-	mes "以我的原則，";
-	mes "像你這樣初次見面又不可靠的人";
-	mes "是不會那麼輕易地把方法告訴你的...";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "請你告訴我要怎麼做?";
-	mes "我要怎麼做你才會把我送至研究所呢?";
-	next;
-	mes "[彼士本]";
-	mes "我只提供前往捷徑的方法而已，我可沒說要送至研究所喔";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "那不是一樣的意思嗎?";
-	next;
-	mes "[彼士本]";
-	mes "我是說只會協助你取得進入研究所條件的機會啦";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你的手腕很好嘛";
-	next;
-	mes "[彼士本]";
-	mes "嗯哈哈~";
-	mes "這只是小意思啦，";
-	mes "不過!!";
-	mes "我覺得還是不妥!!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "不妥什麼啦?";
-	mes "我都還沒開口哩";
-	next;
-	mes "[彼士本]";
-	mes "你再三拜託也沒用啦~不行就是不行~!!!";
-	set piciburn,piciburn+1;
-	close;
-
-L_3:
-	mes "[" +strcharinfo(0) + "]";
-	mes "拜託啦";
-	next;
-	mes "[彼士本]";
-	mes "不可以";
-	set piciburn,piciburn+1;
-	close;
-
-L_4:
-	mes "[" +strcharinfo(0) + "]";
-	mes "拜託啦";
-	next;
-	mes "[彼士本]";
-	mes "不可以";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "拜託啦";
-	next;
-	mes "[彼士本]";
-	mes "不要";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "拜託啦啦啦啦啦啦啦啦啦啦啦!!!!";
-	next;
-	mes "[彼士本]";
-	mes "不要要要要要要要要要要要!!!!!!";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你到底為什麼呢?!!";
-	mes "你有什麼條件啊?!!";
-	next;
-	mes "[彼士本]";
-	mes "那麼給我1億金幣吧";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "你瘋啦?";
-	next;
-	mes "[彼士本]";
-	mes "不願意就算了~";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "大哥你也真是的，大家都是明眼人，我哪有那麼多錢嘛，";
-	mes "沒有別的條件嗎?";
-	next;
-	mes "[彼士本]";
-	mes "哼嗯......";
-	mes "那好吧...";
-	mes "不二價，給我20個傑勒比結晶吧，";
-	mes "我已經算你很便宜了...";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes ".........";
-	mes "你終究是想說這句話啦，";
-	next;
-	mes "[彼士本]";
-	mes "哈哈哈~";
-	mes "哼嗯....";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "........";
-	next;
-	mes "[彼士本]";
-	mes "你決定如何啊，";
-	mes "要不要做呢";
-	next;
-	menu "好的",L_5,"嗚嗚，還是太困難了",-;
-
-	mes "[彼士本]";
-	mes "你實在有夠差勁了，";
-	mes "那就沒辦法了~";
-	mes "再見";
-	close;
-
-L_5:
-	mes "[彼士本]";
-	mes "很好，";
-	mes "就像我剛才說的是傑勒比結晶20個啊，";
-	mes "數量要正確喔，";
-	mes "那麼你去吧";
-	set piciburn,piciburn+1;
-	close;
-
-L_6:
-	mes "[彼士本]";
-	mes "我上次交代的東西帶來了嗎?";
-	next;
-	menu "沒有",-,"是的",L_7,"你交代我什麼啦?",L7_1;
-
-	mes "[彼士本]";
-	mes "喂，我現在沒心情開玩笑...";
-	mes "你還有意願的話，把上次交代的東西帶來吧...";
-	close;
-
-L_7:
-	if (countitem(909) >= 20) goto L_8;
-	mes "[彼士本]";
-	mes "你在開玩笑嗎...";
-	mes "你這樣亂開玩笑的話，";
-	mes "我也有可能不履行約定喔...";
-	mes "還不快去準備再來";
-	close;
-
-L7_1:
-	mes "[彼士本]";
-	mes "你是笨蛋嗎...";
-	mes "是傑勒比結晶 20個啊，";
-	mes "別忘了喔~";
-	close;
-
-L_8:
-	delitem 909,20;
-	mes "[彼士本]";
-	mes "嗯...比想像中的能幹......";
-	mes "看你有照我的吩咐把東西準備妥當了，";
-	mes "我想你應該是巴不得要去那裡吧?";
-	next;
-	mes "[彼士本]";
-	mes "如此看來，";
-	mes "與對你的第一次印象相比可不一樣呢?";
-	mes "可以說你比上次更可靠了...";
-	next;
-	mes "[彼士本]";
-	mes "總之..";
-	mes "好吧...約定就是約定，";
-	mes "我就把方法告訴你吧";
-	next;
-	mes "[彼士本]";
-	mes "我上次也稍微提過，";
-	mes "我只能協助你取得進入研究所條件的機會而已...";
-	next;
-	mes "[彼士本]";
-	mes "我的前職是企業都市研究所的相關人員，";
-	mes "現在因某些因素與企業處在對立的立場，";
-	mes "才會從事這種工作";
-	next;
-	mes "[彼士本]";
-	mes "請你好好回答現在我要問的問題，首先我要送你去的地方，";
-	mes "會隨著你的表現，而有不同的結果呢";
-	next;
-	mes "[彼士本]";
-	mes "我現在要送你去的地方，";
-	mes "在某處藏有你想要尋找的那個東西，";
-	mes "你就仔細找找看吧";
-	next;
-	mes "[彼士本]";
-	mes "我想你也需要事前心理準備，";
-	mes "你去冥想後再來吧";
-	set piciburn,piciburn+1;
-	close;
-
-L_9:
-	mes "[彼士本]";
-	mes "嗯...是啊...";
-	mes "心理準備好了嗎?請問你現在要出發嗎?";
-	next;
-	menu "不要",-,"是的",L9_1;
-
-	mes "[彼士本]";
-	mes "嗯...還不要啊...";
-	mes "好吧，緊張是正常的...";
-	mes "不過別讓我等太久喔...";
-	close;
-
-L9_1:
-	mes "[彼士本]";
-	mes "好，出發囉!!!";
-	mes "也許會冒冷汗喔~那麼走吧?";
-	close2;
-	set piciburn,piciburn+1;
-	set @rdm,rand(3);
-	if(@rdm==1)goto L_warp1;
-	if(@rdm==2)goto L_warp2;
- 	warp "lhz_cube",67,193;
-	end;
-
-L_10:
-	mes "[彼士本]";
-	mes "哈!";
-	mes "你失敗了，對吧，哈哈哈!!!";
-	mes "你想要再嘗試一次嗎，真是太好笑了~";
-	next;
-	menu "不要",-,"是的",L10_1;
-
-	mes "[彼士本]";
-	mes "這很困難嗎?";
-	mes "好吧，等你改變心意再來吧";
-	close;
-
-L10_1:
-	mes "[彼士本]";
-	mes "好吧...";
-	mes "我會再傳你去哪裡一次";
-	mes "祝你好運囉";
-	close2;
-	set @rdm,rand(3);
-	if(@rdm==1)goto L_warp1;
-	if(@rdm==2)goto L_warp2;
- 	warp "lhz_cube",67,193;
-	end;
-
-L_warp1: 
-	warp "lhz_cube",66,136;
-	end;
-L_warp2:
-	warp "lhz_cube",66,74;
-	end;
-
-L_DONE:
-	mes "[彼士本]";
-	mes "噢~你都已經找到入口啦~";
-	mes "那我開始要跟你講重點了，";
-	mes "以後你想再進入那裡的話";
-	next;
-	mes "[彼士本]";
-	mes "只要到村落下方一點，就可以看到下水道的通路，進入那裡就可以了";
-	next;
-	mes "[" +strcharinfo(0) + "]";
-	mes "超噁心...";
-	next;
-	mes "[彼士本]";
-	mes "知道~ 我知道~確實很噁心...";
-	mes "不過那是唯一的通路啊，";
-	mes "想要利用的話，就別抱怨囉";
-	next;
-	mes "[彼士本]";
-	mes "祝你旅途愉快小心囉~";
-	close;
+	if (MISC_QUEST&512) {
+		mes "[彼士本]";
+		mes "噢~你都已經找到入口啦~";
+		mes "那我開始要跟你講重點了，";
+		mes "以後你想再進入那裡的話";
+		next;
+		mes "[彼士本]";
+		mes "只要到村落下方一點，就可以看到下水道的通路，進入那裡就可以了";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "超噁心...";
+		next;
+		mes "[彼士本]";
+		mes "知道~ 我知道~確實很噁心...";
+		mes "不過那是唯一的通路啊，";
+		mes "想要利用的話，就別抱怨囉";
+		next;
+		mes "[彼士本]";
+		mes "祝你旅途愉快小心囉~";
+		close;
+	}
+	switch (piciburn) {
+	case 0:
+		mes "[彼士本]";
+		mes "嗯..什麼事...";
+		mes "我現在有事很忙，";
+		mes "別來煩我...";
+		set piciburn,1;
+		close;
+	case 1:
+		mes "[彼士本]";
+		mes "你這樣老是盯著我看，";
+		mes "無法做事啊...";
+		mes "你就不能走開嗎?";
+		set piciburn,piciburn+1;
+		close;
+	case 2:
+		mes "[彼士本]";
+		mes "哼嗯..真是...";
+		mes "不能讓我專心...";
+		mes "真是個奇怪的朋友啊...";
+		mes "我有欠你什麼嗎?";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "沒有啦，";
+		mes "只是想...隨便看看，";
+		mes "請問你在做什麼呢?";
+		next;
+		mes "[彼士本]";
+		mes "真是的...";
+		mes "若是能讓你看的話，";
+		mes "我就沒必要這麼固執吧...";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你也知道自己固執啊~哈哈";
+		next;
+		mes "[彼士本]";
+		mes "你真是個怪胎啊...";
+		mes "你真的想在那邊整天盯著我看嗎";
+		next;
+		mes "[彼士本]";
+		mes "...你很煩耶，";
+		mes "你到底想幹什麼?";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "我剛才不是問過了嘛，";
+		mes "問你在做什麼啊，";
+		mes "況且又在這種濕漉漉的地方";
+		next;
+		mes "[彼士本]";
+		mes "好吧...";
+		mes "我知道啦...";
+		mes "那麼我就告訴你吧，";
+		mes "但一聽完就要馬上消失在我眼前...";
+		next;
+		mes "[彼士本]";
+		mes "我呢，目前作一些不法的事情...";
+		mes "你絕對不能到處亂說喔...";
+		next;
+		mes "[彼士本]";
+		mes "我的工作是";
+		mes "製造一個讓企業都市-^FF0000研究所^000000-以外的人員，";
+		mes "可以任意通往企業都市的研究員";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "-!!!研究所?!!!-";
+		mes "你是說真的可以幫我進入那裡嗎?!!!";
+		next;
+		mes "[彼士本]";
+		mes "哦~ 喂你，我剛才不是說過，";
+		mes "叫你聽完就要馬上消失啊，";
+		mes "我有沒有這樣說過~";
+		mes "你甚至還這麼大聲...給我安靜點~!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "啊..哈哈...對不起，";
+		mes "我一聽到你說要幫把我送到我想去到地方，";
+		mes "我太興奮了";
+		next;
+		mes "[彼士本]";
+		mes "嗯? 你是說一直想進入那裡啊?";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "是的，但是我現在不能進去...";
+		next;
+		mes "[彼士本]";
+		mes "嗯...這樣我會很困擾...";
+		mes "以我的原則，";
+		mes "像你這樣初次見面又不可靠的人";
+		mes "是不會那麼輕易地把方法告訴你的...";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "請你告訴我要怎麼做?";
+		mes "我要怎麼做你才會把我送至研究所呢?";
+		next;
+		mes "[彼士本]";
+		mes "我只提供前往捷徑的方法而已，我可沒說要送至研究所喔";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "那不是一樣的意思嗎?";
+		next;
+		mes "[彼士本]";
+		mes "我是說只會協助你取得進入研究所條件的機會啦";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你的手腕很好嘛";
+		next;
+		mes "[彼士本]";
+		mes "嗯哈哈~";
+		mes "這只是小意思啦，";
+		mes "不過!!";
+		mes "我覺得還是不妥!!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "不妥什麼啦?";
+		mes "我都還沒開口哩";
+		next;
+		mes "[彼士本]";
+		mes "你再三拜託也沒用啦~不行就是不行~!!!";
+		set piciburn,piciburn+1;
+		close;
+	case 3:
+		mes "[" +strcharinfo(0) + "]";
+		mes "拜託啦";
+		next;
+		mes "[彼士本]";
+		mes "不可以";
+		set piciburn,piciburn+1;
+		close;
+	case 4:
+		mes "[" +strcharinfo(0) + "]";
+		mes "拜託啦";
+		next;
+		mes "[彼士本]";
+		mes "不可以";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "拜託啦";
+		next;
+		mes "[彼士本]";
+		mes "不要";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "拜託啦啦啦啦啦啦啦啦啦啦啦!!!!";
+		next;
+		mes "[彼士本]";
+		mes "不要要要要要要要要要要要!!!!!!";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你到底為什麼呢?!!";
+		mes "你有什麼條件啊?!!";
+		next;
+		mes "[彼士本]";
+		mes "那麼給我1億金幣吧";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "你瘋啦?";
+		next;
+		mes "[彼士本]";
+		mes "不願意就算了~";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "大哥你也真是的，大家都是明眼人，我哪有那麼多錢嘛，";
+		mes "沒有別的條件嗎?";
+		next;
+		mes "[彼士本]";
+		mes "哼嗯......";
+		mes "那好吧...";
+		mes "不二價，給我20個傑勒比結晶吧，";
+		mes "我已經算你很便宜了...";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes ".........";
+		mes "你終究是想說這句話啦，";
+		next;
+		mes "[彼士本]";
+		mes "哈哈哈~";
+		mes "哼嗯....";
+		next;
+		mes "[" +strcharinfo(0) + "]";
+		mes "........";
+		next;
+		mes "[彼士本]";
+		mes "你決定如何啊，";
+		mes "要不要做呢";
+		next;
+		if (select("好的:嗚嗚，還是太困難了")==1) {
+			mes "[彼士本]";
+			mes "很好，";
+			mes "就像我剛才說的是傑勒比結晶20個啊，";
+			mes "數量要正確喔，";
+			mes "那麼你去吧";
+			set piciburn,piciburn+1;
+			close;
+		}
+		mes "[彼士本]";
+		mes "你實在有夠差勁了，";
+		mes "那就沒辦法了~";
+		mes "再見";
+		close;
+	case 5:
+		mes "[彼士本]";
+		mes "我上次交代的東西帶來了嗎?";
+		next;
+		switch (select("沒有:是的:你交代我什麼啦?")) {
+		case 1:
+			mes "[彼士本]";
+			mes "喂，我現在沒心情開玩笑...";
+			mes "你還有意願的話，把上次交代的東西帶來吧...";
+			close;
+		case 2:
+			if (countitem(909) >= 20) {
+				delitem 909,20;
+				mes "[彼士本]";
+				mes "嗯...比想像中的能幹......";
+				mes "看你有照我的吩咐把東西準備妥當了，";
+				mes "我想你應該是巴不得要去那裡吧?";
+				next;
+				mes "[彼士本]";
+				mes "如此看來，";
+				mes "與對你的第一次印象相比可不一樣呢?";
+				mes "可以說你比上次更可靠了...";
+				next;
+				mes "[彼士本]";
+				mes "總之..";
+				mes "好吧...約定就是約定，";
+				mes "我就把方法告訴你吧";
+				next;
+				mes "[彼士本]";
+				mes "我上次也稍微提過，";
+				mes "我只能協助你取得進入研究所條件的機會而已...";
+				next;
+				mes "[彼士本]";
+				mes "我的前職是企業都市研究所的相關人員，";
+				mes "現在因某些因素與企業處在對立的立場，";
+				mes "才會從事這種工作";
+				next;
+				mes "[彼士本]";
+				mes "請你好好回答現在我要問的問題，首先我要送你去的地方，";
+				mes "會隨著你的表現，而有不同的結果呢";
+				next;
+				mes "[彼士本]";
+				mes "我現在要送你去的地方，";
+				mes "在某處藏有你想要尋找的那個東西，";
+				mes "你就仔細找找看吧";
+				next;
+				mes "[彼士本]";
+				mes "我想你也需要事前心理準備，";
+				mes "你去冥想後再來吧";
+				set piciburn,piciburn+1;
+				close;
+			}
+			mes "[彼士本]";
+			mes "你在開玩笑嗎...";
+			mes "你這樣亂開玩笑的話，";
+			mes "我也有可能不履行約定喔...";
+			mes "還不快去準備再來";
+			close;
+		case 3:
+			mes "[彼士本]";
+			mes "你是笨蛋嗎...";
+			mes "是傑勒比結晶 20個啊，";
+			mes "別忘了喔~";
+			close;
+		}
+	case 6:
+		mes "[彼士本]";
+		mes "嗯...是啊...";
+		mes "心理準備好了嗎?請問你現在要出發嗎?";
+		next;
+		if (select("不要:是的")==1) {
+			mes "[彼士本]";
+			mes "嗯...還不要啊...";
+			mes "好吧，緊張是正常的...";
+			mes "不過別讓我等太久喔...";
+			close;
+		}
+		mes "[彼士本]";
+		mes "好，出發囉!!!";
+		mes "也許會冒冷汗喔~那麼走吧?";
+		close2;
+		set piciburn,piciburn+1;
+		break;
+	case 7:
+		mes "[彼士本]";
+		mes "哈!";
+		mes "你失敗了，對吧，哈哈哈!!!";
+		mes "你想要再嘗試一次嗎，真是太好笑了~";
+		next;
+		if (select("不要:是的")==1) {
+			mes "[彼士本]";
+			mes "這很困難嗎?";
+			mes "好吧，等你改變心意再來吧";
+			close;
+		}
+		mes "[彼士本]";
+		mes "好吧...";
+		mes "我會再傳你去哪裡一次";
+		mes "祝你好運囉";
+		close2;
+	}
+	switch (rand(3)) {
+	case 0: warp "lhz_cube",67,193; end;
+	case 1: warp "lhz_cube",66,136; end;
+	case 2: warp "lhz_cube",66,74; end;
+	}
 }
 
 //--------------------------箱子--------------------------
 
 lhz_cube,248,179,0	script	箱子#01	111,{
-	if (MISC_QUEST&512 || cubekey&64) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&64) {
+		mes "你已獲得了一把 ^FF0000斧頭^000000";
+		close;
+	}
 	mes "有放著斧頭的一個箱子";
 	next;
-	menu "拿走斧頭",L_1,"不理它",-;
-	close;
-
-L_1:
-	mes "已獲得了一把 ^FF0000斧頭^000000";
-	set cubekey,cubekey|64;
-	close;
-
-L_DONE:
-	mes "你已獲得了一把 ^FF0000斧頭^000000";
+	if (select("拿走斧頭:不理它")==1) {
+		mes "已獲得了一把 ^FF0000斧頭^000000";
+		set cubekey,cubekey|64;
+	}
 	close;
 }
 
 //--------------------------桶--------------------------
 
 lhz_cube,237,183,0	script	桶	111,{
-	if (MISC_QUEST&512 || cubekey&1) goto L_DONE;
-	if (cubekey&128) goto L_2;
+	if (MISC_QUEST&512 || cubekey&1) {
+		mes "你已經從這裡取得了 '^FF0000黃色鑰匙^000000'";
+		mes "箱子已經被開了";
+		close;
+	}
+	if (cubekey&128) {
+		mes "有發現有數字板子的箱子";
+		next;
+		for(set .@i,0; .@i<9; set .@i,.@i+1) {
+			input .@num;
+			if (.@num < 0 || .@num > 9)
+				set .@num,0;
+			set .@code,.@code*10 + .@num;
+		}
+		switch (LHZ_1QUE_CUBE_NUM) {
+			case 1: set .@answer,376516598; break;
+			case 2: set .@answer,284615574; break;
+			case 3: set .@answer,493762866; break;
+			case 4: set .@answer,364128715; break;
+		}
+		if (LHZ_1QUE_CUBE_NUM!=0 && .@code == .@answer) {
+			mes "- 這個盒子被打開了，並且發出鏗鏘聲 -";
+			mes "- 在盒子裡面，你發現一把'黃色鑰匙' -";
+			next;
+			mes "- 你獲得一把'^FF0000黃色鑰匙^000000' -";
+			set cubekey,cubekey|1;
+			set LHZ_1QUE_CUBE_NUM,0;
+			close;
+		}
+		mes "- 沒有任何事情發生 -";
+		close;
+	}
 	mes "發現看起來很弱的桶";
 	if ((cubekey&64) == 0) close;
 	next;
 	input @axe$;
-
-	if (@axe$ == "斧頭") goto L_1;
+	if (@axe$ == "斧頭") {
+		mes "用斧頭把桶砸掉，";
+		mes "桶裡面有一個放著，";
+		next;
+		mes "適當的箱子箱子上面寫著，1~9數字的板子";
+		set cubekey,cubekey|128;
+		close;
+	}
 	mes "沒發生任何事情!";
-	close;
-
-L_1:
-	mes "用斧頭把桶砸掉，";
-	mes "桶裡面有一個放著，";
-	next;
-	mes "適當的箱子箱子上面寫著，1~9數字的板子";
-	set cubekey,cubekey|128;
-	close;
-
-L_2:
-	mes "有發現有數字板子的箱子";
-	next;
-	set @agree,0;
-	input @number;
-	if (num6 == @number) set @agree,@agree+1;
-	input @number;
-	if (num8 == @number) set @agree,@agree+1;
-	input @number;
-	if (num1 == @number) set @agree,@agree+1;
-	input @number;
-	if (num4 == @number) set @agree,@agree+1;
-	input @number;
-	if (num9 == @number) set @agree,@agree+1;
-	input @number;
-	if (num2 == @number) set @agree,@agree+1;
-	input @number;
-	if (num7 == @number) set @agree,@agree+1;
-	input @number;
-	if (num5 == @number) set @agree,@agree+1;
-	input @number;
-	if (num3 == @number) set @agree,@agree+1;
-	if (@agree == 9 && num1) goto L_3; //you can't enter correct numbers, till read them under that picture [Lupus]
-	mes "沒有反應";
-	close;
-
-L_3:
-	mes "和機械噪音一起箱子被打開了，";
-	mes "箱子裡面有一把'黃色鑰匙'";
-	next;
-	mes "已獲得一把'^FF0000黃色鑰匙^000000'";
-	set cubekey,cubekey|1;
-	close;
-
-L_DONE:
-	mes "你已經從這裡取得了 '^FF0000黃色鑰匙^000000'";
-	mes "箱子已經被開了";
 	close;
 }
 
 //--------------------------抽屜--------------------------
 
 lhz_cube,242,201,0	script	抽屜	111,{
-	if (MISC_QUEST&512 || cubekey&32) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&32) {
+		mes "你已經從這裡取得了 ^FF0000小手刀^000000";
+		mes "沒有任何東西在抽屜裡了";
+		close;
+	}
 	mes "被鎖住了打不開";
-	if (cubekey&2) goto L_1;
-	close;
-
-L_1:
-	input @key$;
-	if (@key$ == "紅色鑰匙") goto L_2;
-	mes "這個抽屜是鎖著的，你需要一些東西來開啟它";
-	close;
-
-L_2:
-	mes "使用紅色鑰匙看看，抽屜打開了，";
-	mes "打開的抽屜裡發現了'小手刀'";
-	next;
-	mes "已獲得了一個^FF0000小手刀^000000";
-	set cubekey,cubekey|32;
-	close;
-
-L_DONE:
-	mes "你已經從這裡取得了 ^FF0000小手刀^000000";
-	mes "沒有任何東西在抽屜裡了";
+	if (cubekey&2) {
+		input @key$;
+		if (@key$ == "紅色鑰匙") {
+			mes "使用紅色鑰匙看看，抽屜打開了，";
+			mes "打開的抽屜裡發現了'小手刀'";
+			next;
+			mes "已獲得了一個^FF0000小手刀^000000";
+			set cubekey,cubekey|32;
+			close;
+		}
+		mes "這個抽屜是鎖著的，你需要一些東西來開啟它";
+	}
 	close;
 }
 
 //--------------------------一堆文件--------------------------
 
 lhz_cube,237,198,0	script	一堆文件#lhz	111,{
-	if (MISC_QUEST&512 || cubekey&2) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&2) {
+		mes "你已經從這裡取得了 ^FF0000紅色鑰匙^000000";
+		mes "這裡已經沒有東西了";
+		close;
+	}
 	mes "有很多文件混雜著散落一地";
 	next;
-	menu "翻一翻文件",L_1,"不理它",-;
-	close;
-
-L_1:
-	mes "抬起文件後突然聽見，'鏘咯啷~'一聲，掉落了一把'紅色鑰匙'";
-	next;
-	mes "獲得了一把 ^FF0000紅色鑰匙^000000";
-	set cubekey,cubekey|2;
-	close;
-
-L_DONE:
-	mes "你已經從這裡取得了 ^FF0000紅色鑰匙^000000";
-	mes "這裡已經沒有東西了";
+	if (select("翻一翻文件:不理它")==1) {
+		mes "抬起文件後突然聽見，'鏘咯啷~'一聲，掉落了一把'紅色鑰匙'";
+		next;
+		mes "獲得了一把 ^FF0000紅色鑰匙^000000";
+		set cubekey,cubekey|2;
+	}
 	close;
 }
 
@@ -696,142 +642,122 @@ L_DONE:
 lhz_cube,247,198,0	script	床舖	111,{
 	mes "有一個雜亂的床舖";
 	next;
-	menu "床舖上面",-,"床舖下面",L_1;
-
-	mes "沒有任何動靜";
-	mes "似乎沒有什麼特別的地方";
-	close;
-
-L_1:
-	if (MISC_QUEST&512 || cubekey&131072) goto L_DONE;
-	if (cubekey&2048){
-		mes "檢查床舖下面時，";
-		mes "在集滿灰塵的角落裡發現了一個小物體";
-		next;
-		input @bed$;
-
-		if (cubekey&4096 && (@bed$ == "長的木棍")){
-			mes "用'長的木棍'把東西撈起來了";
-			next;
-			mes "已獲得了一個 '^FF0000正六面體 模型^000000'";
-			set cubekey,cubekey|131072;
+	if (select("床舖上面:床舖下面")==2) {
+		if (MISC_QUEST&512 || cubekey&131072) {
+			mes "從這裡已經拿走了 '^FF0000正六面體 模型^000000'";
+			mes "沒有任何東西在上面";
 			close;
 		}
-		mes "這看起來需要用長的物品";
-		mes "才能把裡面的東西拿出來，找找看!";
+		if (cubekey&2048){
+			mes "檢查床舖下面時，";
+			mes "在集滿灰塵的角落裡發現了一個小物體";
+			next;
+			input @bed$;
+			if (cubekey&4096 && (@bed$ == "長的木棍")){
+				mes "用'長的木棍'把東西撈起來了";
+				next;
+				mes "已獲得了一個 '^FF0000正六面體 模型^000000'";
+				set cubekey,cubekey|131072;
+				close;
+			}
+			mes "這看起來需要用長的物品";
+			mes "才能把裡面的東西拿出來，找找看!";
+			close;
+		}
+		mes "檢查床舖下面發現了一個'小的木棍'";
+		next;
+		mes "已獲得了一個 '^FF0000小的木棍'^000000'";
+		set cubekey,cubekey|2048;
+		if ((cubekey&4096) == 0 && cubekey&1024){
+			set cubekey,cubekey|4096;
+			next;
+			mes "和在書桌下所尋獲的'小的木棍'，有點接合的關係";
+			next;
+			mes "已獲得了一個 '^FF0000長的木棍^000000'";
+		}
 		close;
 	}
-	mes "檢查床舖下面發現了一個'小的木棍'";
-	next;
-	mes "已獲得了一個 '^FF0000小的木棍'^000000'";
-	set cubekey,cubekey|2048;
-
-	if ((cubekey&4096) == 0 && cubekey&1024){
-		set cubekey,cubekey|4096;
-		next;
-		mes "和在書桌下所尋獲的'小的木棍'，有點接合的關係";
-		next;
-		mes "已獲得了一個 '^FF0000長的木棍^000000'";
-	}
-	close;
-
-L_DONE:
-	mes "從這裡已經拿走了 '^FF0000正六面體 模型^000000'";
-	mes "沒有任何東西在上面";
+	mes "沒有任何動靜";
+	mes "似乎沒有什麼特別的地方";
 	close;
 }
 
 //--------------------------杯子--------------------------
-//TWRO官方翻譯 杯 -> 伓
-//--------------------------------------------------------
 
-lhz_cube,229,184,0	script	伓子	111,{
-	if (MISC_QUEST&512 || cubekey&4) goto L_DONE;
+lhz_cube,229,184,0	script	杯子	111,{
+	if (MISC_QUEST&512 || cubekey&4) {
+		mes "你拿走了 '^FF0000生鏽鑰匙^000000'";
+		mes "已經沒有任何東西在杯子裡面";
+		close;
+	}
 	mes "桌子上有一個空瓶和裝滿某樣東西的杯子";
 	next;
-	menu "不理它",-,"把杯子裡面的內容物拿出來",L_1;
-	close;
-
-L_1:
-	mes "把杯子裡面的內容物拿出來一看，是'生鏽鑰匙'";
-	next;
-	mes "已獲得了一個 '^FF0000生鏽鑰匙^000000'";
-	set cubekey,cubekey|4;
-	close;
-
-L_DONE:
-	mes "你拿走了 '^FF0000生鏽鑰匙^000000'";
-	mes "已經沒有任何東西在杯子裡面";
+	if (select("不理它:把杯子裡面的內容物拿出來")==2) {
+		mes "把杯子裡面的內容物拿出來一看，是'生鏽鑰匙'";
+		next;
+		mes "已獲得了一個 '^FF0000生鏽鑰匙^000000'";
+		set cubekey,cubekey|4;
+	}
 	close;
 }
 
 //--------------------------層板--------------------------
-//修正NPC正確位置 -> lhz_cube,231,202,0
-//原位置 -> lhz_cube,233,206,0 -> 不符合地圖佈景位置
+// 修正NPC正確位置 -> lhz_cube,231,202,0
+// 原位置 -> lhz_cube,233,206,0 -> 不符合地圖佈景位置
 //--------------------------------------------------------
 
 lhz_cube,231,202,0	script	層板	111,{
-	if (MISC_QUEST&512 || cubekey&8) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&8) {
+		mes "生鏽鑰匙已經產生變化而成了綠色鑰匙";
+		next;
+		mes "沒有再看見其它有用的東西了";
+		close;
+	}
 	mes "有各式各樣裝滿試藥的瓶子";
 	mes "仔細一看，上面貼有不同的標籤";
 	next;
 	input @lathe$;
-
-	if (cubekey&4 && (@lathe$ == "生鏽鑰匙")) goto L_1;
+	if (cubekey&4 && (@lathe$ == "生鏽鑰匙")) {
+		mes "把'生鏽鑰匙'放在試藥裡後，";
+		mes "鑰匙上的鐵鏽都不見";
+		next;
+		mes "已獲得了一把 '^FF0000綠色鑰匙^000000'";
+		set cubekey,cubekey|8;
+		close;
+	}
 	mes "沒有任何事情發生";
-	close;
-
-L_1:
-	mes "把'生鏽鑰匙'放在試藥裡後，";
-	mes "鑰匙上的鐵鏽都不見";
-	next;
-	mes "已獲得了一把 '^FF0000綠色鑰匙^000000'";
-	set cubekey,cubekey|8;
-	close;
-
-L_DONE:
-	mes "生鏽鑰匙已經產生變化而成了綠色鑰匙";
-	next;
-	mes "沒有再看見其它有用的東西了";
 	close;
 }
 
 //--------------------------壁櫥--------------------------
 
 lhz_cube,249,191,0	script	壁櫥	111,{
-	if (MISC_QUEST&512 || cubekey&8192) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&8192) {
+		mes "你已經從這個壁櫥裡";
+		mes "取得了 '多角形 模型'";
+		next;
+		mes "沒有其它東西在裡面了";
+		close;
+	}
 	mes "發現了一個有很多抽屜的壁櫥";
-	if (cubekey&8) goto L_2;
 	next;
-	menu "不理它",-,"打開壁櫥",L_1;
-	close;
-
-L_1:
-	mes "沒有什麼特別的東西在壁櫥裡";
-	close;
-
-L_2:
-	next;
-	input @gkey$;
-
-	if (@gkey$ == "綠色鑰匙") goto L_3;
-	mes "沒有反應";
-	close;
-
-L_3:
-	mes "使用'綠色鑰匙'時，";
-	mes "抽屜中有一個被打開了，";
-	mes "打開抽屜中有一個多角形的正六面體";
-	next;
-	mes "已獲得了一個 ^FF0000多角形 模型^000000";
-	set cubekey,cubekey|8192;
-	close;
-
-L_DONE:
-	mes "你已經從這個壁櫥裡";
-	mes "取得了 '多角形 模型'";
-	next;
-	mes "沒有其它東西在裡面了";
+	if (cubekey&8) {
+		input @gkey$;
+		if (@gkey$ == "綠色鑰匙") {
+			mes "使用'綠色鑰匙'時，";
+			mes "抽屜中有一個被打開了，";
+			mes "打開抽屜中有一個多角形的正六面體";
+			next;
+			mes "已獲得了一個 ^FF0000多角形 模型^000000";
+			set cubekey,cubekey|8192;
+			close;
+		}
+		mes "沒有反應";
+		close;
+	}
+	if (select("不理它:打開壁櫥")==1) {
+		mes "沒有什麼特別的東西在壁櫥裡";
+	}
 	close;
 }
 
@@ -840,34 +766,33 @@ L_DONE:
 lhz_cube,234,200,0	script	書桌	111,{
 	mes "發現了有一堆物件，混雜的書桌";
 	next;
-	menu "書桌上面",-,"書桌下面",L_1,"抽屜",L_2;
-
-	mes "上面有一些書本，還有一些沒有用的稿紙";
-	close;
-
-L_1:
-	if(MISC_QUEST&512 || cubekey&1024) goto L_DONE;
-
-	mes "查看書桌底下，";
-	mes "發現了一個適當長度的木棍";
-	next;
-	mes "已獲得了一個 '^FF0000小的木棍^000000'";
-	set cubekey,cubekey|1024;
-	if(cubekey&2048){
-		set cubekey,cubekey|4096;
+	switch (select("書桌上面:書桌下面:抽屜")) {
+	case 1:
+		mes "上面有一些書本，還有一些沒有用的稿紙";
+		close;
+	case 2:
+		if (MISC_QUEST&512 || cubekey&1024) {
+			mes "你已經從這個壁櫥裡 '^FF0000小的木棍^000000'.";
+			mes "裡面已經沒有東西了";
+			close;
+		}
+		mes "查看書桌底下，";
+		mes "發現了一個適當長度的木棍";
 		next;
-		mes "和在床鋪下所尋獲的'小的木棍'，有點接合的關係";
-		next;
-		mes "已獲得了一個 '^FF0000長的木棍^000000'";
+		mes "已獲得了一個 '^FF0000小的木棍^000000'";
+		set cubekey,cubekey|1024;
+		if (cubekey&2048){
+			set cubekey,cubekey|4096;
+			next;
+			mes "和在床鋪下所尋獲的'小的木棍'，有點接合的關係";
+			next;
+			mes "已獲得了一個 '^FF0000長的木棍^000000'";
+		}
+		close;
+	case 3:
+		mes "鎖住了打不開";
+		close;
 	}
-	close;
-L_DONE:
-	mes "你已經從這個壁櫥裡 '^FF0000小的木棍^000000'.";
-	mes "裡面已經沒有東西了";
-	close;
-L_2:
-	mes "鎖住了打不開";
-	close;
 }
 
 //--------------------------圖畫--------------------------
@@ -876,227 +801,176 @@ L_2:
 //--------------------------------------------------------
 
 lhz_cube,234,202,0	script	圖畫	111,{
-	if (MISC_QUEST&512 || num1 > 0) goto L_DONE;
+	if (MISC_QUEST&512 || LHZ_1QUE_CUBE_NUM) {
+		mes "- 牆上掛著一幅圖畫.. -";
+		switch(LHZ_1QUE_CUBE_NUM) {
+		case 1:
+			mes "- 15 57 89 72 63 31 54 66 98 -";
+			close;
+		case 2:
+			mes "- 21 56 43 82 78 49 64 15 57 -";
+			close;
+		case 3:
+			mes "- 33 26 69 74 68 41 87 92 65 -";
+			close;
+		case 4:
+			mes "- 43 18 31 25 86 59 62 14 77 -";
+			close;
+		}
+	}
 	mes "牆壁上掛著一幅圖畫";
 	next;
-	menu "試著搬移它",L_1,"不理它",-;
-	close;
-
-L_1:
-	mes "沒有任何動靜";
-	next;
-	input @knife$;
-
-	if (cubekey&32 && (@knife$ == "小手刀")) goto L1_1;
-	mes "沒有任何事情發生";
-	close;
-
-L1_1:
-	mes "把'小手刀'扭轉一下，";
-	mes "圖畫從牆壁上離開可以搬移了";
-	mes "圖畫後面寫著數字，";
-	next;
-	set num1,rand(1,9);
-	Lset1:
-	set num2,rand(1,9);
-	if (num1 == num2) goto Lset1;
-	Lset2:
-	set num3,rand(1,9);
-	if (num1 == num3) goto Lset2;
-	if (num2 == num3) goto Lset2;
-	Lset3:
-	set num4,rand(1,9);
-	if (num1 == num4) goto Lset3;
-	if (num2 == num4) goto Lset3;
-	if (num3 == num4) goto Lset3;
-	Lset4:
-	set num5,rand(1,9);
-	if (num1 == num5) goto Lset4;
-	if (num2 == num5) goto Lset4;
-	if (num3 == num5) goto Lset4;
-	if (num4 == num5) goto Lset4;
-	Lset5:
-	set num6,rand(1,9);
-	if (num1 == num6) goto Lset5;
-	if (num2 == num6) goto Lset5;
-	if (num3 == num6) goto Lset5;
-	if (num4 == num6) goto Lset5;
-	if (num5 == num6) goto Lset5;
-	Lset6:
-	set num7,rand(1,9);
-	if (num1 == num7) goto Lset6;
-	if (num2 == num7) goto Lset6;
-	if (num3 == num7) goto Lset6;
-	if (num4 == num7) goto Lset6;
-	if (num5 == num7) goto Lset6;
-	if (num6 == num7) goto Lset6;
-	Lset7:
-	set num8,rand(1,9);
-	if (num1 == num8) goto Lset7;
-	if (num2 == num8) goto Lset7;
-	if (num3 == num8) goto Lset7;
-	if (num4 == num8) goto Lset7;
-	if (num5 == num8) goto Lset7;
-	if (num6 == num8) goto Lset7;
-	if (num7 == num8) goto Lset7;
-	Lset8:
-	set num9,rand(1,9);
-	if (num1 == num9) goto Lset8;
-	if (num2 == num9) goto Lset8;
-	if (num3 == num9) goto Lset8;
-	if (num4 == num9) goto Lset8;
-	if (num5 == num9) goto Lset8;
-	if (num6 == num9) goto Lset8;
-	if (num7 == num9) goto Lset8;
-	if (num8 == num9) goto Lset8;
-
-L_DONE:
-	mes "圖畫上面寫著數字";
-	mes "" + num1 + "3 " + num2 + "6 " + num3 + "9 " + num4 + "4 " + num5 + "8 " + num6 + "1 " + num7 + "7 " + num8 + "2 " + num9 + "5";
-	mes "也許這些數字可以用在別的地方";
+	if (select("試著搬移它:不理它")==1) {
+		mes "沒有任何動靜";
+		next;
+		input @knife$;
+		if (cubekey&32 && (@knife$ == "小手刀")) {
+			mes "把'小手刀'扭轉一下，";
+			mes "圖畫從牆壁上離開可以搬移了";
+			mes "圖畫後面寫著數字，";
+			next;
+			switch(rand(4)) {
+			case 0:
+				mes "- 15 57 89 72 63 31 54 66 98 -";
+				set LHZ_1QUE_CUBE_NUM,1;
+				close;
+			case 1:
+				mes "- 21 56 43 82 78 49 64 15 57 -";
+				set LHZ_1QUE_CUBE_NUM,2;
+				close;
+			case 2:
+				mes "- 33 26 69 74 68 41 87 92 65 -";
+				set LHZ_1QUE_CUBE_NUM,3;
+				close;
+			case 3:
+				mes "- 43 18 31 25 86 59 62 14 77 -";
+				set LHZ_1QUE_CUBE_NUM,4;
+				close;
+			}
+		}
+		mes "沒有任何事情發生";
+	}
 	close;
 }
 
 //--------------------------發電機--------------------------
 
 lhz_cube,224,192,0	script	發電機	111,{
-	if (MISC_QUEST&512 || cubekey&256) goto L_DONE;
+	if (MISC_QUEST&512 || cubekey&256) {
+		mes "發電機靜止不動";
+		close;
+	}
 	mes "有一台體積大的機械發出吵雜的聲音在運轉中，";
 	mes "前面部份有一個奇怪的顯示部份，";
 	mes "那旁邊有一個可以插入鑰匙的洞";
 	next;
 	input @key$;
-
-	if (cubekey&1 && (@key$ == "黃色鑰匙")) goto L_1;
+	if (cubekey&1 && (@key$ == "黃色鑰匙")) {
+		mes "把'黃色鑰匙'放入後扭轉，";
+		mes "有一股奇怪的機械噪音後，";
+		mes "機械就停止了";
+		next;
+		mes "機械停止後";
+		mes "在床邊的電燈突然熄滅了";
+		set cubekey,cubekey|256;
+		close;
+	}
 	mes "沒有任何事情發生";
-	close;
-
-L_1:
-	mes "把'黃色鑰匙'放入後扭轉，";
-	mes "有一股奇怪的機械噪音後，";
-	mes "機械就停止了";
-	next;
-	mes "機械停止後";
-	mes "在床邊的電燈突然熄滅了";
-	set cubekey,cubekey|256;
-	close;
-
-L_DONE:
-	mes "發電機靜止不動";
 	close;
 }
 
 //--------------------------電燈--------------------------
 
 lhz_cube,248,205,0	script	電燈	111,{
-	if (MISC_QUEST&512 || cubekey&16) goto L_DONE;
-	if (cubekey&256) goto L_1;
+	if (MISC_QUEST&512 || cubekey&16) {
+		mes "只有一個破碎的電燈";
+		close;
+	}
+	if (cubekey&256) {
+		mes "熄滅的電燈裡，裡面好像有什麼似的";
+		next;
+		if (select("不理它:把電燈砸碎後取出")==2) {
+			mes "把電燈砸碎取出來一看，";
+			mes "有一把'黑色鑰匙'，";
+			next;
+			mes "已獲得一把 '^FF0000黑色鑰匙^000000'";
+			set cubekey,cubekey|16;
+		}
+		close;
+	}
 	mes "這裡有一個發光的電燈，";
 	mes "裡面好像有什麼似的，";
 	mes "但碰了之後非常燙，";
 	mes "看起來需要找個東西讓這電燈熄滅";
-	close;
-
-L_1:
-	mes "熄滅的電燈裡，裡面好像有什麼似的";
-	next;
-	menu "不理它",-,"把電燈砸碎後取出",L_2;
-	close;
-
-L_2:
-	mes "把電燈砸碎取出來一看，";
-	mes "有一把'黑色鑰匙'，";
-	next;
-	mes "已獲得一把 '^FF0000黑色鑰匙^000000'";
-	set cubekey,cubekey|16;
-	close;
-
-L_DONE:
-	mes "只有一個破碎的電燈";
 	close;
 }
 
 //--------------------------箱子--------------------------
 
 lhz_cube,248,193,0	script	箱子#02	111,{
-	if (MISC_QUEST&512 || countitem(2657) || @gotLPkey) goto L_DONE;
+	if (MISC_QUEST&512 || countitem(2657) || @gotLPkey) {
+		mes "有一個打開的箱子";
+		mes "裡面沒有任何東西";
+		close;
+	}
 	mes "有3個特殊模樣洞的箱子";
 	next;
-	if (cubekey&65536 && cubekey&262144 && cubekey&16384) goto L_4;
-	menu "橢圓形洞",L_1,"正四角形洞",L_2,"多角形洞",L_3;
-
-L_1:
-	if (cubekey&65536) goto L1_2;
-	input @ellipse$;
-
-	if (cubekey&32768 && (@ellipse$ == "橢圓形 模型")) goto L1_1;
-	mes "沒有事情發生";
-	close;
-
-L1_1:
-	mes "在3個洞裡，對橢圓形模樣的洞，";
-	mes "放入'橢圓形 模型'後，聽到'鏘卡'的機械的聲音";
-	set cubekey,cubekey|65536;
-	close;
-
-L1_2:
-	mes "這個洞裡面已經放入了 '橢圓形 模型'";
-	close;
-
-L_2:
-	if (cubekey&262144) goto L2_2;
-	input @quadrangle$;
-
-	if (cubekey&131072 && (@quadrangle$ == "正六面體 模型")) goto L2_1;
-	mes "沒有事情發生";
-	close;
-
-L2_1:
-	mes "在3個洞裡，對四角形模樣的洞，";
-	mes "放入'正六面體 模型'後，聽到'鏘卡'的機械的聲音";
-	set cubekey,cubekey|262144;
-	close;
-
-L2_2:
-	mes "這個洞裡面已經放入了 '正六面體 模型'";
-	close;
-
-L_3:
-	if (cubekey&16384) goto L3_2;
-	input @polygon$;
-
-	if (cubekey&8192 && (@polygon$ == "多角形 模型")) goto L3_1;
-	mes "沒有事情發生";
-	close;
-
-L3_1:
-	mes "在3個洞裡，對多角形模樣的洞，";
-	mes "放入'多角形 模型'後，聽到'鏘卡'的機械的聲音";
-	set cubekey,cubekey|16384;
-	close;
-
-L3_2:
-	mes "這個洞裡面已經放入了 '多角形 模型'";
-	close;
-
-L_4:
-	mes "有3個特殊模樣洞的箱子各個洞裡插入著適合模樣的模型";
-	next;
-	menu "不理它",-,"打開箱子看看",L4_1;
-	close;
-
-L4_1:
-	mes "打開箱子裡面有'小的卡片'";
-	next;
-	mes "已獲得了一個 '^FF0000研究所進出卡片^000000'";
-	set @gotLPkey,1;
-	getitem 2657,1;
-	close;
-
-L_DONE:
-	mes "有一個打開的箱子";
-	mes "裡面沒有任何東西";
-	close;
+	if (cubekey&65536 && cubekey&262144 && cubekey&16384) {
+		mes "有3個特殊模樣洞的箱子各個洞裡插入著適合模樣的模型";
+		next;
+		if (select("不理它:打開箱子看看")==2) {
+			mes "打開箱子裡面有'小的卡片'";
+			next;
+			mes "已獲得了一個 '^FF0000研究所進出卡片^000000'";
+			set @gotLPkey,1;
+			getitem 2657,1;
+		}
+		close;
+	}
+	switch (select("橢圓形洞:正四角形洞:多角形洞")) {
+	case 1:
+		if (cubekey&65536) {
+			mes "這個洞裡面已經放入了 '橢圓形 模型'";
+			close;
+		}
+		input @ellipse$;
+		if (cubekey&32768 && (@ellipse$ == "橢圓形 模型")) {
+			mes "在3個洞裡，對橢圓形模樣的洞，";
+			mes "放入'橢圓形 模型'後，聽到'鏘卡'的機械的聲音";
+			set cubekey,cubekey|65536;
+			close;
+		}
+		mes "沒有事情發生";
+		close;
+	case 2:
+		if (cubekey&262144) {
+			mes "這個洞裡面已經放入了 '正六面體 模型'";
+			close;
+		}
+		input @quadrangle$;
+		if (cubekey&131072 && (@quadrangle$ == "正六面體 模型")) {
+			mes "在3個洞裡，對四角形模樣的洞，";
+			mes "放入'正六面體 模型'後，聽到'鏘卡'的機械的聲音";
+			set cubekey,cubekey|262144;
+			close;
+		}
+		mes "沒有事情發生";
+		close;
+	case 3:
+		if (cubekey&16384) {
+			mes "這個洞裡面已經放入了 '多角形 模型'";
+			close;
+		}
+		input @polygon$;
+		if (cubekey&8192 && (@polygon$ == "多角形 模型")) {
+			mes "在3個洞裡，對多角形模樣的洞，";
+			mes "放入'多角形 模型'後，聽到'鏘卡'的機械的聲音";
+			set cubekey,cubekey|16384;
+			close;
+		}
+		mes "沒有事情發生";
+		close;
+	}
 }
 
 //--------------------------門--------------------------
@@ -1106,71 +980,65 @@ L_DONE:
 lhz_cube,250,184,0	script	門#lhzCube	111,{
 	mes "有通往外面的門";
 	next;
-	menu "我要出去",L_OUT,"我不要出去",-;
+	if (select("我要出去:我不要出去")==1) {
+		warp "lighthalzen",310,302;
+		end;
+	}
 	close;
-
-L_OUT:
-	warp "lighthalzen",310,302;
-	end;
 }
 
 //--------------------------實驗管--------------------------
 
 lhz_cube,224,197,0	script	實驗管	111,{
-	if (MISC_QUEST&512) goto L_DONE;
-	if (countitem(2657) > 0) goto L_3;
-	if (cubekey&32768) goto L_2;
+	if (MISC_QUEST&512) {
+		warp "lhz_cube",177,13;
+		end;
+	}
+	if (countitem(2657)) {
+		mes "機械的前面有一個，薄的十字架型的洞";
+		next;
+		input @answer$;
+		if (@answer$ == "研究所進出卡片") {
+			mes "放入 '研究所進出卡片' 後，";
+			mes "出現了一個長長的樓梯";
+			next;
+			if (select("我要下去:我不要下去")==1) {
+				mes "連續著長長的樓梯";
+				set cubekey,0;	
+				set num1,0;	set num2,0;	set num3,0;	set num4,0;	set num5,0;
+				set num6,0;	set num7,0;	set num8,0;	set num9,0;
+				set piciburn,0;
+				set MISC_QUEST,MISC_QUEST|512;
+				close2;
+				warp "lhz_cube",177,13;
+				end;
+			}
+			close;
+		}
+		mes "沒有事情發生";
+		close;
+	}
+	if (cubekey&32768) {
+		mes "體積大的機械安靜的在那裡";
+		mes "從這裡已獲得了一個 '^FF0000橢圓形 模型^000000'";
+		close;
+	}
 	mes "放著一個奇怪的棺木，";
 	mes "內部好像放著什麼東西似的，";
 	mes "下面板子上有可以插入，鑰匙的洞和，可以進入薄板子的洞";
 	next;
 	input @key$;
-
-	if (cubekey&16 && (@key$ == "黑色鑰匙")) goto L_1;
+	if (cubekey&16 && (@key$ == "黑色鑰匙")) {
+		mes "放入黑色鑰匙扭轉後，有奇怪的機械噪音和，";
+		mes "在機械前面的玻璃被開啟了，";
+		mes "裡面有一個橢圓形模樣的模型";
+		next;
+		mes "已獲得了一個 '^FF0000橢圓形 模型^000000'";
+		set cubekey,cubekey|32768;
+		close;
+	}
 	mes "沒有事情發生";
 	close;
-
-L_1:
-	mes "放入黑色鑰匙扭轉後，有奇怪的機械噪音和，";
-	mes "在機械前面的玻璃被開啟了，";
-	mes "裡面有一個橢圓形模樣的模型";
-	next;
-	mes "已獲得了一個 '^FF0000橢圓形 模型^000000'";
-	set cubekey,cubekey|32768;
-	close;
-
-L_2:
-	mes "體積大的機械安靜的在那裡";
-	mes "從這裡已獲得了一個 '^FF0000橢圓形 模型^000000'";
-	close;
-
-L_3:
-	mes "機械的前面有一個，薄的十字架型的洞";
-	next;
-	input @answer$;
-
-	if (@answer$ == "研究所進出卡片") goto L_4;
-	mes "沒有事情發生";
-	close;
-
-L_4:
-	mes "放入 '研究所進出卡片' 後，";
-	mes "出現了一個長長的樓梯";
-	next;
-	menu "我要下去",L4_1,"我不要下去",-;
-	close;
-
-L4_1:
-	mes "連續著長長的樓梯";
-	set cubekey,0;	
-	set num1,0;	set num2,0;	set num3,0;	set num4,0;	set num5,0;
-	set num6,0;	set num7,0;	set num8,0;	set num9,0;
-	set piciburn,0;
-	set MISC_QUEST,MISC_QUEST|512;
-	close2;
-L_DONE:
-	warp "lhz_cube",177,13;
-	end;
 }
 
 //============================================================
@@ -1331,7 +1199,7 @@ OnTouch:
 		close;
 	case 5:
 		mes "扒竊!";
-		specialeffect 18; //"Suspicious Guy#lhz_03" EF_STEAL
+		specialeffect 18;
 		set zeny,zeny-10;
 		next;
 		mes "[" + strcharinfo(0) + "]";
@@ -1487,1358 +1355,1251 @@ OnTouch:
 	}
 }
 
-//==============================================================
-// Friendship
-//==============================================================
-
-lhz_in02,201,210,5	script	Digotz	869,{
-	if (BaseLevel < 50) {
-		mes "[Digotz]";
-		mes "Oh, an adventurer?";
-		mes "Welcome to Uptown";
-		mes "Lighthalzen. However,";
-		mes "I'm afraid this area won't";
-		mes "have much to offer you";
-		mes "in the way of excitement.";
+//===================
+//  相隔兩地的友誼任務
+//===================
+lighthalzen,337,232,3	script	麻庫	870,{
+	switch(friendship) {
+	case 0:
+	case 1:
+		mes "[麻庫]";
+		mes "喂喂~你是冒險家嗎?我想";
+		mes "這裡即沒什麼可看性，又";
+		mes "沒值得冒險的地方，既然";
+		mes "來了我也不方便";
+		mes "叫你回去";
 		next;
-		mes "[Digotz]";
-		mes "Not to be rude or";
-		mes "anything, but this town";
-		mes "should be safe enough for";
-		mes "you to explore. I mean, you";
-		mes "just seem to be kind of new";
-		mes "at this adventurer thing...";
+		mes "[麻庫]";
+		mes "這裡就如你所見，是個";
+		mes "很不理想的地方，不過";
+		mes "我又能怎樣呢? 只好";
+		mes "得過且過了，沒辦法啊";
+		next;
+		mes "[麻庫]";
+		mes "住在這種貧窮的地方的我，";
+		mes "對那邊的富裕村落，";
+		mes "也不是沒有遺憾啦，那裡";
+		mes "有一個感情很好的死黨";
+		next;
+		mes "[麻庫]";
+		mes "我即使人窮但志卻";
+		mes "不窮啊!假如你是";
+		mes "想歪的話，你真是個";
+		mes "大壞蛋，哼";
+		next;
+		mes "[麻庫]";
+		mes "正確說法是... 與其說是有朋友，";
+		mes "倒不如說是曾經有朋友，這樣";
+		mes "形容比較恰當，現在是";
+		mes "由於有太多的因素... 嘖";
+		next;
+		mes "[麻庫]";
+		mes "...我想想看，我幹嘛像";
+		mes "初次見面的你說這些";
+		mes "話呢?真是好好笑，";
+		mes "別放在心上!請你趕快";
+		mes "離開吧!";
+		next;
+		mes "[麻庫]";
+		mes "還有這裡沒什麼可看性，";
+		mes "請你趕快離開，或者到";
+		mes "對面全都是有錢人家的";
+		mes "地方吧!哼嗯...";
+		if (friendship==0) set friendship,1;
 		close;
-	}
-	if (friendship > 14) {
-		mes "^3355FFDigotz has passed";
-		mes "away, but the look on";
-		mes "his face seems very";
-		mes "peaceful and content.^000000";
+	case 2:
+		mes "[麻庫]";
+		mes "嗯?這次又是什麼事啊，";
+		mes "你還有事情沒有";
+		mes "完成嗎?真是的，";
+		mes "你這人很閒嘛，冒險家們";
+		mes "都是這樣子嗎?";
+		next;
+		select("...你們兩位也真是的...");
+		mes "[麻庫]";
+		mes "...等等!你那表情好像小時候";
+		mes "常見過的樣子耶?!你現在";
+		mes "想說 [...你們兩位也";
+		mes "真是的...] 這句話吧?!";
+		mes "我說的對吧?!";
+		next;
+		mes "[麻庫]";
+		mes "我看你心理這樣想，";
+		mes "應該是有去那邊的富裕村落";
+		mes "見過我朋友達伊戈次了吧?!";
+		mes "啊... 不是，曾經是朋友的";
+		mes "達伊戈次啦";
+		next;
+		mes "[麻庫]";
+		mes "我們以前關係算是蠻好的...";
+		mes "當然我這語氣才是正統，";
+		mes "他不過是學我講話";
+		mes "而已，後來由於";
+		mes "很多因素，現在想要";
+		mes "見個面很不容易喔";
+		next;
+		mes "[麻庫]";
+		mes "我們沒玩在一起已經很久了";
+		mes "雖然...偶而會在遠處互相";
+		mes "注視對方過，但是";
+		mes "僅止於此而已... 沒有";
+		mes "更進一步的舉動";
+		next;
+		mes "[麻庫]";
+		mes "...我說是說了，奇怪";
+		mes "我幹嘛向初次見面的你";
+		mes "說這些話呢?!";
+		mes "抱歉，忘掉吧";
+		set friendship,3;
 		close;
-	}
-	if (friendship == 14) {
-		mes "^3355FFDigotz is seriously";
-		mes "injured from a wound";
-		mes "by a knife that is still";
-		mes "embedded in his belly.^000000";
+	case 3:
+	case 4:
+		mes "[麻庫]";
+		mes "奇怪你找我";
+		mes "還有事嗎?";
+		mes "沒事的話，";
+		mes "繼續走你的路吧";
 		next;
-		mes "["+ strcharinfo(0) +"]";
-		mes "Digotz...?";
-		mes "Oh no, let me";
-		mes "get you some help!";
-		next;
-		mes "[Digotz]";
-		mes "H-hey... It's the";
-		mes "adventurer... Man,";
-		mes "that Maku. He always";
-		mes "did bring me bad luck...";
-		mes "It's too late for me and";
-		mes "I don't have much time...";
-		next;
-		mes "[Digotz]";
-		mes "Those guards I told you";
-		mes "about... The ones who don't";
-		mes "want the poor and the rich to";
-		mes "mingle? I... Guess they found";
-		mes "I was gonna meet my old pal.";
-		mes "I just wanted to see him...";
-		next;
-		mes "[Digotz]";
-		mes "This guy... In a black";
-		mes "suit... He just... He just";
-		mes "stabbed me! I... God. It's";
-		mes "been so long since I've talked";
-		mes "to him. We'll hang out and have";
-		mes "fun, just like the good old days.";
-		next;
-		mes "[Digotz]";
-		mes "I missed my buddies, but now...";
-		mes "Now I can hear them calling me.";
-		mes "Now we can all be together just";
-		mes "like we all promised. Yeah...";
-		mes "I was wrong. Life's too short";
-		mes "to be angry with your frie--";
-		next;
-		mes "[Digotz]";
-		mes "..............";
-		next;
-		mes "[Digotz]";
-		mes "..............";
-		mes ".......................";
-		next;
-		mes "[Digotz]";
-		mes "..............";
-		mes ".......................";
-		mes "...............................";
-		next;
-		mes "^3355FFDigotz stopped breathing.";
-		mes "You remove the Knife from";
-		mes "his lifeless body as a final";
-		mes "courtesy to a man who";
-		mes "dearly loved his friends.^000000";
-		next;
-		set friendship,15;
-		getitem 1201,1; //Knife
-		close;
-	}
-	if (friendship == 13) {
-		mes "[Digotz]";
-		mes "Wh-whoa, I need to";
-		mes "get ready! That Maku's";
-		mes "gonna make fun of me if";
-		mes "I look too rich and pampered.";
-		mes "Damn! Where did I put all of";
-		mes "my fashionable street clothes?";
-		close;
-	}
-	if ((friendship == 12 && countitem(7351) > 0)) {
-		mes "[Digotz]";
-		mes "Even if Benkaistein";
-		mes "did come back, I don't";
-		mes "think I could forgive Maku.";
-		mes "In fact, you know what?";
-		mes "I think I'd even be madder!";
-		next;
-		if (select("Show Benkaistein's Journal.:Don't show Benkaistein's Journal.") == 1) {
-			mes "[Digotz]";
-			mes "Why am I so ticked off?";
-			mes "^3355FF*Sigh*^000000 You have something";
-			mes "to show me? Huh? Benkaistein";
-			mes "wanted me to read this diary";
-			mes "of his? Sure, why not? I do";
-			mes "owe him a lot over the years...";
+		if (friendship==3) {
+			mes "[麻庫]";
+			mes "因為討厭被誤會，所以再說一次，";
+			mes "但是從前僅僅只是看起來";
+			mes "像朋友了，絕對不是朋友了!";
+			mes "只是比現在親近";
+			mes "明白了嗎?!";
 			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Today, me, Digotz and";
-			mes "Maku played this crazy flying";
-			mes "game. Basically, we make";
-			mes "these wings out of wood and";
-			mes "paper, jump off these hills";
-			mes "and try to fly. Dumb, I know.^000000";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Today it was my turn to";
-			mes "jump and flap my arms with";
-			mes "these fake, badly made wings.";
-			mes "It's not really a fun game when";
-			mes "I think about it. Boy, I hope";
-			mes "we don't do that again.^000000";
-			next;
-			mes "[Digotz]";
-			mes "Oh yeah, I remember that!";
-			mes "Maku wore the wings most";
-			mes "of the time, but I still hold";
-			mes "the record for staying in the";
-			mes "air the longest! Yeah, I was";
-			mes "a regular Kid Pegasus~";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Maku, Digotz and me went";
-			mes "outside of town. Of course,";
-			mes "we didn't tell anyone or else";
-			mes "we'd get in trouble. It was";
-			mes "a really exciting day. But";
-			mes "then, we ran into a monster!^000000";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363I wanted to run away but Maku";
-			mes "and Digotz wanted to beat it so";
-			mes "that we could become heroes.";
-			mes "Of course, we got hurt pretty";
-			mes "bad and the monster got away.";
-			mes "Boy, mom was not happy...^000000";
-			next;
-			mes "[Digotz]";
-			mes "Huh. I don't remember";
-			mes "that so well. But I know that";
-			mes "Benkaistein, me and Maku";
-			mes "weren't afraid of anything back";
-			mes "then. We must have been totally";
-			mes "nuts to fight a monster, though.";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Digotz's been sick for three";
-			mes "days now. It's just a normal";
-			mes "cold and Maku keeps saying";
-			mes "it's Digotz's fault he got sick.^FFFFFF ^856363 But he's always asking me to";
-			mes "go visit him and see if he's okay.^000000";
-			next;
-			mes "[Digotz]";
-			mes "I think I remember being";
-			mes "pretty sick. Maku was worried?";
-			mes "I... I must have had a horrible";
-			mes "life threatening disease like,";
-			mes "um, Gonorrhitis. You know.";
-			mes "That might have been it.";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Mom and dad keep telling";
-			mes "me not to hang out with Maku";
-			mes "anymore. Their reason is really";
-			mes "dumb, and I don't care if he is";
-			mes "poor. He's one of the best guys";
-			mes "that I'll ever know.^000000";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Digotz's family is really";
-			mes "rich and they don't want him";
-			mes "to see Maku anymore either.";
-			mes "But Digotz doesn't care.";
-			mes "I know he likes Maku a lot.^000000";
-			next;
-			mes "[Digotz]";
-			mes "Well, we were a lot";
-			mes "younger and closer back";
-			mes "then, so... ^333333*Ahem!*^000000 Why did";
-			mes "Benkaistein even write that?!";
-			next;
-			mes "[Benkaistein's Journal]";
-			mes "^856363Today, the three of us";
-			mes "made an oath of brotherhood,";
-			mes "just like we read in the comic";
-			mes "book. We swore we'd always";
-			mes "be friends no matter what.";
-			mes "For always and for always.^000000";
-			next;
-			mes "[Digotz]";
-			mes "I... I was forced to make";
-			mes "that oath! And people do";
-			mes "change, you know! I mean,";
-			mes "we were basically just kids,";
-			mes "it's not like that oath really";
-			mes "means anything now, does it?";
-			next;
-			set friendship,13;
-			mes "[Digotz]";
-			mes "That does it. I'm gonna";
-			mes "go see that Maku. I don't";
-			mes "miss him or anything, but";
-			mes "I gotta get him to cancel";
-			mes "that oath. And maybe I'll";
-			mes "beat up him a little bit.";
+			mes "[麻庫]";
+			mes "覺得珍憐惜我話，";
+			mes "想來見我喔，";
+			mes "只是，說是說我現在的心情嗎?";
+			mes "不要誤會喔!";
+			mes "如果那個傢伙先來見我的話，";
+			mes "能稍微試著考慮一下喲...";
 			close;
 		}
-		mes "[Digotz]";
-		mes "I don't understand";
-		mes "why I'm so angry!";
-		mes "I'm starting to act";
-		mes "more like Maku, though,";
-		mes "don't get me wrong, it's";
-		mes "not like I care about the guy.";
-		close;
-	}
-	if (friendship == 7) {
-		mes "[Digotz]";
-		mes "Even if Benkaistein came";
-		mes "back from wherever he was";
-		mes "studying, I don't think he'd be";
-		mes "able to get Maku to apologize";
-		mes "to me. That guy is just way";
-		mes "too stubborn for his own good!";
-		close;
-	}
-	if (friendship == 6) {
-		mes "[Digotz]";
-		mes "Oh, it's been a while.";
-		mes "What are you doing back";
-		mes "over here? And, um, did";
-		mes "you deliver that message";
-		mes "to Maku? Now when I think";
-		mes "about it, I was kind of--";
+		select("與達伊戈次談過話了");
+		mes "[麻庫]";
+		mes "嗯?你是說和我的";
+		mes "仇人講過話嗎?那麼";
+		mes "不聽也罷，一定說了我";
+		mes "很多壞話吧，壞傢伙...!!";
 		next;
-		mes "["+ strcharinfo(0) +"]";
-		mes "I delivered your message";
-		mes "word for word, and Maku";
-		mes "got angry, called you names";
-		mes "and has been threatening to";
-		mes "beat you up pretty badly.";
+		mes "[麻庫]";
+		mes "好吧，他托你傳什麼話";
+		mes "給我呢?你就照本宣科的";
+		mes "把他說過的話一五一十的";
+		mes "告訴我吧!包括他的語氣、";
+		mes "音調、用語等，詳細的";
+		mes "娓媚道來吧!!";
 		next;
-		mes "[Digotz]";
-		mes "That no-good, dirty";
-		mes "lying rotten scoundrel!";
-		mes "If it weren't for those";
-		mes "guards, I'd head over to";
-		mes "the ghetto and beat Maku";
-		mes "up myself! That stupid guy!";
-		next;
-		mes "[Digotz]";
-		mes "During times like this,";
-		mes "I really miss ^FF0000Benkaistein^000000.";
-		mes "That guy would always have";
-		mes "an answer for this kind of";
-		mes "situation. Yeah, I think he's";
-		mes "in some far off town, studying.";
-		next;
-		mes "[Digotz]";
-		mes "Supposedly he's in that";
-		mes "place, whatever it's called,";
-		mes "since there's a ton of books";
-		mes "there that he can use. But";
-		mes "yeah, Benkaistein would";
-		mes "always be the mediator...";
-		next;
-		mes "[Digotz]";
-		mes "Even back then, when";
-		mes "me, him and Maku used to";
-		mes "hang out, Benkaistein would";
-		mes "mediate if we got into some";
-		mes "argument. Still, he couldn't";
-		mes "do anything about Maku now...";
-		set friendship,7;
-		next;
-		mes "[Digotz]";
-		mes "I don't know why,";
-		mes "but I'm so angry!";
-		mes "Why am I stressing";
-		mes "out so much over this?!";
-		close;
-	}
-	if ((friendship == 4 || friendship == 5)) {
-		mes "[Digotz]";
-		mes "Still checking out";
-		mes "Uptown Lighthalzen?";
-		mes "Not like I'd care, but if you";
-		mes "do happen to see Maku,";
-		mes "deliver this little message";
-		mes "for me, sentence by sentence.";
-		next;
-		mes "[Digotz]";
-		mes "^FF0000Hopeless bastard!";
-		mes "^FF0000You're still a stubborn jerk!";
-		mes "^FF0000You owe me at least 3 lunches!";
-		mes "^FF0000Not to mention an apology!";
-		mes "^FF0000But who cares what you think?!";
-		mes "I'm so goddamn happy without you!^000000";
-		close;
-	}
-	if (friendship == 3) {
-		mes "[Digotz]";
-		mes "I know that the";
-		mes "opulence of Uptown";
-		mes "seems rather attractive,";
-		mes "but trust me. This place";
-		mes "is colorless. Now, have";
-		mes "you visited the poor district?";
-		next;
-		select("Yes, I did already...");
-		mes "["+ strcharinfo(0) +"]";
-		mes "Yes, I did already...";
-		mes "And I met someone";
-		mes "named Maku there.";
-		next;
-		mes "[Digotz]";
-		mes "Maku?! Oh, he must have";
-		mes "mentioned something about";
-		mes "me. But I don't care what he";
-		mes "says, unless it's an apology";
-		mes "for being a fully blown jerk.";
-		mes "Ever since we were kids...";
-		next;
-		mes "[Digotz]";
-		mes "Anyway, we used to be close,";
-		mes "but that guy was never a true";
-		mes "friend of mine! Like that one";
-		mes "time he cheated to beat me at";
-		mes "arm wrestling! Or when he never";
-		mes "thanked me for buying us lunch!";
-		next;
-		mes "[Digotz]";
-		mes "Sure, he might have helped";
-		mes "me a little in meeting my first";
-		mes "girlfriend, but I'll never ever";
-		mes "forgive him for fixing me up";
-		mes "on the worst blind dates a";
-		mes "man can possibly experience!";
-		next;
-		mes "[Digotz]";
-		mes "Maku doesn't know a damn";
-		mes "about friendship! Even if I did";
-		mes "want to see him, there are these";
-		mes "people who don't want the rich";
-		mes "to ever meet with the poor.";
-		next;
-		mes "[Digotz]";
-		mes "If Maku's fine, that's";
-		mes "good enough to hear for";
-		mes "me! There's no need for me";
-		mes "to go all the way over there";
-		mes "and check up on him! I only";
-		mes "have one regret though...";
-		next;
-		mes "[Digotz]";
-		mes "I only wish I had one";
-		mes "last chance to see Maku...";
-		mes "So that I could kick his sorry";
-		mes "ass myself! Yeah, that's right!";
-		mes "Arrogant bastard! But still,";
-		mes "I'm not able to do that...";
-		next;
-		mes "[Digotz]";
-		mes "The security guards here";
-		mes "will never allow the rich and";
-		mes "poor to meet, fearing that";
-		mes "the poor will disturb the peace";
-		mes "and order of the city. It's a dumb rule made for dumb people.";
-		next;
-		mes "[Digotz]";
-		mes "Still, it's pretty scary that";
-		mes "someone can get punished";
-		mes "for violating such a stupid";
-		mes "taboo, actually. Anyway, if";
-		mes "you see Maku again, tell";
-		mes "him this for me, got it?";
-		next;
-		mes "[Digotz]";
-		mes "^FF0000Hopeless bastard!";
-		mes "^FF0000You're still a stubborn jerk!";
-		mes "^FF0000You owe me at least 3 lunches!";
-		mes "^FF0000Not to mention an apology!";
-		mes "^FF0000But who cares what you think?!";
-		mes "I'm so goddamn happy without you!^000000";
-		set friendship,4;
-		close;
-	}
-	if (friendship == 2) {
-		mes "[Digotz]";
-		mes "What are you still";
-		mes "doing hanging around";
-		mes "here? There's nothing";
-		mes "interesting in Uptown";
-		mes "for you to see, adventurer.";
-		next;
-		mes "[Digotz]";
-		mes "Gosh...!";
-		mes "Just hearing about";
-		mes "Maku makes me so feel";
-		mes "so upset for some reason!";
-		close;
-	}
-	if (friendship == 1) {
-		mes "[Digotz]";
-		mes "Oh, an adventurer?";
-		mes "Welcome to Uptown";
-		mes "Lighthalzen. However,";
-		mes "I'm afraid this area won't";
-		mes "have much to offer you";
-		mes "in the way of excitement.";
-		next;
-		mes "[Digotz]";
-		mes "My name is Digotz,";
-		mes "just another citizen";
-		mes "of Upper Lighthalzen.";
-		mes "I hope that you enjoy";
-		mes "your stay in my hometown.";
-		next;
-		select("Do you know someone named Maku?");
-		mes "[Digotz]";
-		mes "Maku? Maku. Yes, he's my";
-		mes "childhood friend. Or he was,";
-		mes "anyway. Now he's just a jerk.";
-		mes "In any case, we can't hang";
-		mes "out, even if we wanted to,";
-		mes "for several reasons.";
-		next;
-		mes "[Digotz]";
-		mes "Hey, why am I even";
-		mes "talking about this? It's";
-		mes "not like I'm bothered by";
-		mes "the fact me and Maku aren't";
-		mes "pals anymore. You know what?";
-		mes "Just forget everything I said.";
-		set friendship,2;
-		close;
-	}
-	mes "[Digotz]";
-	mes "Oh, an adventurer?";
-	mes "Welcome to Uptown";
-	mes "Lighthalzen. However,";
-	mes "I'm afraid this area won't";
-	mes "have much to offer you";
-	mes "in the way of excitement.";
-	next;
-	mes "[Digotz]";
-	mes "Feel free to take";
-	mes "a look around if you";
-	mes "so wish. I'm actually";
-	mes "glad to see somebody";
-	mes "aside from the stuck up";
-	mes "rich people who live here.";
-	close;
-}
-
-lighthalzen,337,232,3	script	Maku	870,{
-	if (friendship > 14) {
-		cutin "lhz_macu07",2;
-		mes "[Maku]";
-		mes "Why is this guy so";
-		mes "late? Once he shows";
-		mes "up, I swear, I'm gonna...!";
-		next;
-		mes "[Maku]";
-		mes "Eh, he might have";
-		mes "some kinda reason for";
-		mes "being late, but if he don't,";
-		mes "I've been saving a whole";
-		mes "six pack of kickass to open,";
-		mes "just for him. Heh heh heh~";
-		close2;
-		cutin "lhz_macu07",255;
-		end;
-	}
-	if (friendship == 14) {
-		cutin "lhz_macu05",2;
-		mes "[Maku]";
-		mes "Why is Digotz";
-		mes "so late? This isn't";
-		mes "like him at all. Maybe";
-		mes "something's wrong?";
-		close2;
-		cutin "lhz_macu05",255;
-		end;
-	}
-	if (friendship == 13 && countitem(7351) > 0) {
-		cutin "lhz_macu06",2;
-		mes "[Maku]";
-		mes "Hey, what is that? You want";
-		mes "I should read this journal?";
-		mes "Er, okay, but I'm none too";
-		mes "comfortable going through";
-		mes "somebody's diary. It's just";
-		mes "kinda... creepy, you know?";
-		next;
-		mes "[Maku]";
-		mes "Hey, this thing is";
-		mes "Benkaistein's. I haven't";
-		mes "seen that guy in a long while.";
-		mes "Ah, so he gave it to you for me";
-		mes "to read? Alright, I owe him a";
-		mes "favor or two, so I oughta...";
-		next;
-		cutin "lhz_macu06",255;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Today, me, Digotz and";
-		mes "Maku played this crazy flying";
-		mes "game. Basically, we make";
-		mes "these wings out of wood and";
-		mes "paper, jump off these hills";
-		mes "and try to fly. Dumb, I know.^000000";
-		next;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Today it was my turn to";
-		mes "jump and flap my arms with";
-		mes "these fake, badly made wings.";
-		mes "It's not really a fun game when";
-		mes "I think about it. Boy, I hope";
-		mes "we don't do that again.^000000";
-		next;
-		cutin "lhz_macu03",2;
-		mes "[Maku]";
-		mes "What is he talking about?!";
-		mes "That game was real fun!";
-		mes "Yeah, I usually wore the";
-		mes "wings and Digotz always";
-		mes "wanted to wear them too.";
-		next;
-		cutin "lhz_macu03",255;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Maku, Digotz and me went";
-		mes "outside of town. Of course,";
-		mes "we didn't tell anyone or else";
-		mes "we'd get in trouble. It was";
-		mes "a really exciting day. But";
-		mes "then, we ran into a monster!^000000";
-		next;
-		mes "[Benkaistein's Journal]";
-		mes "^856363I wanted to run away but Maku";
-		mes "and Digotz wanted to beat it so";
-		mes "that we could become heroes.";
-		mes "Of course, we got hurt pretty";
-		mes "bad and the monster got away.";
-		mes "Boy, mom was not happy...^000000";
-		next;
-		cutin "lhz_macu03",2;
-		mes "[Maku]";
-		mes "That's right! Back then,";
-		mes "the three of us weren't";
-		mes "afraid of anything! Of course,";
-		mes "Digotz got beat up the most.";
-		mes "But I gotta say, he was also";
-		mes "the most fearless of us.";
-		next;
-		cutin "lhz_macu03",255;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Digot's been sick for three";
-		mes "days now. It's just a normal";
-		mes "cold and Maku keeps saying";
-		mes "it's Digotz's fault he got sick.^FFFFFF ^856363 But he's always asking me to";
-		mes "go visit him and see if he's okay.^000000";
-		next;
-		cutin "lhz_macu04",2;
-		mes "[Maku]";
-		mes "Wh-what?! No, I wasn't";
-		mes "worried at all! That must";
-		mes "have been the time Digot";
-		mes "caught Clymonia. You know,";
-		mes "that, uh, horrible disease. No";
-		mes "one should have that one!";
-		next;
-		cutin "lhz_macu04",255;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Mom and dad keep telling";
-		mes "me not to hang out with Maku";
-		mes "anymore. Their reason is really";
-		mes "dumb, and I don't care if he is";
-		mes "poor. He's one of the best guys";
-		mes "that I'll ever know.^000000";
-		next;
-		cutin "lhz_macu01",2;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Digotz's family is really";
-		mes "rich and they don't want him";
-		mes "to see Maku anymore either.";
-		mes "But Digotz doesn't care.";
-		mes "I know he likes Maku a lot.^000000";
-		next;
-		mes "[Maku]";
-		mes "...";
-		mes "......";
-		next;
-		cutin "lhz_macu01",255;
-		mes "[Benkaistein's Journal]";
-		mes "^856363Today, the three of us";
-		mes "made an oath of brotherhood,";
-		mes "just like we read in the comic";
-		mes "book. We swore we'd always";
-		mes "be friends no matter what.";
-		mes "For always and for always.^000000";
-		next;
-		cutin "lhz_macu06",2;
-		mes "[Maku]";
-		mes "Well, that's true,";
-		mes "I guess, but people";
-		mes "change! Besides, we got";
-		mes "that idea from a comic book!";
-		mes "Well, if he apologizes first,";
-		mes "I guess I better forgive him.";
-		next;
-		mes "["+ strcharinfo(0) +"]";
-		mes "Good...";
-		mes "Because Digotz said";
-		mes "that he'll be coming";
-		mes "by in a few days.";
-		next;
-		cutin "lhz_macu07",2;
-		mes "[Maku]";
-		mes "What?! He's really coming";
-		mes "here? What for? It's too late";
-		mes "to patch things up! Still, I'd be";
-		mes "a real prick if I didn't see him. Alright, fine! I'll teach that guy";
-		mes "a lesson once he's here!";
-		next;
-		mes "[Maku]";
-		mes "And, um, gimme that";
-		mes "journal! I'm gonna read";
-		mes "more of it so I can make";
-		mes "fun of Digotz. Bwahahaha!";
-		mes "But yeah, um, thanks. Not";
-		mes "that I'm grateful or anything.";
-		cutin "lhz_macu07",255;
-		next;
-		delitem 7351,1; //Friend's_Diary
-		set friendship,14;
-		if (BaseLevel > 90) {
-			getexp 700000,0;
-		}
-		else if (BaseLevel > 75) {
-			getexp 400000,0;
-		}
-		else {
-			getexp 200000,0;
-		}
-		cutin "lhz_macu04",2;
-		mes "[Maku]";
-		mes "So, uh, I guess";
-		mes "I'll see you later.";
-		mes "Um, now I gotta get";
-		mes "ready for something.";
-		mes "^333333(But not to see Digotz!)^000000";
-		close2;
-		cutin "lhz_macu04",255;
-		end;
-	}
-	if (friendship > 5 && friendship < 13) {
-		cutin "lhz_macu06",2;
-		mes "[Maku]";
-		mes "Arrrrgh! Whenever I hear";
-		mes "about that Digotz, I get so";
-		mes "peeved! Is that guy giving";
-		mes "me the brushoff just because";
-		mes "I'm not a rich guy like he is?!";
-		next;
-		mes "[Maku]";
-		mes "I can't...";
-		mes "I can't even beat him up";
-		mes "all properly because of";
-		mes "all those freakin' guards!";
-		mes "Arrrrrrrgh! Man, where's";
-		mes "Benkaistein when I need him?";
-		close2;
-		cutin "lhz_macu06",255;
-		end;
-	}
-	if (friendship == 5) {
-		mes "[Maku]";
-		mes "RrrrRrrrr....";
-		mes "RrrrrRRRrrRR....";
-		mes "GGGGGRRRRR...";
-		next;
-		mes "^3355FFUh oh...";
-		mes "It looks like Maku";
-		mes "is starting to rage";
-		mes "just a bit too much.^000000";
-		next;
-		mes "...";
-		mes "......";
-		mes ".........";
-		next;
-		cutin "lhz_macu06",2;
-		mes "[Maku]";
-		mes "Gggrrrr...";
-		next;
-		mes "[Maku]";
-		mes "GRAAAAAAAAH~!";
-		mes "Who the hell does he";
-		mes "think he is, telling me";
-		mes "all sorts of crap!? Digotz,";
-		mes "you're not getting away";
-		mes "with this! Gonna wreck you!!";
-		next;
-		mes "^3355FFMaku's seething quickly";
-		mes "explodes into pure, violent";
-		mes "rage. You manage to calm";
-		mes "him down after a while, but";
-		mes "barely keep yourself from";
-		mes "getting killed in this outburst.^000000";
-		percentheal -50,0;
-		next;
-		mes "[Maku]";
-		mes "^333333*Pant pant* *Whew~*^000000";
-		mes "D-don't worry, I've got";
-		mes "a grip on myself now.";
-		mes "Thanks for not letting me";
-		mes "get too crazy. Times like";
-		mes "this, I really miss ^FF0000Benkaistein^000000.";
-		next;
-		mes "[Maku]";
-		mes "Benkaistein would always";
-		mes "make sure that I'd stay out";
-		mes "of fights. I really miss that";
-		mes "guy. Still, he ain't around...";
-		next;
-		set friendship,6;
-		mes "[Maku]";
-		mes "Damn those guards!";
-		mes "If they weren't there,";
-		mes "I could just go over and";
-		mes "kick Digotz's ass! I swear,";
-		mes "if it weren't for them...!";
-		close2;
-		cutin "lhz_macu06",255;
-		end;
-	}
-	if (friendship == 4) {
-		cutin "lhz_macu05",2;
-		mes "[Maku]";
-		mes "What the hell are you";
-		mes "still doing around here?";
-		mes "You must have better things";
-		mes "to do than talk to a ruffian";
-		mes "like me or that snobby and";
-		mes "totally prickish Digotz.";
-		next;
-		select("Speaking of which...");
-		mes "["+ strcharinfo(0) +"]";
-		mes "Speaking of which...";
-		mes "I spoke to Digotz again.";
-		mes "He told me to give you a";
-		mes "message, but I'm not sure th--";
-		next;
-		mes "[Maku]";
-		mes "That no-good bastard";
-		mes "has a message for me?!";
-		mes "Oh, I'm soooo honored~";
-		mes "Tell me what that fink";
-		mes "has to say, line by line!";
-		next;
-		input .@input$;
-		if (.@input$ == "Hopeless bastard!") {
-			mes "[Maku]";
-			mes "''Hopeless bastard?!''";
-			mes "Well, at least he had";
-			mes "the stomach to say that.";
-			mes "Through somebody else";
-			mes "anyway! What else'd he say?!";
+		input .@word$;
+		if (.@word$=="你這冥頑不靈的窮小子啊，") {
+			mes "[麻庫]";
+			mes "... 他是這樣說的嗎?好吧，";
+			mes "請你繼續說下去";
 			next;
-			input .@input$;
-			if (.@input$ == "You're still a stubborn jerk!") {
-				mes "[Maku]";
-				mes "''Stubborn jerk?!''";
-				mes "Takes one to know one,";
-				mes "bastard! Why I oughta--";
-				mes "Grrr! What'd he say next?!";
+			input .@word$;
+			if (.@word$=="你享你的清福吧!哼，") {
+				mes "[麻庫]";
+				mes "...可惡的傢伙，請你繼續";
 				next;
-				input .@input$;
-				if (.@input$ == "You owe me at least 3 lunches!") {
-					mes "[Maku]";
-					mes "Three lunches?!";
-					mes "I treated that guy to";
-					mes "lunch, like, fifteen times!";
-					mes "I tell you, the guy does not";
-					mes "know the meaning of friendship!";
-					mes "What else did that moron say?!";
+				input .@word$;
+				if (.@word$=="沒有你我過的更好!") {
+					mes "[麻庫]";
+					mes "...真可笑，繼續說!";
 					next;
-					input .@input$;
-					if (.@input$ == "Not to mention an apology!") {
-						cutin "lhz_macu05",255;
-						mes "[Maku]";
-						mes "Me, apologize?!";
-						mes "He should be on his hands";
-						mes "and knees begging for my";
-						mes "frickin' forgiveness! That...";
-						mes "That selfish no-good stupid...";
-						mes "W-what else did he tell you?!";
+					input .@word$;
+					if (.@word$=="你小時候做的壞事，") {
+						mes "[麻庫]";
+						mes "............";
 						next;
-						input .@input$;
-						if (.@input$ == "But who cares what you think?!") {
-							mes "[Maku]";
-							mes "''Who cares what I think?!''";
-							mes "GRRRAAAH~!! Who cares";
-							mes "what he thinks!! ^333333*Pant Pant*^000000";
-							mes "I'm gonna murderlize that";
-							mes "dumb creep! He can't possibly";
-							mes "make me angrier than I am now!";
+						input .@word$;
+						if (.@word$=="我仍記憶猶新，!") {
+							mes "[麻庫]";
+							mes "原來是這樣啊啊...";
 							next;
-							input .@input$;
-							if (.@input$ == "I'm so goddamn happy without you!") {
+							input .@word$;
+							if (.@word$=="你這可悲的傢伙啊!") {
+								mes "[麻庫]";
+								mes "可..惡..的..傢..伙..!";
+								mes "嗚嗚嗚...";
+								mes "..............";
+								mes "..............";
+								mes "(喃喃自語)........";
+								mes "....(喃喃自語)....";
+								mes "........(喃喃自語)";
 								set friendship,5;
-								cutin "lhz_macu06",2;
-								mes "[Maku]";
-								mes "That's it.";
-								mes "It's decided. The";
-								mes "next time I see Digotz,";
-								mes "I'm gonna plaster his";
-								mes "face all over the floor.";
-								close2;
-								cutin "lhz_macu06",255;
-								end;
+								close;
 							}
 						}
 					}
 				}
 			}
 		}
-		mes "[Maku]";
-		mes "Wha...? I dunno if Digotz";
-		mes "would say something like";
-		mes "that. You sure you heard";
-		mes "him carefully enough? It's";
-		mes "been a while, but I know";
-		mes "how Digotz talks, man.";
-		close2;
-		cutin "lhz_macu01",255;
-		end;
-	}
-	if (friendship == 3) {
-		cutin "lhz_macu03",2;
-		mes "[Maku]";
-		mes "Man, I need to blow off some";
-		mes "steam! Sure, me and Digotz";
-		mes "were buds before and maybe";
-		mes "we might seem like friends now,";
-		mes "but not anymore, though we used";
-		mes "to be closer than this. Argh!";
-		next;
-		mes "[Maku]";
-		mes "Don't get me wrong, I don't";
-		mes "miss the guy or anything like";
-		mes "that and I don't feel sorry about";
-		mes "what happened. But if he ever";
-		mes "came to apologize to me, I'd";
-		mes "probably accept, you know.";
-		next;
-		mes "[Maku]";
-		mes "Well, after thinking";
-		mes "about it, of course.";
-		mes "I mean, I'm not the one";
-		mes "holding a grudge. It's all";
-		mes "that guy's fault! Sheeeesh!";
-		close2;
-		cutin "lhz_macu03",255;
-		end;
-	}
-	if (friendship == 2) {
-		mes "[Maku]";
-		mes "Hey, what are you";
-		mes "doing back over here?";
-		mes "I thought I recommended";
-		mes "going over to check out";
-		mes "Uptown Lighthalzen. This";
-		mes "place is pretty run-down...";
-		next;
-		select("I actually met Digotz and...");
-		cutin "lhz_macu05",2;
-		mes "[Maku]";
-		mes "You what...?!";
-		mes "You saw my old pal,";
-		mes "Digotz?! Er, I mean,";
-		mes "Mister Alexander Digotz,";
-		mes "who usedta be my buddy,";
-		mes "but obviously not anymore.";
-		next;
-		cutin "lhz_macu05",255;
-		cutin "lhz_macu02",2;
-		mes "[Maku]";
-		mes "Sure, we were real close";
-		mes "at one time, but that was";
-		mes "too long ago. It's been a";
-		mes "long time since we hung";
-		mes "out and he probably hates";
-		mes "my penniless guts and...";
-		set friendship,3;
-		next;
-		mes "[Maku]";
-		mes "Crud, just listen to";
-		mes "me, I sound like a wuss.";
-		mes "I don't miss Digotz! In fact,";
-		mes "I hate the guy, one hundred";
-		mes "percent! The next time I see";
-		mes "him, I'll beat him to a pulp!";
-		close2;
-		cutin "lhz_macu02",255;
-		end;
-	}
-	if (friendship == 1) {
-		cutin "lhz_macu01",2;
-		mes "[Maku]";
-		mes "Hey, you're one of";
-		mes "those adventurers, eh?";
-		mes "Welcome to the ghetto.";
-		mes "Nothing too adventurous";
-		mes "here, but hey, you can";
-		mes "explore all you want.";
-		next;
-		mes "[Maku]";
-		mes "I don't know if you know,";
-		mes "but actually, the people who";
-		mes "live here ain't allowed to";
-		mes "explore this whole city. It's";
-		mes "kind of taboo to talk about,";
-		mes "but what do I care, right?";
-		next;
-		mes "[Maku]";
-		mes "Yeah, basically the rich";
-		mes "people here are too afraid";
-		mes "of the poor people comin' to";
-		mes "see them, so the security in";
-		mes "this city is pretty tight! Those";
-		mes "upper class guys are trash...";
-		next;
-		mes "[Maku]";
-		mes "I didn't used to think";
-		mes "this way. I actually used";
-		mes "to have a pretty rich friend";
-		mes "till I found out he's not all";
-		mes "I thought he was. That";
-		mes "moron! Why's he like that?!";
-		next;
-		mes "[Maku]";
-		mes "Eh, forget about it.";
-		mes "Why am I even talking";
-		mes "about my personal life";
-		mes "to someone I just met";
-		mes "anyway? Sure, we all";
-		mes "do it, but still...";
-		set friendship,1;
-		next;
-		mes "[Maku]";
-		mes "Well, when you get";
-		mes "bored of the ghetto,";
-		mes "you really oughta check";
-		mes "out the rich section of town.";
-		mes "I'm bitter, but I'll also admit";
-		mes "it's way nicer than this place.";
-		close2;
-		cutin "lhz_macu01",255;
-		end;
-	}
-	cutin "lhz_macu01",2;
-	mes "[Maku]";
-	mes "Hey, you're one of";
-	mes "those adventurers, eh?";
-	mes "Welcome to the ghetto.";
-	mes "Nothing too adventurous";
-	mes "here, but hey, you can";
-	mes "explore all you want.";
-	next;
-	mes "[Maku]";
-	mes "I don't know if you know,";
-	mes "but actually, the people who";
-	mes "live here ain't allowed to";
-	mes "explore this whole city. It's";
-	mes "kind of taboo to talk about,";
-	mes "but what do I care, right?";
-	next;
-	mes "[Maku]";
-	mes "Yeah, basically the rich";
-	mes "people here are too afraid";
-	mes "of the poor people comin' to";
-	mes "see them, so the security in";
-	mes "this city is pretty tight! Those";
-	mes "upper class guys are trash...";
-	next;
-	mes "[Maku]";
-	mes "I didn't used to think";
-	mes "this way. I actually used";
-	mes "to have a pretty rich friend";
-	mes "till I found out he's not all";
-	mes "I thought he was. That";
-	mes "moron! Why's he like that?!";
-	next;
-	mes "[Maku]";
-	mes "Eh, forget about it.";
-	mes "Why am I even talking";
-	mes "about my personal life";
-	mes "to someone I just met";
-	mes "anyway? Sure, we all";
-	mes "do it, but still...";
-	set friendship,1;
-	next;
-	mes "[Maku]";
-	mes "Well, when you get";
-	mes "bored of the ghetto,";
-	mes "you really oughta check";
-	mes "out the rich section of town.";
-	mes "I'm bitter, but I'll also admit";
-	mes "it's way nicer than this place.";
-	close2;
-	cutin "lhz_macu01",255;
-	cutin "lhz_macu02",255;
-	cutin "lhz_macu03",255;
-	cutin "lhz_macu04",255;
-	cutin "lhz_macu05",255;
-	cutin "lhz_macu06",255;
-	cutin "lhz_macu07",255;
-	end;
-}
-
-
-yuno_in04,107,14,5	script	Student	754,{
-	if (friendship == 7 || friendship == 8) {
-		mes "[Joey Choryee]";
-		mes "This is a study area where";
-		mes "you're not supposed to speak,";
-		mes "walk or even breathe loudly.";
-		mes "Still, students like Benkaistein can tune out the whole world";
-		mes "when they study hard enough...";
-		next;
-		set friendship,8;
-		mes "[Joey Choryee]";
-		mes "Benkaistein...?";
-		mes "He's in the north part";
-		mes "of this room. He's a real";
-		mes "nice guy, but a little anal.";
-		mes "Well, he's too organized";
-		mes "and he labels everything!";
+		mes "[麻庫]";
+		mes "……不是像那傢伙說著";
+		mes "一樣的感覺……";
+		mes "是否要好好聽了喔?";
+		mes "謊言……";
 		close;
-	}
-	mes "[Joey Choryee]";
-	mes "Property damage. Huh.";
-	mes "It has to do with lightning";
-	mes "and fire and water and stuff";
-	mes "like that? Here I thought it";
-	mes "meant, I dunno, buildings";
-	mes "getting wrecked or something.";
-	close;
-}
-
-yuno_in04,96,106,5	script	Passionate Student	754,{
-	if ((MaxWeight-Weight) < 300 || checkweight(1201,1) == 0) {
-		mes "^3355FFWait a second!";
-		mes "Right now, you're carrying";
-		mes "too many things with you.";
-		mes "Please come back after";
-		mes "using the Kafra Service";
-		mes "to store some of your items.^000000";
+	case 5:
+		mes "[麻庫]";
+		mes "可..惡..的..傢..伙..!";
+		mes "嗚嗚嗚...";
+		mes "..............";
+		mes "..............";
+		mes "(喃喃自語)........";
+		mes "....(喃喃自語)....";
+		mes "........(喃喃自語)";
+		next;
+		select("你在說什麼啊?什麼都聽不到");
+		mes "["+strcharinfo(0)+"]";
+		mes "你在說什麼啊?什麼都聽不到";
+		next;
+		mes "[麻庫]";
+		mes "... 哇 ...";
+		next;
+		mes "[麻庫]";
+		mes "哇...";
+		next;
+		mes "[麻庫]";
+		mes "哇啊啊啊啊啊啊啊啊!!!";
+		mes "嗚哦哦哦哦哦哦哦哦!!!";
+		mes "喀呃呃呃呃呃呃呃呃!!!";
+		mes "呱耶耶耶耶耶耶耶耶!!!";
+		next;
+		mes "[麻庫]";
+		mes "這臭傢伙竟然說出那種話來";
+		mes "這壞小子怎麼可以胡說八道";
+		mes "信口開河胡言亂語一派胡言";
+		mes "怎麼這樣對我達伊戈次傢伙";
+		mes "我一定會給你好看小你碎屍";
+		mes "萬段否則難消除我心頭之恨";
+		next;
+		mes "-麻庫的暴走狂言持續了";
+		mes "10分鐘，你也花了";
+		mes "10分鐘時間安撫他，";
+		mes "而吃足了苦頭-";
+		percentheal -50,0;
+		next;
+		mes "[麻庫]";
+		mes "吁吁... 吁吁... 吁吁...";
+		mes "現在才平復了一些，";
+		mes "嗯，你是說他講過那種..";
+		mes "話嗎，好想把他";
+		mes "揍一頓!啊嗚... 氣死了!!!";
+		next;
+		mes "[麻庫]";
+		mes "總之謝謝你安撫我的";
+		mes "情緒，若像以以這樣";
+		mes "興奮時，^FF0000班卡依史丁^000000";
+		mes "就會馬上過來安撫我呢...";
+		mes "現在連他也不在了";
+		next;
+		mes "[麻庫]";
+		mes "啊嗚... 我現在很想立刻";
+		mes "把位於中間的警衛制伏後，";
+		mes "跑到對面去把達伊戈次";
+		mes "這傢伙給碎屍萬段啊!!!";
+		mes "只是我卻不能這樣做，";
+		mes "嗚嗚嗚，怨啊!怨啊!";
+		next;
+		mes "[麻庫]";
+		mes "先做錯的是他，";
+		mes "是他啊!現在連陳年";
+		mes "往事都想杜撰嗎!甚至說";
+		mes "請我吃過兩次午餐?!";
+		mes "我被削了13次呢!!!!";
+		next;
+		mes "[麻庫]";
+		mes "這傢伙怎可大言不慚呢?!";
+		mes "嗚啊啊啊啊啊啊啊啊啊啊!!!";
+		mes "嗚嗚嗚啊啊啊啊!!!氣死我了!!";
+		next;
+		mes "-我已經無法控制了，乾脆";
+		mes "放棄離開這裡，對我的";
+		mes "身心健康才有益處-";
+		set friendship,6;
 		close;
-	}
-	if (friendship == 15) {
-		mes "[Benkaistein]";
-		mes "Were you able to bring";
-		mes "my journal to Digotz and";
-		mes "Maku? I'm pretty sure it'd";
-		mes "remind them of all the good";
-		mes "times we had. I know they";
-		mes "sure can be stubborn...";
-		next;
-		mes "[Benkaistein]";
-		mes "Anyway, I really";
-		mes "appreciate all your";
-		mes "help. When I go back";
-		mes "home, I look forward to";
-		mes "seeing the two of them again.";
-		next;
-		mes "[Benkaistein]";
-		mes "Until then, I need to research,";
-		mes "finish my thesis and accomplish";
-		mes "my academic goals. Oh, please";
-		mes "take this pass which will let you";
-		mes "go back and forth between the";
-		mes "rich and poor areas as my thanks.";
-		next;
-		set friendship,16;
-		if (BaseLevel > 90) {
-			getexp 700000,0;
+	default:
+		if (friendship==13 && countitem(7351)) {
+			mes "[麻庫]";
+			mes "啊?那是什麼，外表像日記簿的";
+			mes "那個東西?..怎麼，是日記簿";
+			mes "沒錯嘛，拿給我看!你把這個";
+			mes "帶來，當然是為了";
+			mes "要拿給我看吧!";
+			next;
+			mes "- 某月 某日 -";
+			mes "今天我和達伊戈次、麻庫";
+			mes "一起玩飛翔天空的遊戲， ...............";
+			mes "...............................";
+			next;
+			mes "[麻庫]";
+			mes "當時我人蠻單純的，其實那時候";
+			mes "我也玩得很愉快，我玩的次數 比較多，";
+			mes "雖達伊戈次嘀咕嚷襄的時候 我有讓給他玩...";
+			mes "但那小子 從小就在各方面 不是很誠實呢";
+			next;
+			mes "- 某月 某日 -";
+			mes "與達伊戈次、麻庫一起到";
+			mes "村外探險，雖然大人們 ...............";
+			mes "...............................";
+			mes "........ 都怪那兩個...............";
+			next;
+			mes "[麻庫]";
+			mes "...那正是我們三人膽大包天的時候，";
+			mes "班卡依史丁這傢伙，連這個都寫了... 那個時候";
+			mes "達伊戈次傢伙被修理的次數比較多，這傢伙實在";
+			mes "太大膽";
+			next;
+			mes "- 某月 某日 -";
+			mes "達伊戈次這小子因感冒在家中";
+			mes "病病殃映的躺了三天，那小子 ..............";
+			mes "    ...............................";
+			mes "  ............... 真是個不誠實的傢伙";
+			next;
+			mes "[麻庫]";
+			mes "...哪有喜歡啦!這小子 竟然搞出一個天大的";
+			mes "誤會!我只是覺得相識的";
+			mes "朋友若死掉的話會很倒楣，";
+			mes "所以才會那樣催促去探病，他卻誤會我的意思!";
+			next;
+			mes "[麻庫]";
+			mes "還好...很高興 他沒有死，總之絕對不是因為";
+			mes "喜歡他而那樣的!";
+			next;
+			mes "- 某月 某日 -";
+			mes "大人們不准我和麻庫做朋友， ...............";
+			mes "...............................";
+			mes "............. 這小子 也一樣不誠實，真是的";
+			next;
+			mes "[麻庫]";
+			mes "哼，要不是我還有誰願意";
+			mes "跟他玩啊?因為是我才會";
+			mes "跟他交朋友，這小子";
+			mes "還知道我很風趣啊，";
+			mes "不錯嘛小子...";
+			next;
+			mes "- 某月 某日 -";
+			mes "今天就像三國演義一樣， ................";
+			mes "................ ................";
+			mes "       ................";
+			mes "我想他們分開的 那一天，可能就是 世界末日了";
+			next;
+			mes "[麻庫]";
+			mes "... 嗯，有這種事嗎， 好像是有過吧...";
+			mes "唉，不過這也是 沒辦法的事啊!除非";
+			mes "那小子先來找我，否則我怎能先向他低頭認錯呢!";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "他說最快這幾天 就會來找你耶";
+			next;
+			mes "[麻庫]";
+			mes "呃?那是真的嗎?你是說他會來這裡";
+			mes "看我嗎?這... 傻小子現在他又想怎樣呢?!";
+			mes "簡直一點幫助也沒有";
+			next;
+			mes "[麻庫]";
+			mes "可是... 既然說要過來";
+			mes "若不讓他來好像有點";
+			mes "不禮貌，那就見面吧，";
+			mes "哼，這麼晚來有何用，";
+			mes "來就死定了!我一定會";
+			mes "給他顏色瞧瞧";
+			next;
+			mes "[麻庫]";
+			mes "請你，把那日記簿給我吧!";
+			mes "達伊戈次傢伙來的後候，";
+			mes "我要拿給他看好好嘲笑他";
+			mes "一番!呼呼...";
+			next;
+			mes "[麻庫]";
+			mes "啊，總之謝...謝你，哼!";
+			mes "一-點點謝謝你!只是一點點";
+			mes "而已啦!不要誤會!";
+			mes "沒，沒事了的話請離開!";
+			delitem 7351,1;
+			set friendship,14;
+			if (BaseLevel > 90)	getexp 700000,0;
+			else if (BaseLevel > 75)	getexp 400000,0;
+			else			getexp 200000,0;
+			close;
 		}
-		else if (BaseLevel > 75) {
-			getexp 400000,0;
+		mes "[麻庫]";
+		mes "嗚......達伊戈次的東西!";
+		mes "那個傢伙總是破壞了我的重要東西";
+		mes "卻以身份的差距做為";
+		mes "忽視的心情嗎?!";
+		next;
+		mes "[麻庫]";
+		mes "即使，不能到那邊";
+		mes "又......嗚嗚.....!";
+		next;
+		mes "-因為已經是無法掌控";
+		mes "最好是丟開不管他";
+		mes "去另外的地方-";
+		close;
+	case 14:
+		mes "[麻庫]";
+		mes "儘管如此，達伊戈次何時才會來呢!?";
+		mes "等待...";
+		mes "仍然音訊全無!";
+		close;
+	case 15:
+	case 16:
+		mes "[麻庫]";
+		mes "喂喂，已經是這樣的時間卻還不來";
+		mes "等等不揍他一頓的話";
+		mes "心情就不會舒服許多，呼呼呼...";
+		next;
+		mes "[麻庫]";
+		mes "這...那個傢伙一定也有所準備";
+		mes "也就趕不上吧?!";
+		mes "用寬廣的心等候嗎?";
+		close;
+	}
+}
+
+lhz_in02,201,210,4	script	達伊戈次	869,{
+	switch(friendship) {
+	default:
+		if (BaseLevel < 50) {
+			mes "[達伊戈次]";
+			mes "你..好像很弱的樣子，";
+			mes "我討厭弱的人!";
+			mes "正面看來不是正經的東西不是嗎";
+			mes "如果是那樣的話再說吧!";
+			mes "不強就無法有所成就喔!";
+			mes "嘿，不過另外與我沒有關係";
+			close;
+		}
+		mes "[達伊戈次]";
+		mes "喂喂~你是冒險家嗎?我想";
+		mes "這裡即沒什麼可看性，又";
+		mes "沒值得冒險的地方，即然";
+		mes "來了我也不方便";
+		mes "叫你回去";
+		next;
+		if (friendship==1) {
+			select("語氣都一樣...");
+			mes "[達伊戈次]";
+			mes "你!那是什麼表情啊!你呀，";
+			mes "你心裡在想什麼我可是";
+			mes "一清二楚!廢話嘛!你那種";
+			mes "表情我看過很多次呢!";
+			mes "你心理嘀沽著[語氣都一樣...]";
+			mes "不是嗎?!";
+			next;
+			select("你怎麼知道的?");
+			mes "[達伊戈次]";
+			mes "你那表情![你怎麼知道的?]";
+			mes "就是這表情啦!你以為";
+			mes "我不知道嗎!我小時候";
+			mes "聽過許多次!啊啊..";
+			mes "麻庫傢伙，太像我了!";
+			next;
+			mes "[達伊戈次]";
+			mes "我才是正統，他只不過是";
+			mes "模仿我而已啦，";
+			mes "大人們不懂還";
+			mes "亂說... 哼哼";
+			next;
+			select("你們真會一搭~一唱嘛");
+			mes "[達伊戈次]";
+			mes "你那種情!心理在想 [你們真會";
+			mes "一搭~一唱嘛] 是不是呢?!";
+			mes "是啊，我們是唱雙簧啦，甚至連";
+			mes "語氣和動作都模仿的唯妙唯肖，";
+			mes "我們曾是死黨呢，所以";
+			mes "你有什麼不滿嗎?";
+			next;
+			mes "[達伊戈次]";
+			mes "目前，由於各種因素";
+			mes "不能玩在一起..";
+			mes "總之與你不相干，";
+			mes "我沒必要聽你說!";
+			next;
+			mes "[達伊戈次]";
+			mes "還有這裡沒什麼好觀看的，";
+			mes "趕快離開或是到那邊充斥貧民的";
+			mes "地方吧!哼哼...";
+			set friendship,2;
+			close;
+		}
+		mes "[達伊戈次]";
+		mes "飯是當然，但也不拿出茶的打算....";
+		mes "不過如果想看的話，請隨意參觀!";
+		close;
+	case 2:
+		mes "[達伊戈次]";
+		mes "對於這裡完全沒有事情的話";
+		mes "如果沒有請出去! 哼...";
+		close;
+	case 3:
+		mes "[達伊戈次]";
+		mes "你又來啦... 你不覺得";
+		mes "厭煩嗎?好吧，總之這次";
+		mes "又是什麼事呢?不是，本來";
+		mes "就沒事不是嗎?";
+		next;
+		select("有關麻庫的事...");
+		mes "[達伊戈次]";
+		mes "麻庫的事情哦，你又去過";
+		mes "那裡充斥著窮人的村落啦?";
+		mes "你也不累啊，真是的...";
+		mes "途中又有警衛看守，";
+		mes "你還蠻有本事的嘛";
+		next;
+		mes "[達伊戈次]";
+		mes "我來猜一下他說";
+		mes "什麼話吧?麻庫傢伙肯定是說";
+		mes "[當然我這語氣才是正統，";
+		mes "他不過是學我講話]，";
+		mes "是不是呢?";
+		next;
+		mes "[達伊戈次]";
+		mes "簡直氣死我了，那傢伙";
+		mes "會說什麼話，我都";
+		mes "歷歷在目!我們";
+		mes "這麼久沒見了，";
+		mes "他一點也沒變!臭小子..";
+		next;
+		select("我看來你們之間還存在友誼呢");
+		mes "[達伊戈次]";
+		mes "別說些起雞皮疙瘩的話，";
+		mes "哪來的友誼啊?只是";
+		mes "一場孽緣罷了，哼，";
+		next;
+		mes "[達伊戈次]";
+		mes "小時候玩鬥雞時，卑鄙的";
+		mes "用犯規手段贏我的臭傢伙啦，";
+		mes "那麻庫傢伙就是這種人";
+		next;
+		mes "[達伊戈次]";
+		mes "再加上我請也吃過";
+		mes "兩次飯，一點也不";
+		mes "感謝我!他從頭到尾";
+		mes "可說毫無";
+		mes "義氣可言!哼哼...";
+		next;
+		mes "[達伊戈次]";
+		mes "真的... 真搞不懂我和他";
+		mes "糾葛的理由是什麼，再者";
+		mes "我因同情他，所以才跟他";
+		mes "交往，不過他是貧窮家的";
+		mes "準乞丐，我是普通家庭的";
+		mes "普通人";
+		next;
+		mes "[達伊戈次]";
+		mes "即使不用解釋也知道，都是因";
+		mes "身份的差界太大，我們之間";
+		mes "不適合來往吧?其實，";
+		mes "儘管我們喜歡，周圍的人";
+		mes "卻不容許我們在一起，";
+		mes "那也是沒辦法的事啊";
+		next;
+		mes "[達伊戈次]";
+		mes "我只要確認他過的好";
+		mes "就滿足了，哼，我和";
+		mes "那種傢伙沒理由";
+		mes "再見面了，反正我們的";
+		mes "相遇本來就是錯誤的";
+		next;
+		mes "[達伊戈次]";
+		mes "遺憾的是... 沒錯，沒能在";
+		mes "他那狂妄的臉上揍上一拳，";
+		mes "可以說是一大遣憾了，";
+		mes "如果我們又能玩在一起，";
+		mes "那他就死定了";
+		next;
+		mes "[達伊戈次]";
+		mes "可是... 一向都如此，";
+		mes "我們從現在起也不能";
+		mes "再見面了，最近有";
+		mes "所謂的保安維持人員，";
+		mes "正在監視著與貧民區";
+		mes "接觸的人們";
+		next;
+		mes "[達伊戈次]";
+		mes "他們說法是為了事前解決";
+		mes "那些企圖紊亂村落的秩序";
+		mes "及破壞和平的陰謀，";
+		mes "而與貧民接觸的";
+		mes "反動份子呢?";
+		mes "總之...";
+		next;
+		mes "[達伊戈次]";
+		mes "總之這個原因，";
+		mes "我一點都不想和";
+		mes "麻庫傢伙見面，若你";
+		mes "見到他請幫我這樣轉達!";
+		next;
+		mes "[達伊戈次]";
+		mes "^FF0000你這冥頑不靈的窮小子啊，";
+		mes "你享你的清福吧!哼，";
+		mes "沒有你我過的更好!";
+		mes "你小時後幹的壞事，";
+		mes "我仍記憶猶新，";
+		mes "你這可悲的傢伙啊!^000000";
+		next;
+		mes "[達伊戈次]";
+		mes "... 這樣轉告他，";
+		mes "聽清楚了的話出去吧!";
+		set friendship,4;
+		close;
+	case 4:
+	case 5:
+	case 6:
+		mes "[達伊戈次]";
+		mes "哎喲，你怎麼還在";
+		mes "這裡徘徊呢?若你";
+		mes "真的沒事可做，那就";
+		mes "請你把我講的話，";
+		mes "轉達給麻庫吧";
+		next;
+		mes "[達伊戈次]";
+		mes "你這冥頑不靈的窮小子啊，";
+		mes "你享你的清福吧!哼，";
+		mes "沒有你我過的更好!";
+		mes "你小時候幹的壞事，";
+		mes "我仍記憶猶新，!";
+		mes "你這可悲的傢伙啊!";
+		next;
+		mes "[達伊戈次]";
+		mes "... 這樣轉告他";
+		mes "聽清楚了的話出去吧!";
+		if (friendship < 6) close;
+		next;
+		mes "[達伊戈次]";
+		mes "嗯?你是說已轉達啦?真的，";
+		mes "那小氣鬼";
+		mes "說什麼呢?";
+		next;
+		if (select("照他說的轉達","隨便說矇混過去")==1) {
+			mes "[達伊戈次]";
+			mes "那小子從以前就畏首畏尾，";
+			mes "他人既沒氣魄又小氣，";
+			mes "所以講話不清不楚";
+			mes "也說不定... 整天只會";
+			mes "跟我屁股，光記得";
+			mes "無聊的事情!";
 		}
 		else {
-			getexp 200000,0;
+			mes "[達伊戈次]";
+			mes "不像樣的東西!!";
+			mes "從很早以前就不喜歡麻庫的那樣吝嗇性格";
+			mes "男人們可是會一一記著怎樣做那樣的事!?";
+			mes "是從小的時候開始我緊黏在一起的事";
+			mes "不記得了嗎?!";
 		}
-		getitem 7350,1; //Pass
-		mes "[Benkaistein]";
-		mes "Anyway, I wish you";
-		mes "safety in your travels,";
-		mes "adventurer. When the three";
-		mes "of us get together, I'll be";
-		mes "sure to let you know~";
+		next;
+		mes "[達伊戈次]";
+		mes "有那閒工夫還不如";
+		mes "去追女孩子唄!真是的，";
+		mes "時間都過這麼久了";
+		mes "一點都沒變... 還是討厭!";
+		next;
+		mes "[達伊戈次]";
+		mes "真是的，若不是我突然有事，";
+		mes "我很想立刻衝到貧民村去";
+		mes "揍他一頓，另外又有";
+		mes "監視我的人.. 啊嗚";
+		next;
+		mes "[達伊戈次]";
+		mes "這時候^FF0000班卡依史丁^000000傢伙在身邊的話";
+		mes "應該會告訴我答案的...";
+		mes "偏偏需要他時卻不在";
+		next;
+		select("班卡依史丁?");
+		mes "[達伊戈次]";
+		mes "啊啊，那小子?因為他是";
+		mes "書蟲子，聽說目前正在";
+		mes "遙遠的村落";
+		mes "求學中，在哪裡呢...";
+		mes "那裡蘊藏著各種書籍和資料，";
+		mes "以及擁有大學的村落";
+		next;
+		mes "[達伊戈次]";
+		mes "那小子每次在我倆";
+		mes "吵架時，就常當我們的";
+		mes "和事老... 反正";
+		mes "我也不會和麻庫再見面，";
+		mes "他也不必再當和事老了";
+		next;
+		mes "[達伊戈次]";
+		mes "目前他在... 位於那村落的";
+		mes "大學中努力";
+		mes "用功讀書吧，再者即使";
+		mes "他在，我也沒機會";
+		mes "和麻庫在見面了...";
+		next;
+		mes "[達伊戈次]";
+		mes "唉，一肚子氣，";
+		mes "要去那兒發洩呢";
+		set friendship,7;
+		close;
+	case 7:
+	case 12:
+		mes "[達伊戈次]";
+		mes "我告訴你即使去讀大學的";
+		mes "班卡依史丁在這裡";
+		mes "情況也不會有任何改變，";
+		mes "只會惹我生氣，哼嗯!";
+		if (friendship==12 && countitem(7351)) {
+			next;
+			mes "[達伊戈次]";
+			mes "啊嗚... 煩煩煩煩煩煩煩煩!";
+			mes "...啊，你拿的那本書是";
+			mes "什麼?是帶來";
+			mes "給我看的";
+			mes "嗎?";
+			next;
+			if (select("給他看","不給他看")==2) {
+				mes "[達伊戈次]";
+				mes "什麼?不是為了要拿來給我看的嗎!?";
+				mes "別到頭來...";
+				mes "原本壞的心情更加惹怒我的心情嗎?!";
+				close;
+			}
+			mes "[達伊戈次]";
+			mes "我看看..嗯?這...不是";
+			mes "班卡依史丁傢伙的日記簿嗎?";
+			mes "你見過班卡依史丁傢伙啦?";
+			mes "手段不錯嘛... 總之";
+			mes "我會好好讀讀看";
+			next;
+			mes "- 某月 某日 -";
+			mes "今天我和達伊戈次、麻庫";
+			mes "一起玩飛翔天空的遊戲，";
+			mes "告訴你這是怎樣的遊戲，";
+			mes "這是將其中一人的手臂裝上，";
+			mes "以木材和紙張材質製作的大型翅膀，";
+			next;
+			mes "另外兩人就協助裝有翅膀的人，";
+			mes "助跑至懸崖邊，然後快要到達";
+			mes "懸崖時，兩人就把有翅膀的人，";
+			mes "用力朝峭壁方向推下去，那麼";
+			mes "有翅膀的人就會拚命地擺動翅膀，";
+			next;
+			mes "這樣因受到風的影響，就能飛行";
+			mes "一段距離了，今天是輪到我飛行";
+			mes "，結果簡直把我給嚇死了，下次再也不敢玩了";
+			next;
+			mes "[達伊戈次]";
+			mes "哇哈!這時後我們也常常";
+			mes "做些瘋狂的事，那時候的";
+			mes "最高紀錄好像是我建立的吧?";
+			mes "麻庫傢伙的成績最差!";
+			next;
+			mes "- 某月 某日 -";
+			mes "與達伊戈次、麻庫一起到";
+			mes "村外探險，雖然大人們";
+			mes "阻止我們去，但我們是誰啊，";
+			mes "偷偷遛出去看了一下，果然";
+			mes "村外和村內大不相同，感覺";
+			mes "簡直是大開眼界，最重要是";
+			next;
+			mes "因偷偷摸摸的快感，讓我們";
+			mes "爽歪歪... 只是這種快感";
+			mes "曇花一現，突然出現了魔物!";
+			next;
+			mes "我本來說趕緊逃跑，但麻庫和";
+			mes "達伊戈次這倆傢伙提議說去打敗";
+			mes "魔物後，當一次英雄怎樣，";
+			mes "這些瘋子們...我也在萬不得已下";
+			mes "試圖攻擊魔物，結果能保住";
+			mes "小命就已經不錯了，反而";
+			mes "被打的很慘，回到家後";
+			next;
+			mes "又被罵個臭頭...都怪那兩個";
+			mes "死傢伙，唉唷唷好痛";
+			next;
+			mes "[達伊戈次]";
+			mes "哦嗯，也有這種時候嗎?";
+			mes "我不太記得，好像也";
+			mes "有過... 反正那時候";
+			mes "我和麻庫都是年輕氣盛的時期，";
+			mes "也有可能吧... 哦嗯";
+			next;
+			mes "- 某月 某日 -";
+			mes "達伊戈次這小子因感冒在家中";
+			mes "病病殃殃的躺了三天，那小子";
+			mes "看不出來他的身體有";
+			mes "那麼虛弱，老是生病，";
+			mes "真是個體弱多病的傢伙...";
+			next;
+			mes "身為朋友還蠻擔心他的，";
+			mes "可見我是個極重情義之人，";
+			mes "雖然麻庫那小子嘴裡笑他";
+			mes "是個笨蛋啊、蠢啦什麼的，";
+			next;
+			mes "但是看他著急的一直";
+			mes "催促我去探病，";
+			mes "可見他也是很喜歡";
+			mes "達伊戈次吧，";
+			mes "真是不誠實的傢伙";
+			next;
+			mes "[達伊戈次]";
+			mes "...哦喔，其實也不是什麼";
+			mes "大不了的事，還寫在日記上!";
+			mes "唉哦...";
+			next;
+			mes "- 某月 某日 -";
+			mes "大人們不准我和麻庫做朋友，";
+			mes "奇怪，為什麼反對我們玩在";
+			mes "一起呢?不管他家是不是富有，";
+			mes "只要我們喜歡就好了嗎?麻庫";
+			mes "也是個風趣的朋友啊，不能說";
+			mes "因為貧就不准我們交往，奇怪耶，";
+			mes "我就算了，但達伊戈次家";
+			mes "也很富裕，他也受到來自";
+			mes "父母親嚴重的威脅和壓力，";
+			mes "即使如此他仍堅持說";
+			mes "若不能和麻庫交朋友的話，";
+			mes "覺得很無趣，就頑強的 一直和麻庫交朋友，";
+			mes "這小子 也一樣不誠實，真是的";
+			next;
+			mes "[達伊戈次]";
+			mes "..其實，那時還小";
+			mes "也有可能吧... 哦哼，";
+			mes "唉，小時候本來就是這樣啊!";
+			mes "幹嘛把這些寫在日記上嘛!";
+			next;
+			mes "- 某月 某日 -";
+			mes "今天就像三國演義一樣，";
+			mes "我們三人結為桃園三結義，以後不管發生任何事";
+			mes "我們的友誼永不改變，";
+			mes "發誓雖不能同年同月同日生，但願同年同月同日死";
+			mes "即使我們分隔異地，唯有我們的心永遠在一起，";
+			next;
+			mes "麻庫和達伊戈次因感到不好意思，";
+			mes "所以不敢保證說彼此的友情 不會改變，";
+			mes "但都說會永遠陪在身邊，不誠實的傢伙們..";
+			next;
+			mes "可是...我還是很羨慕 他兩的友情，雖然";
+			mes "我也跟他們親近，但是";
+			mes "他們親近的程度讓我好羨慕，";
+			mes "我想他們分開的 那一天，可能就是 世界末日了";
+			next;
+			mes "[達伊戈次]";
+			mes "...哼，嗯，好像...有過";
+			mes "那種事，結義啦... 遺忘的";
+			mes "事情...";
+			next;
+			mes "[達伊戈次]";
+			mes "因為有不得已的情況";
+			mes "所...以... 唉!都是";
+			mes "前塵往事啦!情境和人心";
+			mes "總是會改變的啊!";
+			next;
+			mes "[達伊戈次]";
+			mes "不過，這幾天去";
+			mes "拜訪他一下吧... 不是，";
+			mes "我不是說想他或是";
+			mes "什麼啦!就是因..";
+			mes "呃...又... 對，沒錯，";
+			mes "就是要去取消結義!";
+			next;
+			mes "[達伊戈次]";
+			mes "不要誤會!欸...不管啦!";
+			next;
+			mes "-達伊戈次把日記簿用力地";
+			mes "往地上摔，不知是因羞澀";
+			mes "還是太興奮，臉紅起來了，";
+			mes "你趕緊把日記簿撿起來-";
+			next;
+			mes "[達伊戈次]";
+			mes "總之，要不要把這";
+			mes "日記簿拿給麻庫看，";
+			mes "隨便你啦，我要去準備";
+			mes "一下!天啊!真夠討厭!";
+			next;
+			mes "-暫時先不理準備中的";
+			mes "達伊戈次，翻閱了";
+			mes "一下日記簿-";
+			next;
+			mes "       - 某月 某日 -";
+			mes "今天和麻庫一起捉弄了一下達伊戈次，";
+			mes "這小子太單純了，";
+			mes "所以戲弄他的樂趣普普通通";
+			mes "可是更有趣的是他不自覺自已被玩弄了";
+			mes "果然是單純的傢伙... 麻庫";
+			mes "和我被此樂趣所吸引，才會";
+			mes "玩在一起吧，我要繼續玩弄他";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "...............";
+			next;
+			mes "-我想最好不要再";
+			mes "拿給他看，現在";
+			mes "去找麻庫吧...";
+			set friendship,13;
+		}
+		close;
+	case 13:
+		mes "[達伊戈次]";
+		mes "看什麼的事能出去的!";
+		mes "我現在正在忙著準備喲!";
+		mes "真的隔了好久，";
+		mes "穿的不像樣合適的話";
+		mes "會被那個傢伙笑的...";
+		close;
+	case 14:
+		mes "-達伊戈次的肚子上刺著";
+		mes "小刀，流了很多的血，-";
+		mes "是重傷情況危急-";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "達伊戈次先生!";
+		mes "達伊戈次先生!";
+		next;
+		mes "[達伊戈次]";
+		mes "啊... 嘿黑... 你來啦，結果";
+		mes "結局是樣，確實";
+		mes "和麻庫傢伙有糾葛的話，";
+		mes "一定會倒大楣...";
+		next;
+		mes "[達伊戈次]";
+		mes "之前...我講過吧?為了";
+		mes "維持治安，有哪些人";
+		mes "會與貧民村...接觸而進行監視的";
+		mes "傢伙... 們吧，那些...傢伙們好像察覺到了..";
+		mes "好像是身穿黑色... 西服體格壯碩的男子...的";
+		mes "人... 用刀...刺了我，啊... 有夠倒楣的";
+		next;
+		mes "[達伊戈次]";
+		mes "等了許久的... 再會，期待著一起再聊天...";
+		mes "嘿嘿...我們以後就像小時候那樣打打鬧鬧的";
+		mes "玩耍，以後..繼續..要照結義的後候... 那樣..";
+		next;
+		mes "[達伊戈次]";
+		mes "嘿嘿... 聽到了麻庫小子 叫我的聲音，";
+		mes "班卡依史丁也快... 來了吧... 我先...";
+		mes "走一步了... 麻庫... 班卡依史丁...";
+		mes "真不知道這是. 多少年之後的再會呢...";
+		next;
+		mes "[達伊戈次]";
+		mes "也... 謝謝你，托你的福";
+		mes "我們才能又玩在一起...";
+		mes "嘿嘿... 麻庫... 我去見";
+		mes "你...了....嘿...嘿...";
+		mes ".....................";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "-終於一命嗚呼";
+		mes "至少幫他把刺在肚子上的";
+		mes "刀子拔出來吧-";
+		next;
+		mes "";
+		mes "["+strcharinfo(0)+"]";
+		mes "請你...安息吧，達伊戈次先生...";
+		getitem 1201,1;
+		set friendship,15;
+		close;
+	case 15:
+	case 16:
+		mes "-現在看了他的表情是安詳的表情倒著-";
 		close;
 	}
-	if ((friendship == 11 && countitem(7351) > 0)) {
-		mes "[Benkaistein]";
-		mes "Aw nuts, this is";
-		mes "taking much longer";
-		mes "than I had expected.";
-		mes "Now where did I put";
-		mes "that thing? Hmmmm...";
+}
+
+yuno_in04,107,14,4	script	學生	754,{
+	switch(friendship) {
+	default:
+		mes "[學生]";
+		mes "富裕學，喃喃自語著..";
+		mes "風魔法，喃喃自語著..";
+		mes "黑魔法，喃喃自語著..";
+		mes "他種族，喃喃自語著..";
 		next;
-		mes "[Benkaistein]";
-		mes "Oh, is that it?";
-		mes "Did you find my";
-		mes "journal? Quick, let";
-		mes "me check. Yes, yes...";
-		mes "This is it! Thank you";
-		mes "for finding this for me!";
+		mes "-似乎沉浸在自已封閉的世界";
+		mes "所以偷偷的事先做好了是長處嗎?!-";
+		close;
+	case 7:
+	case 8:
+		mes "[學生]";
+		mes "這裡是讀習的地方，";
+		mes "請你別用跑的，";
+		mes "說話也小聲一點，";
+		mes "請別妨礙用功";
+		mes "讀書的學生們";
 		next;
-		mes "[Benkaistein]";
-		mes "Would you mind doing";
-		mes "a favor for me? It'd be";
-		mes "better if I talk to them";
-		mes "myself, but I'm too busy";
-		mes "working on this thesis...";
+		mes "[學生]";
+		mes "無論任何時刻";
+		mes "都請保持肅靜，";
+		mes "這裡甚至還有把";
+		mes "圖書館當作自家一樣，";
+		mes "整天埋首苦讀的";
+		mes "班卡依史丁學生";
 		next;
-		mes "[Benkaistein]";
-		mes "Would you please give this";
-		mes "journal to Digotz and Maku?";
-		mes "I wrote in it when we were";
-		mes "really young, so it should";
-		mes "remind them of all the good";
-		mes "times we used to share.";
-		next;
-		set friendship,12;
-		mes "[Benkaistein]";
-		mes "Anyway, this should at";
-		mes "least help them realize";
-		mes "how stupid they've been";
-		mes "acting. Thanks in advance,";
-		mes "and please take care of";
-		mes "Maku and Digotz for me.";
+		mes "[學生]";
+		mes "班卡依史丁目前正在";
+		mes "那上面讀書中，所以";
+		mes "進出時請小心";
+		if (friendship==7) set friendship,8;
 		close;
 	}
-	if ((friendship == 10 || friendship == 11)) {
-		mes "[Benkaistein]";
-		mes "Aw nuts, this is";
-		mes "taking much longer";
-		mes "than I had expected.";
-		mes "Now where did I put";
-		mes "that thing? Hmmmm...";
+}
+
+yuno_in04,96,106,4	script	熱血學生	754,{
+	switch(friendship) {
+	default:
+		mes "[熱血學生]";
+		mes "富裕學，喃喃自語著..";
+		mes "風魔法，喃喃自語著..";
+		mes "黑魔法，喃喃自語著..";
+		mes "他種族，喃喃自語著..";
 		next;
-		mes "^3355FFPerhaps it would";
-		mes "be best if you help";
-		mes "Benkaistein look for";
-		mes "he is searching for.^000000";
-		close;
-	}
-	if (friendship == 9) {
-		mes "[Passionate Student]";
-		mes "Oh, you startled me!";
-		mes "Still, I'm aware that it's";
-		mes "hard to get my attention";
-		mes "once I immerse myself";
-		mes "in a book. So, how can";
-		mes "I help you, adventurer?";
+		if (friendship < 8) {
+			mes "-似乎沉浸在自已封閉的世界";
+			mes "所以偷偷的事先做好了是長處嗎?!-";
+			close;
+		}
+		select("是班卡依史丁先生嗎?");
+		mes "["+strcharinfo(0)+"]";
+		mes "班卡依史丁先生?";
 		next;
-		select("Tell him about Maku and Digotz.");
-		mes "[Benkaistein]";
-		mes "Oh, how are my friends";
-		mes "doing? Oh, what? They're";
-		mes "having a huge fight just";
-		mes "because one's rich and";
-		mes "the other one's poor?";
-		mes "That's pretty childish!";
+		mes "[熱血學生]";
+		mes "人類系，喃喃自語著..";
+		mes "魔族系，喃喃自語著..";
+		mes "天上系，喃喃自語著..";
 		next;
-		mes "[Benkaistein]";
-		mes "But then again, that's just";
-		mes "like them. *Sigh* I really want";
-		mes "to go back home and get those";
-		mes "two to make up, but I also need";
-		mes "to finish this thesis. Let's see... What can I possibly do from here?";
+		select("班卡依史丁先生!");
+		mes "["+strcharinfo(0)+"]";
+		mes "班卡依史丁先生!";
 		next;
-		set friendship,10;
-		mes "[Benkaistein]";
-		mes "Oh, I know what I can do!";
-		mes "Wait, but where did I put it?";
-		mes "Oh, how could I lose something";
-		mes "so important? Wait! Would you";
-		mes "please wait a second while";
-		mes "I look for something?";
-		close;
-	}
-	if (friendship == 8) {
-		mes "[Passionate Student]";
-		mes "Let's see, now.";
-		mes "Wind Magic, Black Magic,";
-		mes "Porings, ah, there it is.";
-		mes "Monster race properties.";
-		mes "Hopefully this contains";
-		mes "the information I need...";
+		mes "[熱血學生]";
+		mes "魔術師，喃喃自語著..";
+		mes "召喚師，喃喃自語著..";
 		next;
-		mes "^3355FFUpon briefly glancing at";
-		mes "this student's belongings,";
-		mes "you notice that the name";
-		mes "''Benkaistein'' is printed";
-		mes "on them. This is the friend";
-		mes "mentioned by Maku and Digotz!^000000";
+		select("班卡依史丁先生生生生!!!");
+		mes "["+strcharinfo(0)+"]";
+		mes "班卡依史丁先生生生生!!!";
 		next;
-		select("Excuse me...");
-		mes "["+ strcharinfo(0) +"]";
-		mes "Excuse me...";
-		mes "Benkaistein?";
+		mes "[熱血學生]";
+		mes "嗚哇啊啊啊啊!";
+		mes "-咕咚咕咚咚咕咚咕咚咚-";
 		next;
-		mes "[Passionate Student]";
-		mes "...The world of humans";
-		mes "and the world of demons,";
-		mes "yes, yes... No, what I'm";
-		mes "looking for is a reference";
-		mes "to the heavens or Asgard.";
-		mes "Hmm, this here might help...";
+		mes "[周圍的 學生們]";
+		mes "喂，安靜一點好嗎!";
+		mes "這裡只有你們嗎?!";
+		mes "請肅靜!";
 		next;
-		select("Hey...");
-		mes "["+ strcharinfo(0) +"]";
-		mes "Hey...";
-		mes "Over here.";
-		mes "Benkaistein!";
+		mes "[熱血學生]";
+		mes "喔.. 對，對不起";
 		next;
-		mes "[Passionate Student]";
-		mes "...Oh, now that's a very";
-		mes "interesting observation.";
-		mes "If I can incorporate that";
-		mes "into my thesis without too";
-		mes "much trouble, my standpoint";
-		mes "would look much more solid...";
-		next;
-		select("HEY YOU...!");
-		mes "["+ strcharinfo(0) +"]";
-		mes "HEY YOU...!";
-		mes "BENKAISTEIN~!";
-		next;
-		mes "[Passionate Student]";
-		mes "Oh, good heavens!";
-		mes "C-can't you keep";
-		mes "your voice down?";
-		mes "I-I'm trying to study!";
-		mes "No, wait. Have you been";
-		mes "calling me all this time?";
+		mes "["+strcharinfo(0)+"]";
+		mes "很抱歉";
 		set friendship,9;
 		close;
-	}
-	mes "[Passionate Student]";
-	mes "Let's see, now.";
-	mes "Wind Magic, Black Magic,";
-	mes "Porings, ah, there it is.";
-	mes "Monster race properties.";
-	mes "Hopefully this contains";
-	mes "the information I need...";
-	next;
-	mes "^3355FFThis student seems to";
-	mes "be dilligently conducting";
-	mes "intensive research on some";
-	mes "academic subject. For now,";
-	mes "it would be best to leave him";
-	mes "alone so that he can study.^000000";
-	close;
-}
-
-yuno_in04,168,117,3	script	Book#lhz	111,{
-	if (friendship == 11) {
-		mes "^3355FFThere's nothing";
-		mes "over here that you";
-		mes "really need anymore.^000000";
+	case 9:
+		mes "[熱血學生]";
+		mes "嚇我一跳!你這是幹嘛麼，";
+		mes "你就不能小聲叫我嗎?";
+		mes "你真沒禮貌，哼嗯..";
+		mes "總之找我有什麼事呢?";
+		next;
+		mes "[班卡依史丁]";
+		mes "啊，還有我就是";
+		mes "班卡依史丁，所以你就";
+		mes "放心的把事情告訴我吧，";
+		mes "我要趕快把事情解決後，";
+		mes "繼續去讀書";
+		next;
+		select("告訴有關麻庫和達伊戈次的事情");
+		mes "[班卡依史丁]";
+		mes "... 嗯?因此簡單的說";
+		mes "他倆因為身份的差異，";
+		mes "所以無法正式會面，";
+		mes "只能心裡乾著急，";
+		mes "正在傷腦筋嗎?";
+		next;
+		mes "[班卡依史丁]";
+		mes "真是的.. 也不是小孩子了，";
+		mes "幹嘛這樣，這兩個小子";
+		mes "真好笑";
+		next;
+		mes "[班卡依史丁]";
+		mes "我很想馬上去找他們";
+		mes "訓一頓.. 只是我還在";
+		mes "讀書不能離開，實在是";
+		mes "沒辦法啊，到底";
+		mes "如何是好呢... 嗯...";
+		mes "............";
+		next;
+		mes "[班卡依史丁]";
+		mes "啊，對了，把那個拿給他們";
+		mes "看的話應該可以... 我找一下...";
+		mes "它在哪裡呢...";
+		mes "那我先去找一下";
+		mes "東西，恐你等我";
+		mes "一下，我會盡快找來";
+		next;
+		mes "[班卡依史丁]";
+		mes "我來找找... 在哪裡啦... 哽哽";
+		set friendship,10;
+		close;
+	case 10:
+	case 11:
+		mes "[班卡依史丁]";
+		mes "那個……啊……";
+		mes "…去了……哪裡啊……";
+		next;
+		if (friendship==11 && countitem(7351)) {
+			mes "[班卡依史丁]";
+			mes "...呃?你，現在拿的";
+			mes "那東西，不是我的日記簿嗎?";
+			mes "請你拿給我看看";
+			next;
+			mes "[班卡依史丁]";
+			mes "沒錯沒錯，就是這個，";
+			mes "我正在找這個，你去哪裡";
+			mes "找到的，真厲害，嗚哇...";
+			next;
+			mes "[班卡依史丁]";
+			mes "總之我想拜託你";
+			mes "事情，我親自去也許會";
+			mes "容易解決，可是我要準備";
+			mes "寫論文，所以無法離開";
+			mes "這裡，請你幫我把這日記簿";
+			mes "拿給他們看吧";
+			next;
+			mes "[班卡依史丁]";
+			mes "雖說是我的日記簿，但大部份";
+			mes "是以我們三人玩耍的故事";
+			mes "為主，所以當他們看到後";
+			mes "會反省的，也可以再次確認";
+			mes "彼此的友誼";
+			next;
+			mes "[班卡依史丁]";
+			mes "總之就拜託你了，";
+			mes "那麼我要去讀書";
+			mes "先失陪了... 麻庫和達伊戈次";
+			mes "兩人就拜託你了";
+			set friendship,12;
+			close;
+		}
+		mes "-在找東西很忙的樣子，";
+		mes "究竟在找什麼呢?";
+		mes "心理正納悶著，好想";
+		mes "自已找找看-";
+		close;
+	case 15:
+		mes "[班卡依史丁]";
+		mes "啊，日記簿有幫我安全";
+		mes "送達嗎?他們實在是";
+		mes "不太誠實，所以一旦";
+		mes "讓他們知道過去的事蹟，";
+		mes "他們會覺得自已太羞愧，";
+		mes "都想要像從前一樣重修舊好呢";
+		next;
+		mes "[班卡依史丁]";
+		mes "總之謝謝你了，托你的福，";
+		mes "等我畢業回去之後，";
+		mes "我們三人又能玩在";
+		mes "一起了，我好期待喔，";
+		mes "非常... 感謝你";
+		next;
+		mes "[班卡依史丁]";
+		mes "為了那一天的到來，我一定會";
+		mes "用功讀書，學習我想吸取的";
+		mes "知識，我好想早日回去";
+		mes "和他們一起玩耍";
+		next;
+		mes "[班卡依史丁]";
+		mes "啊... 還有這當做我給你的謝禮，";
+		mes "這是通行證，向警衛亮出時，就可以";
+		mes "自由自在的來往";
+		mes "貧民村和富裕村兩地";
+		next;
+		mes "[班卡依史丁]";
+		mes "等我回到裡希塔樂鎮，";
+		mes "和他們快樂玩耍的時光，";
+		mes "到來時，我會邀請你的，";
+		mes "感激的旅行者喔";
+		getitem 7350,1;
+		set friendship,16;
+		if (BaseLevel > 90)	getexp 700000,0;
+		else if (BaseLevel > 75)	getexp 400000,0;
+		else			getexp 200000,0;
 		close;
 	}
-	if (friendship == 10) {
+}
+
+yuno_in04,168,117,0	script	書	111,{
+	if (friendship==10) {
+		mes "-標誌上是寫著[班卡依史丁的日記6]";
+		mes "之字樣，先帶走拿給";
+		mes "班卡依史丁看夠-";
+		getitem 7351,1;
 		set friendship,11;
-		getitem 7351,1; //Friend's_Diary
-		mes "^3355FFThis book is labeled,";
-		mes "''Benkaistein's Journal";
-		mes "Vol. 6.'' This is probably";
-		mes "what Benkaistein was trying";
-		mes "to find, so it might be best to";
-		mes "bring this and show it to him.^000000";
 		close;
 	}
-	mes "^3355FFThere's nothing of";
-	mes "any real interest";
-	mes "over here for now.^000000";
+	mes "-現在有很多那樣沒有必要的書-";
+	close;
+}
+yuno_in04,117,106,0	script	用傑勒比結晶 煮湯	111,{
+	mes "";
+	mes "      * 用傑勒比結晶 煮湯 *";
+	mes "";
+	mes "              真好真好同好會 篇-";
+	mes "               圖書出版社";
+	mes "應許";
+	close;
+}
+yuno_in04,174,111,0	script	忽克連 沒有 錢	111,{
+	mes "";
+	mes "  * 忽克連 沒有 錢 *";
+	mes "";
+	mes "                忽克連著-";
+	close;
+}
+yuno_in04,168,109,0	script	忽克連的 野心	111,{
+	mes "";
+	mes "  * 忽克連的 野心 *";
+	mes "           亞拉甘 沙列著";
+	mes "            圖書出版社 沙列";
+	next;
+	mes "...";
+	mes "因此，它是這世界上";
+	mes "最偉大的武器，認為";
+	mes "要由他保管的判斷下，";
+	mes "將別人的武器任意地催...";
 	close;
 }
 
-///Cursed Spirit Quest
-
+//===================
+//  過去的試驗體任務( 被詛咒的靈魂 )
+//===================
 lhz_dun01,147,106,0	script	#kiz01-1	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
-	{
-		if(!lhz_curse)
-		{
+	if (countitem(7345)) {
+		if (!lhz_curse) {
 			soundeffect "loli_ruri_stand.wav",0;
 			set lhz_curse,1;
 			end;
 		}
-		else if(lhz_curse < 26)
-		{
+		else if (lhz_curse < 26) {
 			set @lhz_ghost,rand(1,5);
 			sc_start SC_Curse,1000,0;
 			soundeffect "loli_ruri_stand.wav",0;
-			if(@lhz_ghost == 1)
-			{
+			if (@lhz_ghost == 1) {
 				mes "[???]";
 				mes "......";
 				next;
 				mes "[???]";
-				mes "Enjoy... this...";
+				mes "....救 ......救命啊";
 				soundeffect "loli_ruri_stand.wav",0;
 				close;
 			}
-			else if(@lhz_ghost == 4)
-			{
+			else if (@lhz_ghost == 4) {
 				mes "[???]";
 				mes "......";
 				next;
 				mes "[???]";
-				mes "I... I despise the living...";
+				mes "他們是活著的生存者";
 				soundeffect "loli_ruri_stand.wav",0;
 				close;
 			}
@@ -2854,21 +2615,17 @@ lhz_dun01,225,198,0	duplicate(#kiz01-1)	#kiz01-4	-1,3,3
 lhz_dun02,244,229,0	script	#kiz02-1	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
-	{
-		if(!lhz_curse)
-		{
+	if (countitem(7345)) {
+		if (!lhz_curse) {
 			soundeffect "tao_gunka_stand.wav",0;
 			set lhz_curse,1;
 			end;
 		}
-		else if(lhz_curse < 26)
-		{
+		else if (lhz_curse < 26) {
 			set @lhz_ghost,rand(1,10);
 			sc_start SC_Curse,1000,0;
 			soundeffect "tao_gunka_stand.wav",0;
-			if(@lhz_ghost == 1)
-			{
+			if (@lhz_ghost == 1) {
 				mes "[???]";
 				mes "......";
 				next;
@@ -2877,8 +2634,7 @@ OnTouch:
 				soundeffect "loli_ruri_stand.wav",0;
 				close;
 			}
-			else if(@lhz_ghost == 4)
-			{
+			else if (@lhz_ghost == 4) {
 				mes "[???]";
 				mes "......";
 				next;
@@ -2899,20 +2655,20 @@ lhz_dun02,94,199,0	duplicate(#kiz02-1)	#kiz02-4	-1,3,3
 lhz_dun03,244,51,0	script	#kiz03-1	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			soundeffect "tao_gunka_stand.wav",0;
 			set lhz_curse,1;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			set @lhz_ghost,rand(1,10);
 			sc_start SC_Curse,1000,0;
 			soundeffect "tao_gunka_stand.wav",0;
-			if(@lhz_ghost == 1)
+			if (@lhz_ghost == 1)
 			{
 				mes "[???]";
 				mes "......";
@@ -2922,7 +2678,7 @@ OnTouch:
 				soundeffect "tao_gunka_stand.wav",0;
 				close;
 			}
-			else if(@lhz_ghost == 4)
+			else if (@lhz_ghost == 4)
 			{
 				mes "[???]";
 				mes "......";
@@ -2943,15 +2699,15 @@ lhz_dun03,74,140,0	duplicate(#kiz03-1)	#kiz03-3	-1,3,3
 lighthalzen,344,278,0	script	#kiz03	-1,2,2,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			soundeffect "tao_gunka_stand.wav",0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -2990,7 +2746,7 @@ OnTouch:
 			close2;
 			sc_end SC_All;
 			sc_start SC_Curse,5000,0;
-			if(!lhz_spi01) set lhz_spi01,1;
+			if (!lhz_spi01) set lhz_spi01,1;
 			end;
 		}
 	}
@@ -2999,15 +2755,15 @@ OnTouch:
 lhz_in03,178,22,0	script	#kiz04	-1,2,2,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			soundeffect "tao_gunka_stand.wav",0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -3074,7 +2830,7 @@ OnTouch:
 			soundeffect "tao_gunka_stand.wav",0;
 			sc_end SC_All;
 			sc_start SC_Curse,5000,0;
-			if(!lhz_spi02) set lhz_spi02,1;
+			if (!lhz_spi02) set lhz_spi02,1;
 			end;
 		}
 	}
@@ -3083,14 +2839,14 @@ OnTouch:
 lighthalzen,295,227,0	script	#kiz05	-1,2,2,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -3125,7 +2881,7 @@ OnTouch:
 			soundeffect "loli_ruri_stand.wav",0;
 			sc_end SC_All;
 			sc_start SC_Curse,3000,0;
-			if(!lhz_spi03) set lhz_spi03,1;
+			if (!lhz_spi03) set lhz_spi03,1;
 			end;
 		}
 	}
@@ -3134,14 +2890,14 @@ OnTouch:
 lighthalzen,364,315,0	script	#kiz06	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -3189,7 +2945,7 @@ OnTouch:
 			soundeffect "tao_gunka_stand.wav",0;
 			sc_end SC_All;
 			sc_start SC_Curse,5000,0;
-			if(!lhz_spi04) set lhz_spi04,1;
+			if (!lhz_spi04) set lhz_spi04,1;
 			end;
 		}
 	}
@@ -3198,14 +2954,14 @@ OnTouch:
 lhz_in01,113,150,0	script	#kiz07	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -3248,7 +3004,7 @@ OnTouch:
 			soundeffect "tao_gunka_stand.wav",0;
 			sc_end SC_All;
 			sc_start SC_Curse,3000,0;
-			if(lhz_curse == 6) set lhz_curse,7;
+			if (lhz_curse == 6) set lhz_curse,7;
 			end;
 		}
 	}
@@ -3257,14 +3013,14 @@ OnTouch:
 lhz_in01,272,227,0	script	#kiz08	-1,2,2,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(!lhz_curse)
+		if (!lhz_curse)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
 		}
-		else if(lhz_curse < 26)
+		else if (lhz_curse < 26)
 		{
 			mes "...............";
 			next;
@@ -3337,7 +3093,7 @@ OnTouch:
 			soundeffect "tao_gunka_stand.wav",0;
 			sc_end SC_All;
 			sc_start SC_Curse,3000,0;
-			if(lhz_curse == 11) set lhz_curse,12;
+			if (lhz_curse == 11) set lhz_curse,12;
 			end;
 		}
 	}
@@ -3346,9 +3102,9 @@ OnTouch:
 lhz_in01,206,129,0	script	#kiz09	-1,5,5,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(lhz_curse == 12)
+		if (lhz_curse == 12)
 		{
 			mes "...............";
 			next;
@@ -3359,7 +3115,7 @@ OnTouch:
 			warp "lhz_que01",26,27;
 			end;
 		}
-		else if(lhz_curse > 0 && lhz_curse < 26)
+		else if (lhz_curse > 0 && lhz_curse < 26)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
@@ -3370,9 +3126,9 @@ OnTouch:
 lhz_que01,21,31,5	script	#Varmunt	755,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(lhz_curse == 12)
+		if (lhz_curse == 12)
 		{
 			mes "Doctor Varmunt,";
 			mes "you've finally agreed";
@@ -3515,9 +3271,9 @@ OnEmote:
 lhz_que01,29,24,3	script	#Rekenber	754,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(lhz_curse == 12)
+		if (lhz_curse == 12)
 		{
 			mes "Doctor Varmunt,";
 			mes "you've finally agreed";
@@ -3660,9 +3416,9 @@ OnEmote:
 lhz_in01,282,166,0	script	#kiz10	-1,3,3,{
 
 OnTouch:
-	if(countitem(7345))
+	if (countitem(7345))
 	{
-		if(lhz_curse == 16)
+		if (lhz_curse == 16)
 		{
 			mes "...............";
 			next;
@@ -3673,7 +3429,7 @@ OnTouch:
 			warp "lhz_que01",98,59;
 			end;
 		}
-		else if(lhz_curse > 0 && lhz_curse < 26)
+		else if (lhz_curse > 0 && lhz_curse < 26)
 		{
 			sc_start SC_Curse,1000,0;
 			end;
@@ -3683,7 +3439,7 @@ OnTouch:
 
 lhz_que01,99,74,5	script	#pecomaster	48,{
 
-	if(checkweight(7341,1) != 1)
+	if (checkweight(7341,1) != 1)
 	{
 		mes "^3355FFWait a second! Right now,";
 		mes "you have too many items in your";
@@ -3692,7 +3448,7 @@ lhz_que01,99,74,5	script	#pecomaster	48,{
 		mes "inventory space.^000000";
 		close;
 	}
-	else if(lhz_curse == 16)
+	else if (lhz_curse == 16)
 	{
 		mes "[???]";
 		mes "It's over.";
@@ -3838,7 +3594,7 @@ OnTouch:
 
 lighthalzen,346,263,3	script	Elder	846,{
 
-	if((!countitem(7345)) || (lhz_curse > 18))
+	if ((!countitem(7345)) || (lhz_curse > 18))
 	{
 L_NoText:
 		mes "[Elder]";
@@ -3912,7 +3668,7 @@ L_NoText:
 				close;
 		}
 	}
-	else if((lhz_curse == 1) && (lhz_spi01) && (lhz_spi02) && (lhz_spi04))
+	else if ((lhz_curse == 1) && (lhz_spi01) && (lhz_spi02) && (lhz_spi04))
 	{
 		mes "[Elder]";
 		mes "No wonder you look";
@@ -4064,7 +3820,7 @@ L_NoText:
 				close;
 		}
 	}
-	else if((lhz_curse > 5) && (lhz_curse < 17))
+	else if ((lhz_curse > 5) && (lhz_curse < 17))
 	{
 		mes "[Elder]";
 		mes "I'm sorry, but there's";
@@ -4075,9 +3831,9 @@ L_NoText:
 		mes "please let me know.";
 		close;
 	}
-	else if(lhz_curse == 17)
+	else if (lhz_curse == 17)
 	{
-		if(!countitem(7341))
+		if (!countitem(7341))
 		{
 			mes "[Elder]";
 			mes "I'm sorry, but there's";
@@ -4129,9 +3885,9 @@ L_NoText:
 				close;
 			}
 	}
-	else if(lhz_curse == 18)
+	else if (lhz_curse == 18)
 	{
-		if((countitem(523) < 5) || (!countitem(744)) || (!countitem(7341)))
+		if ((countitem(523) < 5) || (!countitem(744)) || (!countitem(7341)))
 		{
 			mes "[Elder]";
 			mes "Hurry and bring";
@@ -4190,9 +3946,9 @@ L_NoText:
 
 lhz_in03,32,162,3	script	Crippled Girl	53,{
 
-	if(lhz_curse == 23)
+	if (lhz_curse == 23)
 	{
-		if(countitem(7341))
+		if (countitem(7341))
 		{
 			mes "["+strcharinfo(0)+"]";
 			mes "Hey there, are";
@@ -4298,14 +4054,14 @@ lhz_in03,32,162,3	script	Crippled Girl	53,{
 		mes "opportunity to give her the...^000000";
 		close;
 	}
-	else if(lhz_curse == 24)
+	else if (lhz_curse == 24)
 	{
 		mes "[Setsu]";
 		mes "...";
 		mes "......";
 		close;
 	}
-	else if(lhz_curse == 25)
+	else if (lhz_curse == 25)
 	{
 		mes "[Setsu]";
 		mes "Excuse me, I can't still";
@@ -4330,7 +4086,7 @@ lhz_in03,32,162,3	script	Crippled Girl	53,{
 		mes "thanks for asking.";
 		mes "I'm just waiting for";
 		mes "somebody, that's all.";
-		if(lhz_curse == 19)
+		if (lhz_curse == 19)
 		{
 			next;
 			switch( select( "Show her the Pendant.","Okay, have a good day." ) )
@@ -4421,7 +4177,7 @@ lhz_in03,32,162,3	script	Crippled Girl	53,{
 							mes "Yes! I must be okay";
 							mes "and be able to walk when my";
 							mes "brother come.";
-							if(!countitem(7341)) close;
+							if (!countitem(7341)) close;
 							next;
 							mes "^3131ffYou place the";
 							mes "old pendant";
@@ -4543,12 +4299,12 @@ lhz_in03,32,162,3	script	Crippled Girl	53,{
 lighthalzen,324,322,1	script	#lhz_door1	45,2,2,{
 
 OnTouch:
-	if((lhz_curse > 19) && (lhz_curse < 23))
+	if ((lhz_curse > 19) && (lhz_curse < 23))
 	{	
 		mes "^3131ffThe door is locked.^000000";
 		close;
 	}
-	else if(lhz_curse > 23)
+	else if (lhz_curse > 23)
 	{
 		mes "^3131ffThe door is locked.^000000";
 		next;
@@ -4584,7 +4340,7 @@ OnTouch:
 lighthalzen,319,321,0	script	#brother	-1,3,3,{
 
 OnTouch:
-	if((lhz_curse == 24) || (lhz_curse == 25))
+	if ((lhz_curse == 24) || (lhz_curse == 25))
 	{
 		mes "*Shhhzzzz!*";
 		next;
@@ -4619,9 +4375,9 @@ OnTouch:
 		mes "Corporation^000000 and that";
 		mes "^FF0000Regenschirm Laboratory^000000.";
 		set lhz_curse,26;
-		if(BaseLevel < 70) getexp 800000,300000;
-		else if(BaseLevel < 80) getexp 1000000,500000;
-		else if(BaseLevel < 90) getexp 1500000,800000;
+		if (BaseLevel < 70) getexp 800000,300000;
+		else if (BaseLevel < 80) getexp 1000000,500000;
+		else if (BaseLevel < 90) getexp 1500000,800000;
 		else getexp 2000000,1000000;
 		close;
 	}
@@ -4634,7 +4390,7 @@ lhz_in01,114,181,3	script	Representative	71,{
 	mes "to the Rekenber Corporation.";
 	mes "How may I be of service today?";
 	next;
-	if(lhz_curse == 7) menu "Building Information",L_Building,"Corporation History",L_History;
+	if (lhz_curse == 7) menu "Building Information",L_Building,"Corporation History",L_History;
 	else menu "Building Information",L_Building;
 
 L_Building:
@@ -4720,7 +4476,7 @@ L_History:
 
 lhz_in01,27,247,5	script	Representative#lhz	71,{
 
-	if(lhz_curse > 6)
+	if (lhz_curse > 6)
 	{
 		mes "[Representative]";
 		mes "Welcome to the";
@@ -4759,8 +4515,8 @@ lhz_in01,27,247,5	script	Representative#lhz	71,{
 				mes "in science that enabled the";
 				mes "Rekenber Corporation to grow";
 				mes "into the nation's biggest company.";
-				if(lhz_curse == 8) set lhz_curse,9;
-				else if(lhz_curse == 9) set lhz_curse,10;
+				if (lhz_curse == 8) set lhz_curse,9;
+				else if (lhz_curse == 9) set lhz_curse,10;
 				next;
 				break;
 
@@ -4780,7 +4536,7 @@ lhz_in01,27,247,5	script	Representative#lhz	71,{
 				mes "that Rekenber is the name";
 				mes "that you can trust.";
 				if (lhz_curse == 8) set lhz_curse,9;
-				else if(lhz_curse == 9) set lhz_curse,10;
+				else if (lhz_curse == 9) set lhz_curse,10;
 				next;
 				break;
 		}
@@ -4899,7 +4655,7 @@ lhz_in01,25,251,3	script	Rekenber Guidebook	111,{
 	mes "by making the ancient power";
 	mes "of the gods more accessible";
 	mes "by means of new technologies.^000000";
-	if(lhz_curse == 10) set lhz_curse,11;
+	if (lhz_curse == 10) set lhz_curse,11;
 	next;
 	mes "...............";
 	close;
@@ -4907,7 +4663,7 @@ lhz_in01,25,251,3	script	Rekenber Guidebook	111,{
 
 lhz_in01,273,121,1	script	Mad Scientist	865,{
 
-	if(lhz_curse == 13)
+	if (lhz_curse == 13)
 	{
 		mes "[Wolfchev]";
 		mes "No one shall";
@@ -4936,7 +4692,7 @@ lhz_in01,273,121,1	script	Mad Scientist	865,{
 				close;
 		}
 	}
-	else if(lhz_curse == 14)
+	else if (lhz_curse == 14)
 	{
 		mes "[Wolfchev]";
 		mes "You again?!";
@@ -4977,9 +4733,9 @@ lhz_in01,273,121,1	script	Mad Scientist	865,{
 				close;
 		}
 	}
-	else if(lhz_curse == 15)
+	else if (lhz_curse == 15)
 	{
-		if(!countitem(746))
+		if (!countitem(746))
 		{
 			mes "[Wolfchev]";
 			mes "It's a round and shining thing!";
@@ -5098,7 +4854,7 @@ L_Ask1:
 
 lhz_in01,286,226,3	script	Secretary Slierre	831,{
 
-	if(lhz_curse == 26)
+	if (lhz_curse == 26)
 	{
 		mes "[Sueii Slierre]";
 		mes "Excuse me, but you are";
@@ -5129,7 +4885,7 @@ lhz_in01,286,226,3	script	Secretary Slierre	831,{
 				close;
 		}
 	}
-	else if(lhz_curse == 27)
+	else if (lhz_curse == 27)
 	{
 		mes "[Sueii Slierre]";
 		mes "Did you have something";
@@ -5170,7 +4926,7 @@ lhz_in01,286,226,3	script	Secretary Slierre	831,{
 				close;
 		}
 	}
-	else if(lhz_curse == 28)
+	else if (lhz_curse == 28)
 	{
 		mes "[Sueii Slierre]";
 		mes "You're back? I really";
@@ -5419,8 +5175,8 @@ L_Evidence:
 				
 		}
 	}
-	else if(lhz_curse == 29) goto L_Evidence;
-	else if(lhz_curse == 30)
+	else if (lhz_curse == 29) goto L_Evidence;
+	else if (lhz_curse == 30)
 	{
 		set @lhz_invest,rand(1,10);
 		if (@lhz_invest < 8)
@@ -5430,7 +5186,7 @@ L_Evidence:
 			mes "Please wait.";
 			close;
 		}
-		else if(checkweight(1119,1) != 1)
+		else if (checkweight(1119,1) != 1)
 		{
 			mes "^3355FFWait a second! Right now,";
 			mes "you have too many items in your";
@@ -5487,7 +5243,7 @@ L_Evidence:
 		mes "power to compensate for this...";
 		close;
 	}
-	else if(lhz_curse > 30)
+	else if (lhz_curse > 30)
 	{
 		mes "[Sueii Slierre]";
 		mes "I'm glad to know that";
@@ -5513,13 +5269,13 @@ L_Evidence:
 lhz_que01,94,24,0	script	#trace	-1,2,2,{
 
 OnTouch:
-	if(lhz_curse > 30)
+	if (lhz_curse > 30)
 	{
 		mes "^3131FFThere's no trace of";
 		mes "that mad scientist. Only";
 		mes "his stacks of well organized";
 		mes "files remain here in the lab.^000000";
-		if(lhz_curse == 31) set lhz_curse,32;
+		if (lhz_curse == 31) set lhz_curse,32;
 		close;
 	}
 }
@@ -5527,7 +5283,7 @@ OnTouch:
 lhz_in01,43,114,1	script	#warp1	45,1,1,{
 
 OnTouch:
-	if(lhz_curse > 30)
+	if (lhz_curse > 30)
 	{
 		warp "lhz_que01",97,30;
 		end;
@@ -5600,7 +5356,7 @@ lhz_in01,269,114,3	script	Documents	111,{
 
 lighthalzen,179,170,4	script	Ordinary Man	98,{
 
-	if(!lhz_boss)
+	if (!lhz_boss)
 	{
 		mes "[Ghalstein]";
 		mes "Hello there~";
@@ -5638,7 +5394,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 				break;
 		}
 		next;
-		if(BaseLevel < 60)
+		if (BaseLevel < 60)
 		{
 			mes "[Ghalstein]";
 			mes "Ha ha ha!";
@@ -5659,10 +5415,10 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		set lhz_boss,1;
 		close;
 	}
-	else if(lhz_boss == 1)
+	else if (lhz_boss == 1)
 	{
 		set @weather,rand(1,5);
-		if(@weather == 4)
+		if (@weather == 4)
 		{
 			mes "[Ghalstein]";
 			mes "Hm? It's a little";
@@ -5682,7 +5438,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		mes "nice on your face, isn't it?";
 		close;
 	}
-	else if(lhz_boss == 2)
+	else if (lhz_boss == 2)
 	{
 		mes "[Ghalstein]";
 		mes "The sun is gently";
@@ -5732,7 +5488,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 				close;
 		}
 	}
-	else if(lhz_boss == 3)
+	else if (lhz_boss == 3)
 	{
 		mes "[Ghalstein]";
 		mes "Hm? Judging from the";
@@ -5856,7 +5612,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 				close;
 		}
 	}
-	else if(lhz_boss == 4)
+	else if (lhz_boss == 4)
 	{
 		mes "[Ghalstein]";
 		mes "I've come into a";
@@ -6049,7 +5805,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		next;
 		mes "[??????]";
 		mes "^666666Now...^000000";
-		if(Sex == 1) mes "^666666Make him^000000";
+		if (Sex == 1) mes "^666666Make him^000000";
 		else mes "^666666Make her^000000";
 		mes "^666666swallow this pill.^000000";
 		next;
@@ -6064,7 +5820,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		warp "lighthalzen",217,313;
 		end;
 	}
-	else if(lhz_boss == 5)
+	else if (lhz_boss == 5)
 	{
 		mes "[Ghalstein]";
 		mes "So how are you feeling?";
@@ -6122,7 +5878,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		set lhz_boss,6;
 		close;
 	}
-	else if(lhz_boss == 6)
+	else if (lhz_boss == 6)
 	{
 		mes "[Ghalstein]";
 		mes "For now, it may be best";
@@ -6132,9 +5888,9 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		mes "get you inside the Laboratory.";
 		close;
 	}
-	else if(lhz_boss == 7)
+	else if (lhz_boss == 7)
 	{
-		if(!MISC_QUEST&512)
+		if (!MISC_QUEST&512)
 		{
 			mes "[Ghalstein]";
 			mes "An error occurred.";
@@ -6172,7 +5928,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 			getitem 7348,1;
 			close;
 		}
-		else if((!countitem(7346)) && (!countitem(7347)) && (!countitem(7345)))
+		else if ((!countitem(7346)) && (!countitem(7347)) && (!countitem(7345)))
 		{
 			mes "[Ghalstein]";
 			mes "When you get inside the";
@@ -6195,7 +5951,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 			close;
 		}
 	}
-	else if(lhz_boss == 8)
+	else if (lhz_boss == 8)
 	{
 		mes "[Ghalstein]";
 		mes "Please find Gushaar";
@@ -6204,7 +5960,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		mes "details for your next mission.";
 		close;
 	}
-	else if(lhz_boss < 25)
+	else if (lhz_boss < 25)
 	{
 		mes "[Ghalstein]";
 		mes "You've made the decision";
@@ -6223,7 +5979,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		mes "difficult to determine.";
 		close;
 	}
-	else if(lhz_boss < 43)
+	else if (lhz_boss < 43)
 	{
 		mes "[Ghalstein]";
 		mes "You're so close to";
@@ -6234,7 +5990,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 		mes "And you'll finally be free.";
 		close;
 	}
-	else if(lhz_boss == 43)
+	else if (lhz_boss == 43)
 	{
 		mes "[Ghalstein]";
 		mes "I can't believe what";
@@ -6296,7 +6052,7 @@ lighthalzen,179,170,4	script	Ordinary Man	98,{
 lighthalzen,173,167,1	script	Switch	-1,2,4,{
 
 OnTouch:
-	if(lhz_boss == 1)
+	if (lhz_boss == 1)
 	{
 		mes "[??????]";
 		mes "^666666Come on.";
@@ -6379,7 +6135,7 @@ OnTouch:
 
 yuno_fild04,165,245,4	script	Dismal Guy	89,{
 
-	if(lhz_boss < 8)
+	if (lhz_boss < 8)
 	{
 		mes "[Gushaar]";
 		mes "Decisions, decisions.";
@@ -6397,7 +6153,7 @@ yuno_fild04,165,245,4	script	Dismal Guy	89,{
 		mes "worth without any cost, right?";
 		close;
 	}
-	else if(lhz_boss == 8)
+	else if (lhz_boss == 8)
 	{
 		mes "[Gushaar]";
 		mes "Alright. Choose";
@@ -6428,7 +6184,7 @@ yuno_fild04,165,245,4	script	Dismal Guy	89,{
 				switch( select( "Oh, right!","What are you talking about?" ) )
 				{
 					case 1:
-						if(!countitem(7348))
+						if (!countitem(7348))
 						{
 							mes "[Gushaar]";
 							mes "Hey... Umm...";
@@ -6472,7 +6228,7 @@ yuno_fild04,165,245,4	script	Dismal Guy	89,{
 				close;
 		}
 	}
-	else if(lhz_boss == 9)
+	else if (lhz_boss == 9)
 	{
 		mes "[Gushaar]";
 		mes "Alright, first of all,";
@@ -6520,7 +6276,7 @@ yuno_fild04,165,245,4	script	Dismal Guy	89,{
 		set lhz_boss,10;
 		close;
 	}
-	else if(lhz_boss == 10)
+	else if (lhz_boss == 10)
 	{
 		mes "[Gushaar]";
 		mes "I hope you understand";
@@ -6558,7 +6314,7 @@ yuno_fild04,165,245,4	script	Dismal Guy	89,{
 
 yuno_pre,69,20,4	script	Secretary#1	862,{
 
-	if(lhz_boss < 11)
+	if (lhz_boss < 11)
 	{
 		mes "[Hes O'Neil]";
 		mes "Good day, how";
@@ -6626,7 +6382,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 				close;
 		}
 	}
-	else if(lhz_boss < 16)
+	else if (lhz_boss < 16)
 	{
 		mes "[Hes O'Neil]";
 		mes "Good day, how";
@@ -6635,7 +6391,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 		switch( select( "Show Secret Wing Card.","I'm here to see the president.","Nothing." ) )
 		{
 			case 1:
-				if(!countitem(7348))
+				if (!countitem(7348))
 				{
 					mes "^3355FFWait a second...";
 					mes "You don't seem to";
@@ -6644,7 +6400,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 					mes "Membership Card.^000000";
 					close;
 				}
-				if(((gettime(3) > 10) && (gettime(3) < 15)) || ((gettime(3) > 19) && (gettime(3) <= 23)))
+				if (((gettime(3) > 10) && (gettime(3) < 15)) || ((gettime(3) > 19) && (gettime(3) <= 23)))
 				{
 					mes "^3355FFYou suavely flash";
 					mes "your ''Secret Wing''";
@@ -6718,9 +6474,9 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 				close;
 		}
 	}
-	else if(lhz_boss == 16)
+	else if (lhz_boss == 16)
 	{
-		if(!countitem(7342))
+		if (!countitem(7342))
 		{
 			mes "[Hes O'Neil]";
 			mes "Hm? I thought the";
@@ -6748,7 +6504,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 		set lhz_boss,17;
 		close;
 	}
-	else if(lhz_boss < 21)
+	else if (lhz_boss < 21)
 	{
 		mes "[Hes O'Neil]";
 		mes "I'm sorry, but the";
@@ -6758,19 +6514,19 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 		mes "visit him another time.";
 		close;
 	}
-	else if(lhz_boss < 43)
+	else if (lhz_boss < 43)
 	{
 		mes "[Hes O'Neil]";
 		mes "Oh, the president";
 		mes "is expecting you.";
 		mes "Please, go right";
-		if(Sex == 1) mes "on ahead, sir.";
+		if (Sex == 1) mes "on ahead, sir.";
 		else mes "on ahead, ma'am.";
 		close2;
 		warp "yuno_pre",113,53;
 		end;
 	}
-	else if(hg_tre == 56)
+	else if (hg_tre == 56)
 	{
 		mes "[Hes O'Neil]";
 	        mes "The President has given the order that ";
@@ -6793,7 +6549,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
         	warp "yuno_pre",113,53;
         	end;
         }
-        else if(hg_tre > 56)
+        else if (hg_tre > 56)
         {
 		mes "[Hes O'Neil]";
 		mes "The president said that you're welcome to visit him anytime.";
@@ -6814,7 +6570,7 @@ yuno_pre,69,20,4	script	Secretary#1	862,{
 
 yuno_pre,95,71,5	script	Guard	852,{
 
-	if(lhz_boss < 11)
+	if (lhz_boss < 11)
 	{
 		mes "[Guard]";
 		mes "You are in the";
@@ -6828,10 +6584,10 @@ yuno_pre,95,71,5	script	Guard	852,{
 		warp "yuno_pre",83,22;
 		end;
 	}
-	else if(lhz_boss == 11 || lhz_boss == 12)
+	else if (lhz_boss == 11 || lhz_boss == 12)
 	{
-		if(lhz_boss == 12) set @visit_pre,rand(1,10);
-		if(@visit_pre == 7)
+		if (lhz_boss == 12) set @visit_pre,rand(1,10);
+		if (@visit_pre == 7)
 		{
 			mes "[?????]";
 			mes "I see.";
@@ -6855,7 +6611,7 @@ yuno_pre,95,71,5	script	Guard	852,{
 			mes "Yes, it's about time";
 			mes "for me to depart. Ah,";
 			mes "and may I ask who this";
-			if(Sex == 1) mes "young gentleman here is?";
+			if (Sex == 1) mes "young gentleman here is?";
 			else mes "lovely young lady is?";
 			next;
 			mes "[Guard]";
@@ -6883,10 +6639,10 @@ yuno_pre,95,71,5	script	Guard	852,{
 		mes "Currently, the president";
 		mes "is seeing another guest.";
 		mes "Thank you for your patience.";
-		if(lhz_boss == 11) set lhz_boss,12;
+		if (lhz_boss == 11) set lhz_boss,12;
 		close;
 	}
-	else if(lhz_boss == 13)
+	else if (lhz_boss == 13)
 	{
 		mes "[Guard]";
 		mes "Now you may enter";
@@ -6897,10 +6653,10 @@ yuno_pre,95,71,5	script	Guard	852,{
 		switch( select( "Thank you.","Who was that gentleman...?" ) )
 		{
 			case 1:
-				if(Sex == 1) mes "A Mister "+strcharinfo(0)+"";
+				if (Sex == 1) mes "A Mister "+strcharinfo(0)+"";
 				else
 				{
-					if(getpartnerid()) mes "A Missis "+strcharinfo(0)+"";
+					if (getpartnerid()) mes "A Missis "+strcharinfo(0)+"";
 					else mes "A Miss "+strcharinfo(0)+"";
 				}
 				mes "has arrived to see you now.";
@@ -6951,7 +6707,7 @@ OnInit:
 
 yuno_pre,69,79,4	script	Mr. President	872,{
 
-	if(checkweight(7342,1) != 1)
+	if (checkweight(7342,1) != 1)
 	{
 		mes "- Wait a moment! -";
 		mes "- Currently you're carrying -";
@@ -6961,7 +6717,7 @@ yuno_pre,69,79,4	script	Mr. President	872,{
 		close;
 	}
 	cutin "lhz_karl.bmp",2;
-	if(lhz_boss < 11)
+	if (lhz_boss < 11)
 	{
 		mes "[Karl]";
 		mes "How did you get in here?";
@@ -6971,7 +6727,7 @@ yuno_pre,69,79,4	script	Mr. President	872,{
 		cutin "",255;
 		warp "yuno_pre",83,22;
 	}
-	else if(lhz_boss == 14)
+	else if (lhz_boss == 14)
 	{
 		mes "[Karl]";
 		mes "Ah, welcome~";
@@ -7121,7 +6877,7 @@ L_Mission:
 				}
 		}
 	}
-	else if(lhz_boss == 15)
+	else if (lhz_boss == 15)
 	{
 		mes "[Karl]";
 		mes "Now, you must first visit";
@@ -7150,7 +6906,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss < 21)
+	else if (lhz_boss < 21)
 	{
 		mes "[Karl]";
 		mes "Hurry and complete";
@@ -7163,9 +6919,9 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 21)
+	else if (lhz_boss == 21)
 	{
-		if(!countitem(7343))
+		if (!countitem(7343))
 		{
 			mes "[Karl]";
 			mes "Hm? I was expecting";
@@ -7205,10 +6961,10 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 22)
+	else if (lhz_boss == 22)
 	{
 		set @read_pre,rand(1,5);
-		if(@read_pre == 3)
+		if (@read_pre == 3)
 		{
 			mes "[Karl]";
 			mes "Hm. After completely";
@@ -7247,7 +7003,7 @@ L_Mission:
 			mes "I don't want our enemies";
 			mes "to discover Shinokas before";
 			mes "we can get him to talk.";
-			if(Shinokas_Quest == 11) set lhz_boss,24;
+			if (Shinokas_Quest == 11) set lhz_boss,24;
 			else set lhz_boss,23;
 			close2;
 			cutin "",255;
@@ -7270,9 +7026,9 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 23)
+	else if (lhz_boss == 23)
 	{
-		if(Shinokas_Quest == 11)
+		if (Shinokas_Quest == 11)
 		{
 			mes "[Karl]";
 			mes "Ymir's Heart Pieces?";
@@ -7339,7 +7095,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 24)
+	else if (lhz_boss == 24)
 	{
 		mes "[Karl]";
 		mes "Hm? What's wrong?";
@@ -7426,10 +7182,10 @@ L_Mission:
 				end;
 		}
 	}
-	else if(lhz_boss == 25)
+	else if (lhz_boss == 25)
 	{
 		set @talk_pre,rand(1,10);
-		if(@talk_pre == 8)
+		if (@talk_pre == 8)
 		{
 			mes "[Karl]";
 			mes "Alright, I just";
@@ -7482,7 +7238,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss < 37)
+	else if (lhz_boss < 37)
 	{
 		mes "[Karl]";
 		mes "I hope you continue";
@@ -7495,9 +7251,9 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 37)
+	else if (lhz_boss == 37)
 	{
-		if(!countitem(7344))
+		if (!countitem(7344))
 		{
 			mes "[Karl]";
 			mes "Did you find any";
@@ -7547,7 +7303,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 38)
+	else if (lhz_boss == 38)
 	{
 		mes "[Karl]";
 		mes "Please hurry and meet";
@@ -7560,9 +7316,9 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 39)
+	else if (lhz_boss == 39)
 	{
-		if(!countitem(7343))
+		if (!countitem(7343))
 		{
 			mes "[Karl]";
 			mes "You don't have the";
@@ -7607,7 +7363,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 41)
+	else if (lhz_boss == 41)
 	{
 		mes "[Karl]";
 		mes "No...";
@@ -7639,7 +7395,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(lhz_boss == 42)
+	else if (lhz_boss == 42)
 	{
 		mes "[Guard]";
 		mes "Advisor Kurelle";
@@ -7744,9 +7500,9 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(hg_tre == 56)
+	else if (hg_tre == 56)
 	{
-		if(!countitem(7342))
+		if (!countitem(7342))
 		{
 			mes "["+strcharinfo(0)+"]";
 			mes "Ah, where did I put the record?";
@@ -7826,7 +7582,7 @@ L_Mission:
 		cutin "",255;
 		end;
 	}
-	else if(hg_tre == 57)
+	else if (hg_tre == 57)
 	{
 		mes "[Karl]";
 		mes "I am trying to recruit capable people who can help me to bring down Rekenber Corporation.";
@@ -7867,7 +7623,7 @@ OnInit:
 yuno_pre,117,60,0	script	Eavesdrop	-1,10,5,{
 
 OnTouch:
-	if(lhz_boss == 16)
+	if (lhz_boss == 16)
 	{
 		mes "^3355FFWhat the...?";
 		mes "You can hear";
@@ -7902,7 +7658,7 @@ OnTouch:
 
 aldebaran,58,225,4	script	Kafra Employee#l1	116,{
 
-	if(lhz_boss != 17)
+	if (lhz_boss != 17)
 	{
 		mes "[Kafra Employee]";
 		mes "Welcome to the";
@@ -7972,7 +7728,7 @@ aldebaran,58,225,4	script	Kafra Employee#l1	116,{
 
 aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 
-	if(checkweight(7343,1) != 1)
+	if (checkweight(7343,1) != 1)
 	{
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -7982,7 +7738,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 		mes "to store some of your items.^000000";
 		close;
 	}
-	if(lhz_boss < 17)
+	if (lhz_boss < 17)
 	{
 		mes "[Kafra Employee]";
 		mes "Welcome to";
@@ -8017,7 +7773,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 		mes "requirements before voting.";
 		close;
 	}
-	else if(lhz_boss == 17)
+	else if (lhz_boss == 17)
 	{
 		mes "[Kafra Employee]";
 		mes "Welcome to";
@@ -8096,7 +7852,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 								close;
 
 							case 2:
-								if(!countitem(7348))
+								if (!countitem(7348))
 								{
 									mes "^3355FFWait...";
 									mes "You can't show";
@@ -8156,7 +7912,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 				close;
 		}
 	}
-	else if(lhz_boss == 18)
+	else if (lhz_boss == 18)
 	{
 		mes "[Benith]";
 		mes "Please hurry and save";
@@ -8174,9 +7930,9 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 		mes "Einbroch and Lighthalzen.";
 		close;
 	}
-	else if(lhz_boss == 19)
+	else if (lhz_boss == 19)
 	{
-		if(!countitem(7343))
+		if (!countitem(7343))
 		{
 			mes "[Benith]";
 			mes "Please hurry!";
@@ -8219,7 +7975,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 		set lhz_boss,20;
 		close;
 	}
-	else if(lhz_boss == 20)
+	else if (lhz_boss == 20)
 	{
 		mes "[Benith]";
 		mes "Alright. Please take";
@@ -8253,7 +8009,7 @@ aldeba_in,155,240,5	script	Kafra Employee#l2	859,{
 
 lhz_fild02,228,214,0	script	Wounded Man	849,{
 
-	if(checkweight(7343,1) != 1)
+	if (checkweight(7343,1) != 1)
 	{
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -8263,7 +8019,7 @@ lhz_fild02,228,214,0	script	Wounded Man	849,{
 		mes "to store some of your items.^000000";
 		close;
 	}
-	if(lhz_boss < 18)
+	if (lhz_boss < 18)
 	{
 		mes "[?????]";
 		mes "^333333*Cough cough*^000000";
@@ -8288,7 +8044,7 @@ lhz_fild02,228,214,0	script	Wounded Man	849,{
 		mes "j-just get the hell away!";
 		close;
 	}
-	else if(lhz_boss == 18)
+	else if (lhz_boss == 18)
 	{
 		mes "[?????]";
 		mes "^333333*Cough cough*^000000";
@@ -8308,7 +8064,7 @@ lhz_fild02,228,214,0	script	Wounded Man	849,{
 				mes "are you working for...?";
 				next;
 				input @jargeah$;
-				if((@jargeah$ == "Kafra Corporation") || (@jargeah$ == "Secret Wing"))
+				if ((@jargeah$ == "Kafra Corporation") || (@jargeah$ == "Secret Wing"))
 				{
 					mes "[Jargeah]";
 					mes "Th-thank goodness!";
@@ -8355,7 +8111,7 @@ OnInit:
 lhz_fild02,224,220,0	script	Wounded Man Switch	-1,3,3,{
 
 OnTouch:
-	if(lhz_boss == 18)
+	if (lhz_boss == 18)
 	{
 		mes "[?????]";
 		mes "^333333*Cough cough*^000000";
@@ -8369,7 +8125,7 @@ OnTouch:
 lhz_fild01,76,214,0	script	Esuna Trigger	-1,5,5,{
 
 OnTouch:
-	if((lhz_boss == 26) || (lhz_boss == 36) || (lhz_boss == 38) || (lhz_boss == 40))
+	if ((lhz_boss == 26) || (lhz_boss == 36) || (lhz_boss == 38) || (lhz_boss == 40))
 	{
 		mes "[????]";
 		mes "Here,";
@@ -8383,9 +8139,9 @@ OnTouch:
 
 lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 
-	if(lhz_boss == 26)
+	if (lhz_boss == 26)
 	{
-		if(checkweight(7343,1) != 1)
+		if (checkweight(7343,1) != 1)
 		{
 			mes "^3355FFWait a second!";
 			mes "Right now, you're carrying";
@@ -8437,7 +8193,7 @@ lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 		disablenpc "Mysterious Woman";
 		end;
 	}
-	else if(lhz_boss == 27)
+	else if (lhz_boss == 27)
 	{
 		mes "[Esuna]";
 		mes "Use the pass that you";
@@ -8447,13 +8203,13 @@ lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 		mes "that he's undercover...";
 		close;
 	}
-	else if(lhz_boss < 36)
+	else if (lhz_boss < 36)
 	{
 		mes "[Esuna]";
 		mes ".........";
 		close;
 	}
-	else if(lhz_boss == 36)
+	else if (lhz_boss == 36)
 	{
 		mes "[Esuna]";
 		mes "Good work.";
@@ -8475,14 +8231,14 @@ lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 		disablenpc "Mysterious Woman";
 		end;
 	}
-	else if(lhz_boss < 38)
+	else if (lhz_boss < 38)
 	{
 		mes "[Esuna]";
 		mes "........";
 		mes ".....";
 		close;
 	}
-	else if(lhz_boss == 38)
+	else if (lhz_boss == 38)
 	{
 		mes "[Esuna]";
 		mes "You're back. Listen,";
@@ -8503,7 +8259,7 @@ lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 		disablenpc "Mysterious Woman";
 		end;
 	}
-	else if(lhz_boss == 39)
+	else if (lhz_boss == 39)
 	{
 		mes "[Esuna]";
 		mes "What are you waiting";
@@ -8514,7 +8270,7 @@ lhz_fild01,66,219,4	script	Mysterious Woman	859,{
 		mes "but he deserves to know...";
 		close;
 	}
-	else if(lhz_boss == 40)
+	else if (lhz_boss == 40)
 	{
 		mes "[Esuna]";
 		mes "Good, you're back.";
@@ -8597,7 +8353,7 @@ OnInit:
 
 lhz_in01,93,45,4	script	Researcher#1	865,{
 
-	if(lhz_boss < 28)
+	if (lhz_boss < 28)
 	{
 		mes "[Researcher]";
 		mes "You know what's weird?";
@@ -8606,7 +8362,7 @@ lhz_in01,93,45,4	script	Researcher#1	865,{
 		mes "bombs? There's so many";
 		mes "others you could use, like";
 		mes "pink or yellow or or green...";
-		if(lhz_boss == 27)
+		if (lhz_boss == 27)
 		{
 			next;
 			mes "[Researcher]";
@@ -8626,7 +8382,7 @@ lhz_in01,93,45,4	script	Researcher#1	865,{
 					mes "Heh, yeah, just like";
 					mes "in the movies. I like";
 					mes "the way you think~";
-					if(!countitem(7348)) close;
+					if (!countitem(7348)) close;
 					next;
 					mes "^3355FFYou surrepticiously";
 					mes "check the researcher's";
@@ -8699,7 +8455,7 @@ lhz_in01,93,45,4	script	Researcher#1	865,{
 
 lhz_in01,285,169,3	script	Researcher#2	865,{
 
-	if(checkweight(7349,1) != 1)
+	if (checkweight(7349,1) != 1)
 	{
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -8709,7 +8465,7 @@ lhz_in01,285,169,3	script	Researcher#2	865,{
 		mes "to store some of your items.^000000";
 		close;
 	}
-	if(lhz_boss < 27)
+	if (lhz_boss < 27)
 	{
 		mes "[Researcher]";
 		mes "This is a restricted";
@@ -8717,7 +8473,7 @@ lhz_in01,285,169,3	script	Researcher#2	865,{
 		mes "immediately.";
 		close;
 	}
-	else if(lhz_boss == 27)
+	else if (lhz_boss == 27)
 	{
 		mes "[Lestin]";
 		mes "This place should be";
@@ -8751,7 +8507,7 @@ lhz_in01,285,169,3	script	Researcher#2	865,{
 		mes "is risky, but not impossible.";
 		close;
 	}
-	else if(lhz_boss < 35)
+	else if (lhz_boss < 35)
 	{
 		mes "[Lestin]";
 		mes "Remember, you gotta";
@@ -8784,9 +8540,9 @@ lhz_in01,285,169,3	script	Researcher#2	865,{
 		mes "and don't get caught!";
 		close;
 	}
-	else if(lhz_boss == 35)
+	else if (lhz_boss == 35)
 	{
-		if((!countitem(7349)) || (!countitem(7344)))
+		if ((!countitem(7349)) || (!countitem(7344)))
 		{
 			mes "[Lestin]";
 			mes "My pass will get you inside,";
@@ -8853,10 +8609,10 @@ lhz_in01,187,31,0	script	#Sneak	111,4,3,{
 	end;
 
 OnTouch:
-	if((lhz_boss > 27) && (lhz_boss < 35))
+	if ((lhz_boss > 27) && (lhz_boss < 35))
 	{
 		set @sneaktime,gettimetick(0) % 100;
-		if((@sneaktime > 10 && @sneaktime < 59) || (@sneaktime < -10 && @sneaktime > -59))
+		if ((@sneaktime > 10 && @sneaktime < 59) || (@sneaktime < -10 && @sneaktime > -59))
 		{
 			mes "^3355FFAs you approach";
 			mes "the corner, you can";
@@ -8904,7 +8660,7 @@ OnTouch:
 					switch( select( "Insert Card","Retreat" ) )
 					{
 						case 1:
-							if(!countitem(7349))
+							if (!countitem(7349))
 							{
 								mes "^3355FFYou forgot to bring";
 								mes "the card pass that";
@@ -8922,7 +8678,7 @@ OnTouch:
 							next;
 L_Enter:
 							input @sneakpass;
-							if(@sneakpass == 738495)
+							if (@sneakpass == 738495)
 							{
 								mes "^3355FF*Beep~*";
 								mes "You hear a pleasant";
@@ -8963,7 +8719,7 @@ L_Enter:
 							mes "should try to input it again.^000000";
 							set @sneakerror,@sneakerror +1;
 							next;
-							if(@sneakerror > 2)
+							if (@sneakerror > 2)
 							{
 									mes "[Security System]";
 									mes "*Gzzzzz*";
@@ -9034,7 +8790,7 @@ OnTimer190000:
 
 lhz_in01,182,35,0	script	File Search Engine	111,{
 
-	if((lhz_boss > 28) && (lhz_boss < 35))
+	if ((lhz_boss > 28) && (lhz_boss < 35))
 	{
 		mes "^3355FFThis machine can be";
 		mes "used to locate specific";
@@ -9057,7 +8813,7 @@ L_Search:
 				mes "capital letters.^000000";
 				next;
 				input @sneaksearch$;
-				if((@sneaksearch$ == "kafra") || (@sneaksearch$ == "cool event"))
+				if ((@sneaksearch$ == "kafra") || (@sneaksearch$ == "cool event"))
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9067,7 +8823,7 @@ L_Search:
 					set lhz_boss,30;
 					close;
 				}
-				else if(@sneaksearch$ == "shinokas")
+				else if (@sneaksearch$ == "shinokas")
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9076,7 +8832,7 @@ L_Search:
 					set lhz_boss,31;
 					close;
 				}
-				else if((@sneaksearch$ == "stein") || (@sneaksearch$ == "STEIN") || (@sneaksearch$ == "S.T.E.I.N"))
+				else if ((@sneaksearch$ == "stein") || (@sneaksearch$ == "STEIN") || (@sneaksearch$ == "S.T.E.I.N"))
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9086,7 +8842,7 @@ L_Search:
 					mes "through this system.^000000";
 					close;
 				}
-				else if(@sneaksearch$ == "ymir")
+				else if (@sneaksearch$ == "ymir")
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9096,7 +8852,7 @@ L_Search:
 					mes "through this system.^000000";
 					close;
 				}
-				else if((@sneaksearch$ == "president") || (@sneaksearch$ == "karl") || (@sneaksearch$ == "weierstrass"))
+				else if ((@sneaksearch$ == "president") || (@sneaksearch$ == "karl") || (@sneaksearch$ == "weierstrass"))
 				{
 					mes "^663300[Search Result]";
 					mes "2nd Class documents on";
@@ -9108,7 +8864,7 @@ L_Search:
 					set lhz_boss,32;
 					close;
 				}
-				else if(@sneaksearch$ == "einbroch")
+				else if (@sneaksearch$ == "einbroch")
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9117,7 +8873,7 @@ L_Search:
 					set lhz_boss,33;
 					close;
 				}
-				else if(@sneaksearch$ == "lighthalzen")
+				else if (@sneaksearch$ == "lighthalzen")
 				{
 					mes "^663300[Search Result]" ;
 					mes "Documents regarding";
@@ -9126,7 +8882,7 @@ L_Search:
 					set lhz_boss,34;
 					close;
 				}
-				else if(@sneaksearch$ == "rekenber")
+				else if (@sneaksearch$ == "rekenber")
 				{
 					mes "^663300[Search Result]";
 					mes "Documents regarding";
@@ -9164,7 +8920,7 @@ L_Search:
 
 lhz_in01,177,31,0	script	Door#sneak	111,{
 
-	if(lhz_boss < 29)
+	if (lhz_boss < 29)
 	{
 		mes "[Guard]";
 		mes "This is a";
@@ -9175,7 +8931,7 @@ lhz_in01,177,31,0	script	Door#sneak	111,{
 		mes "Thank you for cooperating.";
 		close;
 	}
-	else if(lhz_boss < 36)
+	else if (lhz_boss < 36)
 	{
 		mes "^3355FFThe door is shut, but";
 		mes "there is a device that";
@@ -9202,7 +8958,7 @@ lhz_in01,177,31,0	script	Door#sneak	111,{
 
 lhz_in01,184,40,0	script	Area 1-5	111,{
 
-	if(checkweight(7344,1) != 1)
+	if (checkweight(7344,1) != 1)
 	{
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -9212,7 +8968,7 @@ lhz_in01,184,40,0	script	Area 1-5	111,{
 		mes "to store some of your items.^000000";
 		close;
 	}
-	if((lhz_boss > 28) && (lhz_boss < 31))
+	if ((lhz_boss > 28) && (lhz_boss < 31))
 	{
 		mes "^3355FFThere's literally thousands";
 		mes "of documents to sort through.";
@@ -9221,7 +8977,7 @@ lhz_in01,184,40,0	script	Area 1-5	111,{
 		mes "just three minutes...^000000";
 		close;
 	}
-	else if(lhz_boss == 31)
+	else if (lhz_boss == 31)
 	{
 		mes "^3355FFWait, one of these files";
 		mes "looks pretty incriminating.";
@@ -9251,7 +9007,7 @@ lhz_in01,184,40,0	script	Area 1-5	111,{
 
 lhz_in01,184,52,0	script	Area 1-7	111,{
 
-	if((lhz_boss > 28) && (lhz_boss < 32))
+	if ((lhz_boss > 28) && (lhz_boss < 32))
 	{
 		mes "^3355FFThere's literally thousands";
 		mes "of documents to sort through.";
@@ -9260,7 +9016,7 @@ lhz_in01,184,52,0	script	Area 1-7	111,{
 		mes "just three minutes...^000000";
 		close;
 	}
-	else if(lhz_boss == 32)
+	else if (lhz_boss == 32)
 	{
 		mes "^3355FFThis looks like a file";
 		mes "containing information";
@@ -9313,7 +9069,7 @@ lhz_in01,184,52,0	script	Area 1-7	111,{
 
 lhz_in01,184,46,0	script	Area 3-2	111,{
 
-	if((lhz_boss > 28) && (lhz_boss < 30))
+	if ((lhz_boss > 28) && (lhz_boss < 30))
 	{
 		mes "^3355FFThere's literally thousands";
 		mes "of documents to sort through.";
@@ -9322,7 +9078,7 @@ lhz_in01,184,46,0	script	Area 3-2	111,{
 		mes "just three minutes...^000000";
 		close;
 	}
-	else if(lhz_boss == 30)
+	else if (lhz_boss == 30)
 	{
 		mes "^3355FFYou've found a file";
 		mes "containing information";
@@ -9378,7 +9134,7 @@ lhz_in01,184,46,0	script	Area 3-2	111,{
 
 lhz_in01,184,48,0	script	Area 3-3	111,{
 
-	if((lhz_boss > 28) && (lhz_boss < 34))
+	if ((lhz_boss > 28) && (lhz_boss < 34))
 	{
 		mes "^3355FFThere's literally thousands";
 		mes "of documents to sort through.";
@@ -9387,7 +9143,7 @@ lhz_in01,184,48,0	script	Area 3-3	111,{
 		mes "just three minutes...^000000";
 		close;
 	}
-	else if(lhz_boss == 34)
+	else if (lhz_boss == 34)
 	{
 		mes "[Classified Info]";
 		mes "^8C1717...After negotiating with";
@@ -9426,7 +9182,7 @@ lhz_in01,184,48,0	script	Area 3-3	111,{
 
 lhz_in01,177,56,0	script	Area 6-1	111,{
 
-	if((lhz_boss > 28) && (lhz_boss < 33))
+	if ((lhz_boss > 28) && (lhz_boss < 33))
 	{
 		mes "^3355FFThere's literally thousands";
 		mes "of documents to sort through.";
@@ -9435,7 +9191,7 @@ lhz_in01,177,56,0	script	Area 6-1	111,{
 		mes "just three minutes...^000000";
 		close;
 	}
-	else if(lhz_boss == 33)
+	else if (lhz_boss == 33)
 	{
 		mes "[Classified Info]";
 		mes "^8C1717........";
@@ -9473,7 +9229,7 @@ lhz_in01,177,56,0	script	Area 6-1	111,{
 
 lhz_dun02,282,278,0	script	Broken Machine	111,{
 
-	if(checkweight(7346,1) != 1)
+	if (checkweight(7346,1) != 1)
 	{
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
@@ -9483,7 +9239,7 @@ lhz_dun02,282,278,0	script	Broken Machine	111,{
 		mes "to store some of your items.^000000";
 		close;
 	}
-	if(lhz_boss < 6)
+	if (lhz_boss < 6)
 	{
 		mes "^3355FFThere are several";
 		mes "broken machines lying";
@@ -9491,7 +9247,7 @@ lhz_dun02,282,278,0	script	Broken Machine	111,{
 		mes "seem completely useless.^000000";
 		close;
 	}
-	else if(lhz_boss == 6)
+	else if (lhz_boss == 6)
 	{
 		mes "^3355FFThere are several";
 		mes "broken machines lying";
@@ -9567,7 +9323,7 @@ lhz_in02,19,274,2	script	Maintenance Guy	851,{
 
 lhz_in01,174,258,3	script	Young Man#reken	868,{
 
-	if(lhz_rekenber > 21)
+	if (lhz_rekenber > 21)
 	{
 		mes "[Kazien]";
 		mes "Just...";
@@ -9584,7 +9340,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "Someday I'll be strong enough...";
 		close;
 	}
-	else if(lhz_rekenber == 21)
+	else if (lhz_rekenber == 21)
 	{
 		mes "[Kazien]";
 		mes "Hey, you're back. As usual,";
@@ -9714,7 +9470,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		getexp 550000,0;
 		close;
 	}
-	else if(lhz_rekenber > 16)
+	else if (lhz_rekenber > 16)
 	{
 		mes "[Kazien]";
 		mes "Hey now, you better";
@@ -9723,7 +9479,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "the Rune-Midgarts Kingdom.";
 		close;
 	}
-	else if(lhz_rekenber == 16)
+	else if (lhz_rekenber == 16)
 	{
 		mes "[Kazien]";
 		mes "Ah, I heard from Lyozien";
@@ -9786,7 +9542,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		getexp 450000,0;
 		close;
 	}
-	else if(lhz_rekenber > 11)
+	else if (lhz_rekenber > 11)
 	{
 		mes "[Kazien]";
 		mes "What are you doing";
@@ -9795,7 +9551,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "do, so hurry up and do it~";
 		close;
 	}
-	else if(lhz_rekenber == 11)
+	else if (lhz_rekenber == 11)
 	{
 		mes "[Kazien]";
 		mes "Hey, you're back. I got a";
@@ -9870,7 +9626,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "any trouble: that's my job!";
 		close;
 	}
-	else if(lhz_rekenber > 7)
+	else if (lhz_rekenber > 7)
 	{
 		mes "[Kazien]";
 		mes "Lyozien is waiting for";
@@ -9881,7 +9637,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "I'll see you later.";
 		close;
 	}
-	else if(lhz_rekenber == 7)
+	else if (lhz_rekenber == 7)
 	{
 		mes "[Kazien]";
 		mes "Hey, you're back~";
@@ -9913,10 +9669,10 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "for the international flights.";
 		close;
 	}
-	else if(lhz_rekenber == 6)
+	else if (lhz_rekenber == 6)
 	{
 		set @rekenrand,rand(1,15);
-		if(@rekenrand == 7)
+		if (@rekenrand == 7)
 		{
 			mes "[Kazien]";
 			mes "Oh, hey, it's you again.";
@@ -9957,7 +9713,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 			close;
 		}
 	}
-	else if(lhz_rekenber == 5)
+	else if (lhz_rekenber == 5)
 	{
 		mes "[Kazien]";
 		mes "So, were you able to";
@@ -10021,7 +9777,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		set lhz_rekenber,7;
 		close;
 	}
-	else if(lhz_rekenber == 4)
+	else if (lhz_rekenber == 4)
 	{
 		mes "[Kazien]";
 		mes "So, were you able to";
@@ -10073,7 +9829,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "sorry, but we can't use you...";
 		close;
 	}
-	else if(lhz_rekenber == 3)
+	else if (lhz_rekenber == 3)
 	{
 		mes "[Kazien]";
 		mes "Remember, visit ^FF0000Garins^000000";
@@ -10089,7 +9845,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "that, come back to me.";
 		close;
 	}
-	else if(lhz_rekenber == 2)
+	else if (lhz_rekenber == 2)
 	{
 		mes "[Kazien]";
 		mes "Okay, I got it! Your first";
@@ -10130,7 +9886,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "that, come back to me.";
 		close;
 	}
-	else if(lhz_rekenber == 1)
+	else if (lhz_rekenber == 1)
 	{
 		mes "[Kazien]";
 		mes "We're so busy, we barely";
@@ -10161,7 +9917,7 @@ lhz_in01,174,258,3	script	Young Man#reken	868,{
 		mes "you're a straight shooter.";
 		mes "I like that. Let's see now...";
 		next;
-		if(BaseLevel < 70)
+		if (BaseLevel < 70)
 		{
 			mes "[Kazien]";
 			mes "Awww, I'm sorry, pal.";
@@ -10242,13 +9998,13 @@ lighthalzen,141,162,3	script	Old Man#reken	85,{
 	mes "the corporation building.";
 	mes "Young people like him should";
 	mes "never be too proud to ask for help. He still needs to learn...";
-	if(!lhz_rekenber) set lhz_rekenber,1;
+	if (!lhz_rekenber) set lhz_rekenber,1;
 	close;
 }
 
 einbroch,55,52,3	script	Laboratory Guard#reken	 852,{
 
-	if(lhz_rekenber == 3)
+	if (lhz_rekenber == 3)
 	{
 		mes "[Laboratory Guard]";
 		mes "Hold it! This is";
@@ -10320,7 +10076,7 @@ einbroch,55,52,3	script	Laboratory Guard#reken	 852,{
 
 airplane_01,96,48,3	script	Man#Lyozien	868,{
 
-	if(lhz_rekenber > 21)
+	if (lhz_rekenber > 21)
 	{
 		mes "[Lyozien]";
 		mes "Hey, I hear from my";
@@ -10331,7 +10087,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "really good working with you...";
 		close;
 	}
-	else if(lhz_rekenber == 21)
+	else if (lhz_rekenber == 21)
 	{
 		mes "[Lyozien]";
 		mes "Oh good, you're back.";
@@ -10348,7 +10104,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "break or something?";
 		close;
 	}	
-	else if(lhz_rekenber == 20)
+	else if (lhz_rekenber == 20)
 	{
 		mes "[Lyozien]";
 		mes "Heya, keep up the";
@@ -10358,7 +10114,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "done with this delivery.";
 		close;
 	}
-	else if(lhz_rekenber == 19)
+	else if (lhz_rekenber == 19)
 	{
 		mes "[Lyozien]";
 		mes "Whoa, you were great!";
@@ -10392,7 +10148,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "contact Mr. Ahman in Izlude.";
 		close;
 	}	
-	else if(lhz_rekenber == 18)
+	else if (lhz_rekenber == 18)
 	{
 		mes "[Lyozien]";
 		mes "Okay, just like before, we";
@@ -10414,7 +10170,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		donpcevent "Man#Lyozien::OnStop";
 		end;
 	}
-	else if(lhz_rekenber == 17)
+	else if (lhz_rekenber == 17)
 	{
 		mes "[Lyozien]";
 		mes "I heard that you upset";
@@ -10446,7 +10202,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "back to work, shall we?";
 		close;
 	}
-	else if(lhz_rekenber == 16)
+	else if (lhz_rekenber == 16)
 	{
 		mes "[Lyozien]";
 		mes "I'm lucky that you're";
@@ -10457,7 +10213,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "my brother Kazien, okay?";
 		close;
 	}
-	else if(lhz_rekenber == 15)
+	else if (lhz_rekenber == 15)
 	{
 		mes "[Lyozien]";
 		mes "So you spoke to";
@@ -10476,7 +10232,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		set lhz_rekenber,16;
 		close;
 	}
-	else if(lhz_rekenber == 14)
+	else if (lhz_rekenber == 14)
 	{
 		mes "[Lyozien]";
 		mes "Now that those thugs are";
@@ -10487,7 +10243,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "have arrived. See you later~";
 		close;
 	}
-	else if(lhz_rekenber == 13)
+	else if (lhz_rekenber == 13)
 	{
 		mes "[Lyozien]";
 		mes "Oh, thank you!";
@@ -10514,7 +10270,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		set lhz_rekenber,14;
 		close;
 	}
-	else if(lhz_rekenber == 12)
+	else if (lhz_rekenber == 12)
 	{
 		mes "[Lyozien]";
 		mes "Hey, we already have another";
@@ -10545,7 +10301,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		donpcevent "#bully1::OnEnter";
 		end;
 	}
-	if(lhz_rekenber == 11)
+	if (lhz_rekenber == 11)
 	{
 		mes "[Lyozien]";
 		mes "Hey, would you go see";
@@ -10556,7 +10312,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "to find me. See you later~";
 		close;
 	}
-	else if(lhz_rekenber == 10)
+	else if (lhz_rekenber == 10)
 	{
 		mes "[Lyozien]";
 		mes "Good work, Mr. Ahman just";
@@ -10596,7 +10352,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		set lhz_rekenber,11;
 		close;
 	}	
-	else if(lhz_rekenber == 9)
+	else if (lhz_rekenber == 9)
 	{
 		mes "[Lyozien]";
 		mes "Alright, when this Airship";
@@ -10607,7 +10363,7 @@ airplane_01,96,48,3	script	Man#Lyozien	868,{
 		mes "already arrived, okay?";
 		close;
 	}	
-	else if(lhz_rekenber == 8)
+	else if (lhz_rekenber == 8)
 	{
 		mes "[Lyozien]";
 		mes "Um, would you mind";
@@ -10688,7 +10444,7 @@ OnStop:
 
 izlude,186,57,5	script	Scamp	853,{
 
-	if(lhz_rekenber > 21)
+	if (lhz_rekenber > 21)
 	{
 		mes "[Ahman]";
 		mes "Oh, hello. I've heard";
@@ -10699,7 +10455,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "been destroyed by those thugs.";
 		close;
 	}
-	else if(lhz_rekenber == 21)
+	else if (lhz_rekenber == 21)
 	{
 		mes "[Ahman]";
 		mes "Shouldn't you be";
@@ -10708,7 +10464,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "you the Airship, isn't he?";
 		close;
 	}
-	else if(lhz_rekenber == 20)
+	else if (lhz_rekenber == 20)
 	{
 		mes "[Ahman]";
 		mes "Oh, have my packages";
@@ -10738,7 +10494,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "few deliveries in queue, but shouldn't you be in Lighthalzen?";
 		close;
 	}
-	else if(lhz_rekenber == 15)
+	else if (lhz_rekenber == 15)
 	{
 		mes "[Ahman]";
 		mes "Shouldn't you be on";
@@ -10747,7 +10503,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "before the Airship takes off.";
 		close;
 	}
-	else if(lhz_rekenber == 14)
+	else if (lhz_rekenber == 14)
 	{
 		mes "[Ahman]";
 		mes "Ah, it's you again.";
@@ -10790,7 +10546,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "deliveries in queue, you know.";
 		close;
 	}
-	else if(lhz_rekenber == 10)
+	else if (lhz_rekenber == 10)
 	{
 		mes "[Ahman]";
 		mes "Thank you for letting me";
@@ -10801,7 +10557,7 @@ izlude,186,57,5	script	Scamp	853,{
 		mes "sometime, adventurer.";
 		close;
 	}
-	else if(lhz_rekenber == 9)
+	else if (lhz_rekenber == 9)
 	{
 		mes "[Man]";
 		mes "Hmm, can you really";
@@ -10888,7 +10644,7 @@ OnReset:
 
 OnMyMobDead:
 	set .bullymobs,.bullymobs -1;
-	if(.bullymobs < 1)
+	if (.bullymobs < 1)
 	{
 		mes "[Bully]";
 		mes "Damn it! N-next time...";
@@ -10932,7 +10688,7 @@ OnReset:
 
 OnMyMobDead:
 	set .bullymobs,.bullymobs -1;
-	if(.bullymobs < 1)
+	if (.bullymobs < 1)
 	{
 		mes "^3355FFHey-- there's a slit";
 		mes "in the wrapping on one";
@@ -10966,7 +10722,7 @@ OnEnter:
 	end;
 
 OnTouch:
-	if(lhz_rekenber == 19)
+	if (lhz_rekenber == 19)
 	{
 		mes "^3355FFYou peek through the";
 		mes "slit in the wrapping";
@@ -10989,7 +10745,7 @@ OnTouch:
 lhz_in01,187,247,3	script	#flashback1	139,2,2,{
 
 OnTouch:
-	if(lhz_rekenber == 22)
+	if (lhz_rekenber == 22)
 	{
 		mes "[Kazien]";
 		mes "-Don't you have anything to protect, huh?- ";
@@ -11009,7 +10765,7 @@ OnTouch:
 lhz_in01,75,248,3	script	#flashback2	139,2,2,{
 
 OnTouch:
-	if(lhz_rekenber == 22)
+	if (lhz_rekenber == 22)
 	{
 		mes "[Kazien]";
 		mes "Look man, this is what";
