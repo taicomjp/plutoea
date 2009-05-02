@@ -7,6 +7,21 @@
 //= 版本：1.5 [笨冰]
 //===================================
 
+//===== eAthena Script =======================================
+//= 商城精鍊
+//===== By: ==================================================
+//= 笨冰
+//===== Current Version: =====================================
+//= 1.5
+//===== Compatible With: =====================================
+//= Eathena SVN
+//===== Description: =========================================
+//= [Aegis Conversion]
+//= 對話完全參考台灣官方正式伺服器
+//===== Additional Comments: =================================
+//= 1.5 台灣官方版本 [笨冰]
+//============================================================
+
 morocc,183,94,3	script	龍仙儒	85,{
 	mes "[龍仙儒]";
 	mes "我是專門鍛治武器與防具的鐵匠，";
@@ -139,9 +154,6 @@ morocc,183,94,3	script	龍仙儒	85,{
 		mes "這項武器已經鍛治到最高等級，無法再鍛治了..";
 		close;
 	}
-
-	// Make sure you have the neccessary items and Zeny to refine your items
-	// Determines chance of failure and verifies that you want to continue.
 	switch( getequipweaponlv(.@part) )
 	{
 		case 1: callsub S_RefineValidate,1,7620,50,.@part; break;
@@ -150,22 +162,22 @@ morocc,183,94,3	script	龍仙儒	85,{
 		case 4: callsub S_RefineValidate,4,7620,20000,.@part; break;
 		default: callsub S_RefineValidate,0,7619,2000,.@part; break;
 	}
-
 	if( getequippercentrefinery(.@part) > rand(100) || getequippercentrefinery(.@part) > rand(100) )
 	{
 		mes "[龍仙儒]";
-		mes "鏘！鏘！鏘！";
+		mes "鏘! 鏘! 鏘!";
 		SuccessRefItem .@part;
 		next;
 		Emotion e_no1;
 		mes "[龍仙儒]";
-		mes "拿去吧！已經做好了。好久沒鍛治出那麼優質的武器了，武器變強了你一定也很高興吧！";
+		mes "拿去吧! 已經做好了。";
+		mes "好久沒鍛治出那麼優質的武器了，武器變強了你一定也很高興吧!";
 		close;
 	}
 	else
 	{
 		mes "[龍仙儒]";
-		mes "鏘！鏘！鏘！";
+		mes "鏘! 鏘! 鏘!";
 		FailedRefItem .@part;
 		next;
 		if (rand(5) == 1)
@@ -173,17 +185,15 @@ morocc,183,94,3	script	龍仙儒	85,{
 		else 
 			Emotion e_omg;
 		mes "[龍仙儒]";
-		mes "咳咳咳咳咳咳咳！！！";
+		mes "咳咳咳咳咳咳咳!!!!";
 		next;
 		mes "[龍仙儒]";
+		mes "咳...咳咳...";
 		mes "真...丟臉。";
 		mes "武器在鍛治的程序中損壞了。";
-		next;
-		mes "[龍仙儒]";
-		mes "我...我...早就告訴過你會這樣的嘛！";
+		mes "我...我...早就告訴過你會這樣的嘛!";
 		close;
 	}
-
 S_RefineValidate:
 	mes "[龍先儒]";
 	if (getarg(0)) {
@@ -200,13 +210,14 @@ S_RefineValidate:
 		if( getequippercentrefinery(getarg(3)) < 100 )
 		{
 			mes "[龍仙儒]";
+			mes "嗚哇!!";
 			mes "看來這武器已經鍛治很多次了的樣子...";
-			mes "要是再繼續鍛治的話，可能會造成損壞喔！";
+			mes "要是再繼續鍛治的話，可能會造成損壞喔!";
 			next;
 			mes "要是損壞的話可就不能繼續使用了!!";
 			mes "插在裏面的卡片和特徵";
 			mes "^ff0000全部都會消失了!!^000000";
-			mes " 再說，防具被會消失掉了";
+			mes " 再說，防具被消失了!!";
 			mes "你確定還要繼續鍛治嗎?";
 			next;
 			if( select("是:否") == 2 )
