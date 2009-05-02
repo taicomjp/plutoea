@@ -8,13 +8,14 @@
 //==========================================
 
 //----------------------------------------------------------
-//時間控制項
+// 時間控制項
 //----------------------------------------------------------
 pay_arche,1,1,0	script	08spring_timer	-1,{
 OnInit:
 	donpcevent "08spring_timer::OnEventPy";
 	donpcevent "08spring_timer::OnEventPr";
 	end;
+
 OnEventPy:
 	sleep2 5400000;
 	enablenpc "花樹#08spring_py02";
@@ -27,6 +28,7 @@ OnEventPy:
 	sleep2 5400000;
 	goto OnEventPy;
 	end;
+
 OnEventPr:
 	sleep2 5400000;
 	enablenpc "花樹#08spring_prb01";
@@ -51,8 +53,9 @@ OnEventPr:
 	goto OnEventPr;
 	end;
 }
+
 //----------------------------------------------------------
-//花樹
+// 花樹
 //----------------------------------------------------------
 prontera,172,294,0	script	花樹#08spring_pr01	111,{
 	if ($@08seventpr) {
@@ -223,13 +226,15 @@ pay_arche,76,136,0	script	花樹#08spring_py01	111,{
 	mes "^4d4dff這是綻放著華麗春花的樹木，";
 	mes "先在樹下享受一下花香吧";
 	close;
+
 OnEffect:
 	misceffect EF_MAPPILLAR2;
 	misceffect EF_LEVEL99_4;
 	end;
 }
+
 //----------------------------------------------------------
-//掉落櫻花樹枝
+// 掉落櫻花樹枝
 //----------------------------------------------------------
 //每一小時三十分鐘，有三十分鐘的時間會隨機掉落櫻花樹枝(普隆得拉)
 //----------------------------------------------------------
@@ -253,10 +258,12 @@ OnMake:
 	if (.@make==16)	end;
 	}
 	end;
+
 OnUnhide:
 	donpcevent "花樹#08spring_pr01::OnEffect";
 	goto OnMake;
 	end;
+
 OnHide:
 	misceffect 16;
 	end;
@@ -349,10 +356,11 @@ OnHide:
 	misceffect 16;
 	end;
 }
+
 //----------------------------------------------------------
-//掉落櫻花樹枝
+// 掉落櫻花樹枝
 //----------------------------------------------------------
-//每三小時，有三十分鐘的時間會隨機掉落櫻花樹枝(斐揚)
+// 每三小時，有三十分鐘的時間會隨機掉落櫻花樹枝(斐揚)
 //----------------------------------------------------------
 pay_arche,76,136,0	script	花樹#08spring_py02	-1,{
 	end;
@@ -444,10 +452,11 @@ OnHide:
 	misceffect 16;
 	end;
 }
+
 //----------------------------------------------------------
-//裴雷斯
+// 裴雷斯
 //----------------------------------------------------------
-//斐揚的花樹發光時，將無法對話
+// 斐揚的花樹發光時，將無法對話
 //----------------------------------------------------------
 pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 	if ($@08springevent) {
@@ -461,13 +470,156 @@ pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 		mes "此刻盡情去享受不算奢侈啦";
 		close;
 	}
-	if ( SPRINGEVENT == 4 ) {
+	switch (SPRINGEVENT) {
+	case 0:
+		mes "[裴雷斯]";
+		mes "... .... ...嗯?";
+		mes "你找我有事嗎?";
+		next;
+		select("是.. 貓咪!:貓咪會說人話哩!:是隻肥貓呢?!");
+		mes "[裴雷斯]";
+		mes "這位朋友還真有趣，";
+		mes "你管我是貓還是會說話，都跟你沒關係吧?";
+		next;
+		mes "[裴雷斯]";
+		mes "不過.. 這裡的風景優美又舒適吧!";
+		mes "像這樣花瓣飄起的天氣更讓心情舒暢不已...";
+		next;
+		mes "[裴雷斯]";
+		mes ".....　...嗯嗯..";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "..... ... ...";
+		next;
+		mes "[裴雷斯]";
+		mes "我與弟弟一起正在經營商隊，";
+		mes "地地說曾受到此地人的鼎力相助，叫我好好答謝他們";
+		mes ".. ..";
+		next;
+		select("原來如此");
+		mes "[裴雷斯]";
+		mes "我對你這位人類友人印象不錯，我就告訴你好了，";
+		mes "這顆巨樹提供大家絕佳的休憩之地..";
+		mes "最近從這顆樹上感覺到神祕的氣息";
+		next;
+		mes "[裴雷斯]";
+		mes ".. 時而像這樣注視它的話....";
+		mes "樹上就會出現一團光圈，";
+		mes "偶然間看到帶有花朵的樹枝掉下來...";
+		mes "於是我就輕輕搖一下...";
+		next;
+		mes "[裴雷斯]";
+		mes "就覺得心情氣爽，";
+		mes "有如洗掉霉運般，";
+		mes "全身上下輕鬆多了";
+		next;
+		set SPRINGEVENT,1;
+		mes "[裴雷斯]";
+		mes "如果你想要櫻花樹枝的話我可以幫你，";
+		mes "引起強風後它就會掉下來了..";
+		close;
+	case 1:
+		mes "[裴雷斯]";
+		mes ".... 嗯? 是你嗎?";
+		mes "找我有事嗎?";
+		next;
+		if (select("我想要櫻花樹枝:沒事..")==2) {
+			mes "[裴雷斯]";
+			mes "你瞧不起我是嗎?";
+			mes "嗯? 是嗎?";
+			close;
+		}
+		mes "[裴雷斯]";
+		mes "拿到櫻花樹枝的方法有..親自去摘或搖晃讓它掉落..";
+		mes "兩者之一，但告訴你利用風的優雅方法吧";
+		next;
+		mes "[裴雷斯]";
+		mes "利用簡單的材料來製作可引起強風的道具，";
+		mes "然後再利用強風好讓樹木掉落樹枝";
+		next;
+		mes "[裴雷斯]";
+		mes "像你這樣有能力的人...";
+		mes "材料需要....";
+		next;
+		if (BaseLevel < 70) {
+			set SPRINGEVENT,3;
+			mes "[裴雷斯]";
+			mes "^4a4aff風靈石 1個、";
+			mes "竹筒 2個、";
+			mes "油紙 2個^000000，";
+			mes "差不多這些了";
+			close;
+		}
+		set SPRINGEVENT,2;
+		mes "[裴雷斯]";
+		mes "^4a4aff風靈石 1個、";
+		mes "折扇 1個、";
+		mes "藍色魔力礦石 1個^000000，";
+		mes "差不多這些了";
+		close;
+	case 2:
+	case 3:
+		mes "[裴雷斯]";
+		mes "折扇的材料都帶來了嗎?";
+		mes "... 我要先確認一下";
+		next;
+		if ( SPRINGEVENT == 2 ) {
+			if (countitem(717) < 1 || countitem(7262) < 1 || countitem(7523) < 1) {
+				mes "[裴雷斯]";
+				mes "... 材料是";
+				mes "^4a4aff風靈石 1個、";
+				mes "折扇 1個、";
+				mes "藍色魔力礦石 1個^000000，";
+				mes "都沒有帶來";
+				close;
+			}
+		}
+		else {
+			if (countitem(7150) < 2 || countitem(7151) < 2 || countitem(7523) < 1) {
+				mes "[裴雷斯]";
+				mes "... 材料是";
+				mes "^4a4aff風靈石 1個、";
+				mes "竹筒 2個、";
+				mes "油紙 2個^000000，";
+				mes "都沒有帶來";
+				close;
+			}
+		}
+		mes "[裴雷斯]";
+		mes "確實都帶齊了，";
+		mes "用這個來製作起風的媒介後利用風靈石上的風力";
+		next;
+		specialeffect2 EF_WIND;
+		mes "[裴雷斯]";
+		mes "像這樣....";
+		next;
+		mes "[裴雷斯]";
+		mes "OK，都做好了，";
+		mes "將這把折扇用在花樹上就可以了，";
+		mes "只是不能隨時使用，另外有可獲得擁有神秘力量的櫻花樹枝之時段";
+		next;
+		if ( SPRINGEVENT == 2 ) {
+			delitem 717,1;
+			delitem 7262,1;
+			delitem 7523,1;
+		}
+		else {
+			delitem 7150,2;
+			delitem 7151,2;
+			delitem 7523,1;
+		}
+		getitem 6009,1;
+		set SPRINGEVENT,4;
+		mes "[裴雷斯]";
+		mes "這點你親自去打聽吧!";
+		close;
+	case 4:
 		mes "[裴雷斯]";
 		mes "你有什麼事嗎?";
 		next;
 		switch(select("製作折扇所需材料:製作折扇:櫻花樹枝的運用方法:取消")) {
 		case 1:
-			if (countitem(6009) > 0) {
+			if (countitem(6009)) {
 				mes "[裴雷斯]";
 				mes "...?";
 				mes "你手上拿著的是什麼呢?";
@@ -484,7 +636,7 @@ pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 			mes "材料是 '風靈石 1個'、'竹筒 2個'、'油紙 2個'";
 			close;
 		case 2:
-			if (countitem(6009) > 0) {
+			if (countitem(6009)) {
 				mes "[裴雷斯]";
 				mes "...?";
 				mes "你手上拿著的是什麼呢?";
@@ -516,8 +668,16 @@ pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 			mes "跳過繁瑣過程我馬上幫你做，";
 			mes "我一一示範也是件苦差事..";
 			next;
-			if (BaseLevel > 69) { delitem 717,1; delitem 7262,1; delitem 7523,1; }
-			if (BaseLevel < 70) { delitem 7150,2; delitem 7151,2; delitem 7523,1; }
+			if (BaseLevel > 69) {
+				delitem 717,1;
+				delitem 7262,1;
+				delitem 7523,1;
+			}
+			if (BaseLevel < 70) {
+				delitem 7150,2;
+				delitem 7151,2;
+				delitem 7523,1;
+			}
 			getitem 6009,1;
 			mes "[裴雷斯]";
 			mes "OK，在這給你";
@@ -533,8 +693,7 @@ pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 			mes "所以一次拿五個來揮舞的話..";
 			mes "結果會怎樣呢?";
 			next;
-			switch(select("製作大型櫻花樹枝:取消")) {
-			case 1:
+			if (select("製作大型櫻花樹枝:取消")==1) {
 				if (countitem(12310) < 5 || countitem(7186) < 1) {
 					mes "[裴雷斯]";
 					mes "想要製作大型櫻花樹枝的話至少要有^4a4aff櫻花";
@@ -553,151 +712,14 @@ pay_arche,66,143,5	script	船長裴雷斯#08spring	421,{
 				mes "[裴雷斯]";
 				mes "在這給你，去向好友們炫耀一下吧";
 				close;
-			case 2:
-				mes "[裴雷斯]";
-				mes "若有為隊友們著想的話，你會再來找我的.";
-				close;
 			}
+			mes "[裴雷斯]";
+			mes "若有為隊友們著想的話，你會再來找我的.";
+			close;
 		case 4:
 			mes "[裴雷斯]";
 			mes "我打算暫時待在這裡，可以隨時來找我";
 			close;
 		}
 	}
-	if ( SPRINGEVENT == 2 || SPRINGEVENT == 3 ) {
-		mes "[裴雷斯]";
-		mes "折扇的材料都帶來了嗎?";
-		mes "... 我要先確認一下";
-		next;
-		if ( SPRINGEVENT == 2 ) {
-			if (countitem(717) < 1 || countitem(7262) < 1 || countitem(7523) < 1) {
-				mes "[裴雷斯]";
-				mes "... 材料是";
-				mes "^4a4aff風靈石 1個、";
-				mes "折扇 1個、";
-				mes "藍色魔力礦石 1個^000000，";
-				mes "都沒有帶來";
-				close;
-			}
-		}
-		if ( SPRINGEVENT == 3 ) {
-			if (countitem(7150) < 2 || countitem(7151) < 2 || countitem(7523) < 1) {
-				mes "[裴雷斯]";
-				mes "... 材料是";
-				mes "^4a4aff風靈石 1個、";
-				mes "竹筒 2個、";
-				mes "油紙 2個^000000，";
-				mes "都沒有帶來";
-				close;
-			}
-		}
-		mes "[裴雷斯]";
-		mes "確實都帶齊了，";
-		mes "用這個來製作起風的媒介後利用風靈石上的風力";
-		next;
-		specialeffect2 EF_WIND;
-		mes "[裴雷斯]";
-		mes "像這樣....";
-		next;
-		mes "[裴雷斯]";
-		mes "OK，都做好了，";
-		mes "將這把折扇用在花樹上就可以了，";
-		mes "只是不能隨時使用，另外有可獲得擁有神秘力量的櫻花樹枝之時段";
-		next;
-		if ( SPRINGEVENT == 2 ) { delitem 717,1; delitem 7262,1; delitem 7523,1; }
-		if ( SPRINGEVENT == 3 ) { delitem 7150,2; delitem 7151,2; delitem 7523,1; }
-		getitem 6009,1;
-		set SPRINGEVENT,4;
-		mes "[裴雷斯]";
-		mes "這點你親自去打聽吧!";
-		close;
-	}
-	if ( SPRINGEVENT == 1 ) {
-		mes "[裴雷斯]";
-		mes ".... 嗯? 是你嗎?";
-		mes "找我有事嗎?";
-		next;
-		switch(select("我想要櫻花樹枝:沒事..")) {
-		case 1:
-			mes "[裴雷斯]";
-			mes "拿到櫻花樹枝的方法有..親自去摘或搖晃讓它掉落..";
-			mes "兩者之一，但告訴你利用風的優雅方法吧";
-			next;
-			mes "[裴雷斯]";
-			mes "利用簡單的材料來製作可引起強風的道具，";
-			mes "然後再利用強風好讓樹木掉落樹枝";
-			next;
-			mes "[裴雷斯]";
-			mes "像你這樣有能力的人...";
-			mes "材料需要....";
-			next;
-			if (BaseLevel < 70) {
-				set SPRINGEVENT,3;
-				mes "[裴雷斯]";
-				mes "^4a4aff風靈石 1個、";
-				mes "竹筒 2個、";
-				mes "油紙 2個^000000，";
-				mes "差不多這些了";
-				close;
-			}
-			set SPRINGEVENT,2;
-			mes "[裴雷斯]";
-			mes "^4a4aff風靈石 1個、";
-			mes "折扇 1個、";
-			mes "藍色魔力礦石 1個^000000，";
-			mes "差不多這些了";
-			close;
-		case 2:
-			mes "[裴雷斯]";
-			mes "你瞧不起我是嗎?";
-			mes "嗯? 是嗎?";
-			close;
-		}
-	}
-	mes "[裴雷斯]";
-	mes "... .... ...嗯?";
-	mes "你找我有事嗎?";
-	next;
-	select("是.. 貓咪!:貓咪會說人話哩!:是隻肥貓呢?!");
-	mes "[裴雷斯]";
-	mes "這位朋友還真有趣，";
-	mes "你管我是貓還是會說話，都跟你沒關係吧?";
-	next;
-	mes "[裴雷斯]";
-	mes "不過.. 這裡的風景優美又舒適吧!";
-	mes "像這樣花瓣飄起的天氣更讓心情舒暢不已...";
-	next;
-	mes "[裴雷斯]";
-	mes ".....　...嗯嗯..";
-	next;
-	mes "["+strcharinfo(0)+"]";
-	mes "..... ... ...";
-	next;
-	mes "[裴雷斯]";
-	mes "我與弟弟一起正在經營商隊，";
-	mes "地地說曾受到此地人的鼎力相助，叫我好好答謝他們";
-	mes ".. ..";
-	next;
-	select("原來如此");
-	mes "[裴雷斯]";
-	mes "我對你這位人類友人印象不錯，我就告訴你好了，";
-	mes "這顆巨樹提供大家絕佳的休憩之地..";
-	mes "最近從這顆樹上感覺到神祕的氣息";
-	next;
-	mes "[裴雷斯]";
-	mes ".. 時而像這樣注視它的話....";
-	mes "樹上就會出現一團光圈，";
-	mes "偶然間看到帶有花朵的樹枝掉下來...";
-	mes "於是我就輕輕搖一下...";
-	next;
-	mes "[裴雷斯]";
-	mes "就覺得心情氣爽，";
-	mes "有如洗掉霉運般，";
-	mes "全身上下輕鬆多了";
-	next;
-	set SPRINGEVENT,1;
-	mes "[裴雷斯]";
-	mes "如果你想要櫻花樹枝的話我可以幫你，";
-	mes "引起強風後它就會掉下來了..";
-	close;
 }
