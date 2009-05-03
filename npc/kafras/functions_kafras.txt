@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 卡普拉腳本 - 
 //===================================
-// - 6.2
+// - 6.3
 //===================================
 
 function	script	F_Kafra	{
@@ -469,7 +469,7 @@ function	script	F_KafInfo	{
 }
 
 
-// End Function =====================================================
+// 結束 函式 =====================================================
 //  arg(0): used to determine what message to display.
 //  arg(1): used to determine if save message is displayed.
 //  arg(2): used to display the name of the area you're saving in.
@@ -505,14 +505,14 @@ function	script	F_KafEnd	{
 	end;
 }
 
-// Check Storage Password Function ====================
+// 確認倉庫密碼 函式 ====================
 function	script	F_CheckKafCode	{
 	if(#kafra_code==0) return;
 	mes "顧客您有使用倉庫密碼保護服務";
 	mes "請輸入你的倉庫密碼：";
 	set @code_,0;
 	input @code_;
-	if(@code_ != #kafra_code-getcharid(3)-1337) {
+	if(@code_ != #kafra_code) {
 		dispbottom "密碼錯誤";
 		close2;
 		cutin "",255;
@@ -528,7 +528,7 @@ function	script	F_CheckKafCode	{
 	end;
 }
 
-// Set / Change / Clear Storage Password Function ====================
+// 設置 / 更改 / 移除 倉庫密碼 函式 ====================
 // getarg(0) = NPC Name, getarg(1) = Company Name
 function	script	F_SetKafCode	{
 	mes getarg(0);
@@ -539,18 +539,18 @@ function	script	F_SetKafCode	{
 		menu "更改密碼 -> 5000z",-,
 		"移除密碼 -> 1000z",M_CLEAR,
 		"取消",M_END;
-	} else {
+	}
+	else {
 		mes ""+getarg(1)+" 隆重得為您介紹一項新服務";
 		mes "'倉庫密碼'功能";
 		next;
-		menu "設置密碼 -> 5000z",M_SET,
-		"取消",M_END;
+		menu "設置密碼 -> 5000z",M_SET,"取消",M_END;
 	}
 
 	mes getarg(0);
 	mes "請先輸入您的^0000FF舊密碼^000000.";
 	set @code,callfunc("F_EntKafCode");
-	if(@code==0 || @code != #kafra_code-getcharid(3)-1337) {
+	if(@code==0 || @code != #kafra_code) {
 		mes "密碼錯誤，請重新輸入";
 		emotion e_hmm;
 		goto M_END;
@@ -570,9 +570,8 @@ M_SET:
 	mes getarg(0);
 	if(Zeny < 5000) goto L_ZENY;
 	set Zeny,Zeny-5000;
-	//set RESRVPTS, RESRVPTS + (5000/50);	//hardcoded password doesn't add pts
-
-	set #kafra_code,@code+getcharid(3)+1337;
+	//set RESRVPTS, RESRVPTS + (5000/50);	//是否增加卡普拉點數
+	set #kafra_code,@code;
 	mes "倉庫密碼已設置完成，";
 	mes "感謝您使用 "+getarg(1)+".";
 	emotion e_thx;
@@ -591,13 +590,14 @@ M_CLEAR:
 	mes getarg(0);
 	if(Zeny < 1000) goto L_ZENY;
 	set Zeny,Zeny-1000;
-	//set RESRVPTS, RESRVPTS + (1000/50);	//hardcoded password doesn't add pts
-	if(@code == #kafra_code-getcharid(3)-1337) {
+	//set RESRVPTS, RESRVPTS + (1000/50);	//是否增加卡普拉點數
+	if(@code == #kafra_code) {
 		set #kafra_code,0;
 		mes "倉庫密碼已移除，";
 		mes "感謝您使用"+getarg(1)+".";
 		emotion e_thx;
-	} else {
+	}
+	else {
 		mes "密碼錯誤，將沒收您1000金幣";
 		emotion e_sry;
 	}

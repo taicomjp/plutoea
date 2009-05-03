@@ -8,7 +8,7 @@
 //= 翻譯: 5511
 //===================================
 //= 2009/02/03
-//= *A級武器制作製作任務
+//= *A級武器製作任務
 //= -魔刀 吞神, 暗靈之斧和利剪劍製作任務
 //= -破甲短劍, 削刃短劍和斯勒特斧製作任務
 //= -聖劍 渾沌, 秘錘 冷月和魔錘 安魂曲製作任務
@@ -38,7 +38,7 @@ OnInit:
 	set $@LV4_Hammer_Of_Blacksmith, 1005; // 1005,高級鐵砧
 	set $@LV4_Emperium_Anvil, 989; // 989,華麗金屬鐵砧
 	set $@LV4_Illusion_Flower, 710; // 710,幻想花
-	end;		
+	end;
 }
 
 //---------------------------------------------------------------
@@ -47,63 +47,71 @@ OnInit:
 
 umbala,117,285,3	script	巴佐	85,{
 	set @NowWeight, MaxWeight - Weight;
-	if (@NowWeight >= 3000) goto LV4_NOT_OW;
-	mes "- 稍等下! -";
-	mes "- 當前你已經超重了. -";
-	mes "- 請減輕你的負重再來找我. -";
-	close;
-
-	
-LV4_NOT_OW:
-	if(lv4_weapon == 0) goto LV4_0;
-	if(lv4_weapon == 1) goto LV4_1;
-	if(lv4_weapon == 2) goto LV4_2;
-	if(lv4_weapon == 3) goto LV4_2;
-	if(lv4_weapon == 4) goto LV4_2;
-	if(lv4_weapon == 5) goto LV4_5;
-	if(lv4_weapon == 6) goto LV4_5;
-	if(lv4_weapon == 7) goto LV4_5;
-	if(lv4_weapon > 7) goto LV4_7;
-	end; // 不應該在這裡
-
-	
-LV4_0:
-	mes "[巴佐]";
-	mes "你好, 你從外面的世界來的, 哈?";
-	mes "我是從你的外貌看出來的.";
-	mes "很高興見到你. 我的名字是";
-	mes "巴佐 哈布瑞奇.";
-	mes "我也來自外面的世界.";
-	next;
-	mes "[巴佐]";
-	mes "我們一定曾經見到過.";
-	mes "如果你不介意, 讓我來跟你說說";
-	mes "這個地方.";
-	mes "汶巴拉與死者國家, 尼芙菲姆相";
-	mes "鄰.";
-	mes "實際上第一次來到這裡, 我就知";
-	mes "道了關於這個村落的一些事情.";
-	next;
-	mes "[巴佐]";
-	mes "由於地理上的特殊,";
-	mes "這個村落完全受到了來自死者國";
-	mes "家的某種邪惡力量的影響.";
-	next;
-	mes "[巴佐]";
-	mes "這裡的本地居民已經學會了製造";
-	mes "擁有邪惡力量的特製品.";
-	next;
-	mes "[巴佐]";
-	mes "在這裡停留的時間裡, 我也學會";
-	mes "了一些方法. 如果你帶給我適當";
-	mes "材料, 我會讓你看看我的能力.";
-	mes "聽起來怎麼樣?";
-	next;
-	
-	switch( select( "聽起來不錯.", "不, 謝謝." ) ) {
+	if (@NowWeight < 3000) {
+		mes "- 稍等下! -";
+		mes "- 當前你已經超重了. -";
+		mes "- 請減輕你的負重再來找我. -";
+		close;
+	}
+	switch (lv4_weapon) {
+	case 0:
+		mes "[巴佐]";
+		mes "你好, 你從外面的世界來的, 哈?";
+		mes "我是從你的外貌看出來的.";
+		mes "很高興見到你. 我的名字是";
+		mes "巴佐 哈布瑞奇.";
+		mes "我也來自外面的世界.";
+		next;
+		mes "[巴佐]";
+		mes "我們一定曾經見到過.";
+		mes "如果你不介意, 讓我來跟你說說";
+		mes "這個地方.";
+		mes "汶巴拉與死者國家, 尼芙菲姆相鄰.";
+		mes "實際上第一次來到這裡, 我就知";
+		mes "道了關於這個村落的一些事情.";
+		next;
+		mes "[巴佐]";
+		mes "由於地理上的特殊,";
+		mes "這個村落完全受到了來自死者國";
+		mes "家的某種邪惡力量的影響.";
+		next;
+		mes "[巴佐]";
+		mes "這裡的本地居民已經學會了製造";
+		mes "擁有邪惡力量的特製品.";
+		next;
+		mes "[巴佐]";
+		mes "在這裡停留的時間裡, 我也學會";
+		mes "了一些方法. 如果你帶給我適當";
+		mes "材料, 我會讓你看看我的能力.";
+		mes "聽起來怎麼樣?";
+		next;
+		switch( select( "聽起來不錯:不, 謝謝" ) ) {
 		case 1:
-			if(BaseLevel >= 70) goto L4_0_1;
-			
+			if(BaseLevel >= 70) {
+				mes "[巴佐]";
+				mes "非常棒! 讓我告訴你需要的材料.";
+				mes "我希望你能把他們記下來.";
+				mes "雖然數量並不是很多.";
+				next;
+				mes "[巴佐]";
+				mes "我需要10 塊黃金, 50 片鋼鐵和";
+				mes "10 塊華麗金屬作為基本材料...";
+				mes "還需要對特定物品施予特殊魔法.";
+				mes "所以, 我還需要一些稀有礦石...";
+				next;
+				mes "[巴佐]";
+				mes "請帶給我30 塊黃水晶, 或綠松";
+				mes "石或是瑪瑙.";
+				mes "你帶來的每一種礦石都會施予不";
+				mes "同的屬性, 我的製造物就會有不";
+				mes "同的特色.";
+				next;
+				mes "[巴佐]";
+				mes "祝你好運...";
+				mes "我會在這裡等你!";
+				set lv4_weapon, 1;
+				close;
+			}
 			mes "[巴佐]";
 			mes "呃... 我想你還沒有能力掌控我";
 			mes "的創造物.";
@@ -118,13 +126,19 @@ LV4_0:
 			mes "所以, 我希望你最好先提升你的";
 			mes "等級然後再回來.";
 			mes "等你你準備好後, 期待你再來.";
-			break;
-L4_0_1:
+			close;
+		case 2:
 			mes "[巴佐]";
-			mes "非常棒! 讓我告訴你需要的材料.";
-			mes "我希望你能把他們記下來.";
-			mes "雖然數量並不是很多.";
-			next;
+			mes "噢, 好吧. 反正對我無所謂.";
+			mes "順便說一句, 你不想知道死者國";
+			mes "家的邪惡力量是如何的嗎?";
+			mes "要知道, 自從那城市憑借那種力";
+			mes "量影響了很多村落後, 我才開始";
+			mes "自己製作物品的.";
+			close;
+		}
+	case 1:
+		if( countitem($@LV4_Gold) < 10 || countitem($@LV4_Steel) < 50 || countitem($@LV4_Emperium ) < 10) {
 			mes "[巴佐]";
 			mes "我需要10 塊黃金, 50 片鋼鐵和";
 			mes "10 塊華麗金屬作為基本材料...";
@@ -141,145 +155,96 @@ L4_0_1:
 			mes "[巴佐]";
 			mes "祝你好運...";
 			mes "我會在這裡等你!";
-			
-			set lv4_weapon, 1;
-			break;
-		case 2:
+			close;
+		}
+		mes "[巴佐]";
+		mes "噢... 你已經帶來了所有的基本";
+		mes "材料.";
+		mes "那麼我來檢查看看你帶來哪些稀";
+		mes "有礦石...";
+		next;
+		if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Turquoise) >= 30 && countitem($@LV4_Agate) >= 30) {
 			mes "[巴佐]";
-			mes "噢, 好吧. 反正對我無所謂.";
-			mes "順便說一句, 你不想知道死者國";
-			mes "家的邪惡力量是如何的嗎?";
-			mes "要知道, 自從那城市憑借那種力";
-			mes "量影響了很多村落後, 我才開始";
-			mes "自己製作物品的.";
-			break;			
-	}	
-	close;
-	
-
-
-//--------------------------------------------------
-// 黃金, 鋼鐵, 華麗金屬檢查 + 選擇魔法石
-//--------------------------------------------------
-LV4_1:
-	if(countitem($@LV4_Gold) < 10) goto LV4_1_FAIL;
-	if(countitem($@LV4_Steel) < 50) goto LV4_1_FAIL;
-	if(countitem($@LV4_Emperium) < 10) goto LV4_1_FAIL;
-
-	mes "[巴佐]";
-	mes "噢... 你已經帶來了所有的基本";
-	mes "材料.";
-	mes "那麼我來檢查看看你帶來哪些稀";
-	mes "有礦石...";
-	next;
-	
-	if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Turquoise) >= 30 && countitem($@LV4_Agate) >= 30) goto LV4_1_CTA;
-	if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Turquoise) >= 30) goto LV4_1_CT;
-	if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Agate) >= 30) goto LV4_1_CA;
-	if (countitem($@LV4_Turquoise) >= 30 && countitem($@LV4_Agate) >= 30) goto LV4_1_TA;
-	if (countitem($@LV4_Citrine) >= 30) goto LV4_1_C;
-	if (countitem($@LV4_Turquoise) >= 30) goto LV4_1_T;
-	if (countitem($@LV4_Agate) >= 30) goto LV4_1_A;
-	goto LV4_1_NOGEM;
-	end;
-
-
-LV4_1_CTA:	
-	mes "[巴佐]";
-	mes "哈哈哈, 我叫你隨便帶一種, 可";
-	mes "你都帶來啦.";
-	mes "你只可以使用其中一種.";
-	mes "哪種你更想使用?";
-	next;
-	
-	switch( select( "黃水晶", "綠松石", "瑪瑙" ) ) {
-		case 1:
-			mes "[巴佐]";
-			mes "黃水晶... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Citrine;
-			set @gemstring$,"黃水晶";
+			mes "哈哈哈, 我叫你隨便帶一種, 可";
+			mes "你都帶來啦.";
+			mes "你只可以使用其中一種.";
+			mes "哪種你更想使用?";
+			next;
+			switch( select( "黃水晶:綠松石:瑪瑙" ) ) {
+			case 1:
+				mes "[巴佐]";
+				mes "黃水晶... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Citrine;
+				set @gemstring$,"黃水晶";
+				break;
+			case 2:
+				mes "[巴佐]";
+				mes "綠松石... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Turquoise;
+				set @gemstring$,"綠松石";
+				break;
+			case 3:
+				mes "[巴佐]";
+				mes "瑪瑙.... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Agate;
+				set @gemstring$,"瑪瑙";
+			}
 			break;
-		case 2:
+		}
+		else if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Turquoise) >= 30) {
 			mes "[巴佐]";
-			mes "綠松石... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Turquoise;
-			set @gemstring$,"綠松石";
+			mes "哈哈哈, 我叫你隨便帶一種, 可";
+			mes "你帶來了兩種.";
+			mes "你只可以使用其中一種.";
+			mes "哪種你更想使用?";
+			next;
+			switch( select( "黃水晶:綠松石" ) ) {
+			case 1:
+				mes "[巴佐]";
+				mes "黃水晶... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Citrine;
+				set @gemstring$,"黃水晶";
+				break;
+			case 2:
+				mes "[巴佐]";
+				mes "綠松石... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Turquoise;
+				set @gemstring$,"綠松石";
+				break;
+			}
 			break;
-		case 3:
+		}
+		else if (countitem($@LV4_Citrine) >= 30 && countitem($@LV4_Agate) >= 30) {
 			mes "[巴佐]";
-			mes "瑪瑙.... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Agate;
-			set @gemstring$,"瑪瑙";
+			mes "哈哈哈, 我叫你隨便帶一種, 可";
+			mes "你帶來了兩種.";
+			mes "你只可以使用其中一種.";
+			mes "哪種你更想使用?";
+			next;
+			switch( select( "黃水晶:瑪瑙" ) ) {
+			case 1:
+				mes "[巴佐]";
+				mes "黃水晶... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Citrine;
+				set @gemstring$,"黃水晶";
+				break;
+			case 2:
+				mes "[巴佐]";
+				mes "瑪瑙.... 好吧. 在我們開始前,";
+				set @gem, $@LV4_Agate;
+				set @gemstring$,"瑪瑙";
+				break;
+			}
 			break;
-	}
-	
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-	
-LV4_1_CT:
-	mes "[巴佐]";
-	mes "哈哈哈, 我叫你隨便帶一種, 可";
-	mes "你帶來了兩種.";
-	mes "你只可以使用其中一種.";
-	mes "哪種你更想使用?";
-	next;
-	
-	switch( select( "黃水晶", "綠松石" ) ) {
-		case 1:
+		}
+		else if (countitem($@LV4_Turquoise) >= 30 && countitem($@LV4_Agate) >= 30) {
 			mes "[巴佐]";
-			mes "黃水晶... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Citrine;
-			set @gemstring$,"黃水晶";
-			break;
-		case 2:
-			mes "[巴佐]";
-			mes "綠松石... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Turquoise;
-			set @gemstring$,"綠松石";
-			break;
-	}
-	
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-
-LV4_1_CA:	
-	mes "[巴佐]";
-	mes "哈哈哈, 我叫你隨便帶一種, 可";
-	mes "你帶來了兩種.";
-	mes "你只可以使用其中一種.";
-	mes "哪種你更想使用?";
-	next;
-	
-	switch( select( "黃水晶", "瑪瑙" ) ) {
-		case 1:
-			mes "[巴佐]";
-			mes "黃水晶... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Citrine;
-			set @gemstring$,"黃水晶";
-			break;
-		case 2:
-			mes "[巴佐]";
-			mes "瑪瑙.... 好吧. 在我們開始前,";
-			set @gem, $@LV4_Agate;
-			set @gemstring$,"瑪瑙";
-			break;
-	}
-	
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-	
-LV4_1_TA:	
-	mes "[巴佐]";
-	mes "哈哈哈, 我叫你隨便帶一種, 可";
-	mes "你帶來了兩種.";
-	mes "你只可以使用其中一種.";
-	mes "哪種你更想使用?";
-	next;
-	
-	switch( select( "綠松石", "瑪瑙" ) ) {
+			mes "哈哈哈, 我叫你隨便帶一種, 可";
+			mes "你帶來了兩種.";
+			mes "你只可以使用其中一種.";
+			mes "哪種你更想使用?";
+			next;
+			switch( select( "綠松石:瑪瑙" ) ) {
 			case 1:
 				mes "[巴佐]";
 				mes "綠松石... 好吧. 在我們開始前,";
@@ -292,311 +257,237 @@ LV4_1_TA:
 				set @gem, $@LV4_Agate;
 				set @gemstring$,"瑪瑙";
 				break;
-	}
-	
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-	
-LV4_1_C:
-	mes "[巴佐]";
-	mes "黃水晶... 好吧. 在我們開始前,";
-	set @gem, $@LV4_Citrine;
-	set @gemstring$,"黃水晶";
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-		
-		
-LV4_1_T:
-	mes "[巴佐]";
-	mes "綠松石... 好吧. 在我們開始前,";
-	set @gem, $@LV4_Turquoise;
-	set @gemstring$,"綠松石";
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-	
-LV4_1_A:
-	mes "[巴佐]";
-	mes "瑪瑙.... 好吧. 在我們開始前,";
-	set @gem, $@LV4_Agate;
-	set @gemstring$,"瑪瑙";
-	goto LV4_1_PICK;
-	end; // 不應該在這裡
-	
-	
-LV4_1_PICK:
-	mes "我們要先做一件事.";
-	mes "那就是, 測測你的運氣.";
-	mes "就像你知道的, 我可不能保證我";
-	mes "可以立刻為你製造.";
-	next;
-	mes "[巴佐]";
-	mes "如果在開始前, 你能夠提升你的";
-	mes "運氣, 我們將會成功製造.";
-	next;
-	mes "[巴佐]";
-	mes "現在你一定好奇我們要做什麼來";
-	mes "提升你的運氣.";
-	mes "很簡單, 我們要玩讀心術的遊戲.";
-	mes "我現在想我最喜歡的4 種魔物中";
-	mes "的一種, 你來猜那魔物是什麼.";
-	next;
-	mes "[巴佐]";
-	mes "你至少要在5 次中答對1 次. 這";
-	mes "不怎麼難吧.";
-	mes "如果你回答失敗了, 我們得做點";
-	mes "什麼來驅趕的壞運氣了.";
-	next;
-	mes "[巴佐]";
-	mes "我會拿走10 顆你選的特別礦石.";
-	mes "好吧, 我明白這聽起來不怎麼誘";
-	mes "人, 但這是唯一的方法.";
-	mes "這比要花費30 顆礦石卻仍然制";
-	mes "作失敗要好的多吧, 是不是?";
-	next;
-	mes "[巴佐]";
-	mes "好, 現在我需要些時間準備...";
-	mes "稍等下再來找我!";
-	
-	if(countitem($@LV4_Gold) < 10) goto LV4_HACK;
-	if(countitem($@LV4_Steel) < 50) goto LV4_HACK;
-	if(countitem($@LV4_Emperium) < 10) goto LV4_HACK;
-	delitem $@LV4_Gold, 10;
-	delitem $@LV4_Steel, 50;
-	delitem $@LV4_Emperium, 10;
-	if(@gem == $@LV4_Citrine) set lv4_weapon, 2;
-	if(@gem == $@LV4_Turquoise) set lv4_weapon, 3;
-	if(@gem == $@LV4_Agate) set lv4_weapon, 4;	
-	close;
-
-
-LV4_1_NOGEM:
-	mes "[巴佐]";
-	mes "我記得我說過我需要你帶來30";
-	mes "塊特別的礦石, 黃水晶, 或綠松";
-	mes "石或是瑪瑙...";
-	mes "可我沒看到它們.";
-	mes "你一定是忘了. 接著去找它們吧.";
-	close;
-
-
-LV4_1_FAIL:
-	mes "[巴佐]";
-	mes "我需要10 塊黃金, 50 片鋼鐵和";
-	mes "10 塊華麗金屬作為基本材料...";
-	mes "還需要對特定物品施予特殊魔法.";
-	mes "所以, 我還需要一些稀有礦石...";
-	next;
-	mes "[巴佐]";
-	mes "請帶給我30 塊黃水晶, 或綠松";
-	mes "石或是瑪瑙.";
-	mes "你帶來的每一種礦石都會施予不";
-	mes "同的屬性, 我的製造物就會有不";
-	mes "同的特色.";
-	next;
-	mes "[巴佐]";
-	mes "祝你好運...";
-	mes "我會在這裡等你!";
-	close;
-
-
-
-//--------------------------------------------------
-// 猜猜看遊戲
-//--------------------------------------------------
-LV4_2:
-	if(lv4_weapon == 2) set @gem, $@LV4_Citrine;
-	if(lv4_weapon == 3) set @gem, $@LV4_Turquoise;
-	if(lv4_weapon == 4) set @gem, $@LV4_Agate;
-	if(countitem(@gem) < 30) goto LV4_2_NOGEM; 
-	
-	mes "[巴佐]";
-	mes "很好, 看來你準備好了.";
-	mes "那我們開始吧.";
-	mes "我最喜歡的魔物是波利, 蚯蚓,";
-	mes "人魚, 和米洛斯.";
-	next;
-
-	set @dap, 0;
-	set @correct[0],1;
-	for( set @i, 1; @i <= 5; set @i, @i + 1 ) {
-		mes "[巴佐]";
-		
-		if(@i == 1) mes "現在是第一次. 那麼猜猜在我心";
-		if(@i != 1) mes "那麼好吧. 現在接著猜猜在我心";
-		
-		mes "中所想的魔物是什麼.";
-		next;
-
-		set @mons, rand(1, 4);		
-
-		switch( select( "波利", "蚯蚓", "人魚", "米洛斯" ) ) {
-				case 1:
-					set @correct[@i], 1;
-					if(@mons == 1) set @dap, @dap + 1;
-					break;
-
-				case 2:
-					set @correct[@i], 2;
-					if(@mons == 2) set @dap, @dap + 1;
-					break;
-
-				case 3:
-					set @correct[@i], 3;
-					if(@mons == 3) set @dap, @dap + 1;
-					break;
-
-				case 4:
-					set @correct[@i], 4;
-					if(@mons == 4) set @dap, @dap + 1;
-					break;
+			}
+			break;
 		}
-	}
-
-	mes "[巴佐]";
-	mes "好吧, 讓我告訴你問題的答案.";
-	mes "我來看看你所猜的魔物列表.";
-	next;
-	mes "[巴佐]";
-
-	for( set @i, 1; @i <= 5; set @i, @i + 1 ) {
-		if(@correct[@i] == 1) mes "波利";
-		if(@correct[@i] == 2) mes "蚯蚓";
-		if(@correct[@i] == 3) mes "人魚";
-		if(@correct[@i] == 4) mes "米洛斯";
-	}
-
-	if(@dap < 1) goto LV4_2_FAIL;
-	
-	next;
-	mes "[巴佐]";
-	mes "你答對了" + @dap + " 次!";
-	mes "你真了不起!";
-	mes "就像我說的, 我會為你製造汶巴";
-	mes "拉的特別製造物.";
-	mes "請再給我點時間準備.";
-	mes "稍等下再來找我.";
-	
-	if(countitem(@gem) < 30) goto LV4_HACK;
-	delitem @gem, 30;
-	set lv4_weapon, lv4_weapon + 3;
-	close;
-	
-	
-LV4_2_FAIL:
-	if(countitem(@gem) < 10) goto LV4_HACK;
-	delitem @gem, 10;
-	
-	next;
-	mes "[巴佐]";
-	mes "呃... 我想你不擅長讀他人的思";
-	mes "想. 或者我猜你的運氣也夠壞.";
-	mes "我們不能繼續製造, 除非你能驅";
-	mes "趕你的壞運氣.";
-	mes "給我10 塊" + @gemstring$ + ", 然後繼續.";
-	next;
-	mes "[巴佐]";
-	mes "那麼... 如果你想要再進行一次";
-	mes "讀心術的遊戲, 請帶著材料再來.";
-	mes "我會在這裡等你.";
-	close;
-
-
-LV4_2_NOGEM:
-	mes "[巴佐]";
-	mes "呃... 什麼事情感覺不對. 缺少";
-	mes "點什麼東西...";
-	mes "你要不要檢查下你帶來的東西?";
-	close;
-	
-	
-	
-//--------------------------------------------------
-// 武器制造
-//--------------------------------------------------
-LV4_5:
-	mes "[巴佐]";
-	mes "很好... 現在, 來製造吧!";
-	mes "祝我好運... 啊, 我忘了告訴你";
-	mes "這個.";
-	mes "我不能告訴你製造物是什麼. 因";
-	mes "為是隨機的.";
-	mes "讓我們一塊期待好東西的誕生,";
-	mes "怎麼樣?";
-	next;
-	mes "- 你感覺到未知的力量開始集 -";
-	mes "- 中在材料上. 材料似乎正在 -";
-	mes "- 吸收空氣中所有的邪惡力量 -";
-	next;
-	mes "- 隨後, 材料開始融合到一塊 -";
-	mes "- 而巴佐卻根本沒有碰到它們 -";
-	next;
-	mes "[巴佐]";
-	mes "你能感覺到嗎? 材料正在根據它";
-	mes "們的能力收集力量.";
-	mes "它們現在不受我控制. 來等待結";
-	mes "果吧.";
-	next;
-	mes "- 過了一會兒, 空氣寧靜下來 -";
-	mes "- 然後你們看到了最後的結果 -";
-	next;
-	mes "[巴佐]";
-	mes "喔喔喔喔! 完成了!";
-	mes "我們成功了! 啊, 太棒了!";
-	mes "我告訴過你這個是很稀有的嗎?";
-	mes "哈, 上帝一定聽到了我們的祈禱.";
-	mes "噢, 這件武器! 一定會對你非常";
-	mes "有用.";
-	mes "讓我們看看...";
-	next;
-
-	mes "[巴佐]";
-
-	switch( lv4_weapon ) {
+		else if (countitem($@LV4_Citrine) >= 30) {
+			mes "[巴佐]";
+			mes "黃水晶... 好吧. 在我們開始前,";
+			set @gem, $@LV4_Citrine;
+			set @gemstring$,"黃水晶";
+			break;
+		}
+		else if (countitem($@LV4_Turquoise) >= 30) {
+			mes "[巴佐]";
+			mes "綠松石... 好吧. 在我們開始前,";
+			set @gem, $@LV4_Turquoise;
+			set @gemstring$,"綠松石";
+			break;
+		}
+		else if (countitem($@LV4_Agate) >= 30) {
+			mes "[巴佐]";
+			mes "瑪瑙.... 好吧. 在我們開始前,";
+			set @gem, $@LV4_Agate;
+			set @gemstring$,"瑪瑙";
+			break;
+		}
+		else {
+			mes "[巴佐]";
+			mes "我記得我說過我需要你帶來30";
+			mes "塊特別的礦石, 黃水晶, ";
+			mes "或綠松石或是瑪瑙...";
+			mes "可我沒看到它們.";
+			mes "你一定是忘了. 接著去找它們吧.";
+			close;
+		}
+		mes "我們要先做一件事.";
+		mes "那就是, 測測你的運氣.";
+		mes "就像你知道的, 我可不能保證我";
+		mes "可以立刻為你製造.";
+		next;
+		mes "[巴佐]";
+		mes "如果在開始前, 你能夠提升你的";
+		mes "運氣, 我們將會成功製造.";
+		next;
+		mes "[巴佐]";
+		mes "現在你一定好奇我們要做什麼來";
+		mes "提升你的運氣.";
+		mes "很簡單, 我們要玩讀心術的遊戲.";
+		mes "我現在想我最喜歡的4 種魔物中";
+		mes "的一種, 你來猜那魔物是什麼.";
+		next;
+		mes "[巴佐]";
+		mes "你至少要在5 次中答對1 次. 這";
+		mes "不怎麼難吧.";
+		mes "如果你回答失敗了, 我們得做點";
+		mes "什麼來驅趕的壞運氣了.";
+		next;
+		mes "[巴佐]";
+		mes "我會拿走10 顆你選的特別礦石.";
+		mes "好吧, 我明白這聽起來不怎麼誘";
+		mes "人, 但這是唯一的方法.";
+		mes "這比要花費30 顆礦石卻仍然制";
+		mes "作失敗要好的多吧, 是不是?";
+		next;
+		mes "[巴佐]";
+		mes "好, 現在我需要些時間準備...";
+		mes "稍等下再來找我!";
+		if(countitem($@LV4_Gold) < 10 || countitem($@LV4_Steel) < 50 || countitem($@LV4_Emperium) < 10) goto LV4_HACK;
+		delitem $@LV4_Gold, 10;
+		delitem $@LV4_Steel, 50;
+		delitem $@LV4_Emperium, 10;
+		if(@gem == $@LV4_Citrine) set lv4_weapon, 2;
+		if(@gem == $@LV4_Turquoise) set lv4_weapon, 3;
+		if(@gem == $@LV4_Agate) set lv4_weapon, 4;
+		close;
+	case 2:
+	case 3:
+	case 4:
+		if(lv4_weapon == 2) set @gem, $@LV4_Citrine;
+		if(lv4_weapon == 3) set @gem, $@LV4_Turquoise;
+		if(lv4_weapon == 4) set @gem, $@LV4_Agate;
+		if(countitem(@gem) < 30) {
+			mes "[巴佐]";
+			mes "呃... 什麼事情感覺不對. 缺少";
+			mes "點什麼東西...";
+			mes "你要不要檢查下你帶來的東西?";
+			close;
+		}
+		mes "[巴佐]";
+		mes "很好, 看來你準備好了.";
+		mes "那我們開始吧.";
+		mes "我最喜歡的魔物是波利, 蚯蚓,";
+		mes "人魚, 和米洛斯.";
+		next;
+		set @dap, 0;
+		set @correct[0],1;
+		for( set @i, 1; @i <= 5; set @i, @i + 1 ) {
+			mes "[巴佐]";
+			if(@i == 1) mes "現在是第一次. 那麼猜猜在我心";
+			if(@i != 1) mes "那麼好吧. 現在接著猜猜在我心";
+			mes "中所想的魔物是什麼.";
+			next;
+			set @mons,rand(1,4);
+			switch( select( "波利:蚯蚓:人魚:米洛斯" ) ) {
+			case 1:
+				set @correct[@i], 1;
+				if(@mons == 1) set @dap, @dap + 1;
+				break;
+			case 2:
+				set @correct[@i], 2;
+				if(@mons == 2) set @dap, @dap + 1;
+				break;
+			case 3:
+				set @correct[@i], 3;
+				if(@mons == 3) set @dap, @dap + 1;
+				break;
+			case 4:
+				set @correct[@i], 4;
+				if(@mons == 4) set @dap, @dap + 1;
+				break;
+			}
+		}
+		mes "[巴佐]";
+		mes "好吧, 讓我告訴你問題的答案.";
+		mes "我來看看你所猜的魔物列表.";
+		next;
+		mes "[巴佐]";
+		for( set @i, 1; @i <= 5; set @i, @i + 1 ) {
+			if(@correct[@i] == 1) mes "波利";
+			if(@correct[@i] == 2) mes "蚯蚓";
+			if(@correct[@i] == 3) mes "人魚";
+			if(@correct[@i] == 4) mes "米洛斯";
+		}
+		if(@dap < 1) {
+			if(countitem(@gem) < 10) goto LV4_HACK;
+			delitem @gem, 10;
+			next;
+			mes "[巴佐]";
+			mes "呃... 我想你不擅長讀他人的思";
+			mes "想. 或者我猜你的運氣也夠壞.";
+			mes "我們不能繼續製造, 除非你能驅";
+			mes "趕你的壞運氣.";
+			mes "給我10 塊" + @gemstring$ + ", 然後繼續.";
+			next;
+			mes "[巴佐]";
+			mes "那麼... 如果你想要再進行一次";
+			mes "讀心術的遊戲, 請帶著材料再來.";
+			mes "我會在這裡等你.";
+			close;
+		}
+		next;
+		mes "[巴佐]";
+		mes "你答對了" + @dap + " 次!";
+		mes "你真了不起!";
+		mes "就像我說的, 我會為你製造";
+		mes "汶巴拉的特別產物.";
+		mes "請再給我點時間準備.";
+		mes "等一下再來找我";
+		if(countitem(@gem) < 30) goto LV4_HACK;
+		delitem @gem, 30;
+		set lv4_weapon, lv4_weapon + 3;
+		close;
+	case 5:
+	case 6:
+	case 7:
+		mes "[巴佐]";
+		mes "很好... 現在, 來製造吧!";
+		mes "祝我好運... 啊, 我忘了告訴你";
+		mes "這個.";
+		mes "我不能告訴你製造物是什麼. 因";
+		mes "為是隨機的.";
+		mes "讓我們一塊期待好東西的誕生,";
+		mes "怎麼樣?";
+		next;
+		mes "- 你感覺到未知的力量開始集 -";
+		mes "- 中在材料上. 材料似乎正在 -";
+		mes "- 吸收空氣中所有的邪惡力量 -";
+		next;
+		mes "- 隨後, 材料開始融合到一塊 -";
+		mes "- 而巴佐卻根本沒有碰到它們 -";
+		next;
+		mes "[巴佐]";
+		mes "你能感覺到嗎? 材料正在根據它";
+		mes "們的能力收集力量.";
+		mes "它們現在不受我控制. 來等待結";
+		mes "果吧.";
+		next;
+		mes "- 過了一會兒, 空氣寧靜下來 -";
+		mes "- 然後你們看到了最後的結果 -";
+		next;
+		mes "[巴佐]";
+		mes "喔喔喔喔! 完成了!";
+		mes "我們成功了! 啊, 太棒了!";
+		mes "我告訴過你這個是很稀有的嗎?";
+		mes "哈, 上帝一定聽到了我們的祈禱.";
+		mes "噢, 這件武器! 一定會對你非常";
+		mes "有用.";
+		mes "讓我們看看...";
+		next;
+		mes "[巴佐]";
+		switch( lv4_weapon ) {
 		case 5:
 			mes "是聖劍 渾沌!";
-			getitem 1141, 1; // 1141,聖劍 渾沌
+			getitem 1141, 1; //1141,聖劍 渾沌
 			break;
 		case 6:
 			mes "是魔錘 安魂曲!";
-			getitem 1526, 1; // 1526,魔錘 安魂曲
+			getitem 1526, 1; //1526,魔錘 安魂曲
 			break;
 		case 7:
 			mes "是秘錘 冷月!";
-			getitem 1527, 1; // 1527,秘錘 冷月
+			getitem 1527, 1; //1527,秘錘 冷月
 			break;
+		}
+		set lv4_weapon, 0;
+		mes "這武器是你的了!";
+		mes "恭喜你, 希望你能好好利用它.";
+		next;
+		mes "[巴佐]";
+		mes "我感覺如此滿足. 如果你想製作";
+		mes "其它的東西, 有空再來找我.";
+		mes "旅行愉快!";
+		close;
+	default:
+		mes "[巴佐]";
+		mes "嗯... 我感覺到你有一些奇怪.";
+		mes "我很遺憾的告訴你我不能幫你做";
+		mes "什麼.";
+		mes "希望你旅途安全.";
+		close;
 	}
 
-	set lv4_weapon, 0;
-	mes "這武器是你的了!";
-	mes "恭喜你, 希望你能好好利用它.";
-	next;
-
-	mes "[巴佐]";
-	mes "我感覺如此滿足. 如果你想製作";
-	mes "其它的東西, 有空再來找我.";
-	mes "旅行愉快!";
-	close;
-
-
-
-//--------------------------------------------------
-// 其它任務
-//--------------------------------------------------
-LV4_7:
-	mes "[巴佐]";
-	mes "嗯... 我感覺到你有一些奇怪.";
-	mes "我很遺憾的告訴你我不能幫你做";
-	mes "什麼.";
-	mes "希望你旅途安全.";
-	close;
-	
-	
-	
-//--------------------------------------------------
 // 篡改企圖
-//--------------------------------------------------
 LV4_HACK:
 	mes "[巴佐]";
 	mes "嗯. 似乎有點什麼小問題.";
@@ -608,18 +499,22 @@ LV4_HACK:
 //---------------------------------------------------------------
 // 希必拉伊坦, 製作破甲短劍, 削刃短劍和斯勒特斧
 //---------------------------------------------------------------
-
 umbala,163,257,3	script	希必拉伊坦	785,{
-	if(event_umbala < 3) goto LumWord;
+	if(event_umbala < 3) {
+		mes "[希必拉伊坦]";
+		mes "汶巴! 汶巴巴...汶汶! 巴汶巴!";
+		mes "汶汶汶巴巴巴汶汶巴巴汶巴!";
+		mes "汶巴汶巴汶巴汶巴汶哈!";
+		mes "汶汶汶汶汶巴巴巴巴巴巴!";
+		close;
+	}
 	set @NowWeight, MaxWeight - Weight;
-	if (@NowWeight >= 3000) goto LV4_NOT_OW;
-	mes "- 稍等下! -";
-	mes "- 當前你已經超重了. -";
-	mes "- 請減輕你的負重再來找我. -";
-	close;
-
-	
-LV4_NOT_OW:
+	if (@NowWeight < 3000) {
+		mes "- 稍等下! -";
+		mes "- 當前你已經超重了. -";
+		mes "- 請減輕你的負重再來找我. -";
+		close;
+	}
 	if(lv4_weapon == 0) goto LV4_0;
 	if(lv4_weapon == 8) goto LV4_8;
 	if(lv4_weapon == 9) goto LV4_9;
@@ -629,19 +524,8 @@ LV4_NOT_OW:
 	if(lv4_weapon == 13) goto LV4_12;
 	if(lv4_weapon == 14) goto LV4_12;
 	if(lv4_weapon < 8) goto LV4_7;
-	if(lv4_weapon > 14) goto LV4_7;	
-	end; // 不應該在這裡
-	
-
-LumWord:
-		mes "[希必拉伊坦]";
-		mes "汶巴! 汶巴巴...汶汶! 巴汶巴!";
-		mes "汶汶汶巴巴巴汶汶巴巴汶巴!";
-		mes "汶巴汶巴汶巴汶巴汶哈!";
-		mes "汶汶汶汶汶巴巴巴巴巴巴!";
-	close;
-
-	
+	if(lv4_weapon > 14) goto LV4_7;
+	end;
 LV4_0:
 	mes "[希必拉伊坦]";
 	mes "哈哈, 是啊, 我就知道這一天一";
@@ -661,19 +545,17 @@ LV4_0:
 	mes "時下說實話, 人太膽怯!";
 	mes "誠實點告訴我你想還是不想.";
 	next;
-	
-	switch( select( "... 當然.", "... 抱歉, 我真不需要!" ) ) {
-		case 1:
-			if(BaseLevel >= 70) goto L4_0_1;
-			
-			mes "[希必拉伊坦]";
-			mes "... 真可惜! 很遺憾的告訴你,";
-			mes "由於你的靈魂太脆弱而不能掌控";
-			mes "我的創造物的能量!";
-			mes "不妙啊, 一點都不妙!";
-			mes "先去鍛煉你自己吧.";
-			mes "當你強壯的時候, 再回來!";
-			break;
+	switch( select( "... 當然.:... 抱歉, 我真不需要!" ) ) {
+	case 1:
+		if(BaseLevel >= 70) goto L4_0_1;
+		mes "[希必拉伊坦]";
+		mes "... 真可惜! 很遺憾的告訴你,";
+		mes "由於你的靈魂太脆弱而不能掌控";
+		mes "我的創造物的能量!";
+		mes "不妙啊, 一點都不妙!";
+		mes "先去鍛煉你自己吧.";
+		mes "當你強壯的時候, 再回來!";
+		break;
 L4_0_1:
 			mes "[希必拉伊坦]";
 			mes "很好! 我喜歡你的態度! 不錯,";
@@ -697,7 +579,6 @@ L4_0_1:
 			mes "[希必拉伊坦]";
 			mes "好吧, 祝你幸運!";
 			mes "我會在這裡等你的.";
-			
 			set lv4_weapon, 8;
 			break;
 		case 2:
@@ -707,11 +588,9 @@ L4_0_1:
 			mes "好吧, 你說了算.";
 			mes "但是如果你改變了心意, 隨時回";
 			mes "來找我.";
-			break;			
-	}	
+			break;
+	}
 	close;
-	
-
 
 //--------------------------------------------------
 // 黃金, 鋼鐵, 華麗金屬檢查 + 選擇魔法石
@@ -747,7 +626,7 @@ LV4_8_MBP:
 	mes "選一種你想使用的吧.";
 	next;
 			
-	switch( select( "白雲母", "黑雲母", "輝石" ) ) {
+	switch( select( "白雲母:黑雲母:輝石" ) ) {
 		case 1:
 			mes "[希必拉伊坦]";
 			mes "白雲母... 好吧. 在我們開始前,";
@@ -769,7 +648,7 @@ LV4_8_MBP:
 	}
 	
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_8_MB:
@@ -780,7 +659,7 @@ LV4_8_MB:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "白雲母", "黑雲母" ) ) {
+	switch( select( "白雲母:黑雲母" ) ) {
 		case 1:
 			mes "[希必拉伊坦]";
 			mes "白雲母... 好吧. 在我們開始前,";
@@ -796,7 +675,7 @@ LV4_8_MB:
 	}
 	
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 
 LV4_8_MP:	
@@ -807,7 +686,7 @@ LV4_8_MP:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "白雲母", "輝石" ) ) {
+	switch( select( "白雲母:輝石" ) ) {
 		case 1:
 			mes "[希必拉伊坦]";
 			mes "白雲母... 好吧. 在我們開始前,";
@@ -823,7 +702,7 @@ LV4_8_MP:
 	}
 	
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_8_BP:	
@@ -834,7 +713,7 @@ LV4_8_BP:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "黑雲母", "輝石" ) ) {
+	switch( select( "黑雲母:輝石" ) ) {
 			case 1:
 				mes "[希必拉伊坦]";
 				mes "黑雲母... 好吧. 在我們開始前,";
@@ -850,7 +729,7 @@ LV4_8_BP:
 	}
 	
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_8_M:
@@ -859,7 +738,7 @@ LV4_8_M:
 	set @gem, $@LV4_Muscovite;
 	set @gemstring$,"白雲母";
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 		
 		
 LV4_8_B:
@@ -868,7 +747,7 @@ LV4_8_B:
 	set @gem, $@LV4_Biotite;
 	set @gemstring$,"黑雲母";
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_8_P:
@@ -877,7 +756,7 @@ LV4_8_P:
 	set @gem, $@LV4_Pyroxene;
 	set @gemstring$,"輝石";
 	goto LV4_8_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_8_PICK:
@@ -992,7 +871,7 @@ LV4_9:
 
 		set @mons, rand(1, 4);		
 
-		switch( select( "艾斯恩魔女", "愛麗瑟", "僵屍", "蛇女伊絲" ) ) {
+		switch( select( "艾斯恩魔女:愛麗瑟:僵屍:蛇女伊絲" ) ) {
 				case 1:
 					set @correct[@i], 1;
 					if(@mons == 1) set @dap, @dap + 1;
@@ -1192,7 +1071,7 @@ LV4_NOT_OW:
 	if(lv4_weapon == 21) goto LV4_19;
 	if(lv4_weapon < 15) goto LV4_14;
 	if(lv4_weapon > 21) goto LV4_14;	
-	end; // 不應該在這裡
+	end;
 	
 
 LumWord:
@@ -1239,7 +1118,7 @@ LV4_0:
 	mes "材料, 我非常樂意展示我餓才能.";
 	next;
 	
-	switch( select( "好啊.", "不, 謝謝." ) ) {
+	switch( select( "好啊.:不, 謝謝." ) ) {
 		case 1:
 			if(BaseLevel >= 70) goto L4_0_1;
 			
@@ -1334,7 +1213,7 @@ LV4_15_POR:
 	mes "選一種這次你想使用的.";
 	next;
 			
-	switch( select( "金雲母", "橄欖石", "玫瑰石英" ) ) {
+	switch( select( "金雲母:橄欖石:玫瑰石英" ) ) {
 		case 1:
 			mes "[鐵波茲坦]";
 			mes "金雲母... 好吧. 在我們開始前,";
@@ -1356,7 +1235,7 @@ LV4_15_POR:
 	}
 	
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_15_PO:
@@ -1367,7 +1246,7 @@ LV4_15_PO:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "金雲母", "橄欖石" ) ) {
+	switch( select( "金雲母:橄欖石" ) ) {
 		case 1:
 			mes "[鐵波茲坦]";
 			mes "金雲母... 好吧. 在我們開始前,";
@@ -1383,7 +1262,7 @@ LV4_15_PO:
 	}
 	
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 
 LV4_15_PR:	
@@ -1394,7 +1273,7 @@ LV4_15_PR:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "金雲母", "玫瑰石英" ) ) {
+	switch( select( "金雲母:玫瑰石英" ) ) {
 		case 1:
 			mes "[鐵波茲坦]";
 			mes "金雲母... 好吧. 在我們開始前,";
@@ -1410,7 +1289,7 @@ LV4_15_PR:
 	}
 	
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_15_OR:	
@@ -1421,7 +1300,7 @@ LV4_15_OR:
 	mes "哪種你更想使用?";
 	next;
 	
-	switch( select( "橄欖石", "玫瑰石英" ) ) {
+	switch( select( "橄欖石:玫瑰石英" ) ) {
 			case 1:
 				mes "[鐵波茲坦]";
 				mes "橄欖石... 好吧. 在我們開始前,";
@@ -1437,7 +1316,7 @@ LV4_15_OR:
 	}
 	
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_15_P:
@@ -1446,7 +1325,7 @@ LV4_15_P:
 	set @gem, $@LV4_Phlogopite;
 	set @gemstring$,"金雲母";
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 		
 		
 LV4_15_O:
@@ -1455,7 +1334,7 @@ LV4_15_O:
 	set @gem, $@LV4_Olivine;
 	set @gemstring$,"橄欖石";
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_15_R:
@@ -1464,7 +1343,7 @@ LV4_15_R:
 	set @gem, $@LV4_Rose_Quartz;
 	set @gemstring$,"玫瑰石英";
 	goto LV4_15_PICK;
-	end; // 不應該在這裡
+	end;
 	
 	
 LV4_15_PICK:
@@ -1571,10 +1450,8 @@ LV4_16:
 		
 		mes "現在, 猜猜我現在想得是哪一個.";
 		next;
-
-		set @mons, rand(1, 4);		
-
-		switch( select( "巴風特", "黑暗領主", "血腥騎士", "冰暴騎士" ) ) {
+		set @mons, rand(1, 4);
+		switch( select( "巴風特:黑暗領主:血腥騎士:冰暴騎士" ) ) {
 				case 1:
 					set @correct[@i], 1;
 					if(@mons == 1) set @dap, @dap + 1;
@@ -2072,7 +1949,7 @@ LV4_LEVEL_PASS:
 	if(lv4_weapon == 29) goto LV4_29;
 	if(lv4_weapon == 30) goto LV4_30;
 	if(lv4_weapon > 30) goto LV4_31;
-	end; // 不應該在這裡
+	end;
 
 
 LV4_0:
@@ -2094,7 +1971,7 @@ LV4_22:
 	close;
 	
 LV4_0_ASK:
-	switch( select( "Show interest.", "Ignore him." ) ) {
+	switch( select( "Show interest.:Ignore him." ) ) {
 		case 1:
 			mes "[Kayron]";
 			mes "Ah...I cannot remember what I was going to say...";
@@ -2288,7 +2165,7 @@ LV4_28:
 		if(@i == 3) mes "This will be the last one!";
 		if(@i == 3) mes "Let's compare after this.";
 		set @npchand[@i], rand(1, 3);
-		switch( select( "Scissors", "Rock", "Paper" ) ) {
+		switch( select( "Scissors:Rock:Paper" ) ) {
 			case 1:
 				set @myhand[@i], 1;
 				if(@npchand[@i] == 3) set @shobu, @shobu + 1;
@@ -2479,7 +2356,7 @@ LV4_LEVEL_PASS:
 	if(lv4_weapon == 38) goto LV4_38;
 	if(lv4_weapon == 39) goto LV4_39;
 	if(lv4_weapon > 39) goto LV4_40;
-	end; // 不應該在這裡
+	end;
 
 
 LV4_0:
@@ -2501,7 +2378,7 @@ LV4_31:
 	close;
 	
 LV4_0_ASK:
-	switch( select( "Show interest.", "Igonore him." ) ) {
+	switch( select( "Show interest.:Igonore him." ) ) {
 		case 1:
 			mes "[Reyghema]";
 			mes "Ah...I cannot remember what I was going to say...";
@@ -2683,7 +2560,7 @@ LV4_37:
 		if(@i == 3) mes "This will be the last one!";
 		if(@i == 3) mes "Let's compare after this.";
 		set @npchand[@i], rand(1, 3);
-		switch( select( "Scissors", "Rock", "Paper" ) ) {
+		switch( select( "Scissors:Rock:Paper" ) ) {
 			case 1:
 				set @myhand[@i], 1;
 				if(@npchand[@i] == 3) set @shobu, @shobu + 1;
@@ -2878,7 +2755,7 @@ LV4_LEVEL_PASS:
 	if(lv4_weapon == 47) goto LV4_47;
 	if(lv4_weapon == 48) goto LV4_48;
 	if(lv4_weapon > 48) goto LV4_49;
-	end; // 不應該在這裡
+	end;
 
 
 LV4_0:
@@ -2903,7 +2780,7 @@ LV4_40:
 	close;
 	
 LV4_0_ASK:
-	switch( select( "Show interest.", "Igonore him." ) ) {
+	switch( select( "Show interest.:Igonore him." ) ) {
 		case 1:
 			mes "[Hein]";
 			mes "Why did I speak of money?";
@@ -3091,7 +2968,7 @@ LV4_46:
 		if(@i == 3) mes "This will be the last one!";
 		if(@i == 3) mes "Let's compare after this.";
 		set @npchand[@i], rand(1, 3);
-		switch( select( "Scissors", "Rock", "Paper" ) ) {
+		switch( select( "Scissors:Rock:Paper" ) ) {
 			case 1:
 				set @myhand[@i], 1;
 				if(@npchand[@i] == 3) set @shobu, @shobu + 1;
@@ -3281,7 +3158,7 @@ LV4_LEVEL_PASS:
 	if(lv4_weapon == 56) goto LV4_56;
 	if(lv4_weapon == 57) goto LV4_57;
 	if(lv4_weapon > 57) goto LV4_58;
-	end; // 不應該在這裡
+	end;
 
 
 LV4_0:
@@ -3307,7 +3184,7 @@ LV4_49:
 	close;
 	
 LV4_0_ASK:
-	switch( select( "Show interest.", "Igonore him." ) ) {
+	switch( select( "Show interest.:Igonore him." ) ) {
 		case 1:
 			mes "[Waltboughst]";
 			mes "...what did he say afterwards?";
@@ -3479,7 +3356,7 @@ LV4_55:
 		if(@i == 3) mes "This will be the last one!";
 		if(@i == 3) mes "Let's compare after this.";
 		set @npchand[@i], rand(1, 3);
-		switch( select( "Scissors", "Rock", "Paper" ) ) {
+		switch( select( "Scissors:Rock:Paper" ) ) {
 			case 1:
 				set @myhand[@i], 1;
 				if(@npchand[@i] == 3) set @shobu, @shobu + 1;
