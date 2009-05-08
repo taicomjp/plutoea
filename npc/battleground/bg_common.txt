@@ -1,20 +1,17 @@
 // ==============================================================================
-// 戰場系統 - 指令 NPCs
+// 戰場系統 - 常設NPC
 // ==============================================================================
 
-// MapFlags
+// 地圖設定
 // *********************************************************************
-
 bat_room	mapflag	nomemo
 bat_room	mapflag	nowarpto
 bat_room	mapflag	nobranch
 bat_room	mapflag	nopenalty
 bat_room	mapflag	noteleport
-//bat_room	mapflag	nosave	SavePoint
 
-// 戰場傳送人員 - 進入
+// 募兵官 - 進入到戰場準備室
 // *********************************************************************
-
 payon,189,104,3	script	馬樂戰場 募兵官::BatRecruit	728,{
 	mes "[馬樂戰場 募兵官]";
 	mes "你好冒險家，";
@@ -24,8 +21,7 @@ payon,189,104,3	script	馬樂戰場 募兵官::BatRecruit	728,{
 	mes "由於兩位王子因馬樂的王位繼承問題而需要展開戰鬥，所以我們正在募集像你這樣經驗豐富的傭兵，";
 	mes "你願不願意助我們馬樂一臂之力呢?";
 	next;
-	if( select("參戰:不參戰") == 2 )
-	{
+	if( select("參戰:不參戰") == 2 ) {
 		mes "[馬樂戰場 募兵官]";
 		mes "我會隨時在這裡為各位服務，等改變心意時再來吧";
 		close;
@@ -36,22 +32,19 @@ payon,189,104,3	script	馬樂戰場 募兵官::BatRecruit	728,{
 	warp "bat_room",155,150;
 	end;
 }
-
 prontera,123,83,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit2	728
 rachel,149,138,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit3	728
 moc_ruins,75,162,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit4	728
 aldebaran,146,109,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit5	728
 lighthalzen,153,86,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit6	728
 
-// 戰場傳送人員 - 離開
+// 空間移動師 - 離開戰場準備室
 // *********************************************************************
-
 bat_room,148,150,4	script	空間移動師#戰場	124,{
 	mes "[空間移動師]";
 	mes "你想離開這裡嗎? 我可以把你送回先前停留過的地方喔";
 	next;
-	if( select("返回村落:不回去") == 2 )
-	{
+	if( select("返回村落:不回去") == 2 ) {
 		mes "[空間移動師]";
 		mes "需要服務時歡迎隨時來找我";
 		close;
@@ -60,10 +53,10 @@ bat_room,148,150,4	script	空間移動師#戰場	124,{
 	if (.@spoint$ == "prontera") set .@sname$,"普隆德拉";
 	if (.@spoint$ == "morocc") set .@sname$,"夢羅克";
 	if (.@spoint$ == "geffen") set .@sname$,"吉芬";
-	if (.@spoint$ == "payon" || .@spoint$ == "paion") set .@sname$,"斐揚";
+	if (.@spoint$ == "payon") set .@sname$,"斐揚";
 	if (.@spoint$ == "alberta") set .@sname$,"艾爾貝塔";
-	if (.@spoint$ == "izlude" || .@spoint$ == "islude") set .@sname$,"伊斯魯得島";
-	if (.@spoint$ == "aldebaran" || .@spoint$ == "al") set .@sname$,"艾爾帕蘭";
+	if (.@spoint$ == "izlude") set .@sname$,"伊斯魯得島";
+	if (.@spoint$ == "aldebaran") set .@sname$,"艾爾帕蘭";
 	if (.@spoint$ == "lutie" || .@spoint$ == "christmas" || .@spoint$ == "xmas" || .@spoint$ == "x-mas") set .@sname$,"薑餅城";
 	if (.@spoint$ == "comodo") set .@sname$,"克魔島";
 	if (.@spoint$ == "yuno") set .@sname$,"朱諾";
@@ -72,11 +65,11 @@ bat_room,148,150,4	script	空間移動師#戰場	124,{
 	if (.@spoint$ == "umbala") set .@sname$,"汶巴拉";
 	if (.@spoint$ == "niflheim") set .@sname$,"尼芙菲姆";
 	if (.@spoint$ == "louyang") set .@sname$,"洛陽";
-	if (.@spoint$ == "new_1-1" || .@spoint$ == "startpoint" || .@spoint$ == "begining") set .@sname$,"初學者 修練場";
+	if (.@spoint$ == "new_1-1" ) set .@sname$,"初學者 修練場";
 	if (.@spoint$ == "sec_pri" || .@spoint$ == "prison" || .@spoint$ == "jails") set .@sname$,"反省的房間";
-	if (.@spoint$ == "jawaii" || .@spoint$ == "jawai") set .@sname$,"爪哇咿";
-	if (.@spoint$ == "ayothaya" || .@spoint$ == "ayotaya") set .@sname$,"哎喲雅泰";
-	if (.@spoint$ == "einbroch" || .@spoint$ == "ainbroch") set .@sname$,"艾音布羅克";
+	if (.@spoint$ == "jawaii") set .@sname$,"爪哇咿";
+	if (.@spoint$ == "ayothaya") set .@sname$,"哎喲雅泰";
+	if (.@spoint$ == "einbroch") set .@sname$,"艾音布羅克";
 	if (.@spoint$ == "lighthalzen") set .@sname$,"里希塔樂鎮";
 	if (.@spoint$ == "einbech") set .@sname$,"艾音貝赫";
 	if (.@spoint$ == "hugel") set .@sname$,"毀葛";
@@ -101,80 +94,71 @@ bat_room,148,147,4	script	卡普拉 職員::kaf_bat	861,{
 	mes "請問需要什麼服務呢?";
 	next;
 	switch(select("使用倉庫服務:使用手推車服務:結束")) {
-		case 1:
-			if (basicskillcheck() && getskilllv(1) < 6) {
+	case 1:
+		if (basicskillcheck() && getskilllv(1) < 6) {
+			mes "[卡普拉 職員]";
+			mes "抱歉客官，";
+			mes "若要使用倉庫的話，初學者技能等級要超過6以上";
+		}
+		else {
+			if (Zeny < 800) {
 				mes "[卡普拉 職員]";
-				mes "抱歉客官，";
-				mes "若要使用倉庫的話，初學者技能等級要超過6以上";
+				mes "客官您支付的金幣不足，";
+				mes "倉庫使用費是40金幣";
 				close2;
-				cutin "", 255;
+				cutin "",255;
 				end;
 			}
-			else {
+			mes "[卡普拉 職員]";
+			mes "我要準備打開倉庫了，";
+			mes "謝謝惠顧";
+			close2;
+			set zeny,zeny-40;
+			openstorage;
+			cutin "", 255;
+			end;
+		}
+		break;
+	case 2:
+		if (BaseClass != Job_Merchant) {
+			mes "[卡普拉 職員]";
+			mes "很抱歉，";
+			mes "手推車是商人與鐵匠的專屬服務.";
+		}
+		else if (checkcart() == 1) {
+			mes "[卡普拉 職員]";
+			mes "你正在使用著手推車";
+		}
+		else {
+			mes "[卡普拉 職員]";
+			mes "手推車的使用費用是800金幣，";
+			mes "請問你要使用嗎?";
+			next;
+			switch(select("使用:取消")) {
+			case 1:
 				if (Zeny < 800) {
 					mes "[卡普拉 職員]";
 					mes "客官您支付的金幣不足，";
-					mes "倉庫使用費是40金幣";
-					close2;
-					cutin "",255;
-					end;
+					mes "手推車的使用費是800金幣，";
+					break;
 				}
-				mes "[卡普拉 職員]";
-				mes "我要準備打開倉庫了，";
-				mes "謝謝惠顧";
-				close2;
-				set zeny,zeny-40;
-				openstorage;
+				set zeny,zeny-800;
+				setcart;
 				cutin "", 255;
-				end;
-			}
-			break;
-		case 2:
-			if (BaseClass != Job_Merchant) {
-				mes "[卡普拉 職員]";
-				mes "很抱歉，";
-				mes "手推車是商人與鐵匠的專屬服務.";
-				close2;
+				close;
+			case 2:
 				cutin "", 255;
-				end;
+				close;
 			}
-			else if (checkcart() == 1) {
-				mes "[卡普拉 職員]";
-				mes "你正在使用著手推車";
-				close2;
-				cutin "", 255;
-				end;
-			}
-			else {
-				mes "[卡普拉 職員]";
-				mes "手推車的使用費用是800金幣，";
-				mes "請問你要使用嗎?";
-				next;
-				switch(select("使用:取消")) {
-				case 1:
-					if (Zeny < 800) {
-						mes "[卡普拉 職員]";
-						mes "客官您支付的金幣不足，";
-						mes "手推車的使用費是800金幣，";
-						close2;
-						cutin "",255;
-						end;
-					}
-					set zeny,zeny-800;
-					setcart;
-					cutin "", 255;
-					close;
-				case 2:
-					cutin "", 255;
-					close;
-				}
-			}
-		case 3:
-			mes "[卡普拉 職員]";
-			mes "我們卡普拉服務秉持著一貫熱誠又專業的心，提供大家最優質和專業的服務，歡迎隨時利用，";
-			mes "謝謝惠顧";
-			close;
+		}
+	case 3:
+		mes "[卡普拉 職員]";
+		mes "我們卡普拉服務秉持著一貫熱誠又專業的心，提供大家最優質和專業的服務，歡迎隨時利用，";
+		mes "謝謝惠顧";
 	}
+	close2;
+	cutin "", 255;
+	end;
 }
 
 // 將軍 吉永 馬樂羅
@@ -216,8 +200,7 @@ bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 		mes "他那安逸的思想會讓國家更貧苦，讓百姓變軟弱，漸漸成為鄰近國家併吞的食物，擁有小土地的馬樂能夠有今天的繁榮，都是靠強大軍力作後盾的關係";
 	}
 	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 )
-	{
+	if( select("我願與你並肩作戰:結束對話") == 2 ) {
 		mes "[吉永 馬樂羅]";
 		mes "我必會槍先取得勝利的旗幟!";
 		close2;
@@ -270,8 +253,7 @@ bat_room,160,141,3	script	克勒亞 馬樂羅	416,{
 		mes "我不希望再看到血流成河的情景，所以我這次當任不讓";
 	}
 	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 )
-	{
+	if( select("我願與你並肩作戰:結束對話") == 2 ) {
 		mes "[克勒亞 馬樂羅]";
 		mes "為了馬樂!";
 		close2;
@@ -288,7 +270,7 @@ bat_room,160,141,3	script	克勒亞 馬樂羅	416,{
 	end;
 }
 
-// 時間計算方程式
+// 時間計算函式
 // *********************************************************************
 function	script	Time2Str	{
 	set .@Time_Left, getarg(0) - gettimetick(2);
@@ -305,17 +287,17 @@ function	script	Time2Str	{
 		set .@Time$, .@Time$ + .@Days + " days, ";
 	else if( .@Days > 0 )
 		set .@Time$, .@Time$ + .@Days + " day, ";
-
+	
 	if( .@Hours > 1 )
 		set .@Time$, .@Time$ + .@Hours + " hours, ";
 	else if( .@Hours > 0 )
 		set .@Time$, .@Time$ + .@Hours + " hour, ";
-
+	
 	if( .@Minutes > 1 )
 		set .@Time$, .@Time$ + .@Minutes + " minutes, ";
 	else if( .@Minutes > 0 )
 		set .@Time$, .@Time$ + .@Minutes + " minute, ";
-
+	
 	if( .@Time_Left > 1 || .@Time_Left == 0 )
 		set .@Time$, .@Time$ + .@Time_Left + " seconds.";
 	else if( .@Time_Left == 1 )
@@ -324,950 +306,163 @@ function	script	Time2Str	{
 	return .@Time$;
 }
 
-// 吉本 陣營騎士 - Tierra Valley
+// 行政官
 // *********************************************************************
-bat_room,159,178,5	script	吉本 陣營騎士#1	417,{
-	mes "[吉本 陣營騎士]";
-	mes "Tierra Gorge is a very steep canyon with two forts residing in the north and south ends of the map.";
+-	script	行政官	1,{
+	if ( strnpcinfo(3) == "吉永1" || strnpcinfo(3) == "吉永2" || strnpcinfo(3) == "吉永3" || strnpcinfo(3) == "吉永4") {
+		set .@we$,"吉永";
+		set .@rival$,"克勒亞";
+	}
+	else {
+		set .@we$,"克勒亞";
+		set .@rival$,"吉永";
+	}
+	mes "["+ .@we$ +"傭兵 行政官]";
+	switch (Bat_Team) {
+	case 0:
+		mes "請先向 克勒亞王子 或吉永將軍登記吧!";
+		close;
+	case 1:
+	case 2:
+		mes "我們勇猛的"+ .@we$ +"軍給那些"+ .@rival$ +"軍顏色瞧瞧吧 !";
+		if (Bat_Team == 1) break;
+		close;
+	}
 	next;
-	mes "[吉本 陣營騎士]";
-	mes "There is a ration depot for the Guillaume and Croix armies at the 11 and 8 o'clock directions.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "The battle starts at your army's ship, and the goal is to advance and destroy your enemy's rations depot faster than they can destroy yours.";
-	mes "";
-	mes "The army that captures the neutral flag in the center of the battlefield will be rewarded with extra regeneration points, meaning their soldiers will resurrect more than the other side, giving them an advantage.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// Tierra Officerer - Guillaume
-// *********************************************************************
-bat_room,156,178,5	script	Tierra Valley Officer#1	418,{
-	mes "[吉永傭兵 行政官]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stinky Croix!";
+	if( select("我願與你並肩作戰:結束對話") == 2 ) {
+		mes "["+ .@we$ +"傭兵 行政官]";
+		mes "我軍必獲全勝";
 		close;
 	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
+	mes "["+ .@we$ +"傭兵 行政官]";
+	if( BG_Delay_Tick >= gettimetick(2) ) {
+		mes "你怎麼可以擅自離開呢?";
+		mes "您須再等 ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 才能進入戰場";
 		close;
 	}
-	
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Tierra Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
+	if ( strnpcinfo(1) == "提耶拉峽谷 傭兵行政官") {
+		if( Tierra_BG_Tick >= gettimetick(2) ) {
+			mes "抱歉，您現在無法馬上進入戰場，";
+			mes "您須再等 ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 才能進入提耶拉峽谷";
+			close;
+		}
+	}
+	else {
+		if( Flavius_BG_Tick >= gettimetick(2) ) {
+			mes "抱歉，您現在無法馬上進入戰場，";
+			mes "您須再等 ^0000FF" + callfunc("Time2Str",Flavius_BG_Tick) + "^000000 才能進入瀑拉畢烏斯";
+			close;
+		}
+	}
+	if( BaseLevel < 80 ) {
+		mes "雖然很佩服你的勇氣願意加入"+ .@we$ +"軍，去對抗"+ .@rival$ +"軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
 		close;
 	}
-	if( Tierra_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 to join again Tierra Valley.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
+	mes "你已經做好參戰的完全準備了!";
+	mes "快去讓"+ .@rival$ +"軍嚐嚐我們的厲害吧，";
+	mes "今天可以盡情吶喊我們"+ .@we$ +"軍勝利了!";
 	close2;
-	warp "bat_room",85,224;
+	if ( strnpcinfo(1) == "提耶拉峽谷 傭兵行政官") {
+		setarray .@warpy[1],224,208,94,77;
+		warp "bat_room",85,.@warpy[strnpcinfo(2)];
+	}
+	else {
+		setarray .@warpx[1],253,253,57,57;
+		setarray .@warpy[1],94,77,94,77;
+		warp "bat_room",.@warpx[strnpcinfo(2)],.@warpy[strnpcinfo(2)];
+	}
 	end;
 }
+bat_room,156,178,5	duplicate(行政官)	提耶拉峽谷 傭兵行政官#1::吉永1	418
+bat_room,156,121,1	duplicate(行政官)	提耶拉峽谷 傭兵行政官#2::克勒亞1	414
+bat_room,172,178,5	duplicate(行政官)	提耶拉峽谷 傭兵行政官#3::吉永2	418
+bat_room,172,121,1	duplicate(行政官)	提耶拉峽谷 傭兵行政官#4::克勒亞2	414
+bat_room,148,178,5	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#1::吉永3	418
+bat_room,148,121,1	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#2::克勒亞3	414
+bat_room,164,178,5	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#3::吉永4	418
+bat_room,164,121,1	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#4::克勒亞4	414
 
-// 克勒亞 陣營騎士 - Tierra Valley
+// 陣營騎士
 // *********************************************************************
-bat_room,159,121,1	script	克勒亞 陣營騎士#1	413,{
-	mes "[Croix Knight]";
-	mes "Tierra Gorge is a very steep canyon with two forts residing in the north and south ends of the map.";
+// 提耶拉峽谷
+-	script	提耶拉 陣營	1,{
+	mes "["+ strnpcinfo(1) +"]";
+	mes "提耶拉峽谷為上下長方形狀，在11點和7點鐘的方向各有吉永和克勒亞陣營的糧倉";
 	next;
-	mes "[Croix Knight]";
-	mes "There is a ration depot for the Guillaume and Croix armies at the 11 and 8 o'clock directions.";
+	mes "["+ strnpcinfo(1) +"]";
+	mes "參與戰鬥的人從各陣陣營的船上出發後，快速地移動至對方的糧倉並銷毀，就是這次戰鬥的目標";
 	next;
-	mes "[Croix Knight]";
-	mes "The battle starts at your army's ship, and the goal is to advance and destroy your enemy's rations depot faster than they can destroy yours.";
-	mes "";
-	mes "The army that captures the neutral flag in the center of the battlefield will be rewarded with extra regeneration points, meaning their soldiers will resurrect more than the other side, giving them an advantage.";
+	mes "["+ strnpcinfo(1) +"]";
+	mes "戰場的治療師每個25秒鐘會讓喪失戰鬥能力的人恢復後再次投入戰鬥中，另外搶先占領位於中央處中立旗幟之陣營，可獲得額外的復活點，因而比對方陣營更處於有利的位置上";
 	next;
-	mes "[Croix Knight]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
+	mes "["+ strnpcinfo(1) +"]";
+	mes " 雖然各陣營的糧倉是由狹窄的峽谷相互串連，但是被對方陣營的拒馬封鎖出口了，所以各位手腳快一點的話，就有利於破壞對方的拒馬";
+	next;
+	mes "["+ strnpcinfo(1) +"]";
+	mes "另外凡是參與戰鬥的人都會拿到在一定時間結束時，都不得再參與相同戰鬥的標誌，時間可以透過Alt+U進行確認";
+	next;
+	mes "["+ strnpcinfo(1) +"]";
+	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧";
 	close;
 }
+bat_room,159,178,5	duplicate(提耶拉 陣營)	吉永 陣營騎士#1	417
+bat_room,175,178,5	duplicate(提耶拉 陣營)	吉永 陣營騎士#2	417
+bat_room,159,121,1	duplicate(提耶拉 陣營)	克勒亞 陣營騎士#1	413
+bat_room,175,121,1	duplicate(提耶拉 陣營)	克勒亞 陣營騎士#2	413
 
-// Tierra Officer - Croix
-// *********************************************************************
-bat_room,156,121,1	script	Tierra Valley Officer#2	414,{
-	mes "[克勒亞傭兵 行政官]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Tierra Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Tierra_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 to join again Tierra Valley.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",85,208;
-	end;
-}
-
-// 吉本 陣營騎士 - Tierra
-// *********************************************************************
-bat_room,175,178,5	script	吉本 陣營騎士#2	417,{
-	mes "[吉本 陣營騎士]";
-	mes "Tierra Gorge is a very steep canyon with two forts residing in the north and south ends of the map.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "There is a ration depot for the Guillaume and Croix armies at the 11 and 8 o'clock directions.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "The battle starts at your army's ship, and the goal is to advance and destroy your enemy's rations depot faster than they can destroy yours.";
-	mes "";
-	mes "The army that captures the neutral flag in the center of the battlefield will be rewarded with extra regeneration points, meaning their soldiers will resurrect more than the other side, giving them an advantage.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// Tierra Officer - Guillaume
-// *********************************************************************
-bat_room,172,178,5	script	Tierra Valley Officer#3	418,{
-	mes "[Tierra Officer]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stinky Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-	
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Tierra Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Tierra_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 to join again Tierra Valley.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",85,94;
-	end;
-}
-
-// 克勒亞 陣營騎士 - Tierra
-// *********************************************************************
-bat_room,175,121,1	script	克勒亞 陣營騎士#2	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "Tierra Gorge is a very steep canyon with two forts residing in the north and south ends of the map.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "There is a ration depot for the Guillaume and Croix armies at the 11 and 8 o'clock directions.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The battle starts at your army's ship, and the goal is to advance and destroy your enemy's rations depot faster than they can destroy yours.";
-	mes "";
-	mes "The army that captures the neutral flag in the center of the battlefield will be rewarded with extra regeneration points, meaning their soldiers will resurrect more than the other side, giving them an advantage.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// Tierra Officer - Croix
-// *********************************************************************
-bat_room,172,121,1	script	Tierra Valley Officer#4	414,{
-	mes "[Tierra Officer]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Tierra Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Tierra_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 to join again Tierra Valley.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",85,77;
-	end;
-}
-
-// Guillaune Knight - Flavius
-// *********************************************************************
-bat_room,151,178,5	script	吉本 陣營騎士#3	417,{
-	mes "[吉本 陣營騎士]";
+// 瀑拉畢烏斯
+-	script	瀑拉畢烏斯 陣營	1,{
+	mes "["+ strnpcinfo(1) +"]";
 	mes "瀑拉畢烏斯戰鬥是搶先破壞對方的水晶後，快速取得2分的一方就獲勝的戰鬥";
 	next;
-	mes "[吉本 陣營騎士]";
+	mes "["+ strnpcinfo(1) +"]";
 	mes "各水晶是由特殊的拒馬所包圍的關係，絕對不會被破壞的";
 	next;
-	mes "[吉本 陣營騎士]";
+	mes "["+ strnpcinfo(1) +"]";
 	mes "因此為了摧毀看不見的特殊拒馬，就須先破壞保護各陣營的所有守護者";
 	next;
-	mes "[吉本 陣營騎士]";
+	mes "["+ strnpcinfo(1) +"]";
 	mes "加上水晶不會受到各種技能的影響，所以各位俐落的身手對摧毀水晶大有幫助";
 	next;
-	mes "[吉本 陣營騎士]";
+	mes "["+ strnpcinfo(1) +"]";
 	mes "另外凡是參與戰鬥的人都會拿到在一定時間結束前，都不得再參與相同戰鬥的標誌，";
 	mes "時間可透過Alt+U進行確認";
 	next;
-	mes "[吉本 陣營騎士]";
+	mes "["+ strnpcinfo(1) +"]";
 	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧!";
 	close;
 }
+bat_room,151,178,5	duplicate(瀑拉畢烏斯 陣營)	吉永 陣營騎士#3	417
+bat_room,167,178,5	duplicate(瀑拉畢烏斯 陣營)	吉永 陣營騎士#4	417
+bat_room,151,121,1	duplicate(瀑拉畢烏斯 陣營)	克勒亞 陣營騎士#3	413
+bat_room,167,121,1	duplicate(瀑拉畢烏斯 陣營)	克勒亞 陣營騎士#4	413
 
-// 瀑拉畢烏斯 傭兵行政官er - Guillaume
+// KVM (Krieger von Midgard) 戰場部分
+
+// 守衛與保鑣
 // *********************************************************************
-bat_room,148,178,5	script	瀑拉畢烏斯 傭兵行政官#1	418,{
-	mes "[吉永傭兵 行政官]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stupid Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "我們勇猛的吉永軍給那些克勒亞軍顏色瞧瞧吧 !";
-	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 ) {
-		mes "[吉永傭兵 行政官]";
-		mes "我軍必獲大勝";
-		close;
-	}
-	mes "[吉永傭兵 行政官]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Flavius_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Flavius_BG_Tick) + "^000000 to join again Flavius.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "雖然很佩服你的勇氣願意加入吉永軍，去對抗克勒亞軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
-		close;
-	}
-
-	mes "你已經做好參戰的完全準備了!";
-	mes "快去讓克勒亞軍嚐嚐我門的厲害吧，";
-	mes "今天可以盡情吶喊我們吉永軍勝利了!";
-	close2;
-	warp "bat_room",253,94;
-	end;
-}
-
-// 克勒亞 陣營騎士 - Flavius
-// *********************************************************************
-bat_room,151,121,1	script	克勒亞 陣營騎士#3	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "瀑拉畢烏斯戰鬥是搶先破壞對方的水晶後，快速取得2分的一方就獲勝的戰鬥";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "各水晶是由特殊的拒馬所包圍的關係，絕對不會被破壞的";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "因此為了摧毀看不見的特殊拒馬，就須先破壞保護各陣營的所有守護者";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "加上水晶不會受到各種技能的影響，所以各位俐落的身手對摧毀水晶大有幫助";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "另外凡是參與戰鬥的人都會拿到在一定時間結束前，都不得再參與相同戰鬥的標誌，";
-	mes "時間可透過Alt+U進行確認";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧!";
-	close;
-}
-
-// 瀑拉畢烏斯 傭兵行政官 - Croix
-// *********************************************************************
-bat_room,148,121,1	script	瀑拉畢烏斯 傭兵行政官#2	414,{
-	mes "[克勒亞傭兵 行政官]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "我們勇猛的克勒亞軍給那些吉永軍顏色瞧瞧吧 !";
-	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 ) {
-		mes "[克勒亞傭兵 行政官]";
-		mes "我軍必獲大勝";
-		close;
-	}
-	mes "[克勒亞傭兵 行政官]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Flavius_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Flavius_BG_Tick) + "^000000 to join again Flavius.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "雖然很佩服你的勇氣願意加入克勒亞軍，去對抗吉永軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
-		close;
-	}
-
-	mes "你已經做好參戰的完全準備了!";
-	mes "快去讓吉永軍嚐嚐我門的厲害吧，";
-	mes "今天可以盡情吶喊我們克勒亞軍勝利了!";
-	close2;
-	warp "bat_room",253,77;
-	end;
-}
-
-// Guillaune Knight - Flavius
-// *********************************************************************
-bat_room,167,178,5	script	吉本 陣營騎士#4	417,{
-	mes "[Guillaume Knight]";
-	mes "The objective of the Flavius Battle is to score 2 points before your enemy by destryoing theur crystal.";
-	next;
-	mes "[Guillaume Knight]";
-	mes "The crystals for both armies are protected by special barricades that cannot be destroyed by direct attacks.";
-	next;
-	mes "[Guillaume Knight]";
-	mes "But they can be removed by destroying the Guardians that protect the enemy army base.";
-	next;
-	mes "[Guillaume Knight]";
-	mes "The crystals are immune to every type of skill; your physical attacks are the only choice for destroying your enemy's crystal.";
-	next;
-	mes "[Guillaume Knight]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// 瀑拉畢烏斯 傭兵行政官er - Guillaume
-// *********************************************************************
-bat_room,164,178,5	script	瀑拉畢烏斯 傭兵行政官#3	418,{
-	mes "[Flavius Officer]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stupid Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Flavius Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Flavius_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Flavius_BG_Tick) + "^000000 to join again Flavius.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",57,94;
-	end;
-}
-
-// 克勒亞 陣營騎士 - Flavius
-// *********************************************************************
-bat_room,167,121,1	script	克勒亞 陣營騎士#4	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "The objective of the Flavius Battle is to score 2 points before your enemy by destryoing theur crystal.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The crystals for both armies are protected by special barricades that cannot be destroyed by direct attacks.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "But they can be removed by destroying the Guardians that protect the enemy army base.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The crystals are immune to every type of skill; your physical attacks are the only choice for destroying your enemy's crystal.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// 瀑拉畢烏斯 傭兵行政官er - Croix
-// *********************************************************************
-bat_room,164,121,1	script	瀑拉畢烏斯 傭兵行政官#4	414,{
-	mes "[Flavius Officer]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[Flavius Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( Flavius_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",Flavius_BG_Tick) + "^000000 to join again Flavius.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: I can't send a rookie like you to die on the cruel battlefield";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",57,77;
-	end;
-}
-
-// 吉本 陣營騎士 - KvM
-// *********************************************************************
-bat_room,143,178,5	script	吉本 陣營騎士#5	417,{
-	mes "[吉本 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officerer - Guillaume
-// *********************************************************************
-bat_room,140,178,5	script	KVM [80-99] Officer#1	418,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stinky Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 80 to 99.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",253,224;
-	end;
-}
-
-// 克勒亞 陣營騎士 - KvM
-// *********************************************************************
-bat_room,143,121,1	script	克勒亞 陣營騎士#5	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officer - Croix
-// *********************************************************************
-bat_room,140,121,1	script	KVM [80-99] Officer#2	414,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel < 80 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 80 to 99.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",253,208;
-	end;
-}
-
-// 吉本 陣營騎士 - KvM
-// *********************************************************************
-bat_room,135,178,5	script	吉本 陣營騎士#6	417,{
-	mes "[吉本 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officerer - Guillaume
-// *********************************************************************
-bat_room,132,178,5	script	KVM [60-79] Officer#1	418,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stinky Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel < 60 || BaseLevel > 79 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 60 to 79.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",225,224;
-	end;
-}
-
-// 克勒亞 陣營騎士 - KvM
-// *********************************************************************
-bat_room,135,121,1	script	克勒亞 陣營騎士#6	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officer - Croix
-// *********************************************************************
-bat_room,132,121,1	script	KVM [60-79] Officer#2	414,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel < 60 || BaseLevel > 79 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 60 to 79.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",225,208;
-	end;
-}
-
-// 吉本 陣營騎士 - KvM
-// *********************************************************************
-bat_room,127,178,5	script	吉本 陣營騎士#7	417,{
-	mes "[吉本 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[吉本 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officerer - Guillaume
-// *********************************************************************
-bat_room,124,178,5	script	KVM [1-59] Officer#1	418,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 2 )
-	{
-		mes "Get out of here you stinky Croix!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Guillaume Army to those stinky Croixs!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel > 59 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 1 to 59.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",197,224;
-	end;
-}
-
-// 克勒亞 陣營騎士 - KvM
-// *********************************************************************
-bat_room,127,121,1	script	克勒亞 陣營騎士#7	413,{
-	mes "[克勒亞 陣營騎士]";
-	mes "To win the Battle of Kriger Von Midgard you and your team must kill all the other oponents before all of you die.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "The first team to lose all their soldiers loses.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Since you cannot come back to battle after you die, taking care on the battlefield is essential.";
-	next;
-	mes "[克勒亞 陣營騎士]";
-	mes "Are you ready for battle? Then apply with the recruiter next to me!";
-	close;
-}
-
-// KvM Officer - Croix
-// *********************************************************************
-bat_room,124,121,1	script	KVM [1-59] Officer#2	414,{
-	mes "[KVM Officer]";
-	if( Bat_Team == 1 )
-	{
-		mes "Get out of here you stupid Guillaume!";
-		close;
-	}
-
-	if( Bat_Team == 0 )
-	{
-		mes "Please sign up for an army with Prince Croix or General Guillaume!";
-		close;
-	}
-
-	mes "Hello " + strcharinfo(0) + ", let's show the power of the Croix Army to those stinky Guillaumes!";
-	next;
-	if( select("I want to join your army!:End Conversation") == 2 )
-		close;
-
-	mes "[KVM Officer]";
-	if( BG_Delay_Tick >= gettimetick(2) )
-	{
-		mes "You are a Deserter!!";
-		mes "Because of running away, you need to wait ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 to join again a BattleGround.";
-		close;
-	}
-	if( KvM_BG_Tick >= gettimetick(2) )
-	{
-		mes "Sorry, you can't join the battle right now.";
-		mes "You need to wait ^0000FF" + callfunc("Time2Str",KvM_BG_Tick) + "^000000 to join KvM.";
-		close;
-	}
-	if( BaseLevel > 59 )
-	{
-		mes "I'm very please you want to join our army, but I'm sorry: This arena is for players with baselevel from 1 to 59.";
-		close;
-	}
-
-	mes "Good luck!";
-	close2;
-	warp "bat_room",197,208;
-	end;
-}
-
-// Guard Dummy
-// *********************************************************************
-
 bat_room,161,142,3	script	克勒亞 秘書長::bat_aid	415,{ end; }
 bat_room,161,140,3	duplicate(bat_aid)	克勒亞 秘書長::bat_aid2	415
 bat_room,161,160,3	duplicate(bat_aid)	吉永 秘書長::bat_aid3	419
 bat_room,161,158,3	duplicate(bat_aid)	吉永 秘書長::bat_aid4	419
 
-// Flags
+// 旗幟
 // *********************************************************************
+-	script	吉永陣營#bat	973,{ end; }
+-	script	克勒亞陣營#bat	974,{ end; }
 
--	script	Guillaume camp#bat	973,{ end; }
--	script	Croix camp#bat	974,{ end; }
-
-// Exit from Registration
+// 從等待區離開
 // *********************************************************************
-// Flavius bat_b02
+// 瀑拉畢烏斯 bat_b02
 bat_room,57,81,0	warp	bat1	2,2,bat_room,154,149
 bat_room,57,90,0	warp	bat2	2,2,bat_room,154,149
 // Free BG
 bat_room,57,220,0	warp	bat3	2,2,bat_room,154,149
 bat_room,57,211,0	warp	bat4	2,2,bat_room,154,149
-// Tierra Valley bat_a02
+// 提耶拉峽谷 bat_a02
 bat_room,85,81,0	warp	bat5	2,2,bat_room,154,149
 bat_room,85,90,0	warp	bat6	2,2,bat_room,154,149
-// Tierra Valley bat_a01
+// 提耶拉峽谷 bat_a01
 bat_room,85,220,0	warp	bat7	2,2,bat_room,154,149
 bat_room,85,211,0	warp	bat8	2,2,bat_room,154,149
 // Free BG
@@ -1300,16 +495,15 @@ bat_room,225,90,0	warp	bat26	2,2,bat_room,154,149
 // KvM bat_c02
 bat_room,225,220,0	warp	bat27	2,2,bat_room,154,149
 bat_room,225,211,0	warp	bat28	2,2,bat_room,154,149
-// Flavius bat_b01
+// 瀑拉畢烏斯 bat_b01
 bat_room,253,81,0	warp	bat29	2,2,bat_room,154,149
 bat_room,253,90,0	warp	bat30	2,2,bat_room,154,149
-// KvM bat_c01
+// KVM bat_c01
 bat_room,253,220,0	warp	bat31	2,2,bat_room,154,149
 bat_room,253,211,0	warp	bat32	2,2,bat_room,154,149
 
 // 戰場修理工(台灣版本沒有)
 // *********************************************************************
-
 bat_room,138,144,5	script	修理工#戰場	99,{
 	callfunc "repairmain","修理工";
 	end;
@@ -1317,183 +511,186 @@ bat_room,138,144,5	script	修理工#戰場	99,{
 
 // 戰場物品交換(改編台灣版本)
 // *********************************************************************
-
 bat_room,160,150,3	script	艾倫德克	109,{
 	mes "[艾倫德克]";
 	mes "請問您持有透過戰場所獲得的徽章嗎?";
 	mes "我負責的是換成特攻徽章和勇猛徽章物品的工作";
 	next;
 	switch(select("換成徽章:查看目錄")) {
+	case 1:
+		mes "[艾倫德克]";
+		mes "請問您要看哪一種呢?";
+		mes "各物品的詳細功能，請參考 ^3131FF目錄^000000";
+		next;
+		switch(select("武器:防具:裝飾品:消耗性物品")) {
 		case 1:
 			mes "[艾倫德克]";
-			mes "請問您要看哪一種呢?";
-			mes "各物品的詳細功能，請參考 ^3131FF目錄^000000";
+			mes "您選的是^3131FF武器^000000，";
+			mes "需要徽章的武器，共有以下幾種";
+			mes "分成^3131FF勇猛徽章專用是(勇)^000000，^3131FF特攻徽章專用是(特)^000000，提供您參考";
 			next;
-			switch(select("武器:防具:裝飾品:消耗性物品")) {
+			switch(select("短劍/單手劍/雙手劍/雙手槍:手杖/鈍器/雙手斧/風魔翼飛鏢:弓/拳刃/樂器/鞭子:書籍/拳套:左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器")) {
+			case 1:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF短劍/單手劍/雙手劍/雙手槍^000000，共有以下幾種物品";
+				next;
+				switch(select("刺客的大馬士革短劍(勇):刺客的大馬士革短劍(特):劍士的厚刃劍(勇):劍士的厚刃劍(特):突襲隊長的亞藍斯之劍(勇):突襲隊長的亞藍斯之劍(特):突襲隊長的長矛:突襲隊長的騎士長矛")){
 				case 1:
 					mes "[艾倫德克]";
-					mes "您選的是^3131FF武器^000000，";
-					mes "需要徽章的武器，共有以下幾種";
-					mes "分成^3131FF勇猛徽章專用是(勇)^000000，^3131FF特攻徽章專用是(特)^000000，提供您參考";
+					mes "您選的是^3131FF刺客的大馬士革短劍(勇)^000000，";
+					mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+					mes "請問您要交換嗎?";
 					next;
-					switch(select("短劍/單手劍/雙手劍/雙手槍:手杖/鈍器/雙手斧/風魔翼飛鏢:弓/拳刃/樂器/鞭子:書籍/拳套:左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器")) {
+					switch(select("不交換:交換")){
+					case 1:
+						mes "[艾倫德克]";
+						mes "您要再看看一下嗎?";
+						close;
+					case 2:
+						mes "[艾倫德克]";
+						mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(勇)^000000嗎?";
+						next;
+						switch(select("要:不要")){
 						case 1:
+							if(countitem(7828)<100){
+								mes "[艾倫德克]";
+								mes "交換所需的徽章數量不足呢";
+								close;
+							}
+							else{
+								mes "[艾倫德克]";
+								mes "謝謝光臨";
+								close2;
+								getitem 13036,1;
+								delitem 7828,100;
+								end;
+							}
+						case 2:
 							mes "[艾倫德克]";
-							mes "我們所準備的 ^3131FF短劍/單手劍/雙手劍/雙手槍^000000，共有以下幾種物品";
-							next;
-							switch(select("刺客的大馬士革短劍(勇):刺客的大馬士革短劍(特):劍士的厚刃劍(勇):劍士的厚刃劍(特):突襲隊長的亞藍斯之劍(勇):突襲隊長的亞藍斯之劍(特):突襲隊長的長矛:突襲隊長的騎士長矛")){
-								case 1:
-									mes "[艾倫德克]";
-									mes "您選的是^3131FF刺客的大馬士革短劍(勇)^000000，";
-									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
-									mes "請問您要交換嗎?";
-									next;
-									switch(select("不交換:交換")){
-										case 1:
-											mes "[艾倫德克]";
-											mes "您要再看看一下嗎?";
-											close;
-										case 2:
-											mes "[艾倫德克]";
-											mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(勇)^000000嗎?";
-											next;
-											switch(select("要:不要")){
-												case 1:
-													if(countitem(7828)<100){
-														mes "[艾倫德克]";
-														mes "交換所需的徽章數量不足呢";
-														close;
-													}else{
-														mes "[艾倫德克]";
-														mes "謝謝光臨";
-														close2;
-														getitem 13036,1;
-														delitem 7828,100;
-														end;
-													}
-												case 2:
-													mes "[艾倫德克]";
-													mes "您要再看看一下嗎?";
-													close;
-											}
-									}
-								case 2:
-									mes "[艾倫德克]";
-									mes "您選的是^3131FF刺客的大馬士革短劍(特)^000000";
-									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
-									mes "請問您要交換嗎?";
-									next;
-									switch(select("不交換:交換")){
-									case 1:
+							mes "您要再看看一下嗎?";
+							close;
+						}
+					}
+				case 2:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF刺客的大馬士革短劍(特)^000000";
+					mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+					mes "請問您要交換嗎?";
+					next;
+					switch(select("不交換:交換")){
+					case 1:
+						mes "[艾倫德克]";
+						mes "您要再看看一下嗎?";
+						close;
+					case 2:
+						mes "[艾倫德克]";
+						mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(特)^000000嗎?";
+						next;
+						switch(select("要:不要")){
+						case 1:
+							if(countitem(7829)<100){
+								mes "[艾倫德克]";
+								mes "交換所需的徽章數量不足呢";
+								close;
+							}
+							else {
+								mes "[艾倫德克]";
+								mes "謝謝光臨";
+								close2;
+								getitem 13037,1;
+								delitem 7829,100;
+								end;
+							}
+						case 2:
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						}
+					}
+				case 3:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF劍士的厚刃劍(勇)^000000，";
+					mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+					mes "請問您要交換嗎?";
+					next;
+					switch(select("不交換:交換")){
+					case 1:
+						mes "[艾倫德克]";
+						mes "您要再看看一下嗎?";
+						close;
+					case 2:
+						mes "[艾倫德克]";
+						mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(勇)^000000嗎?";
+						next;
+						switch(select("要:不要")){
+						case 1:
+							if(countitem(7828)<100){
+								mes "[艾倫德克]";
+								mes "交換所需的徽章數量不足呢";
+								close;
+							}
+							else{
+								mes "[艾倫德克]";
+								mes "謝謝光臨";
+								close2;
+								getitem 13410,1;
+								delitem 7828,100;
+								end;
+							}
+						case 2:
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						}
+					}
+				case 4:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF劍士的厚刃劍(特)^000000，";
+					mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
+					mes "請問您要交換嗎?";
+					next;
+					switch(select("不交換:交換")){
+					case 1:
+						mes "[艾倫德克]";
+						mes "您要再看看一下嗎?";
+						close;
+					case 2:
+						mes "[艾倫德克]";
+						mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(特)^000000嗎?";
+						next;
+						switch(select("要:不要")){
+						case 1:
+							if(countitem(7829)<100){
+								mes "[艾倫德克]";
+								mes "交換所需的徽章數量不足呢";
+								close;
+							}
+							else{
+								mes "[艾倫德克]";
+								mes "謝謝光臨";
+								close2;
+								getitem 13411,1;
+								delitem 7829,100;
+								end;
+							}
+						case 2:
+							mes "[艾倫德克]";
+							mes "您要再看看一下嗎?";
+							close;
+						}
+					}
+				case 5:
+					mes "[艾倫德克]";
+					mes "您選的是^3131FF突襲隊長的亞藍斯之劍(勇)^000000，";
+					mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
+					mes "請問您要交換嗎?";
+					next;
+					switch(select("不交換:交換")){
+					case 1:
 										mes "[艾倫德克]";
 										mes "您要再看看一下嗎?";
 										close;
-									case 2:
-										mes "[艾倫德克]";
-										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF刺客的大馬士革短劍(特)^000000嗎?";
-										next;
-										switch(select("要:不要")){
-											case 1:
-												if(countitem(7829)<100){
-													mes "[艾倫德克]";
-													mes "交換所需的徽章數量不足呢";
-													close;
-												}else{
-													mes "[艾倫德克]";
-													mes "謝謝光臨";
-													close2;
-													getitem 13037,1;
-													delitem 7829,100;
-													end;
-												}
-											case 2:
-												mes "[艾倫德克]";
-												mes "您要再看看一下嗎?";
-												close;
-										}
-									}	
-								case 3:
-									mes "[艾倫德克]";
-									mes "您選的是^3131FF劍士的厚刃劍(勇)^000000，";
-									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
-									mes "請問您要交換嗎?";
-									next;
-									switch(select("不交換:交換")){
-									case 1:
-										mes "[艾倫德克]";
-										mes "您要再看看一下嗎?";
-										close;
-									case 2:
-										mes "[艾倫德克]";
-										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(勇)^000000嗎?";
-										next;
-										switch(select("要:不要")){
-											case 1:
-												if(countitem(7828)<100){
-														mes "[艾倫德克]";
-														mes "交換所需的徽章數量不足呢";
-													close;
-												}else{
-													mes "[艾倫德克]";
-													mes "謝謝光臨";
-													close2;
-													getitem 13410,1;
-													delitem 7828,100;
-													end;
-												}
-											case 2:
-												mes "[艾倫德克]";
-												mes "您要再看看一下嗎?";
-												close;
-										}
-									}
-								case 4:
-									mes "[艾倫德克]";
-									mes "您選的是^3131FF劍士的厚刃劍(特)^000000，";
-									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
-									mes "請問您要交換嗎?";
-									next;
-									switch(select("不交換:交換")){
-									case 1:
-										mes "[艾倫德克]";
-										mes "您要再看看一下嗎?";
-										close;
-									case 2:
-										mes "[艾倫德克]";
-										mes "您要用^FF0000特攻徽章 100個^000000來購買 ^3131FF劍士的厚刃劍(特)^000000嗎?";
-										next;
-										switch(select("要:不要")){
-											case 1:
-												if(countitem(7829)<100){
-													mes "[艾倫德克]";
-													mes "交換所需的徽章數量不足呢";
-													close;
-												}else{
-													mes "[艾倫德克]";
-													mes "謝謝光臨";
-													close2;
-													getitem 13411,1;
-													delitem 7829,100;
-													end;
-												}
-											case 2:
-												mes "[艾倫德克]";
-												mes "您要再看看一下嗎?";
-												close;
-											}
-									}
-								case 5:
-									mes "[艾倫德克]";
-									mes "您選的是^3131FF突襲隊長的亞藍斯之劍(勇)^000000，";
-									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
-									mes "請問您要交換嗎?";
-									next;
-									switch(select("不交換:交換")){
-									case 1:
-										mes "[艾倫德克]";
-										mes "您要再看看一下嗎?";
-										close;
-									case 2:
+					case 2:
 										mes "[艾倫德克]";
 										mes "您要用^FF0000勇猛徽章 100個^000000來購買 ^3131FF突襲隊長的亞藍斯之劍(勇)^000000嗎?";
 										next;
@@ -1517,7 +714,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 6:
+				case 6:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF突襲隊長的亞藍斯之劍(特)^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -1552,7 +749,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 7:
+				case 7:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF突襲隊長的長矛^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
@@ -1587,7 +784,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 8:
+				case 8:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF突襲隊長的騎士長矛^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -1623,7 +820,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 										}
 									}
 							}
-						case 2:
+			case 2:
 							mes "[艾倫德克]";
 							mes "艾倫德克 : 我們所準備的 ^3131FF手杖/鈍器/雙手斧/風魔翼飛鏢^000000，共有以下幾種物品";
 							next;
@@ -1984,7 +1181,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 							mes "我們所準備的 ^3131FF弓/拳刃/樂器/鞭子^000000，共有以下幾種物品";
 							next;
 							switch(select("戰鬥十字弓(勇):戰鬥十字弓(特):屠殺的拳刃(勇):屠殺的拳刃(特):戰場的吉他(勇):戰場的吉他(特):戰鬥細刃鞭子(勇):戰鬥細刃鞭子(特)")){
-								case 1:
+							case 1:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰鬥十字弓(勇)^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
@@ -2019,7 +1216,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 2:
+							case 2:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰鬥十字弓(特)^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -2054,7 +1251,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 3:
+							case 3:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF屠殺的拳刃(勇)^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
@@ -2089,7 +1286,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 4:
+							case 4:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF屠殺的拳刃(特)^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -2124,7 +1321,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 5:
+							case 5:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰場的吉他(勇)^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
@@ -2159,7 +1356,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 6:
+							case 6:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰場的吉他(特)^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -2194,7 +1391,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 7:
+							case 7:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰鬥細刃鞭子(勇)^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
@@ -2229,7 +1426,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 												close;
 										}
 									}
-								case 8:
+							case 8:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF戰鬥細刃鞭子(特)^000000，";
 									mes "此物品需要 ^FF0000特攻徽章 100個^000000，";
@@ -2270,7 +1467,7 @@ bat_room,160,150,3	script	艾倫德克	109,{
 							mes "我們所準備的 ^3131FF書籍/拳套^000000，共有以下幾種物品";
 							next;
 							switch(select("孫子兵法(勇):孫子兵法(特):鬥士的戰鬥昇龍拳套(勇):鬥士的戰鬥昇龍拳套(特)")){
-								case 1:
+							case 1:
 									mes "[艾倫德克]";
 									mes "您選的是^3131FF孫子兵法(勇)^000000，";
 									mes "此物品需要 ^FF0000勇猛徽章 100個^000000，";
