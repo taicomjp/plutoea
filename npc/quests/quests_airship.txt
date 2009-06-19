@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 飛空艇 相關任務腳本 - 
 //===================================
-// 版本：1.5
+// 版本：1.6
 //====================================
 //= *失散的過去 (尋找女兒)
 //=   獎勵: -飛空艇免費搭乘券 4個
@@ -232,7 +232,7 @@ airplane,47,61,1	script	機組員	833,{
 				close;
 			} else {
 				mes "["+strcharinfo(0)+"]";
-				mes ""+@comment$+".";
+				mes @comment$+".";
 				next;
 				mes "[凱因 希每勒]";
 				mes "呵嗯.. 是嗎，我明白了，";
@@ -793,10 +793,10 @@ function	script	cherno	{
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "I am called,";
-		mes ""+strcharinfo(0)+".";
+		mes strcharinfo(0)+",";
 		next;
 		mes "[泰蕾莎 其魯諾]";
-		mes ""+strcharinfo(0)+",";
+		mes strcharinfo(0)+",";
 		mes "I appreciate your concerns~ Would you please stay for a cup of tea?";
 		next;
 		mes "[泰蕾莎 其魯諾]";
@@ -1353,16 +1353,16 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 	mes "我是這艘飛空艇得船長叫裴陸,";
 	mes "請問找我有事嗎? 呃?!";
 	next;
-	if (lght_air >= 0 && lght_air <= 2 || lght_air == 7) {
-		set question$, "飛空艇是如何飛行的呢?";
+	if (lght_air >= 0 && lght_air <= 3 || lght_air == 7) {
+		set .@question$, "飛空艇是如何飛行的呢?";
 	} else if(lght_air == 4) {
-		set question$, "I handed the letter to Captain Ferlock.";
+		set .@question$, "I handed the letter to Captain Ferlock.";
 	} else if(lght_air == 5) {
-		set question$, "You finished reading the letter?";
+		set .@question$, "You finished reading the letter?";
 	} else if(lght_air == 6) {
-		set question$, "Already finished reading?";
+		set .@question$, "Already finished reading?";
 	}
-	switch( select( "船長竟是馴鹿?", ""+question$+"", "取消" )){
+	switch( select( "船長竟是馴鹿?", .@question$, "取消" )){
 	case 1:
 		mes "[裴陸]";
 		mes "說什麼馴鹿啦!";
@@ -1381,7 +1381,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 		mes "才是我人生的一大樂趣與目標囉";
 		close2;
 		cutin "",255;
-		end;	
+		end;
 	case 2:
 		if(lght_air == 1) {
 			if (BaseLevel <= 59) {
@@ -1393,7 +1393,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 				mes "allowed to tell you that secret.";
 				close2;
 				cutin "",255;
-				end;	
+				end;
 			} else {
 				mes "[Tarlock]";
 				mes "Mm...?";
@@ -1411,7 +1411,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 					mes "fly through the skies.";
 					close2;
 					cutin "",255;
-					end;	
+					end;
 				case 2:
 					mes "[Tarlock]";
 					mes "In all honestly, the";
@@ -1439,7 +1439,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 						mes "back after you decide, alright?";
 						close2;
 						cutin "",255;
-						end;	
+						end;
 					case 2:
 						set lght_air, 2;
 						mes "[Tarlock]";
@@ -1470,7 +1470,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 						mes "brother, Captain Ferlock.";
 						close2;
 						cutin "",255;
-						end;	
+						end;
 					}
 				}
 			}
@@ -1485,7 +1485,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			mes "I'll read his letter.";
 			close2;
 			cutin "",255;
-			end;	
+			end;
 		} else if(lght_air == 5) {
 			set lght_air, 6;
 			mes "[Tarlock]";
@@ -1500,7 +1500,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			mes "the letter.^000000";
 			close2;
 			cutin "",255;
-			end;	
+			end;
 		} else if(lght_air== 6) {
 			mes "[Tarlock]";
 			mes "Yes, I finished.";
@@ -1544,7 +1544,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 				mes "called ^ff0000Rune Mechanism^000000.";
 				next;
 				switch( select( "Uh? What's a Rune Mechanism?")) {
-				case 1:					
+				case 1:
 					mes "[Tarlock]";
 					mes "It's a device that uses a";
 					mes "magic stone as power source.";
@@ -1578,7 +1578,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 					getexp 200000, 10000;
 					close2;
 					cutin "",255;
-					end;	
+					end;
 				}
 			}
 		} else if(lght_air == 7) {
@@ -1588,7 +1588,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			mes "tale again!";
 			close2;
 			cutin "",255;
-			end;	
+			end;
 		} else if(lght_air == 2) {
 			mes "[Tarlock]";
 			mes "Hahahah! Don't worry, I'll";
@@ -1598,7 +1598,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			mes "and bring back his reply.";
 			close2;
 			cutin "",255;
-			end;	
+			end;
 		}
 		mes "[Tarlock]";
 		mes "Hahaha! How this";
@@ -1610,13 +1610,13 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 		set lght_air, 1;
 		close2;
 		cutin "",255;
-		end;	
+		end;
 	case 3:
 		mes "[裴陸]";
 		mes "哼! 我很忙沒事別來煩我啦!";
 		close2;
 		cutin "",255;
-		end;	
+		end;
 	}
 }
 
@@ -1937,16 +1937,15 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 	mes "船長叫做杜陸，請問需要什麼幫忙呢?";
 	next;
 	if(lght_air == 2) {
-		set question2$, "Give him Tarlock's Letter.";
-		set question3$, "取消";
+		set .@question2$, "Give him Tarlock's Letter.";
+		set .@question3$, "取消";
 	} else if(lght_air == 3) {
-		set question2$, "Here are the items I've found.";
-		set question3$, "取消";
+		set .@question2$, "Here are the items I've found.";
+		set .@question3$, "取消";
 	} else {
-		set question2$, "取消";
-		set question3$, "";
+		set .@question2$, "取消";
 	}
-	switch( select( "請問飛空艇是如何飛行的呢?", ""+question2$+"", ""+question3$+"")) {
+	switch( select( "請問飛空艇是如何飛行的呢?", .@question2$, .@question3$)) {
 	case 1:
 		mes "[杜陸]";
 		mes "很抱歉，那部份是屬於只有船長們才知道";
@@ -2055,7 +2054,7 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 		mes "那麼祝你旅途平安愉快";
 		close2;
 		cutin "",255;
-		end;	
+		end;
 	case 3:
 		mes "[Ferlock]";
 		mes "Well, I hope that";
