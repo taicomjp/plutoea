@@ -128,6 +128,8 @@
 //=       Changed the error behaviour of delitem/delitem2/Zeny. [FlavioJS]
 //= 3.25.20081220
 //=       Extended the behaviour of duplicates (warps/shops/cashshops). [FlavioJS]
+//= 3.26.20090702
+//=       Replaced 'bonusautoscript' by 'autobonus'. [Inkfish]
 //=========================================================
 
 This document is a reference manual for all the scripting commands and functions 
@@ -999,6 +1001,7 @@ From here on, we will have the commands sorted as follow:
 4.- Player-related commands.
 5.- Mob / NPC -related commands.
 6.- Other commands.
+7.- Instance Commands.
 
 =====================
 |1.- Basic commands.|
@@ -1193,7 +1196,7 @@ with other command, such as "if", but often used on it's own.
 Label:
 	mes "This will be seen";
 
-Note by FlavioJS: goto's are "evil" and should be avoided if possible (Ú_Û)
+Note by FlavioJS: goto's are "evil" and should be avoided if possible (Ú_?
 
 ---------------------------------------
 
@@ -1463,6 +1466,7 @@ generally cleaner:
 ---------------------------------------
 
 *callsub <label>{,<argument>,...<argument>};
+*callsub(<label>{,<argument>,...<argument>})
 
 This command will go to a specified label within the current script (do NOT use 
 quotes around it) coming in as if it were a 'callfunc' call, and pass it 
@@ -4443,7 +4447,7 @@ character.
 
 ---------------------------------------
 
-*specialeffect <effect number>;
+*specialeffect <effect number>{,<send_target>};
 
 This command will display special effect with the given number, centered on the 
 specified NPCs coordinates, if any. For a full list of special effect numbers 
@@ -4453,7 +4457,7 @@ released after April 2005.)
 
 ---------------------------------------
 
-*specialeffect2 <effect number>;
+*specialeffect2 <effect number>{,<send_target>};
 
 This command behaves identically to the 'specialeffect', but the effect will be 
 centered on the invoking character's sprite.
@@ -4500,42 +4504,55 @@ kind in 'doc/item_bonus.txt'.
 
 ---------------------------------------
 
-*bonusautoscript <script>,<rate>{,<flag>}
-*bonusautoscript2 <script>,<rate>{,<flag>}
+*autobonus <bonus script>,<rate>,<duration>{,<flag>,{<other script>}};
+*autobonus2 <bonus script>,<rate>,<duration>{,<flag>,{<other script>}};
+*autobonus3 <bonus script>,<rate>,<duration>,<skill id>,{<other script>};
+*autobonus3 <bonus script>,<rate>,<duration>,"<skill name>",{<other script>};
 
 These commands are meant to be used in item scripts. They will probably work 
 outside item scripts, but the bonus will not persist for long. They, as 
 expected, refer only to an invoking character.
 
 What these commands do is 'attach' a script to the player which will get
-executed on attack (or when attacked in the case of bonusautoscript2). Rate is
-the trigger rate of the script (1000 = 100%). The optional argument flag is
-used to classify the type of attack where the script can trigger (it shares
-the same flags as the bAutoSpell bonus script):
+executed on attack (or when attacked in the case of autobonus2).
+
+Rate is the trigger rate of the script (1000 = 100%). 
+
+Duration is the time that the bonus will last for since the script has triggered.
+
+The optional argument 'flag' is used to classify the type of attack where the script
+can trigger (it shares the same flags as the bAutoSpell bonus script):
 
 Range criteria:
-	BF_SHORT: Trigger on melee attack
-	BF_LONG: Trigger on ranged attack
-	Default: BF_SHORT+BF_LONG
+	BF_SHORT:  Trigger on melee attack
+	BF_LONG:   Trigger on ranged attack
+	Default:   BF_SHORT+BF_LONG
 Attack type criteria:
 	BF_WEAPON: Trigger on weapon skills 
-	BF_MAGIC: Trigger on magic skills 
-	BF_MISC: Trigger on misc skills
-	Default: BF_WEAPON
+	BF_MAGIC:  Trigger on magic skills 
+	BF_MISC:   Trigger on misc skills
+	Default:   BF_WEAPON
 Skill criteria:
 	BF_NORMAL: Trigger on normal attacks
-	BF_SKILL: Trigger on skills
-	default: If the attack type is BF_WEAPON (only) BF_NORMAL is used, otherwise
-		BF_SKILL+BF_NORMAL is used.
+	BF_SKILL:  Trigger on skills
+	default:   If the attack type is BF_WEAPON (only) BF_NORMAL is used,
+		   otherwise BF_SKILL+BF_NORMAL is used.
 
-In both cases, when the script triggers, the attached player will be the one
-who holds the bonus. There is currently no way of knowing within this script
-who was the other character (the attacker in autoscript2, or the target in
-autoscript).
+The difference between the optional argument 'other script' and the 'bonus script' is that,
+the former one triggers only when attacking(or attacked) and the latter one runs on 
+status calculation as well, which makes sure, within the duration, the "bonus" that get
+lost on status calculation is restored. So, 'bonus script' is technically supposed to accept
+"bonus" command only. And we usually use 'other script' to show visual effects.
+
+In all cases, when the script triggers, the attached player will be the one
+who holds the bonus. There is currently no way of knowing within this script  
+who was the other character (the attacker in autobonus2, or the target in
+autobonus and autobonus3).
 
 //Grants a 1% chance of starting the state "all stats +10" for 10 seconds when
-//using weapon or misc attacks (both melee and ranged skills).
-	bonusautoscript "{ sc_start SC_INCALLSTATUS,10000,10; }",10,BF_WEAPON|BF_MISC;
+//using weapon or misc attacks (both melee and ranged skills) and shows a special 
+//effect when the bonus is active.
+	autobonus "{ bonus bAllStats,10; }",10,10000,BF_WEAPON|BF_MISC,"{ specialeffect2 EF_FIRESPLASHHIT; }";
 
 ---------------------------------------
 
@@ -4872,7 +4889,7 @@ the homunculus must be on at least 91000/100000 intimacy with it's owner.
 ---------------------------------------
 
 *unitwalk <GID>,<x>,<y>;
-* unitwalk <GID>,<mapid>;
+*unitwalk <GID>,<mapid>;
 
 This is one command, but can be used in two ways. If only the first argument is given,
 the unit whose GID is given will start walking towards the map with the given mapid 
@@ -5143,10 +5160,10 @@ Example 1:
 Example 2:
 
     OnTimer15000:
-				npctalk "Another 15 seconds have passed.";
-        initnpctimer; // You have to use 'initnpctimer' instead of 'setnpctimer 0'.
-        							// This is equal to 'setnpctimer 0' + 'startnpctimer'.
-        							// Alternatively, you can also insert another 'OnTimer15001' label so that the timer won't stop.
+	npctalk "Another 15 seconds have passed.";
+        initnpctimer;   // You have to use 'initnpctimer' instead of 'setnpctimer 0'.
+        		// This is equal to 'setnpctimer 0' + 'startnpctimer'.
+        		// Alternatively, you can also insert another 'OnTimer15001' label so that the timer won't stop.
         end;
        
     // This OnInit label will run when the script is loaded, so that the timer 
@@ -5505,8 +5522,22 @@ mf_fireworks) and whether day/night will be in effect on this map (mf_indoors).
 
 ---------------------------------------
 
+*removemapflag "<map name>",<flag>;
+
+This command removes a mapflag from a specified map. 
+See 'setmapflag' for a list of mapflags.
+
+---------------------------------------
+
+*getmapflag("<map name>",<flag>)
+
+This command checks the status of a given mapflag. 
+Returns 1 for ON, 0 for OFF. See 'setmapflag' for a list of mapflags.
+
+---------------------------------------
+
 *setbattleflag "<battle flag>",<value>;
-*getbattleflag "<battle flag>";
+*getbattleflag("<battle flag>)
 
 Sets or gets the value of the given battle flag.
 Battle flags are the flags found in the battle/*.conf files and is also used in Lupus' variable rates script.
@@ -5518,12 +5549,6 @@ Example(s):
 	
 //will return the value of the base experience rate (when used after the above example, it would return 2000).
 	getBattleFlag "base_exp_rate";
-
----------------------------------------
-
-*removemapflag "<map name>",<flag>;
-
-This command removes a mapflag from a specified map. See 'setmapflag'.
 
 ---------------------------------------
 
@@ -5781,7 +5806,7 @@ memory of where the points are set whatsoever.
 This command will display a picture stored in the GRF file in the client for the 
 player. 
 
-The files are taken from '\data\texture\A_A£AIèIíÑAI´ß\illust' directory in the 
+The files are taken from '\data\texture\¿Ø¿˙¿Œ≈Õ∆‰¿ÃΩ∫\illust' directory in the 
 GRF file. Also it seems that card cutins from \cardbmp will work here as well. 
 Only bitmaps (images stored in the bitmap format) will actually get displayed. 
 The '.bmp' extension is optional. 
@@ -6095,7 +6120,7 @@ Type can optionally be used indicates which script to set (default is 0):
 Example:
 
 setitemscript 2637,"{ if(isequipped(2236)==0)end; if(getskilllv(26)){skill 40,1;}else{skill 26,1+isequipped(2636);} }";
-setitemscript 2639,"";
+setitemscript 2637,"";
 
 ---------------------------------------
 
@@ -6335,6 +6360,95 @@ this one update client part too to avoid the glith problem.
 *readbook <book id>,<page>;
 
 This will open a book item at the specified page
+
+---------------------------------------
+
+========================
+|7.- Instance commands.|
+========================
+---------------------------------------
+
+*instance_create("<Instance Name>",<Party ID>,<Instance>)
+
+Create an instance using the name "<Instance Name>" for the Party of <Party ID>.
+Instance ID currently will only be ID_ENDLESS (5) or ID_CATACOMBS (6)
+Most Instance_* commands are used in conjunction with this command and depend
+on the ID this command returns.
+
+Example: 
+	// Store the Party ID of the invoking character.
+	set .@party_id, getcharid(1);
+	// Atempt to create an instance using that party ID.
+	set .@id, instance_create("Endless Tower", .@party_id, ID_ENDLESS);
+	if (.@id == -1) { // Party ID is in use by another instance.
+		...
+	}
+	else (.@id < 0) { // Unspecified error while queuing instance.
+		...
+	}
+---------------------------------------
+
+*instance_destroy(<Instance ID>)
+
+Destroys instance with the ID <Instance ID>.
+
+---------------------------------------
+
+*instance_attachmap(<Instance ID>,"<Map Name>")
+*instance_detachmap(<Instance ID>,"<Map Name>")
+
+Attach or detach the map "<Map Name>" to the instance with the <Instance ID>.
+
+---------------------------------------
+
+*instance_init(<Instance ID>);
+
+Initiate the instance of <Instance ID>.
+
+---------------------------------------
+
+*instance_announce <Instance ID>,"<text>",<flag>{,<color>};
+
+Works like announce, but has the <Instance ID> paramter, where 0 = active instance?
+
+---------------------------------------
+
+*instance_attach(<Instance ID>);
+
+Attaches a script to the proviced <Instance ID>?
+
+---------------------------------------
+
+*instance_npcname("<NPC Name>",<Instance ID>)
+
+Retrieve the unique name given to a copy of an NPC for an instance, the given
+"<NPC Name>" that belonds to instance <Instance ID>. Can be used with such commands
+as enablenpc and disablenpc, donpcevent, etc.
+
+---------------------------------------
+
+*has_instance("<Map Name>")
+
+Check if the player has been queued for the <Map Name> instance.
+
+---------------------------------------
+
+*instance_id(<?>)
+
+Apparantly returns the ID the player is currently attached too.
+
+---------------------------------------
+
+*instance_warpall "<Map Name>",<x>,<y>;
+
+Warp all palyers in the instance to <map name> and given coordinates.
+
+---------------------------------------
+
+*instance_set_timeout <Time1>,<Time2>,<Instance ID>;
+
+Lifetime of <Time1> for <Instance ID>, while <Time2> is how long until the 
+instance times out while inactive. 
 
 ---------------------------------------
 
