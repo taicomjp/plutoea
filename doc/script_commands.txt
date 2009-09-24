@@ -1198,7 +1198,7 @@ with other command, such as "if", but often used on it's own.
 Label:
 	mes "This will be seen";
 
-Note by FlavioJS: goto's are "evil" and should be avoided if possible (�_?
+Note by FlavioJS: goto's are "evil" and should be avoided if possible (ò_ó)
 
 ---------------------------------------
 
@@ -1480,16 +1480,48 @@ you like, to save space and time, without creating extra NPC objects which are
 needed with 'callfunc'. A label is not callable in this manner from another 
 script.
 
-		mes "[Woman]"
-		mes "Lets see if you win";
-		callsub Check;
-		mes "Well done you have won";
+Example 1: callsub for checking (if checks pass, return to script)
+	callsub S_CheckFull, "guild_vs2",50;
+	switch( rand(4) ) {
+		case 0:	warp "guild_vs2",9,50;	end;
+		case 1:	warp "guild_vs2",49,90;	end;
+		case 2:	warp "guild_vs2",90,50;	end;
+		case 3:	warp "guild_vs2",49,9;	end;
+	}
+
+...
+
+S_CheckFull:
+	if (getmapusers(getarg(0)) >= getarg(1)) {
+		mes "I'm sorry, this arena is full.  Please try again later.";
 		close;
-	Check:
-		set @win, rand(2);
-		if(@win==0) return;
-		mes "Sorry you lost";
-		close;
+	}
+	return;
+
+Example 2: callsub used repeatedly, with different arguments
+// notice how the zeny check/delete is reused, instead of copy-pasting for every warp
+	switch(select("Abyss Lake:Amatsu Dungeon:Anthell:Ayothaya Dungeon:Beacon Island, Pharos") {
+		case 1:	callsub S_DunWarp,"hu_fild05",192,207;
+		case 2:	callsub S_DunWarp,"ama_in02",119,181;
+		case 3:	callsub S_DunWarp,"moc_fild20",164,145;
+		case 4:	callsub S_DunWarp,"ayo_fild02",279,150;
+		case 5:	callsub S_DunWarp,"cmd_fild07",132,125;
+		// etc
+	}
+
+...
+
+S_DunWarp:
+// getarg(0) = "mapname"
+// getarg(1) = x
+// getarg(2) = y
+	if (Zeny >= 100) {
+		set Zeny, Zeny-100;
+		warp getarg(0),getarg(1),getarg(2);
+	} else {
+		mes "Dungeon warp costs 100 zeny.";
+	}
+	close;
 
 ---------------------------------------
 
@@ -2282,7 +2314,7 @@ You can also use it to make sure people don't pass a point before removing an
 item totally from them. Let's say you don't want people to wear Legion Plate 
 armor, but also don't want them to equip if after the check, you would do this:
 
-        if ((getequipid(EQI_ARMOR) == 2341) || (getequipid(EQI_ARMOR) == 2342) goto L_EquipedLegionPlate; 
+        if ((getequipid(EQI_ARMOR) == 2341) || (getequipid(EQI_ARMOR) == 2342) goto L_EquipedLegionPlate;
     // the || is used as an or argument, there is 2341 and 2342 cause there are 
     // two different legion plate armors, one with a slot one without.
         if ((countitem(2341) > 0) || (countitem(2432) > 0) goto L_InventoryLegionPlate;
@@ -3080,7 +3112,7 @@ other length limits and asking them to try to input something else.
 
 ---------------------------------------
 
-*skillpointcount; 
+*skillpointcount()
 
 Returns the total amount of skill points a character posesses (SkillPoint+SP's used in skills)
 This command can be used to check the currently attached characters total amount of skillpoints.
@@ -3095,7 +3127,7 @@ Example:
 	
 //Self-explanatory... :P
 	if (skillPointCount() > 20)
-		mes "Wow, you have more then 20 Skill Points in total!"; 
+		mes "Wow, you have more then 20 Skill Points in total!";
 
 ---------------------------------------
 
@@ -3121,7 +3153,7 @@ currently work due to a bug.
 ========================
 -------------------------
 
-*playerattached;
+*playerattached()
 
 Returns the ID of the player currently attached to the script. It will return
 0 if noone is attached, or if the attached player no longer exists on the map
@@ -3132,7 +3164,7 @@ account ID.
 
 ---------------------------------------
 
-*isloggedin(<account id>{,<char id>});
+*isloggedin(<account id>{,<char id>})
 
 This function returns 1 if the specified account is logged in and 0 if they 
 aren't. You can also pass the char_id to check for both account and char id.
@@ -3592,7 +3624,7 @@ There is also a nice example on using this with the 'rand' function, to give you
 a random ammount of healing.
 
     // This will heal anything thing from 100 to 150 HP and no SP
-    itemheal rand(100,150),0; 
+    itemheal rand(100,150),0;
 
 ---------------------------------------
 
@@ -3629,9 +3661,9 @@ list of job names and the numbers they correspond to can be found in
 'db/const.txt'.
 
     // This would change your player into a Swordman
-    jobchange Job_Swordman; 
+    jobchange Job_Swordman;
     // This would change your player into a Swordman High
-    jobchange Job_Swordman_High; 
+    jobchange Job_Swordman_High;
 
 'upper flag' can alternatively be used to specify the type of job one changes
 to. For example, jobchange Job_Swordman,1; will change the character to a high
@@ -3784,12 +3816,12 @@ a palette number that exists/is usable by the client you use.
     // This will change your hair(6), so that it uses palette 8, what ever your 
     // palette 8 is, your hair will use that colour
 
-    setlook 6,8; 
+    setlook 6,8;
 
     // This will change your clothes(7), so they are using palette 1, whatever 
     // your palette 1 is, your clothes will then use that set of colours.
     
-    setlook 7,1; 
+    setlook 7,1;
 
 Here are the possible look types:
  
@@ -3991,11 +4023,11 @@ Failure occurs when there is:
 Example:
 
 //This will give the currently attached player a Aaron's Apple (if Aaron is online).
-	getnameditem "Apple","Aaron"; 
+	getnameditem "Apple","Aaron";
 	
 //Self-explanatory (I hope).
 	if (getnameitem("Apple","Aaron")) {
-		mes "You now have a Aaron's Apple!"; 
+		mes "You now have a Aaron's Apple!";
 	}
 
 ---------------------------------------
@@ -4633,11 +4665,11 @@ previously, they will now at 0+the level given.
 
 // This will permanently give the character Stone Throw (TF_THROWSTONE,152), at 
 // level 1.
-    skill 152,1,0; 
+    skill 152,1,0;
 
 ---------------------------------------
 
-*nude; 
+*nude;
 
 This command will unequip anything equipped on the invoking character.
 
@@ -4722,7 +4754,7 @@ online.
 ---------------------------------------
 
 *pcfollow <id>,<target id>;
-*pcstopfollow <id>; 
+*pcstopfollow <id>;
 
 Makes a character follow or stop following someone. This command does the same as the @follow command.
 The main difference is that @follow can use character names, and this commands needs the Account ID for the target.
@@ -5136,20 +5168,31 @@ Since trunk r11779
 *deltimer "<NPC object name>::<event label>";
 *addtimercount <ticks>,"<NPC object name>::<event label>";
 
-These commands will create, destroy, and delay a countdown timer - 'addtimer' to 
+These commands will create and manage a player-based timer: 'addtimer' to 
 create, 'deltimer' to destroy and 'addtimercount' to delay it by the specified 
 number of ticks. For all three cases, the event label given is the identifier of 
-that timer.
+that timer. A player can have multiple timers running at the same time, and 
+there can even be multiple timers referencing the same label.
 
 When this timer runs out, a new execution thread will start in the specified NPC 
-object at the specified label. If no such label is found in the NPC object, it 
-will run as if clicked. In either case, the script runs with no RID attached.
+object at the specified label, and the script will run attached to that player. 
+If the specified label is not found, the map server will happily print an error.
 
 The ticks are given in 1/1000ths of a second.
 
 One more thing. These timers are stored as part of player data. If the player
 logs out, all of these get immediately deleted, without executing the script.
 If this behavior is undesirable, use some other timer mechanism (like 'sleep').
+
+Example 1:
+<NPC Header> {
+	dispbottom "Starting a 5 second timer...";
+	addtimer 5000, strnpcinfo(3)+"::On5secs";
+	end;
+On5secs:
+	dispbottom "5 seconds have passed!";
+	end;
+}
 
 ---------------------------------------
 
@@ -5238,7 +5281,7 @@ Example 2:
 
     OnTimer15000:
 	npctalk "Another 15 seconds have passed.";
-        initnpctimer;   // You have to use 'initnpctimer' instead of 'setnpctimer 0'.
+        initnpctimer; // You have to use 'initnpctimer' instead of 'setnpctimer 0'.
         		// This is equal to 'setnpctimer 0' + 'startnpctimer'.
         		// Alternatively, you can also insert another 'OnTimer15001' label so that the timer won't stop.
         end;
@@ -5263,7 +5306,7 @@ Example 4:
     mes "[Man]";
     mes "Ok I will let you have 30 sec more";
     close2;
-    setnpctimer (getnpctimer(0)-30000); 
+    setnpctimer (getnpctimer(0)-30000);
     // Notice the 'close2'. If there were a 'next' there the timer would be 
     // changed only after the player pressed the 'next' button.
     end;
@@ -5624,8 +5667,8 @@ Example(s):
 //will set the base experience rate to 20x (2000%)
 	setBattleFlag "base_exp_rate",2000;
 	
-//will return the value of the base experience rate (when used after the above example, it would return 2000).
-	getBattleFlag "base_exp_rate";
+//will return the value of the base experience rate (when used after the above example, it would print 2000).
+	mes getBattleFlag("base_exp_rate");
 
 ---------------------------------------
 
@@ -5715,7 +5758,7 @@ returns a guild id:
 // This will change the emblem on the flag to that of the guild that owns
 // "guildcastle"
 
-    flagemblem GetCastleData("guildcastle",1); 
+    flagemblem GetCastleData("guildcastle",1);
 
 ---------------------------------------
 
@@ -6554,12 +6597,12 @@ Remove the quest of the given <ID> from the user's quest log.
 
 *changequest <ID>,<ID2>;
 
-Remove quest of the given <ID> from the user's quest log, and change state to "complete".
+Remove quest of the given <ID> from the user's quest log.
 Add quest of the <ID2> to the the quest log, and the state is "active".
 
 ---------------------------------------
 
-checkquest(<ID>{,PLAYTIME|HUNTING});
+*checkquest(<ID>{,PLAYTIME|HUNTING})
 
 If no additonal argument supplied, return the state of the quest: 
 	-1 = Quest not started (not in quest log)
