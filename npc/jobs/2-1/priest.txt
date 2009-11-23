@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 祭司 轉職腳本 - 
 //===================================
-// 版本：2.4a
+// 版本：2.5
 //===================================
 
 prt_church,16,41,4	script	高等級 祭司#prst	60,{
@@ -226,6 +226,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 					close;
 				}
 				set PRIEST_Q,1;
+				setquest 8009;
 				mes "[湯瑪斯 神父]";
 				mes "很好，那麼我就告訴你關於祭司的修行";
 				mes "雖然修行歷程很痛苦，希望你能夠順利克服，" +strcharinfo(0)+ "";
@@ -263,6 +264,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 					mes "[湯瑪斯 神父]";
 					mes "那麼，現在就開始驅魔修行嗎?";
 					set PRIEST_Q,5;
+					changequest 8009,8011;
 					next;
 					if (select("請開始吧:我準備一下再過來") == 1) {
 						mes "[湯瑪斯 神父]";
@@ -298,6 +300,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 				next;
 				mes "[湯瑪斯 神父]";
 				mes "願神保佑你...";
+				changequest 8009,8010;
 				close;
 			}
 			mes "[湯瑪斯 神父]";
@@ -380,6 +383,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 	}
 	else if (PRIEST_Q == 4) {
 		set PRIEST_Q,5;
+		changequest 8010,8011;
 		mes "[湯瑪斯 神父]";
 		mes "你已經見過攸晤斯克神父了嗎";
 		mes "恭喜你順利完成第一階段的巡禮修行";
@@ -491,6 +495,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 		mes "恭喜你，你已經完成了全部的修行";
 		mes "我現在就讓你轉職成為祭司";
 		next;
+		changequest 8015,8016;
 		mes "[湯瑪斯 神父]";
 		mes "神啊...願您將您的全能賜與您面前的這位信徒吧";
 		mes "請你賜給這位信徒傲立於世的強大意志、";
@@ -501,6 +506,7 @@ prt_church,16,41,4	script	高等級 祭司#prst	60,{
 		mes "願您能幫助我們在這世界上行您的奇跡...";
 		next;
 		set .@joblvl,JobLevel;
+		completequest 8016;
 		callfunc "Job_Change",Job_Priest;
 		callfunc "F_ClearJobVar";
 		mes "[湯瑪斯 神父]";
@@ -722,6 +728,9 @@ prt_church,27,24,1	script	奉獻的 修女	79,{
 		close;
 	}
 	else if (PRIEST_Q == 7) {
+		if(checkquest(8014) == -1) {
+			changequest 8013,8014;
+		}
 		mes "辛苦你了!";
 		mes "你已經順利回來了，你現在已經到達了轉職的最後階段了";
 		next;
@@ -865,6 +874,7 @@ L_AskQuestions:
 		mes "[欣詩 修女]";
 		mes "希望神會保佑你...";
 		set PRIEST_Q,8;
+		changequest 8014,8015;
 		close;
 	}
 	else if (PRIEST_Q == 8) {
@@ -997,6 +1007,7 @@ job_prist,24,187,4	script	彼特神父	110,{
 			mes "有分為幾個階段，所以你要小心";
 			mes "那麼，進去吧!";
 			close2;
+			changequest 8011,8012;
 			warp "job_prist",24,44;
 			donpcevent "驅魔#prst::OnEnable";
 			donpcevent "彼特神父::OnDisable";
@@ -1041,6 +1052,9 @@ job_prist,24,187,4	script	彼特神父	110,{
 			mes "Kill those";
 			mes "misbegotten creatures!";
 			close2;
+			if(checkquest(8012) == -1) {
+				changequest 8011,8012;
+			}
 			warp "job_prist",24,44;
 			donpcevent "驅魔#prst::OnEnable";
 			donpcevent "彼特神父::OnDisable";
@@ -1699,6 +1713,9 @@ OnTouch:
 	}
 	else if (BaseClass == Job_Acolyte) {
 		set PRIEST_Q,7;
+		if(checkquest(8012) != -1) {
+			changequest 8012,8013;
+		}
 		warp "prt_church",16,37;
 		donpcevent "驅魔2::OnDisable";
 	}

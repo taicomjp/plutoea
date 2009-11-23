@@ -132,6 +132,7 @@ aldeba_in,223,167,3	script	特傑雷諾	709,{
 			mes "[特傑雷諾]";
 			mes "那麼，就在這等待你回來唷!";
 			set SUPNOV_Q,1;
+			setquest 6010;
 			close;
 		case 2:
 			mes "[特傑雷諾]";
@@ -178,6 +179,8 @@ aldeba_in,223,167,3	script	特傑雷諾	709,{
 		mes "這次請不要忘記啊~";
 		close;
 	}
+	delitem 938,30;
+	delitem 907,30;
 	mes "[特傑雷諾]";
 	mes "哦..果然如我預測般";
 	mes "你真的適合過普通又平凡的人生";
@@ -193,13 +196,12 @@ aldeba_in,223,167,3	script	特傑雷諾	709,{
 	mes "- 你突然不知道要說什麼好! -";
 	mes "- 那一瞬間! -";
 	next;
-	delitem 938,30;
-	delitem 907,30;
 	getitem 2339,1;
-	nude;
+	completequest 6010;
 	callfunc "F_ClearJobVar";
-	jobchange 23;
-	set SUPNOV_Q,0;
+	getitem 2339,1; //G_Strings
+	if (Upper==0) jobchange Job_SuperNovice;
+	if (Upper==2) jobchange Job_Super_Baby;
 	mes "[特傑雷諾]";
 	mes "哇哈哈哈!嚇了一跳?";
 	mes "只是對普通又平凡的日常生活";
@@ -222,7 +224,6 @@ aldeba_in,223,167,3	script	特傑雷諾	709,{
 	close;
 }
 
-//==============================================================
 aldeba_in,216,169,5	script	艾賽雷依	86,{
 	if(Class == 23) {
 		mes "[艾賽雷依]";
@@ -256,7 +257,6 @@ aldeba_in,216,169,5	script	艾賽雷依	86,{
 	close;
 }
 
-// -- Car Rental --
 aldebaran,54,238,5	script	卡普拉 職員::kaf_sn	117,{	
 	if(BaseJob != Job_SuperNovice) {
 		mes "[卡普拉 職員]";

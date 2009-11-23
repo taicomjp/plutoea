@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 賢者 轉職腳本 - 
 //===================================
-// 版本：2.4a
+// 版本：2.7
 //===================================
 
 yuno_in02,38,61,5	script	學院 院長#sa	743,{
@@ -54,12 +54,12 @@ yuno_in02,38,61,5	script	學院 院長#sa	743,{
 			mes "多多告知及幫忙，";
 			mes "他們也會相對的幫助你的...";
 		}
-		close;
+		close2;
+		cutin "job_sage_kayron",255;
+		end;
 	}
 	switch (SAGE_Q) {
 	case 0:
-		cutin "job_sage_kayron",2;
-		mes "[凱倫 葛瑞]";
 		mes "對於魔法充滿熱情的你，歡迎你，";
 		mes "來到這裡有什麼事?";
 		next;
@@ -134,6 +134,7 @@ yuno_in02,38,61,5	script	學院 院長#sa	743,{
 			mes "文筆雖然還沒有成熟，不過寫的還不錯，";
 			mes "對...你看起來頗有研究天份，";
 			next;
+			completequest 2052;
 			callfunc "Job_Change",Job_Sage;
 			callfunc "F_ClearJobVar";
 			mes "[凱倫 葛瑞]";
@@ -317,6 +318,7 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 					mes "請去找柯瑞土斯教授吧，";
 					mes "他就在裡面左邊的房間內";
 					set SAGE_Q,4;
+					setquest 2041;
 					close;
 				}
 				mes "[梅泰伍司 詩夫]";
@@ -331,6 +333,7 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 						mes "好了，已經收下你的入學申請費用了，";
 						mes "恭喜你完成申請的手續";
 						set SAGE_Q,4;
+						setquest 2041;
 						next;
 						mes "[梅泰伍司 詩夫]";
 						mes "去見柯瑞土斯教授就可以了，";
@@ -349,6 +352,7 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 					mes "把要求的物品都找來了，辛苦了";
 					mes "在此承認你的入學資格";
 					set SAGE_Q,4;
+					setquest 2041;
 					next;
 					mes "[梅泰伍司 詩夫]";
 					mes "去見柯瑞土斯教授就可以了，";
@@ -381,6 +385,7 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 					mes "請去找柯瑞土斯教授吧，";
 					mes "他就在裡面左邊的房間內";
 					set SAGE_Q,4;
+					setquest 2041;
 					close;
 				}
 				if (Zeny > 43210) {
@@ -413,18 +418,21 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 						switch(rand(1,3)) {
 						case 1:
 							set SAGE_Q,1;
+							setquest 2043;
 							mes "^3355FF羽毛^000000 50個";
 							mes "^3355FF毛^000000 50個";
 							mes "^3355FF鐵礦石^000000 25個";
 							break;
 						case 2:
 							set SAGE_Q,2;
+							setquest 2044;
 							mes "^3355FF三葉幸運草^000000 50個";
 							mes "^3355FF柔毛^000000 50個";
 							mes "^3355FF墨汁^000000 25個";
 							break;
 						case 3:
 							set SAGE_Q,3;
+							setquest 2045;
 							mes "^3355FF羽毛^000000 50個";
 							mes "^3355FF毛^000000 50個";
 							mes "^3355FF三葉幸運草^000000 50個";
@@ -521,10 +529,10 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 				next;
 				mes "[梅泰伍司 詩夫]";
 				mes "請你收集以下的物品來交給我";
-				mes .@count[0]+"個^3355FF"+.@item[0]+"^000000";
-				mes .@count[1]+"個^3355FF"+.@item[1]+"^000000";
-				mes .@count[2]+"個^3355FF"+.@item[2]+"^000000";
-				if (SAGE_Q == 3) mes .@count[3]+"個^3355FF"+.@item[3]+"^000000";
+				mes .@count[0]+"個^3355FF"+getitemname(.@item[0])+"^000000";
+				mes .@count[1]+"個^3355FF"+getitemname(.@item[1])+"^000000";
+				mes .@count[2]+"個^3355FF"+getitemname(.@item[2])+"^000000";
+				if (SAGE_Q == 3) mes .@count[3]+"個^3355FF"+getitemname(.@item[3])+"^000000";
 				next;
 				mes "[梅泰伍司 詩夫]";
 				mes "把以上的物品拿來給我的話，";
@@ -549,6 +557,18 @@ yuno_in03,154,35,4	script	學院 相關人員#a	742,{
 		mes "好，入學手續辦好了，";
 		mes "那麼馬上去考入學考試吧！";
 		set SAGE_Q,4;
+		if(checkquest(2043) != -1) {
+			changequest 2043,2041;
+		}
+		else if(checkquest(2044) != -1) {
+			changequest 2044,2041;
+		}
+		else if(checkquest(2045) != -1) {
+			changequest 2045,2041;
+		}
+		else {
+			setquest 2041;
+		}
 		next;
 		mes "[梅泰伍司 詩夫]";
 		mes "接下來去見柯瑞土斯教授就可以了，";
@@ -676,7 +696,7 @@ yuno_in03,105,177,5	script	筆試 考試 教授#s	754,{
 		mes "拿去給凱倫院長點評吧";
 		mes "你能不能畢業就看院長的決定了";
 		close;
-	dafault:
+	default:
 		mes "現在正忙於計算其它學生的考試分數....";
 		mes "不好意思，請等下再來找我吧";
 		close;
@@ -1026,6 +1046,7 @@ yuno_in03,105,177,5	script	筆試 考試 教授#s	754,{
 			mes "能做到這樣也算不錯了";
 		}
 		set SAGE_Q,6;
+		changequest 2041,2046;
 		next;
 		mes "[柯瑞土斯 貝多爾]";
 		mes "好，你通過了我的筆試";
@@ -1034,6 +1055,7 @@ yuno_in03,105,177,5	script	筆試 考試 教授#s	754,{
 		}
 		else if (.@sage_t >= 80) {
 			set SAGE_Q,6;
+			changequest 2041,2046;
 			mes "真是差強人意，";
 			mes "不過這種水準應該可以聽課了";
 			next;
@@ -1190,6 +1212,7 @@ yuno_in03,169,180,3	script	術科考試 教授	755,{
 		switch(rand(1,3)) {
 		case 1:
 			set SAGE_Q,9;
+			changequest 2046,2047;
 			mes "[海爾梅斯 特利斯]";
 			mes "你就去做有關於天地樹的研究吧，";
 			mes "傳說天地樹是世界上所有生命的根源";
@@ -1202,6 +1225,7 @@ yuno_in03,169,180,3	script	術科考試 教授	755,{
 			break;
 		case 2:
 			set SAGE_Q,11;
+			changequest 2046,2048;
 			mes "[海爾梅斯 特利斯]";
 			mes "你就做關於生物魔法的研究吧，";
 			mes "是增廣有關我們在處理，基本魔法的暸解";
@@ -1215,6 +1239,7 @@ yuno_in03,169,180,3	script	術科考試 教授	755,{
 			break;
 		case 3:
 			set SAGE_Q,13;
+			changequest 2046,2049;
 			mes "[海爾梅斯 特利斯]";
 			mes "你就做關於屬性魔法的研究吧，";
 			mes "是增廣有關我們在處理，基本魔法的暸解";
@@ -1367,6 +1392,7 @@ yuno_in03,62,176,2	script	歷史課 教授#sa	109,{
 			mes "不會很難吧? 對吧?";
 			mes "那帶10個來就開始吧~";
 			set SAGE_Q2,1;
+			changequest 2047,2050;
 			close;
 		}
 		else {
@@ -1475,6 +1501,7 @@ yuno_in03,62,176,2	script	歷史課 教授#sa	109,{
 			next;
 			set SAGE_Q2,0;
 			set SAGE_Q,10;
+			changequest 2050,2051;
 			mes "[斯必安 萊利斯]";
 			mes "收集好了就回來找我吧";
 			mes "快要完成了，加油啊";
@@ -1654,6 +1681,7 @@ yuno_in03,62,176,2	script	歷史課 教授#sa	109,{
 			mes ".................................";
 			next;
 			set SAGE_Q,15;
+			changequest 2051,2052;
 			mes "[斯必安 萊利斯]";
 			mes "噢，你寫好了嗎?";
 			mes "請好好保管你的論文，";
@@ -1774,18 +1802,21 @@ yuno_in03,32,102,1	script	生物學 教授#sa	755,{
 			mes "我現在需要";
 			if (sage_m4 == 1) {
 				set SAGE_Q2,1;
+				changequest 2048,2053;
 				mes "^3355FF觸鬚^000000 5個";
 				mes "^3355FF單細胞^000000 5個";
 				mes "^3355FF魚尾^000000 5個";
 			}
 			else if (sage_m4 == 2) {
 				set SAGE_Q2,2;
+				changequest 2048,2054;
 				mes "^3355FF鉗子^000000 5個";
 				mes "^3355FF蛤蜊肉^000000 5個";
 				mes "^3355FF人魚之心^000000 5個";
 			}
 			else {
 				set SAGE_Q2,3;
+				changequest 2048,2055;
 				mes "^3355FF血管^000000 5個";
 				mes "^3355FF鉗子^000000 5個";
 				mes "^3355FF銳利麟片^000000 5個";
@@ -1861,23 +1892,59 @@ yuno_in03,32,102,1	script	生物學 教授#sa	755,{
 				switch(rand(1,4)) {
 				case 1:
 					set SAGE_Q2,4;
+					if(checkquest(2053) != -1) {
+						changequest 2053,2056;
+					}
+					else if(checkquest(2054) != -1) {
+						changequest 2054,2056;
+					}
+					else {
+						changequest 2055,2056;
+					}
 					mes "^3355FF蜘蛛絲^000000 5個";
 					mes "^3355FF堅硬外殼^000000 5個";
 					mes "^3355FF昆蟲觸角^000000 5個";
 					break;
 				case 2:
 					set SAGE_Q2,5;
+					if(checkquest(2053) != -1) {
+						changequest 2053,2057;
+					}
+					else if(checkquest(2054) != -1) {
+						changequest 2054,2057;
+					}
+					else {
+						changequest 2055,2057;
+					}
 					mes "^3355FF硬角^000000 5個";
 					mes "^3355FF蝸牛殼^000000 5個";
 					mes "^3355FF蛾蝶蟲翅膀粉末^000000 5個";
 					break;
 				case 3:
 					set SAGE_Q2,6;
+					if(checkquest(2053) != -1) {
+						changequest 2053,2058;
+					}
+					else if(checkquest(2054) != -1) {
+						changequest 2054,2058;
+					}
+					else {
+						changequest 2055,2058;
+					}
 					mes "^3355FF螳螂臂^000000 5個";
 					mes "^3355FF昆蟲外殼^000000 5個";
 					mes "^3355FF彩色昆蟲外殼^000000 5個";
 					break;
 				case 4:
+					if(checkquest(2053) != -1) {
+						changequest 2053,2059;
+					}
+					else if(checkquest(2054) != -1) {
+						changequest 2054,2059;
+					}
+					else {
+						changequest 2055,2059;
+					}
 					set SAGE_Q2,7;
 					mes "^3355FF蜘蛛絲^000000 5個";
 					mes "^3355FF螳螂臂^000000 5個";
@@ -1953,6 +2020,18 @@ yuno_in03,32,102,1	script	生物學 教授#sa	755,{
 				mes "快要完成了，加油啊";
 				set SAGE_Q2,0;
 				set SAGE_Q,12;
+				if(checkquest(2056) != -1) {
+					changequest 2056,2051;
+				}
+				else if(checkquest(2057) != -1) {
+					changequest 2057,2051;
+				}
+				else if(checkquest(2058) != -1) {
+					changequest 2058,2051;
+				}
+				else {
+					changequest 2059,2051;
+				}
 				close;
 			}
 			mes "什麼，忘了要找什麼物品?";
@@ -2012,6 +2091,7 @@ yuno_in03,32,102,1	script	生物學 教授#sa	755,{
 			mes ".................................";
 			next;
 			set SAGE_Q,15;
+			changequest 2051,2052;
 			getitem 1550,1;
 			mes "[路西伍司 凱莎斯]";
 			mes "嗯哼，辛苦了!";
@@ -2125,6 +2205,7 @@ yuno_in03,244,31,3	script	物理學 教授#sa	120,{
 			mes "那試試看拜託盜賊朋友們看看";
 			mes "那麼，我等你的30個石頭喔";
 			set SAGE_Q2,1;
+			changequest 2049,2060;
 			close;
 		}
 		else if (SAGE_Q2 == 1) {
@@ -2158,6 +2239,7 @@ yuno_in03,244,31,3	script	物理學 教授#sa	120,{
 				mes "還有呢還有呢~";
 				mes "要把我的話聽到最後啊~";
 				set SAGE_Q2,2;
+				changequest 2060,2061;
 				next;
 				mes "[艾貝西 喬勒奇]";
 				mes "幫我做這些箭來吧";
@@ -2220,6 +2302,7 @@ yuno_in03,244,31,3	script	物理學 教授#sa	120,{
 				delitem 1756,50;
 				delitem 1755,50;
 				set SAGE_Q2,3;
+				changequest 2060,2061;
 				next;
 				mes "[艾貝西 喬勒奇]";
 				mes "下次你過來之前，^3051FD聖水^000000可以帶1個來給我嗎?";
@@ -2278,6 +2361,7 @@ yuno_in03,244,31,3	script	物理學 教授#sa	120,{
 				delitem 523,1;
 				set SAGE_Q2,0;
 				set SAGE_Q,14;
+				changequest 2062,2051;
 				next;
 				mes "[艾貝西 喬勒奇]";
 				mes "嗯，再來只要寫好論文就完美了";
@@ -2454,6 +2538,7 @@ yuno_in03,244,31,3	script	物理學 教授#sa	120,{
 			mes ".................................";
 			next;
 			set SAGE_Q,15;
+			changequest 2051,2052;
 			mes "[艾貝西 喬勒奇]";
 			mes "呵呵~";
 			mes "好像有抓到一些感覺嘛~";
@@ -2514,17 +2599,13 @@ job_sage,50,165,4	script	考試等待室#sg	700,{
 OnInit:
 	disablenpc "考試等待室#sg";
 	waitingroom "考試等待室",20,"考試等待室#sg::OnStartArena",1;
+	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	disablewaitingroomevent;
 	warpwaitingpc "job_sage",116,97;
-	set .Sage_pid,$@warpwaitingpc[0];
-	if (attachrid(.Sage_pid) == 0) {
-		enablewaitingroomevent;
-		end;
-	}
 	donpcevent "Arena#1::OnEnable";
+	disablewaitingroomevent;
 	end;
 
 OnEnable:
@@ -2625,6 +2706,8 @@ OnTimer185000:
 OnTimer186000:
 	disablenpc "Arena#1";
 	donpcevent "考試等待室#sg::OnEnable";
+	stopnpctimer;
+	end;
 }
 
 -	script	Arena#2	-1,{
@@ -2725,6 +2808,8 @@ OnTimer185000:
 OnTimer186000:
 	disablenpc "Arena#2";
 	donpcevent "考試等待室#sg::OnEnable";
+	stopnpctimer;
+	end;
 }
 
 -	script	Arena#Doorkeeper	-1,{
@@ -2776,7 +2861,7 @@ OnTimer50000:
 
 OnTimer60000:
 	mapannounce "job_sage","考試場 : 時間終了！",bc_map;
-	disablenpc "Arena#Doorkeeper";
+	donpcevent "Arena#Doorkeeper::OnReset";
 	end;
 
 OnTimer61000:
@@ -2790,6 +2875,8 @@ OnTimer62000:
 OnTimer63000:
 	disablenpc "Arena#Doorkeeper";
 	donpcevent "考試等待室#sg::OnEnable";
+	stopnpctimer;
+	end;
 }
 
 -	script	Arena#3	-1,{

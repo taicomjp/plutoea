@@ -4,7 +4,7 @@
 // -----------------------------------------
 // - 鐵匠 轉職腳本 -
 //========================
-//= 版本：2.6a
+//= 版本：2.7
 //========================
 
 ein_in01,18,28,4	script	工會會員#BLS	731,{
@@ -138,6 +138,7 @@ ein_in01,18,28,4	script	工會會員#BLS	731,{
 					mes "你去幫他的忙吧... 你的第一次考試.";
 					next;
 					set BSMITH_Q,1;
+					setquest 2000;
 					mes "[鐵匠工會裏的  阿特阿伊健]";
 					mes "那麼路上小心.";
 					close;
@@ -192,6 +193,7 @@ ein_in01,18,28,4	script	工會會員#BLS	731,{
 			next;
 			if (select("..太過分了吧. 但是...還是要去啊:嗚啊啊啊!! 我不轉職了啦!") == 1) {
 				set BSMITH_Q,16;
+				changequest 2013,2014;
 				mes "[鐵匠工會裏的  阿特阿伊健]";
 				mes "...很抱歉，但是辦法";
 				mes "你應該也很清楚吧? ";
@@ -227,6 +229,9 @@ ein_in01,18,28,4	script	工會會員#BLS	731,{
 			mes "[鐵匠工會裏的  阿特阿伊健]";
 			mes "喔, 果然... 我的眼光沒有錯. 成功的轉職了啊!";
 			mes "我給你，可以繼承火焰之美學的權利";
+			if(checkquest(2015) != -1) {
+				changequest 2015,2016;
+			}
 			next;
 			set .@joblvl,JobLevel;
 			callfunc "Job_Change",Job_Blacksmith;
@@ -236,6 +241,7 @@ ein_in01,18,28,4	script	工會會員#BLS	731,{
 			mes "不要陷入似欲而脫離正道.!!!";
 			next;
 			delitem 1005,1; //高級鐵砧
+			completequest 2016;
 			mes "[鐵匠工會裏的  阿特阿伊健]";
 			mes "這是...給你的禮物!! 恭喜你轉職!!!";
 			if (.@joblvl > 48)
@@ -401,6 +407,11 @@ L_AskQuestions:
 				mes "分數是 " + .@black_q + "分..";
 				if (.@black_q == 100) {
 					set BSMITH_Q,3;
+					if(checkquest(2001) != -1) {
+						changequest 2001,2002;
+					}else{
+						changequest 2000,2002;
+					}
 					mes "喔喔!! 這樣就沒問題了! 來來...";
 					next;
 					mes "[蓋修坢士特]";
@@ -409,6 +420,9 @@ L_AskQuestions:
 					close;
 				}
 				set BSMITH_Q,2;
+				if(checkquest(2001) == -1) {
+					changequest 2000,2001;
+				}
 				mes ".............";
 				next;
 				mes "[蓋修坢士特]";
@@ -450,15 +464,15 @@ L_AskQuestions:
 			next;
 			switch(rand(1,5)) {
 			//鋼鐵, 腐爛繃帶, 藍色魔力礦石, 言靈魔杖
-			case 1: setarray .@items[0], 999,1, 930,1, 717,2, 1610,1, 4; break;
+			case 1: setarray .@items[0], 999,1, 930,1, 717,2, 1610,1, 4; changequest 2002,2003; break;
 			//星星的粉末, 死人遺骨, 剎勒空結晶, 長柄短劍
-			case 2: setarray .@items[0], 1001,2, 932,1, 912,1, 1219,1, 5; break;
+			case 2: setarray .@items[0], 1001,2, 932,1, 912,1, 1219,1, 5; changequest 2002,2004; break;
 			//煤礦, 堅硬外殼, 火靈礦石, 日本刀
-			case 3: setarray .@items[0], 1003,1, 935,2, 990,2, 1119,1, 6; break;
+			case 3: setarray .@items[0], 1003,1, 935,2, 990,2, 1119,1, 6; changequest 2002,2005; break;
 			//鐵礦石, 獨眼龍眼罩, 藍色魔力礦石, 亞伯雷弓
-			case 4: setarray .@items[0], 1002,1, 2212,1, 717,2, 1713,1, 7; break;
+			case 4: setarray .@items[0], 1002,1, 2212,1, 717,2, 1713,1, 7; changequest 2002,2006; break;
 			//鐵, 綠色藥草, 動物外皮, 圓柄馬刀
-			default: setarray .@items[0], 998,1, 511,1, 919,2, 1122,1, 8; break;
+			default: setarray .@items[0], 998,1, 511,1, 919,2, 1122,1, 8; changequest 2002,2007; break;
 			}
 			set BSMITH_Q,.@items[8];
 			mes "[蓋修坢士特]";
@@ -522,6 +536,9 @@ L_AskQuestions:
 				case 9:
 					mes "那麼. 把這個交給吉芬的 '^8E6B23巴伊斯里特^000000'之後把收據拿給我就好了";
 					getitem 1610,1; //言靈魔杖
+					if(checkquest(2003) != -1) {
+						changequest 2003,2008;
+					}
 					next;
 					mes "[蓋修坢士特]";
 					mes "嗯? 看起來沒什麼特別的嗎?!!";
@@ -538,6 +555,9 @@ L_AskQuestions:
 				case 10:
 					mes "那麼. 把這個交給夢羅克的 '^8E6B23修咖巴殷^000000'之後把收據拿給我就好了";
 					getitem 1219,1; //長柄短劍
+					if(checkquest(2004) != -1) {
+						changequest 2004,2009;
+					}
 					next;
 					mes "[蓋修坢士特]";
 					mes "嗯? 看起來沒什麼特別的嗎?!!";
@@ -554,6 +574,9 @@ L_AskQuestions:
 				Case 11:
 					mes "那麼. 把這個交給里希塔樂鎮的 '哥倫卡史特'之後把收據拿給我就好了..";
 					getitem 1119,1; //日本刀
+					if(checkquest(2005) != -1) {
+						changequest 2005,2010;
+					}
 					next;
 					mes "[蓋修坢士特]";
 					mes "嗯? 看起來沒什麼特別的嗎?!!";
@@ -570,6 +593,9 @@ L_AskQuestions:
 				case 12:
 					mes "那麼. 把這個交給斐揚的 '^8E6B23鐵痞子^000000'之後把收據拿給我就好了";
 					getitem 1713,1; //亞伯雷弓
+					if(checkquest(2006) != -1) {
+						changequest 2006,2011;
+					}
 					next;
 					mes "[蓋修坢士特]";
 					mes "嗯? 看起來沒什麼特別的嗎?!!";
@@ -586,6 +612,9 @@ L_AskQuestions:
 				case 13:
 					mes "那麼. 把這個交給毀葛的 '^8E6B23畢司馬爾克^000000'之後把收據拿給我就好了";
 					getitem 1122,1; //圓柄馬刀
+					if(checkquest(2007) != -1) {
+						changequest 2007,2012;
+					}
 					next;
 					mes "[蓋修坢士特]";
 					mes "嗯? 看起來很普通嗎?!!";
@@ -659,6 +688,21 @@ L_AskQuestions:
 				if (countitem(1073) > 0) {
 					set BSMITH_Q,15;
 					delitem 1073,1; //收據
+					if(checkquest(2008) != -1) {
+						changequest 2008,2013;
+					}
+					else if(checkquest(2009) != -1) {
+						changequest 2009,2013;
+					}
+					else if(checkquest(2010) != -1) {
+						changequest 2010,2013;
+					}
+					else if(checkquest(2011) != -1) {
+						changequest 2011,2013;
+					}
+					else {
+						changequest 2012,2013;
+					}
 					mes "[蓋修坢士特]";
 					mes "Oh ho ho~";
 					mes "Great!";
@@ -1190,6 +1234,7 @@ ein_in01,24,41,5	script	鐵匠 工會員#moc	726,{
 				mes "這兒，我送你一個高級鐵砧.";
 				set BSMITH_Q,17;
 				getitem 1005,1; //高級鐵砧
+				changequest 2014,2015;
 				next;
 				mes "[米特麻依兒]";
 				mes "拿著這個...";

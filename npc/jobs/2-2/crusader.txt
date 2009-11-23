@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 十字軍 轉職腳本 - 
 //===================================
-// 版本：2.9a
+// 版本：3.0
 //===================================
 // 翻譯 - [阿軒]
 //===================================
@@ -116,6 +116,7 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 					delitem 1004, 1;
 					delitem 1009, 1;
 					set CRUS_Q,4;
+					setquest 3009;
 				}
 			mes "[米凱蘭 坎土尼汶]";
 			mes "嗯....";
@@ -128,6 +129,7 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 				set .@cru_m1,rand(1,3);
 				if(.@cru_m1 == 1) {
 					set CRUS_Q, 1;
+					setquest 3006;
 					mes "^3152FF亡者指甲^000000 10個";
 					mes "^3152FF腐爛鱗片^000000 10個";
 					mes "^3152FF老舊犯人服^000000 10個";
@@ -136,6 +138,7 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 				}
 				else if(.@cru_m1 == 2) {
 					set CRUS_Q, 2;
+					setquest 3007;
 					mes "^3152FF死人遺骨^000000 10個";
 					mes "^3152FF獸人指甲^000000 10個";
 					mes "^3152FF手銬^000000 10個";
@@ -144,6 +147,7 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 				}
 				else {
 					set CRUS_Q, 3;
+					setquest 3008;
 					mes "^3152FF亡者牙齒^000000 10個";
 					mes "^3152FF腐爛繃帶^000000 10個";
 					mes "^3152FF手提燈^000000 10個";
@@ -205,6 +209,15 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 			delitem @item3, 10;
 			delitem @item4, 10;
 			set CRUS_Q, 4;
+			if(checkquest(3006) != -1) {
+				changequest 3006,3009;
+			}
+			else if(checkquest(3007) != -1) {
+				changequest 3007,3009;
+			}
+			else {
+				changequest 3008,3009;
+			}
 			mes "[米凱蘭 坎土尼汶]";
 			mes "他會告訴你怎麼做的";
 			mes "當考試全部結束後再回來我這裡";
@@ -239,6 +252,7 @@ prt_castle,45,169,5	script	十字軍 領袖	752,{
 		mes "身心都已經準備好和我們一起準備聖戰了";
 		next;
 		set .@Joblevel,JobLevel;
+		completequest 3015;
 		callfunc "Job_Change",Job_Crusader;
 		callfunc "F_ClearJobVar";
 		mes "[米凱蘭 坎土尼汶]";
@@ -343,6 +357,8 @@ prt_castle,164,32,1	script	受苦難者	733,{
 			mes "有一件事情希望你能牢記";
 			mes "無論發生什麼都不能攻擊怪物";
 			next;
+			set CRUS_Q,5;
+			changequest 3009,3010;
 			mes "[牧勒拿喀 咪月]";
 			mes "那麼請出發吧";
 			close2;
@@ -705,6 +721,7 @@ C_Questions:
 		mes " " + .@cru_t + " 分...";
 		if(.@cru_t == 100) {
 			set CRUS_Q, 8;
+			changequest 3011,3013;
 			mes "請準備下一個考試吧";
 			next;
 			mes "[蓋布利爾 范倫鐵諾]";
@@ -714,6 +731,7 @@ C_Questions:
 		}
 		else if(.@cru_t == 90) {
 			set CRUS_Q, 8;
+			changequest 3011,3013;
 			mes "請準備下一個考試吧";
 			next;
 			mes "[蓋布利爾 范倫鐵諾]";
@@ -723,6 +741,7 @@ C_Questions:
 		}
 		else if (.@cru_t == 80 && CRUS_Q == 7) {
 			set CRUS_Q,8;
+			changequest 3011,3013;
 			mes "請準備下一個考試吧";
 			next;
 			mes "[蓋布利爾 范倫鐵諾]";
@@ -731,6 +750,9 @@ C_Questions:
 			close;
 		}
 		set CRUS_Q,7;
+		if(checkquest(3011) != -1) {
+			changequest 3011,3012;
+		}
 		mes "真可惜....";
 		mes "請你再稍微學習一下再來吧";
 		next;
@@ -812,6 +834,9 @@ prt_castle,35,151,5	script	守衛兵	751,{
 			mes "最後我的考試是，實戰訓練";
 			mes "作為十字軍，必須有卓越的戰鬥能力";
 			next;
+			if(checkquest(3013) != -1) {
+				changequest 3013,3014;
+			}
 			mes "[布里頓 皮耀勒德]";
 			mes "在接受考試之前，請先準備一瓶^3152FF聖水^000000";
 			mes "為了凈化接受考試的人";
@@ -1124,6 +1149,7 @@ OnDead:
 job_cru,98,105,4	script	 Summoner#cr5	45,3,3,{
 OnTouch:
 	set CRUS_Q,6;
+	changequest 3010,3011;
 	warp "prt_castle",164,28;
 	end;
 }
@@ -1149,16 +1175,19 @@ job_cru,24,187,2	script	Waiting Room#cr1	700,{
 
 OnInit:
 	disablenpc "Waiting Room#cr1";
-	waitingroom "等待室",20,"Waiting Room#cr1::OnStart",1;
+	waitingroom "等待室",20,"Waiting Room#cr1::OnStartArena",1;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "job_cru",168,21;
+	donpcevent "Monster Summon#cr0::OnStart";
+	disablewaitingroomevent;
 	end;
 
 OnStart:
-	if (getareausers("job_cru", 160, 16, 190, 190)) end;
-	if (!getwaitingroomstate(33)) end;
-	warpwaitingpc "job_cru",168,21;
-	donpcevent "Monster Summon#cr0::OnStart";
+	enablewaitingroomevent;
 	end;
-
 }
 
 job_cru,168,17,0	script	Zombie Guide	-1,2,2,{
@@ -1179,7 +1208,7 @@ OnInit:
 	end;
 
 OnStart:
-	set .MyMobCount,0;
+	set .MyMonsterCount,0;
 	enablenpc "Monster Summon#cr0";
 	donpcevent "Monster Summon#cr1::OnStart";
 	donpcevent "Monster Summon#cr2::OnStart";
@@ -1204,12 +1233,16 @@ OnMonster2:
 	end;
 
 OnMonster3:
+	monster "job_cru",168,110,"邪骸弓箭手",1016,1,"Monster Summon#cr0::OnDead";
 	monster "job_cru",168,115,"木乃伊",1041,1,"Monster Summon#cr0::OnDead";
 	end;
 
 OnDead:
 	set .MyMonsterCount,.MyMonsterCount+1;
-	if (.MyMonsterCount >= 10) set CRUS_Q,10;
+	if (.MyMonsterCount >= 10) {
+		set CRUS_Q,10;
+		changequest 3014,3015;
+	}
 	end;
 
 OnEnd:
@@ -1265,7 +1298,6 @@ OnInit:
 	end;
 
 OnTouch:
-	monster "job_cru",168,110,"邪骸弓箭手",1016,1;
 	donpcevent "Monster Summon#cr0::OnMonster3";
 	donpcevent "Monster Summon#cr3::OnEnd";
 	end;
@@ -1321,10 +1353,12 @@ OnInit:
 OnTouch:
 	warp "prt_castle",35,147;
 	donpcevent "Monster Summon#cr0::OnReset";
+	donpcevent "Monster Summon#cr4::OnReset";
 	donpcevent "Monster Summon#cr0::OnEnd";
+	donpcevent "Monster Summon#cr4::OnEnd";
+	donpcevent "Monster Summon#cr5::OnEnd";
 	donpcevent "Monster Summon#cr6::OnStop";
 	donpcevent "Monster Summon#cr6::OnEnd";
-	donpcevent "Monster Summon#cr5::OnEnd";
 	donpcevent "Waiting Room#cr1::OnStart";
 	end;
 
@@ -1338,33 +1372,17 @@ OnEnd:
 }
 
 job_cru,2,2,1	script	Monster Summon#cr6	-1,{
-OnTimer60000:
-	donpcevent "Monster Summon#cr8::OnStart";
-	end;
-
-OnTimer61000:
-	donpcevent "Monster Summon#cr8::OnEnd";
-	end;
-
-OnTimer240000:
-	donpcevent "Monster Summon#cr7::OnStart";
-	end;
 
 OnTimer241000:
+	areawarp "job_cru",160,14,175,178,"job_cru",24,169;
 	donpcevent "Monster Summon#cr0::OnReset";
 	donpcevent "Monster Summon#cr4::OnReset";
-	end;
-
-OnTimer242000:
 	donpcevent "Monster Summon#cr0::OnEnd";
 	donpcevent "Monster Summon#cr4::OnEnd";
-	donpcevent "Monster Summon#cr7::OnEnd";
-	end;
-
-OnTimer243000:
+	donpcevent "Monster Summon#cr5::OnEnd";
+	donpcevent "Monster Summon#cr6::OnStop";
 	donpcevent "Monster Summon#cr6::OnEnd";
 	donpcevent "Waiting Room#cr1::OnStart";
-	stopnpctimer;
 	end;
 
 OnInit:
@@ -1384,44 +1402,6 @@ OnStop:
 	stopnpctimer;
 	end;
 }
-
-job_cru,168,110,0	script	Monster Summon#cr7	-1,14,82,{
-OnInit:
-	disablenpc "Monster Summon#cr7";
-	end;
-
-OnTouch:
-	warp "prontera",234,318;
-	end;
-
-OnStart:
-	enablenpc "Monster Summon#cr7";
-	end;
-
-OnEnd:
-	disablenpc "Monster Summon#cr7";
-	end;
-}
-
-job_cru,168,17,0	script	Monster Summon#cr8	-1,14,5,{
-OnInit:
-	disablenpc "Monster Summon#cr8";
-	end;
-
-OnTouch:
-	warp "prontera",234,318;
-	end;
-
-OnStart:
-	enablenpc "Monster Summon#cr8";
-	end;
-
-OnEnd:
-	disablenpc "Monster Summon#cr8";
-	end;
-
-}
-
 //============================================================ 
 // mapflag
 //============================================================ 

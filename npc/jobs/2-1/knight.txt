@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 騎士 轉職腳本 - 
 //===================================
-// 版本：2.8
+// 版本：2.9
 //===================================
 
 prt_in,88,101,4	script	普隆德拉 騎士團長#knt	56,{
@@ -133,6 +133,7 @@ prt_in,88,101,4	script	普隆德拉 騎士團長#knt	56,{
 					end;
 				}
 				set KNIGHT_Q,1;
+				setquest 9000;
 				mes "[騎士團長 海陸曼]";
 				mes "嗯，好，申請我已經收到了";
 				mes "歡迎你來申請考試";
@@ -449,6 +450,7 @@ prt_in,88,101,4	script	普隆德拉 騎士團長#knt	56,{
 		mes "嚴格來說，在每一個回合的考試中並不能說都是滿分...";
 		mes "但是我們的總評價是對於一名騎士來說已經充分的擁有騎士的資質";
 		next;
+		completequest 9012;
 		callfunc "Job_Change",Job_Knight;
 		callfunc "F_ClearJobVar";
 		mes "[騎士團長 海陸曼]";
@@ -564,6 +566,11 @@ prt_in,75,107,4	script	忠實的 騎士#knt	65,{
 				case 2: setarray .@items[0], 1042,5, 950,5, 1032,5, 966,5, 7031,5, 946,5, 3; break;
 			}
 			set KNIGHT_Q,.@items[12];
+			if(KNIGHT_Q == 2) {
+				changequest 9000,9001;
+			}else{
+				changequest 9000,9002;
+			}
 			mes "^236B8E"+.@items[1]+"個"+getitemname(.@items[0])+"^000000,";
 			mes "^236B8E"+.@items[3]+"個"+getitemname(.@items[2])+"^000000,";
 			mes "^236B8E"+.@items[5]+"個"+getitemname(.@items[4])+"^000000,";
@@ -603,6 +610,11 @@ prt_in,75,107,4	script	忠實的 騎士#knt	65,{
 			delitem .@items[6],.@items[7];
 			delitem .@items[8],.@items[9];
 			delitem .@items[10],.@items[11];
+			if(KNIGHT_Q == 2) {
+				changequest 9001,9003;
+			}else{
+				changequest 9002,9003;
+			}
 			set KNIGHT_Q,4;
 			mes "[騎士 安德魯]";
 			mes "那麼, 你就去找我的同士 騎士詹姆士 喜拉吉斯.";
@@ -924,6 +936,7 @@ L_AskQuestions:
 				close;
 			}
 			set KNIGHT_Q,6;
+			changequest 9003,9004;
 			mes "[騎士 詹姆士]";
 			mes "好了，我這裡的考試已經結束了";
 			next;
@@ -1045,6 +1058,7 @@ prt_in,79,94,4	script	武藝的 騎士#knt	733,{
 			mes "...";
 			next;
 			set KNIGHT_Q,7;
+			changequest 9004,9005;
 			mes "[騎士 文強]";
 			mes "...";
 			mes "......";
@@ -1059,6 +1073,9 @@ prt_in,79,94,4	script	武藝的 騎士#knt	733,{
 				mes "...就是這樣..";
 			}
 			close2;
+			if(checkquest(9006) == -1) {
+				changequest 9005,9006;
+			}
 			warp "job_knt",89,101;
 			end;
 		}
@@ -1335,6 +1352,9 @@ OnMyMobDead:
 		mes "...去找艾咪吧...";
 		close2;
 		set KNIGHT_Q,8;
+		if(checkquest(9007) == -1) {
+			changequest 9006,9007;
+		}
 		warp "prt_in",80,100;
 		donpcevent "Knight3::OnDisable";
 		donpcevent "騎士 文強#knt::OnStart";
@@ -1431,6 +1451,9 @@ prt_in,69,107,6	script	有禮貌的 騎士#knt	728,{
 		mes "嗯? 找艾咪有什麼事嗎?";
 		next;
 		if (select("騎士文強叫我來...:沒事.") == 1) {
+			if(checkquest(9008) == -1) {
+				changequest 9007,9008;
+			}
 			mes "[騎士 艾咪]";
 			mes "嘿，來這裡來這裡!";
 			mes "這次輪到艾咪的考試了嘻嘻";
@@ -1574,6 +1597,7 @@ L_AskQuestions:
 			next;
 			if (.@knight_t == 100) {
 				set KNIGHT_Q,10;
+				changequest 9008,9009;
 				mes "[騎士 艾咪]";
 				mes "真不錯!只要你有這樣的精神，";
 				mes "就已經是一個合格的騎士了!";
@@ -1587,6 +1611,7 @@ L_AskQuestions:
 			}
 			else if (.@knight_t == 90) {
 				set KNIGHT_Q,10;
+				changequest 9008,9009;
 				mes "[騎士 艾咪]";
 				mes "雖然有些部分不太滿意  不過就留到最後再決定吧";
 				mes "你去考下一回合得考試吧 愛德蒙登騎士在旁等著你呢";
@@ -1745,6 +1770,7 @@ prt_in,70,99,6	script	虔誠的騎士#knt	734,{
 		mes "希望你能夠保持虔誠的心";
 		close2;
 		set KNIGHT_Q,11;
+		changequest 9009,9010;
 		warp "job_knt",143,57;
 		end;
 	}
@@ -1836,6 +1862,7 @@ OnInit:
 	end;
 OnTouch:
 	set KNIGHT_Q,12;
+	changequest 9010,9011;
 	warp "prt_in",80,100;
 	end;
 }
@@ -2197,6 +2224,7 @@ L_AskQuestions:
 			}
 			else if (.@knight_t == 10) {
 				set KNIGHT_Q,14;
+				changequest 9011,9012;
 				mes "[克萊兒 騎士]";
 				mes "我很高興能跟你聊天，雖然也有擔心之處...";
 				next;

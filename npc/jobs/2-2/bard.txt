@@ -138,6 +138,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 					mes "像現在這樣的話....";
 					mes "也不錯吧....哈哈";
 					set BARD_Q,1;
+					setquest 3000;
 					close2;
 					cutin "job_bard_aiolo01",255;
 					end;
@@ -196,6 +197,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 				mes "任何花都可以啦，希望能拿給我想要的花";
 				mes "不要隨便買一束花，知道嗎?";
 				set BARD_Q,2;
+				changequest 3000,3001;
 				close2;
 				cutin "job_bard_aiolo01",255;
 				end;
@@ -405,6 +407,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 		mes "你到那裡去，帶一些禮物回來吧，怎麼樣?";
 		next;
 		set BARD_Q,3;
+		changequest 3001,3002;
 		set xmas_npc,1;
 		mes "[阿伊歐樂]";
 		mes "^008800和雪人成為朋友^000000的話，應該可以得到什麼東西的吧";
@@ -425,6 +428,9 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 			mes "那麼，唱首歌試試看吧....";
 			mes "從我的本子上選歌來試試吧....";
 			mes "把你會的唱出來";
+			if(checkquest(3003) == -1) {
+				changequest 3002,3003;
+			}
 			next;
 			mes "[阿伊歐樂]";
 			mes "開始了";
@@ -503,6 +509,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 					cutin "job_bard_aiolo01",255;
 					end;
 				}
+				completequest 3003;
 				callfunc "Job_Change",Job_Bard;
 				callfunc "F_ClearJobVar";
 				mes "[阿伊歐樂]";
@@ -515,6 +522,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 				cutin "job_bard_aiolo01",255;
 				end;
 			}
+			changequest 3003,3004;
 			mes "[阿伊歐樂]";
 			mes "嗯...這樣啊";
 			mes "你就帶些^3173FF樹枝^000000來吧";
@@ -608,6 +616,7 @@ comodo.gat,211,155,5	script	流浪的吟遊詩人	741,{
 	end;
 
 S_ChangeJob:
+		completequest 3004;
 		callfunc "Job_Change",Job_Bard;
 		callfunc "F_ClearJobVar";
 		mes "[阿伊歐樂]";

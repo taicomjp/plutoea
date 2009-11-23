@@ -140,14 +140,17 @@ alde_alche,27,185,5	script	鍊金術師 組合員#am	744,{
 				switch(rand(1,3)) {
 				case 1:
 					set ALCH_Q,1;
+					setquest 2028;
 					mes "^551A8B菠色克藥水7個^000000.";
 					break;
 				case 2:
 					set ALCH_Q,2;
+					setquest 2029;
 					mes "^551A8B攜帶用熔礦爐100個^000000.";
 					break;
 				case 3:
 					set ALCH_Q,3;
+					setquest 2030;
 					mes "^551A8B火箭矢 7,500支^000000.";
 				}
 				next;
@@ -181,6 +184,15 @@ alde_alche,27,185,5	script	鍊金術師 組合員#am	744,{
 			mes "再來就是要學習鍊金術師的基礎";
 			mes "現在要學習藥品組合的過程";
 			set ALCH_Q,4;
+			if(checkquest(2028) != -1) {
+				changequest 2028,2031;
+			}
+			else if(checkquest(2029) != -1) {
+				changequest 2029,2031;
+			}
+			else {
+				changequest 2030,2031;
+			}
 			next;
 			mes "[帕樂米 基阿尼諾]";
 			mes "在這之前....";
@@ -209,6 +221,15 @@ alde_alche,27,185,5	script	鍊金術師 組合員#am	744,{
 			mes "不知道有什麼事....";
 			mes "先到樓下去看看可以嗎?";
 			set ALCH_Q,4;
+			if(checkquest(2028) != -1) {
+				changequest 2028,2031;
+			}
+			else if(checkquest(2029) != -1) {
+				changequest 2029,2031;
+			}
+			else {
+				changequest 2030,2031;
+			}
 			close;
 		}
 		mes "還沒準備好嗎?";
@@ -507,6 +528,7 @@ L_AskQuestions:
 			mes "[拉斯普琴 克勒咕哩]";
 			mes "用7.6折低價買進鐵鎧4個，再打8折賣出，賺取的金額是?";
 			next;
+			input .@input;
 			if (.@input != 7680) set w_point,w_point+1;
 		}
 		if (.@w_point == 0) {
@@ -556,6 +578,7 @@ L_AskQuestions:
 		mes "嘻嘻嘻呵呵呵...";
 		mes "別以為這樣就結束了!";
 		set ALCH_Q,6;
+		changequest 2031,2032;
 		close;
 	}
 	else if (ALCH_Q == 5) {
@@ -667,6 +690,7 @@ alde_alche,13,15,7	script	研究者#am	750,{
 			mes "^3355FF黃色藥草^000000 1個";
 			mes "^3355FF白色藥草^000000 1個";
 			set ALCH_Q,7;
+			changequest 2032,2033;
 			next;
 			mes "[塔羅西亞]";
 			mes "等你準備好了....再來吧";
@@ -966,6 +990,7 @@ alde_alche,13,15,7	script	研究者#am	750,{
 			mes "....還不錯第一次還算做得不錯....";
 			mes "拿回去留著做紀念吧";
 			set ALCH_Q,8;
+			changequest 2033,2035;
 			next;
 			mes "[塔羅西亞]";
 			mes "你去找隔壁房間的斑 黑文特吧....";
@@ -1123,6 +1148,7 @@ alde_alche,79,19,5	script	實驗專家#am	748,{
 			mes "那麼，祝你好運.";
 			mes "你最好趕快出發，才不會繼續打擾我.";
 			set ALCH_Q,9;
+			changequest 2035,2036;
 			close;
 		}
 		mes "如果你在這裡沒有事要幹就請你趕快離開好嗎!!!";
@@ -1207,6 +1233,7 @@ alde_alche,79,19,5	script	實驗專家#am	748,{
 		mes "還在這裡做什麼，趕快走吧";
 		mes "我這裡已經沒有什麼好教給你的了";
 		set ALCH_Q,20;
+		changequest 2036,2037;
 		close;
 	}
 	else if (ALCH_Q == 20) {
@@ -1310,9 +1337,13 @@ alde_alche,101,184,4	script	精通 鍊金術師#am	122,{
 			cutin "",255;
 			end;
 		}
+		if(checkquest(2039) != -1) {
+			changequest 2039,2040;
+		}
 		mes "不錯，加入工會必須的基礎知識都掌握了";
 		next;
 		set ALCH_Q,0;
+		completequest 2040;
 		set .@jlevel,JobLevel;
 		callfunc "Job_Change",Job_Alchemist;
 		callfunc "F_ClearJobVar";
@@ -1488,6 +1519,7 @@ alde_alche,145,19,1	script	首席研究員#am	57,{
 		mes "黃晶沙 5個";
 		mes "神之金屬原石、鋁原石各3個";
 		set ALCH_Q,23;
+		changequest 2037,2038;
 		getitem 974,1; //混合劑
 		getitem 7068,5; //燃燒一半的木材
 		getitem 7043,5; //黃晶沙
@@ -1506,6 +1538,7 @@ alde_alche,145,19,1	script	首席研究員#am	57,{
 	}
 	else if (ALCH_Q == 24) {
 		set ALCH_Q,40;
+		changequest 2038,2039;
 		mes "[尼克拉斯 波拉媒]";
 		mes "噢! 你終於回來了啊.";
 		mes "我收到他們兩兄弟寄來的信，他們說很高興見到你.";

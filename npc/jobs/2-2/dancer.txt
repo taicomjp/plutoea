@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 舞孃 轉職腳本 - 
 //===================================
-// 版本：3.5
+// 版本：3.7
 //===================================
 
 comodo,180,153,4	script	斯諾特拉#1	90,{
@@ -174,6 +174,7 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 				close2;
 				cutin "",255;
 				set DANC_Q,1;
+				setquest 7000;
 				end;
 			}
 			else {
@@ -234,6 +235,7 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 		set .@item_nd,rand(1,10);
 		if (.@item_nd > 0 && .@item_nd < 3) {
 			set DANC_Q,2;
+			changequest 7000,7001;
 			mes "要把舞鞋給擦亮，需要^CD688920個 黏稠液體^000000";
 			next;
 			mes "[耶伊樂]";
@@ -249,6 +251,7 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 		}
 		else if (.@item_nd == 4) {
 			set DANC_Q,3;
+			changequest 7000,7002;
 			mes "製作跳舞需要的鞋，";
 			mes "需要^0000FF蚯蚓皮 5個^000000就好了";
 			next;
@@ -264,6 +267,7 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 		}
 		else {
 			set DANC_Q,4;
+			changequest 7000,7003;
 			mes "衣服上的裝飾，需要^0000FF蛤蜊外殼 2個^000000";
 			next;
 			mes "[耶伊樂]";
@@ -305,6 +309,7 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 			setarray .@count[0], 5,1;
 			break;
 		case 4: 
+
 			setarray .@item[0], 965,503,909,1020,2401;
 			setarray .@count[0], 2,5,20,10,1;
 			break;
@@ -328,6 +333,15 @@ job_duncer,43,93,4	script	耶伊樂#da	724,{
 			mes "只是問幾個簡單的問題，";
 			mes "請放輕鬆作答";
 			set DANC_Q,5;
+			if(checkquest(7001) != -1) {
+				changequest 7001,7004;
+			}
+			else if(checkquest(7002) != -1) {
+				changequest 7002,7004;
+			}
+			else {
+				changequest 7003,7004;
+			}
 			close2;
 			cutin "",255;
 			end;
@@ -802,6 +816,7 @@ job_duncer,95,93,4	script	寶羅瓦珠#da	101,{
 		}
 		mes "[寶羅瓦珠]";
 		mes "那麼請加油吧!";
+		changequest 7004,7005;
 		set DANC_Q,8;
 		close2;
 		warp "job_duncer",105,109;
@@ -839,6 +854,7 @@ job_duncer,95,93,4	script	寶羅瓦珠#da	101,{
 		next;
 		set .@jlevel,JobLevel;
 		mes "[寶羅瓦珠]";
+		completequest 7006;
 		callfunc "Job_Change",Job_Dancer;
 		callfunc "F_ClearJobVar";
 		mes "為了人們的微笑....";
@@ -1183,9 +1199,8 @@ OnTimer82000:
 	end;
 
 OnTimer89000:
-	donpcevent "dance#return::OnEnable";
 	donpcevent "dance#poring::OnDisable";
-	stopnpctimer;
+	donpcevent "dance#return::OnEnable";
 	end;
 }
 
@@ -1193,6 +1208,7 @@ job_duncer,69,110,0	script	dance#return	-1,1,4,{
 OnTouch:
 	mapannounce "job_duncer","舞者 : 恭喜你都學會! 寶羅瓦珠小姐的教導完成了!",bc_map;
 	set DANC_Q,9;
+	changequest 7005,7006;
 	warp "comodo",188,162;
 	end;
 
@@ -1236,6 +1252,7 @@ OnDisable:
 
 OnEnable:
 	enablenpc "dance#return#3";
+	donpcevent "Bijou#dance_timer::OnDisable";
 	donpcevent "舞孃考試接待員#dance::OnEnable";
 	end;
 }
@@ -1247,6 +1264,7 @@ OnTouch:
 	donpcevent "舞者#1::OnOmg";
 	mapannounce "job_duncer","舞者 : " + strcharinfo(0) + ", ~你太慢了!",bc_map;
 	set DANC_Q,8;
+	donpcevent "Bijou#dance_timer::OnDisable";
 	donpcevent "舞孃考試接待員#dance::OnEnable";
 	warp "comodo",188,162;
 	end;

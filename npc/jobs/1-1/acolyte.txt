@@ -90,19 +90,19 @@ prt_church,184,41,4	script	聖堂 神父#aco	60,{
 					set job_acolyte_q,2;
 					mes "請你去^000077普隆德拉東北方的教區^000000，";
 					mes "尋找正在修行中的^000077魯帕卡法拉^000000神父";
-					//setquest 1001;
+					setquest 1001;
 					break;
 				case 1:
 					set job_acolyte_q,3;
 		          		mes "請你去^000077普隆德拉西南方的夢羅克^000000，";
 					mes "尋找正在修行中的^000077瑪狄妲^000000修女";
-					//setquest 1002;
+					setquest 1002;
 					break;
 				case 2:
 					set job_acolyte_q,4;
 					mes "請你去^000077普隆德拉西北方的橋墩^000000，";
 					mes "找正在修行中的^000077攸晤斯克^000000神父";
-					//setquest 1003;
+					setquest 1003;
 					break;
 				}
 				next;
@@ -158,9 +158,15 @@ prt_church,184,41,4	script	聖堂 神父#aco	60,{
 		skill 143,0,0;
 		callfunc "Job_Change",Job_Acolyte;
 		callfunc "F_ClearJobVar";
-		//completequest 1001;
-		//completequest 1002;
-		//completequest 1003;
+		if(checkquest(1001) != -1) {
+			completequest 1001;
+		}
+		else if(checkquest(1002) != -1) {
+			completequest 1002;
+		}
+		else {
+			completequest 1003;
+		}
 		mes "[馬勒西斯 神父]";
 		mes "要時常懷著感謝的心侍奉憐愛我們的神，";
 		mes "今後不管面臨什麼困難與磨練，";

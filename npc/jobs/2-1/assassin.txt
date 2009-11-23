@@ -4,7 +4,7 @@
 // ---------------------------------
 // - 刺客 轉職腳本 - 
 //===================================
-// 版本：3.1b
+// 版本：3.3
 //===================================
 
 in_moc_16,19,33,1	script	工會人員#asn	55,{
@@ -90,9 +90,11 @@ in_moc_16,19,33,1	script	工會人員#asn	55,{
 		mes "...";
 		next;
 		delitem 1008,1; //泯滅之心
+		changequest 8007,8008;
 		mes "[高等刺客 修伊]";
 		mes "嗯. 沒有錯.";
 		next;
+		completequest 8008;
 		callfunc "Job_Change",Job_Assassin;
 		callfunc "F_ClearJobVar";
 		mes "[高等刺客 修伊]";
@@ -205,6 +207,11 @@ in_moc_16,19,33,1	script	工會人員#asn	55,{
 					mes "喔喔....好久沒有來客人了. 我送你到報名處吧";
 					close2;
 					set ASSIN_Q,0;
+					if(checkquest(8000) != -1) {
+						changequest 8000,8001;
+					}else{
+						setquest 8001;
+					}
 					warp "in_moc_16",19,76;
 					end;
 				case 2:
@@ -529,6 +536,7 @@ OnTouch:
 				close2;
 				set ASSIN_Q3,1;
 				set ASSIN_Q,1;
+				changequest 8001,8002;
 				warp "in_moc_16",19,144;
 				end;
 			}
@@ -540,6 +548,7 @@ OnTouch:
 				close2;
 				set ASSIN_Q3,2;
 				set ASSIN_Q,1;
+				changequest 8001,8002;
 				warp "in_moc_16",19,144;
 				end;
 			}
@@ -567,6 +576,7 @@ OnTouch:
 				set ASSIN_Q,0;
 				set ASSIN_Q3,0;
 				set ASSIN_Q2,0;
+				erasequest 8001;
 				warp "moc_fild16",206,229;
 				end;
 			}
@@ -587,6 +597,7 @@ OnTouch:
 				next;
 				set ASSIN_Q3,1;
 				set ASSIN_Q,1;
+				changequest 8001,8002;
 				warp "in_moc_16",19,144;
 				end;
 			}
@@ -598,6 +609,7 @@ OnTouch:
 				next;
 				set ASSIN_Q3,2;
 				set ASSIN_Q,1;
+				changequest 8001,8002;
 				warp "in_moc_16",19,144;
 				end;
 			}
@@ -980,6 +992,7 @@ L_AskQuestions:
 			mes "" + .@asn_t + "分";
 			if (.@asn_t > 80) {
 				set ASSIN_Q2,5;
+				changequest 8002,8003;
 				mes "考試合格了";
 				next;
 				mes "[無名者]";
@@ -1014,6 +1027,7 @@ L_AskQuestions:
 			mes "" + .@asn_t + " points...";
 			if (.@asn_t > 90) {
 				set ASSIN_Q2,5;
+				changequest 8002,8003;
 				next;
 				mes "[無名者]";
 				mes "考試合格了";
@@ -1199,6 +1213,7 @@ OnTouch:
 		set ASSIN_Q,0;
 		set ASSIN_Q3,0;
 		set ASSIN_Q2,0;
+		changequest 8003,8000;
 		warp "in_moc_16",19,13;
 		end;
 	}
@@ -1272,6 +1287,7 @@ OnMyMobDead:
 	if (.MyMobs < 1) {
 		mapannounce "in_moc_16","情況還不錯啊，繼續保持!",bc_map;
 		set ASSIN_Q,3;
+		changequest 8003,8004;
 		donpcevent "timestopper#1::OnEnable";
 		donpcevent "門衛#ASN::OnEnable";
 		donpcevent "監考官#ASNTEST::OnResetmob";
@@ -1527,6 +1543,7 @@ OnTouch:
 			set ASSIN_Q,0;
 			set ASSIN_Q2,0;
 			set ASSIN_Q3,0;
+			changequest 8004,8000;
 			savepoint "in_moc_16",18,14;
 			warp "in_moc_16",18,14;
 			donpcevent "轉職服務人員#ASNTEST::OnStart";
@@ -1595,6 +1612,7 @@ OnTouch:
 	mes "差不多要進行最後的考試了";
 	close2;
 	set ASSIN_Q,5;
+	changequest 8004,8005;
 	warp "in_moc_16",181,183;
 	end;
 }
@@ -1604,6 +1622,7 @@ OnTouch:
 	if (ASSIN_Q == 5 || ASSIN_Q == 6) {
 		warp "in_moc_16",181,183;
 		set ASSIN_Q,ASSIN_Q+1;
+		changequest 8005,8006;
 	}
 	else {
 		mapannounce "in_moc_16",strcharinfo(0)+" 進入了工會會長的房間'",bc_map;
@@ -2105,6 +2124,7 @@ OnTouch:
 		mes "只有自己的意志是絕對不會遺忘...";
 		savepoint "morocc",100,100;
 		getitem 1008,1; //泯滅之心
+		changequest 8006,8007;
 		next;
 		mes "[工會會長]";
 		mes "好，大家都回去吧!";

@@ -3,7 +3,7 @@
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.6b
+//= 1.7
 //===== Compatible With: =====================================
 //= eAthena SVN
 //===== Description: =========================================
@@ -122,7 +122,7 @@ OnAgitBreak:
 	SetCastleData strnpcinfo(2),1, .@GID;
 
 	// Announce that the Emperium is destroyed, and respawn all but new castle-occupants.
-	mapannounce strnpcinfo(2),"華麗金屬被破壞了",bc_map,"0x00CCFF";
+	mapannounce strnpcinfo(2),"華麗金屬被破壞了",bc_map|bc_woe,"0x00CCFF",FW_NORMAL,12;
 	MapRespawnGuildID strnpcinfo(2),.@GID,2;
 
 	// Refresh castle data, disable Kafra and reset Invest information.
@@ -142,7 +142,7 @@ OnAgitBreak:
 	if( agitcheck() )
 		donpcevent "Agit#"+strnpcinfo(2)+"::OnStartArena";
 	sleep getbattleflag("gvg_eliminate_time");
-	announce "秘密基地 [" + getcastlename(strnpcinfo(2)) + "]被 [" + getguildName(.@GID) + "] 工會佔領了",bc_all;
+	announce "秘密基地 [" + getcastlename(strnpcinfo(2)) + "]被 [" + getguildName(.@GID) + "] 工會佔領了",bc_all|bc_woe;
 	end;
 
 // War of Emperium has ended.
@@ -697,6 +697,7 @@ OnRecvCastle:
 					cutin "kafra_01",255;
 					end;
 				}
+				break;
 			case 2:
 				mes "[ 管理人 " + .@name$ + " ]";
 				mes "主人，我想我們應該要留下現在這位卡普拉職員，因為她已經竭盡所能地為我們服務了!";
@@ -1287,7 +1288,7 @@ OnClock0001:
 	setcastledata strnpcinfo(2),5,0;
 
 	// Spawn boxes in proper order.
-	for (set .@i,0; .@i <= .@Treasure ; set .@i,.@i+1) {
+	for (set .@i,0; .@i < .@Treasure ; set .@i,.@i+1) {
 		// set treasure box ID
 		set .@boxid, .@treasurebox + (.@i+2) % 2;
 		set .@box,1 << .@i;
