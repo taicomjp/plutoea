@@ -110,7 +110,7 @@ hu_in01,386,373,4	script	獵人工會人員#hnt	727,{
 			set .@joblvl,joblevel;
 			completequest 4013;
 			callfunc "Job_Change",Job_Hunter;
-			callfunc "F_ClearJobVar";		// 清除轉職用的變數
+			callfunc "F_ClearJobVar";	// 清除轉職用的變數
 			next;
 			mes "[獵人 雪霖]";
 			mes "就跟你帥氣的樣子一樣，";
@@ -131,7 +131,7 @@ hu_in01,386,373,4	script	獵人工會人員#hnt	727,{
 			mes "看起來好像已經有相當的熟練度了";
 			mes "是為了轉職為獵人而來的吧?";
 			next;
-			switch(select("是的，我是為轉職而來的:詢問轉職條件:還不想轉職")) {
+			switch(select("是的，我是為轉職而來的:轉職的條件是什麼啊?:還不想轉職")) {
 			case 1:
 				mes "[獵人工會人員]";
 				mes "嘻嘻，果然沒錯~";
@@ -1020,7 +1020,7 @@ OnTouch:
 			mes "我會幫你送回斐揚的";
 			mes "希望下次再見";
 			mes "不要忘了存檔吧";
-			//donpcevent "轉職考試等待室#hnt::OnStart";
+			//donpcevent "Hunter waitingroom#hnt::OnStart";
 			close2;
 			set HNTR_Q,13;
 			savepoint "payon",104,99;
@@ -1037,11 +1037,11 @@ OnTouch:
 	end;
 }
 
-job_hunte,178,38,1	script	轉職考試等待室#hnt	66,{
+job_hunte,178,38,1	script	Hunter waitingroom#hnt	66,{
 	end;
 
 OnInit:
-	waitingroom "轉職考試等待室", 10,"轉職考試等待室#hnt::OnStartArena",1;
+	waitingroom "job-change waiting room", 10,"Hunter waitingroom#hnt::OnStartArena",1;
 	enablewaitingroomevent;
 	end;
 
@@ -1109,13 +1109,13 @@ OnEnable:
 OnMyMobDead:
 	set .MyMobs,.MyMobs-1;
 	if (.MyMobs < 3) {
-		mapannounce "job_hunte","考試監督: 很好，太棒了注意陷阱去找地圖中央的按鈕吧!",bc_map;
+		mapannounce "job_hunte","invigilator: 很好，太棒了注意陷阱去找地圖中央的按鈕吧!",bc_map;
 		set HNTR_Q,14;
 		donpcevent "開關#hnt::OnEnable";
 		donpcevent "Manager#hnt::OnDisable";
 	}
 	else {
-		mapannounce "job_hunte","考試監督: 很好，就是這樣",bc_map;
+		mapannounce "job_hunte","invigilator: 很好，就是這樣",bc_map;
 		set .MyMobs,.MyMobs-1;
 	}
 	end;
@@ -1125,7 +1125,7 @@ OnMyMobDead2:
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
 	donpcevent "Manager#hnt::OnReset";
-	donpcevent "轉職考試等待室#hnt::OnStart";
+	donpcevent "Hunter waitingroom#hnt::OnStart";
 	end;
 
 OnReset:
@@ -1137,67 +1137,71 @@ OnDisable:
 	end;
 
 OnTimer2000:
-	mapannounce "job_hunte","考試監督: 那麼，轉職考試要開始了",bc_map;
+	mapannounce "job_hunte","invigilator: 那麼. 轉職考試要開始了.",bc_map;
 	end;
 
-OnTimer5000:
-	mapannounce "job_hunte","考試監督: 前面也有說明過，在許多怪獸當中擊倒「轉職考試專用怪獸」就行了",bc_map;
+OnTimer4000:
+	mapannounce "job_hunte","invigilator: 前面也有說明過, 在許多怪獸當中只選擇抓住 ‘轉職考試專用怪獸' 就好了.",bc_map;
+	end;
+
+OnTimer6000:
+	mapannounce "job_hunte","invigilator: ***** 請注意陷阱而抓住怪獸. *****",bc_map;
 	end;
 
 OnTimer8000:
-	mapannounce "job_hunte","考試監督: 脫離的時候打開中央的開關，在地圖12點鐘方向的出口就會打開",bc_map;
+	mapannounce "job_hunte","invigilator: 能夠抓住4隻以上的'轉職考試專用怪獸' 的話就可以啟動中央的脫離用按鈕的.",bc_map;
 	end;
 
-OnTimer11000:
-	mapannounce "job_hunte","考試監督: 考試過程限時3分鐘",bc_map;
+OnTimer10000:
+	mapannounce "job_hunte","invigilator: 請啟動脫離用按鈕之後就會看到12點方向的出口的,  經過那裡離開考場就成功了.",bc_map;
 	end;
 
-OnTimer13000:
-	mapannounce "job_hunte","考試監督: 每過1分鐘會提醒一次加油吧!",bc_map;
+OnTimer12000:
+	mapannounce "job_hunte","invigilator: 好, 現在開始要進入倒數了. 每一分鐘會提醒大家的.",bc_map;
 	end;
 
 OnTimer14000:
-	mapannounce "job_hunte"," ****** 剩餘 3分鐘 ****** ",bc_map;
+	mapannounce "job_hunte","invigilator:  ****** 剩下3分鐘. ******",bc_map;
 	end;
 
 OnTimer74000:
-	mapannounce "job_hunte"," ****** 剩餘 2分鐘 ****** ",bc_map;
+	mapannounce "job_hunte","invigilator:  ****** 剩下2分鐘. ******",bc_map;
 	end;
 
 OnTimer134000:
-	mapannounce "job_hunte"," ****** 剩餘 1分鐘 ****** ",bc_map;
+	mapannounce "job_hunte","invigilator:  ****** 剩下1分鐘. ******",bc_map;
 	end;
 
 OnTimer164000:
-	mapannounce "job_hunte"," ****** 剩餘 30秒 ****** ",bc_map;
+	mapannounce "job_hunte","invigilator:  ****** 剩下30秒. ******",bc_map;
 	end;
 
 OnTimer187000:
-	mapannounce "job_hunte"," 考試結束還剩 5 秒... ",bc_map;
+	mapannounce "job_hunte","invigilator:  考試終了還剩下5秒. . . . .",bc_map;
 	end;
 
 OnTimer188000:
-	mapannounce "job_hunte"," 考試結束還剩 4 秒... ",bc_map;
+	mapannounce "job_hunte","invigilator: 考試終了還剩下4秒. . . .",bc_map;
 	end;
 
 OnTimer189000:
-	mapannounce "job_hunte"," 考試結束還剩 3 秒... ",bc_map;
+	mapannounce "job_hunte","invigilator: 考試終了還剩下3秒. . . .",bc_map;
 	end;
 
 OnTimer191000:
-	mapannounce "job_hunte"," 考試結束還剩 2 秒... ",bc_map;
+	mapannounce "job_hunte","invigilator: 考試終了還剩下2秒. . . .",bc_map;
 	end;
 
 OnTimer192000:
-	mapannounce "job_hunte"," 考試結束還剩 1 秒... ",bc_map;
+	mapannounce "job_hunte","invigilator: 考試終了還剩下1秒. . . .",bc_map;
 	end;
 
 OnTimer193000:
-	mapannounce "job_hunte"," 0 ",bc_map;
+	mapannounce "job_hunte","invigilator:  0 ",bc_map;
 	end;
 
 OnTimer194000:
-	mapannounce "job_hunte","考試監督:  時間到了，請多試幾次吧",bc_map;
+	mapannounce "job_hunte","invigilator:  時間到了 . 請再次挑戰.",bc_map;
 	end;
 
 OnTimer195000:
@@ -1206,7 +1210,7 @@ OnTimer195000:
 
 OnTimer197000:
 	donpcevent "Manager#hnt::OnReset";
-	donpcevent "轉職考試等待室#hnt::OnStart";
+	donpcevent "Hunter waitingroom#hnt::OnStart";
 	end;
 }
 
@@ -1235,7 +1239,7 @@ OnTouch:
 		set HNTR_Q,13;
 		warp "job_hunte",176,22;
 		donpcevent "Manager#hnt::OnReset";
-		donpcevent "轉職考試等待室#hnt::OnStart";
+		donpcevent "Hunter waitingroom#hnt::OnStart";
 		end;
 	}
 
@@ -1256,7 +1260,7 @@ OnInit:
 
 OnTouch:
 	donpcevent "Manager#hnt::OnReset";
-	donpcevent "轉職考試等待室#hnt::OnStart";
+	donpcevent "Hunter waitingroom#hnt::OnStart";
 	set HNTR_Q,16;
 	changequest 4011,4012;
 	savepoint "payon",104,99;
@@ -1272,7 +1276,7 @@ OnTouch:
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
 	donpcevent "Manager#hnt::OnReset";
-	donpcevent "轉職考試等待室#hnt::OnStart";
+	donpcevent "Hunter waitingroom#hnt::OnStart";
 	end;
 }
 
@@ -1504,11 +1508,11 @@ job_hunte,65,92,0	duplicate(HntTrap)	57-3	-1,0,0
 
 job_hunte,65,93,0	script	57-4::HntTrap2	-1,{
 OnTouch:
-	mapannounce "job_hunte",strcharinfo(0) + ", has failed me! Go back to where you started!",bc_map;
+	mapannounce "job_hunte",strcharinfo(0) + " 掉入陷阱了. 要回到原來的位置了.",bc_map;
 	set HNTR_Q,13;
 	warp "job_hunte",176,22;
 	donpcevent "Manager#hnt::OnReset";
-	donpcevent "轉職考試等待室#hnt::OnStart";
+	donpcevent "Hunter waitingroom#hnt::OnStart";
 	end;
 }
 
