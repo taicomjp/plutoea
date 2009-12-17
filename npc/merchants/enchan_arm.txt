@@ -2,7 +2,7 @@
 // [冥] The PlutoEA Project [王]
 // http://opensvn.csie.org/PlutoEA
 // -----------------------------------------
-// - 隱藏打洞
+// - 隱藏打洞 (附魔系統)
 //==========================================
 // 版本: 1.0 [L0ne_W0lf]
 //==========================================
@@ -73,7 +73,7 @@ prontera,165,60,2	script	實習打洞師	73,{
 				callsub S_EnchantArmor,2396,50;
 			}
 		case 2:
-			switch(select("Mink Coat:Lord's Clothes:Glittering Jacket:Formal Suit:Mantle(1):Coat(1):Chain Mail(1):Full Plate(1):Silk Robe(1):Scapulare(1):Saint's Robe(1):Tights(1):Silver Robe(1):Thief Clothes(1):Legion Plate Armor(1):Lucius's Fierce Armor of Volcano(1):Saphien's Armor of Ocean(1):Aebeccee's Raging Typhoon Armor(1):Claytos Cracking Earth Armor(1)")) {
+			switch(select("毛皮大衣:秘衣 美德:秘衣 惡德:西裝外套:大衣:長大衣:鋼鐵鎖子甲:鋼鐵鎧甲:絲質外袍:聖職之袍:聖職之衣:緊身便衣:秘銀之衣:盜賊之衣:秘銀金屬鎧甲:火鱗鎧甲:水鱗鎧甲:風鱗鎧甲:地鱗鎧甲")) {
 			case 1:
 				callsub S_EnchantArmor,2311,55;
 			case 2:
@@ -114,7 +114,7 @@ prontera,165,60,2	script	實習打洞師	73,{
 				callsub S_EnchantArmor,2351,55;
 			}
 		case 3:
-			switch(select("隕石鋼鐵鎧甲:Orlean's Gown:Life Link:Diablos Robe:Diablos Armor:Assaulter Plate:Elite Engineer Armor:Assassin Robe:Warlock's Battle Robe:Medic's Robe:Elite Archer Suit:Elite Shooter Sit:Sprint Mail:Kandura:Armor of Naga:Improved Tights")) {
+			switch(select("隕石鋼鐵鎧甲:歐羅萊昂的制服:生命鍊結:魔王的外袍:魔王的鎧甲:突襲隊長的鋼鐵鎧甲:精銳工兵的鎧甲:刺客的外袍:魔法師的戰鬥外袍:醫護兵的外袍:精銳弓兵外套:精銳射手的外套:急速衝刺鎧甲:中東衣:那迦鱗片鎧甲:改良型緊身衣")) {
 			case 1:
 				callsub S_EnchantArmor,2364,60;
 			case 2:
@@ -170,28 +170,27 @@ S_EnchantArmor:
 	set .@failrate,getarg(1);
 	if ((countitem(.@itemid) > 0) && (countitem(.@itemid) < 2)) {
 		mes "[實習打洞師]";
-		mes "Socket enchant wil cost you 400,000 zeny. And there will be a random option enchanted. Of course, there is a chance of breaking your armor.";
+		mes "插槽鑽洞需要40萬金幣，而且鑽洞效果是隨機的，當然裝備有一定機率會損壞";
 		next;
 		mes "[實習打洞師]";
-		mes "First and most importantly.";
-		mes "^ff5555Existing Refine Level of the Armor";
-		mes "and Cards will be GONE.^000000";
-		mes "Do you still want to try an Enchant?";
+		mes "最重要的是，";
+		mes "^ff5555既有的精煉值和原來裝備的";
+		mes "卡片會全部消失^000000，";
+		mes "你確定要鑽洞嗎?";
 		next;
-		switch(select("Hmm... Let me think it over.:Go ahead.")) {
+		switch(select("再考慮一下:已經決定了，請幫我鑽洞")) {
 		case 1:
 			mes "[實習打洞師]";
-			mes "Well, I can't blame you. Safety first, Ey?";
-			mes "Now you have a nice day.";
+			mes "安全第一，祝你旅途愉快!";
 			close;
 		case 2:
 			mes "[實習打洞師]";
-			mes "Quite of an adventurer huh? Well, shall we?";
+			mes "看來你很喜歡冒險，那我們開始吧";
 			close2;
 			specialeffect2 EF_MAPPILLAR;
 			if (Zeny < 400000) {
 				mes "[實習打洞師]";
-				mes "Sorry, but you don't have enough zeny.";
+				mes "抱歉，你身上的錢不夠";
 				close;
 			}
 			progressbar "ffff00",7;
@@ -255,8 +254,8 @@ S_EnchantArmor:
 			else {
 				specialeffect2 EF_PHARMACY_FAIL;
 				mes "[實習打洞師]";
-				mes "Well that's too bad.";
-				mes "The requested equipment has failed to enchant.";
+				mes "真是糟糕!";
+				mes "打洞失敗了";
 				close;
 			}
 			getitem2 .@itemid, 1, 1, 0, 0, 0, 0, 0, .@addpart;
@@ -264,8 +263,8 @@ S_EnchantArmor:
 	}
 	else {
 		mes "[實習打洞師]";
-		mes "Hmm? There's nothing to be enchanted!";
-		mes "Please come back with just ONE equipment to be enchanted.";
+		mes "嗯? 好像什麼都沒有啊?";
+		mes "請帶著1個要鑽洞的裝備再來找我吧!";
 		close;
 	}
 }
