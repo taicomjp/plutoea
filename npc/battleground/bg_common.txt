@@ -1,174 +1,104 @@
-// ==============================================================================
-// 戰場系統 - 常設NPC
-// ==============================================================================
+//===== eAthena Script ======================================= 
+// BattleGround System - Common NPCs
+//===== By: ================================================== 
+//= ????, L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 1.1
+//===== Compatible With: ===================================== 
+//= eAthena 1.0
+//===== Description: ========================================= 
+//= [AEGIS Conversion]
+//= Battleground npcs:
+//= - Generals and Aides
+//= - Battlegroun Warper
+//= - Kafra and Repairman.
+//= - GM Management NPC (Disabled by default)
+//= - Badge Exhanger (Tierra and Flavius.)
+//===== Additional Comments: ================================= 
+//= 1.0 First Version.
+//= 1.1 Updated several NPCs to Official.
+//============================================================
 
-// 地圖設定
-// *********************************************************************
-bat_room	mapflag	nomemo
-bat_room	mapflag	nowarpto
-bat_room	mapflag	nobranch
-bat_room	mapflag	nopenalty
-bat_room	mapflag	noteleport
+// Generals
+//============================================================
+bat_room,161,158,3	script	Gen. Guillaume's Aide#01	419,{ end; }
+bat_room,161,160,3	script	Gen. Guillaume's Aide#03	419,{ end; }
 
-// 募兵官 - 進入到戰場準備室
-// *********************************************************************
-payon,189,104,3	script	馬樂戰場 募兵官::BatRecruit	728,{
-	mes "[馬樂戰場 募兵官]";
-	mes "你好冒險家，";
-	mes "我是遙遠國度馬樂王國的騎士";
+bat_room,160,141,3	script	克勒亞 馬樂羅	416,{
+	cutin "bat_crua1",2;
+	mes "[克勒亞 馬樂羅]";
+	mes "有智慧的冒險家喔，願意助我門一輩之力嗎?";
 	next;
-	mes "[馬樂戰場 募兵官]";
-	mes "由於兩位王子因馬樂的王位繼承問題而需要展開戰鬥，所以我們正在募集像你這樣經驗豐富的傭兵，";
-	mes "你願不願意助我們馬樂一臂之力呢?";
-	next;
-	if( select("參戰:不參戰") == 2 ) {
-		mes "[馬樂戰場 募兵官]";
-		mes "我會隨時在這裡為各位服務，等改變心意時再來吧";
-		close;
-	}
-	mes "[馬樂戰場 募兵官]";
-	mes "希望神保佑你的精神與勇氣";
-	close2;
-	warp "bat_room",155,150;
-	end;
-}
-prontera,123,83,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit2	728
-rachel,149,138,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit3	728
-moc_ruins,75,162,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit4	728
-aldebaran,146,109,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit5	728
-lighthalzen,153,86,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit6	728
-
-// 空間移動師 - 離開戰場準備室
-// *********************************************************************
-bat_room,148,150,4	script	空間移動師#戰場	124,{
-	mes "[空間移動師]";
-	mes "你想離開這裡嗎? 我可以把你送回先前停留過的地方喔";
-	next;
-	if( select("返回村落:不回去") == 2 ) {
-		mes "[空間移動師]";
-		mes "需要服務時歡迎隨時來找我";
-		close;
-	}
-	set .@spoint$, getsavepoint(0);
-	if (.@spoint$ == "prontera") set .@sname$,"普隆德拉";
-	if (.@spoint$ == "morocc") set .@sname$,"夢羅克";
-	if (.@spoint$ == "geffen") set .@sname$,"吉芬";
-	if (.@spoint$ == "payon") set .@sname$,"斐揚";
-	if (.@spoint$ == "alberta") set .@sname$,"艾爾貝塔";
-	if (.@spoint$ == "izlude") set .@sname$,"伊斯魯得島";
-	if (.@spoint$ == "aldebaran") set .@sname$,"艾爾帕蘭";
-	if (.@spoint$ == "lutie" || .@spoint$ == "christmas" || .@spoint$ == "xmas" || .@spoint$ == "x-mas") set .@sname$,"薑餅城";
-	if (.@spoint$ == "comodo") set .@sname$,"克魔島";
-	if (.@spoint$ == "yuno") set .@sname$,"朱諾";
-	if (.@spoint$ == "amatsu") set .@sname$,"天津町";
-	if (.@spoint$ == "gonryun") set .@sname$,"崑崙";
-	if (.@spoint$ == "umbala") set .@sname$,"汶巴拉";
-	if (.@spoint$ == "niflheim") set .@sname$,"尼芙菲姆";
-	if (.@spoint$ == "louyang") set .@sname$,"洛陽";
-	if (.@spoint$ == "new_1-1" ) set .@sname$,"初學者 修練場";
-	if (.@spoint$ == "sec_pri" || .@spoint$ == "prison" || .@spoint$ == "jails") set .@sname$,"反省的房間";
-	if (.@spoint$ == "jawaii") set .@sname$,"爪哇咿";
-	if (.@spoint$ == "ayothaya") set .@sname$,"哎喲雅泰";
-	if (.@spoint$ == "einbroch") set .@sname$,"艾音布羅克";
-	if (.@spoint$ == "lighthalzen") set .@sname$,"里希塔樂鎮";
-	if (.@spoint$ == "einbech") set .@sname$,"艾音貝赫";
-	if (.@spoint$ == "hugel") set .@sname$,"毀葛";
-	if (.@spoint$ == "rachel") set .@sname$,"拉赫";
-	if (.@spoint$ == "veins") set .@sname$,"菲因斯";
-	if (.@spoint$ == "moscovia") set .@sname$,"莫斯科比亞";
-	set .@x, getsavepoint(1);
-	set .@y, getsavepoint(2);
-	mes "[空間移動師]";
-	mes "把你送回" + .@sname$ + "囉";
-	close2;
-	warp .@spoint$, .@x, .@y;
-	end;
-}
-
-// 卡普拉服務人員
-// *********************************************************************
-bat_room,148,147,4	script	卡普拉 職員::kaf_bat	861,{
-	cutin "kafra_09",2;
-	mes "[卡普拉 職員]";
-	mes "歡迎光聯，我們隨時會提供熱誠的卡普拉服務，";
-	mes "請問需要什麼服務呢?";
-	next;
-	switch(select("使用倉庫服務:使用手推車服務:結束")) {
+	switch(select("關於戰鬥的理由:關於吉永 馬樂羅")) {
 	case 1:
-		if (basicskillcheck() && getskilllv(1) < 6) {
-			mes "[卡普拉 職員]";
-			mes "抱歉客官，";
-			mes "若要使用倉庫的話，初學者技能等級要超過6以上";
-		}
-		else {
-			if (Zeny < 800) {
-				mes "[卡普拉 職員]";
-				mes "客官您支付的金幣不足，";
-				mes "倉庫使用費是40金幣";
-				close2;
-				cutin "",255;
-				end;
-			}
-			mes "[卡普拉 職員]";
-			mes "我要準備打開倉庫了，";
-			mes "謝謝惠顧";
-			close2;
-			set zeny,zeny-40;
-			openstorage;
-			cutin "", 255;
-			end;
+		cutin "bat_crua2",2;
+		mes "[克勒亞 馬樂羅]";
+		mes "馬樂的偉大國王麻勒薛 馬樂羅 7世之龍體欠安的關係，";
+		mes "陛下已下旨希望把馬樂的未來交給第3王子吉永 馬樂羅將軍或其他王子中一位";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "雖說戰鬥對身為馬樂將軍的吉永 馬樂羅比較有利，不過事情是沒有絕對的，";
+		mes "我一定要從戰鬥中獲勝，好讓百姓們遠離戰爭的災難之中";
+		next;
+		switch(select("我願與你並肩作戰:結束對話")) {
+		case 1:
+			cutin "bat_crua1",2;
+			mes "[克勒亞 馬樂羅]";
+			mes "你真是很牢靠的人，";
+			mes "好!";
+			mes "請往下走，可靠又武功高強的戰士們正在等著你呢";
+			break;
+		case 2:
+			mes "[克勒亞 馬樂羅]";
+			mes "為了馬樂!";
+			break;
 		}
 		break;
 	case 2:
-		if (BaseClass != Job_Merchant) {
-			mes "[卡普拉 職員]";
-			mes "很抱歉，";
-			mes "手推車是商人與鐵匠的專屬服務.";
+		cutin "bat_crua2",2;
+		mes "[克勒亞 馬樂羅]";
+		mes "第3王子吉永 馬樂羅是馬樂的將軍，";
+		mes "握有強大兵力之馬樂國將軍，他的戰鬥指揮能力和武藝就不用多說了";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "但是依賴馬樂軍力的人之中也有反對人士，";
+		mes "那真是百姓們所希望的嗎?";
+		mes "一直以來馬樂的百姓們深受戰爭的蹂躡，再好的利刃也有折斷的一天";
+		next;
+		mes "[克勒亞 馬樂羅]";
+		mes "我不希望再看到血流成河的情景，所以我這次當任不讓";
+		next;
+		switch(select("我願與你並肩作戰:結束對話")) {
+		case 1:
+			cutin "bat_crua1",2;
+			mes "[克勒亞 馬樂羅]";
+			mes "你真是很牢靠的人，";
+			mes "好!";
+			mes "請往下走，可靠又武功高強的戰士們正在等著你呢";
+			break;
+		case 2:
+			mes "[克勒亞 馬樂羅]";
+			mes "為了馬樂!";
+			break;
 		}
-		else if (checkcart() == 1) {
-			mes "[卡普拉 職員]";
-			mes "你正在使用著手推車";
-		}
-		else {
-			mes "[卡普拉 職員]";
-			mes "手推車的使用費用是800金幣，";
-			mes "請問你要使用嗎?";
-			next;
-			switch(select("使用:取消")) {
-			case 1:
-				if (Zeny < 800) {
-					mes "[卡普拉 職員]";
-					mes "客官您支付的金幣不足，";
-					mes "手推車的使用費是800金幣，";
-					break;
-				}
-				set zeny,zeny-800;
-				setcart;
-				cutin "", 255;
-				close;
-			case 2:
-				cutin "", 255;
-				close;
-			}
-		}
-	case 3:
-		mes "[卡普拉 職員]";
-		mes "我們卡普拉服務秉持著一貫熱誠又專業的心，提供大家最優質和專業的服務，歡迎隨時利用，";
-		mes "謝謝惠顧";
+		break;
 	}
 	close2;
-	cutin "", 255;
+	cutin "bat_crua1",255;
+	cutin "bat_crua2",255;
 	end;
 }
 
-// 將軍 吉永 馬樂羅
-// *********************************************************************
+bat_room,161,140,3	script	Prince Croix's Aide#01	415,{ end; }
+bat_room,161,142,3	script	Prince Croix's Aide#02	415,{ end; }
+
 bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 	cutin "bat_kiyom2",2;
 	mes "[吉永 馬樂羅]";
 	mes "有勇氣的冒險家喔，我們需要你的過人才能";
 	next;
-	if(select("關於戰鬥的理由:關於克勒亞 馬樂羅")==1) {
+	switch(select("關於戰鬥的理由:關於克勒亞 馬樂羅")) {
+	case 1:
 		cutin "bat_kiyom1",2;
 		mes "[吉永 馬樂羅]";
 		mes "我們尊崇的陛下，麻勒薛 馬樂羅 7世健康亮起紅燈了，";
@@ -180,8 +110,25 @@ bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 		mes "[吉永 馬樂羅]";
 		mes "這不僅是我們的戰場而已，國家未來的命運取決於戰鬥的結果，";
 		mes "我要以將軍的名譽來證明，能夠保護國家來自外部威脅的人，只有我辦得到而已";
-	}
-	else {
+		next;
+		switch(select("我願與你並肩作戰:結束對話")) {
+		case 1:
+			cutin "bat_kiyom2",2;
+			mes "[吉永 馬樂羅]";
+			mes "你真是位可靠的人，";
+			mes "從你的眼神中就能看出你是個不簡單的人物";
+			next;
+			mes "[吉永 馬樂羅]";
+			mes "我誠摯地歡迎你!";
+			mes "你現在給予在階梯上我部下戰鬥支援的話，他們就會熱烈地歡迎你的";
+			break;
+		case 2:
+			mes "[吉永 馬樂羅]";
+			mes "我必會槍先取得勝利的旗幟!";
+			break;
+		}
+		break;
+	case 2:
 		cutin "bat_kiyom1",2;
 		mes "[吉永 馬樂羅]";
 		mes "第五王子克勒亞 馬樂羅目前擔任馬樂的內政官員，";
@@ -198,434 +145,684 @@ bat_room,160,159,3	script	將軍 吉永 馬樂羅	420,{
 		next;
 		mes "[吉永 馬樂羅]";
 		mes "他那安逸的思想會讓國家更貧苦，讓百姓變軟弱，漸漸成為鄰近國家併吞的食物，擁有小土地的馬樂能夠有今天的繁榮，都是靠強大軍力作後盾的關係";
+		next;
+		switch(select("我願與你並肩作戰:結束對話")) {
+		case 1:
+			cutin "bat_kiyom2",2;
+			mes "[吉永 馬樂羅]";
+			mes "你真是位可靠的人，";
+			mes "從你的眼神中就能看出你是個不簡單的人物";
+			next;
+			mes "[吉永 馬樂羅]";
+			mes "我誠摯地歡迎你!";
+			mes "你現在給予在階梯上我部下戰鬥支援的話，他們就會熱烈地歡迎你的";
+			break;
+		case 2:
+			mes "[吉永 馬樂羅]";
+			mes "我必會槍先取得勝利的旗幟!";
+			break;
+		}
+		break;
 	}
-	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 ) {
-		mes "[吉永 馬樂羅]";
-		mes "我必會槍先取得勝利的旗幟!";
-		close2;
-		cutin "",255;
-		end;
-	}
-	cutin "bat_kiyom2",2;
-	mes "[吉永 馬樂羅]";
-	mes "你真是位可靠的人，";
-	mes "從你的眼神中就能看出你是個不簡單的人物";
-	set Bat_Team,1;
-	next;
-	mes "[吉永 馬樂羅]";
-	mes "我誠摯地歡迎你!";
-	mes "你現在給予在階梯上我部下戰鬥支援的話，他們就會熱烈地歡迎你的";
 	close2;
-	cutin "",255;
+	cutin "bat_kiyom1",255;
+	cutin "bat_kiyom2",255;
 	end;
 }
 
-// 克勒亞 馬樂羅
-// *********************************************************************
-bat_room,160,141,3	script	克勒亞 馬樂羅	416,{
-	cutin "bat_crua1",2;
-	mes "[克勒亞 馬樂羅]";
-	mes "有智慧的冒險家喔，願意助我門一輩之力嗎?";
-	next;
-	if(select("關於戰鬥的理由:關於吉永 馬樂羅")==1) {
-		cutin "bat_crua2",2;
-		mes "[克勒亞 馬樂羅]";
-		mes "馬樂的偉大國王麻勒薛 馬樂羅 7世之龍體欠安的關係，";
-		mes "陛下已下旨希望把馬樂的未來交給第3王子吉永 馬樂羅將軍或其他王子中一位";
-		next;
-		mes "[克勒亞 馬樂羅]";
-		mes "雖說戰鬥對身為馬樂將軍的吉永 馬樂羅比較有利，不過事情是沒有絕對的，";
-		mes "我一定要從戰鬥中獲勝，好讓百姓們遠離戰爭的災難之中";
-	}
-	else {
-		cutin "bat_crua2",2;
-		mes "[克勒亞 馬樂羅]";
-		mes "第3王子吉永 馬樂羅是馬樂的將軍，";
-		mes "握有強大兵力之馬樂國將軍，他的戰鬥指揮能力和武藝就不用多說了";
-		next;
-		mes "[克勒亞 馬樂羅]";
-		mes "但是依賴馬樂軍力的人之中也有反對人士，";
-		mes "那真是百姓們所希望的嗎?";
-		mes "一直以來馬樂的百姓們深受戰爭的蹂躡，再好的利刃也有折斷的一天";
-		next;
-		mes "[克勒亞 馬樂羅]";
-		mes "我不希望再看到血流成河的情景，所以我這次當任不讓";
-	}
-	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 ) {
-		mes "[克勒亞 馬樂羅]";
-		mes "為了馬樂!";
-		close2;
-		cutin "",255;
-		end;
-	}
-	mes "[克勒亞 馬樂羅]";
-	mes "你真是很牢靠的人，";
-	mes "好!";
-	mes "請往下走，可靠又武功高強的戰士們正在等著你呢";
-	set Bat_Team,2;
-	close2;
-	cutin "",255;
-	end;
-}
+// Flags
+//============================================================
+//bat_room,140,160,3	script	Guillaume Base#roomflag1	973,{ end; }
+//bat_room,167,160,3	script	Guillaume Base#roomflag2	973,{ end; }
+//bat_room,140,139,3	script	Croix Base#roomflag1	974,{ end; }
+//bat_room,167,139,3	script	Croix Base#roomflag2	974,{ end; }
 
-// 時間計算函式
-// *********************************************************************
-function	script	Time2Str	{
-	set .@Time_Left, getarg(0) - gettimetick(2);
-	
-	set .@Days, .@Time_Left / 86400;
-	set .@Time_Left, .@Time_Left - (.@Days * 86400);
-	set .@Hours, .@Time_Left / 3600;
-	set .@Time_Left, .@Time_Left - (.@Hours * 3600);
-	set .@Minutes, .@Time_Left / 60;
-	set .@Time_Left, .@Time_Left - (.@Minutes * 60);
-	
-	set .@Time$, "";
-	if( .@Days > 1 )
-		set .@Time$, .@Time$ + .@Days + " days, ";
-	else if( .@Days > 0 )
-		set .@Time$, .@Time$ + .@Days + " day, ";
-	
-	if( .@Hours > 1 )
-		set .@Time$, .@Time$ + .@Hours + " hours, ";
-	else if( .@Hours > 0 )
-		set .@Time$, .@Time$ + .@Hours + " hour, ";
-	
-	if( .@Minutes > 1 )
-		set .@Time$, .@Time$ + .@Minutes + " minutes, ";
-	else if( .@Minutes > 0 )
-		set .@Time$, .@Time$ + .@Minutes + " minute, ";
-	
-	if( .@Time_Left > 1 || .@Time_Left == 0 )
-		set .@Time$, .@Time$ + .@Time_Left + " seconds.";
-	else if( .@Time_Left == 1 )
-		set .@Time$, .@Time$ + .@Time_Left + " second.";
-	
-	return .@Time$;
-}
-
-// 行政官
-// *********************************************************************
--	script	行政官	1,{
-	if ( strnpcinfo(3) == "吉永1" || strnpcinfo(3) == "吉永2" || strnpcinfo(3) == "吉永3" || strnpcinfo(3) == "吉永4") {
-		set .@we$,"吉永";
-		set .@rival$,"克勒亞";
-	}
-	else {
-		set .@we$,"克勒亞";
-		set .@rival$,"吉永";
-	}
-	mes "["+ .@we$ +"傭兵 行政官]";
-	switch (Bat_Team) {
-	case 0:
-		mes "請先向 克勒亞王子 或吉永將軍登記吧!";
-		close;
+// BattleGround Warper
+//============================================================
+bat_room,148,150,5	script	空間移動師#Battlefield	124,{
+	mes "[空間移動師]";
+	mes "你想離開這裡嗎? 我可以把你送回先前停留過的地方喔";
+	next;
+	switch(select("返回村落:不回去")) {
 	case 1:
+		mes "[空間移動師]";
+		switch(bat_return) {
+		default:
+		case 1:
+			setarray .@mapname$[0],"普隆德拉","prontera";
+			setarray .@xy[0],116,72;
+			break;
+		case 2:
+			setarray .@mapname$[0],"夢羅克","moc_ruins";
+			setarray .@xy[0],152,48;
+			break;
+		case 3:
+			setarray .@mapname$[0],"艾爾帕蘭","aldebaran";
+			setarray .@xy[0],168,112;
+			break;
+		case 4:
+			setarray .@mapname$[0],"吉芬","geffen";
+			setarray .@xy[0],120,39;
+			break;
+		case 5:
+			setarray .@mapname$[0],"斐揚","payon";
+			setarray .@xy[0],161,58;
+			break;
+		case 6:
+			setarray .@mapname$[0],"里希塔樂鎮","lighthalzen";
+			setarray .@xy[0],159,93;
+			break;
+		case 7:
+			setarray .@mapname$[0],"毀葛","rachel";
+			setarray .@xy[0],115,124;
+			break;
+		}
+		mes "把你送回"+.@mapname$[0]+"囉";
+		close2;
+		warp .@mapname$[1],.@xy[0],.@xy[1];
+		break;
 	case 2:
-		mes "我們勇猛的"+ .@we$ +"軍給那些"+ .@rival$ +"軍顏色瞧瞧吧 !";
-		if (Bat_Team == 1) break;
+		mes "[空間移動師]";
+		mes "需要服務時歡迎隨時來找我";
 		close;
-	}
-	next;
-	if( select("我願與你並肩作戰:結束對話") == 2 ) {
-		mes "["+ .@we$ +"傭兵 行政官]";
-		mes "我軍必獲全勝";
-		close;
-	}
-	mes "["+ .@we$ +"傭兵 行政官]";
-	if( BG_Delay_Tick >= gettimetick(2) ) {
-		mes "你怎麼可以擅自離開呢?";
-		mes "您須再等 ^0000FF" + callfunc("Time2Str",BG_Delay_Tick) + "^000000 才能進入戰場";
-		close;
-	}
-	if( Tierra_BG_Tick >= gettimetick(2) ) {
-		mes "抱歉，您現在無法馬上進入戰場，";
-		mes "您須再等 ^0000FF" + callfunc("Time2Str",Tierra_BG_Tick) + "^000000 才能進入提耶拉峽谷";
-		close;
-	}
-	if( BaseLevel < 80 ) {
-		mes "雖然很佩服你的勇氣願意加入"+ .@we$ +"軍，去對抗"+ .@rival$ +"軍，但是並不希望把我們鍛鍊中的你推入戰場之中!";
-		close;
-	}
-	mes "你已經做好參戰的完全準備了!";
-	mes "快去讓"+ .@rival$ +"軍嚐嚐我們的厲害吧，";
-	mes "今天可以盡情吶喊我們"+ .@we$ +"軍勝利了!";
-	close2;
-	if ( strnpcinfo(1) == "提耶拉峽谷 傭兵行政官") {
-		setarray .@warpy[1],224,208,94,77;
-		warp "bat_room",85,.@warpy[strnpcinfo(2)];
-	}
-	else {
-		setarray .@warpx[1],253,253,57,57;
-		setarray .@warpy[1],94,77,94,77;
-		warp "bat_room",.@warpx[strnpcinfo(2)],.@warpy[strnpcinfo(2)];
 	}
 	end;
 }
-bat_room,156,178,5	duplicate(行政官)	提耶拉峽谷 傭兵行政官#1::吉永1	418
-bat_room,156,121,1	duplicate(行政官)	提耶拉峽谷 傭兵行政官#2::克勒亞1	414
-bat_room,172,178,5	duplicate(行政官)	提耶拉峽谷 傭兵行政官#3::吉永2	418
-bat_room,172,121,1	duplicate(行政官)	提耶拉峽谷 傭兵行政官#4::克勒亞2	414
-bat_room,148,178,5	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#1::吉永3	418
-bat_room,148,121,1	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#2::克勒亞3	414
-bat_room,164,178,5	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#3::吉永4	418
-bat_room,164,121,1	duplicate(行政官)	瀑拉畢烏斯 傭兵行政官#4::克勒亞4	414
 
-// 陣營騎士
-// *********************************************************************
-// 提耶拉峽谷
--	script	提耶拉 陣營	1,{
-	mes "["+ strnpcinfo(1) +"]";
-	mes "提耶拉峽谷為上下長方形狀，在11點和7點鐘的方向各有吉永和克勒亞陣營的糧倉";
+-	script	馬樂戰場 募兵官::BatRecruit	728,{
+	mes "[馬樂戰場 募兵官]";
+	mes "你好冒險家，";
+	mes "我是遙遠國度馬樂王國的騎士";
 	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "參與戰鬥的人從各陣陣營的船上出發後，快速地移動至對方的糧倉並銷毀，就是這次戰鬥的目標";
+	mes "[馬樂戰場 募兵官]";
+	mes "由於兩位王子因馬樂的王位繼承問題而需要展開戰鬥，所以我們正在募集像你這樣經驗豐富的傭兵，";
+	mes "你願不願意助我們馬樂一臂之力呢?";
 	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "戰場的治療師每個25秒鐘會讓喪失戰鬥能力的人恢復後再次投入戰鬥中，另外搶先占領位於中央處中立旗幟之陣營，可獲得額外的復活點，因而比對方陣營更處於有利的位置上";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes " 雖然各陣營的糧倉是由狹窄的峽谷相互串連，但是被對方陣營的拒馬封鎖出口了，所以各位手腳快一點的話，就有利於破壞對方的拒馬";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "另外凡是參與戰鬥的人都會拿到在一定時間結束時，都不得再參與相同戰鬥的標誌，時間可以透過Alt+U進行確認";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧";
-	close;
+	switch(select("參戰:不參戰")) {
+	case 1:
+		mes "[馬樂戰場 募兵官]";
+		mes "希望神保佑你的精神與勇氣";
+		close2;
+		getmapxy(.@mapname$,.@x,.@y,1);
+		if (.@mapname$ == "prontera")
+			set bat_return,1;
+		else if (.@mapname$ == "moc_ruins")
+			set bat_return,2;
+		else if (.@mapname$ == "aldebaran")
+			set bat_return,3;
+		else if (.@mapname$ == "geffen")
+			set bat_return,4;
+		else if (.@mapname$ == "payon")
+			set bat_return,5;
+		else if (.@mapname$ == "lighthalzen")
+			set bat_return,6;
+		else if (.@mapname$ == "rachel")
+			set bat_return,7;
+		else
+			set bat_return,1;
+		warp "bat_room",154,150;
+		break;
+	case 2:
+		mes "[馬樂戰場 募兵官]";
+		mes "我會隨時在這裡為各位服務，等改變心意時再來吧";
+		close;
+	}
+	end;
 }
-bat_room,159,178,5	duplicate(提耶拉 陣營)	吉永 陣營騎士#1	417
-bat_room,175,178,5	duplicate(提耶拉 陣營)	吉永 陣營騎士#2	417
-bat_room,159,121,1	duplicate(提耶拉 陣營)	克勒亞 陣營騎士#1	413
-bat_room,175,121,1	duplicate(提耶拉 陣營)	克勒亞 陣營騎士#2	413
 
-// 瀑拉畢烏斯
--	script	瀑拉畢烏斯 陣營	1,{
-	mes "["+ strnpcinfo(1) +"]";
-	mes "瀑拉畢烏斯戰鬥是搶先破壞對方的水晶後，快速取得2分的一方就獲勝的戰鬥";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "各水晶是由特殊的拒馬所包圍的關係，絕對不會被破壞的";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "因此為了摧毀看不見的特殊拒馬，就須先破壞保護各陣營的所有守護者";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "加上水晶不會受到各種技能的影響，所以各位俐落的身手對摧毀水晶大有幫助";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "另外凡是參與戰鬥的人都會拿到在一定時間結束前，都不得再參與相同戰鬥的標誌，";
-	mes "時間可透過Alt+U進行確認";
-	next;
-	mes "["+ strnpcinfo(1) +"]";
-	mes "好了，那麼準備完成了的話，請向我旁邊的募兵官申請參戰吧!";
-	close;
+prontera,123,83,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit1	728
+moc_ruins,75,162,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit2	728
+aldebaran,146,109,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit3	728
+geffen,109,66,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit4	728
+payon,189,105,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit5	728
+lighthalzen,153,86,5	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit6	728
+rachel,149,138,3	duplicate(BatRecruit)	馬樂戰場 募兵官::BatRecruit7	728
+
+// Additional warps
+// Empty
+bat_room,57,81,0	warp	bat1	1,1,bat_room,154,149
+bat_room,57,90,0	warp	bat2	1,1,bat_room,154,149
+// Empty
+bat_room,85,81,0	warp	bat5	1,1,bat_room,154,149
+bat_room,85,90,0	warp	bat6	1,1,bat_room,154,149
+// Free BG
+bat_room,113,81,0	warp	bat9	1,1,bat_room,154,149
+bat_room,113,90,0	warp	bat10	1,1,bat_room,154,149
+// Free BG
+bat_room,141,81,0	warp	bat13	1,1,bat_room,154,149
+bat_room,141,90,0	warp	bat14	1,1,bat_room,154,149
+// Free BG
+bat_room,169,81,0	warp	bat17	1,1,bat_room,154,149
+bat_room,169,90,0	warp	bat18	1,1,bat_room,154,149
+// Free BG
+bat_room,197,81,0	warp	bat21	1,1,bat_room,154,149
+bat_room,197,90,0	warp	bat22	1,1,bat_room,154,149
+// Free BG
+bat_room,225,81,0	warp	bat25	1,1,bat_room,154,149
+bat_room,225,90,0	warp	bat26	1,1,bat_room,154,149
+// Empty
+bat_room,253,81,0	warp	bat29	1,1,bat_room,154,149
+bat_room,253,90,0	warp	bat30	1,1,bat_room,154,149
+// Empty
+bat_room,253,220,0	warp	bat31	1,1,bat_room,154,149
+bat_room,253,211,0	warp	bat32	1,1,bat_room,154,149
+
+// Kafra
+//============================================================
+bat_room,148,147,4	script	卡普拉 職員::kaf_bat	861,{
+	cutin "kafra_09",2;
+	callfunc "F_Kafra",0,2,1,150,0;
 }
-bat_room,151,178,5	duplicate(瀑拉畢烏斯 陣營)	吉永 陣營騎士#3	417
-bat_room,167,178,5	duplicate(瀑拉畢烏斯 陣營)	吉永 陣營騎士#4	417
-bat_room,151,121,1	duplicate(瀑拉畢烏斯 陣營)	克勒亞 陣營騎士#3	413
-bat_room,167,121,1	duplicate(瀑拉畢烏斯 陣營)	克勒亞 陣營騎士#4	413
 
-// KVM (Krieger von Midgard) 戰場部分
-
-// 守衛與保鑣
-// *********************************************************************
-bat_room,161,142,3	script	克勒亞 秘書長::bat_aid	415,{ end; }
-bat_room,161,140,3	duplicate(bat_aid)	克勒亞 秘書長::bat_aid2	415
-bat_room,161,160,3	duplicate(bat_aid)	吉永 秘書長::bat_aid3	419
-bat_room,161,158,3	duplicate(bat_aid)	吉永 秘書長::bat_aid4	419
-
-// 旗幟
-// *********************************************************************
--	script	吉永陣營#bat	973,{ end; }
--	script	克勒亞陣營#bat	974,{ end; }
-
-// 從等待區離開
-// *********************************************************************
-// 瀑拉畢烏斯 bat_b02
-bat_room,57,81,0	warp	bat1	2,2,bat_room,154,149
-bat_room,57,90,0	warp	bat2	2,2,bat_room,154,149
-// Free BG
-bat_room,57,220,0	warp	bat3	2,2,bat_room,154,149
-bat_room,57,211,0	warp	bat4	2,2,bat_room,154,149
-// 提耶拉峽谷 bat_a02
-bat_room,85,81,0	warp	bat5	2,2,bat_room,154,149
-bat_room,85,90,0	warp	bat6	2,2,bat_room,154,149
-// 提耶拉峽谷 bat_a01
-bat_room,85,220,0	warp	bat7	2,2,bat_room,154,149
-bat_room,85,211,0	warp	bat8	2,2,bat_room,154,149
-// Free BG
-bat_room,113,81,0	warp	bat9	2,2,bat_room,154,149
-bat_room,113,90,0	warp	bat10	2,2,bat_room,154,149
-// Free BG
-bat_room,113,220,0	warp	bat11	2,2,bat_room,154,149
-bat_room,113,211,0	warp	bat12	2,2,bat_room,154,149
-// Free BG
-bat_room,141,81,0	warp	bat13	2,2,bat_room,154,149
-bat_room,141,90,0	warp	bat14	2,2,bat_room,154,149
-// Free BG
-bat_room,141,220,0	warp	bat15	2,2,bat_room,154,149
-bat_room,141,211,0	warp	bat16	2,2,bat_room,154,149
-// Free BG
-bat_room,169,81,0	warp	bat17	2,2,bat_room,154,149
-bat_room,169,90,0	warp	bat18	2,2,bat_room,154,149
-// Free BG
-bat_room,169,220,0	warp	bat19	2,2,bat_room,154,149
-bat_room,169,211,0	warp	bat20	2,2,bat_room,154,149
-// Free BG
-bat_room,197,81,0	warp	bat21	2,2,bat_room,154,149
-bat_room,197,90,0	warp	bat22	2,2,bat_room,154,149
-// KvM bat_c03
-bat_room,197,220,0	warp	bat23	2,2,bat_room,154,149
-bat_room,197,211,0	warp	bat24	2,2,bat_room,154,149
-// Free BG
-bat_room,225,81,0	warp	bat25	2,2,bat_room,154,149
-bat_room,225,90,0	warp	bat26	2,2,bat_room,154,149
-// KvM bat_c02
-bat_room,225,220,0	warp	bat27	2,2,bat_room,154,149
-bat_room,225,211,0	warp	bat28	2,2,bat_room,154,149
-// 瀑拉畢烏斯 bat_b01
-bat_room,253,81,0	warp	bat29	2,2,bat_room,154,149
-bat_room,253,90,0	warp	bat30	2,2,bat_room,154,149
-// KVM bat_c01
-bat_room,253,220,0	warp	bat31	2,2,bat_room,154,149
-bat_room,253,211,0	warp	bat32	2,2,bat_room,154,149
-
-// 戰場修理工(台灣版本沒有)
-// *********************************************************************
-bat_room,138,144,5	script	修理工#戰場	99,{
+// Repairman
+//============================================================
+bat_room,138,144,5	script	修理工#bg	86,{
 	callfunc "repairmain","修理工";
 	end;
 }
 
-// 戰場物品交換(改編台灣版本)
-// *********************************************************************
-bat_room,160,150,3	script	艾倫德克	109,{
-	function GetBadgeID {
-		return (getarg(0)?7829:7828);
+/*
+// GM Management NPC
+//============================================================
+bat_room,1,151,3	script	開關#batgnd	81,{
+	input .@input,0,2000;
+	if (.@input == 0) {
+		mes "The command has been cancelled.";
+		close;
 	}
-	function GetArrayStr {
-		for(set .@i,0;.@i<getarraysize(getarg(0));set .@i,.@i+1)set .@str$,.@str$+(.@str$==""?"":getarg(1))+getelementofarray(getarg(0),.@i)+(getelementofarray(getarg(0),.@i)=="劍士"?"/拳聖":"");
-		return .@str$;
+	else if (.@input == 1854) {
+		mes "May I help ypu?";
+		next;
+		switch(select("Close Battlefield:Open Battlefield:Reset a01:Reset b01:Reset a02:Reset b02")) {
+		case 1:
+			disablenpc "Tierra Gorge Officer#01a";
+			disablenpc "Tierra Gorge Officer#02a";
+			disablenpc "Tierra Gorge Officer#01b";
+			disablenpc "Tierra Gorge Officer#02b";
+			disablenpc "Flavius Officer#01a";
+			disablenpc "Flavius Officer#01b";
+			disablenpc "Flavius Officer#02a";
+			disablenpc "Flavius Officer#02b";
+			break;
+		case 2:
+			enablenpc "Tierra Gorge Officer#01a";
+			enablenpc "Tierra Gorge Officer#02a";
+			enablenpc "Tierra Gorge Officer#01b";
+			enablenpc "Tierra Gorge Officer#02b";
+			enablenpc "Flavius Officer#01a";
+			enablenpc "Flavius Officer#01b";
+			enablenpc "Flavius Officer#02a";
+			enablenpc "Flavius Officer#02b";
+			break;
+		case 3:
+			donpcevent "start#bat_a01::OnEnable";
+			break;
+		case 4:
+			donpcevent "start#bat_b01::OnEnable";
+			break;
+		case 5:
+			donpcevent "start#bat_a02::OnEnable";
+			break;
+		case 6:
+			donpcevent "start#bat_b02::OnEnable";
+			break;
+		}
+		mes "Complete";
+		close;
+	}
+}
+*/
+
+// Badges Exchange
+//============================================================
+bat_room,160,150,3	script	艾倫德克	109,{
+	if (checkweight(1201,1) == 0) {
+		mes "- Wait a minute !! -";
+		mes "- Currently you're carrying -";
+		mes "- too many items with you. -";
+		mes "- Please try again -";
+		mes "- after you loose some weight. -";
+		close;
 	}
 	mes "[艾倫德克]";
 	mes "請問您持有透過戰場所獲得的徽章嗎?";
 	mes "我負責的是換成特攻徽章和勇猛徽章物品的工作";
 	next;
-	if(select("換成徽章:查看目錄") == 2) {
+	switch(select("換成徽章:查看目錄")) {
+	case 1:
+		mes "[艾倫德克]";
+		mes "請問您要看哪一種呢?";
+		mes "各物品的詳細功能，請參考 ^3131FF目錄^000000";
+		next;
+		switch(select("武器:防具:裝飾品:消耗性物品")) {
+		case 1:
+			mes "[艾倫德克]";
+			mes "您選的是^3131FF武器^000000，";
+			mes "需要徽章的武器，共有以下幾種";
+			mes "分成^3131FF勇猛徽章專用是(勇)^000000，^3131FF特攻徽章專用是(特)^000000，提供您參考";
+			next;
+			switch(select("短劍/單手劍/雙手劍/雙手槍:手杖/鈍器/雙手斧/風魔翼飛鏢:弓/拳刃/樂器/鞭子:書籍/拳套:左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器")) {
+			case 1:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF短劍/單手劍/雙手劍/雙手槍^000000，共有以下幾種物品";
+				next;
+				switch(select("刺客的大馬士革短劍(勇):刺客的大馬士革短劍(特):劍士的厚刃劍(勇):劍士的厚刃劍(特):突襲隊長的亞藍斯之劍(勇):突襲隊長的亞藍斯之劍(特):突襲隊長的長矛:突襲隊長的騎士長矛")) {
+				case 1:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],13036,1; //BF_Dagger1
+					break;
+				case 2:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13037,1; //BF_Dagger2
+					break;
+				case 3:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],13411,1; //BF_Sword2
+					break;
+				case 4:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13410,1; //BF_Sword1
+					break;
+				case 5:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1183,1; //BF_Two_Handed_Sword1
+					break;
+				case 6:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1184,1; //BF_Two_Handed_Sword2
+					break;
+				case 7:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1425,1; //BF_Spear1
+					break;
+				case 8:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1482,1; //BF_Lance1
+					break;
+				}
+				break;
+			case 2:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF手杖/鈍器/雙手斧/風魔翼飛鏢^000000，共有以下幾種物品";
+				next;
+				switch(select("魔法師的魔杖(勇):魔法師的魔杖(特):強力的恢復手杖:迅速的恢復手杖:鬥士的日星錘(勇):鬥士的日星錘(特):狂戰士的巨斧(勇):狂戰士的巨斧(特):戰鬥風魔翼飛鏢(勇):戰鬥風魔翼飛鏢(特))")) {
+				case 1:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1632,1; //BF_Staff1
+					break;
+				case 2:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1633,1; //BF_Staff2
+					break;
+				case 3:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1634,1; //BF_Staff3
+					break;
+				case 4:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1635,1; //BF_Staff4
+					break;
+				case 5:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1543,1; //BF_Morning_Star2
+					break;
+				case 6:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1542,1; //BF_Morning_Star1
+					break;
+				case 7:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1380,1; //BF_Two_Handed_Axe2
+					break;
+				case 8:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1379,1; //BF_Two_Handed_Axe1
+					break;
+				case 9:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],13305,1; //BF_Huuma_Shuriken1
+					break;
+				case 10:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13306,1; //BF_Huuma_Shuriken2
+					break;
+				}
+				break;
+			case 3:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF弓/拳刃/樂器/鞭子^000000，共有以下幾種物品";
+				next;
+				switch(select("戰鬥十字弓(勇):戰鬥十字弓(特):屠殺的拳刃(勇):屠殺的拳刃(特):戰場的吉他(勇):戰場的吉他(特):戰鬥細刃鞭子(勇):戰鬥細刃鞭子(特)")) {
+				case 1:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1739,1; //BF_Bow2
+					break;
+				case 2:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1738,1; //BF_Bow1
+					break;
+				case 3:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1279,1; //BF_Katar1
+					break;
+				case 4:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1280,1; //BF_Katar2
+					break;
+				case 5:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1924,1; //BF_Instrument2
+					break;
+				case 6:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1923,1; //BF_Instrument1
+					break;
+				case 7:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1978,1; //BF_Whip2
+					break;
+				case 8:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1977,1; //BF_Whip1
+					break;
+				}
+				break;
+			case 4:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF書籍/拳套^000000，共有以下幾種物品";
+				next;
+				switch(select("孫子兵法(勇):孫子兵法(特):鬥士的戰鬥昇龍拳套(勇):鬥士的戰鬥昇龍拳套(特)")) {
+				case 1:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1574,1; //BF_Book1
+					break;
+				case 2:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1575,1; //BF_Book2
+					break;
+				case 3:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],1824,1; //BF_Knuckle2
+					break;
+				case 4:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],1823,1; //BF_Knuckle1
+					break;
+				}
+				break;
+			case 5:
+				mes "[艾倫德克]";
+				mes "我們所準備的 ^3131FF左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器^000000，共有以下幾種物品";
+				next;
+				switch(select("破壞性的左輪手槍:快速的布林其來福槍:暴力的格林機關槍:敏銳的霰彈槍:暴力的榴彈發射器")) {
+				case 1:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],13108,1; //BF_Pistol1
+					break;
+				case 2:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13171,1; //BF_Rifle1
+					break;
+				case 3:
+					setarray .@cost[0],7828,100; //BF_Badge1
+					setarray .@item[0],13172,1; //BF_Gatling_Gun1
+					break;
+				case 4:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13173,1; //BF_Shotgun1
+					break;
+				case 5:
+					setarray .@cost[0],7829,100; //BF_Badge2
+					setarray .@item[0],13174,1; //BF_Launcher1
+					break;
+				}
+				break;
+			}
+			if (.@cost[0] == 7829)
+				set .@type$,"(特)";
+			else 
+				set .@type$,"(勇)";
+			mes "[艾倫德克]";
+			mes "您選的是^3131FF"+getitemname(.@item[0])+""+.@type$+"^000000.";
+			mes "此物品需要 ^FF0000"+getitemname(.@cost[0])+" "+.@cost[1]+"個^000000.";
+			mes "請問您要交換嗎?";
+			next;
+			switch(select("不交換:交換")) {
+			case 1:
+				mes "[艾倫德克]";
+				mes "您要再看看一下嗎?";
+				break;
+			case 2:
+				mes "[艾倫德克]";
+				mes "您要用^FF0000"+.@cost[1]+" "+getitemname(.@cost[0])+"個^000000來購買 ^3131FF"+getitemname(.@item[0])+""+.@type$+"^000000嗎?";
+				next;
+				mes "[艾倫德克]";
+				mes "Remember, Battleground Reward Items are ^FF0000Character Bound^000000. Are you sure you want this item?";
+				next;
+				switch(select("要:不要")) {
+				case 1:
+					if (countitem(.@cost[0]) >= .@cost[1]) {
+						mes "[艾倫德克]";
+						mes "謝謝光臨";
+						delitem .@cost[0],.@cost[1];
+						getitem .@item[0],.@item[1];
+					}
+					else {
+						mes "[艾倫德克]";
+						mes "交換所需的徽章數量不足呢";
+					}
+					break;
+				case 2:
+					mes "[艾倫德克]";
+					mes "您要再看看一下嗎?";
+					break;
+				}
+				break;
+			}
+			close;
+		case 2:
+			mes "[艾倫德克]";
+			mes "您選的是^3131F防具^000000，";
+			mes "需要徽章的防具，共有以下幾種";
+			next;
+			switch(select("披肩類/靴子:鎧甲")) {
+			case 1:
+				switch(select("司令官的_斗篷:指揮官的斗篷:保安官的斗篷:戰鬥重靴:軍靴:戰鬥短靴")) {
+				case 1:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2538,1; //Commander_Manteau
+					break;
+				case 2:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2539,1; //Commander_Manteau_
+					break;
+				case 3:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2540,1; //Sheriff_Manteau
+					break;
+				case 4:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2435,1; //Battle_Greave
+					break;
+				case 5:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2436,1; //Combat_Boots
+					break;
+				case 6:
+					setarray .@cost[0],7828,50,7829,50; //BF_Badge1
+					setarray .@item[0],2437,1; //Battle_Boots
+					break;
+				}
+				break;
+			case 2:
+				switch(select("突襲隊長的鋼鐵鎧甲:精銳工兵的鎧甲:刺客的外袍:魔法師的戰鬥外袍:醫護兵的外袍:精銳弓兵的外套:精銳射手的外套")) {
+				case 1:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2376,1; //Assaulter_Plate
+					break;
+				case 2:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2377,1; //Elite_Engineer_Armor
+					break;
+				case 3:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2378,1; //Assassin_Robe
+					break;
+				case 4:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2379,1; //Warlock_Battle_Robe
+					break;
+				case 5:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2380,1; //Medic_Robe
+					break;
+				case 6:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2381,1; //Elite_Archer_Suit
+					break;
+				case 7:
+					setarray .@cost[0],7828,80,7829,80; //BF_Badge1
+					setarray .@item[0],2382,1; //Elite_Shooter_Suit
+					break;
+				}
+				break;
+			}
+			break;
+		case 3:
+			mes "[艾倫德克]";
+			mes "您選的是^3131FF裝飾品^000000，";
+			mes "需要徽章的武功勳章，共分為以下幾種職業系列";
+			next;
+			switch(select("神槍手:劍士:盜賊:服事:魔法師:弓箭手:商人")) {
+			case 1:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2733,1; //Medal_Gunner
+				break;
+			case 2:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2720,1; //Medal_Swordman
+				break;
+			case 3:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2721,1; //Medal_Thief
+				break;
+			case 4:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2722,1; //Medal_Acolyte
+				break;
+			case 5:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2723,1; //Medal_Mage
+				break;
+			case 6:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2724,1; //Medal_Archer
+				break;
+			case 7:
+				setarray .@cost[0],7828,500,7829,500; //BF_Badge1
+				setarray .@item[0],2725,1; //Medal_Merchant
+				break;
+			}
+			break;
+		case 4:
+			mes "[艾倫德克]";
+			mes "您選的是^3131FF消耗性物品^000000，";
+			mes "需要徽章的消耗性物品，共有以下幾種";
+			next;
+			switch(select("救命丹(紅):救命丹(黃):軍備乾糧A:軍備乾糧B:軍備乾糧C")) {
+			case 1:
+				setarray .@cost[0],7828,10,7829,10; //BF_Badge1
+				setarray .@item[0],12269,1; //Tasty_Colonel
+				break;
+			case 2:
+				setarray .@cost[0],7828,10,7829,10; //BF_Badge1
+				setarray .@item[0],12270,1; //Tasty_Major
+				break;
+			case 3:
+				setarray .@cost[0],7828,5,7829,5; //BF_Badge1
+				setarray .@item[0],12271,1; //Mre_A
+				break;
+			case 4:
+				setarray .@cost[0],7828,10,7829,10; //BF_Badge1
+				setarray .@item[0],12272,1; //Mre_B
+				break;
+			case 5:
+				setarray .@cost[0],7828,10,7829,10; //BF_Badge1
+				setarray .@item[0],12273,1; //Mre_C
+				break;
+			}
+			break;
+		}
+		break;
+	case 2:
 		mes "[艾倫德克]";
 		mes "我們備有相當豐富的物品，請慢慢瀏覽後仔細的挑選吧";
 		close2;
-		Readbook 11010,1;
+		ReadBook 11010,1;
 		end;
 	}
+
 	mes "[艾倫德克]";
-	mes "請問您要看哪一種呢?";
-	mes "各物品的詳細功能，請參考 ^3131FF目錄^000000";
-	next;
-	set .@Menu1,select("武器:防具:裝飾品:消耗性物品");
-	mes "[艾倫德克]";
-	mes "您選的是^3131FF"+$@MenuShow$[.@Menu1-1]+"^000000，";
-	if(.@Menu1 != 3)mes "需要徽章的"+$@MenuShow$[.@Menu1-1]+"，共有以下幾種";
-	else mes "需要徽章的武功勳章，共分為以下幾種職業系列";
-	if(.@Menu1==1)mes "分成^3131FF勇猛徽章專用是(勇)^000000，^3131FF特攻徽章專用是(特)^000000，提供您參考";
-	next;
-	if(.@Menu1<3) {
-		set .@Menu2,select(GetArrayStr(getd("$@Menu"+.@Menu1+"Show$"),":"));
-		if(.@Menu1==1) {
-			mes "[艾倫德克]";
-			mes "我們所準備的 ^3131FF"+$@Menu1Show$[.@Menu2-1]+"^000000，共有以下幾種物品";
-			next;
-		}
+	mes "您選的是^3131FF"+getitemname(.@item[0])+"^000000.";
+	switch(.@item[0]) {
+	case 2720: mes "This item is for Swordman and Taekwon Master Class only."; break;
+	case 2721: mes "This item is for Thief Class only."; break;
+	case 2722: mes "This item is for Acolyte Class only."; break;
+	case 2723: mes "This item is for Magician Class only."; break;
+	case 2724: mes "This item is for Archer Class only."; break;
+	case 2725: mes "This item is for Merchant Class only."; break;
+	case 2733: mes "This item is for Gunslinger only."; break;
+	default: break;
 	}
-	set .@Menu3,select(GetArrayStr(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"Show$"),":"));
-	mes "[艾倫德克]";
-	mes "您選的是^3131FF"+(.@Menu1 == 3?(.@Menu3 == 1?"保安官":"戰功")+"勳章":getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"Show$["+(.@Menu3-1)+"]"))+"^000000，";
-	if(.@Menu1 == 3)mes "這是"+$@Menu3Show$[.@Menu3-1]+(.@Menu3==1?"":"系列")+"專用物品，";
-	mes "此物品需要 ^FF0000"+(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")<2?(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")?"特攻徽章":"勇猛徽章"):"勇猛或是特攻徽章")+" "+getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeSpend["+(.@Menu3-1)+"]")+"個^000000，";
+	mes "您要用^FF0000"+.@cost[1]+" "+getitemname(.@cost[0])+" 或 "+.@cost[3]+" "+getitemname(.@cost[2])+"^000000.";
 	mes "請問您要交換嗎?";
 	next;
-	if(select("不交換:交換")==1) {
-	Exit:
+	switch(select("不交換:交換")) {
+	case 1:
 		mes "[艾倫德克]";
 		mes "您要再看看一下嗎?";
-		close;
-	}
-	mes "[艾倫德克]";
-	if(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")<2){
-		mes "您要用^FF0000"+(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")?"特攻徽章":"勇猛徽章")+" "+getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeSpend["+(.@Menu3-1)+"]")+"個^000000來購買 ^3131FF"+getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"Show$["+(.@Menu3-1)+"]")+"^000000嗎?";
-		next;
-		if(select("要:不要")==2)goto Exit;
-	}
-	else {
+		break;
+	case 2:
+		mes "[艾倫德克]";
 		mes "請問您要與哪一種徽章交換呢?";
-		mes "交換所需的數量是 ^3131FF"+getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeSpend["+(.@Menu3-1)+"]")+"個^000000";
+		mes "交換所需的數量是 ^3131FF"+.@cost[1]+" 個^000000";
 		next;
-		if(select("勇猛徽章:特攻徽章:取消交換")==3){
+		if (.@item[0] < 12269 || .@item[0] > 12273 ) {
+			mes "[艾倫德克]";
+			mes "Remember, Battleground Reward Items are ^FF0000Character Bound^000000. Are you sure you want this item?";
+			next;
+		}
+		switch(select("勇猛徽章:特攻徽章:取消交換")) {
+		case 1:
+			if (countitem(.@cost[0]) >= .@cost[1]) {
+				mes "[艾倫德克]";
+				mes "謝謝光臨";
+				delitem .@cost[0],.@cost[1];
+				getitem .@item[0],.@item[1];
+			}
+			else {
+				mes "[艾倫德克]";
+				mes "交換所需的勇猛徽章數量不足呢";
+			}
+			break;
+		case 2:
+			if (countitem(.@cost[2]) >= .@cost[3]) {
+				mes "[艾倫德克]";
+				mes "謝謝光臨";
+				delitem .@cost[2],.@cost[3];
+				getitem .@item[0],.@item[1];
+			}
+			else {
+				mes "[艾倫德克]";
+				mes "交換所需的特攻徽章數量不足呢";
+			}
+			break;
+		case 3:
 			mes "[艾倫德克]";
 			mes "您已經取消交換了";
-			close;
+			break;
 		}
+		break;
 	}
-	if(countitem(GetBadgeID((getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")<2?getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]"):@menu-1)))<getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeSpend["+(.@Menu3-1)+"]")){
-		mes "[艾倫德克]";
-		mes "交換所需的"+(getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")<2?"":(@menu==1?"勇猛":"特攻"))+"徽章數量不足呢";
-		close;
-	}
-	mes "[艾倫德克]";
-	mes "謝謝光臨";
-	close2;
-	getitem getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"ID["+(.@Menu3-1)+"]"),1;
-	delitem GetBadgeID((getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]")<2?getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeType["+(.@Menu3-1)+"]"):@menu-1)),getd("$@Menu"+.@Menu1+(.@Menu2?"_"+.@Menu2:"")+"BadgeSpend["+(.@Menu3-1)+"]");
-	end;
-OnInit:
-	setarray $@MenuShow$,"武器","防具","裝飾品","消耗性物品";
-		setarray $@Menu1Show$,"短劍/單手劍/雙手劍/雙手槍","手杖/鈍器/雙手斧/風魔翼飛鏢","弓/拳刃/樂器/鞭子","書籍/拳套","左輪手槍/布林其來福槍/格林機關槍/霰彈槍/榴彈發射器";
-			setarray $@Menu1_1Show$,"刺客的大馬士革短劍(勇)","刺客的大馬士革短劍(特)","劍士的厚刃劍(勇)","劍士的厚刃劍(特)","突襲隊長的亞藍斯之劍(勇)","突襲隊長的亞藍斯之劍(特)","突襲隊長的長矛","突襲隊長的騎士長矛";
-			setarray $@Menu1_1ID,13036,13037,13411,13410,1184,1183,1425,1482;
-			setarray $@Menu1_1BadgeType,0,1,0,1,0,1,0,1;
-			setarray $@Menu1_1BadgeSpend,100,100,100,100,100,100,100,100;
-			
-			setarray $@Menu1_2Show$,"魔法師的魔杖(勇)","魔法師的魔杖(特)","強力的恢復手杖","迅速的恢復手杖","鬥士的日星錘(勇)","鬥士的日星錘(特)","狂戰士的巨斧(勇)","狂戰士的巨斧(特)","戰鬥風魔翼飛鏢(勇)","戰鬥風魔翼飛鏢(特)";
-			setarray $@Menu1_2ID,1632,1633,1634,1635,1543,1542,1379,1380,13305,13306;
-			setarray $@Menu1_2BadgeType,0,1,0,1,0,1,0,1,0,1;
-			setarray $@Menu1_2BadgeSpend,100,100,100,100,100,100,100,100,100,100;
-			
-			setarray $@Menu1_3Show$,"戰鬥十字弓(勇)","戰鬥十字弓(特)","屠殺的拳刃(勇)","屠殺的拳刃(特)","戰場的吉他(勇)","戰場的吉他(特)","戰鬥細刃鞭子(勇)","戰鬥細刃鞭子(特)";
-			setarray $@Menu1_3ID,1739,1738,1279,1280,1924,1923,1978,1977;
-			setarray $@Menu1_3BadgeType,0,1,0,1,0,1,0,1;
-			setarray $@Menu1_3BadgeSpend,100,100,100,100,100,100,100,100;
-			
-			setarray $@Menu1_4Show$,"孫子兵法(勇)","孫子兵法(特)","鬥士的戰鬥昇龍拳套(勇)","鬥士的戰鬥昇龍拳套(特)";
-			setarray $@Menu1_4ID,1574,1575,1824,1823;
-			setarray $@Menu1_4BadgeType,0,1,0,1;
-			setarray $@Menu1_4BadgeSpend,100,100,100,100;
-			
-			setarray $@Menu1_5Show$,"破壞性的左輪手槍","快速的布林其來福槍","暴力的格林機關槍","敏銳的霰彈槍","暴力的榴彈發射器";
-			setarray $@Menu1_5ID,13036,13108,13171,13172,13173,13174;
-			setarray $@Menu1_5BadgeType,0,1,0,1,1;
-			setarray $@Menu1_5BadgeSpend,100,100,100,100,100;
-			
-		setarray $@Menu2Show$,"披肩類/靴子","鎧甲";
-			setarray $@Menu2_1Show$,"司令官的_斗篷","指揮官的斗篷","保安官的斗篷","戰鬥重靴","軍靴","戰鬥短靴";
-			setarray $@Menu2_1ID,2538,2539,2540,2435,2436,2437;
-			setarray $@Menu2_1BadgeType,2,2,2,2,2,2;
-			setarray $@Menu2_1BadgeSpend,50,50,50,50,50,50;
-			
-			setarray $@Menu2_2Show$,"突襲隊長的鋼鐵鎧甲","精銳工兵的鎧甲","刺客的外袍","魔法師的戰鬥外袍","醫護兵的外袍","精銳弓兵的外套","精銳射手的外套";
-			setarray $@Menu2_2ID,2376,2377,2378,2379,2380,2381,2382;
-			setarray $@Menu2_2BadgeType,2,2,2,2,2,2,2;
-			setarray $@Menu2_2BadgeSpend,80,80,80,80,80,80,80;
-			
-		setarray $@Menu3Show$,"神槍手","劍士","盜賊","服事","魔法師","弓箭手","商人";
-		setarray $@Menu3ID,2733,2720,2721,2722,2723,2724,2725;
-		setarray $@Menu3BadgeType,2,2,2,2,2,2,2;
-		setarray $@Menu3BadgeSpend,500,500,500,500,500,500,500;
-		
-		setarray $@Menu4Show$,"救命丹(紅)","救命丹(黃)","軍備乾糧A","軍備乾糧B","軍備乾糧C";
-		setarray $@Menu4ID,12269,12270,12271,12272,12273;
-		setarray $@Menu4BadgeType,2,2,2,2,2;
-		setarray $@Menu4BadgeSpend,10,10,5,10,10;
+	close;
 }

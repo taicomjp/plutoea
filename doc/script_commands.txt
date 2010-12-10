@@ -4,7 +4,7 @@
 //= A reference manual for the eAthena scripting language.
 //= Commands are sorted depending on their functionality.
 //===== Version ===========================================
-//= 3.28.20091119
+//= 3.32.20101208
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
@@ -135,6 +135,19 @@
 //= 3.28.20091119
 //=       Added showevent and searchitem commands [Skotlex]
 //=       Added info on strcharinfo(3) [Skotlex]
+//= 3.29.20101123
+//=       Added 'pushpc' command. [Ai4rei]
+//= 3.30.20101126
+//=       Added 'setfont', 'mercenary_create', 'mercenary_heal', 'mercenary_sc_start',
+//=       'mercenary_create', 'mercenary_get_calls', 'mercenary_set_calls',
+//=       'mercenary_get_faith' and 'mercenary_set_faith' commands. [Ai4rei]
+//= 3.31.20101130
+//=       Added 'progressbar' command. [Ai4rei]
+//= 3.32.20101208
+//=       Updated description for commands 'next', 'return', 'attachrid',
+//=       'detachrid', 'itemskill', 'openstorage', 'skilleffect', 'donpcevent',
+//=       'day', 'night', 'atoi', 'axtoi', 'jump_zero', 'getelementofarray',
+//=       'changebase', 'kickwaitingroomall', 'cutin' and 'charcommand'. [Ai4rei]
 //=========================================================
 
 This document is a reference manual for all the scripting commands and functions 
@@ -490,15 +503,16 @@ implemented (but NEVER documented by Lance. Shame on you...).
 Item and pet scripts
 --------------------
 
-Each item in the item database has two special fields - EquipScript and 
-UseScript. The first is script code run every time a character equips the item, 
+Each item in the item database has three special fields - Script , OnEquip_Script
+and OnUnequip_Script. The first is script code run every time a character equips the item, 
 with the RID of the equipping character. Every time they unequip an item, all 
 temporary bonuses given by the script commands are cleared, and all the scripts 
 are executed once again to rebuild them. This also happens in several other 
 situations (like upon login) but the full list is currently unknown.
 
-UseScript is a piece of script code run whenever the item is used by a character 
-by doubleclicking on it.
+OnEquip_Script is a piece of script code run whenever the item is used by a character 
+by doubleclicking on it. OnUnequip_Script runs whenever the
+equipment is unequip by a character
 
 Not all script commands work properly in the item scripts. Where commands and 
 functions are known to be meant specifically for use in item scripts, they are 
@@ -547,8 +561,10 @@ permanent - They still exist when the server resets.
 temporary - They cease to exist when the server resets.
 
 Prefix: scope and extent
-nothing  - A permanent variable attached to the character, the default 
-           variable type.
+nothing  - A permanent variable attached to the character, the default variable
+           type. They are stored with all the account data in "save\athena.txt"
+           in TXT versions and in the SQL versions in the `global_reg_value`
+           table using type 3.
 "@"      - A temporary variable attached to the character.
            SVN versions before 2094 revision and RC5 version will also treat
            'l' as a temporary variable prefix, so beware of having variable
@@ -745,7 +761,7 @@ common mathematical operations or conditional operators
 + - will add two numbers. If you try to add two strings, the result will be a 
     string glued together at the +. You can add a number to a string, and the
     result will be a string. No other math operators work with strings.
-- - will subtract two numbers.
+- - will subtract two numbers. 
 * - will multiply two numbers.
 / - will divide two numbers. Note that this is an integer division, i.e.
     7/2 is not equal 3.5, it's equal 3.
@@ -861,6 +877,52 @@ Logical bitwise operators work only on numbers, and they are the following:
 			mes "Quest 1 complete!! You unlocked the secrets of the Xor dinasty, use them wisely.";
 			close;
 		}
+
+Unary operators with only with a single number, which follows the operator, and
+are following:
+
+ -  - Negation.
+	The sign of the number will be reversed. If the number was positive, it will
+	become negative and vice versa.
+
+	Example:
+		set .@myvar,10;
+		mes "Negative 10 is "+(-.@myvar);
+
+ !  - Logical Not.
+	Reverses the boolean result of an expression. True will become false and
+	false will become true.
+
+	Example:
+		if(!callfunc("F_dosomething"))
+		{
+			mes "Doing something failed.";
+			close;
+		}
+
+ ~  - Bitwise Not.
+	Reverses each bit in a number, also known as one's complement. Cleared bits
+	are set, and set bits are cleared.
+
+	Example:
+	- Ensure, that quest 2 is disabled, while keeping all other active, if they are.
+		set inProgress,inProgress&(~2);  // same as set inProgress,inProgress&0xfffffffd
+
+Ternary operators take three expressions (numbers, strings or boolean), and are
+following:
+
+ ?: - Conditional operator
+	Very useful e.g. to replace
+
+		if(Sex) mes "..."; else mes "...";
+
+	clauses with simple
+
+		mes "Welcome, " + (Sex?"Mr.":"Mrs.") + " " + strcharinfo(0);
+
+	or to replace any other simple if-else clauses. It might be worth
+	mentioning that ?: has low priority and has to be enclosed with
+	parenthesis in most (if not all) cases.
 
 Labels
 ------
@@ -979,6 +1041,15 @@ OnThisMobDeath:
 
 Each time you kill one, that announce will appear in blue to everyone.
 
+"Global" labels
+
+There's a catch with labels and doevent. If you call a label (using doevent)
+and called label is in NPC that has trigger area, that label must end with
+"Global" to work globally (i.e. if RID is outside of the trigger area, which
+usually happens since otherwise there would be no point calling the label with
+doevent, because OnTouch would do the job). For further reference look for
+npc_event in npc.c.
+
 Scripting commands and functions
 --------------------------------
 
@@ -1006,9 +1077,10 @@ From here on, we will have the commands sorted as follow:
 4.- Player-related commands.
 5.- Mob / NPC -related commands.
 6.- Other commands.
-7.- Instance Commands.
-8.- Quest Log Commands.
+7.- Instance commands.
+8.- Quest Log commands.
 9.- Battleground commands.
+10.- Mercenary commands.
 
 =====================
 |1.- Basic commands.|
@@ -1047,9 +1119,14 @@ either side solves the problem.
 
 *next;
 
-This command will create a 'next' button in the message window for the invoking 
-character. If no window is currently on screen, it will be created. Used to 
-segment NPC talking, this command is used A LOT. See 'mes'.
+This command will display a 'next' button in the message window for the
+invoking character. Clicking on it will cause the window to clear and display
+a new one. Used to segment NPC-talking, next is often used in combination with
+'mes' and 'close'.
+
+If no window is currently on screen, one will be created, but once the invoking
+character clicks on it, a warning is thrown on the server console and the script
+will terminate.
 
     mes "[Woman]";
     mes "This would appear on the page";
@@ -1586,9 +1663,13 @@ in the previous example getarg(2,-1) would be 3 and getarg(3,-1) would be -1
 
 *return {<value>};
 
-When you use callsub or callfunc, this command allows you to go back to the 
-calling script. You can optionally return with a value telling the calling 
-program what exactly happened.
+This command causes the script execution to leave previously called function
+with callfunc or script with callsub and return to the location, where the call
+originated from. Optionally a return value can be supplied, when the call was
+done using the function form. 
+
+Using this command outside of functions or scripts referenced by callsub will
+result in error and termination of the script.
 
 	callfunc "<your function>";// when nothing is returned
 	set <variable>,callfunc("<your function>");// when a value is being returned
@@ -1603,9 +1684,9 @@ program what exactly happened.
 
 (Skotlex stop being so selfish and give us all the commands T~T! J/k lol :P)
 
-This works like callfunc, but doesn't support arguments like callfunc. It's used for cleaner
-and fast script that doesn't require arguments for it to work. Also they must be inside a script. 
-They're not separated scripts and they work more like labels.
+This works like callfunc. It's used for cleaner and fast scripting. Also they
+must be inside a script. They're not separated scripts and they work more like
+labels with arguments.
 
 Note it looks like the normal declaration
 
@@ -1613,10 +1694,10 @@ Usage:
 
 You first Declare the function with function <function name>;.
 
-Put the rest of your code. You can use then <function name>; to call the function. If it returns a value is unsure,
-test it if you want and give us some comments ;3
+Put the rest of your code. You can use then <function name>; to call the
+function. It can also return a value when used with parentheses.
 
-And at least, but inside the script itself, put the function <function name> {<code>}.
+And at last, but inside the script itself, put the function <function name> {<code>}.
 
 Example:
 
@@ -1663,6 +1744,24 @@ function SF_Selling {
 		}
 	}
 	return;
+}
+
+Example with parameters and return value:
+
+prontera,150,150,0	script	TestNPC	123,{
+	function MyAdd;
+
+	mes "Enter two numbers.";
+	next;
+	input .@a;
+	input .@b;
+	mes .@a+" + "+.@b+" = "+MyAdd(.@a,.@b);
+	close;
+
+	function MyAdd
+	{
+		return getarg(0)+getarg(1);
+	}
 }
 
 
@@ -1824,10 +1923,12 @@ else if (<condition 2>)
 
 This command works kinda like an 'if'+'goto' combination in one go. (See 'if'). 
 If the condition is false (equal to zero) this command will immediately jump to 
-the specified label like in 'goto'.
+the specified label like in 'goto'. While 'if' is more generally useful, for
+some cases this could be an optimization.
 
-While 'if' is more generally useful, for some cases this could be an 
-optimisation.
+The main reason for this command is that other control statements, like
+'switch', 'for' or 'while', are disassembled into simple expressions together
+with this command when a script is parsed.
 
 ---------------------------------------
 
@@ -2060,16 +2161,13 @@ This will make @arraysize == 6. But if you try this:
 
 *getelementofarray(<array name>,<index>)
 
-This function will return an array's element when given an index.
+This command retrieves the value of the element of given array at given index.
+This is equivalent to using:
 
-    // This will find the 2nd array value
-    getelementofarray(@array,1)
+    array[index]
 
-Pretty pointless now when we have
-
-    @array[1]
-
-which has the same effect.
+The reason for this is, that this short form is internally converted into a call
+to getelementofarray, when the script is loaded.
 
 ---------------------------------------
 
@@ -2753,15 +2851,12 @@ This will print a full date and time like 'YYYY-MM/DD HH:MM:SS'.
 This function will return a number of users on a map or the whole server. What 
 it returns is specified by Type.
 
-Type is a bitmask, add up to get the effects you want:
+Type can be one of the following values, which control what will be returned:
 
-  8 - This will count all characters on the same map as the current NPC.
-      (By default, it will count people on the same map as the character)
-  7 - Return the amount of players for the entire server.
-      (By default, only the players on the map will be counted.)
-      
-So 'getusers(0)' will return the number of characters on the same map as the 
-invoking character, while 'getusers(7)' will give the count for entire server.
+    0 - Count of all characters on the map of the invoking character.
+    1 - Count of all characters in the entire server.
+    8 - Count of all characters on the map of the NPC the script is
+        running in.
 
 ---------------------------------------
 
@@ -3445,18 +3540,13 @@ For a list of equipment slots see 'getequipid'.
 *attachrid(<account ID>)
 *detachrid;
 
-A 'RID' is an ID of a character who caused the NPC script to run, as has been 
-explained above in the introduction section. Quite a bit of commands want a RID 
-to work, since they wouldn't know where to send information otherwise. And in 
-quite a few cases the script gets invoked with a RID of zero (like through 
-OnTime special labels). If an NPC script needs this, it can attach a specified 
-character's id to itself. by calling the 'attachrid' function.
+These commands allow the manipulation of the script's currently attached player.
+While attachrid allows attaching of a different player by using it's account id
+for the parameter rid, detachrid makes the following commands run, as if the
+script was never invoked by a player. 
 
-'attachrid' returns 1 if the character was found online and 0 if it wasn't.
-
-This could also be used, while running in a script invoked by a character 
-through talking to an NPC, to mess with other characters.
-Detaching the RID will make the RID of the script zero.
+In case, that the player cannot be attached, such as, when the player went
+offline in the mean time, attachrid returns 0, otherwise 1.
 
 ---------------------------------------
 
@@ -3754,8 +3844,6 @@ It would be entered in the equip bonus section of an item
 
 2338,Wedding_Dress,Wedding Dress,5,43000,,500,,0,,0,119529470,7,0,16,,0,1,0,{ bonus bMdef,15; changebase 22; }
 
-This command only works when inside item scripts.
-
 ---------------------------------------
 
 *classchange <view id>,<type>;
@@ -3868,6 +3956,22 @@ impossible to tell you what all the colour numbers are. If you want a serious
 example, there is a Stylist script inside the default eAthena installation that 
 you can look at, this may help you create a Stylist of your own: 
 'custom\dye.txt'
+
+---------------------------------------
+
+*pushpc <direction>,<cells>;
+
+This command will push the currently attached player to given direction by given
+amount of square cells. Direction is the same as used when declaring npcs, and
+can be specified by using one of the DIR_* constants (db/const.txt).
+
+The knock-back is not restricted by items or map flags, only obstacles are taken
+into account. If there is not enough space to perform the push (e.g. due to a
+wall), the character is pushed only up to the obstacle.
+
+    // pushes the character 5 cells in 3 o'clock direction from it's
+    // current position.
+    pushpc DIR_EAST, 5;
 
 ---------------------------------------
 \\
@@ -4181,14 +4285,13 @@ effect is still in effect).
 *itemskill <skill id>,<skill level>;
 *itemskill "<skill name>",<skill level>;
 
-This is a command meant for item scripts to replicate single-use skills. It will 
-not work properly in NPC scripts a lot of the time because casting a skill is 
-not allowed when there is a message window or menu on screen. If there isn't one 
-cause you've made sure to run this when they already closed it, it should work 
-just fine and even show a targeting pointer if this is a targeting skill.
+This command meant for item scripts to replicate single-use skills in usable
+items. It will not work properly, if there is a visible dialog window or menu.
+If the skill is self or auto-targeting, it will be used immediately otherwise a
+target cursor is shown.
 
-// When you use Anodyne, you will cast Endure(8) level 1, 
-// and "Endure" will appear above your head as you use it.
+// When Anodyne is used, it will cast Endure (8), Level 1, as if the actual
+// skill has been used from skill tree.
 605,Anodyne,Anodyne,11,2000,0,100,,,,,10477567,2,,,,,{ itemskill 8,1; },{}
 
 
@@ -4326,14 +4429,13 @@ Example(s):
 
 *openstorage;
 
-This will open a character's Kafra storage window on the client connected to the 
-invoking character. It does not check wherever it is run from, so you can allow 
-any feasible NPC to open a kafra storage. (It's not certain whether this works 
-in item scripts, but if it does, it could be interesting.)
+This will open character's Kafra storage window on the client connected to the
+invoking character. It can be used from any kind of NPC or item script, not just
+limited to Kafra Staff.
 
-The storage window might not open if a message box or a trade deal is present on 
-screen already, so you should at least make sure the message box is closed 
-before you open storage.
+The storage window opens regardless of whether there are open NPC dialogs or
+not, but it is preferred to close the dialog before displaying the storage
+window, to avoid any disruption when both windows overlap.
 
     mes "I will now open your stash for you";
     close2;
@@ -4528,23 +4630,26 @@ should be rather obvious.
 *skilleffect <skill id>,<number>;
 *skilleffect "<skill name>",<number>;
 
-This command will display the visual and sound effects of a specified skill (see 
-'db/skill_db.txt' for a full list of skills) on the invoking character's sprite. 
-Nothing but the special effects and animation will happen. If the skill's normal 
-effect displays a floating number, the number given will float up.
+This command displays visual and aural effects of given skill on currently
+attached character. The number parameter is for skill whose visual effect
+involves displaying of a number (healing or damaging). Note, that this command
+will not actually use the skill, it is intended for scripts, which simulate
+skill usage by the NPC, such as buffs, by setting appropriate status and
+displaying the skill's effect.
 
-    // This will heal the character with 2000 hp, buff with 
-    // Bless 10 and Increase AGI 5, and display appropriate
-    // effects.
-    mes "Blessed be!";
-    skilleffect 28,2000;
+    mes "Be blessed!";
+    // Heal of 2000 HP
     heal 2000,0;
-    skilleffect 34,0;
-    // That's bless 10.
+    skilleffect 28,2000;
+    // Blessing Level 10
     sc_start 10,240000,10;
-    skilleffect 29,0;
-    // That's agi 5
+    skilleffect 34,0;
+    // Increase AGI Level 5
     sc_start 12,140000,5;
+    skilleffect 29,0;
+
+This will heal the character with 2000 HP, buff it with Blessing Lv 10 and
+Increase AGI Lv 5, and display appropriate effects.
 
 ---------------------------------------
 
@@ -5013,7 +5118,7 @@ If it doesn't work, the /swt emoticon is shown.
 
 To evolve a homunculus, the invoking player must have a homunculus,
 the homunculus must not be the last evolution and
-the homunculus must be on at least 91000/100000 intimacy with it's owner.
+the homunculus must have above 91000 intimacy with it's owner.
 
 ---------------------------------------
 
@@ -5107,21 +5212,16 @@ invoked by the RID that was active in the script that issued a 'doevent'.
 
 *donpcevent "{NPC NAME}::<event label>";
 
-This command is kinda confusing cause it performs in two completely different 
-ways.
+This command invokes the event label code within an another NPC or NPCs. If
+event label has the form "NpcName::OnLabel", then only given NPC's event label
+will be invoked (much like 'goto' into another NPC). If the form is "::OnLabel"
+(NpcName ommited), the event code of all NPCs with given label will be invoked,
+one after another. In both cases the invoked script will run without an attached
+RID, whether or not the invoking script was attached to a player. The event
+label name is required to start with On.
 
-If the event label is phrased like "::<label name>", all NPC objects that have a 
-specified label in them will be invoked as if by a 'doevent', but no RID 
-whatsoever will be attached while they execute.
-
-Otherwise, if the label is given as "<NPC name>::<label name>", a label within 
-the NPC object that runs this command will be called, but as if it was running 
-inside another, specified NPC object. No RID will be attached to it in this case 
-either.
-
-This can be used for making another NPC react to an action that you have done 
-with the NPC that has this command in it, i.e. show an emotion, or say 
-something.
+This command can be used to make other NPCs act, as if they were responding to
+the invoking NPC's actions, such as using an emotion or talking.
 
     place,100,100,1%TAB%script%TAB%NPC%TAB%53,{
         mes "Hey NPC2 copy what I do";
@@ -5143,8 +5243,8 @@ something.
         end;
     }
 
-This will make both NPC perform the same random emotion from 1 to 30, and the 
-emotion will appear above each of their heads.
+Whichever of the both NPCs is talked to, both will show a random emotion at the
+same time. 
 
 ---------------------------------------
 
@@ -5184,19 +5284,19 @@ Since trunk r11779
 5,1.- Time-related commands
 \\
 ---------------------------------------
-*addtimer <ticks>,"<NPC object name>::<label>";
-*deltimer "<NPC object name>::<event label>";
-*addtimercount <ticks>,"<NPC object name>::<event label>";
+*addtimer <ticks>,"NPC::OnLabel";
+*deltimer "NPC::OnLabel";
+*addtimercount <ticks>,"NPC::OnLabel";
 
-These commands will create and manage a player-based timer: 'addtimer' to 
-create, 'deltimer' to destroy and 'addtimercount' to delay it by the specified 
-number of ticks. For all three cases, the event label given is the identifier of 
-that timer. A player can have multiple timers running at the same time, and 
-there can even be multiple timers referencing the same label.
+These commands will create, destroy, and delay a countdown timer - 'addtimer' to
+create, 'deltimer' to destroy and 'addtimercount' to delay it by the specified
+number of ticks. For all three cases, the event label given is the identifier of
+that timer. The timer runs on the character object that is attached to the script,
+and can have multiple instances. When the label is run, it is run as if the player that
+the timer runs on has clicked the NPC.
 
-When this timer runs out, a new execution thread will start in the specified NPC 
-object at the specified label, and the script will run attached to that player. 
-If the specified label is not found, the map server will happily print an error.
+When this timer runs out, a new execution thread will start in the specified NPC
+object at the specified label.
 
 The ticks are given in 1/1000ths of a second.
 
@@ -5273,6 +5373,8 @@ The 'setnpctimer' command will explicitly set the timer to a given tick.
 Example 1:
 
     <NPC Header> {
+        // We need to use attachnpctimer because the mes command below needs RID attach
+        attachnpctimer;
         initnpctimer;
         npctalk "I cant talk right now, give me 10 seconds";
         end;
@@ -5292,9 +5394,11 @@ Example 1:
         npctalk "1";
         end;
     OnTimer10000:
-        stopnpctimer; // This command is indeed not neccessary here because timer automaticly stopped due to no remaining events.
+        stopnpctimer;
         mes "[Man]";
         mes "Ok we can talk now";
+        detachnpctimer;
+        // and remember attachnpctimer and detachnpctimer can only use while the npc timer is not running !
     }
 
 Example 2:
@@ -5348,6 +5452,17 @@ Examples:
 	sleep 10000; //pause the script for 10 seconds and ditch the RID (so no player is attached anymore)
 	sleep2 5000; //pause the script for 5 seconds, and continue with the RID attached.
 	awake "NPC"; //Cancels any running sleep timers on the NPC 'NPC'.
+
+---------------------------------------
+
+*progressbar "<color>",<seconds>;
+
+This command works almost like sleep2, but displays a progress bar
+above the head of the currently attached character (like cast bar).
+Once the given amount of seconds passes, the script resumes. If the
+character moves while the progress bar progresses, it is aborted and
+the script ends. The color format is in RGB (0xRRGGBB). The color is
+currently ignored by the client and appears always green.
 
 ---------------------------------------
 //
@@ -5642,10 +5757,7 @@ example.
 
 *kickwaitingroomall {"<NPC object name>"};
 
-This command would kick everybody out of a specified waiting room chat. IF it 
-was properly linked into the script interpreter which it isn't, even though the 
-code for it is in place. Expect this to become available in upcoming SVN 
-releases.
+This command kicks everybody out of a specified waiting room chat.
 
 ---------------------------------------
 
@@ -5959,40 +6071,39 @@ memory of where the points are set whatsoever.
 
 *cutin "<filename>",<position>;
 
-This command will display a picture stored in the GRF file in the client for the 
-player. 
+This command will display a picture, usually an NPC illustration, also called
+cutin, for the currently attached client. The position parameter determines the
+placement of the illustration and takes following values:
 
-The files are taken from '\data\texture\유저인터페이스\illust' directory in the 
-GRF file. Also it seems that card cutins from \cardbmp will work here as well. 
-Only bitmaps (images stored in the bitmap format) will actually get displayed. 
-The '.bmp' extension is optional. 
-The client has no problem rendering huge 4096x4096 bitmaps, but usually they're 
-around 500x500. Bright magenta (color FF00FF) is considered to be transparent in 
-these pictures. You can easily add and alter them, but how to do this is outside 
-of the scope of this document.
+    0 - bottom left corner 
+    1 - bottom middle 
+    2 - bottom right corner 
+    3 - middle of screen in a movable window with an empty title bar 
+    4 - middle of screen without the window header, but still movable 
 
-The position determines just where on screen the picture will appear:
-  0 - bottom left corner
-  1 - bottom middle
-  2 - bottom right corner
-  3 - middle of screen in a movable window with an empty title bar.
-  4 - middle of screen without the window header, but still movable.
-  255 - will remove the cutin previously displayed.
- 
-Giving an empty string for the filename and 255 for the position will remove all 
-cutin pictures. Any other position value will not cause a script error but will 
-cause the player's client to curl up and die. Only one cutin may be on screen at 
-any given time, any new cutins will replace it.
 
-    // This will display the picture of the 7th kafra,
-    // the one in orange and the mini-skirt :P
+The picture is read from data\texture\유저인터페이스\illust, from both the GRF archive
+and data folder, and is required to be a bitmap. The file extension .bmp can be
+omitted. Magenta color (#ff00ff) is considered transparent. There is no limit
+placed on the size of the illustrations by the client, although loading of large
+pictures (about 700x700 and larger) causes the client to freeze shortly (lag).
+Typically the size is about 320x480. New illustrations can be added by just
+putting the new file into the location above.
+
+The client is able to display only one cutin at the same time and each new one
+will cause the old one to disappear. To delete the currently displayed
+illustration without displaying a new one, an empty file name and position 255
+must be used.
+
+    // Displays the Comodo Kafra illustration in lower right corner.
     cutin "kafra_7",2;
 
-    // This will remove the displayed picture.
-    cutin "Kafra_7",255;
-
-    // This will remove all pictures displayed.
+    // Typical way to end a script, which displayed an illustration during a
+    // dialog with a player.
+    mes "See you.";
+    close2;
     cutin "",255;
+    end;
 
 ---------------------------------------
 
@@ -6132,40 +6243,30 @@ For the position, the x and y are given in the unitSkillUsePos.
 *day;
 *night;
 
-These two commands will switch the entire server between day and night mode. 
-Depending on the configuration, it may cause differing client effects. If your 
-server is set to cycle between day and night, it will eventually return to that 
-cycle.
-
-This example will set the night time to start at 03 AM and end at 08 AM, and the 
-nighttime will persist if the server restarts during the night, if the automated 
-day/night switching is turned off in the configuration files. Figure it out on 
-your own:
+These two commands will switch the entire server between day and night mode
+respectively. If your server is set to cycle between day and night by
+configuration, it will eventually return to that cycle.
 
 -%TAB%script%TAB%DayNight%TAB%-1,{
-        
 	end;
-
-OnClock0300:
-    
-OnClock0800:
-    
+OnClock0600:
+	day;
+	end;
 OnInit:
-
-        set $@minutesfrommidnight, gettime(3)*60+gettime(2);
-
-        set $@night_start, 180; // 03:00
-        set $@night_end, 480;   // 08:00
-
-        if ($@minutesfrommidnight>=$@night_start && $@minutesfrommidnight<$@night_end) goto StartNight;
-
-        goto StartDay;
-	StartNight:	
+	// setting correct mode upon server start-up
+	if(gettime(3)>=6 && gettime(3)<18)
+	{
+		end;
+	}
+OnClock1800:
 	night;
 	end;
-	StartDay:
-	day;
-	end;	} 
+}
+
+This script allows to emulate the day/night cycle as the server does, but also
+allows triggering additional effects upon change, like announces, gifts, etc.
+The day/night cycle set by configuration should be disabled, when this script is
+used.
 
 ---------------------------------------
 
@@ -6325,9 +6426,9 @@ setitemscript 2637,"";
 *atoi ("<string>")
 *axtoi ("<string>")
 
-These commands are used to convert strings to numbers. 
-atoi will convert string using normal number (0,1,2,3,etc) while axtoi converts them to 
-hexadecimal numbers (0,1,11,01).
+These commands are used to convert strings to numbers. 'atoi' will interpret
+given string as a decimal number (base 10), while 'axtoi' interprets strings as
+hexadecimal numbers (base 16).
 
 Example:
 
@@ -6359,6 +6460,26 @@ Example(s):
 This function will return 1 if the character number Position in the given string 
 is a letter, 0 if it isn't a letter but a digit or a space.
 The first letter is position 0.
+
+---------------------------------------
+
+*setfont <font>
+
+This command sets the current RO client interface font to one of the
+fonts stored in data\*.eot by using an ID of the font. When the ID
+of the currently used font is used, default interface font is used
+again.
+
+    0 - Default
+    1 - RixLoveangel
+    2 - RixSquirrel
+    3 - NHCgogo
+    4 - RixDiary
+    5 - RixMiniHeart
+    6 - RixFreshman
+    7 - RixKid
+    8 - RixMagic
+    9 - RixJJangu
 
 ---------------------------------------
 
@@ -6848,6 +6969,57 @@ mapflag	<mapname>	battleground	2
 This command will force the update of the displayed scoreboard.
 
 ----------------------------------------
+
+==========================
+|10.- Mercenary commands.|
+==========================
+---------------------------------------
+
+*mercenary_create <class>,<contract time>;
+
+This command summons a mercenary of given class, for given amount of
+time in milliseconds. Typically used in item scripts of mercenary
+scrolls.
+
+----------------------------------------
+
+*mercenary_heal <hp>,<sp>;
+
+This command works like 'heal', but affects the mercenary of the
+currently attached character.
+
+----------------------------------------
+
+*mercenary_sc_start <type>,<tick>,<val1>;
+
+This command works like 'sc_start', but affects the mercenary of the
+currently attached character.
+
+----------------------------------------
+
+*mercenary_get_calls(<guild>);
+*mercenary_set_calls <guild>,<value>;
+
+Sets or gets the mercenary calls value for given guild for currently
+attached character. Guild can be one or the following constants:
+
+    ARCH_MERC_GUILD
+    SPEAR_MERC_GUILD
+    SWORD_MERC_GUILD
+
+----------------------------------------
+
+*mercenary_get_faith(<guild>);
+*mercenary_set_faith <guild>,<value>;
+
+Sets or gets the mercenary faith value for given guild for currently
+attached character. Guild can be one or the following constants:
+
+    ARCH_MERC_GUILD
+    SPEAR_MERC_GUILD
+    SWORD_MERC_GUILD
+
+---------------------------------------
 
 Whew.
 That's about all of them.
