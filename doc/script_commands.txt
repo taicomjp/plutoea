@@ -4,7 +4,7 @@
 //= A reference manual for the eAthena scripting language.
 //= Commands are sorted depending on their functionality.
 //===== Version ===========================================
-//= 3.34.20101217
+//= 3.42.20110508
 //=========================================================
 //= 1.0 - First release, filled will as much info as I could
 //=       remember or figure out, most likely there are errors,
@@ -153,6 +153,27 @@
 //=       behavior. [Ai4rei]
 //= 3.34.20101217
 //=       Spellcheck. [Ai4rei]
+//= 3.35.20110106
+//=       Removed bug warning from 'deletearray'. [Ai4rei]
+//= 3.36.20110219
+//=       Added 'buyingstore' command. [Ai4rei]
+//= 3.37.20110306
+//=       Added 'searchstores' command. [Ai4rei]
+//= 3.38.20110313
+//=       Added 'cooking' command. [Ai4rei]
+//=       Fixed item levels in 'produce' command.
+//= 3.39.20110322
+//=       Added 'bg_getareausers' and 'bg_get_data' commands. [Ai4rei]
+//=       Updated description of 'waitingroom2bg_single' command.
+//=       Documented optional parameter 'npc name' of 'waitingroom2bg' command.
+//= 3.40.20110404
+//=       Updated description of 'waitingroom' command to include required zeny/lvl. [Kisuka]
+//= 3.41.20110427
+//=       Updated description of 'itemheal' primarily to remove overhead and lies
+//=       about client effects. [Ai4rei]
+//= 3.42.20110508
+//=       Updated description of all instance commands to reflect actual behavior.
+//=       [Ai4rei]
 //=========================================================
 
 This document is a reference manual for all the scripting commands and functions 
@@ -2105,11 +2126,6 @@ array, shifting all the elements beyond this towards the beginning.
 
     deletearray @array[1],3
 
-IMPORTANT: deletarray is horribly broken since the earliest days of jAthena. It 
-tends to merrily remove much more variables than it's told to remove, which 
-makes it pretty much useless for anything other than removing an array from 
-memory entirely. This would be very handy, if it always worked. 
-
 ---------------------------------------
 
 ======================================
@@ -3717,15 +3733,10 @@ character and produces no other output whatsoever.
 
 *itemheal <hp>,<sp>;
 
-This command works on the invoking character like 'heal', however, it is not 
-normally used in NPC scripts and will not work as expected there, but is used 
-all over in item scripts. 
-
-Unlike 'heal', which just alters hp/sp and doesn't do anything else at all, this 
-command also shows healing animations for potions and other stuff, checks 
-whether the potion was made by a famous alchemist and alters the amount healed, 
-etc, etc. Since which kind of effect is shown depends on what item was used, 
-using it in an NPC script will not have a desired effect.
+This command heals given absolute amounts of HP and/or SP on the invoking
+character. Unlike heal, this command is intended for use in item scripts. It
+applies potion-related bonuses, such as alchemist ranking, cards and status
+changes. When used inside an NPC script, certain bonuses are omitted.
 
 There is also a nice example on using this with the 'rand' function, to give you 
 a random amount of healing.
@@ -4316,11 +4327,38 @@ Valid item levels are:
  1   - Level 1 Weapons
  2   - Level 2 Weapons
  3   - Level 3 Weapons
- 16  - Blacksmith's Stones and Metals
- 32  - Alchemist's Potions
- 64  - Whitesmith's Coins
- 123 - Whitesmith's Nuggets
- 256 - Assassin Cross's Deadly Poison
+ 21  - Blacksmith's Stones and Metals
+ 22  - Alchemist's Potions, Holy Water, Assassin Cross's Deadly Poison
+ 23  - Elemental Converters
+
+---------------------------------------
+
+*cooking <dish level>;
+
+This command will open a produce window on the client connected to the invoking 
+character. The 'dish level' is the number which determines what kind of dish
+level you can produce. You can see the full list of dishes that can be produced in 
+'db/produce_db.txt'.
+
+The window will be shown empty if the invoking character does not have enough of
+the required incredients to cook a dish.
+
+Valid dish levels are:
+
+11 - Level 1 Dish
+12 - Level 2 Dish
+13 - Level 3 Dish
+14 - Level 4 Dish
+15 - Level 5 Dish
+16 - Level 6 Dish
+17 - Level 7 Dish
+18 - Level 8 Dish
+19 - Level 9 Dish
+20 - Level 10 Dish
+
+Altough it's required to set a dish level, it doesn't matter if you set it to 1
+and you want to cook a level 10 dish, as long as you got the required incredients
+to cook the dish the command works.
 
 ---------------------------------------
 
@@ -4425,6 +4463,39 @@ Example(s):
 	
 //The invoked character will no longer automatically equip a falchion.
 	autoequip 1104,0;
+
+---------------------------------------
+
+*buyingstore <slots>;
+
+Invokes buying store preparation window like the skill 'Open Buying Store',
+without the item requirement. Amount of slots is limited by the server to
+a maximum of 5 slots by default.
+
+Example:
+
+	// Gives the player oppurtunity to buy 4 different kinds of items.
+	buyingstore 4;
+
+---------------------------------------
+
+*searchstores <uses>,<effect>;
+
+Invokes the store search window, which allows to search for both vending
+and buying stores. Parameter uses indicates, how many searches can be
+started, before the window has to be reopened. Effect value affects,
+what happens, when a result item is double-clicked and can be one of the
+following:
+
+	0 = Shows the store's position on the mini-map and highlights the
+		shop sign with yellow color, when the store is on same map
+		as the invoking player.
+	1 = Directly opens the shop, regardless of distance.
+
+Example:
+
+	// Item Universal_Catalog_Gold (10 uses, effect: open shop)
+	searchstores 10,1;
 
 ---------------------------------------
 //
@@ -5474,7 +5545,7 @@ currently ignored by the client and appears always green.
 5,1.- End of time-related commands
 //
 
-*announce "<text>",<flag>{,<fontColor>{,<fontType>{,<fontSize>{,<fontAlign>{,<fontY>}}}}}};
+*announce "<text>",<flag>{,<fontColor>{,<fontType>{,<fontSize>{,<fontAlign>{,<fontY>}}}}};
 
 This command will broadcast a message to all or most players, similar to 
 @kami/@kamib GM commands.
@@ -5640,7 +5711,7 @@ The function returns 0 if the shop was not found, 1 otherwise.
 
 ---------------------------------------
 
-*waitingroom "<chatroom name>",<limit>{,<event label>,<trigger>};
+*waitingroom "<chatroom name>",<limit>{,<event label>,<trigger>,<required zeny>,<min lvl>,<max lvl>};
 
 This command will create a chat room, owned by the NPC object running this 
 script and displayed above the NPC sprite.
@@ -5650,9 +5721,6 @@ The limit is the maximum number of people allowed to enter the chat room. If the
 optional event and trigger parameters are given, the event label 
 ("<NPC object name>::<label name>") will be invoked as if with a 'doevent' upon 
 the number of people in the chat room reaching the given triggering amount.
-
-It's funny, but for compatibility with jAthena, you can swap the event label and 
-the trigger parameters, and it will still work.
 
 // The NPC will just show a box above its head that says "Hello World", clicking 
 // it will do nothing, since the limit is zero.
@@ -5664,6 +5732,14 @@ the trigger parameters, and it will still work.
 // it will cause the NPC "Bouncer" run the label "OnStart"
 
     waitingroom "Disco - Waiting Room",8,"Bouncer::OnStart",8;
+
+// The NPC will have a box above its head, it will say "Party - Waiting Room" 
+// and will have 8 waiting slots. Clicking this will allow a player who has
+// 5000 zeny and lvl 50~99 to enter the chat room, where the player will be
+// able to wait until 8 people accumulate. Once this happens, it will cause
+// the NPC "Bouncer" run the label "OnStart"
+
+    waitingroom "Party - Waiting Room",5,"Bouncer::OnStart",8,5000,50,99;
 
 Creating a waiting room does not stop the execution of the script and it will 
 continue to the next line.
@@ -5974,17 +6050,19 @@ sprite based sprite id in 'db/mob-avail.txt' with this.
 
 ---------------------------------------
 
-*movenpc <NPC name>,x,y;
+*movenpc "<NPC name>",<x>,<y>{,<dir>};
 
 This command looks like the NPCWalkToxy function,but is a little different.
 
-While NPCWalkToXY just makes the NPC 'walk' to the coordinates given 
-(which sometimes gives problems if the path isn't a straight line without objects),
-this command just moves the NPC. It basically warps out and in on the current and given spot.
+While NPCWalkToXY just makes the NPC 'walk' to the coordinates given (which 
+sometimes gives problems if the path isn't a straight line without objects), 
+this command just moves the NPC. It basically warps out and in on the current 
+and given spot. Direction can be used to change the NPC's facing direction.
 
 Example(s):
 
-//This will move Bugga from it's current position to the coordinates 100,20 (if those coordinates are walkable (legit)).
+// This will move Bugga from it's current position to the coordinates 100,20 
+// (if those coordinates are walkable (legit)).
 	moveNPC "Bugga",100,20;
 	
 ---------------------------------------
@@ -6101,7 +6179,7 @@ illustration without displaying a new one, an empty file name and position 255
 must be used.
 
     // Displays the Comodo Kafra illustration in lower right corner.
-    cutin "kafra_7",2;
+    cutin "kafra_07",2;
 
     // Typical way to end a script, which displayed an illustration during a
     // dialog with a player.
@@ -6691,18 +6769,17 @@ This will open a book item at the specified page
 ========================
 ---------------------------------------
 
-*instance_create("<Instance Name>",<Party ID>,<Instance>)
+*instance_create("<instance name>",<party id>);
 
-Create an instance using the name "<Instance Name>" for the Party of <Party ID>.
-Instance ID currently will only be ID_ENDLESS (5) or ID_CATACOMBS (6)
-Most Instance_* commands are used in conjunction with this command and depend
+Create an instance using the name "<instance name>" for the Party of <party id>.
+Most instance_* commands are used in conjunction with this command and depend
 on the ID this command returns.
 
 Example: 
 	// Store the Party ID of the invoking character.
 	set .@party_id, getcharid(1);
 	// Attempt to create an instance using that party ID.
-	set .@id, instance_create("Endless Tower", .@party_id, ID_ENDLESS);
+	set .@id, instance_create("Endless Tower", .@party_id);
 	if (.@id == -1) { // Party ID is in use by another instance.
 		...
 	}
@@ -6711,73 +6788,117 @@ Example:
 	}
 ---------------------------------------
 
-*instance_destroy(<Instance ID>)
+*instance_destroy {<instance id>};
 
-Destroys instance with the ID <Instance ID>.
-
----------------------------------------
-
-*instance_attachmap(<Instance ID>,"<Map Name>")
-*instance_detachmap(<Instance ID>,"<Map Name>")
-
-Attach or detach the map "<Map Name>" to the instance with the <Instance ID>.
+Destroys instance with the ID <instance id>. If no ID is specified, the instance,
+the script is attached to, is used. If the script is not attached to an instance,
+the instance of the currently attached player's party is used. If no player is
+currently attached, the command fails and causes the script to halt.
 
 ---------------------------------------
 
-*instance_init(<Instance ID>);
+*instance_attachmap("<map name>",<instance id>{,<use base name>});
 
-Initiate the instance of <Instance ID>.
+Attaches the map "<map name>" to the instance specified with <instance id>. The
+optional parameter specifies, whether a map requires emulation for instancing (1)
+or not (0 = default).
 
----------------------------------------
-
-*instance_announce <Instance ID>,"<text>",<flag>{,<color>};
-
-Works like announce, but has the <Instance ID> parameter, where 0 = active instance?
+Returns the resulting map name on success or an empty string on failure.
 
 ---------------------------------------
 
-*instance_attach(<Instance ID>);
+*instance_detachmap "<map name>"{,<instance id>};
 
-Attaches a script to the provided <Instance ID>?
-
----------------------------------------
-
-*instance_npcname("<NPC Name>",<Instance ID>)
-
-Retrieve the unique name given to a copy of an NPC for an instance, the given
-"<NPC Name>" that belongs to instance <Instance ID>. Can be used with such commands
-as enablenpc and disablenpc, donpcevent, etc.
+Detach the map "<map name>" to the instance with the <instance id>. If no ID is
+specified, the instance, the script is attached to, is used. If the script is not
+attached to an instance, the instance of the currently attached player's party is
+used. If no player is currently attached, the command fails and causes the script
+to halt.
 
 ---------------------------------------
 
-*has_instance("<Map Name>")
+*instance_init <instance id>;
 
-Check if the player has been queued for the <Map Name> instance.
-
----------------------------------------
-
-*instance_id(<?>)
-
-Apparently returns the ID the player is currently attached too.
+Initializes the instance given by <instance id>. This copies all NPCs from the
+source maps to the instanced maps.
 
 ---------------------------------------
 
-*instance_warpall "<Map Name>",<x>,<y>;
+*instance_announce <instance id>,"<text>",<flag>{,<fontColor>{,<fontType>{,<fontSize>{,<fontAlign>{,<fontY>}}}}};
 
-Warp all players in the instance to <map name> and given coordinates.
-
----------------------------------------
-
-*instance_set_timeout <Time1>,<Time2>,<Instance ID>;
-
-Lifetime of <Time1> for <Instance ID>, while <Time2> is how long until the 
-instance times out while inactive. 
+Works like announce, but has the <instance id> parameter. If instance id is 0, the
+instance, the script is attached to, is used. If the script is not attached to an
+instance, the instance of the currently attached player's party is used. If no
+player is currently attached, the command fails and causes the script to halt.
 
 ---------------------------------------
 
-========================
+*instance_attach <instance id>;
+
+Attaches the current script to the instance given by <instance id>.
+
+---------------------------------------
+
+*instance_npcname("<npc name>"{,<instance id>});
+
+Retrieves the unique name given to a copy of an NPC given by "<npc name>" in an
+instance specified <instance id>. If no ID is specified, the instance, the script
+is attached to, is used. If the script is not attached to an instance, the
+instance of the currently attached player's party is used. If no player is
+currently attached, the command fails and causes the script to halt.
+
+---------------------------------------
+
+*has_instance("<map name>"{,<instance id>});
+
+Checks whether or not the given map belongs to specified instance. If no ID is
+specified, the instance, the script is attached to, is used. If the script is not
+attached to an instance, the instance of the currently attached player's party
+is used. If no player is currently attached, the command fails and causes the
+script to halt.
+
+Returns the name of the instanced map on success, otherwise an empty string.
+
+---------------------------------------
+
+*instance_id({<type>});
+
+Retrieves the instance id, depending on <type>. If type is not given, it defaults
+to 0.
+
+Type:
+    0 - Instance ID the script is attached to.
+    1 - Instance ID of the currently attached player's party.
+
+---------------------------------------
+
+*instance_warpall "<map name>",<x>,<y>{,<instance id>};
+
+Warps all players in the instance <instance id> to <map name> at given
+coordinates. If no ID is specified, the instance, the script is attached to,
+is used. If the script is not attached to an instance, the instance of the
+currently attached player's party is used. If no player is currently attached,
+the command fails and causes the script to halt.
+
+---------------------------------------
+
+*instance_set_timeout <alive timeout>,<idle timeout>{,<instance id>};
+
+Sets the timeout values for an instance given by <instance id>. If no ID is
+specified, the instance, the script is attached to, is used. If the script is
+not attached to an instance, the instance of the currently attached player's
+party is used. If no player is currently attached, the command fails and causes
+the script to halt.
+
+Parameter <alive timeout> specifies the total amount of time the instance will
+exist. Parameter <idle timeout> specifies how long players have, when they are
+outside of the instance, until it is destroyed.
+
+---------------------------------------
+
+=========================
 |8.- Quest Log commands.|
-========================
+=========================
 ---------------------------------------
 
 *setquest <ID>;
@@ -6846,13 +6967,20 @@ color can be:
 
 ----------------------------------------
 
-===========================
+============================
 |9.- Battleground commands.|
-===========================
+============================
 ---------------------------------------
 
-*waitingroom2bg_single("<mapname>",<x>,<y>,"<On Quit Event>","<On Death Event>");
-*waitingroom2bg("<mapname>",<x>,<y>,"<On Quit Event>","<On Death Event>");
+*waitingroom2bg_single(<battle group>,"<mapname>",<x>,<y>,"<npc name>");
+
+Adds the first waiting player from the chat room of given NPC to an
+existing battleground group and warps it to specified coordinates on
+given map.
+
+---------------------------------------
+
+*waitingroom2bg("<mapname>",<x>,<y>,"<On Quit Event>","<On Death Event>"{,"<npc name>"});
 
 <Mapname> and X Y coordinates refer to where the "respawn" base is, where the player group will respawn when they die.
 <On Quit Event> refers to an NPC label that attaches to the character and is run when they relog.
@@ -6860,6 +6988,8 @@ color can be:
 
 Unlike the prior command, the latter will attach a GROUP in a waiting room to the battleground, and 
 sets the array $@arenamembers[0] where 0 holds the IDs of the first group, and 1 holds the IDs of the second.
+
+If the option parameter is left out, the waiting room of the current NPC is used.
 
 Example:
 	// Battle Group will be referred to as $@KvM01BG_id1, and when they die, respawn at bat_c01,52,129.
@@ -6958,9 +7088,16 @@ Example:
 
 *bg_get_data(<Battle Group>,<type>);
 
+Retrieves data related to given battle group. Type can be one of the following:
+
+    0 - Amount of players currently belonging to the group.
+
 ----------------------------------------
 
-*bg_getareausers
+*bg_getareausers(<battle group>,<map name>,<x0>,<y0>,<x1>,<y1>);
+
+Retrieves amount of players belonging to given battle group on given
+map within an specified rectangular area.
 
 ----------------------------------------
 
