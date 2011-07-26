@@ -2200,7 +2200,7 @@ arug_cas04,328,98,3	script	管理人#aru04	55,{
 			mes "^FF0000目前防禦度以經是100了,你已經不需要再加入任何投資了^000000";
 			close;
 		}
-		if (GetCastleData("arug_cas04",4) == 2) {
+		if (GetCastleData("arug_cas04",4) >= 2) {
 			mes "[ 管理人 ]";
 			mes "^FF0000可是你已經在今天之內投資了兩次再不能投資了,^000000讓發展度趕快上升期待著富貴的日子囉";
 			close;
@@ -2217,6 +2217,14 @@ arug_cas04,328,98,3	script	管理人#aru04	55,{
 		next;
 		switch(select("投資商業發展度:取消")) {
 		case 1:
+			if (GetCastleData("arug_cas04",4) >= 2) {
+				mes "[ 管理人 ]";
+				mes "You've already made two";
+				mes "investments today, so you'll";
+				mes "have to wait until tomorrow";
+				mes "to make another investment.";
+				close;
+			}
 			if (Zeny < .@eco_invest) {
 				mes "[ 管理人 ]";
 				mes "主人,你沒有足夠的資金可以投資商業發展度";
@@ -2269,7 +2277,7 @@ arug_cas04,328,98,3	script	管理人#aru04	55,{
 			mes "^FF0000目前防禦度以經是100了,你已經不需要再加入任何投資了^000000";
 			close;
 		}
-		if (GetCastleData("arug_cas04",5) == 2) {
+		if (GetCastleData("arug_cas04",5) >= 2) {
 			mes "^FF0000可是你已經在今天之內投資了兩次再不能投資了,^000000讓發展度趕快上升期待著富貴的日子囉";
 			close;
 		}
@@ -2284,6 +2292,15 @@ arug_cas04,328,98,3	script	管理人#aru04	55,{
 		next;
 		switch(select("投資防禦度:取消")) {
 		case 1:
+			if (GetCastleData("arug_cas04",5) >= 2) {
+				mes "[ 管理人 ]";
+				mes "Master, you've already";
+				mes "invested in Defense twice";
+				mes "today. You'll need to wait";
+				mes "until tomorrow if you really";
+				mes "want to increase our defenses.";
+				close;
+			}
 			if (Zeny < .@def_invest) {
 				mes "[ 管理人 ]";
 				mes "主人,你沒有足夠的資金可以投資防禦度";

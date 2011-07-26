@@ -529,7 +529,7 @@ OnRecvCastle:
 			mes "^ff0000目前商業發展度以經是100了，你已經不需要再加入任何投資了^000000";
 			close;
 		}
-		if (GetCastleData(strnpcinfo(2),4) == 2) {
+		if (GetCastleData(strnpcinfo(2),4) >= 2) {
 			mes "^ff0000可是你已經在今天之內投資了兩次，再不能投資了^000000.讓發展度趕快上升，期待著富貴的日子囉";
 			close;
 		}
@@ -542,6 +542,11 @@ OnRecvCastle:
 		next;
 		switch(select("對商業發展度投資:取消")) {
 		case 1:
+			if (GetCastleData(strnpcinfo(2),4) >= 2) {
+				mes "[ Steward " + .@name$ + " ]";
+				mes "I'm sorry but you already invested twice today so you cannot invest any more.";
+				close;
+			}
 			if (Zeny < .@eco_invest) {
 				mes "[ 管理人 " + .@name$ + " ]";
 				mes "主人 ，你沒有足夠的資金可以投資商業發展度";
@@ -592,7 +597,7 @@ OnRecvCastle:
 			mes "^ff0000目前防禦度以經是100了，你已經不需要再加入任何投資了^000000";
 			close;
 		}
-		if (GetCastleData(strnpcinfo(2),5) == 2) {
+		if (GetCastleData(strnpcinfo(2),5) >= 2) {
 			mes "^ff0000可是你已經在今天之內投資了兩次，再不能投資了^000000.讓防禦度趕快上升，期待著富貴的日子囉";
 			close;
 		}
@@ -605,6 +610,11 @@ OnRecvCastle:
 		next;
 		switch(select("對防禦度 投資:取消")) {
 		case 1:
+			if (GetCastleData(strnpcinfo(2),5) >= 2) {
+				mes "[ 管理人 " + .@name$ + " ]";
+				mes "I'm sorry but you already invested twice today so you cannot invest any more.";
+				close;
+			}
 			if (Zeny < .@def_invest) {
 				mes "[ 管理人 " + .@name$ + " ]";
 				mes "主人 ，你沒有足夠的資金可以投資防禦度";
