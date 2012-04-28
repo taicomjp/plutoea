@@ -1,0 +1,421 @@
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// ---------------------------------
+// - 准它 企劃 服務人員 腳本 - 
+//===================================
+// 版本：1.4 (TRO)
+//===================================
+
+lighthalzen,94,248,4	script	准它 企劃 服務人員	874,{
+	cutin "zonda_01",2;
+	mes "[准它 企劃社 服務人員]";
+	mes "歡迎光臨，准它";
+	mes "企劃社永遠秉持著最好的服務的，";
+	mes "請問您需要哪一種服務呢?";
+	next;
+	switch(select("儲存服務:倉庫服務:手推車服務:結束")){
+	case 1:
+		savepoint lighthalzen,94,240;
+		mes "[准它 企劃社 服務人員]";
+		mes "已經儲存好了，";
+		mes "謝謝您的使用";
+		break;
+	case 2:
+		mes "[准它 企劃社 服務人員]";
+		if(basicskillcheck() && getskilllv(1) < 6){
+			mes "你的基本技能要6級以上";
+			mes "才能使用倉庫服務";
+			emotion e_sry;
+			break;
+		}
+		if(Zeny < 40){
+			mes "顧客，您支付的金額不足啊，";
+			mes "倉庫使用費是 40金幣";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+		}
+		set Zeny, Zeny - 40;
+		set RESRVPTS, RESRVPTS + 4;
+		mes "倉庫將打開了，";
+		mes "感謝您的使用";
+		close2;
+		openstorage;
+		cutin "",255;
+		end;
+	case 3:
+		mes "[准它 企劃社 服務人員]";
+		if(BaseClass != Job_Merchant){
+			mes "很抱歉，";
+			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
+			emotion e_sry;
+			break;
+		}
+		if(getskilllv(39) == 0){
+			mes "如果沒學相關技能的話";
+			mes "是沒有手推車的";
+			break;
+		}
+		if(checkcart() == 1){
+			mes "你已經租過手推車了";
+			break;
+		}
+		if(countitem(7061)){
+			delitem 7061,1;
+			setcart;
+			break;
+		}
+		mes "手推車使用費是800金幣，";
+		mes "請問您要使用嗎?";
+		next;
+		if(select("使用:取消") == 1){
+			if(Zeny < 800){
+				mes "[准它 企劃社 服務人員]";
+				mes "顧客，您支付的金額不足啊，";
+				mes "手推車使用費是800金幣，";
+				emotion e_cash;
+				break;
+			} else {
+				set Zeny, Zeny - 800;
+				set RESRVPTS, RESRVPTS + 80;
+				setcart;
+				break;
+			}
+			break;
+		}
+		break;
+	case 4:
+		mes "[准它 企劃社 服務人員]";
+		mes "我們准它 企劃社";
+		mes "永遠提供最好服務的，若有不便之處的";
+		mes "話請隨時告知我們，";
+		mes "下一次預計以更好的服務與你見面";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}
+
+hugel,88,168,4	script	准它 企劃 服務人員::CoolEventCorpStaffHugel	874,{
+	cutin "zonda_01",2;
+	mes "[准它 企劃社 服務人員]";
+	mes "歡迎光臨，准它";
+	mes "企劃社永遠秉持著最好的服務的，";
+	mes "請問您需要哪一種服務呢?";
+	next;
+	switch(select("儲存服務:倉庫服務:手推車服務:結束")){
+	case 1:
+		savepoint hugel,96,155;
+		mes "[准它 企劃社 服務人員]";
+		mes "已經儲存好了，";
+		mes "謝謝您的使用";
+		break;
+	case 2:
+		mes "[准它 企劃社 服務人員]";
+		if(basicskillcheck() && getskilllv(1) < 6){
+			mes "你的基本技能要6級以上";
+			mes "才能使用倉庫服務";
+			emotion e_sry;
+			break;
+		}
+		if(Zeny < 40){
+			mes "顧客，您支付的金額不足啊，";
+			mes "倉庫使用費是 40金幣";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+		}
+		set Zeny, Zeny - 40;
+		set RESRVPTS, RESRVPTS + 4;
+		mes "倉庫將打開了，";
+		mes "感謝您的使用";
+		close2;
+		openstorage;
+		cutin "",255;
+		end;
+	case 3:
+		mes "[准它 企劃社 服務人員]";
+		if(BaseClass != Job_Merchant){
+			mes "很抱歉，";
+			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
+			emotion e_sry;
+			break;
+		}
+		if(getskilllv(39) == 0){
+			mes "如果沒學相關技能的話";
+			mes "是沒有手推車的";
+			break;
+		}
+		if(checkcart() == 1){
+			mes "你已經租過手推車了";
+			break;
+		}
+		if(countitem(7061)){
+			delitem 7061,1;
+			setcart;
+			break;
+		}
+		mes "手推車使用費是800金幣，";
+		mes "請問您要使用嗎?";
+		next;
+		if(select("使用:取消") == 1){
+			if(Zeny < 800){
+				mes "[准它 企劃社 服務人員]";
+				mes "顧客，您支付的金額不足啊，";
+				mes "手推車使用費是800金幣，";
+				emotion e_cash;
+				break;
+			} else {
+				set Zeny, Zeny - 800;
+				set RESRVPTS, RESRVPTS + 80;
+				setcart;
+				break;
+			}
+			break;
+		}
+		break;
+	case 4:
+		mes "[准它 企劃社 服務人員]";
+		mes "我們准它 企劃社";
+		mes "永遠提供最好服務的，若有不便之處的";
+		mes "話請隨時告知我們，";
+		mes "下一次預計以更好的服務與你見面";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}
+
+rachel,109,138,5	script	准它 企劃社 服務人員::CoolEventCorpStaffRachel	874,{
+	cutin "zonda_01",2;
+	mes "[准它 企劃社 服務人員]";
+	mes "歡迎光臨，准它";
+	mes "企劃社永遠秉持著最好的服務的，";
+	mes "請問您需要哪一種服務呢?";
+	next;
+	switch(select("儲存服務:倉庫服務:傳送服務:手推車服務:結束")){
+	case 1:
+		savepoint rachel,115,125;
+		mes "[准它 企劃社 服務人員]";
+		mes "已經儲存好了，";
+		mes "謝謝您的使用";
+		break;
+	case 2:
+		mes "[准它 企劃社 服務人員]";
+		if(basicskillcheck() && getskilllv(1) < 6){
+			mes "你的基本技能要6級以上";
+			mes "才能使用倉庫服務";
+			emotion e_sry;
+			break;
+		}
+		if(Zeny < 40){
+			mes "顧客，您支付的金額不足啊，";
+			mes "倉庫使用費是 40金幣";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+		}
+		set Zeny, Zeny - 40;
+		set RESRVPTS, RESRVPTS + 4;
+		mes "倉庫將打開了，";
+		mes "感謝您的使用";
+		close2;
+		openstorage;
+		cutin "",255;
+		end;
+	case 3:
+		mes "[准它 企劃社 服務人員]";
+		mes "請說你想要去的地方。";
+		next;
+		switch(select("菲音斯  -> 2200z:取消")){
+		case 1:
+			if(Zeny < 2200){
+			mes "[准它 企劃社 服務人員]";
+			mes "顧客，您支付的金額不足啊";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+			}
+			warp "veins", 205, 101;
+			cutin "", 255;
+			end;
+		case 2:
+			close2;
+			cutin "", 255;
+			end;
+		}
+	case 4:
+		mes "[准它 企劃社 服務人員]";
+		if(BaseClass != Job_Merchant){
+			mes "很抱歉，";
+			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
+			emotion e_sry;
+			break;
+		}
+		if(getskilllv(39) == 0){
+			mes "如果沒學相關技能的話";
+			mes "是沒有手推車的";
+			break;
+		}
+		if(checkcart() == 1){
+			mes "你已經租過手推車了";
+			break;
+		}
+		if(countitem(7061)){
+			delitem 7061,1;
+			setcart;
+			break;
+		}
+		mes "手推車使用費是800金幣，";
+		mes "請問您要使用嗎?";
+		next;
+		if(select("使用:取消") == 1){
+			if(Zeny < 800){
+				mes "[准它 企劃社 服務人員]";
+				mes "顧客，您支付的金額不足啊，";
+				mes "手推車使用費是800金幣，";
+				emotion e_cash;
+				break;
+			} else {
+				set Zeny, Zeny - 800;
+				set RESRVPTS, RESRVPTS + 80;
+				setcart;
+				break;
+			}
+			break;
+		}
+		break;
+
+	case 5:
+		mes "[准它 企劃社 服務人員]";
+		mes "我們准它 企劃社";
+		mes "永遠提供最好服務的，若有不便之處的";
+		mes "話請隨時告知我們，";
+		mes "下一次預計以更好的服務與你見面";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}
+
+veins,208,128,5	script	准它 企劃社 服務人員::CoolEventCorpStaffVeins	874,{
+	cutin "zonda_01",2;
+	mes "[准它 企劃社 服務人員]";
+	mes "歡迎光臨，准它";
+	mes "企劃社永遠秉持著最好的服務的，";
+	mes "請問您需要哪一種服務呢?";
+	next;
+	switch(select("儲存服務:倉庫服務:傳送服務:手推車服務:結束")){
+	case 1:
+		savepoint veins,204,103;
+		mes "[准它 企劃社 服務人員]";
+		mes "已經儲存好了，";
+		mes "謝謝您的使用";
+		break;
+	case 2:
+		mes "[准它 企劃社 服務人員]";
+		if(basicskillcheck() && getskilllv(1) < 6){
+			mes "你的基本技能要6級以上";
+			mes "才能使用倉庫服務";
+			emotion e_sry;
+			break;
+		}
+		if(Zeny < 40){
+			mes "顧客，您支付的金額不足啊，";
+			mes "倉庫使用費是 40金幣";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+		}
+		set Zeny, Zeny - 40;
+		set RESRVPTS, RESRVPTS + 4;
+		mes "倉庫將打開了，";
+		mes "感謝您的使用";
+		close2;
+		openstorage;
+		cutin "",255;
+		end;
+	case 3:
+		mes "[准它 企劃社 服務人員]";
+		mes "請說你想要去的地方。";
+		next;
+		switch(select("拉赫  -> 2200z:取消")){
+		case 1:
+			if(Zeny < 2200){
+			mes "[准它 企劃社 服務人員]";
+			mes "顧客，您支付的金額不足啊";
+			emotion e_cash;
+			close2;
+			cutin "",255;
+			end;
+			}
+			warp "rachel", 115, 125;
+			cutin "", 255;
+			end;
+		case 2:
+			close2;
+			cutin "", 255;
+			end;
+		}
+	case 4:
+		mes "[准它 企劃社 服務人員]";
+		if(BaseClass != Job_Merchant){
+			mes "很抱歉，";
+			mes "手推車是商人和鐵匠、鍊金術師專用的服務";
+			emotion e_sry;
+			break;
+		}
+		if(getskilllv(39) == 0){
+			mes "如果沒學相關技能的話";
+			mes "是沒有手推車的";
+			break;
+		}
+		if(checkcart() == 1){
+			mes "你已經租過手推車了";
+			break;
+		}
+		if(countitem(7061)){
+			delitem 7061,1;
+			setcart;
+			break;
+		}
+		mes "手推車使用費是800金幣，";
+		mes "請問您要使用嗎?";
+		next;
+		if(select("使用:取消") == 1){
+			if(Zeny < 800){
+				mes "[准它 企劃社 服務人員]";
+				mes "顧客，您支付的金額不足啊，";
+				mes "手推車使用費是800金幣，";
+				emotion e_cash;
+				break;
+			} else {
+				set Zeny, Zeny - 800;
+				set RESRVPTS, RESRVPTS + 80;
+				setcart;
+				break;
+			}
+			break;
+		}
+		break;
+	case 5:
+		mes "[准它 企劃社 服務人員]";
+		mes "我們准它 企劃社";
+		mes "永遠提供最好服務的，若有不便之處的";
+		mes "話請隨時告知我們，";
+		mes "下一次預計以更好的服務與你見面";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}

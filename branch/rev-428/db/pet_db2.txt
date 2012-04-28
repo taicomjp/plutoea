@@ -1,0 +1,57 @@
+// 資料結構:
+// MobID,Name,JName,LureID,EggID,EquipID,FoodID,Fullness,HungryDelay,R_Hungry,R_Full,Intimate,Die,Capture,Speed,S_Performance,talk_convert_class,attack_rate,defence_attack_rate,change_target_rate,pet_script,loyal_script
+//
+// 01. MobID			魔物編號
+// 02. Name			魔物的名稱
+// 03. JName			孵化後的預設名稱
+// 04. LureID			捕獲道具編號
+// 05. EggID			魔物蛋 編號
+// 06. EquipID			裝飾品 編號
+// 07. FoodID			飼料 編號
+// 08. Fullness			飢餓度下降的幅度
+// 09. HungeyDelay		飢餓度下降的週期 (預設: 60秒)
+// 10. R_Hungry			飢餓時所下降的親密度
+// 11. R_Full			過度餵食所下降的親密度
+// 12. Intimate			起始親密度
+// 13. Die			主人死亡後所下降的親密度
+// 14. Capture			捕獲成功率 (10000 = 100%)
+// 15. Speed			行走速度 (預設: 150)
+// 16. S_Performance		特殊行為 (Yes = 1, No = 0)
+// 17. talk_convert_class	Disables pet talk (instead of talking they emote  with /!.)
+// 18. attack_rate			Rate of which the pet will attack (requires at least pet_support_min_friendly intimacy).
+// 19. defence_attack_rate	Rate of which the pet will retaliate when master is being attacked (requires at least pet_support_min_friendly intimacy).
+// 20. change_target_rate	Rate of which the pet will change its attack target.
+// 21. pet_script		Script to execute when the pet is hatched.
+// 22. loyal_script		Script to execute when the pet is hatched (requires at least pet_equip_min_friendly intimacy, independent of pet_script).
+//備註:  attack_rate, defense_rate & change_target_rate 的最大值是10000 (萬分比)
+
+//理論上你可以使用任何腳本指令, 但是只在讀取寵物時引發一次
+//所以建議你使用特定的寵物腳本指令:
+//petskillattack skillid, skilllv, rate, bonusrate
+//當寵物攻擊時觸發寵物技能
+//機率指攻擊時發動技能的機率
+//額外機率指當親密度最大的時候給予的發動加成
+
+//petskillattack2 skillid, damage, hits, rate, bonusrate
+//跟petskillattack一樣, 不同的只有傷害固定, 機率固定
+//傷害指的是全部, 不是單一攻擊
+
+//petskillsupport skillid, skilllv, delay, hp%, sp%
+//當 hp% 和 sp% 低於所標示之數值時可以使用該技能
+//Delay是指再次使用此技能時所需等待時間(秒)
+
+//petheal amount, delay, hp%, sp%
+//跟petskillsupport類似, 但是技能固定是治瘉術(28)
+//治療的點數也是固定所給予的值
+
+//petrecovery type, delay: 治療 "type" 的狀態, "delay" (秒)的延遲時間
+
+//petskillbonus type, value, duration, delay
+//可以對玩家進行素質點數的額外獎勵. Type 是所要增加的素質 (bStr, bLuk), value 是要增加的量,
+//duration 表示持續多久
+//delay 再次觸發時等待時間
+
+//每隻寵物都可以同時使用 petloot, petskillbonus, petskillattack (petskillattack2)
+// petskillsupport (petheal)
+//但是每種只能使用一次
+

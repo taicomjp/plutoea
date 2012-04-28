@@ -1,0 +1,117 @@
+prontera,151,189,3	script	初學者任務委託秘書	727,{
+	mes "[初學者任務委託秘書]";
+	mes "你好!!這裡是初學者接受任務委託的地";
+	mes "方。請問你有什麼事情嗎？";
+	next;
+	menu "接受委託",Lgivetask,"完成委託",Lovertask,"沒事了",Left;
+	close;
+Lgivetask:
+	if(Class!=Job_Novice) goto Lnotask;
+	if(taskjob!=0) goto Lnotover;
+	mes "[初學者任務委託秘書]";
+	mes "請你稍等一下，我找找現在有哪些需要";
+	mes "處理的任務!!";
+	next;
+	set givejob,rand(4);
+	if(givejob==0) goto Lnotask3;
+	if(givejob==1) goto Ltask1;
+	if(givejob==2) goto Ltask2;
+	if(givejob==3) goto Ltask3;
+	close;
+
+Ltask1:
+	mes "[初學者任務委託秘書]";
+	mes "目前有一個工作:";
+	mes "收集30個 ^313880傑勒比結晶^000000 的工作";
+	mes "酬勞: ^FF00005000z^000000";
+	menu "接受",Ltake;
+	close;
+Ltask2:
+	mes "[初學者任務委託秘書]";
+	mes "目前有一個工作:";
+	mes "收集30個 ^313880羽毛^000000 的工作";
+	mes "酬勞: ^FF00006000z^000000";
+	menu "接受",Ltake;
+	close;
+Ltask3:
+	mes "[初學者任務委託秘書]";
+	mes "目前有一個工作:";
+	mes "收集30個 ^313880粘稠液體^000000 的工作";
+	mes "酬勞: ^FF00007000z^000000";
+	menu "接受",Ltake;
+	close; 
+Ltake:
+	next;
+	mes "[初學者任務委託秘書]";
+	mes "我很期待你的表現唷!!";
+	if(givejob==1) set taskjob,1;
+	if(givejob==2) set taskjob,2;
+	if(givejob==3) set taskjob,3;
+	close;
+Lovertask:
+	if(taskjob==0) goto Lnotask2;
+	if(taskjob==1) goto Levent1;
+	if(taskjob==2) goto Levent2;
+	if(taskjob==3) goto Levent3;
+Levent1:
+	if (countitem(909)<30) goto Lnotover2;
+	mes "[初學者任務委託秘書]";
+	mes "你已經收集完成了呀，真是感謝你！來";
+	mes "這是你的酬勞!!下次有空的話，再來找";
+	mes "我。再見！";
+	delitem 909,30;
+	set Zeny,Zeny+5000;
+	set taskjob,0;
+	close;
+Levent2:
+	if (countitem(916)<30) goto Lnotover2;
+	mes "[初學者任務委託秘書]";
+	mes "你已經收集完成了呀，真是感謝你！來";
+	mes "這是你的酬勞!!下次有空的話，再來找";
+	mes "我。再見！";
+	delitem 916,30;
+	set Zeny,Zeny+6000;
+	set taskjob,0;
+	close;
+Levent3:
+	if (countitem(938)<30) goto Lnotover2;
+	mes "[初學者任務委託秘書]";
+	mes "你已經收集完成了呀，真是感謝你！來";
+	mes "這是你的酬勞!!下次有空的話，再來找";
+	mes "我。再見！";
+	delitem 938,30;
+	set Zeny,Zeny+7000;
+	set taskjob,0;
+	close;
+Lnotask:
+	mes "[初學者任務委託秘書]";
+	mes "你已經不是初學者了，所以無法接任務";
+	mes "。真是抱歉，你可以找一般任務委託秘";
+	mes "書，接任務委託！";
+	close;
+Lnotask2:
+	mes "[初學者任務委託秘書]";
+	mes "你沒有接受任何的委託!!>.<。沒事的話";
+	mes "，別來煩我，我可是個大忙人。";
+	close;
+Lnotask3:
+	mes "[初學者任務委託秘書]";
+	mes "目前沒有適合的工作耶!!請你下次再來";
+	mes "吧!!";
+	close;
+Lnotover:
+	mes "[初學者任務委託秘書]";
+	mes "抱歉！你手上有未完成的委託，請先完";
+	mes "成後，才能接下各委託。";
+	close;
+Lnotover2:
+	mes "[初學者任務委託秘書]";
+	mes "抱歉！你手上的材料不足，請多努力點";
+	mes "吧！收集完成再來我。";
+	close;
+Left:
+	mes "[初學者任務委託秘書]";
+	mes "這樣子呀!!那有事在過來吧！希望我能";
+	mes "夠幫助你^_^。";
+	close;
+}
