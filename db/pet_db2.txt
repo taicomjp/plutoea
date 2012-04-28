@@ -1,57 +1,60 @@
-// 資料結構:
+// Pet Additional Database - Custom Pets
+//
+// Structure of Database:
 // MobID,Name,JName,LureID,EggID,EquipID,FoodID,Fullness,HungryDelay,R_Hungry,R_Full,Intimate,Die,Capture,Speed,S_Performance,talk_convert_class,attack_rate,defence_attack_rate,change_target_rate,pet_script,loyal_script
 //
-// 01. MobID			魔物編號
-// 02. Name			魔物的名稱
-// 03. JName			孵化後的預設名稱
-// 04. LureID			捕獲道具編號
-// 05. EggID			魔物蛋 編號
-// 06. EquipID			裝飾品 編號
-// 07. FoodID			飼料 編號
-// 08. Fullness			飢餓度下降的幅度
-// 09. HungeyDelay		飢餓度下降的週期 (預設: 60秒)
-// 10. R_Hungry			飢餓時所下降的親密度
-// 11. R_Full			過度餵食所下降的親密度
-// 12. Intimate			起始親密度
-// 13. Die			主人死亡後所下降的親密度
-// 14. Capture			捕獲成功率 (10000 = 100%)
-// 15. Speed			行走速度 (預設: 150)
-// 16. S_Performance		特殊行為 (Yes = 1, No = 0)
+// 01. MobID			Monster ID of the pet.
+// 02. Name			Name of the monster as defined in the database.
+// 03. JName			The display name of the monster when hatched.
+// 04. LureID			Pet Tame Item ID.
+// 05. EggID			Pet Egg ID.
+// 06. EquipID			Pet Accessory ID.
+// 07. FoodID			Pet Food ID.
+// 08. Fullness			The amount Hunger is decreased every [HungryDelay] seconds.
+// 09. HungryDelay		The amount of time it takes for hunger to decrease after feeding. (Default: 60 seconds)
+// 10. R_Hungry			Amount of Intimacy that is increased when fed.
+// 11. R_Full			Amount of Intimacy that is decreased when over-fed.
+// 12. Intimate			Amount of Intimacy the pet starts with.
+// 13. Die			Amount of Intimacy that is decreased when the pet owner dies.
+// 14. Capture			Capture succes rate (10000 = 100%)
+// 15. Speed			Pet's walk speed. (Defaul: 150)
+// 16. S_Performance		Special Performance. (Yes = 1, No = 0)
 // 17. talk_convert_class	Disables pet talk (instead of talking they emote  with /!.)
 // 18. attack_rate			Rate of which the pet will attack (requires at least pet_support_min_friendly intimacy).
 // 19. defence_attack_rate	Rate of which the pet will retaliate when master is being attacked (requires at least pet_support_min_friendly intimacy).
 // 20. change_target_rate	Rate of which the pet will change its attack target.
 // 21. pet_script		Script to execute when the pet is hatched.
 // 22. loyal_script		Script to execute when the pet is hatched (requires at least pet_equip_min_friendly intimacy, independent of pet_script).
-//備註:  attack_rate, defense_rate & change_target_rate 的最大值是10000 (萬分比)
+//NOTE: The max value (100%) of attack_rate, defense_rate & change_target_rate is 10000.
 
-//理論上你可以使用任何腳本指令, 但是只在讀取寵物時引發一次
-//所以建議你使用特定的寵物腳本指令:
+//In theory you can use any valid script, but it is run only once upon pet
+//loading, so it is recommended you use the specific pet scripts:
+
 //petskillattack skillid, skilllv, rate, bonusrate
-//當寵物攻擊時觸發寵物技能
-//機率指攻擊時發動技能的機率
-//額外機率指當親密度最大的時候給予的發動加成
+//Skill attack that triggers while the pet is attacking. Rate is the base
+//chance of execution per attack. Bonusrate is an additional success rate when
+//intimacy reaches max.
 
 //petskillattack2 skillid, damage, hits, rate, bonusrate
-//跟petskillattack一樣, 不同的只有傷害固定, 機率固定
-//傷害指的是全部, 不是單一攻擊
+//Same as petskillattack, but the damage and number of hits is fixed
+//the damage specified is total, not per hit.
 
 //petskillsupport skillid, skilllv, delay, hp%, sp%
-//當 hp% 和 sp% 低於所標示之數值時可以使用該技能
-//Delay是指再次使用此技能時所需等待時間(秒)
+//Casts a support skill when the health levels are below the specified hp% and
+//sp%. Delay is the minimum time in seconds before the skill can be cast again
 
 //petheal amount, delay, hp%, sp%
-//跟petskillsupport類似, 但是技能固定是治瘉術(28)
-//治療的點數也是固定所給予的值
+//Similar to petskillsupport, but the skill is fixed to heal (28) and the
+//heal-amount is fixed to the value given.
 
-//petrecovery type, delay: 治療 "type" 的狀態, "delay" (秒)的延遲時間
+//petrecovery type, delay: Cures the "type" status effect after "delay" seconds
 
 //petskillbonus type, value, duration, delay
-//可以對玩家進行素質點數的額外獎勵. Type 是所要增加的素質 (bStr, bLuk), value 是要增加的量,
-//duration 表示持續多久
-//delay 再次觸發時等待時間
+//Gives bonus stats. Type is the stat to increase (bStr, bLuk), value is the
+//amount by which it is increased, duration signals how long the bonus lasts
+//delay is the time elapsed after the bonus ends and before it starts again.
 
-//每隻寵物都可以同時使用 petloot, petskillbonus, petskillattack (petskillattack2)
-// petskillsupport (petheal)
-//但是每種只能使用一次
+//A single pet can have petloot, petskillbonus, petskillattack (or
+//petskillattack2) and petskillsupport (or petheal) at the same time,
+//but only one of each.
 

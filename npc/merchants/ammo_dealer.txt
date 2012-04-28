@@ -1,89 +1,126 @@
-//======================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// --------------------------------------
-// - 彈藥經銷商 腳本 -
-//======================================
-//= 版本: 1.3 [5511]
-//======================================
+//===== rAthena Script =======================================
+//= Bullet Dealer Tony
+//===== By ===================================================
+//= Playtester, Paradox924X
+//===== Version ==============================================
+//= 1.5
+//===== Compatible With ======================================
+//= rAthena SVN
+//===== Description ==========================================
+//= Bullet trader.
+//===== Comments =============================================
+//= 1.0 First version [Playtester]
+//= 1.1 Converted from Aegis [Paradox924X]
+//= 1.2 More optimized conversion [Legionaire]
+//= 1.2a Removed .GATs [Lupus]
+//= 1.3 Fixed [Playtester] Optimized. Got rid of @vars [Lupus]
+//= 1.4 Updated to match AEGIS script. [Kisuka]
+//= 1.5 Updated to match AEGIS script again. [Masao]
+//============================================================
 
-que_ng,187,156,3	script	彈藥經銷商 托尼	86,{
-
-	mes "[托尼]";
+alberta,118,160,3	script	Bullet Dealer Tony#alb::bdt	86,{
 	if (BaseJob == Job_Gunslinger) {
-		mes "我是彈牙托尼!";
-		mes "如果你缺少子彈的話,";
-		mes "來找我!!!";
+		mes "[Tony]";
+		mes "I'm Tony, the Bullet Dealer.";
+		mes "Come to me whenever you're";
+		mes "short on ammo. Just bring me";
+		mes "the materials, and I'll make";
+		mes "you the bullets you need.";
 		next;
-		mes "[托尼]";
-		mes "現在~! 朋友~夥計~ 老兄";
-		mes "你需要些什麼東西?!";
-		mes "挑選下~!";
-		mes "然後付錢~!";
-		next;
-		switch(select("毒物子彈:火焰子彈:雷擊子彈:暗盲子彈:冰凍子彈:取消")) {
+		switch(select("Poison Sphere:Flare Sphere:Lighting Sphere:Blind Sphere:Freezing Sphere:Cancel")) {
 		case 1: callfunc "Bullet_Trade",937,10,13205; break;
 		case 2: callfunc "Bullet_Trade",7097,2,13203; break;
 		case 3: callfunc "Bullet_Trade",7053,3,13204; break;
 		case 4: callfunc "Bullet_Trade",1024,5,13206; break;
 		case 5: callfunc "Bullet_Trade",7054,2,13207; break;
-		default:
-			mes "[托尼]";
-			mes "嗯~ 好吧~";
-			mes "請以後再來找我~";
-			mes "我, 彈牙托尼,";
-			mes "會永遠在這裡的~!!!";
+		case 6:
+			mes "[Tony]";
+			mes "Changed your mind?";
+			mes "Well, if you ever need";
+			mes "any bullets, I'll be right";
+			mes "here. Come back whenever";
+			mes "you think you'll need more";
+			mes "ammunition, Gunslinger.";
 			close;
 		}
 	}
-	mes "我是專門為槍手們提供貿易貨品的商人.";
-	mes "我是彈牙托尼.";
+	mes "[Tony]";
+	mes "Hey, I'm Tony. I'm in";
+	mes "charge of distributing";
+	mes "and making bullets for";
+	mes "Gunslingers. It's just";
+	mes "how our guild likes";
+	mes "to do things.";
 	next;
-	mes "[托尼]";
-	mes "我想你應該不是一名槍手吧";
-	mes "那你就隨便走走逛逛吧.";
+	mes "[Tony]";
+	mes "I'm sorry if you came";
+	mes "here to buy some bullets.";
+	mes "I can only do business with";
+	mes "fully fledged Gunslingers.";
 	close;
 }
 
 function	script	Bullet_Trade	{
-	mes "[托尼]";
-	mes "輸入你想要購買的數量.";
+	mes "[Tony]";
+	mes "For every set of";
+	mes "30 "+getitemname(getarg(2))+"s,";
+	mes "you must give me";
+	mes "1 Emveretarcon,";
+	mes "1 Phracon, and";
+	mes ""+getarg(1)+" "+getitemname(getarg(0))+".";
 	next;
-	mes "[托尼]";
-	mes "我交易30 發"+getitemname(getarg(2))+"需要";
-	mes "1 塊強化武器金屬-級數一,";
-	mes "1 塊強化武器金屬-級數二,";
-	mes "和"+getarg(1)+" 個"+getitemname(getarg(0))+".";
-	next;
-	mes "[托尼]";
-	mes "你能交易的最大數量為500.";
-	mes "如果你想要取消, 輸入0.";
+	mes "[Tony]";
+	mes "Remember that I can give";
+	mes "a maximum of 500 sets of";
+	mes "30 bullets at a time. Please";
+	mes "enter the number of bullet sets";
+	mes "that you'd like. If you want to";
+	mes "cancel, then just enter ''0.''";
 	next;
 	input .@amount;
-	mes "[托尼]";
 	if (.@amount < 1 || .@amount > 500) {
-		mes "無效的數量!";
-		mes "重新輸入~!";
+		mes "[Tony]";
+		mes "Hey, I can't give you";
+		mes "that many bullets. Don't";
+		mes "forget to enter a number";
+		mes "that's no higher than 500";
+		mes "if you want to trade your";
+		mes "items for some bullets.";
 		close;
-	} else if (countitem(1010) >= .@amount && countitem(1011) >= .@amount && countitem(getarg(0)) >= (.@amount*getarg(1))) {
+	}
+	if (countitem(1010) >= .@amount && countitem(1011) >= .@amount && countitem(getarg(0)) >= (.@amount*getarg(1))) {
 		if (checkweight(getarg(2),.@amount * 30) == 0) {
-			mes "我不能給你子彈因為你的背包已經裝滿了. 等你騰些空出來, 再來吧.";
+			mes "[Tony]";
+			mes "Eh? Your Inventory doesn't";
+			mes "have enough space for this";
+			mes "many bullets. Come back later";
+			mes "after you make more space";
+			mes "available. Try putting some of";
+			mes "your things into Kafra Storage.";
 			close;
-		} else {
-			mes "喔~ 很好!";
-			mes "交易數額檢查完了!";
-			mes "我將立刻和你交易.";
+		}else{
+			mes "[Tony]";
+			mes "Great, everything seems";
+			mes "to be in order. Let me take";
+			mes "these materials, and here are";
+			mes "your bullets. It's a pleasure";
+			mes "to do business with you~";
 			delitem 1010,.@amount;
 			delitem 1011,.@amount;
 			delitem getarg(0),.@amount * getarg(1);
 			getitem getarg(2),.@amount * 30;
 			close;
 		}
-	} else {
-		mes "嘖嘖嘖嘖~";
-		mes "你沒有為你想要交易的物品準備足夠的材";
-		mes "料.";
-		mes "準備好了再來吧.";
+	}else{
+		mes "[Tony]";
+		mes "Huh. It looks like you";
+		mes "don't have enough materials";
+		mes "for that many bullets. Well,";
+		mes "it's no problem. Just come";
+		mes "back after gathering everything";
+		mes "that you need, okay?";
 		close;
 	}
 }
+
+izlude,171,133,3	duplicate(bdt)	Bullet Dealer Tony#iz	86

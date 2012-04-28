@@ -1,215 +1,129 @@
-//==================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ---------------------------------
-// - 弓箭手 轉職腳本 - 
-//===================================
-// 版本：1.7a
-//===================================
-
-payon_in02,64,71,4	script	工會服務人員#arch	85,{
+//===== rAthena Script ======================================= 
+//= Renewal Archer Job Change
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena SVN
+//===== Description: ========================================= 
+//= Job Change to Archer Class
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//============================================================ 
+payon_in02,64,71,4	script	Archer Guildsman#archer	85,{
 	if (Upper == 1) {
 		if (Class == Job_Novice_High && (ADVJOB == Job_Sniper || ADVJOB == Job_Clown || ADVJOB == Job_Gypsy)) {
-			mes "[弓箭手 工會員]";
-			mes "您已經轉生了，不需要什麼轉職考試了哦";
+			mes "[Archer Guildsman]";
+			mes "Hey, I know you.";
+			mes "You took this test";
+			mes "before, didn't you?";
 			next;
-			if (getskilllv(1) < 9) {
-				mes "[弓箭手 工會員]";
-				mes "您的'基本技能'等級還不夠喔!";
-				mes "再確認一次轉職條件，請努力爭取到基本技能等級９吧";
+			mes "[Archer Guildsman]";
+			mes "Ah, you must have been";
+			mes "to Valhalla and been reborn.";
+			mes "Wow, that's so impressive!";
+			next;
+			if (getskilllv("NV_BASIC") < 9) {
+				mes "[Archer Guildsman]";
+				mes "Err...";
+				mes "You'd better learn all the Basic Skills first before you can become an Archer.";
+				next;
+				mes "[Archer Guildsman]";
+				mes "Alright, see you later.";
 				close;
 			}
-			mes "[弓箭手 工會員]";
-			mes "請好好的把弓箭手的精神發揚光大吧";
+			mes "[Archer Guildsman]";
+			mes "Well then. I don't";
+			mes "need to say anything else.";
+			mes "I know you'll make a great Archer...";
 			next;
 			skill 143,0,0;
 			jobchange Job_Archer_high;
 			skill 147,1,0;
 			skill 148,1,0;
-			mes "[弓箭手 工會員]";
-			mes "恭喜您轉職成功!";
-			mes "從今往後也請為了弓箭手工會的復興努力奮鬥吧!";
+			mes "[Archer Guildsman]";
+			mes "Although there's no special";
+			mes "reward for you this time, I hope you understand. Take care of yourself.";
 			close;
-		}
-		else {
-			mes "[弓箭手 工會員]";
-			mes "嗯... 第一次看到弓箭手嗎?";
-			mes "繼續走你的路吧!";
-			mes "我是有水準的...";
-			mes "啊啊，不是這個...?";
+		}else{
+			mes "[Archer Guildsman]";
+			mes "Oh...?";
+			mes "Hey, what are";
+			mes "you doing here...?";
 			next;
-			mes "[弓箭手 工會員]";
-			mes "嘿嘿，剛剛講的算沒有聽到好嗎?";
-			mes "是你聽錯了，是你心情在做怪";
+			mes "[Archer Guildsman]";
+			mes "I can tell that you're not cut out to be an Archer. It sort of feels like you're meant to do";
+			mes "something else...";
 			close;
 		}
 	}
-	mes "[弓箭手 工會員]";
-	mes "你好";
-	mes "這裡是弓箭手工會，有什麼可以幫您的嗎??";
+	mes "[Archer Guildsman]";
+	mes "Nice to meet you. How may I help you?";
 	next;
-	switch(select("轉職成為弓箭手:轉職條件是什麼?:沒什麼事情")) {
+	switch(select("I want to be an Archer.:I need the requirements, please.:Nothing, thanks.")) {
 	case 1:
-		if (BaseJob == Job_Archer) {
-			mes "[弓箭手 工會員]";
-			mes "閣下已經是弓箭手了";
-			close;
-		}
-		else if (BaseJob != Job_Archer && BaseJob != Job_Novice) {
-			mes "[弓箭手 工會員]";
-			mes "看樣子你已經不是初學者了...";
-			mes "你已經選擇了其他職業，無法轉職為弓箭手";
-			close;
-		}
-		if (job_archer_q == 0) {
-			mes "[弓箭手 工會員]";
-			mes "你是為轉職弓箭手而來嗎?";
-			mes "這樣的話，在這裡填一下轉職申請書吧";
-			next;
-			if (select("填寫弓箭手轉職申請書:放棄") == 1) {
-				set job_archer_q,1;
-				setquest 1004;
-				mes "[弓箭手 工會員]";
-				mes "在申請書上簽名...";
-				mes "嗯，這樣一來就OK了";
-				next;
-				mes "[弓箭手 工會員]";
-				mes "接下來只要滿足了弓箭手轉職的條件的話就可以順利轉職了";
-				mes "是不是已經滿足了條件了呢，現在可以讓我確認一下嗎";
-				next;
-				if (select("好的:不好") == 1) {
-					mes "[弓箭手 工會員]";
-					mes "好的，馬上為您開始確認";
-					next;
-				}
-				else {
-					mes "[弓箭手 工會員]";
-					mes "明白了";
-					mes "如果對弓箭手轉職條件還有什麼疑問的話，請隨時來問我";
-					close;
-				}
+		if(Class != Job_Novice) {
+			mes "[Archer Guildsman]";
+			if(Class == Job_Archer) {
+				mes "Haha, you are kidding me..";
+			}else{
+				mes "I feel sorry but only Novices can change their job.";
+				mes "You already have your own decent job, don't you?";
 			}
-			mes "[弓箭手 工會員]";
-			mes "啊...再見了";
 			close;
-		}
-		mes "[弓箭手 工會員]";
-		mes "姓名是... " +strcharinfo(0)+ "吧?";
-		next;
-		if (getskilllv(1) < 9) {
-			mes "[弓箭手 工會員]";
-			mes "您的'基本技能'等級還不夠喔!";
-			mes "再確認一次轉職條件，請努力爭取到基本技能等級９吧";
-			close;
-		}
-		if (job_archer_q == 1) {
-			set .@archer_item1,countitem(1066) * 5;
-			set .@archer_item2,countitem(1067) * 3;
-			set .@archer_item3,countitem(1068) * 2;
-			set .@archer_item4,countitem(1019);
-			set .@total_archer,.@archer_item1 + .@archer_item2 + .@archer_item3 + .@archer_item4;
-			set .@total_archer2,(((.@archer_item2 + .@archer_item3) * 2) + .@archer_item4);
-			mes "[弓箭手 工會員]";
-			mes "初學者技能等級已經足夠了...";
-			mes "那麼開始檢驗製作弓所必須的樹枝數量吧";
+		}else{
+			mes "[Archer Guildsman]";
+			mes "You are... "+strcharinfo(0)+". right?";
 			next;
-			if (countitem(1066) == 0 && countitem(1067) == 0 && countitem(1068) == 0 && countitem(1019) == 0) {
-				mes "[弓箭手 工會員]";
-				mes "....";
-				mes "並沒有要檢驗的樹枝啊!!";
+			if (getskilllv("NV_BASIC") < 9) {
+				mes "[Archer Guildsman]";
+				mes "Well, you're not at the right skill level.";
+				mes "Your job level must be at least ^4A4AFF10^000000 and your Basic Skill level should reach ^4A4AFFlevel 9";
+				next;
+				mes "[Archer Guildsman]";
+				mes "Because an Archer needs extremely high concentration, so we do not accept those who have little patience.";
 				close;
 			}
-			mes "[弓箭手 工會員]";
-			if (countitem(1066) != 0) mes " 天地樹枝 : " + countitem(1066) + "個，" + .@archer_item1 + "分";
-			if (countitem(1067) != 0) mes " 智慧樹枝 : " + countitem(1067) + "個，" + .@archer_item2 + "分";
-			if (countitem(1068) != 0) mes " 世界樹枝 : " + countitem(1068) + "個，" + .@archer_item3 + "分";
-			if (countitem(1019) != 0) mes " 瑪哪樹枝 : " + countitem(1019) + "個，" + .@archer_item4 + "分";
-			if (.@total_archer < 25) {
-				mes "總分: ^FF0000" + .@total_archer + "^000000 / 40";
-				next;
-				mes "[弓箭手 工會員]";
-				mes "25分以下?";
-				mes "如果不到25分以上的話不能讓你合格哦!";
-				mes "請再努力一些吧!";
-				close;
-			}
-			else {
-				mes "總分: ^0000FF" + .@total_archer + "^000000 / 40";
-				next;
-				mes "[弓箭手 工會員]";
-				if (.@total_archer > 40) {
-					mes "哇!40分以上!";
-					mes "好厲害啊!合格了!";
-				}
-				else if (.@total_archer > 30) {
-					mes "30分以上!合格了!";
-					mes "真是辛苦您了!";
-				}
-				else {
-					mes "25分以上!嗯~";
-					mes "剛好合格了";
-				}
-			}
+			mes "[Archer Guildsman]";
+			mes "Your Basic Skill is now enough..";
+			mes "....Hm~~ so you are now ready to be an Archer. I will take the step right away.";
 			next;
-			mes "[弓箭手 工會員]";
-			mes "現在就把樹枝轉交給'弓'的製作負責人";
-			if (countitem(1066) != 0) delitem 1066,countitem(1066); //Tree_Of_Archer_1
-			if (countitem(1067) != 0) delitem 1067,countitem(1067); //Tree_Of_Archer_2
-			if (countitem(1068) != 0) delitem 1068,countitem(1068); //Tree_Of_Archer_3
-			if (countitem(1019) != 0) delitem 1019,countitem(1019); //Wooden_Block
+			mes "[Archer Guildsman]";
+			mes "Congratulations! You are now an Archer! Also, we hope that you actively participate in many programs for the revival of the Archer Guild.";
+			mes "Ah, items have arrived from the Production Department. Here, take these! These are all yours!";
+			jobchange Job_Archer;
+			getitem 1742,1;	// N_Composite_Bow
+			getitem 12004,1;	// Arrow_Container
+			getitem 12009,1;	// Silver_Arrow_Container
+			getitem 12008,1;	// Fire_Arrow_Container
+			next;
+			mes "[Archer Guildsman]";
+			mes "Having a bow and arrows, now you became a real Archer.";
+			mes "If you open the arrow container, there are arrows in it and then you can equip them.";
+			mes "Well, I expect to hear better news from you. It's time to say goodbye.";
+			mes "Bye.";
+			close;
 		}
-		next;
-		callfunc "Job_Change",Job_Archer;
-		callfunc "F_ClearJobVar";
-		completequest 1004;
-		mes "[弓箭手 工會員]";
-		mes "這麼一來弓箭手轉職條件就都齊了";
-		mes "馬上就為您轉職";
-		next;
-		mes "[弓箭手 工會員]";
-		mes "恭喜您弓箭手轉職成功!";
-		mes "那麼，從今往後也請為了弓箭手工會的復興努力奮鬥吧!";
-		mes "啊，製作負責人的禮物送到了請收下吧";
-		getitem 1702,1; //Bow_
-		getitem 1750,.@total_archer2; //Arrow
-		next;
-		mes "[弓箭手 工會員]";
-		mes "弓箭手是離不開弓與箭的!";
-		mes "那麼，請您好好努力吧";
-		mes "我將拭目以待";
-		close;
 	case 2:
-		mes "[弓箭手 工會員]";
-		mes "那麼現在就來說明一下弓箭手的轉職條件吧";
-		if (BaseJob != Job_Novice) {
-			if (BaseJob == Job_Archer) {
-				next;
-				mes "[弓箭手 工會員]";
-				mes "但是，你已經是弓箭手了呢...";
-			}
-			else {
-				next;
-				mes "[弓箭手 工會員]";
-				mes "但是，你已經是其他職業了呢...";
-			}
-			mes "...那麼，好吧";
-		}
+		mes "[Archer Guildsman]";
+		mes "An Archer has skills using a bow and has various talents.";
+		mes "The greatest ability of an Archer is attacking enemies from a long distance.";
 		next;
-		mes "[弓箭手 工會員]";
-		mes "首先，請將初學者職業等級提升到９以上";
-		mes "弓箭手是需要高度集中力的職業，做事糊塗的傢伙是絕對不能勝任的";
+		mes "[Archer Guildsman]";
+		mes "Although an Archer has weaker HP, he or she can shoot enemies at a long range,";
+		mes "so an Archer is safer in a real battle.";
 		next;
-		mes "[弓箭手 工會員]";
-		mes "要完成弓箭手轉職考試，需要收集製作弓箭所必須的^ff0000樹枝^000000";
-		mes "可以收集到的樹枝共分為４個等級，將收集到的樹枝帶回來後把數量合計後打分";
+		mes "[Archer Guildsman]";
+		mes "Although an Archer in Ragnarok has lower HP, he or she has high accuracy and attack rate so that the archer can kill monsters before they get close to an Archer.";
 		next;
-		mes "[弓箭手 工會員]";
-		mes "達到40分滿分中的^0000ff25分以上^000000的話，你就可以順利轉職成弓箭手了";
-		mes "樹枝這種東西，可以從魔物'樹精'身上取得";
-		mes "樹精雖然不是很厲害的魔物，但是輕敵可是大忌哦";
+		mes "[Archer Guildsman]";
+		mes "^8C2121An Archer can change jobs to a Hunter.^000000";
+		mes "^8C2121Other than Hunter, if you are a man, you can change your job to Bard and if you are a woman, you can change your job to Dancer.^000000";
 		close;
 	case 3:
+		mes "[Archer Guildsman]";
+		mes "If you have any questions, feel free to come and ask me.";
 		close;
 	}
 }
-

@@ -1,62 +1,62 @@
 // Custom mob skills
 //MOB_ID, a unused dummy character sequence (for information only), STATE, SKILL_ID, SKILL_LV,
 // rate (10000 = 100%), casttime, delay, cancelable, a target, a condition type, a condition value,
-// a value 1, a value 2, a value 3, a value 4, a value 5, emotion
+// a value 1, a value 2, a value 3, a value 4, a value 5, emotion, chat
 //Example
-//1001,波利@TF_POISON,attack,52,3,100,1500,10000,no,target,always,0,,,,,7
+//1001,Poring@TF_POISON,attack,52,3,100,1500,10000,no,target,always,0,,,,,7
 //
-// 發動機率用於當這個技能達到發動條件後的機率
-// 延遲以毫秒為單位,防止魔物無休止的施放同一技能
+//rate refers to the chance of the skill being casted when the condition is fulfilled.
+//delay is the time in milliseconds that has to be pass before recasting the same skill.
 //
-//狀態:
-// any (任何情況除了死亡) / idle (待機時) / walk (移動中) / dead (死亡時) /
-// loot (技能發動成功時) /attack (攻擊時) /
-// angry (跟 attack一樣, 但是尚未遭受攻擊角色) /
-// chase (遭受攻擊時跟隨目標) / follow (沒有遭受攻擊時跟隨目標)
+//STATE:
+// any / idle (in standby) / walk (in movement) / dead (on killed) / loot /
+// attack / angry (like attack, except player has not attacked mob yet) /
+// chase (following target, after being attacked) / follow (following
+// target, without being attacked)
 //
-//目標: 魔物的技能施放於: target (目標) / self(自己) / friend(友方) / master主人(BOSS召喚的隨從)
-// (如果是地面技能,將按照特殊地
-// 形隨機分配目標形隨機分配目標):
-// around1 (圍繞自己3x3格的地區) / around2 (圍繞自己5x5格的地區) / 
-// around3 (圍繞自己7x7格的地區) / around4 (圍繞自己9x9格的地區) /
-// around5 (圍繞目標3x3格的地區) / around6 (圍繞目標5x5格的地區) /
-// around7 (圍繞目標7x7格的地區) / around8 (圍繞目標9x9格的地區) /
-// around (圍繞自己11x11格的地區)
+//target: The target of the skill can be: target (when a PC is targetted) / self / friend / master
+// (the following are for ground-skills, a random target tile is selected from
+// the specified area):
+// around1 (3x3 area around self) / around2 (5x5 area around self) /
+// around3 (7x7 area around self) / around4 (9x9 area around self) /
+// around5 (3x3 area around target) / around6 (5x5 area around target) /
+// around7 (7x7 area around target) / around8 (9x9 area around target) /
+// around (11x11 area around self)
 //
-// 發動條件: (條件數值因發動條件而異) 
-//	always			無視發動條件
-//	myhpltmaxrate		魔物HP值降到一定比值(百分比:50=50%)時發動
-//	mystatuson		魔物狀態改變時發動(比如皮裡恩發動隱匿後使用治癒術,或者魔物被暴風雪冰凍之類的時候)
-//	mystatusoff		魔物狀態恢復時發動
-//	friendhpltmaxrate	友方魔物HP值降到一定比值(百分比:50=50%)時發動
-//	friendstatuson		友方魔物改變狀態時發動
-//	friendstatusoff		友方魔物狀態恢復時發動
-//	attackpcgt		攻擊魔物的玩家大於指定人數時發動 
-//	attackpcge		攻擊魔物的玩家大於等於指定人數時發動 
-//	slavelt			護衛(BOSS帶的小怪)數量小於召喚數量時發動 
-//	slavele			護衛(BOSS帶的小怪)數量小於等於召喚數量時發動
-//	closedattacked		魔物處於混戰時發動 (無遠程攻擊)
-//	longrangeattacked	魔物遭受超遠距離攻擊時發動 (如弓之類的遠程武器)
-//	skillused		魔物被使用指定技能時發動
-//	afterskill		魔物完成一個技能時發動
-//	casttargeted		魔物處於詠唱範圍內時發動
-//	rudeattacked		魔物遭受致命一擊時發動(應該是指類似阿修羅霸皇拳之類的技能)
+//conditions: (condition type) (value which specifies a condition value)
+//	always			uncondtional
+//	myhpltmaxrate		when the mob's hp drops to a certain %
+//	mystatuson		If the mob has any abnormalities in status (condition value),
+//	mystatusoff		If the mob has ended any abnormalities in status (condition value),
+//	friendhpltmaxrate	when the mobs' friend's hp drops to a certain %
+//	friendstatuson		If the friend has any abnormalities in status (condition value),
+//	friendstatusoff		If the friend has ended any abnormalities in status (condition value),
+//	attackpcgt		Attack PC becomes more than the  number of specification
+//	attackpcge		Attack PC becomes equal or more than the number of specification.
+//	slavelt			when the number of slaves is lower than the original number of specification.
+//	slavele			when the number of slaves is lower or equal than the original number of specification.
+//	closedattacked		when melee attacked (close range attack)
+//	longrangeattacked	when long ranged attacked (like bows and far range weapons)
+//	skillused		when a skill is used on the mob
+//	afterskill		after the mob used certain skill.
+//	casttargeted		when a target is in cast range.
+//	rudeattacked		when a target is rude attacked
 //
-// 當statuson(狀態改變)/statusoff(狀態恢復)系統開啟時,魔物可以針對玩家施展的技能(如:石化術)發動技能,來免除玩家技能效果
-//	anybad		處於任何狀態時發動
-//	stone		處於石化狀態時發動
-//	freeze		處於冰凍狀態時發動
-//	stun		處於昏眩狀態時發動
-//	sleep		處於睡眠狀態時發動
-//	poison		處於中毒狀態時發動
-//	curse		處於詛咒狀態時發動
-//	silence		處於沉默狀態時發動
-//	confusion	處於混亂狀態時發動
-//	blind		處於黑暗狀態時發動
-//	hiding		處於隱匿狀態時發動
-//	sight		處於顯現狀態時發動
-//
-// eAthena Dev Team
+// The character's state which can be specified to be a condition value by the statuson/statusoff system
+//	anybad		any type of state change
+//	stone		condition of being in stone state
+//	freeze		condition of being in frozen state
+//	stun		condition of being in stunned state
+//	sleep		condition of being in sleep state
+//	poison		condition of being in poisoned state
+//	curse		condition of being in cursed state
+//	silence		condition of being in silenced state
+//	confusion		condition of being in confusion state
+//	blind		condition of being in blind state
+//	hiding		condition of being in hidden state
+//	sight		condition of being in unhidden state
+
+// rAthena Dev Team
 //1900,Valaris@AL_TELEPORT,idle,26,1,10000,0,0,yes,self,rudeattacked,,,,,,,,
 //1900,Valaris@AL_TELEPORT,walk,26,1,500,0,5000,yes,self,rudeattacked,,,,,,,,
 //1900,Valaris@KN_BRANDISHSPEAR,attack,57,10,2000,500,5000,no,target,always,0,,,,,,29,

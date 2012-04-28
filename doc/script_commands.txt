@@ -1,192 +1,18 @@
-﻿//===== Athena Doc ========================================
-//= eAthena Script Commands
-//===== Description =======================================
-//= A reference manual for the eAthena scripting language.
+﻿//===== Athena Doc ===========================================
+//= rAthena Script Commands
+//===== By: ==================================================
+//= rAthena Dev Team
+//===== Current Version: =====================================
+//= $Revision: 15983 $
+//===== Last Updated: ========================================
+//= $LastChangedDate: 2012-04-27 23:26:14 +0800 (週五, 27 四月 2012) $
+//===== Description: =========================================
+//= A reference manual for the rAthena scripting language.
 //= Commands are sorted depending on their functionality.
-//===== Version ===========================================
-//= 3.45.20110709
-//=========================================================
-//= 1.0 - First release, filled will as much info as I could
-//=       remember or figure out, most likely there are errors,
-//=       and things I have missed out [Fredzilla]
-//= 1.1 - Added better discription for "getmapxy" (by Terminal Vertex & Z3R0)
-//= 1.2b- Added a description for getpartymember (by HappyDenn)
-//=       (+few spelling mistakes corrected)
-//= 2.0 - +79kb extra stuff and numerous corrections by 
-//=       Maeki Rika.
-//= 2.1 - Small but important corrections, more proofreading.
-//=       Some important discoveries in item functions, the 
-//=       secret of making VVS weapons with 'getitem2' and 
-//=       other news. (Rika again) +10kb :) 
-//= 2.2 - added getItemInfo description [Lupus]
-//= 2.3 - added plenty of info for recent (and not so) script commands I added
-//=       [Skotlex]
-//= 2.4 - Explained the upper parameter of jobchange. [Skotlex]
-//= 2.5 - Added pow, sqrt and distance. [Lance]
-//= 2.6 - Added setd and getd. [Lance]
-//= 2.7 - petstat command. [Lance]
-//= 2.7a- delitem2, countitems2 commands [Lupus]
-//= 2.7b- clone command [Skotlex]
-//= 2.7c- disguise / undisguise, query_sql commands [Lupus]
-//= 2.8 - Deleted a copy of the nude command. Added axtoi command (needing a
-//=       clearer explanation of atoi.Gave a better explanation of OnLabels
-//=       and modified monster explanation due that L_Label isn't working with
-//=       monster.
-//= 2.9.20061230 - Updated getitem and guardian. [FlavioJS]
-//= 2.10.20070101 - added sleep,sleep2,awake and updated the variables section.
-//=       [FlavioJS]
-//= 2.11.20070109 - removed the unused flag argument in guildskill, added an 
-//=       optional argument to setcart,setfalcon,setriding and other cleanups 
-//=       [FlavioJS]
-//= 2.12.20070201 - Added npcshopitem, npcshopadditem, npcshopdelitem and
-//=       npcshopattach [Skotlex]
-//= 3.00.20070208
-//=       - Explained Logical Bitwise Operators. 
-//=         Dj-Yhn contributed to AND (&) operator, rest by myself. [erKURITA]
-//=       - Added a resume of allowed variable and arrays scopes. [erKURITA]
-//=       - Re-organized the script commands, and grouped them depending
-//=         on what they do. [erKURITA]
-//=       - Added a packload of commands that were missing, 
-//=         and corrected some of the wrong ones [Dj-Yhn, erKURITA & Trancid]
-//= 3.01.20070209
-//=       Updated 'cutin' (removed lies, removed outdated bmp list) [ultramage]
-//=       Removed 'cutincard' since eA no longer implements it
-//= 3.02.20070209
-//=       Corrected/updated info on Xor/setd/getd/callfunc/callsub/return and 
-//=       updated some examples to use "better" code. [FlavioJS]
-//= 3.03.20070216
-//=       Expanded/clarified information on npc timers, added info about the
-//=       new attach flag for script commands startnpctimer/ stopnpctimer/ 
-//=       initnpctimer [Skotlex]
-//= 3.03.20070226
-//=       Updated makeitem and how to include " in strings [Lupus]
-//= 3.03.20070228
-//=       Added info on OnTimerQuit label to npctimer section. [Skotlex]
-//= 3.04.20070317
-//=       Removed all .gat refferences from the examples [Lupus]
-//= 3.04.20070330
-//=       Adjusted the 'itemskill' description due to recent change [ultramage]
-//= 3.04.20070409
-//=       Fixed the incorrect order of parameters in 'makeitem' [ultramage]
-//= 3.05.20070423
-//=       menu/select/prompt produce consistent results for grouped and empty 
-//=       options [FlavioJS]
-//= 3.05.20070819
-//=       Removed the messy 'unitdeadsit' command reference [ultramage]
-//= 3.05.20070823
-//=       Fixed typo in 'areamonster' description (missing argument) [ultramage]
-//= 3.06 20070909
-//=       Added 'gethominfo' description [Skotlex]
-//= 3.06.20070910
-//=       Added info about the new behavior of 'getexp' [ultramage]
-//= 3.07.20070915
-//=       Fixed 'duplicate' missing the target 'name' parameter! [ultramage]
-//= 3.08.20071018
-//=       Clarified how npc names work. [FlavioJS]
-//= 3.09.20071103
-//=       Added script function 'strnpcinfo' [ultramage]
-//= 3.10.20071122
-//=       Added setnpcdisplay. [FlavioJS]
-//= 3.10.20071211
-//=       Added query_logsql. [Skotlex]
-//= 3.11.20071215
-//=       Updated guardianinfo and get-/setcastledata [ultramage]
-//= 3.12.20071218
-//=       Corrected various mistakes mentioned in bugreport:373 [ultramage]
-//= 3.12.20071227
-//=       Corrected description of scope and npc variables. [FlavioJS]
-//= 3.13.20080104
-//=       Updated 'setcell' desc to match latest code changes [ultramage]
-//= 3.14.20080211
-//=       Updated 'input' (new arguments and return value). [FlavioJS]
-//= 3.15.20080227
-//=       Updated 'checkweight' description slightly. [L0ne_W0lf]
-//= 3.16.20080229
-//=       Updated 'Shop' NPC type description to include cashshop. [L0ne_W0lf]
-//=       Woopth. Fixed spelling. ;P Should be a bit clearer now. [L0ne_W0lf]
-//= 3.17.20080312
-//=       Corrected cashshop description. (#FREEPOINTS->#KAFRAPOINTS) [L0ne_W0lf]
-//= 3.18.20080327
-//=       Added documentation for the 'checkcell' command [ultramage]
-//= 3.19.20080407
-//=       Extended the behaviour of 'guardian'. [FlavioJS]
-//= 3.20.20080425
-//=       Corrected 'getitem', 'getitem2' & 'delitem2' (charid instead of accountid) [Toms]
-//=       Modified 'delitem' (added optional accountid parameter) [Toms]
-//= 3.21.20080612
-//=       Script commands extended to support skill names: [FlavioJS]
-//=       skill, addtoskill, guildskill, getskilllv, getgdskilllv, itemskill, 
-//=       petskillattack, petskillattack2, petskillsupport, skilleffect, npcskilleffect,
-//=       unitskilluseid, unitskillusepos, bonus/bonus2/bonus3/bonus4/bonus5
-//= 3.22.20080622
-//=       Extended 'set' to return the variable reference. [FlavioJS]
-//= 3.22.20080901
-//=       Adjusted the 'getequipname' description to match src [ultramage]
-//= 3.23.20080909
-//=       Added WoE SE related commands. [L0ne_W0lf]
-//= 3.24.20081111
-//=       Changed the error behaviour of delitem/delitem2/Zeny. [FlavioJS]
-//= 3.25.20081220
-//=       Extended the behaviour of duplicates (warps/shops/cashshops). [FlavioJS]
-//= 3.26.20090702
-//=       Replaced 'bonusautoscript' by 'autobonus'. [Inkfish]
-//= 3.27.20090725
-//=       Added Quest Log related commands. [Inkfish]
-//= 3.28.20091119
-//=       Added showevent and searchitem commands [Skotlex]
-//=       Added info on strcharinfo(3) [Skotlex]
-//= 3.29.20101123
-//=       Added 'pushpc' command. [Ai4rei]
-//= 3.30.20101126
-//=       Added 'setfont', 'mercenary_create', 'mercenary_heal',
-//=       'mercenary_sc_start', 'mercenary_get_calls', 'mercenary_set_calls',
-//=       'mercenary_get_faith' and 'mercenary_set_faith' commands. [Ai4rei]
-//= 3.31.20101130
-//=       Added 'progressbar' command. [Ai4rei]
-//= 3.32.20101208
-//=       Updated description for commands 'next', 'return', 'attachrid',
-//=       'detachrid', 'itemskill', 'openstorage', 'skilleffect', 'donpcevent',
-//=       'day', 'night', 'atoi', 'axtoi', 'jump_zero', 'getelementofarray',
-//=       'changebase', 'kickwaitingroomall', 'cutin' and 'charcommand'. [Ai4rei]
-//= 3.33.20101212
-//=       Updated description of 'playBGM' and 'playBGMall' to reflect the actual
-//=       behavior. [Ai4rei]
-//= 3.34.20101217
-//=       Spellcheck. [Ai4rei]
-//= 3.35.20110106
-//=       Removed bug warning from 'deletearray'. [Ai4rei]
-//= 3.36.20110219
-//=       Added 'buyingstore' command. [Ai4rei]
-//= 3.37.20110306
-//=       Added 'searchstores' command. [Ai4rei]
-//= 3.38.20110313
-//=       Added 'cooking' command. [Ai4rei]
-//=       Fixed item levels in 'produce' command.
-//= 3.39.20110322
-//=       Added 'bg_getareausers' and 'bg_get_data' commands. [Ai4rei]
-//=       Updated description of 'waitingroom2bg_single' command.
-//=       Documented optional parameter 'npc name' of 'waitingroom2bg' command.
-//= 3.40.20110404
-//=       Updated description of 'waitingroom' command to include required zeny/lvl. [Kisuka]
-//= 3.41.20110427
-//=       Updated description of 'itemheal' primarily to remove overhead and lies
-//=       about client effects. [Ai4rei]
-//= 3.42.20110508
-//=       Updated description of all instance commands to reflect actual behavior.
-//=       [Ai4rei]
-//= 3.43.20110529
-//=       Updated 'npcshopitem', 'npcshopadditem' and 'npcshopdelitem' to support
-//=       cashshops as well. [Ai4rei]
-//= 3.44.20110530
-//=       Documented special map names recognized by 'warpguild'. [Ai4rei]
-//= 3.45.20110709
-//=       Added 'getmercinfo' command. [Ai4rei]
-//= 3.46.20110810
-//=       Added information on OnTouchNPC and 'unitwarp' special case [Skotlex]
-//=========================================================
+//============================================================
 
 This document is a reference manual for all the scripting commands and functions 
-available in current eAthena SVN. It is not a simple tutorial. When people tell 
+available in current rAthena SVN. It is not a simple tutorial. When people tell 
 you to "Read The F***ing Manual", they mean this.
 
 The information was mostly acquired through looking up how things actually work 
@@ -272,6 +98,19 @@ Whenever '//' is encountered in a line upon reading, everything beyond this on
 that line is considered to be a comment and is ignored. This works wherever you 
 place it.
 
+// This line will be ignored when processing the script.
+
+Block comments can also be used, where you can place /* and */ between any text you 
+wish rAthena to ignore.
+
+Example:
+/* This text,
+ * no matter which new line you start
+ * is ignored, until the following 
+ * symbol is encountered: */
+ 
+The asterisks (*) in front of each line is a personal preference, and is not required.
+
 Upon loading all the files, the server will execute all the top-level commands 
 in them. No variables exist yet at this point, no commands can be called other 
 than those given in this section. These commands set up the basic server script 
@@ -306,7 +145,7 @@ explanation, see 'setmapflag'.
 
 Map name is the name of the map the monsters will spawn on. x,y are the
 coordinates where the mob should spawn. If xs and ys are non-zero, they
-specify the diameters of a spawn-rectangle area who's center is x,y.
+specify the 'radius' of a spawn-rectangle area centered at x,y.
 Putting zeros instead of these coordinates will spawn the monsters randomly.
 Note this is only the initial spawn zone, as mobs random-walk, they are free
 to move away from their specified spawn region.
@@ -315,7 +154,7 @@ Monster name is the name the monsters will have on screen, and has no relation
 whatsoever to their names anywhere else. It's the mob id that counts, which 
 identifies monster record in 'mob_db.txt' database of monsters. If the mob name 
 is given as "--ja--", the 'japanese name' field from the monster database is 
-used, (which, in eAthena, actually contains an english name) if it's "--en--", 
+used, (which, in rAthena, actually contains an english name) if it's "--en--", 
 it's the 'english name' from the monster database (which contains an uppercase 
 name used to summon the monster with a GM command).
 
@@ -576,7 +415,7 @@ Variables
 The meat of every programming language is variables - places where you store 
 data.
 
-In the eAthena scripting language, variable names are not case sensitive.
+In the rAthena scripting language, variable names are not case sensitive.
 
 Variables are divided into and uniquely identified by the combination of:
 prefix  - determines the scope and extent (or lifetime) of the variable
@@ -622,6 +461,9 @@ nothing  - A permanent variable attached to the character, the default variable
            callsub/callfunc starts a new scope, returning from the function 
            ends it. When a scope ends, it's variables are converted to values 
            ('return .@var;' returns a value, not a reference).
+"'"      - An instance variable
+           These are used with the instancing system, and are unique to each 
+           party's instance.
 "#"      - A permanent local account variable.
            They are stored with all the account data in "save\accreg.txt" in
            TXT versions and in the SQL versions in the 'global_reg_value'
@@ -704,6 +546,40 @@ notable exception is Zeny, which you can and often will address directly -
 setting it will make the character own this number of Zeny.
 If you try to set Zeny to a negative number, the script will be terminated with an error.
 
+Assigning variables
+--------- ---------
+
+As of rAthena revision 15982, variables can be accessed and assigned values directly
+without the use of the built-in 'set' function. This means that variables can be
+accessed and modified much like other programming languages.
+
+    @x = 100;
+    @x = @y = 100;
+
+Support for modifying variable values using 'set' is still supported (and required
+to exist for this new method to work) so previous scripts will continue to work.
+
+When assigning values, all operator methods are supported which exist in the below
+'Operators' section. For instance:
+
+    @x += 100;
+    @x -= 100;
+    @x *= 2;
+    @x /= 2;
+    @x %= 5;
+    @x >>= 2;
+    @x <<= 2;
+
+Will all work. For more information on available operators, see the Operators section
+described below. All operators listed there may be placed in-front of the '=' sign
+when modifying variables to perform the action as required.
+
+Note:
+
+ !! Currently the scripting engine does not support directly copying array variables.
+ !! In order to copy arrays between variables the use of 'copyarray' function is still
+ !! required.
+
 Strings
 -------
 
@@ -713,7 +589,7 @@ To include symbol '"' in a string you should use prefix '\"'
 Arrays
 ------
 
-Arrays (in eAthena at least) are essentially a set of variables going under the 
+Arrays (in rAthena at least) are essentially a set of variables going under the 
 same name. You can tell between the specific variables of an array with an 
 'array index', a number of a variable in that array:
 
@@ -860,7 +736,7 @@ Logical bitwise operators work only on numbers, and they are the following:
  |  - Or.
 	The bitwise operator AND (&) is used to test two values against each other, 
 	and results in setting bits which are active in both arguments. This can
-	be used for a few things, but in eAthena this operator is usually used to
+	be used for a few things, but in rAthena this operator is usually used to
 	create bit-masks in scripts. 
 	
 	The bitwise operator OR (|)sets to 1 a binary position if the binary position
@@ -1006,8 +882,10 @@ OnAgitInit2:
 
 OnAgitStart will run whenever the server shifts into WoE mode, whether it is 
 done with @agitstart GM command or with 'AgitStart' script command. OnAgitEnd 
-will do likewise for the end of WoE. OnAgitInit will run when castle data is 
-loaded from the char-server by the map server.
+will do likewise for the end of WoE.
+
+OnAgitInit will run when data for all castles and all guilds that hold a castle 
+is received by map-server from the char-server after initial connect.
 
 No RID will be attached while any of the above mentioned labels are triggered, so 
 no character or account-based variables will be accessible, until you attach a 
@@ -1151,6 +1029,14 @@ Notice that the text coloring is handled purely by the client. If you use non-
 english characters, the color codes might get screwed if they stick to letters 
 with no intervening space. Separating them with spaces from the letters on 
 either side solves the problem.
+
+To display multiple lines of message while only using a single mes; command,
+use the script command in the following format:
+
+    mes "Line 1", "Line 2", "Line 3";
+
+This will display 3 different lines while only consuming a single line in
+the relevant script file.
 
 ---------------------------------------
 
@@ -1587,6 +1473,26 @@ generally cleaner:
 		if (getarg(0)%2==0) return 0;// it's even
 		return 1;// it's odd
 	}
+
+Alternately, as of rAthena revision 15979 and 15981, user-defined functions
+may be called directly without the use of the 'callfunc' script command.
+
+	function<tab>script<tab>SayHello<tab>{
+		mes "Hello " + getarg(0);
+		return 0;
+	}
+
+	place,50,50,6<tab>script<tab>Man<tab>115,{
+		mes "[Man]";
+		SayHello strcharinfo(0);
+		close;
+	}
+
+Note:
+
+ !! A user-defined function must be declared /before/ a script attempts to
+ !! call it. That is to say, any functions should be placed above scripts or NPCs
+ !! (or loaded in a seperate file first) before attempting to call them directly.
 
 ---------------------------------------
 
@@ -2278,6 +2184,19 @@ if( getcharid(2) == 0 ) mes "Only members of a guild are allowed here!";
 
 ---------------------------------------
 
+*getnpcid(<type>{,"<npc name>"});
+
+Retrieves IDs of the currently invoked NPC. If a unique npc name is
+given, IDs of that NPC are retrieved instead. Type specifies what ID
+to retrieve and can be one of the following:
+
+    0 - Unit ID (GID)
+
+If an invalid type is given or the NPC does not exist, return value
+is 0.
+
+---------------------------------------
+
 *getchildid()
 *getmotherid()
 *getfatherid()
@@ -2314,7 +2233,7 @@ If there is no such party ID, "null" will be returned.
 Lets say the ID of a party was saved as a global variable:
 
     // This would return the name of the party from the ID stored in a variable
-    mes "You're in the '"+getpartyname($@var)"' party, I know!";
+    mes "You're in the '"+getpartyname($@var)+"' party, I know!";
 
 ---------------------------------------
 
@@ -2495,7 +2414,7 @@ See 'getequipid' for a full list of valid equipment slots.
 *getitemname(<item id>)
 
 Given the database ID number of an item, this function will return the text 
-stored in the 'japanese name' field (which, in eAthena, stores an english name 
+stored in the 'japanese name' field (which, in rAthena, stores an english name 
 the players would normally see on screen.)
 
 ---------------------------------------
@@ -2747,7 +2666,7 @@ Valid types are:
 	4 - sex; 5 - equip; 6 - weight; 7 - atk; 8 - def; 9 - range;
 	10 - slot; 11 - look; 12 - elv; 13 - wlv; 14 - view id
 
-Check sample in nps\sample\getiteminfo.txt
+Check sample in doc/sample/getiteminfo.txt
 
 ---------------------------------------
 
@@ -2821,15 +2740,22 @@ Notice that NPC objects disabled with 'disablenpc' will still be located.
 
 *getgmlevel()
 
-This function will return the GM level of the account to which the invoking 
-character belongs. If this is somehow executed from a console command, 99 will 
-be returned, and 0 will be returned if the account has no GM level.
+This function will return the (GM) level of player group the account to which the 
+invoking character belongs. If this is somehow executed from a console command,
+99 will be returned, and 0 will be returned if the account has no GM level.
 
 This allows you to make NPC's only accessible for certain GM levels, or behave 
 specially when talked to by GMs.
 
    if (getgmlevel()) mes "What is your command, your godhood?";
    if (getgmlevel()) goto Wherever;
+
+---------------------------------------
+
+*getgroupid()
+
+This function will return the id of player group the account to which the 
+invoking player belongs.
 
 ---------------------------------------
 
@@ -2878,7 +2804,7 @@ http://www.delorie.com/gnu/docs/glibc/libc_437.html
 All the format characters given in there should properly work.
 Max length is the maximum length of a time string to generate.
 
-The example given in eAthena sample scripts works like this:
+The example given in rAthena sample scripts works like this:
 
   mes gettimestr("%Y-%m/%d %H:%M:%S",21);
   
@@ -2997,36 +2923,40 @@ castle. The data is read from 'db/castle_db.txt'.
 *setcastledata "<map name>",<type of data>,<value>;
 
 This function returns the castle ownership information for the castle referred 
-to by it's map name. Castle information stored in 'save\castle.txt' for the TXT 
-version of the server and in 'guild_castle' table for the SQL version.
+to by its map name. Castle information is stored in `guild_castle` SQL table.
 
-Valid types of data are:
+Types of data correspond to `guild_castle` table columns:
 
- 0 - Will make the map server request the castle data from the char server, and 
-     always return 0. This, apparently, will also cause indirectly the execution 
-     of an 'OnAgitInit:' event mentioned at the beginning of this document.
- 1 - Guild ID
- 2 - Castle Economy score.
- 3 - Castle Defense score.
- 4 - Number of times the economy was invested in today.
- 5 - Number of times the defense was invested in today.
- 9 - Will return 1 if a Kafra was hired for this castle, 0 otherwise.
-10 - Is 1 if the 1st guardian is present (Soldier Guardian)
-11 - Is 1 if the 2nd guardian is present (Soldier Guardian)
-12 - Is 1 if the 3rd guardian is present (Soldier Guardian)
-13 - Is 1 if the 4th guardian is present (Archer Guardian)
-14 - Is 1 if the 5th guardian is present (Archer Guardian)
-15 - Is 1 if the 6th guardian is present (Knight Guardian)
-16 - Is 1 if the 7th guardian is present (Knight Guardian)
-17 - Is 1 if the 8th guardian is present (Knight Guardian)
+ 1 - `guild_id`   - Guild ID.
+ 2 - `economy`    - Castle Economy score.
+ 3 - `defense`    - Castle Defense score.
+ 4 - `triggerE`   - Number of times the economy was invested in today.
+ 5 - `triggerD`   - Number of times the defense was invested in today.
+ 6 - `nextTime`   - unused
+ 7 - `payTime`    - unused
+ 8 - `createTime` - unused
+ 9 - `visibleC`   - Is 1 if a Kafra was hired for this castle, 0 otherwise.
+10 - `visibleG0`  - Is 1 if the 1st guardian is present (Soldier Guardian)
+11 - `visibleG1`  - Is 1 if the 2nd guardian is present (Soldier Guardian)
+12 - `visibleG2`  - Is 1 if the 3rd guardian is present (Soldier Guardian)
+13 - `visibleG3`  - Is 1 if the 4th guardian is present (Archer Guardian)
+14 - `visibleG4`  - Is 1 if the 5th guardian is present (Archer Guardian)
+15 - `visibleG5`  - Is 1 if the 6th guardian is present (Knight Guardian)
+16 - `visibleG6`  - Is 1 if the 7th guardian is present (Knight Guardian)
+17 - `visibleG7`  - Is 1 if the 8th guardian is present (Knight Guardian)
 
-18-25 types of data will return current hit point values for guardians 1-8 
-respectively.
+All types of data have their meaning determined by War of Emperium scripts, 
+with exception of:
+ - `guild_id` that is always considered ID of the guild that owns the castle,
+ - `defense` that is used in Guardians & Emperium HP calculations,
+ - `visibleG` that is always considered to hold guardian presence bits.
 
 The 'setcastledata' command will behave identically, but instead of returning 
 values for the specified types of accessible data, it will alter them and cause 
-them to be sent to the char server for storage. Data type of 0 won't do 
-anything, obviously.
+them to be sent to the char-server for storage.
+
+Changing Guild ID or Castle Defense will trigger additional actions, like 
+recalculating guardians' HP.
 
 ---------------------------------------
 
@@ -3040,7 +2970,7 @@ Refer to 'db/skill_db.txt' for the full list of skills. (GD_* are guild skills)
 
 ---------------------------------------
 
-*requestguildinfo <guild id>,"<event label>";
+*requestguildinfo <guild id>{,"<event label>"};
 
 This command requests the guild data from the char server and merrily continues 
 with the execution. Whenever the guild information becomes available (which 
@@ -3174,19 +3104,31 @@ It will return -1 if there is no such monster (or the type value is invalid),
 or "null" if you requested the monster's name.
 
 Valid types are listed in const.txt:
-	MOB_NAME	0		MOB_LV	1
-	MOB_MAXHP	2		MOB_BASEEXP	3
-	MOB_JOBEXP	4		MOB_ATK1	5
-	MOB_ATK2	6		MOB_DEF	7
-	MOB_MDEF	8		MOB_STR	9
-	MOB_AGI		10		MOB_VIT		11
-	MOB_INT		12		JOB_DEX		13
-	MOB_LUK		14		MOB_RANGE	15
-	MOB_RANGE2	16		MOB_RANGE3	17
-	MOB_SIZE	18		MOB_RACE	19
-	MOB_ELEMENT	20		MOB_MODE	21
+	MOB_NAME	0
+	MOB_LV	1
+	MOB_MAXHP	2
+	MOB_BASEEXP	3
+	MOB_JOBEXP	4
+	MOB_ATK1	5
+	MOB_ATK2	6
+	MOB_DEF	7
+	MOB_MDEF	8
+	MOB_STR	9
+	MOB_AGI	10
+	MOB_VIT	11
+	MOB_INT	12
+	MOB_DEX	13
+	MOB_LUK	14
+	MOB_RANGE	15
+	MOB_RANGE2	16
+	MOB_RANGE3	17
+	MOB_SIZE	18
+	MOB_RACE	19
+	MOB_ELEMENT	20
+	MOB_MODE	21
+	MOB_MVPEXP	22
 
-Check sample in nps\sample\getmonsterinfo.txt
+Check sample in doc/sample/getmonsterinfo.txt
 
 ---------------------------------------
 
@@ -3240,23 +3182,6 @@ Example:
 
 ---------------------------------------
 
-*getmapmobs("<map name>")
-
-This function will return the total count of monsters currently located on the 
-specified map. If the map name is given as "this", the map the invoking 
-character is on will be used. If the map is not found, or the invoker is not a 
-character while the map is "this", it will return -1.
-
----------------------------------------
-
-*getstrlen("<string>")
-
-This function will return the length of the string given as an argument. It is 
-useful to check if anything input by the player exceeds name length limits and 
-other length limits and asking them to try to input something else.
-
----------------------------------------
-
 *skillpointcount()
 
 Returns the total amount of skill points a character possesses (SkillPoint+SP's used in skills)
@@ -3276,7 +3201,7 @@ Example:
 
 ---------------------------------------
 
-*getscrate(<effect type>,<base rate>{,<target ID number>})
+*getscrate(<effect type>,<base rate>{,<GID>})
 
 This function will return the chance of a status effect affecting the invoking 
 character, in percent, modified by the their current defense against said 
@@ -3287,9 +3212,6 @@ in percent.
   
 You can see the full list of available effect types you can possibly inflict in 
 'db/const.txt' under 'Eff_'.
-
-It is pretty certain that addressing the target by an ID number will not 
-currently work due to a bug.
 
 ---------------------------------------
 
@@ -3478,22 +3400,29 @@ bird and 0 if they don't.
 
 ---------------------------------------
 
-*checkvending ({"<player name>"})
-*checkchatting ({"<Player Name>"})
+*checkvending({"<player name>"})
+*checkchatting({"<Player Name>"})
 
-If the player's name is given, this command checks for that player
-to be online and whether he/she is chatting or vending.
-When no name is given, the attached player is used for checking.
-Returns true or false (1 or 0) when the player is chatting/vending or not.
+Checks if the player is vending or in a chatroom.
+Name is optional, and defaults to the attached player if omitted.
+
+Return values for 'checkvending' are
+  0 = not vending
+  1 = normal vending
+  2 = vending using @autotrade
+
+'checkchatting' returns 1 if they are in a chat room, 0 if they are not.
 
 Example(s):
-if (checkVending("Aaron")) mes "Aaron is currently vending!";	
 	//This will check if Aaron is vending, and if so, put a message in front
 	//of the attached player saying Aaron is vending.
+	if (checkvending("Aaron"))
+		mes "Aaron is currently vending!";
 
-if (checkChatting()) mes "You are currently chatting!";
-	//This will check if you're in a chat room or not
-	
+	//This will check if the attached player in a chat room or not.
+	if (checkchatting())
+		mes "You are currently in a chat room!";
+
 ---------------------------------------
 
 *agitcheck()
@@ -3995,7 +3924,7 @@ sprites, which is essential for making custom headgear.
 
 Since a lot of people have different palettes for hair and clothes, it's 
 impossible to tell you what all the color numbers are. If you want a serious 
-example, there is a Stylist script inside the default eAthena installation that 
+example, there is a Stylist script inside the default rAthena installation that 
 you can look at, this may help you create a Stylist of your own: 
 'custom\dye.txt'
 
@@ -4680,10 +4609,10 @@ Used in reset NPC's (duh!)
 
 ---------------------------------------
 
-*sc_start 	<effect type>,<ticks>,<extra argument>{,<target ID number>};
-*sc_start2 	<effect type>,<ticks>,<extra argument>,<percent chance>{,<target ID number>};
-*sc_start4	<effect type>,<ticks>,<value 1>,<value 2>,<value 3>,<value 4>{,<target ID number>};
-*sc_end 	<effect type>{,<target ID number>};
+*sc_start 	<effect type>,<ticks>,<extra argument>{,<GID>};
+*sc_start2 	<effect type>,<ticks>,<extra argument>,<percent chance>{,<GID>};
+*sc_start4	<effect type>,<ticks>,<value 1>,<value 2>,<value 3>,<value 4>{,<GID>};
+*sc_end 	<effect type>{,<GID>};
 
 These command bestow a status effect on the invoking character. This command is 
 used a lot in the item scripts.
@@ -4704,7 +4633,7 @@ would have been used to create that effect, for others it might have no meaning
 whatsoever. You can actually bless someone with a 0 bless spell level this way, 
 which is fun, but weird.
 
-The target ID number, if given, will cause the status effect to appear on a 
+The GID, if given, will cause the status effect to appear on a 
 specified character, instead of the one attached to the running script. This has 
 not been properly tested.
 
@@ -4726,6 +4655,26 @@ do a complete removal of all statuses (although permanent ones will re-apply).
 You can see the full list of status effects caused by skills in 
 'src/map/status.h' - they are currently not fully documented, but most of that 
 should be rather obvious.
+
+---------------------------------------
+
+*getstatus <effect type>{,<type>};
+
+Retrieve information about a specific status effect when called. Depending on <type>
+specified the function will return different information.
+
+Possible <type> values:
+	- 0 or undefined: whether the status is active
+	- 1: the val1 of the status
+	- 2: the val2 of the status
+	- 3: the val3 of the status
+	- 4: the val4 of the status
+	- 5: the amount of time in milliseconds that the status has remaining
+
+If <type> is not defined or is set to 0, then the script function will either
+return 1 if the status is active, or 0 if the status is not active. If the status
+is not active when any of the <type> fields are provided, this script function
+will always return 0.
 
 ---------------------------------------
 
@@ -4765,7 +4714,7 @@ character.
 
 ---------------------------------------
 
-*specialeffect <effect number>{,<send_target>}{,"<NPC Name>"};
+*specialeffect <effect number>{,<send_target>{,"<NPC Name>"}};
 
 This command will display special effect with the given number, centered on the 
 specified NPCs coordinates, if any. For a full list of special effect numbers 
@@ -4788,7 +4737,7 @@ will retain the default behavior of the command.
 
 ---------------------------------------
 
-*specialeffect2 <effect number>{,<send_target>}{,"<Player Name>"};
+*specialeffect2 <effect number>{,<send_target>{,"<Player Name>"}};
 
 This command behaves identically to the 'specialeffect', but the effect will be 
 centered on the invoking character's sprite.
@@ -5042,6 +4991,12 @@ and upon the monster being killed, it will execute the script inside of the
 specified NPC object starting from the label given. The RID of the player 
 attached at this execution will be the RID of the killing character.
 
+The Event field can be used alternatively to specify other mob properties. Use
+2 to specify that the mob should be small, 4 for big monsters, and 8 for
+special ai mobs (which by default attack other monsters instead of players).
+You can add these, so using 10 will spawn small monsters that attack other
+mobs (if you specify both 2 and 4, the small version takes priority).
+
     monster "place",60,100,"Poring",1002,1,"NPCNAME::OnLabel";
 
 The coordinates of 0,0 will spawn the monster on a random place on the map.
@@ -5156,14 +5111,19 @@ per 'db/mob_db.txt'. Type is the kind of information returned. Valid types are:
 
 This function will count all the monsters on the specified map that have a given 
 event label and return the number or 0 if it can't find any. Naturally, only 
-monsters spawned with 'monster' and 'areamonster' script commands can be like 
-this.
-
-However, apparently, if you pass this function an empty string for the event 
-label, it should return the total count of normal permanently respawning 
-monsters instead. With the current dynamic mobs system, where mobs are not kept 
+monsters spawned with 'monster' and 'areamonster' script commands can have non-empty 
+event label.
+If you pass this function an empty string for the event label, it will return 
+the total count of monster without event label, including permanently spawning monsters.
+With the dynamic mobs system enabled, where mobs are not kept 
 in memory for maps with no actual people playing on them, this will return a 0 
 for any such map.
+If the event label is given as "all", all monsters will be counted, regardless of
+having any event label attached.
+
+If the map name is given as "this", the map the invoking character is on will 
+be used. If the map is not found, or the invoker is not a character while the map 
+is "this", it will return -1.
 
 ---------------------------------------
 
@@ -5675,8 +5635,9 @@ is bought or sold by a player.
 In the OnBuyItem, two arrays are set (@bought_nameid and @bought_quantity), which
 hold information about the name id (item id) sold and the amount sold of it. Same 
 goes for the OnSellItem label, only the variables are named different 
-(@sold_nameid and @sold_quantity). An example on a shop comes with eAthena, and 
-can be found in the doc/sample/npc_dynamic_shop.txt file.
+(@sold_nameid, @sold_quantity, @sold_refine, @sold_attribute, @sold_identify,
+@sold_card1, @sold_card2, @sold_card3, @sold_card4). An example on a shop comes
+with rAthena, and can be found in the doc/sample/npc_dynamic_shop.txt file.
  
 This example shows how to use the labels and their set variables to create a dynamic shop.
 
@@ -5810,7 +5771,7 @@ characters are present in the room to mess up the script.
 
 The 'enablearena'/'disablearena' commands are just aliases with no parameter.
 These are supposedly left here for compatibility with official server scripts,
-but no eathena script uses these at the moment.
+but no rAthena script uses these at the moment.
 
 ---------------------------------------
 
@@ -5884,7 +5845,7 @@ kick the reconnecting players off to the alternate map given to the coordinates
 
 ---------------------------------------
 
-*setmapflag "<map name>",<flag>;
+*setmapflag "<map name>",<flag>{,<zone>};
 
 This command marks a specified map with a map flag given. Map flags alter the 
 behavior of the map, you can see the list of the available ones in 
@@ -5899,12 +5860,16 @@ skills or open up trade deals (mf_notrade, mf_novending, mf_noskill, mf_noicewal
 current weather effects (mf_snow, mf_fog, mf_sakura, mf_leaves, mf_rain, mf_clouds, 
 mf_fireworks) and whether night will be in effect on this map (mf_nightenabled).
 
+The zone optional parameter is used to set the zone for restricted mapflags.
+
 ---------------------------------------
 
-*removemapflag "<map name>",<flag>;
+*removemapflag "<map name>",<flag>{,<zone>};
 
 This command removes a mapflag from a specified map. 
 See 'setmapflag' for a list of mapflags.
+
+The zone optional parameter is used to remove the zone from restricted mapflags.
 
 ---------------------------------------
 
@@ -6021,7 +5986,7 @@ returns a guild id:
 
 ---------------------------------------
 
-*guardian("<map name>",<x>,<y>,"<name to show>",<mob id>,<amount>{,"<event label>"}{,<guardian index>})
+*guardian "<map name>",<x>,<y>,"<name to show>",<mob id>{,"<event label>"{,<guardian index>}};
 
 This command is roughly equivalent to 'monster', but is meant to be used with 
 castle guardian monsters and will only work with them. It will set the guardian 
@@ -6035,7 +6000,7 @@ Temporary guardians are not saved with the castle and can't be accessed by guard
 
 ---------------------------------------
 
-*guardianinfo("<map name>", <guardian number>, <type>)
+*guardianinfo("<map name>", <guardian number>, <type>);
 
 This function will return various info about the specified guardian, or -1
 if it fails for some reason. It is primarily used in the castle manager NPC.
@@ -6157,7 +6122,8 @@ used to color text in 'mes' output, but are written as hexadecimal numbers in C.
 (They look like 0x<six numbers>.)
 
 Action is what you want to do with a point, 1 will set it, while 2 will clear 
-it. Point number is the number of the point - you can have several. If more than 
+it. 0 will also set it, but automatically removes the point after 15 seconds.
+Point number is the number of the point - you can have several. If more than 
 one point is drawn at the same coordinates, they will cycle, which can be used 
 to create flashing marks.
 
@@ -6232,7 +6198,7 @@ A full list of pet IDs can be found inside 'db/pet_db.txt'
 
 ---------------------------------------
 
-*emotion <emotion number>{,<target>}{,"<target name>"};
+*emotion <emotion number>{,<target>{,"<target name>"}};
 
 This command makes an object display an emotion sprite above their own as 
 if they were doing that emotion. For a full list of emotion numbers, 
@@ -6262,8 +6228,8 @@ those that actually work may differ greatly between client versions.
 
 ---------------------------------------
 
-*soundeffect "<effect filename>",<type>
-*soundeffectall "<effect filename>",<type>{,"<map name>"}{,<x0>,<y0>,<x1>,<y1>}
+*soundeffect "<effect filename>",<type>;
+*soundeffectall "<effect filename>",<type>{,"<map name>"}{,<x0>,<y0>,<x1>,<y1>};
 
 These two commands will play a sound effect to either the invoking character 
 only ('soundeffect') or multiple characters ('soundeffectall'). If the running 
@@ -6276,15 +6242,15 @@ Effect filename is the filename in a GRF. It must have the .wav extension.
 
 It's not quite certain what the 'type' actually does, it is sent to the client 
 directly. It probably determines which directory to play the effect from.
-It's certain that giving 0 for the number will play sound files from 'data/wav',
+It's certain that giving 0 for the number will play sound files from '\data\wav\',
 but where the other numbers will read from is unclear.
 
 You can add your own effects this way, naturally.
 
 ---------------------------------------
 
-*playBGM "<BGM filename>"
-*playBGMall "<BGM filename>"{,"<map name>"{,<x0>,<y0>,<x1>,<y1>}}
+*playBGM "<BGM filename>";
+*playBGMall "<BGM filename>"{,"<map name>"{,<x0>,<y0>,<x1>,<y1>}};
 
 These two commands will play a Background Music to either the invoking character 
 only ('playBGM') or multiple characters ('playBGMall').
@@ -6419,7 +6385,7 @@ expression pattern is, see a few web pages:
 http://www.regular-expressions.info/
 http://www.weitz.de/regex-coach/
 
-For an example of this in use, see 'npc\sample\npc_pcre.txt'.
+For an example of this in use, see doc/sample/npc_pcre.txt
 
 With this you could, for example, automatically punish players for asking for 
 Zeny in public places, or alternatively, automatically give them Zeny instead if 
@@ -6487,10 +6453,10 @@ to query the server log tables.
 
 ---------------------------------------
 
-*escape_sql("<string>")
+*escape_sql(<value>)
 
-Escapes special characters in the string, so that it is safe to use in query_sql(), 
-and returns the escaped form of the given string.
+Converts the value to a string and escapes special characters so that it is safe to use in query_sql().
+Returns the escaped form of the given value.
 
 Example 1:
 	set .@str$, "John's Laptop";
@@ -6513,7 +6479,7 @@ Valid types are:
 
 Example:
 
-setiteminfo 7049,6,999; // Stone now weighs 999
+setiteminfo 7049,6,9990; // Stone now weighs 999.0
 
 ---------------------------------------
 
@@ -6550,7 +6516,7 @@ Example:
 
 ---------------------------------------
 
-*compare (<string>,<substring>)
+*compare(<string>,<substring>)
 
 This command returns 1 or 0 when the substring is in the main string (1) or not (0).
 This command is not case sensitive.
@@ -6566,6 +6532,14 @@ Example(s):
 
 ---------------------------------------
 
+*getstrlen("<string>")
+
+This function will return the length of the string given as an argument. It is 
+useful to check if anything input by the player exceeds name length limits and 
+other length limits and asking them to try to input something else.
+
+---------------------------------------
+
 *charisalpha("<string>",<position>)
 
 This function will return 1 if the character number Position in the given string 
@@ -6574,7 +6548,194 @@ The first letter is position 0.
 
 ---------------------------------------
 
-*setfont <font>
+*charat(<string>,<index>)
+
+	Returns char at specified index. If index is out of range, 
+	returns empty string.
+	
+	Example:
+	
+	charat("This is a string", 10); //returns "s"
+	
+---------------------------------------
+	
+*setchar(<string>,<char>,<index>)
+
+	Returns the original string with the char at the specified
+	index set to the specified char. If index out of range, the
+	original string will be returned.
+	Only the 1st char in the <char> parameter will be used.
+	
+	Example:
+	
+	setchar("Cat", "B", 0); //returns "Bat"
+	
+---------------------------------------
+
+*insertchar(<string>,<char>,<index>)
+	
+	Returns the original string with the specified char inserted
+	at the specified index. If index is out of range, the char 
+	will be inserted on the end	of the string that it is closest.
+	Only the 1st char in the <char> parameter will be used.
+	
+	Example:
+	
+	setchar("laughter", "s", 0); //returns "slaughter"
+	
+---------------------------------------
+
+*delchar(<string>,<index>)
+
+	Returns the original string with the char at the specified index
+	removed. If index is out of range, original string will be returned.
+	
+	Example:
+	
+	delchar("Diet", 3); //returns "Die"
+	
+---------------------------------------
+
+*strtoupper(<string>)
+*strtolower(<string>)
+
+	Returns the specified string in it's uppercase/lowercase form.
+	All non-alpha characters will be preserved
+	
+	Example:
+	
+	strtoupper("The duck is blue!!"); //returns "THE DUCK IS BLUE!!"
+
+---------------------------------------
+
+*charisupper(<string>,<index>)
+*charislower(<string>,<index>)
+
+	Returns 1 if character at specified index of specified string is
+	uppercase/lowercase. Otherwise, 0. Characters not of the alphabelt
+	will return 0.
+
+	Example:
+	
+	charisupper("rAthena", 1); //returns 1
+	
+---------------------------------------
+
+*substr(<string>,<start_index>,<end_index>)
+	
+	Returns the sub-string of the specified string inclusively between
+	the set indexes.
+	If indexes are out of range, or the start index is after the end
+	index, an empty string will be returned.
+
+	Example:
+	
+	substr("foobar", 3, 5); //returns "bar"
+	
+---------------------------------------
+
+*explode(<dest_array>,<string>,<delimiter>)
+
+	Breaks a string up into substrings based on the specified delimiter.
+	Substrings will be stored within the specified string array.
+	Only the 1st char of the delimiter parameter will be used.
+	If an empty string is passed as a delimiter, the string will be placed
+	in the array in it's original form.
+	
+	Example:
+	
+	explode(.@my_array$, "Explode:Test:1965:red:PIE", ":");
+	//.@my_array$ contents will be...
+	//.@my_array$[0]: "Explode"
+	//.@my_array$[1]: "Test"
+	//.@my_array$[2]: "1965"
+	//.@my_array$[3]: "red"
+	//.@my_array$[4]: "PIE"
+	
+
+---------------------------------------
+
+*implode(<string_array>{,<glue>})
+
+	Combines all substrings within the specified string array into a single string.
+	If the glue parameter is specified, it will be inserted inbetween each substring.
+	
+	Example:
+	setarray .@my_array$[0], "This", "is", "a", "test";
+	implode(.@my_array$, " "); //returns "This is a test"
+
+---------------------------------------
+
+*sprintf(<format>[,param[,param[,...]]]) [Mirei]
+
+	C style sprintf. The resulting string is returned same as in PHP. All C format 
+	specifiers are supported except %n. More info: sprintf @ www.cplusplus.com. 
+	The number of params is only limited by eA's script engine.
+	
+	See thread: http://www.eathena.ws/board/index.php?showtopic=190410
+	
+	Example:
+	.@format$ = 'The %s contains %d monkeys';
+	dispbottom(sprintf(.@format$, "zoo", 5));        //prints "The zoo contains 5 monkeys"
+	dispbottom(sprintf(.@format$, "barrel", 82));    //prints "The barrel contains 82 monkeys"
+	
+---------------------------------------
+
+*sscanf(<string>,<format>[,param[,param[,...]]]) [Mirei]
+	
+	C style sscanf. All C format specifiers are supported. 
+	More info: sscanf @ www.cplusplus.com. The number of params is only limited 
+	by eA's script engine.
+	
+	See thread: http://www.eathena.ws/board/index.php?showtopic=191157
+	
+	Example:
+	sscanf("This is a test: 42 foobar", "This is a test: %d %s", .@num, .@str$);
+	dispbottom(.@num + " " + .@str$); //prints "42 foobar"
+	
+---------------------------------------
+
+*strpos(<haystack>,<needle>{,<offset>})
+
+	PHP style strpos. Finds a substring (needle) within a string (haystack).
+	The offset parameter indicates the index of the string to start searching.
+	Returns index of substring on successful search, else -1.
+	Comparison is case sensitive.
+	
+	Example:
+	strpos("foobar", "bar", 0); //returns 3
+	strpos("foobarfoo", "foo", 0); //returns 0
+	strpos("foobarfoo", "foo", 1); //returns 6
+	
+---------------------------------------
+
+*replacestr(<input>, <search>, <replace>{, <usecase>{, <count>}})
+
+	Replaces all instances of a search string in the input with the specified
+	replacement string. By default is case sensitive unless <usecase> is set
+	to 0. If specified it will only replace as many instances as specified
+	in the count parameter.
+	
+	Example:
+	replacestr("testing tester", "test", "dash"); //returns "dashing dasher"
+	replacestr("Donkey", "don", "mon", 0);	//returns "monkey"
+	replacestr("test test test test test", "yay", 0, 3); //returns "yay yay yay test test"
+	
+---------------------------------------
+
+*countstr(<input>, <search>{, <usecase>})
+	
+	Counts all instances of a search string in the input. By default is case
+	sensitive unless <usecase> is set to 0.
+	
+	Example:
+	countstr("test test test Test", "test"); //returns 3
+	countstr("cake Cake", "Cake", 0); //returns 2
+
+
+---------------------------------------
+
+*setfont <font>;
 
 This command sets the current RO client interface font to one of the
 fonts stored in data\*.eot by using an ID of the font. When the ID
@@ -6591,6 +6752,33 @@ again.
     7 - RixKid
     8 - RixMagic
     9 - RixJJangu
+
+---------------------------------------
+
+*showdigit <value>{,<type>};
+
+Displays given numeric 'value' in large digital clock font on top of
+the screen. The optional parameter 'type' specifies visual aspects
+of the "clock" and can be one of the following values:
+
+    0 - Displays the value for 5 seconds (default).
+    1 - Incremental counter (1 tick/second).
+    2 - Decremental counter (1 tick/second). Does not stop at zero,
+        but overflows.
+    3 - Decremental counter (1 tick/second). Two digits only, stops
+        at zero.
+
+For type 1 and 2 the start value is set by using negative number of
+the one intended to set (ex. -10 starts the counter at 10 seconds).
+Except for type 3 the value is interpreted as seconds and formatted
+as time in days, hours, minutes and seconds. Note, that the official
+script command does not have the optional parameter.
+
+    // displays 23:59:59 for 5 seconds
+    showdigit 86399;
+
+    // counter that starts at 60 and runs for 60 seconds
+    showdigit 60,3;
 
 ---------------------------------------
 
@@ -6811,7 +6999,16 @@ Example:
 	set .@party_id, getcharid(1);
 	// Attempt to create an instance using that party ID.
 	set .@id, instance_create("Endless Tower", .@party_id);
-	if (.@id == -1) { // Party ID is in use by another instance.
+	if (.@id == -1) { // Invalid type - not used anymore
+		...
+	}
+	else if (.@id == -2) { // Invalid Party ID
+		...
+	}
+	else if (.@id == -3) { // No free instances (MAX_INSTANCE exceeded)
+		...
+	}
+	else if (.@id == -4) { // Already exists
 		...
 	}
 	else (.@id < 0) { // Unspecified error while queuing instance.
@@ -6925,6 +7122,8 @@ Parameter <alive timeout> specifies the total amount of time the instance will
 exist. Parameter <idle timeout> specifies how long players have, when they are
 outside of the instance, until it is destroyed.
 
+Both timeout values are in seconds.
+
 ---------------------------------------
 
 =========================
@@ -6990,10 +7189,10 @@ state can be:
 	Other value may cause client crashes.
 
 color can be:
-	0 = yellow
-	1 = orange
-	2 = green
-	3 = blue
+	0 = yellow "Quest"
+	1 = orange "Job"
+	2 = green "Event"
+	3 = an MVP flag
 	other values show a transparent mark in the mini-map.
 
 ----------------------------------------

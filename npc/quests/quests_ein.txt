@@ -1,24 +1,55 @@
-//==================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ---------------------------------
-// - 艾音布羅克 地區任務腳本 - 
-//===================================
-// 版本：2.3
-//===================================
+//===== rAthena Script ======================================= 
+//= Quest NPCs related to Einbroch and Einbech
+//===== By: ================================================== 
+//= Evera and The rAthena Dev Team
+//===== Current Version: ===================================== 
+//= 2.5
+//===== Compatible With: ===================================== 
+//= rAthena SVN
+//===== Description: ========================================= 
+//= [Aegis conversion]
 //= Oridecon/Mineral Quest
 //= - Variable in use: ein_gear1 (max 2)
 //= - Variable in use: $ein_amano (max 60)
 //= Uwe Kliene Quest
 //= - Variable in use: ein_cook (max ???)
-//= 工廠任務
+//= Factory Quest
 //= - Variable in use: EinFactory (max 16)
 //= - Variable in use: $EinPolution (max 10)
 //= Murder Quest
 //= - Variable in use: Shinokas_Quest (max 11)
-//= 無法傳達的愛情
+//= Lovers Quest
 //= - Variable in use: EIN_LOVERQ (max 17)
-//===================================
+//===== Additional Comments: ================================= 
+//= 1.0 Initial Release [Evera]
+//= 1.1 Added more quests [Evera]
+//= 1.2 Added quest bits from Einbech and renamed file to
+//=	quests_ein.txt [Evera]
+//= 1.3 Implemented the polution quest. [MasterOfMuppets]
+//= 1.4.1 Massive bugfix. Fixed Pollution exploit [Lupus]
+//= 1.4.2 Fixed Khowropher bug [Lupus]
+//= 1.5 Fixed double levelup bug [Lupus]
+//= 1.5.1 Fixed exploit [KarLaeda]
+//= 1.5.2 Updated Shino Quest to leave no grabage vars [Lupus]
+//= 1.5.3 Fixed some typos regarding Schwartzvalt Trilogy [SinSloth]
+//= 1.6 Updated Laboratory Entrance regarding Heart Fragment quest. [SinSloth]
+//= 1.7 Changed the laboratory entrance checking to prevent players
+//= from being stuck in the quest. [SinSloth]
+//= 1.8 Fixed experience gains to match upcoming rate adjustments. [SinSloth]
+//= 1.9 Fixed a bug with Einbroch Pollution quest. [SinSloth]
+//= 2.0 Fixed bad NPC header data to comply with rev. 11603. [L0ne_W0lf]
+//= 2.1 Fixed typo in disable/enable npc's (bugreport:2027) [Yommy]
+//= 2.2 Overall update to the structure of the scripts. [L0ne_W0lf]
+//=     Swapped the use of enable/disablenpc with hideon/offnpc.
+//=     Added missing quest, "Oridecon/Mineral Quest"
+//=     Full overhual of the Uwe Kleine quest.
+//= 2.2a Fixed typos in var names from EIN_LOVERQRQ to EIN_LOVERQ. (bugreport:2464) [Paradox924X]
+//= 2.3 Removed occurance of PcName. [L0ne_W0lf]
+//= 2.4 Added missing remove cutin. [Kisuka]
+//= 2.5 Added quest log entries for:
+//=     - Factory Quest
+//=     - Murder Quest
+//============================================================ 
 
 // Oridecon Stone OR Mineral Stone Quest
 //============================================================ 
@@ -118,7 +149,7 @@ einbech,97,167,5	script	Cavitar	847,{
 			mes "Come back";
 			mes "whenever you're ready.";
 			close;
-		}				
+		}
 	}
 	else {
 		if (BaseLevel < 40){
@@ -392,7 +423,7 @@ einbech,97,167,5	script	Cavitar	847,{
 						mes "But please understand";
 						mes "that I'm desperate...";
 						close;
-					}	
+					}
 		 		case 2:
 					mes "[Cavitar]";
 					mes "You're...";
@@ -441,13 +472,13 @@ einbech,97,167,5	script	Cavitar	847,{
 
 // Uwe Kleine
 //============================================================
-einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
+einbroch,215,180,6	script	Uwe Kleine#ein	85,{
 	set EinUwe,0;
 	if (BaseClass == Job_Blacksmith) {
 		if (ein_cook > 999) {
 			set .@ccc,ein_cook-1000;
 			if (.@ccc > 199) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh hello hello~";
 				mes "It's been a long";
 				mes "time since we've talked,";
@@ -459,7 +490,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "So...";
 					mes "You're a chef.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "That's right, it's";
 					mes "what I do for business.";
 					mes "Now, as for what I do for";
@@ -468,13 +499,13 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					break;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Only continuous effort will lead you to success. I guess that means you've learned your lesson, sugar honey~";
 					next;
 					break;
 				}
 				if (checkweight(908,200) == 0) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, I was going to give";
 					mes "you a little something,";
 					mes "but you've carrying too";
@@ -485,7 +516,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				}
 				set ein_cook,219;
 				getitem 612,10; //Portable_Furnace
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "I had these lying";
 				mes "around, so why don't";
 				mes "you take them, sugar";
@@ -493,7 +524,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				mes "pricey, but they're useful";
 				mes "in doing some smithing.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Alright then~";
 				mes "Hope you enjoy";
 				mes "your Mini Furances";
@@ -504,13 +535,13 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				}
 			}
 			else if (.@ccc > 99) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh hello hello~";
 				mes "It's been a long";
 				mes "time since we've talked,";
 				mes "you cutie adventurer~";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "So, sugar honey,";
 				mes "how is it going with";
 				mes "the little favor I asked";
@@ -522,7 +553,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				case 1:
 					if (countitem(7126) > 5) {
 						if (checkweight(908,199) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Oh, I was going to give";
 							mes "you a little something,";
 							mes "but you've carrying too";
@@ -531,7 +562,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							mes "in your Kafra Storage?";
 							close;
 						}
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Thank you ^EEA9B8so^000000 much!";
 						mes "Here's the Coal I promised~";
 						mes "Oh, and take these Mini Furnaces. They were just lying around, so you know, I thought, well, why don't you take them? *Tee hee hee~*";
@@ -540,7 +571,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						getitem 1003,1; //Coal
 						getitem 612,10; //Portable_Furnace
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "I hope you enjoy!";
 						mes "Personally, I think the";
 						mes "best part of smithing";
@@ -550,7 +581,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 					else if (countitem(7126) > 0) {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ooh, you're missing";
 						mes "some. I guess you can";
 						mes "still give them to me, but";
@@ -564,7 +595,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						switch(select("Give him all.:Cancel.")) {
 						case 1:
 							if (checkweight(1201,1) == 0) {
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "Oh, I was going to give";
 								mes "you a little something,";
 								mes "but you've carrying too";
@@ -573,12 +604,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 								mes "in your Kafra Storage?";
 								close;
 							}
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Just kidding~";
 							mes "Don't be so nervous, I don't really need those anymore. But since I know you're hard working, I'll throw in a little something extra...";
 							next;
 							if (checkweight(908,220) == 0) {
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "Oh, I was going to give";
 								mes "you a little something,";
 								mes "but you've carrying too";
@@ -587,7 +618,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 								mes "in your Kafra Storage?";
 								close;
 							}
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							if (Class == Job_Whitesmith) {
 								mes "I usually give you cutie MasterSmiths 10 Mini Furnaces, but you can have ^EEA9B811^000000. There's the little something extra I was talking about.";
 							}
@@ -597,12 +628,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							set ein_cook,219;
 							getitem 612,11; //Portable_Furnace
 							next;
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "I know it's not very extravagant, but these will come in handy next time you're smithing. So make the best use of them, 'kay?";
 							close;
 						case 2:
 							if (checkweight(1201,1) == 0) {
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "Oh, I was going to give";
 								mes "you a little something,";
 								mes "but you've carrying too";
@@ -611,7 +642,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 								mes "in your Kafra Storage?";
 								close;
 							}
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Well... Then... Anyway,";
 							mes "Congratulation to became";
 							if (Class == Job_Whitesmith) {
@@ -642,23 +673,23 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						set ein_cook,219;
 						getitem 612,5; //Portable_Furnace
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "I know it's not very extravagant, but these will come in handy next time you're smithing. So make the best use of them, 'kay?";
 						close;
 					}
 					else {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "^666666You didn't bring";
 						mes "any Large Jellopy...?^000000.";
 						set ein_cook,219;
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "It's fine! It's not like I feel ^EEA9B8betrayed^000000 or anything, but I don't need them anymore! Since we're both in the business of smithing, I just hope that you remember to follow through on your favors, 'kay? Buhbye~";
 						close;
 					}
 				case 2:
 					if (checkweight(908,200) == 0) {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, I was going to give";
 						mes "you a little something,";
 						mes "but you've carrying too";
@@ -667,11 +698,11 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "in your Kafra Storage?";
 						close;
 					}
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Quit...?";
 					mes "Oh well, at least you're honest. But let me give you a little something, since we're both fellow smiths.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Still...";
 					mes "That doesn't change";
 					mes "the fact that you've";
@@ -685,17 +716,17 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					set ein_cook,219;
 					getitem 612,10; //Portable_Furnace
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "I know it's not very extravagant, but these will come in handy next time you're smithing. So make the best use of them, 'kay?";
 					close;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oooh, you came back later than I thought, so I don't need really need them anymore. Then again, just holding onto them doesn't sound right either...";
 					next;
 					switch(select("Here you go~:I want to quit.")) {
 					case 1:
 						if (checkweight(908,199) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Oh, I was going to give";
 							mes "you a little something,";
 							mes "but you've carrying too";
@@ -705,7 +736,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							close;
 						}
 						if (countitem(7126) > 5) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Thank you ^EEA9B8so^000000 much!";
 							mes "Here's the Coal I promised~";
 							mes "Oh, and take these Mini Furnaces. They were just lying around, so you know, I thought, well, why don't you take them? *Tee hee hee~*";
@@ -716,7 +747,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							close;
 						}
 						else if (countitem(7126) > 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Ooh, you're missing";
 							mes "some. I guess you can";
 							mes "still give them to me, but";
@@ -730,7 +761,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							switch(select("Give them all.:Cancel.")) {
 							case 1:
 								if (checkweight(908,220) == 0) {
-									mes "[愛依娜]";
+									mes "[Uwe]";
 									mes "Oh, I was going to give";
 									mes "you a little something,";
 									mes "but you've carrying too";
@@ -739,11 +770,11 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 									mes "in your Kafra Storage?";
 									close;
 								}
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "Just kidding~";
 								mes "Don't be so nervous, I don't really need those anymore. But since I know you're hard working, I'll throw in a little something extra...";
 								next;
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								if (Class == Job_Whitesmith) {
 									mes "I usually give you cutie MasterSmiths 10 Mini Furnaces, but you can have ^EEA9B811^000000. There's the little something extra I was talking about.";
 								}
@@ -753,12 +784,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 								set ein_cook,219;
 								getitem 612,11; //Portable_Furnace
 								next;
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "I know it's not very extravagant, but these will come in handy next time you're smithing. So make the best use of them, 'kay?";
 								close;
 							case 2:
 								if (checkweight(908,200) == 0) {
-									mes "[愛依娜]";
+									mes "[Uwe]";
 									mes "Oh, I was going to give";
 									mes "you a little something,";
 									mes "but you've carrying too";
@@ -767,7 +798,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 									mes "in your Kafra Storage?";
 									close;
 								}
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "Okay.";
 								mes "Anyway~!";
 								mes "When you do get all";
@@ -782,7 +813,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 								set ein_cook,219;
 								getitem 612,10; //Portable_Furnace
 								next;
-								mes "[愛依娜]";
+								mes "[Uwe]";
 								mes "This Portable Furnace is not expensive";
 								mes "but very important item for smiths, right?";
 								mes "Use it!";
@@ -791,18 +822,18 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							}
 						}
 						else {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "^666666You didn't bring";
 							mes "any Large Jellopy...?^000000.";
 							set ein_cook,219;
 							next;
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "It's fine! It's not like I feel ^EEA9B8betrayed^000000 or anything, but I don't need them anymore! Since we're both in the business of smithing, I just hope that you remember to follow through on your favors, 'kay? Buhbye~";
 							close;
 						}
 					case 2:
 						if (checkweight(908,200) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Oh, I was going to give";
 							mes "you a little something,";
 							mes "but you've carrying too";
@@ -811,7 +842,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 							mes "in your Kafra Storage?";
 							close;
 						}
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well... Then... Anyway,";
 						mes "Congratulation to became";
 						if (Class == Job_Whitesmith) {
@@ -831,7 +862,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						set ein_cook,219;
 						getitem 612,10; //Portable_Furnace
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "I know it's not very extravagant, but these will come in handy next time you're smithing. So make the best use of them, 'kay?";
 						close;
 					}
@@ -839,26 +870,26 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			}
 		}
 		if (ein_cook == 0) {
-			mes "[愛依娜]";
+			mes "[Uwe]";
 			mes "Cooking is such a joy~!";
 			mes "The scents, the flavors, the sensation of sheer ^EEA9B8satiation^000000...";
 			next;
 			switch(select("Um, isn't this a forge?:Ignore him.")) {
 			case 1:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Is this a forge?";
 				mes "Oh, sugar honey,";
 				mes "you haven't been here";
 				mes "before, haven't you?";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "My name is Uwe Kleine";
 				mes "and this is my forge~! I am";
 				mes "the most elegant Blacksmith";
 				mes "and the best chef here in the";
 				mes "Schwaltzvalt Republic~";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Cooking is probably one";
 				mes "of the greatest pleasures";
 				mes "a craftsman can enjoy. Ooh,";
@@ -873,31 +904,31 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Heart.:Ingredients.:Skills.:Tools.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "...";
 					mes "......";
 					mes "......Heart?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Na-na-na-na-noooo~";
 					mes "If a heart was all you";
 					mes "needed to cook or forge,";
 					mes "then anyone can make and";
 					mes "upgrade a Claymore, right?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "What you really need";
 					mes "when cooking and forging";
 					mes "is ^EEA9B8desire^000000. The burning desire";
 					mes "and passion to make something";
 					mes "great! If that was what you meant, then you are absolutely right!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "But any other meaning";
 					mes "to that answer would have";
 					mes "been absolutely wrooooong.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oooh, I just received";
 					mes "some Emvertarcons today,";
 					mes "so please have one, 'kay?";
@@ -906,22 +937,22 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					getitem 1011,1; //Emveretarcon
 					break;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "...";
 					mes "......";
 					mes "......Ingredients?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Na-na-na-na-noooo~";
 					mes "People always blame their";
 					mes "ingredients when something";
 					mes "goes wrong! It's those people";
 					mes "who just embarrass themselves~ ";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now, if you have the pride to only use the very best ingredients you can find, then that's fine. But the quality of whatever you make can't depend on the ingredients alone.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Speaking of ingredients,";
 					mes "someone just gave me some";
 					mes "Steel. Why don't you have 2 of";
@@ -930,12 +961,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					getitem 998,2; //Iron
 					break;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "...";
 					mes "......";
 					mes "......Skills?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, skill alone isn't";
 					mes "enough to make something";
 					mes "great. You also need to put in";
@@ -943,14 +974,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "about not having enough skill";
 					mes "when you slack off, right?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "You always need to invest";
 					mes "time and effort to make your";
 					mes "crafts stand out. Now, if you";
 					mes "meet someone whose skill";
 					mes "makes yours seem pathetic, driving you to improve yourself...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Then by all means,";
 					mes "feel free to follow";
 					mes "your drive and improve";
@@ -958,7 +989,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "fall back on your lack";
 					mes "of skills as any excuse.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oooh, I just received";
 					mes "some Emvertarcons today,";
 					mes "so please have one, 'kay?";
@@ -967,12 +998,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					getitem 1011,1; //Emveretarcon
 					break;
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "...";
 					mes "......";
 					mes "......Tools?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, not just anyone can";
 					mes "bake delicious cakes, even";
 					mes "if they had the best oven in";
@@ -980,12 +1011,12 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "And a child with all the tools";
 					mes "couldn't put a sword together.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Tools are helpful, but";
 					mes "master craftsmen never blame";
 					mes "their tools for their mistakes.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, and speaking of";
 					mes "tools, I just received";
 					mes "some new hammers today.";
@@ -997,7 +1028,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					break;
 				}
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh...";
 				mes "And feel free to";
 				mes "come and see me";
@@ -1009,7 +1040,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				case 3: mes "...Behbie~"; close;
 				}
 			case 2:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Hmmm...?";
 				mes "Why don't you stay and chat?";
 				mes "Oh, you adventurers are always";
@@ -1019,7 +1050,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			}
 		}
 		else if (ein_cook < 10) {
-			mes "[愛依娜]";
+			mes "[Uwe]";
 			mes "Oh! Hello again,";
 			mes "you cutie adventurer.";
 			mes "So tell me, what brings";
@@ -1028,21 +1059,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			switch(select("Ask about Cooking.:Ask about Einbroch.:Cancel.")) {
 			case 1:
 				if (ein_cook == 1) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Ingredients:Skills:Tools:Cancel")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -1050,7 +1081,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -1058,7 +1089,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "dedicate yourself to make the";
 						mes "very best finished product~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1070,27 +1101,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "When you're beginning to learn";
 						mes "skills, you can't let yourself be discouraged! Practice makes";
 						mes "perfect, you know? But never";
 						mes "use your lack of skills as an";
 						mes "excuse if you happen to fail...";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Effort is also an essential";
 						mes "in forging and cooking! Now,";
 						mes "on the other hand, if you put";
 						mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "The key is to always";
 						mes "give 100% effort and work";
 						mes "on improving your skills.";
 						mes "Before you know it, you'll";
 						mes "be a respected master!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1102,7 +1133,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "Umho."; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -1110,14 +1141,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, while we're on";
 						mes "the subject of tools,";
 						mes "I just received some";
@@ -1125,7 +1156,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Would you like a couple?";
 						next;
 						if (checkweight(908,50) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Mmmm...?";
 							mes "You're holding too many";
 							mes "things. I can't give you any";
@@ -1137,7 +1168,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						set ein_cook,11;
 						getitem 614,1; //Golden_Hammer
 						getitem 613,1; //Iron_Hammer
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I hope";
 						mes "you like them~";
 						switch(rand(1,3)) {
@@ -1146,7 +1177,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -1156,14 +1187,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 				}
 				else if (ein_cook == 3) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Heart:Skills:Tools:Cancel.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -1171,7 +1202,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -1183,27 +1214,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "When you're beginning to learn";
 						mes "skills, you can't let yourself be discouraged! Practice makes";
 						mes "perfect, you know? But never";
 						mes "use your lack of skills as an";
 						mes "excuse if you happen to fail...";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Effort is also an essential";
 						mes "in forging and cooking! Now,";
 						mes "on the other hand, if you put";
 						mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "The key is to always";
 						mes "give 100% effort and work";
 						mes "on improving your skills.";
 						mes "Before you know it, you'll";
 						mes "be a respected master!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1215,7 +1246,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "Umho."; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -1223,14 +1254,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, while we're on";
 						mes "the subject of tools,";
 						mes "I just received some";
@@ -1238,7 +1269,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Would you like a couple?";
 						next;
 						if (checkweight(908,50) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Mmmm...?";
 							mes "You're holding too many";
 							mes "things. I can't give you any";
@@ -1250,7 +1281,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						set ein_cook,13;
 						getitem 614,1; //Golden_Hammer
 						getitem 613,1; //Iron_Hammer
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I hope";
 						mes "you like them~";
 						switch(rand(1,3)) {
@@ -1259,7 +1290,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -1269,14 +1300,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 				}
 				else if (ein_cook == 5) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Heart:Ingredients:Tools:Cancel")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -1284,7 +1315,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -1296,14 +1327,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -1311,7 +1342,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -1319,7 +1350,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "dedicate yourself to make the";
 						mes "very best finished product~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1331,7 +1362,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -1339,14 +1370,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, while we're on";
 						mes "the subject of tools,";
 						mes "I just received some";
@@ -1354,7 +1385,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Would you like a couple?";
 						next;
 						if (checkweight(908,50) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Mmmm...?";
 							mes "You're holding too many";
 							mes "things. I can't give you any";
@@ -1367,7 +1398,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						getitem 614,1; //Golden_Hammer
 						getitem 613,1; //Iron_Hammer
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I hope";
 						mes "you like them~";
 						switch(rand(1,3)) {
@@ -1376,7 +1407,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -1386,14 +1417,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 				}
 				else if (ein_cook == 7) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Heart:Ingredients:Skills:Cancel.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -1401,7 +1432,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -1413,14 +1444,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -1428,7 +1459,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -1437,7 +1468,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "very best finished product~";
 						set ein_cook,17;
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1449,27 +1480,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "'I couldn't do it cuz";
 						mes "I'm not skillful with it.'";
 						mes "It's the most foolish words in the world.";
 						mes "There's only way for cooking.";
 						mes "Practice, practice and try!.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "I know it's the easiest";
 						mes "lame excuse for a person";
 						mes "who never try hard anything.";
 						mes "";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "It's very same for a smith job.";
 						mes "If you don't try to";
 						mes "upgrade your skill,";
 						mes "your works will be poor";
 						mes "forever..";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "But there's different way";
 						mes "to blaim on your skill.";
 						mes "When you face the higher wall,";
@@ -1477,13 +1508,13 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Then you can reproch yourself and your skills.";
 						mes "It's natural.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "After that ordeal, if you try harder";
 						mes "and make your goal higher,";
 						mes "every people around you will";
 						mes "look up to you.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I hope";
 						mes "you like them~";
 						switch(rand(1,3)) {
@@ -1492,7 +1523,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -1502,14 +1533,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 				}
 				else if (ein_cook == 9) {
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Heart:Ingredients:Skills:Tools:Cancel.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -1517,7 +1548,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -1529,14 +1560,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -1544,7 +1575,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -1552,7 +1583,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "dedicate yourself to make the";
 						mes "very best finished product~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1564,27 +1595,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "When you're beginning to learn";
 						mes "skills, you can't let yourself be discouraged! Practice makes";
 						mes "perfect, you know? But never";
 						mes "use your lack of skills as an";
 						mes "excuse if you happen to fail...";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Effort is also an essential";
 						mes "in forging and cooking! Now,";
 						mes "on the other hand, if you put";
 						mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "The key is to always";
 						mes "give 100% effort and work";
 						mes "on improving your skills.";
 						mes "Before you know it, you'll";
 						mes "be a respected master!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -1596,7 +1627,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "Umho."; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -1604,14 +1635,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, while we're on";
 						mes "the subject of tools,";
 						mes "I just received some";
@@ -1619,7 +1650,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Would you like a couple?";
 						next;
 						if (checkweight(908,50) == 0) {
-							mes "[愛依娜]";
+							mes "[Uwe]";
 							mes "Mmmm...?";
 							mes "You're holding too many";
 							mes "things. I can't give you any";
@@ -1632,7 +1663,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						getitem 614,1; //Golden_Hammer
 						getitem 613,1; //Iron_Hammer
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I hope";
 						mes "you like them~";
 						switch(rand(1,3)) {
@@ -1641,7 +1672,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 5:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -1651,35 +1682,35 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 				}
 			case 2:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch was originally";
 				mes "built to support Einbech's";
 				mes "mining efforts. Because it's";
 				mes "small and crowded with people,";
 				mes "there's no room to build the ore refining factories over there.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Since Einbroch used to be";
 				mes "an empty lot, it was perfect";
 				mes "for building factories. That's";
 				mes "what my grandfather told me a";
 				mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Now people think that this";
 				mes "city was never planned to be";
 				mes "just an extension of Einbech.";
 				mes "See that rampart over there?";
 				mes "It doesn't connect to Einbech at all! No protection for them...";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "It's like the government";
 				mes "lost all interest in Einbech.";
 				mes "Even the miners there have";
 				mes "been moving here to work in ";
 				mes "the factories. But more people hasn't made this city more lively.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch may look modern";
 				mes "and exciting now, but soon";
 				mes "you'll see that there's no sign";
@@ -1687,21 +1718,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Then why are you here?:But I like the city life~")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, sugar honey,";
 					mes "I've been waiting for";
 					mes "someone. But... It looks";
 					mes "like that person won't be";
 					mes "coming back anyway.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oooh, but let's not talk";
 					mes "about that. Next time you";
 					mes "drop by, we'll talk about";
 					mes "something more fun, 'kay?";
 					close;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Big cities can be nice,";
 					mes "but you never get to enjoy";
 					mes "the sensation of stepping";
@@ -1709,21 +1740,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "or the magnificent sight of";
 					mes "the shining stars at night.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "And the people who live";
 					mes "in the cities can be so";
 					mes "uptight! I've known more";
 					mes "than a few who look down";
 					mes "on people from smaller towns.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's sad to see some";
 					mes "people will always be";
 					mes "that ignorant. I... I just";
 					mes "can't believe those people";
 					mes "can be sooo close minded!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh...!";
 					mes "I'm sorry, I guess";
 					mes "I went a little overboard.";
@@ -1733,7 +1764,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					close;
 				}
 			case 3:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh...?";
 				mes "Well, feel";
 				mes "free to visit";
@@ -1743,21 +1774,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			}
 		}
 		else if ((ein_cook < 20) || (ein_cook == 219)) {
-			mes "[愛依娜]";
+			mes "[Uwe]";
 			mes "Oh, welcome back.";
 			mes "So how's the weapon";
 			mes "forging coming along?";
 			next;
 			switch(select("Talk about Cooking:Talk about Einbroch:Talk about Cooking Utensils:Cancel")) {
 			case 1:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Ooh, cooking!";
 				mes "So what did you";
 				mes "want to ask me...?";
 				next;
 				switch(select("Heart:Ingredients:Skills:Tools:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ah, heart. Just like forging,";
 					mes "you need passion and desire";
 					mes "to create something special.";
@@ -1765,7 +1796,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "you can do anything if you have";
 					mes "the will and the commitment.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that's all";
 					mes "I really have to";
 					mes "say about that. But";
@@ -1777,14 +1808,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now for beginners,";
 					mes "learning to select";
 					mes "and use ingredients";
 					mes "is one of the most";
 					mes "important fundamentals.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Cooking is like forging";
 					mes "since specific ingredients";
 					mes "are needed to make specialty";
@@ -1792,7 +1823,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "skip them if you really need";
 					mes "them, right? Right!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Once you make up your";
 					mes "mind to do something,";
 					mes "focus on finishing it, 'kay?";
@@ -1800,7 +1831,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "dedicate yourself to make the";
 					mes "very best finished product~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -1812,27 +1843,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "When you're beginning to learn";
 					mes "skills, you can't let yourself be discouraged! Practice makes";
 					mes "perfect, you know? But never";
 					mes "use your lack of skills as an";
 					mes "excuse if you happen to fail...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Effort is also an essential";
 					mes "in forging and cooking! Now,";
 					mes "on the other hand, if you put";
 					mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "The key is to always";
 					mes "give 100% effort and work";
 					mes "on improving your skills.";
 					mes "Before you know it, you'll";
 					mes "be a respected master!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -1844,7 +1875,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Cooking is a little";
 					mes "easier if you have";
 					mes "nicer tools to use,";
@@ -1852,14 +1883,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "themselves can't make";
 					mes "just anybody a master.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "In the end, the best";
 					mes "tools are the ones you're";
 					mes "most comfortable with using.";
 					mes "In fact, I still use the old knife I used back when I was just";
 					mes "a little novice chef~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -1871,7 +1902,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 5:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh...?";
 					mes "Well, feel";
 					mes "free to visit";
@@ -1880,35 +1911,35 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					close;
 				}
 			case 2:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch was originally";
 				mes "built to support Einbech's";
 				mes "mining efforts. Because it's";
 				mes "small and crowded with people,";
 				mes "there's no room to build the ore refining factories over there.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Since Einbroch used to be";
 				mes "an empty lot, it was perfect";
 				mes "for building factories. That's";
 				mes "what my grandfather told me a";
 				mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Now people think that this";
 				mes "city was never planned to be";
 				mes "just an extension of Einbech.";
 				mes "See that rampart over there?";
 				mes "It doesn't connect to Einbech at all! No protection for them...";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "It's like the government";
 				mes "lost all interest in Einbech.";
 				mes "Even the miners there have";
 				mes "been moving here to work in ";
 				mes "the factories. But more people hasn't made this city more lively.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch may look modern";
 				mes "and exciting now, but soon";
 				mes "you'll see that there's no sign";
@@ -1916,48 +1947,48 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Then why are you here?:But I like the city life~")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, sugar honey,";
 					mes "I've been waiting for someone. But... It looks like that person won't be coming back anyway.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oooh, but let's not talk about that. Next time you drop by, we'll talk about something more fun, 'kay? Buhbye~";
 					close;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, big cities are nice, but you never get to enjoy the sensation of stepping barefoot through the grass, or the clear sight of the stars at night.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "And the people who live in cities can be so uptight! I've known more than a few who look down on people who live in smaller towns.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's sad to see some people will always be that ignorant. I... I just can't believe people can be sooo close minded!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh...!";
 					mes "I'm sorry, I guess I went a little overboard. ^666666*Titter*^000000 Next time you drop by, we'll talk about something more fun, 'kay? Buhbye~";
 					close;
 				}
 			case 3:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Cooking utensils?";
 				mes "Well, they're usually";
 				mes "made out of ^0000FFJubilee^000000,";
 				mes "a crystallization dropped";
 				mes "from mineral monsters.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Jubilee is too soft";
 				mes "to make weapons, but";
 				mes "it conducts heat very well";
 				mes "so it's perfect for making";
 				mes "cooking utensils! *Tee hee~*";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "That reminds me...";
 				mes "I need to make some new cooking utensils soon. Would you do me a favor and let me have some of your materials? Pretty pleeeeeease~";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "If you don't mind,";
 				mes "would you please give me";
 				mes "30 ^0000FFJubilee^000000 and 4 ^0000FFLarge Jellopy^000000.";
@@ -1969,19 +2000,19 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						delitem 7312,30; //Jubilee
 						delitem 7126,4; //Large_Jellopy
 						getitem 1003,1; //Coal
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Hooray!";
 						mes "Thank you";
 						mes "^EEA9B8soooo^000000 much!";
 						close;
 					}
 					else {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Hmmm...?";
 						mes "You don't have";
 						mes "enough of them?";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh well, don't";
 						mes "worry. You can take";
 						mes "your time and bring";
@@ -1990,7 +2021,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "I understand.";
 					mes "You might not have all";
 					mes "that Jubilee and Large Jellopy";
@@ -1999,7 +2030,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					close;
 				}
 			case 4:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh...?";
 				mes "Well, feel";
 				mes "free to visit";
@@ -2010,13 +2041,13 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 		}
 		else if (ein_cook > 299) {
 			if (Class == Job_Whitesmith) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oooh...!";
 				mes "Congratulations!";
 				mes "You finally became";
 				mes "a cutie MasterSmith!";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Mmmm...";
 				mes "I know!";
 				mes "Let's celebrate!";
@@ -2026,14 +2057,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				set ein_cook,9;
 				getitem 538,5; //Well_Baked_Cookie
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Okay, enjoy!";
 				mes "I hope you have";
 				mes "a good time smithing!";
 				close;
 			}
 			else {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Hmmm?";
 				mes "Oh, it's you~";
 				mes "I'm sorry, I was";
@@ -2042,7 +2073,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				mes "lost my train of thought.";
 				set ein_cook,219;
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "What was I going";
 				mes "to say? Hmm, I can't";
 				mes "quite remember. Oh well,";
@@ -2074,7 +2105,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				set .@ccc,0;
 			}
 			if (.@ccc < 3) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Hm...?";
 				mes "I never forget a face,";
 				mes "but somehow I feel like";
@@ -2086,14 +2117,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				else if (.@ccc == 2) {
 					set ein_cook,ein_cook+100;
 				}
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Ah...!";
 				mes "I have it!";
 				mes "" + strcharinfo(0) + "!";
 				mes "Yes, now I remember you.";
 				mes "Decided to transcend, eh?";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "What brings to";
 				if (Sex) {
 					mes "me, you ^EEA9B8naughty boy^000000?";
@@ -2104,7 +2135,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 			}
 			else if (.@ccc == 3) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Ah, hello again,";
 				mes "cutie adventurer.";
 				mes "How can I help you?";
@@ -2112,35 +2143,35 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			}
 			switch(select("Ask about Einbroch.:Ask about Cooking.:Cancel.")) {
 			case 1:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch was originally";
 				mes "built to support Einbech's";
 				mes "mining efforts. Because it's";
 				mes "small and crowded with people,";
 				mes "there's no room to build the ore refining factories over there.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Since Einbroch used to be";
 				mes "an empty lot, it was perfect";
 				mes "for building factories. That's";
 				mes "what my grandfather told me a";
 				mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Now people think that this";
 				mes "city was never planned to be";
 				mes "just an extension of Einbech.";
 				mes "See that rampart over there?";
 				mes "It doesn't connect to Einbech at all! No protection for them...";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "It's like the government";
 				mes "lost all interest in Einbech.";
 				mes "Even the miners there have";
 				mes "been moving here to work in ";
 				mes "the factories. But more people hasn't made this city more lively.";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Einbroch may look modern";
 				mes "and exciting now, but soon";
 				mes "you'll see that there's no sign";
@@ -2148,14 +2179,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Then why are you here?:I won't. Thanks for the advice.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, I have some";
 					mes "precious memories of";
 					mes "this place. Once, there was";
 					mes "a man who lived here who";
 					mes "was just like a father to me.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, but I'm sure that";
 					mes "you don't want to hear";
 					mes "about that. Next time you";
@@ -2164,7 +2195,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "Buhbye for now, cutie~";
 					close;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, that is such";
 					mes "a good decision,";
 					mes "sugar honey! Oh, you";
@@ -2172,7 +2203,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "so precious, so lovable.";
 					mes "^333333*Tee hee hee~*^000000";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -2181,14 +2212,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					close;
 				}
 			case 2:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Ooh, cooking!";
 				mes "So what did you";
 				mes "want to ask me...?";
 				next;
 				switch(select("Heart:Ingredients:Skills:Tools:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ah, heart. Just like forging,";
 					mes "you need passion and desire";
 					mes "to create something special.";
@@ -2196,7 +2227,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "you can do anything if you have";
 					mes "the will and the commitment.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that's all";
 					mes "I really have to";
 					mes "say about that. But";
@@ -2204,14 +2235,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "whenever you please.";
 					break;
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now for beginners,";
 					mes "learning to select";
 					mes "and use ingredients";
 					mes "is one of the most";
 					mes "important fundamentals.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Cooking is like forging";
 					mes "since specific ingredients";
 					mes "are needed to make specialty";
@@ -2219,7 +2250,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "skip them if you really need";
 					mes "them, right? Right!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Once you make up your";
 					mes "mind to do something,";
 					mes "focus on finishing it, 'kay?";
@@ -2227,7 +2258,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "dedicate yourself to make the";
 					mes "very best finished product~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -2235,27 +2266,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "the next time~";
 					break;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "When you're beginning to learn";
 					mes "skills, you can't let yourself be discouraged! Practice makes";
 					mes "perfect, you know? But never";
 					mes "use your lack of skills as an";
 					mes "excuse if you happen to fail...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Effort is also an essential";
 					mes "in forging and cooking! Now,";
 					mes "on the other hand, if you put";
 					mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "The key is to always";
 					mes "give 100% effort and work";
 					mes "on improving your skills.";
 					mes "Before you know it, you'll";
 					mes "be a respected master!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -2263,7 +2294,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "the next time~";
 					break;
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Cooking is a little";
 					mes "easier if you have";
 					mes "nicer tools to use,";
@@ -2271,14 +2302,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "themselves can't make";
 					mes "just anybody a master.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "In the end, the best";
 					mes "tools are the ones you're";
 					mes "most comfortable with using.";
 					mes "In fact, I still use the old knife I used back when I was just";
 					mes "a little novice chef~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]"							;
 					mes "Well, that was";
 					mes "a fun talk. Come";
 					mes "back and visit, 'kay?";
@@ -2286,7 +2317,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "the next time~";
 					break;
 				case 5:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh...?";
 					mes "Well, feel";
 					mes "free to visit";
@@ -2302,7 +2333,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				close;
 
 			case 3:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh...?";
 				mes "Well, feel";
 				mes "free to visit";
@@ -2314,42 +2345,42 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 		if (ein_cook > 999) {
 			set .@eee,ein_cook-1000;
 			if (.@eee > 199) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Ah, hello again,";
 				mes "cutie adventurer.";
 				mes "How can I help you?";
 				next;
 				switch(select("Talk about Einbroch.:Ask him to forge a Weapon.:Talk about Cooking.:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch was originally";
 					mes "built to support Einbech's";
 					mes "mining efforts. Because it's";
 					mes "small and crowded with people,";
 					mes "there's no room to build the ore refining factories over there.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Since Einbroch used to be";
 					mes "an empty lot, it was perfect";
 					mes "for building factories. That's";
 					mes "what my grandfather told me a";
 					mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now people think that this";
 					mes "city was never planned to be";
 					mes "just an extension of Einbech.";
 					mes "See that rampart over there?";
 					mes "It doesn't connect to Einbech at all! No protection for them...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's like the government";
 					mes "lost all interest in Einbech.";
 					mes "Even the miners there have";
 					mes "been moving here to work in ";
 					mes "the factories. But more people hasn't made this city more lively.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch may look modern";
 					mes "and exciting now, but soon";
 					mes "you'll see that there's no sign";
@@ -2357,14 +2388,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					switch(select("Then why are you here?:I won't. Thanks for the advice.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I have some";
 						mes "precious memories of";
 						mes "this place. Once, there was";
 						mes "a man who lived here who";
 						mes "was just like a father to me.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, but I'm sure that";
 						mes "you don't want to hear";
 						mes "about that. Next time you";
@@ -2373,7 +2404,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Buhbye for now, cutie~";
 						close;
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, that is such";
 						mes "a good decision,";
 						mes "sugar honey! Oh, you";
@@ -2381,7 +2412,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "so precious, so lovable.";
 						mes "^333333*Tee hee hee~*^000000";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2390,14 +2421,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well...";
 					mes "I actually just";
 					mes "do smithing work";
 					mes "to create my own";
 					mes "cooking tools.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, I understand";
 					mes "that somebody needs";
 					mes "to fight the monsters,";
@@ -2405,7 +2436,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "to ask for forging weapons.";
 					mes "I... am a strict pacifist~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just go look";
 					mes "around for a little";
 					mes "bit, I'm sure you'll";
@@ -2414,14 +2445,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "you a good weapon~";
 					close;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Ooh, cooking!";
 					mes "So what did you";
 					mes "want to ask me...?";
 					next;
 					switch(select("Heart:Ingredients:Skills:Tools:Cancel.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -2429,7 +2460,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -2437,14 +2468,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "whenever you please.";
 						break;
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -2452,7 +2483,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -2460,7 +2491,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "dedicate yourself to make the";
 						mes "very best finished product~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2468,27 +2499,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "the next time~";
 						break;
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "When you're beginning to learn";
 						mes "skills, you can't let yourself be discouraged! Practice makes";
 						mes "perfect, you know? But never";
 						mes "use your lack of skills as an";
 						mes "excuse if you happen to fail...";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Effort is also an essential";
 						mes "in forging and cooking! Now,";
 						mes "on the other hand, if you put";
 						mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "The key is to always";
 						mes "give 100% effort and work";
 						mes "on improving your skills.";
 						mes "Before you know it, you'll";
 						mes "be a respected master!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2496,7 +2527,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "the next time~";
 						break;
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -2504,14 +2535,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]"							;
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2519,7 +2550,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "the next time~";
 						break;
 					case 5:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh...?";
 						mes "Well, feel";
 						mes "free to visit";
@@ -2534,7 +2565,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Alright then,";
 					mes "sugar honey.";
 					mes "Take care~";
@@ -2543,13 +2574,13 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				}
 			}
 			else if (.@eee > 99) {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Oh hello hello~";
 				mes "It's been a long";
 				mes "time since we've talked,";
 				mes "you cutie adventurer~";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "So, sugar honey,";
 				mes "how is it going with";
 				mes "the little favor I asked";
@@ -2559,35 +2590,35 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Talk about Einbroch.:Ask him to forge a Weapon.:Give him the Materials.:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch was originally";
 					mes "built to support Einbech's";
 					mes "mining efforts. Because it's";
 					mes "small and crowded with people,";
 					mes "there's no room to build the ore refining factories over there.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Since Einbroch used to be";
 					mes "an empty lot, it was perfect";
 					mes "for building factories. That's";
 					mes "what my grandfather told me a";
 					mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now people think that this";
 					mes "city was never planned to be";
 					mes "just an extension of Einbech.";
 					mes "See that rampart over there?";
 					mes "It doesn't connect to Einbech at all! No protection for them...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's like the government";
 					mes "lost all interest in Einbech.";
 					mes "Even the miners there have";
 					mes "been moving here to work in ";
 					mes "the factories. But more people hasn't made this city more lively.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch may look modern";
 					mes "and exciting now, but soon";
 					mes "you'll see that there's no sign";
@@ -2595,14 +2626,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					switch(select("Then why are you here?:I won't. Thanks for the advice.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I have some";
 						mes "precious memories of";
 						mes "this place. Once, there was";
 						mes "a man who lived here who";
 						mes "was just like a father to me.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, but I'm sure that";
 						mes "you don't want to hear";
 						mes "about that. Next time you";
@@ -2611,7 +2642,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Buhbye for now, cutie~";
 						close;
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, that is such";
 						mes "a good decision,";
 						mes "sugar honey! Oh, you";
@@ -2619,7 +2650,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "so precious, so lovable.";
 						mes "^333333*Tee hee hee~*^000000";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2628,14 +2659,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well...";
 					mes "I actually just";
 					mes "do smithing work";
 					mes "to create my own";
 					mes "cooking tools.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, I understand";
 					mes "that somebody needs";
 					mes "to fight the monsters,";
@@ -2643,7 +2674,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "to ask for forging weapons.";
 					mes "I... am a strict pacifist~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just go look";
 					mes "around for a little";
 					mes "bit, I'm sure you'll";
@@ -2653,7 +2684,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					close;
 				case 3:
 					if (countitem(7126) > 5) {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Thank you ^EEA9B8so^000000 much!";
 						mes "Here's the Coal I promised~";
 						delitem 7126,6; //Large_Jellopy
@@ -2662,7 +2693,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						next;
 					}
 					else {
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Huh...?";
 						if (countitem(7126) == 0) {
 							mes "You brought";
@@ -2677,7 +2708,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "okay? Don't forget, cutie~";
 						close;
 					}
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now, I can't teach you everything about cooking, but I will give you some good advice for beginners.";
 					mes "I hope you pay attention, sugar";
 					mes "honey. Now what would you like";
@@ -2685,7 +2716,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					switch(select("Heart:Materials:Skills:Tools:Cancel.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Ah, heart. Just like forging,";
 						mes "you need passion and desire";
 						mes "to create something special.";
@@ -2693,7 +2724,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "you can do anything if you have";
 						mes "the will and the commitment.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that's all";
 						mes "I really have to";
 						mes "say about that. But";
@@ -2705,14 +2736,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Now for beginners,";
 						mes "learning to select";
 						mes "and use ingredients";
 						mes "is one of the most";
 						mes "important fundamentals.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is like forging";
 						mes "since specific ingredients";
 						mes "are needed to make specialty";
@@ -2720,7 +2751,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "skip them if you really need";
 						mes "them, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Once you make up your";
 						mes "mind to do something,";
 						mes "focus on finishing it, 'kay?";
@@ -2728,7 +2759,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "dedicate yourself to make the";
 						mes "very best finished product~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2740,27 +2771,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 3:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "When you're beginning to learn";
 						mes "skills, you can't let yourself be discouraged! Practice makes";
 						mes "perfect, you know? But never";
 						mes "use your lack of skills as an";
 						mes "excuse if you happen to fail...";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Effort is also an essential";
 						mes "in forging and cooking! Now,";
 						mes "on the other hand, if you put";
 						mes "in all the effort but didn't learn any of the skills, you'll still get nowhere fast, right? Right!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "The key is to always";
 						mes "give 100% effort and work";
 						mes "on improving your skills.";
 						mes "Before you know it, you'll";
 						mes "be a respected master!";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2772,7 +2803,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "Umho."; close;
 						}
 					case 4:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Cooking is a little";
 						mes "easier if you have";
 						mes "nicer tools to use,";
@@ -2780,14 +2811,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "themselves can't make";
 						mes "just anybody a master.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "In the end, the best";
 						mes "tools are the ones you're";
 						mes "most comfortable with using.";
 						mes "In fact, I still use the old knife I used back when I was just";
 						mes "a little novice chef~";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]"							;
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2799,7 +2830,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						case 3: mes "...Behbie~"; close;
 						}
 					case 5:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Alright then,";
 						mes "sugar honey.";
 						mes "Take care~";
@@ -2808,7 +2839,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					}
 					break;
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Alright then,";
 					mes "sugar honey.";
 					mes "Take care~";
@@ -2817,41 +2848,41 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				}
 			}
 			else {
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Hello, cutie~";
 				mes "How can I help you?";
 				next;
 				switch(select("Talk about Einbroch.:Ask him to forge a Weapon.:Master, I want to learn cooking.:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch was originally";
 					mes "built to support Einbech's";
 					mes "mining efforts. Because it's";
 					mes "small and crowded with people,";
 					mes "there's no room to build the ore refining factories over there.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Since Einbroch used to be";
 					mes "an empty lot, it was perfect";
 					mes "for building factories. That's";
 					mes "what my grandfather told me a";
 					mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now people think that this";
 					mes "city was never planned to be";
 					mes "just an extension of Einbech.";
 					mes "See that rampart over there?";
 					mes "It doesn't connect to Einbech at all! No protection for them...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's like the government";
 					mes "lost all interest in Einbech.";
 					mes "Even the miners there have";
 					mes "been moving here to work in ";
 					mes "the factories. But more people hasn't made this city more lively.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch may look modern";
 					mes "and exciting now, but soon";
 					mes "you'll see that there's no sign";
@@ -2859,14 +2890,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					switch(select("Then why are you here?:I won't. Thanks for the advice.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I have some";
 						mes "precious memories of";
 						mes "this place. Once, there was";
 						mes "a man who lived here who";
 						mes "was just like a father to me.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, but I'm sure that";
 						mes "you don't want to hear";
 						mes "about that. Next time you";
@@ -2875,7 +2906,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Buhbye for now, cutie~";
 						close;
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, that is such";
 						mes "a good decision,";
 						mes "sugar honey! Oh, you";
@@ -2883,7 +2914,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "so precious, so lovable.";
 						mes "^333333*Tee hee hee~*^000000";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -2892,14 +2923,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well...";
 					mes "I actually just";
 					mes "do smithing work";
 					mes "to create my own";
 					mes "cooking tools.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, I understand";
 					mes "that somebody needs";
 					mes "to fight the monsters,";
@@ -2907,7 +2938,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "to ask for forging weapons.";
 					mes "I... am a strict pacifist~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just go look";
 					mes "around for a little";
 					mes "bit, I'm sure you'll";
@@ -2916,21 +2947,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "you a good weapon~";
 					close;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Mm...?";
 					mes "Did you just";
 					mes "say that you";
 					mes "want to learn";
 					mes "the art of cooking?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "I'm sorry, but I can't";
 					mes "really give culinary";
 					mes "lessons. But I will";
 					mes "give good advice for";
 					mes "hopeful beginners.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now...";
 					mes "For your tuition";
 					mes "I'll need-- Gosh,";
@@ -2939,27 +2970,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "and a pen for this list...";
 					next;
 					set ein_cook,ein_cook+100;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just kidding!";
 					mes "^333333*Titter~*^000000 I don't need";
 					mes "much to make some";
 					mes "cooking utensils. Bring";
 					mes "6 ^0000FFLarge Jellopy^000000. That's it!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "In return, I will give you";
 					mes "1 Coal and some useful";
 					mes "cooking advice for novices.";
 					mes "I give this advice for free to";
 					mes "my smithing colleages, though...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Why ^EEA9B8don't^000000 you";
 					mes "become a Blacksmith?";
 					mes "I'm much more confident";
 					mes "in that field. ^333333*Tee hee~*^000000";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, I'll be";
 					mes "waiting right";
 					mes "here until you";
@@ -2970,7 +3001,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Take care,";
 					mes "cutie adventurer!";
 					mes "Hohoho!";
@@ -2979,27 +3010,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 			}
 		}
 		else if (ein_cook == 0) {
-			mes "[愛依娜]";
+			mes "[Uwe]";
 			mes "Cooking is such a joy~!";
 			mes "The scents, the flavors, the sensation of sheer ^EEA9B8satiation^000000...";
 			next;
 			switch(select("Um, isn't this a forge?:Ignore him.")) {
 			case 1:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				set ein_cook,1000;
 				mes "Is this a forge?";
 				mes "Oh, sugar honey,";
 				mes "you haven't been here";
 				mes "before, haven't you?";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "My name is Uwe Kleine";
 				mes "and this is my forge~! I am";
 				mes "the most elegant Blacksmith";
 				mes "and the best chef here in the";
 				mes "Schwaltzvalt Republic~";
 				next;
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "So, how can";
 				mes "I help you, you";
 				mes "adooooooooorable";
@@ -3012,35 +3043,35 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 				next;
 				switch(select("Talk about Einbroch.:Ask him to forge a Weapon.:Master, I want to learn cooking.:Cancel.")) {
 				case 1:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch was originally";
 					mes "built to support Einbech's";
 					mes "mining efforts. Because it's";
 					mes "small and crowded with people,";
 					mes "there's no room to build the ore refining factories over there.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Since Einbroch used to be";
 					mes "an empty lot, it was perfect";
 					mes "for building factories. That's";
 					mes "what my grandfather told me a";
 					mes "long time ago. Anyway, Einbroch quickly grew into a major city.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now people think that this";
 					mes "city was never planned to be";
 					mes "just an extension of Einbech.";
 					mes "See that rampart over there?";
 					mes "It doesn't connect to Einbech at all! No protection for them...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "It's like the government";
 					mes "lost all interest in Einbech.";
 					mes "Even the miners there have";
 					mes "been moving here to work in ";
 					mes "the factories. But more people hasn't made this city more lively.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Einbroch may look modern";
 					mes "and exciting now, but soon";
 					mes "you'll see that there's no sign";
@@ -3048,14 +3079,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					next;
 					switch(select("Then why are you here?:I won't. Thanks for the advice.")) {
 					case 1:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, I have some";
 						mes "precious memories of";
 						mes "this place. Once, there was";
 						mes "a man who lived here who";
 						mes "was just like a father to me.";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, but I'm sure that";
 						mes "you don't want to hear";
 						mes "about that. Next time you";
@@ -3064,7 +3095,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "Buhbye for now, cutie~";
 						close;
 					case 2:
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Oh, that is such";
 						mes "a good decision,";
 						mes "sugar honey! Oh, you";
@@ -3072,7 +3103,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						mes "so precious, so lovable.";
 						mes "^333333*Tee hee hee~*^000000";
 						next;
-						mes "[愛依娜]";
+						mes "[Uwe]";
 						mes "Well, that was";
 						mes "a fun talk. Come";
 						mes "back and visit, 'kay?";
@@ -3081,14 +3112,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 						close;
 					}
 				case 2:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well...";
 					mes "I actually just";
 					mes "do smithing work";
 					mes "to create my own";
 					mes "cooking tools.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Oh, I understand";
 					mes "that somebody needs";
 					mes "to fight the monsters,";
@@ -3096,7 +3127,7 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "to ask for forging weapons.";
 					mes "I... am a strict pacifist~";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just go look";
 					mes "around for a little";
 					mes "bit, I'm sure you'll";
@@ -3105,21 +3136,21 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "you a good weapon~";
 					close;
 				case 3:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Mm...?";
 					mes "Did you just";
 					mes "say that you";
 					mes "want to learn";
 					mes "the art of cooking?";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "I'm sorry, but I can't";
 					mes "really give culinary";
 					mes "lessons. But I will";
 					mes "give good advice for";
 					mes "hopeful beginners.";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Now...";
 					mes "For your tuition";
 					mes "I'll need-- Gosh,";
@@ -3128,27 +3159,27 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					mes "and a pen for this list...";
 					next;
 					set ein_cook,ein_cook+100;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Just kidding!";
 					mes "^333333*Titter~*^000000 I don't need";
 					mes "much to make some";
 					mes "cooking utensils. Bring";
 					mes "6 ^0000FFLarge Jellopy^000000. That's it!";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "In return, I will give you";
 					mes "1 Coal and some useful";
 					mes "cooking advice for novices.";
 					mes "I give this advice for free to";
 					mes "my smithing colleages, though...";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Why ^EEA9B8don't^000000 you";
 					mes "become a Blacksmith?";
 					mes "I'm much more confident";
 					mes "in that field. ^333333*Tee hee~*^000000";
 					next;
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Well, I'll be";
 					mes "waiting right";
 					mes "here until you";
@@ -3159,14 +3190,14 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 					case 3: mes "...Behbie~"; close;
 					}
 				case 4:
-					mes "[愛依娜]";
+					mes "[Uwe]";
 					mes "Take care,";
 					mes "sugar honey~";
 					mes "Ho ho ho!";
 					close;
 				}
 			case 2:
-				mes "[愛依娜]";
+				mes "[Uwe]";
 				mes "Cooking begins with";
 				mes "fire and ends with fire.";
 				mes "There's a certain art to";
@@ -3178,15 +3209,15 @@ einbroch,215,180,6	script	愛依娜 克萊茵#ein	85,{
 	}
 }
 
-// 工廠任務
+// Factory Quest
 //============================================================
-einbroch,1,1,0	script	空汙警報	-1,{
+einbroch,1,1,0	script	Einbroch Smog Alert	-1,{
 	end;
 
 OnEnable:
 	set $@AlrdEinPoll,1;
-	mapannounce "einbroch","環境管理員: 發生緊急事件!!　工廠的煤煙在擴大，艾音布羅克的居民請趕快躲起來!",bc_map;
-	enablenpc "空汙警報";
+	mapannounce "einbroch","This is a state of emercency! Harmful smog is reaching high levels of saturation. Residents of Einbroch must find shelter immediately.",bc_map;
+	enablenpc "Einbroch Smog Alert";
 	hideonnpc "Centzu#ein";
 	hideonnpc "Khowropher#ein";
 	hideonnpc "Khetine#ein";
@@ -3208,104 +3239,104 @@ OnEnable:
 	hideonnpc "Mark#ein";
 	hideonnpc "Khemko#ein";
 	hideonnpc "Oberu#ein";
-	hideonnpc "愛依娜 克萊茵#ein";
+	hideonnpc "Uwe Kleine#ein";
 	hideonnpc "Flu Mask Dealer#ein";
 	hideonnpc "Paddler#ein";
 	hideonnpc "Laboratory Soldier#ein-1";
 	hideonnpc "Laboratory Soldier#ein=2";
 	initnpctimer;
-	monster "einbroch",82,332,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",99,328,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",122,317,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",138,319,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",147,312,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",159,316,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",173,315,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",161,311,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",147,296,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",168,282,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",175,271,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",146,274,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",160,272,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",155,256,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",179,262,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",192,248,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",212,255,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",230,250,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",246,251,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",262,254,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",253,240,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",202,245,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",181,251,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",172,238,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",146,242,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",186,226,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",173,239,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",124,248,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",120,234,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",98,234,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",101,219,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",89,208,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",96,191,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",76,194,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",60,196,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",45,194,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",34,201,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",40,184,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",64,173,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",96,173,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",41,155,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",46,131,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",46,108,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",38,93,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",55,86,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",81,81,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",107,82,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",107,104,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",123,73,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",132,87,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",125,63,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",142,64,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",150,52,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",157,37,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",179,39,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",197,46,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",217,67,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",246,54,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",228,110,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",250,118,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",273,127,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",288,138,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",281,160,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",281,192,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",291,201,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",283,218,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",268,216,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",273,196,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",262,164,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",241,180,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",216,205,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",209,198,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",224,177,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",227,163,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",208,166,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",132,87,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",149,119,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",119,36,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",84,155,"毒的煙",1621,1,"空汙警報::OnMyMobDead";
-	monster "einbroch",82,107,"酸的煙",1621,1,"空汙警報::OnMyMobDead";
+	monster "einbroch",82,332,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",99,328,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",122,317,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",138,319,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",147,312,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",159,316,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",173,315,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",161,311,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",147,296,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",168,282,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",175,271,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",146,274,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",160,272,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",155,256,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",179,262,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",192,248,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",212,255,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",230,250,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",246,251,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",262,254,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",253,240,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",202,245,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",181,251,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",172,238,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",146,242,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",186,226,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",173,239,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",124,248,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",120,234,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",98,234,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",101,219,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",89,208,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",96,191,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",76,194,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",60,196,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",45,194,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",34,201,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",40,184,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",64,173,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",96,173,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",41,155,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",46,131,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",46,108,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",38,93,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",55,86,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",81,81,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",107,82,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",107,104,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",123,73,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",132,87,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",125,63,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",142,64,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",150,52,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",157,37,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",179,39,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",197,46,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",217,67,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",246,54,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",228,110,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",250,118,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",273,127,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",288,138,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",281,160,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",281,192,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",291,201,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",283,218,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",268,216,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",273,196,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",262,164,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",241,180,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",216,205,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",209,198,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",224,177,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",227,163,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",208,166,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",132,87,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",149,119,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",119,36,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",84,155,"Toxic Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
+	monster "einbroch",82,107,"Red Fog",1621,1,"Einbroch Smog Alert::OnMyMobDead";
 	end;
 
 OnMyMobDead:
-	if (mobcount("einbroch","空汙警報::OnMyMobDead")) {
+	if (mobcount("einbroch","Einbroch Smog Alert::OnMyMobDead")) {
 		end;
 	}
 
 OnTimer600000:
 	killmonsterall "einbroch";
 	mapannounce "einbroch","Emergency status is now cancelled. Air pollution levels are now within the safety zone.",bc_map;
-	disablenpc "空汙警報";
-	hideoffnpc "魯茲波格#ein";
+	disablenpc "Einbroch Smog Alert";
+	hideoffnpc "Liotzburg#ein";
 	hideoffnpc "Centzu#ein";
 	hideoffnpc "Khowropher#ein";
 	hideoffnpc "Khetine#ein";
@@ -3327,7 +3358,7 @@ OnTimer600000:
 	hideoffnpc "Mark#ein";
 	hideoffnpc "Khemko#ein";
 	hideoffnpc "Oberu#ein";
-	hideoffnpc "愛依娜 克萊茵#ein";
+	hideoffnpc "Uwe Kleine#ein";
 	hideoffnpc "Flu Mask Dealer#ein";
 	hideoffnpc "Paddler#ein";
 	hideoffnpc "Laboratory Soldier#ein-1";
@@ -3338,15 +3369,16 @@ OnTimer600000:
 	end;
 }
 
-einbroch,132,84,3	script	魯茲波格#ein	853,2,2,{
+einbroch,132,84,3	script	Liotzburg#ein	853,2,2,{
 	if ((EinFactory == 13) || (EinFactory == 14)) {
+		changequest 8029,8030;
 		set EinFactory,14;
-		mes "[魯茲波格]";
+		mes "[Liotzburg]";
 		mes "What...?";
 		mes "Factory Repair";
 		mes "budget? No way!";
 		next;
-		mes "[魯茲波格]";
+		mes "[Liotzburg]";
 		mes "Why waste money?";
 		mes "We haven't had any";
 		mes "problems so far! Look,";
@@ -3354,35 +3386,35 @@ einbroch,132,84,3	script	魯茲波格#ein	853,2,2,{
 		mes "are you exaggerating";
 		mes "such small details?";
 		next;
-		mes "[魯茲波格]";
+		mes "[Liotzburg]";
 		mes "The field overseer,";
-		mes "傑米特, just came by to";
+		mes "Zelmeto, just came by to";
 		mes "ask for a budget increase.";
 		mes "Well, I think he's lying!";
 		mes "Everything's perfect!";
 		close;
 	}
-	mes "[魯茲波格]";
+	mes "[Liotzburg]";
 	mes "I'm the plant";
 	mes "superintendant of this";
 	mes "factory. Most of my employees";
 	mes "are diligent workers. I can't say that of everyone, but overall we're doing an excellent job. Ha ha ha~!";
 	next;
-	mes "[魯茲波格]";
+	mes "[Liotzburg]";
 	mes "So long as this factory";
 	mes "is well maintained, we won't";
 	mes "have to worry about this city's";
 	mes "safety. The field overseer,";
-	mes "傑米特, is also very reliable.";
+	mes "Zelmeto, is also very reliable.";
 	next;
-	mes "[魯茲波格]";
-	mes "I can trust 傑米特";
+	mes "[Liotzburg]";
+	mes "I can trust Zelmeto";
 	mes "to look after things,";
 	mes "so there's no need for";
 	mes "me to go inside the factory.";
 	mes "Delegating work is great!";
 	next;
-	mes "[魯茲波格]";
+	mes "[Liotzburg]";
 	mes "Our factory will";
 	mes "continue to develop";
 	mes "and everyone will be";
@@ -3392,22 +3424,24 @@ einbroch,132,84,3	script	魯茲波格#ein	853,2,2,{
 	close;
 
 OnTouch:
-	if ($EinPolution > 9) {
-		mes "[魯茲波格]";
+	if ($EinPolution > 9 && !$@AlrdEinPoll) {
+		mes "[Liotzburg]";
 		mes "What's going on?!";
 		mes "Who's responsible?!";
 		mes "God, I can't believe";
 		mes "this is happening!";
 		mes "^333333*Cough Cough!*^000000";
 		next;
-		mes "[魯茲波格]";
+		mes "[Liotzburg]";
 		mes "I need to get out of here!";
 		mes "You! D-do something and";
 		mes "fix this! I gotta hide and find";
 		mes "someplace safe!";
 		close2;
-		donpcevent "空汙警報::OnEnable";
-		hideonnpc "魯茲波格#ein";
+ 		if ($EinPolution > 9 && !$@AlrdEinPoll) {
+			donpcevent "Einbroch Smog Alert::OnEnable";
+			hideonnpc "Liotzburg#ein";
+		}
 		end;
 	}
 	else {
@@ -3415,29 +3449,29 @@ OnTouch:
 	}
 }
 
-ein_in01,67,242,3	script	傑米特	851,{
+ein_in01,67,242,3	script	Zelmeto	851,{
 	if ($EinPolution > 9) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We've got a big problem";
 		mes "here! I appreciate that you've";
 		mes "been gathering the materials,";
 		mes "but the machines have been";
 		mes "broken for too long!";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Right when I tried to";
 		mes "fix it, a huge shortout";
 		mes "occurred. Our town is";
 		mes "probably filled with";
-		mes "毒的煙 right now!";
+		mes "toxic fog right now!";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I'll try my best to fix";
 		mes "this, but we really should";
 		mes "have allocated some funds";
 		mes "to fix this machine earlier!";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "The most important";
 		mes "thing is that you get";
 		mes "out of here and find";
@@ -3447,7 +3481,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		end;
 	}
 	if (EinFactory == 16) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We'll be putting good";
 		mes "use to the materials you";
 		mes "gave me. With your help,";
@@ -3457,13 +3491,13 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if ((EinFactory == 15) && (countitem(7325) > 19) && (countitem(7317) > 9) && (countitem(7319) > 9)) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Ah, it's you again.";
 		mes "It's shameful letting";
 		mes "other people know about";
 		mes "our miserable situation...";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "There's nothing";
 		mes "worth seeing here,";
 		mes "so there really isn't";
@@ -3472,7 +3506,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		next;
 		switch(select("Give him materials.:Huh.")) {
 		case 1:
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "...Hm?";
 			mes "Aren't these the";
 			mes "materials we need";
@@ -3480,14 +3514,14 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "the factory? How did";
 			mes "you find all of these?";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "I don't know how";
 			mes "I can possibly pay you";
 			mes "back for this great favor.";
 			mes "I appreciate that you've";
 			mes "stepped forward to help us.";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "Oh...!";
 			mes "In my years of managing,";
 			mes "I've learned the ultimate";
@@ -3495,14 +3529,14 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "me enhance your motivation";
 			mes "to show you my gratitude.";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "Now...";
 			mes "Just open your mind";
 			mes "and listen to my words";
 			mes "of encouragement";
 			mes "and inspiration...";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "^236B8EWhen the going";
 			mes "gets rough, you've";
 			mes "gotta get rougher!";
@@ -3510,7 +3544,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "mountain 'cause no one's";
 			mes "gonna climb it for you!^000000";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "^236B8EDon't give it up!";
 			mes "Go for broke!";
 			mes "Losers are quitters";
@@ -3519,30 +3553,31 @@ ein_in01,67,242,3	script	傑米特	851,{
 			delitem 7317,10; //Screw
 			delitem 7319,10; //Old_Steel_Plate
 			set $EinPolution,$EinPolution+1;
+			completequest 8031;
 			set EinFactory,16;
 			if (BaseLevel < 41) {
-				getexp 615,0;
+				getexp 62,0;
 			}
 			else if (BaseLevel < 51) {
-				getexp 3075,0;
+				getexp 308,0;
 			}
 			else if (BaseLevel < 61) {
-				getexp 6604,0;
+				getexp 660,0;
 			}
 			else if (BaseLevel < 71) {
-				getexp 18508,0;
+				getexp 1851,0;
 			}
 			else if( BaseLevel < 81) {
-				getexp 32062,0;
+				getexp 3206,0;
 			}
 			else if (BaseLevel < 91) {
-				getexp 76026,0;
+				getexp 7603,0;
 			}
 			else if (BaseLevel < 99) {
-				getexp 290675,0;
+				getexp 29068,0;
 			}
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "^333333*Whew*^000000";
 			mes "I haven't given that much";
 			mes "inspriration in a while, but";
@@ -3550,7 +3585,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "I'm going to start the repairs, but once again, I'd like to thank you.";
 			close;
 		case 2:
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "^333333*Sigh...*^000000";
 			mes "I'm really worried";
 			mes "about this factory's";
@@ -3560,7 +3595,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		}
 	}
 	if (EinFactory == 15) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We need";
 		mes "at least";
 		mes "20 ^FF0000Flexible Tubes^000000,";
@@ -3568,7 +3603,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "10 ^FF0000Used Iron Plate^000000";
 		mes "to repair this factory.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "^333333*Sigh...*^000000";
 		mes "But there's no way";
 		mes "we can get all of those";
@@ -3577,11 +3612,11 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 14) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "...";
 		mes "......";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "^333333*Sigh*^000000";
 		mes "My proposal was rejected";
 		mes "by our superintendant. But";
@@ -3589,7 +3624,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "are crucial for peak operating";
 		mes "efficiency and worker safety!";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I'm frustrated and worried.";
 		mes "Maybe nothing will happen";
 		mes "for now, but we've got to";
@@ -3597,13 +3632,13 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "regularly maintaining";
 		mes "all of these machines.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Even possible threats";
 		mes "to the safety of our workers";
 		mes "can't be ignored. Isn't there";
 		mes "something I can do? ^333333*Sigh*^000000";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "If we can";
 		mes "just get";
 		mes "20 ^FF0000Flexible Tube^000000,";
@@ -3611,8 +3646,9 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "10 ^FF0000Used Iron Plate^000000,";
 		mes "we could make those repairs.";
 		next;
+		changequest 8030,8031;
 		set EinFactory,15;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "But without funds, there's";
 		mes "no way we can purchase";
 		mes "those items. If something";
@@ -3621,12 +3657,12 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 13) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I've got to report this";
 		mes "to our superintendant";
 		mes "as soon as possible.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "With any luck, he'll approve";
 		mes "a budget increase so that we";
 		mes "can get all of the materials";
@@ -3634,7 +3670,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 12) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Well, I figured that both";
 		mes "conveyors would have";
 		mes "similar problems. We";
@@ -3642,22 +3678,23 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "same time, but it'll";
 		mes "be a hassle.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thank you so much for";
 		mes "your help. Without you,";
 		mes "I'm pretty sure we wouldn't";
 		mes "know about these problems";
 		mes "until it was too late.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Now, I've got to make sure";
 		mes "we have enough materials";
 		mes "to make the repairs so that";
 		mes "the machines will be safely";
 		mes "functioning again.";
 		next;
+		changequest 8028,8029;
 		set EinFactory,13;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "First, I better";
 		mes "hurry and request";
 		mes "an increase for the";
@@ -3666,13 +3703,13 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 11) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "The machine which";
 		mes "you are supposed to";
 		mes "inspect right now";
 		mes "is a large conveyor.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Remember that we";
 		mes "also have a small sized";
 		mes "conveyor, so make sure";
@@ -3681,19 +3718,19 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 10) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "This is";
 		mes "worse than";
 		mes "I imagined...";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We've got to start";
 		mes "repairs as soon as we";
 		mes "can! Hopefully, we can";
 		mes "resolve this before any";
 		mes "serious problems happen...";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Alright, the last";
 		mes "thing that you need to";
 		mes "inspect is a ^FF0000large converyor^000000.";
@@ -3701,7 +3738,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "inspected before, but it's";
 		mes "bigger and more powerful.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We have only one of these";
 		mes "machines and it's usually";
 		mes "moved around a lot since";
@@ -3709,8 +3746,9 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "use it. I really don't know";
 		mes "where it could be now.";
 		next;
+		changequest 8026,8027;
 		set EinFactory,11;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Still, I'm sure that";
 		mes "it's inside the building,";
 		mes "so you should be able to";
@@ -3719,13 +3757,13 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 9) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "This time, you need";
 		mes "to inspect an outdoor";
 		mes "pipe that is located far";
 		mes "outside of the factory.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Since there aren't any";
 		mes "other machines in that";
 		mes "area, that pipe shouldn't";
@@ -3733,20 +3771,20 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 8) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Huh?";
 		mes "I'm suprised to hear";
 		mes "that. ^333333*Sigh*^000000 There's just";
 		mes "too many things that need";
 		mes "fixing. This is terrible...";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Well, let me worry";
 		mes "about that for now. Please";
 		mes "focus on continuing to inspect";
 		mes "some of the other machines.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Now, there's a pipe inside";
 		mes "this factory that I want you";
 		mes "to look at. Many of our pipes";
@@ -3754,28 +3792,29 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "but this particular one might";
 		mes "be severely damaged.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Now, the pipe I want";
 		mes "you to inspect is located";
 		mes "near those large caultrons";
 		mes "of molten metal. You should";
 		mes "be able to find it pretty easily.";
 		next;
+		changequest 8024,8025;
 		set EinFactory,9;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thanks again";
 		mes "for your help,";
 		mes "adventurer.";
 		close;
 	}
 	if (EinFactory == 7) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "The machine which";
 		mes "I want you to inspect";
 		mes "this time is a small";
 		mes "sized conveyor.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Be sure that you";
 		mes "inspect the small";
 		mes "one, since we also";
@@ -3784,7 +3823,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 6) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I see...";
 		mes "It's most likely that";
 		mes "there was a short";
@@ -3792,7 +3831,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "of the internal devices";
 		mes "were burnt out...";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thanks for checking";
 		mes "that out for me. Now,";
 		mes "the next machine I need";
@@ -3800,14 +3839,14 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "than the others I've had";
 		mes "you examine.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "It's a mechanical";
 		mes "hand that transports";
 		mes "small objects. We didn't";
 		mes "really give it a name, but";
 		mes "you should be able to find it.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Recently, it seems";
 		mes "that there have been";
 		mes "problems in operating";
@@ -3815,14 +3854,15 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "broken, we need to know";
 		mes "and fix it right away.";
 		next;
+		changequest 8022,8023;
 		set EinFactory,7;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thanks again";
 		mes "in advance.";
 		close;
 	}
 	if (EinFactory == 5) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I'd like you to inspect";
 		mes "the control panel. It's";
 		mes "fairly large and can be";
@@ -3832,7 +3872,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 4) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "What...?";
 		mes "This is worse";
 		mes "than I expected. But";
@@ -3840,21 +3880,21 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "about these problems";
 		mes "as soon as possible.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Don't you worry,";
 		mes "we'll take care of";
 		mes "this. In the meantime,";
 		mes "I'd like you to inspect";
 		mes "the next machine for me.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "I want you to check";
 		mes "a ^FF0000control panel^000000. It's the";
 		mes "same kind as the one";
 		mes "you just inspected, but";
 		mes "bigger in size.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "It's located in the";
 		mes "middle of the factory,";
 		mes "so you should be able";
@@ -3862,8 +3902,9 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "condition, even though it's";
 		mes "operating fine for now...";
 		next;
+		changequest 8020,8021;
 		set EinFactory,5;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "We need to ensure that";
 		mes "it's stable, reliable and";
 		mes "doesn't pose a threat to";
@@ -3872,35 +3913,35 @@ ein_in01,67,242,3	script	傑米特	851,{
 		close;
 	}
 	if (EinFactory == 3) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "You need to inspect";
 		mes "an automatic pressure";
 		mes "governor. It looks fine,";
 		mes "but sometimes it makes";
 		mes "strange noises.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "It probably will";
 		mes "be a good idea to";
 		mes "check that machine";
 		mes "more carefully this";
 		mes "time, just in case.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thank you";
 		mes "for helping us,";
 		mes "adventurer.";
 		close;
 	}
 	if (EinFactory == 2) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Huh, I see.";
 		mes "We must do something";
 		mes "about that as soon as";
 		mes "we can. Now, let me tell";
 		mes "you what to check next.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "There are 3 automatic";
 		mes "pressure governors which";
 		mes "hammer the bent iron plates";
@@ -3908,20 +3949,21 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "seems that one of them may";
 		mes "have some kind of problem.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Please inspect the ^FF0000automatic pressure governors^000000. Even if the";
 		mes "problem seems small, please";
 		mes "report it to me. I know it might seem fine now, but I want to prevent an accident if I can.";
 		next;
+		changequest 8018,8019;
 		set EinFactory,3;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thank you";
 		mes "in advance,";
 		mes "adventurer.";
 		close;
 	}
 	if (EinFactory == 1) {
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "If you would,";
 		mes "please inspect the";
 		mes "2nd control panel that";
@@ -3929,32 +3971,32 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "broken for a while...";
 		close;
 	}
-	mes "[傑米特]";
+	mes "[Zelmeto]";
 	mes "Ah, you must be a visitor.";
-	mes "I'm 傑米特 Abellov, the";
+	mes "I'm Zelmeto Abellov, the";
 	mes "field overseer. Have you";
 	mes "been in this facility before?";
 	next;
-	mes "[傑米特]";
+	mes "[Zelmeto]";
 	mes "This factory plays an";
 	mes "important role in our city";
 	mes "and generates a lot of income.";
 	mes "However, our employees suffer";
 	mes "from a poor work environment.";
 	next;
-	mes "[傑米特]";
+	mes "[Zelmeto]";
 	mes "Our superintendant makes a lot";
 	mes "of money and seems content with";
 	mes "the current situation. However, the rest of the workforce doesn't enjoy all of the benefits he receives...";
 	next;
-	mes "[傑米特]";
+	mes "[Zelmeto]";
 	mes "Many people have already";
 	mes "quit and there are only a few";
 	mes "people who continue to work";
 	mes "here. So now we're understaffed";
 	mes "and I'm in quite a bind...";
 	next;
-	mes "[傑米特]";
+	mes "[Zelmeto]";
 	mes "There are some urgent";
 	mes "tasks I need done, but";
 	mes "there's no way for me";
@@ -3964,7 +4006,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 	next;
 	switch(select("You're understaffed?:No, it's okay.")) {
 	case 1:
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Yes, we are!";
 		mes "I don't have enough";
 		mes "people to inspect the";
@@ -3972,7 +4014,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		mes "determine what kinds";
 		mes "of problems we have.";
 		next;
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "It's a time consuming";
 		mes "task I'd rather do on my";
 		mes "own. However, between that";
@@ -3981,7 +4023,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 		next;
 		switch(select("I can help you.:Keep up the good job.")) {
 		case 1:
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "You can help me?";
 			mes "I know something like";
 			mes "this is too much to ask,";
@@ -3989,7 +4031,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "anyone offers me. I'm";
 			mes "that desperate.";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "Alright, I'll have you";
 			mes "inspect the machines";
 			mes "in the factory one by one.";
@@ -3997,7 +4039,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "what needs to be repaired";
 			mes "and what's working fine.";
 			next;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "First, find the ^FF00002nd control";
 			mes "panel^000000 and determine its";
 			mes "status. I'm fairly certain that";
@@ -4005,8 +4047,9 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "it wouldn't hurt to make sure.";
 			mes "You should find it easily.";
 			next;
+			setquest 8017;
 			set EinFactory,1;
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "When you finish your";
 			mes "inspection, report back";
 			mes "to me so I can tell you";
@@ -4015,7 +4058,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			mes "offering to help.";
 			close;
 		case 2:
-			mes "[傑米特]";
+			mes "[Zelmeto]";
 			mes "Well, it's a living.";
 			mes "^333333*Sigh*^000000 I can put up with";
 			mes "this, but I hope the higher";
@@ -4024,7 +4067,7 @@ ein_in01,67,242,3	script	傑米特	851,{
 			close;
 		}
 	case 2:
-		mes "[傑米特]";
+		mes "[Zelmeto]";
 		mes "Thank you for";
 		mes "your kindness.";
 		mes "And please don't";
@@ -4036,9 +4079,10 @@ ein_in01,67,242,3	script	傑米特	851,{
 
 ein_in01,49,232,3	script	2nd Control Panel#ins	111,{
 	if ((EinFactory == 1) || (EinFactory == 2)) {
+		changequest 8017,8018;
 		set EinFactory,2;
 		mes "^3355FFIt's the 2nd control panel";
-		mes "傑米特 asked you to inspect.";
+		mes "Zelmeto asked you to inspect.";
 		mes "It looks totally broken: screws";
 		mes "are missing, and the iron cover";
 		mes "has been bent open, revealing";
@@ -4050,6 +4094,7 @@ ein_in01,49,232,3	script	2nd Control Panel#ins	111,{
 
 ein_in01,108,217,3	script	3rd Pressure Governor#1	111,{
 	if ((EinFactory == 3) || (EinFactory == 4)) {
+		changequest 8019,8020;
 		set EinFactory,4;
 		mes "^3355FFAt first glance, this";
 		mes "pressure governor looks";
@@ -4065,6 +4110,7 @@ ein_in01,108,217,3	script	3rd Pressure Governor#1	111,{
 
 ein_in01,62,258,3	script	Main Control Panel#ins	111,{
 	if ((EinFactory == 5) || (EinFactory == 6)) {
+		changequest 8021,8022;
 		set EinFactory,6;
 		mes "^3355FFThe main control panel";
 		mes "doesn't look like it has";
@@ -4080,6 +4126,7 @@ ein_in01,62,258,3	script	Main Control Panel#ins	111,{
 
 ein_in01,46,197,3	script	Conveyor#ins	111,{
 	if ((EinFactory == 7) || (EinFactory == 8)) {
+		changequest 8023,8024;
 		set EinFactory,8;
 		mes "^3355FFThe conveyor's movements";
 		mes "look jittery and clumsy. The";
@@ -4094,6 +4141,7 @@ ein_in01,46,197,3	script	Conveyor#ins	111,{
 
 ein_in01,100,266,3	script	Pipe#ins	111,{
 	if ((EinFactory == 9) || (EinFactory == 10)) {
+		changequest 8025,8026;
 		set EinFactory,10;
 		mes "^3355FFThe inspection of this";
 		mes "pipe didn't take very long.";
@@ -4109,6 +4157,7 @@ ein_in01,100,266,3	script	Pipe#ins	111,{
 
 ein_in01,95,239,3	script	Conveyor#ins2	111,{
 	if ((EinFactory == 11) || (EinFactory == 12)) {
+		changequest 8027,8028;
 		set EinFactory,12;
 		mes "^3355FFThis conveyor seems";
 		mes "to have similar problems";
@@ -4123,7 +4172,7 @@ ein_in01,95,239,3	script	Conveyor#ins2	111,{
 
 // Administrator NPC used to rig the invasion in Einbroch.
 /**/
-sec_in02,127,86,3	script	工廠任務測試	851,{
+sec_in02,127,86,3	script	Factory Quest Test	851,{
 	input .@input; //,0,9000;
 	if ((.@input < 0) || (.@input > 9000)) {
 		mes "[Test1]";
@@ -4140,7 +4189,7 @@ sec_in02,127,86,3	script	工廠任務測試	851,{
 		mes "[Test1]";
 		mes "The current value";
 		mes "of the global variable";
-		mes "for the 工廠任務";
+		mes "for the Factory Quest";
 		mes "is... ^3355FF" + z + "^000000.";
 		mes "You wanna change?";
 		next;
@@ -4160,7 +4209,7 @@ sec_in02,127,86,3	script	工廠任務測試	851,{
 			set $EinPolution,10;
 			close;
 		case 3:
-			donpcevent "空汙警報::OnEnable";
+			donpcevent "Einbroch Smog Alert::OnEnable";
 			close;
 		}
 	}
@@ -4352,6 +4401,7 @@ einbech,165,105,7	script	Buender Hikeman#ein	847,{
 		mes "[Buender Hikeman]";
 		mes "Then I learned...";
 		mes "You planned it all along.";
+		setquest 2071;
 		set Shinokas_Quest,1;
 		close2;
 		cutin "ein_hicman",255;
@@ -4463,6 +4513,7 @@ einbech,165,105,7	script	Buender Hikeman#ein	847,{
 		mes "It wouldn't be a good idea to";
 		mes "provoke the old man anymore,";
 		mes "intentionally or not.^000000";
+		changequest 2071,2072;
 		set Shinokas_Quest,2;
 		close2;
 		cutin "ein_hicman",255;
@@ -4621,18 +4672,19 @@ einbech,165,105,7	script	Buender Hikeman#ein	847,{
 			mes "their intentions can't be good.";
 			close2;
 			cutin "ein_hicman",255;
+			completequest 2078;
 			set Shinokas_Quest,11;
 			if (BaseLevel < 70) {
-				getexp 100000,80000;
+				getexp 10000,8000;
 			}
 			else if ((BaseLevel > 69) && (BaseLevel < 80)) {
-				getexp 300000,100000;
+				getexp 30000,10000;
 			}
 			else if ((BaseLevel > 79) && (BaseLevel < 90)) {
-				getexp 500000,300000;
+				getexp 50000,30000;
 			}
 			else if ((BaseLevel > 89) && (BaseLevel < 100)) {
-				getexp 700000,500000;
+				getexp 70000,50000;
 			}
 			end;
 		case 2:
@@ -4675,6 +4727,7 @@ einbech,165,105,7	script	Buender Hikeman#ein	847,{
 		mes "from the look of discomfort";
 		mes "on his face, he seems to be";
 		mes "having a nightmare.";
+		cutin "ein_hicman",255;
 		close;
 	}
 }
@@ -4856,6 +4909,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 		mes "Alright, I'll tell you what";
 		mes "happened. But it's a";
 		mes "long story...";
+		changequest 2072,2073;
 		set Shinokas_Quest,3;
 		close;
 	}
@@ -4934,6 +4988,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 		mes "[Shinokas]";
 		mes "I'm too old and weak to leave";
 		mes "this house, and there's the chance that those men will find me. If you can sympathize with my situation, please find out if the Kapellthaine family has any unique ores...";
+		changequest 2073,2074;
 		set Shinokas_Quest,4;
 		close;
 	}
@@ -4952,7 +5007,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 		mes "anything from the";
 		mes "Kapellthaines?";
 		next;
-		mes "["+strcharinfo(0)+"]";
+		mes "["+strcharinfo(0)+"]"	;
 		mes "Well, Mr. Kapellthaine";
 		mes "is kind of violent, but";
 		mes "I didn't find anything";
@@ -4979,6 +5034,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 		mes "Please go and search the";
 		mes "Factory for that ore as";
 		mes "soon as you can.";
+		changequest 2074,2075;
 		set Shinokas_Quest,6;
 		close;
 	}
@@ -5059,6 +5115,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 				mes "can enter that kind";
 				mes "of place. But I'm sure";
 				mes "you'll figure something out.";
+				changequest 2075,2076;
 				set Shinokas_Quest,7;
 				close;
 			}
@@ -5187,6 +5244,7 @@ ein_in01,231,163,7	script	Sick Old Man#ein	849,{
 		mes "Shinokas!";
 		mes "Why, God?";
 		mes "Why...";
+		changequest 2077,2078;
 		set Shinokas_Quest,10;
 		close;
 	}
@@ -5523,6 +5581,7 @@ airplane,31,77,5	script	Drunken Man#ein	853,{
 			mes "must have been a piece";
 			mes "of ^3131FFYmir's Heart^333333. I better";
 			mes "tell Shinokas about this.)^000000";
+			changequest 2076,2077;
 			set Shinokas_Quest,9;
 			close;
 		case 2:
@@ -5839,7 +5898,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "[Calla]";
 		mes "I just heard from my mother";
 		mes "that she's planning to have";
-		mes "tea with Clitzer! I'm sure that";
+		mes "tea with Klitzer! I'm sure that";
 		mes "I have you to thank for this~";
 		next;
 		mes "[Calla]";
@@ -5854,7 +5913,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "I feel like such a fool,";
 		mes "thinking it was all hopeless.";
 		mes "I'll be doing my best to have";
-		mes "my parents accept Clitzer and";
+		mes "my parents accept Klitzer and";
 		mes "someday we'll be married~";
 		next;
 		mes "[Calla]";
@@ -5889,16 +5948,16 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		percentheal 100,0;
 		set EIN_LOVERQ,17;
 		if (BaseLevel < 41) {
-			getexp 610,0;
+			getexp 61,0;
 		}
 		else if (BaseLevel < 61) {
-			getexp 6000,0;
+			getexp 600,0;
 		}
 		else if (BaseLevel < 81) {
-			getexp 30000,0;
+			getexp 3000,0;
 		}
 		else if (BaseLevel < 99) {
-			getexp 200000,0;
+			getexp 20000,0;
 		}
 		next;
 		mes "[Calla]";
@@ -5920,7 +5979,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 	if ((EIN_LOVERQ == 5) && (countitem(712) > 0)) {
 		mes "[Calla]";
 		mes "You've spoken";
-		mes "with Clitzer? How";
+		mes "with Klitzer? How";
 		mes "is he? What did he say?";
 		next;
 		mes "[Calla]";
@@ -5945,7 +6004,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 			mes "Ah, " + strcharinfo(0) + "!";
 			mes "Such a lovely name~";
 			mes "I promise that I won't ever";
-			mes "forget it. Oh, and if you pass by Einbech, would you thank Clitzer for the flower for me please?";
+			mes "forget it. Oh, and if you pass by Einbech, would you thank Klitzer for the flower for me please?";
 			next;
 			mes "[Calla]";
 			mes "A-and... And...";
@@ -5963,7 +6022,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 			mes "Would you please tell";
 			mes "me your name again?";
 			close;
-		}	
+		}
 	}
 	if (EIN_LOVERQ == 4) {
 		mes "[Calla]";
@@ -5983,7 +6042,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "[Calla]";
 		mes "Would you please";
 		mes "take this Violin and";
-		mes "try to make it to Clitzer";
+		mes "try to make it to Klitzer";
 		mes "this time? Thank you";
 		mes "for your help~";
 		set EIN_LOVERQ,3;
@@ -5993,7 +6052,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 	if ((EIN_LOVERQ == 3) || (EIN_LOVERQ == 5)) {
 		mes "[Calla]";
 		mes "Oh, please send my";
-		mes "regards to Clitzer for me.";
+		mes "regards to Klitzer for me.";
 		mes "I wish I could comfort";
 		mes "him in person, but this";
 		mes "is the best I can do for now.";
@@ -6009,8 +6068,8 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "a prison to me...";
 		next;
 		mes "[Calla]";
-		mes "Oh, you've met Clitzer?";
-		mes "Isn't he so kind, such";
+		mes "Oh, you've met Klitzer?";
+		mes "Isn't he so kind, and such";
 		mes "a perfect gentleman?";
 		next;
 		mes "[Calla]";
@@ -6019,12 +6078,12 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "impossible. My parents think";
 		mes "he's not good enough for me,";
 		mes "but they're wrong! What am";
-		mes "I going to do? Oh, Clitzer...";
+		mes "I going to do? Oh, Klitzer...";
 		next;
 		mes "[Calla]";
 		mes "Well, maybe I can't see";
 		mes "him, but would you give";
-		mes "my violin to Clitzer for me?";
+		mes "my violin to Klitzer for me?";
 		mes "I used to play this for him";
 		mes "all the time...";
 		next;
@@ -6034,7 +6093,7 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 		mes "I'm sorry to trouble you,";
 		mes "but please understand";
 		mes "that I want to comfort my";
-		mes "Clitzer in any way that";
+		mes "Klitzer in any way that";
 		mes "I possibly can. Thank";
 		mes "you so much, adventurer...";
 		close;
@@ -6069,9 +6128,9 @@ ein_in01,31,138,3	script	Calla#ein	90,{
 	}
 }
 
-ein_in01,200,101,5	script	Clitzer#ein	854,{
+ein_in01,200,101,5	script	Klitzer#ein	854,{
 	if (EIN_LOVERQ == 16) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Look out, world!";
 		mes "I'm gonna become";
 		mes "worthy of Calla's love!";
@@ -6080,7 +6139,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if ((EIN_LOVERQ == 15) && (countitem(7170) > 0)) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Waaaah!";
 		mes "What should I wear?!";
 		mes "I can't for the life of me";
@@ -6088,7 +6147,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "um, formal? I've never worn";
 		mes "anything like that before!";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Wait, " + strcharinfo(0) + ".";
 		mes "What's that you've got";
 		mes "there? I've seen something";
@@ -6098,19 +6157,19 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		next;
 		switch(select("Give it to him.:Ignore Him.")) {
 		case 1:
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "I can have this?";
 			mes "Oh, thank you so much!";
 			mes "Finally, I have something";
 			mes "nice enough to wear to meet";
 			mes "Calla's mom! What a relief!";
 			next;
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "You've been helping me all";
 			mes "this time and I haven't properly expressed my gratitude. I'm sorry";
 			mes "if I've been too absorbed in my own problems. I may be poor, but I need to repay you somehow...";
 			next;
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "Wait...";
 			mes "Why don't you have this";
 			mes "ore? I don't know how";
@@ -6142,7 +6201,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 				getitem 7296,1; //Pyroxene
 			}
 			next;
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "" + strcharinfo(0) + ",";
 			mes "you've really opened";
 			mes "my eyes. From now on,";
@@ -6151,7 +6210,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 			mes "become worthy of Calla's love.";
 			close;
 		case 2:
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "But how can I get";
 			mes "a Tuxedo? Ooh, I hope";
 			mes "it doesn't cost too much";
@@ -6161,14 +6220,14 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		}
 	}
 	if (EIN_LOVERQ == 15) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Noooooo!";
 		mes "I've got to find";
 		mes "the perfect thing";
 		mes "to wear or Calla's";
 		mes "mother might ^FF0000hate^000000 me!";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "What am I gonna do?!";
 		mes "Okay, nothing too flashy";
 		mes "or revealing. Can't let her";
@@ -6178,15 +6237,15 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if (EIN_LOVERQ == 14) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Noooooo!";
 		mes "I've got to find";
 		mes "the perfect thing";
 		mes "to wear or Calla's";
 		mes "mother might ^FF0000hate^000000 me!";
 		next;
-		mes "[Clitzer]";
-		mes "Think, Clitzer, think!";
+		mes "[Klitzer]";
+		mes "Think, Klitzer, think!";
 		mes "Okay, no fun colors.";
 		mes "I don't want her to";
 		mes "think I'm not serious";
@@ -6195,20 +6254,20 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if (EIN_LOVERQ == 13) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Eh...?";
 		mes "What did you just say?";
 		mes "You did something for";
 		mes "the Kapellthaines?";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "What...?";
 		mes "Did you just say";
 		mes "that Calla's mother";
 		mes "wants me to have tea";
 		mes "with her? Holy moley...!";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Okay, okay.";
 		mes "I-I I'll need something";
 		mes "nice to wear, right? Oh.";
@@ -6216,7 +6275,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "W-what should I do?";
 		next;
 		set EIN_LOVERQ,14;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "This monkey suit";
 		mes "that I've got on just";
 		mes "won't do! Arrrgh! But I've";
@@ -6226,7 +6285,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if (EIN_LOVERQ > 6) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "*Sigh...*";
 		mes "What can I do to";
 		mes "get Calla's parents";
@@ -6236,13 +6295,13 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if (EIN_LOVERQ == 6) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "You've given her";
 		mes "the flower? That's";
 		mes "great! Thank you,";
 		mes "thank you so mu--";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "...Oh!";
 		mes "Gosh! I was thinking so";
 		mes "much about myself that";
@@ -6250,13 +6309,13 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "name! I'm sorry for being";
 		mes "so knuckle-headed...";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "So...";
 		mes "What's your name?";
 		next;
 		input .@input$;
 		if (.@input$ == strcharinfo(0)) {
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "" + strcharinfo(0) + "...";
 			mes "That's very nice. Thank you,";
 			mes "I'm really grateful for your help. Although I can't see Calla in";
@@ -6264,17 +6323,17 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 			mes "my regards if you help me.";
 			next;
 			set EIN_LOVERQ,7;
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "I feel so much";
 			mes "better now. Oh!";
 			mes "When you have the";
 			mes "time, why don't you talk";
 			mes "to my mother? She always";
 			mes "likes meeting my friends.";
-			close;	
+			close;
 		}
 		else {
-			mes "[Clitzer]";
+			mes "[Klitzer]";
 			mes "Hm...?";
 			mes "Oh, don't be";
 			mes "so nervous~";
@@ -6285,13 +6344,13 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		}
 	}
 	if (EIN_LOVERQ == 5) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Have you left to";
 		mes "see Calla for me yet?";
 		mes "I'm sorry if I sound";
 		mes "pretty demanding...";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Anyway, please";
 		mes "remember to bring";
 		mes "Calla ^FF00001 Flower^000000 for me.";
@@ -6301,20 +6360,20 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if ((EIN_LOVERQ == 3) && (countitem(1901) == 1)) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "What brings you here?";
 		mes "Aren't you tired of hearing";
 		mes "me moan and whine about";
 		mes "lost love? ^333333*Siiiiigh...*^000000";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Hey, this violin...";
 		mes "Calla used to play";
 		mes "such beautiful music";
 		mes "on this for me. Did";
 		mes "she give this to you?";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "I see. Calla must have";
 		mes "known that I'm all broken up";
 		mes "right now. She's too good to";
@@ -6322,21 +6381,21 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "my feelings before thinking";
 		mes "about herself?";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "I know I'm being";
 		mes "shameless, but I have";
 		mes "a favor to ask. Adventurer,";
 		mes "would you please send";
 		mes "Calla a present for me?";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "All you need to do is";
 		mes "just give her ^FF00001 Flower^000000.";
 		mes "I don't have the zeny and";
 		mes "I don't think I'm welcome";
 		mes "at Kapellthaine Manor.";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Here, in return, I'll";
 		mes "give you this health";
 		mes "massage. It's not a";
@@ -6349,7 +6408,6 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "*Press Press Press*";
 		mes "*C-c-c-c-c-c-crack!*";
 		next;
-		set name,strcharinfo(0);
 		mes "["+ strcharinfo(0) +"]";
 		mes "Oh--";
 		mes "Hell yeah!";
@@ -6358,32 +6416,32 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		delitem 1901,1; //Violin
 		set EIN_LOVERQ,5;
 		if (BaseLevel < 41) {
-			getexp 610,0;
+			getexp 61,0;
 		}
 		else if (BaseLevel < 61) {
-			getexp 6000,0;
+			getexp 600,0;
 		}
 		else if (BaseLevel < 81) {
-			getexp 30000,0;
+			getexp 3000,0;
 		}
 		else if (BaseLevel < 99) {
-			getexp 200000,0;
+			getexp 20000,0;
 		}
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Would you please bring";
 		mes "1 Flower to Calla for me?";
 		mes "I'm sorry for troubling you... ";
 		close;
 	}
 	if (EIN_LOVERQ == 2) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "^333333*Sigh*^000000";
 		mes "I really appreciate your";
 		mes "sympathy, but I'm merely";
 		mes "a coward and a fool.";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Yeah...";
 		mes "I'm a coward for doing";
 		mes "nothing about my feelings";
@@ -6392,26 +6450,26 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		close;
 	}
 	if (EIN_LOVERQ == 1) {
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "That faintly sweet";
 		mes "and pleasant scent...";
 		mes "It's just like the fragrance";
 		mes "they use in Calla's house.";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Ah, so you visited";
 		mes "Calla in Einbroch?";
 		mes "I miss her sooo much!";
 		mes "Is she doing alright?";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Calla's so beautiful.";
 		mes "And she's so lovely.";
 		mes "Every time I close my";
 		mes "eyes, I can still see";
 		mes "her lovely smile.";
 		next;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "I'm sorry if I sound";
 		mes "silly, but I can't help";
 		mes "it. I know I'm acting like";
@@ -6419,7 +6477,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "give anything to see her...";
 		next;
 		set EIN_LOVERQ,2;
-		mes "[Clitzer]";
+		mes "[Klitzer]";
 		mes "Just...";
 		mes "Just don't listen";
 		mes "to anything I say.";
@@ -6428,13 +6486,13 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 		mes "person. That has to be it...";
 		close;
 	}
-	mes "[Clitzer]";
+	mes "[Klitzer]";
 	mes "Is there something";
 	mes "that you really want";
 	mes "in life, but it's just";
 	mes "beyond your grasp?";
 	next;
-	mes "[Clitzer]";
+	mes "[Klitzer]";
 	mes "I wish I were more";
 	mes "like you adventurers.";
 	mes "People like you never";
@@ -6442,7 +6500,7 @@ ein_in01,200,101,5	script	Clitzer#ein	854,{
 	mes "what the obstacles may be.";
 	mes "But I'm so helpless...";
 	next;
-	mes "[Clitzer]";
+	mes "[Klitzer]";
 	mes "I can't even see";
 	mes "the one person that";
 	mes "I love. We've just so";
@@ -6529,7 +6587,7 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 		mes "honor to most commoners.";
 		next;
 		mes "[Satra]";
-		mes "However, Clitzer";
+		mes "However, Klitzer";
 		mes "has no reason to feel so";
 		mes "intimidated. Tell the poor";
 		mes "boy that he's earned the";
@@ -6571,9 +6629,9 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 		mes "who actually gathered these?";
 		next;
 		input .@input$;
-		if (.@input$ == "Clitzer") {
+		if (.@input$ == "Klitzer") {
 			mes "[Satra]";
-			mes "Ah, Clitzer?";
+			mes "Ah, Klitzer?";
 			mes "I must say, that's";
 			mes "a very humble name.";
 			mes "Yet it's so familiar...";
@@ -6582,7 +6640,7 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 			mes "Ah, I recall there";
 			mes "was a hooligan that";
 			mes "has been pestering my";
-			mes "daughter named Clitzer.";
+			mes "daughter named Klitzer.";
 			mes "Perhaps they are one";
 			mes "and the same. Hmm...";
 			next;
@@ -6605,7 +6663,7 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 			mes "For a humble peasant,";
 			mes "this must be like a dream";
 			mes "come true! And to have tea";
-			mes "with Clitzer. Oh, what would";
+			mes "with Klitzer. Oh, what would";
 			mes "the girls say? Ah, but I did";
 			mes "marry that oafish Megass~";
 			next;
@@ -6613,7 +6671,7 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 			set EIN_LOVERQ,13;
 			mes "[Satra]";
 			mes "Anyway, when you next";
-			mes "meet Clitzer, please tell";
+			mes "meet Klitzer, please tell";
 			mes "him to pay me a visit soon.";
 			mes "Oh, and remind him to dress";
 			mes "appropriately for this special";
@@ -6722,7 +6780,7 @@ ein_in01,31,151,3	script	Satra#ein	850,{
 		mes "here for sight seeing,";
 		mes "or perhaps you're running";
 		mes "some sort of adventurer's";
-		mes "errand. Am I right?";
+		mes "errand. Am I right?"	;
 		next;
 		mes "[Satra]";
 		mes "I know you well enough";
@@ -7036,7 +7094,7 @@ ein_in01,191,102,5	script	Kaijeta#ein	846,{
 	if (EIN_LOVERQ == 15) {
 		mes "[Kaijeta]";
 		mes "Thank you for helping";
-		mes "my son Clitzer. Sadly, the";
+		mes "my son Klitzer. Sadly, the";
 		mes "little fool doesn't have any";
 		mes "clue when it comes to certain";
 		mes "things like choosing clothing.";
@@ -7053,7 +7111,7 @@ ein_in01,191,102,5	script	Kaijeta#ein	846,{
 	if (EIN_LOVERQ == 14) {
 		mes "[Kaijeta]";
 		mes "Thank you for helping";
-		mes "my son Clitzer. Sadly, the";
+		mes "my son Klitzer. Sadly, the";
 		mes "little fool doesn't have any";
 		mes "clue when it comes to certain";
 		mes "things like choosing clothing.";
@@ -7231,13 +7289,13 @@ einbech,176,125,3	script	Ellhenje#ein	850,{
 	mes "that everyone here likes...";
 	next;
 	mes "[Ellhenje]";
-	mes "I'm talking about Clitzer!";
+	mes "I'm talking about Klitzer!";
 	mes "He's almost too honest and";
 	mes "almost too diligent. But most";
 	mes "of all, he's the nicest guy~";
 	next;
 	mes "[Ellhenje]";
-	mes "Clitzer was born in one of";
+	mes "Klitzer was born in one of";
 	mes "Einbech's poorest families,";
 	mes "but he's usually happy and always thinks about others. I guess that's why people like to think of him";
 	mes "as representing all of Einbech.";

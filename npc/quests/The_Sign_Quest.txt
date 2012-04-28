@@ -1,11 +1,11 @@
-//===== eAthena Script ======================================= 
+//===== rAthena Script ======================================= 
 //= The Sign Quest
 //===== By: ================================================== 
 //= SinSloth(Most of the NPCs), MasterOfMuppets(Some of the NPCs + bug fixes) & Kargha(The quiz NPCs)
 //===== Current Version: ===================================== 
-//= 3.4
+//= 3.6
 //===== Compatible With: ===================================== 
-//= eAthena SVN
+//= rAthena SVN
 //===== Description: ========================================= 
 //= [Aegis Conversion]
 //= Quest for opening the doors to Geffenia.
@@ -20,13 +20,16 @@
 //= 3.2 Removed mapannounce used while debugging. [L0ne_W0lf]
 //=     Moved the disablewaitingroomevent in dancing portion.
 //= 3.3 Applied Kazukin's fix for the dancing portion. (bugreport:3966) [L0ne_W0lf]
+//= 3.4 Added Renewal Changes. [Kisuka]
 //= 3.4 Updated 'waitingroom' to support required zeny/lvl. [Kisuka]
+//= 3.5 Fixed two bugs. 4230 & 4404 [CalciumKid]
+//= 3.6 Corrected the Level Requirements for 'Standby Room' [tr0n]
 //============================================================ 
 
 //============================================================ 
 // The Sign (Part 1)
 //============================================================ 
-prontera,147,305,0	script	Sign#prontera::TheSign	111,{
+-	script	Sign::TheSign	111,{
 	callfunc "F_UpdateSignVars";
 	cutin "sign_01",4;
 	mes "^3355FFNext^000000";
@@ -58,6 +61,7 @@ OnInit:
 	end;
 }
 
+prontera,147,305,0	duplicate(TheSign)	Sign#prontera	111
 geffen,168,175,0	duplicate(TheSign)	Sign#geffen	111
 morocc,168,265,0	duplicate(TheSign)	Sign#morroc	111
 payon,160,183,0	duplicate(TheSign)	Sign#payon	111
@@ -719,7 +723,7 @@ prt_in,227,45,0	script	Archeologist#sign	804,{
 		mes "Engel Howard yet?";
 		mes "He's the only one";
 		mes "who can unlock the";
-		mes "the Sign's power for you...";
+		mes "Sign's power for you...";
 	}
 	else if (sign_q == 141) {
 		if (countitem(2644) == 1) {
@@ -741,7 +745,7 @@ prt_in,227,45,0	script	Archeologist#sign	804,{
 			mes "You may have had your doubts,";
 			mes "but I'm happy enough to confirm that the Sign really exists. Thanks again, and I hope you stop by and chat from time to time.";
 			set sign_q,142;
-			getexp 2000000,0;
+			getexp 200000,0;
 		}
 		else {
 			mes "[Metz]";
@@ -768,9 +772,15 @@ prt_in,227,45,0	script	Archeologist#sign	804,{
 		mes "accept this as a token";
 		mes "of my gratitude. Good luck";
 		mes "on your travels, adventurer.";
+		if (checkweight(7178,1) == 0) {
+				next;
+				mes "^3355FFWait a second! Right now,";
+				mes "you have too many items in your inventory. Please come back after you've freed up more inventory space.^000000";
+				close;
+		}
 		delitem 7178,1; //Star's_Sob
 		set sign_q,202;
-		getexp 100000,0;
+		getexp 10000,0;
 		getitem 617,1; //Old_Violet_Box
 	}
 	else if (sign_q > 201) {
@@ -1569,19 +1579,19 @@ morocc_in,115,154,5	script	Rogue#sign	810,{
 			mes "you're not a total dumbass.";
 			mes "Now you're supposed to go see Daewoon in Payon. And don't forget to show him this Star thingee.";
 			if (BaseLevel < 60) {
-				getexp 3000,0;
+				getexp 300,0;
 			}
 			else if (BaseLevel < 70) {
-				getexp 7500,0;
+				getexp 750,0;
 			}
 			else if (BaseLevel < 80) {
-				getexp 10000,0;
+				getexp 1000,0;
 			}
 			else if (BaseLevel < 90) {
-				getexp 13000,0;
+				getexp 1300,0;
 			}
-			else if (BaseLevel < 99) {
-				getexp 18000,0;
+			else if (BaseLevel < 150) {
+				getexp 1800,0;
 			}
 			set sign_q,14;
 			getitem 7177,1; //Part_Of_Star's_Sob
@@ -2448,19 +2458,19 @@ payon_in03,11,31,4	script	Daewoon#sign	808,{
 				set sign_q,15;
 				getitem 7177,1; //Part_Of_Star's_Sob
 				if (BaseLevel < 60) {
-					getexp 3000,0;
+					getexp 300,0;
 				}
 				else if (BaseLevel < 70) {
-					getexp 7000,0;
+					getexp 700,0;
 				}
 				else if (BaseLevel < 80) {
-					getexp 10000,0;
+					getexp 1000,0;
 				}
 				else if (BaseLevel < 90) {
-					getexp 13000,0;
+					getexp 1300,0;
 				}
-				else if (BaseLevel < 99) {
-					getexp 18000,0;
+				else if (BaseLevel < 150) {
+					getexp 1800,0;
 				}
 				emotion e_heh;
 				mes "[Daewoon]";
@@ -2494,19 +2504,19 @@ payon_in03,11,31,4	script	Daewoon#sign	808,{
 				set sign_q,15;
 				getitem 7177,1; //Part_Of_Star's_Sob
 				if (BaseLevel < 60) {
-					getexp 3000,0;
+					getexp 300,0;
 				}
 				else if (BaseLevel < 70) {
-					getexp 7000,0;
+					getexp 700,0;
 				}
 				else if (BaseLevel < 80) {
-					getexp 10000,0;
+					getexp 1000,0;
 				}
 				else if (BaseLevel < 90) {
-					getexp 13000,0;
+					getexp 1300,0;
 				}
-				else if (BaseLevel < 99) {
-					getexp 18000,0;
+				else if (BaseLevel < 150) {
+					getexp 1800,0;
 				}
 				mes "[Daewoon]";
 				mes "You know, after talking with";
@@ -2671,7 +2681,7 @@ aldeba_in,155,101,3	script	Sir Jore#sign	805,7,7,{
 			mes "......";
 			mes "...No!";
 			mes "Look what";
-			mes "made me do!";
+			mes "you made me do!";
 			next;
 			emotion e_sob;
 			mes "[Sir Jore]";
@@ -2746,10 +2756,10 @@ aldeba_in,155,101,3	script	Sir Jore#sign	805,7,7,{
 				next;
 				set sign_q,16;
 				mes "[Sir Jore]";
-				mes "Just bring";
-				mes "10 Empty Test Tube,";
-				mes "10 Green Herb and";
-				mes "2 Yggdrasil Leaf.";
+				mes "Just bring me";
+				mes "10 Empty Test Tubes,";
+				mes "10 Green Herbs and";
+				mes "2 Yggdrasil Leafs.";
 				next;
 				mes "[Sir Jore]";
 				mes "You see, l-lately I've";
@@ -3194,7 +3204,7 @@ OnTouch:
 
 //prt_maze02,25,161,0	script	#music	-1,7,7,{
 //OnTouch:
-//	soundeffect "effect\\¼®¾çÀÇ ¾î½Ø½Å.wav",1;
+//	soundeffect "effect\\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ø½ï¿½.wav",1;
 //	end;
 //}
 
@@ -4828,19 +4838,19 @@ cmd_in02,88,51,4	script	Strange Guy#sign	806,{
 				}
 				set sign_q,30;
 				if (BaseLevel < 60) {
-					getexp 3000,0;
+					getexp 300,0;
 				}
 				else if (BaseLevel < 70) {
-					getexp 5000,0;
+					getexp 500,0;
 				}
 				else if (BaseLevel < 80) {
-					getexp 8000,0;
+					getexp 800,0;
 				}
 				else if (BaseLevel < 90) {
-					getexp 10000,0;
+					getexp 1000,0;
 				}
-				else if (BaseLevel < 99) {
-					getexp 13000,0;
+				else if (BaseLevel < 150) {
+					getexp 1300,0;
 				}
 				next;
 				warp "cmd_in01",33,29;
@@ -4924,19 +4934,19 @@ cmd_in02,88,51,4	script	Strange Guy#sign	806,{
 			set sign_q,35;
 			getitem 7177,1; //Part_Of_Star's_Sob
 			if (BaseLevel < 60) {
-				getexp 3000,0;
+				getexp 300,0;
 			}
 			else if (BaseLevel < 70) {
-				getexp 7000,0;
+				getexp 700,0;
 			}
 			else if (BaseLevel < 80) {
-				getexp 19000,0;
+				getexp 1900,0;
 			}
 			else if (BaseLevel < 90) {
-				getexp 12000,0;
+				getexp 1200,0;
 			}
-			else if (BaseLevel < 99) {
-				getexp 17000,0;
+			else if (BaseLevel < 150) {
+				getexp 1700,0;
 			}
 			next;
 			mes "[Dearles]";
@@ -4965,19 +4975,19 @@ cmd_in02,88,51,4	script	Strange Guy#sign	806,{
 			getitem 7177,1; //Part_Of_Star's_Sob
 			set zeny,zeny+20000;
 			if (BaseLevel < 60) {
-				getexp 3000,0;
+				getexp 300,0;
 			}
 			else if (BaseLevel < 70) {
-				getexp 7000,0;
+				getexp 700,0;
 			}
 			else if (BaseLevel < 80) {
-				getexp 10000,0;
+				getexp 1000,0;
 			}
 			else if (BaseLevel < 90) {
-				getexp 14000,0;
+				getexp 1400,0;
 			}
-			else if (BaseLevel < 99) {
-				getexp 19000,0;
+			else if (BaseLevel < 150) {
+				getexp 1900,0;
 			}
 			next;
 			mes "[Dearles]";
@@ -5217,7 +5227,7 @@ cmd_in01,33,33,1	script	Standby Room#sign	66,{
 	end;
 
 OnInit:
-	waitingroom "DANCE~ DANCE~",20,"Standby Room#sign::OnStartArena",1,0,44,99;
+	waitingroom "DANCE~ DANCE~",20,"Standby Room#sign::OnStartArena",1,0,50;
 	enablewaitingroomevent;
 	end;
 
@@ -5888,19 +5898,19 @@ alberta_in,125,101,5	script	Wealthy-looking Merchant	807,{
 		set sign_q,53;
 		getitem 7177,1; //Part_Of_Star's_Sob
 		if (BaseLevel < 60) {
-			getexp 5000,0;
+			getexp 500,0;
 		}
 		else if (BaseLevel < 70) {
-			getexp 8000,0;
+			getexp 800,0;
 		}
 		else if (BaseLevel < 80) {
-			getexp 11000,0;
+			getexp 1100,0;
 		}
 		else if (BaseLevel < 90) {
-			getexp 15000,0;
+			getexp 1500,0;
 		}
-		else if (BaseLevel < 99) {
-			getexp 20000,0;
+		else if (BaseLevel < 150) {
+			getexp 2000,0;
 		}
 		close;
 	}
@@ -7192,19 +7202,19 @@ yuno,330,100,4	script	Knight#ss	734,{
 				set sign_q,39;
 				getitem 7181,1; //Receipt_01
 				if (BaseLevel < 60) {
-					getexp 1000,0;
+					getexp 100,0;
 				}
 				else if (BaseLevel < 70) {
-					getexp 2000,0;
+					getexp 200,0;
 				}
 				else if (BaseLevel < 80) {
-					getexp 4000,0;
+					getexp 400,0;
 				}
 				else if (BaseLevel < 90) {
-					getexp 7000,0;
+					getexp 700,0;
 				}
-				else if (BaseLevel < 99) {
-					getexp 11000,0;
+				else if (BaseLevel < 150) {
+					getexp 1100,0;
 				}
 				close;
 			}
@@ -7537,7 +7547,7 @@ mjo_dun02,88,295,4	script	Flaming Spirit Man	85,{
 				mes "If it weren't for your help,";
 				mes "I'd be in big trouble. I really appreciate you stepping in and volunteering your materials like this.";
 				delitem 1002,1; //Iron_Ore
-				getexp 10,0;
+				getexp 1,0;
 				close;
 			case 2:
 				mes "[Engel]";
@@ -8219,7 +8229,7 @@ gef_tower,118,36,4	script	Annoyed Man	64,{
 		else {
 			mes "[Dhota]";
 			mes "You're not even a Mage,";
-			mes "much less a Wizard or a Sage.";
+			mes "much less a Wizard, Sage, Warlock or a Sorcerer.";
 			mes "Why bother climbing this tower?";
 		}
 		mes "What are you doing here?!";
@@ -8387,7 +8397,7 @@ um_in,27,23,3	script	Fastidious-Looking Guy	121,{
 		mes "that you leave, right now!";
 		emotion e_an;
 		close2;
-		warp "um_dun01",129,90;
+		warp "umbala",111,121;
 		end;
 	}
 	else if (sign_q == 74) {
@@ -8478,7 +8488,7 @@ um_in,27,23,3	script	Fastidious-Looking Guy	121,{
 		mes "to find some ancient";
 		mes "or really aged paper...";
 		next;
-		if (countitem(1097) > 6) {
+		if (countitem(1097) > 9) {
 			mes "[Cyon]";
 			mes "How did you find these";
 			mes "Worn Out Pages? This is great,";
@@ -8498,7 +8508,7 @@ um_in,27,23,3	script	Fastidious-Looking Guy	121,{
 			mes "Just as I thought!";
 			mes "The Sobbing Starlight is responding to these Worn Out Pages! Excellent! I've finally fulfilled my promise to Metz! Now he can leave";
 			mes "me alone!";
-			delitem 1097,7; //Worn_Out_Page
+			delitem 1097,10; //Worn_Out_Page
 			set sign_q,76;
 			getitem 7275,1; //Ancient_Document
 			close;
@@ -8534,7 +8544,7 @@ um_in,27,23,3	script	Fastidious-Looking Guy	121,{
 			percentheal -30,0;
 			specialeffect2 EF_MAGNUMBREAK;
 			next;
-			warp "um_dun01",129,90;
+			warp "umbala",111,121;
 			end;
 		}
 	}
@@ -8796,31 +8806,31 @@ himinn,48,86,5	script	Valkyrie#sign	811,{
 		set sign_q,82;
 		percentheal 100,100;
 		if (BaseLevel < 56) {
-			getexp 9000,0;
+			getexp 900,0;
 		}
 		else if ((BaseLevel > 55) && (BaseLevel < 61)) {
-			getexp 12000,0;
+			getexp 1200,0;
 		}
 		else if ((BaseLevel > 60) && (BaseLevel < 66)) {
-			getexp 20000,0;
+			getexp 2000,0;
 		}
 		else if ((BaseLevel > 65) && (BaseLevel < 71)) {
-			getexp 35000,0;
+			getexp 3500,0;
 		}
 		else if ((BaseLevel > 70) && (BaseLevel < 76)) {
-			getexp 70000,0;
+			getexp 7000,0;
 		}
 		else if ((BaseLevel > 75) && (BaseLevel < 81)) {
-			getexp 120000,0;
+			getexp 12000,0;
 		}
 		else if ((BaseLevel > 80) && (BaseLevel < 86)) {
-			getexp 160000,0;
+			getexp 16000,0;
 		}
 		else if ((BaseLevel > 85) && (BaseLevel < 91)) {
-			getexp 210000,0;
+			getexp 21000,0;
 		}
 		else if (BaseLevel > 90) {
-			getexp 350000,0;
+			getexp 35000,0;
 		}
 		close2;
 		warp "geffen",120,100;
@@ -9107,7 +9117,7 @@ que_sign01,196,39,4	script	Serin#serin	90,{
 				mes "ask the Dark Lord to spare";
 				mes "you. Thank you so much...";
 				set sign_q,200;
-				getexp 200000,0;
+				getexp 20000,0;
 				set $@sign_w2,0;
 				donpcevent "Dark Lord#serin::OnDisable";
 				close2;
@@ -9378,7 +9388,7 @@ que_sign01,197,195,4	script	Serin#witch	90,{
 				mes "ask the Dark Lord to spare";
 				mes "you. Thank you so much...";
 				set sign_q,200;
-				getexp 200000,0;
+				getexp 20000,0;
 				set $@sign_w1,0;
 				close2;
 				warp "umbala,",132,203;
@@ -10124,7 +10134,7 @@ niflheim,313,70,4	script	Pleasant-Featured Lady#s	90,{
 				mes "the faint smile on her lips tell you that her memories of you";
 				mes "will always remain in her heart.^000000";
 				delitem 2643,1; //Serin's_Gold_Ring_
-				getexp 500000,0;
+				getexp 50000,0;
 				close;
 			case 2:
 				emotion e_sob;
@@ -10918,7 +10928,7 @@ que_sign01,122,141,4	script	Witch#s	792,{
 				mes "please visit our queen, Lady Hell. I believe she wants to see you for some reason, "+strcharinfo(0)+"...";
 				delitem 7313,5; //Seal_Of_Witch
 				set sign_q,129;
-				getexp 500000,0;
+				getexp 50000,0;
 				close;
 			}
 		}
@@ -10949,7 +10959,7 @@ que_sign01,122,141,4	script	Witch#s	792,{
 				mes "please visit our queen, Lady Hell. I believe she wants to see you for some reason...";
 				delitem 7313,5; //Seal_Of_Witch
 				set sign_q,130;
-				getexp 300000,0;
+				getexp 30000,0;
 				close;
 			}
 		}
@@ -10980,7 +10990,7 @@ que_sign01,122,141,4	script	Witch#s	792,{
 		else {
 			set sign_q,130;
 		}
-		getexp 300000,0;
+		getexp 30000,0;
 		close;
 	}
 	else if (sign_q == 200) {
@@ -11015,7 +11025,7 @@ que_sign01,122,141,4	script	Witch#s	792,{
 			delitem 7308,1; //Witch's_Potion
 		}
 		set sign_q,201;
-		getexp 200000,0;
+		getexp 20000,0;
 		close;
 	}
 	else if (sign_q > 200) {
@@ -12057,7 +12067,7 @@ niflheim,102,54,4	script	Mad Man#s	739,{
 						emotion e_pif;
 						close;
 					case 2:
-						if (Zeny < 20000) {
+						if (Zeny < 60000) {
 							mes "[Laichin]";
 							mes "What is this?";
 							mes "You tryin to welch";
@@ -14248,7 +14258,7 @@ gl_dun02,140,72,0	script	Mysterious Energy#7	111,{
 	}
 }
 
-// Angrboda's Seal 8 °¡Àå small 119 182
+// Angrboda's Seal 8 ï¿½ï¿½ï¿½ï¿½ small 119 182
 gl_dun02,119,182,0	script	Mysterious Energy#8	111,{
 	callfunc "F_UpdateSignVars";
 	set .@crash_s,rand(1,1000);

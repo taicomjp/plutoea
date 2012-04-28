@@ -1,153 +1,189 @@
-//==================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ---------------------------------
-// - 菲音斯 地區任務腳本 - 
-//===================================
-// 版本：1.7
-//====================================
-//= 撿石頭的老人:
-//= - 幫助老人完成他的工作
-//= - 任務變數: veins_stone (最大 8)
-//
-//= 吟遊詩人的故事:
-//= - 幫助吟遊詩人證明他的清白
-//= - 任務變數: que_sch (最大 26)
-//
-//= 兄妹任務:
-//= - 幫助男孩解救他的妹妹
-//= - 任務變數: rachel_camel (最大 25)
-//
-//= 托爾火山基地任務 (預設關閉):
-//= - 內容尚未完整
-//= - 任務變數: rachel_camel (最大 27)
+//===== rAthena Script ======================================= 
+//= Veins Quests
+//===== By: ================================================== 
+//= L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 2.0
+//===== Compatible With: ===================================== 
+//= rAthena SVN
+//===== Description: ========================================= 
+//= [Aegis Conversion]
+//= Collection of Veins Quests 
+//= Stone Quest:
+//= - Help an Old Man with his job.
+//= - Dialog obtained from iRO.
+//= - Variable in use: veins_stone (max 8)
+//= Spy Quest:
+//= - Help prove (or disprove) a bard's innocence.
+//= - Dialog obtained from iRO.
+//= - Variable in use: que_sch (max 26)
+//= Siblings Quest:
+//= - Help a boy save his little sister.
+//= - Dialog partially obtained from iRO.
+//= - Variable in use: rachel_camel (max 25)
+//= Thor Volcano Base Quest:
+//= - Missing addition to High Priest Zhed to start quest.
+//= - Infiltrate Thor Volcano Base. What is Arunafeltz up to?
+//= - Variable in use: rachel_camel (max 27)
+//===== Additional Comments: ================================= 
+//= 1.0 First version, Added Veins Stone quest. [L0ne_W0lf]
+//= 1.1 Added Veins Spy Quest. [L0ne_W0lf]
+//= 1.2 Added Veins Siblings Quest. [L0ne_W0lf]
+//=	Added Veins Thor Volcano Base Quest NPC. [L0ne_W0lf]
+//=	Start NPC is missing, but will be added when I get it.
+//= 1.3 Fixed two typos small in Asbar. [L0ne_W0lf]
+//= 1.3a More fixes to some of the Base quest NPCs. [L0ne_W0lf]
+//= 1.4 Added missing checkweights. [L0ne_W0lf]
+//= 1.4a Corrected a typo error ";;". [Toms]
+//= 1.5 Added Nameless Island quest addition. [L0ne_W0lf]
+//= 1.5a Corrected a couple typos in Nameless Addition. [L0ne_W0lf]
+//= 1.6 Replaced effect numerics with constants. [L0ne_W0lf]
+//= 1.7 Moved a couple NPCs related to the Spy quest. [L0ne_W0lf]
+//= 1.8 Fixed some typos and confusing condition checks. [L0ne_W0lf]
+//= 1.9 Added quest log entries for:
+//=     - Siblings Quest
+//=     - Thor Volcano Base Quest
+//= 2.0 Removed lvel requirement. (bugreport:4678) [L0ne_W0lf]
 //============================================================ 
 
-// 撿石頭的老人
+// Stone Quest
 //============================================================ 
-ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
-
-	if ((MaxWeight - Weight) < 2000) {
-		mes "負重量不足";
+ve_fild05,257,130,4	script	Wincing Old Man#ve	945,{
+	if ((MaxWeight - Weight) < 2000 || checkweight(1201,1) == 0) {
+		mes "- Wait a moment! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please come back after -";
+		mes "- you put some items into Kafra Storage. -";
 		close;
 	}
-	if ((veins_stone == 0) && (BaseLevel > 59)) {
-		mes "[嘉巴魯]";
-		mes "唉呦 我的腰啊...";
-		mes "撿了一整天的石頭，";
-		mes "唉呦 我的腰啊..";
+	if (veins_stone == 0) {
+		mes "[Zabaroo]";
+		mes "My back is killing me";
+		mes "after stooping over to";
+		mes "pick up stones all day long...";
+		mes "The pain... It's unbearable!";
 		next;
-		switch(select("唉呦 你怎麼不小心一點呢:會很痛嗎?")) {
+		switch(select("Bend with your knees, yo.:Gosh, how bad is it?")) {
 		case 1:
-			mes "[嘉巴魯]";
-			mes "你這個傢伙";
-			mes "覺得我看起來很可憐嘛!";
-			mes "怎麼這麼大膽的";
-			mes "敢對大人說忠告呢，";
-			mes "唉呦... 最近這些年輕人...";
+			mes "[Zabaroo]";
+			mes "Whippersnapper!";
+			mes "I didn't ask you for";
+			mes "your advice! Don't";
+			mes "patronize an old man!";
 			close;
 		case 2:
-			mes "[嘉巴魯]";
-			mes "嗯? 昨天在搬運時的時候";
-			mes "不慎閃到腰的關係，";
-			mes "咻嗚... 要把這個填滿之後";
-			mes "才能得到工資啊...";
+			mes "[Zabaroo]";
+			mes "Oh, it hurts so much, it's";
+			mes "almost crippling. But I don't";
+			mes "have any choice. I need to";
+			mes "get enough stops to fill";
+			mes "this gap if I want to get";
+			mes "paid. Arrrrgh, damn it!";
 			next;
-			mes "[嘉巴魯]";
-			mes "這樣才能賺點家補";
-			mes "做為孫女的醫藥費啊... 唉呦..";
+			mes "[Zabaroo]";
+			mes "If I don't get enough";
+			mes "money to pay for my";
+			mes "granddaughter's medicine,";
+			mes "I won't be able to buy any";
+			mes "medicine for my granddaughter!";
+			mes "And that will be horrible! Ag!";
 			next;
-			select("需要我幫助嗎?");
-			mes "[嘉巴魯]";
-			mes "嗯嗯?";
-			mes "唉呦... 我雖然看起來是這樣，";
-			mes "不過處理事情我也能";
-			mes "處理.....";
+			select("Can I help?");
+			mes "[Zabaroo]";
+			mes "I appreciate your kindness,";
+			mes "stranger, but no. I have";
+			mes "to do this on my own.";
+			mes "A man must have his pride....";
 			next;
-			mes "^333333*喀喳*^000000";
+			mes "^333333*Snap*^000000";
 			next;
-			mes "[嘉巴魯]";
-			mes "喔! 唉呦呦 唉呦 我的腰啊..";
-			mes "喔喔喔....";
-			mes "這個真的對不起你啊，";
-			mes "對初次見面的你";
-			mes "還要麻煩這些事情...唉呦呦";
+			mes "[Zabaroo]";
+			mes "Argh! My back...!";
+			mes "This was totally";
+			mes "unforeseeable!";
+			mes "Please! Please,";
+			mes "for the love of Freya,";
+			mes "please help me!";
 			next;
-			select(" 別說這種話啦");
-			mes "[嘉巴魯]";
-			mes "這個真的謝謝你啦，";
-			mes "唉咻...";
+			select("I will help you.");
+			mes "[Zabaroo]";
+			mes "Thank you!";
+			mes "Thanks so much!";
 			next;
-			select("請問要幫助你做什麼事情呢?");
-			mes "[嘉巴魯]";
-			mes "唉呦 腰啊...";
-			mes "我所做的事情就是，";
-			mes "看到這附近的話";
-			mes "有時候會看到一些黑色的石頭的?";
+			select("What do you want me to do?");
+			mes "[Zabaroo]";
+			mes "Ow-ow-ow! Oh... Okay...";
+			mes "You see those all dark";
+			mes "stones stuck in the ground?";
+			mes "Those are what I need to";
+			mes "pick up. Now don't go";
+			mes "lifting rocks just yet...";
 			next;
-			mes "[嘉巴魯]";
-			mes "把那些石頭撿起來之後送到那工廠的話，";
-			mes "會得到一天的工資";
+			mes "[Zabaroo]";
+			mes "I asked some other old";
+			mes "man in town, Absar, to";
+			mes "make me something to help";
+			mes "with my back. He was going";
+			mes "to help me if I gave hi--";
+			mes "ARGH! My back! It hurts!";
 			next;
-			mes "[嘉巴魯]";
-			mes "唉呦，我這樣講";
-			mes "並不是叫你幫我去撿那些石頭的意思，";
-			mes "只是腰實在是有點不太好，";
-			mes "我委託我們村落裡的個性怪異的老伯";
-			mes "請他幫忙製作出一樣東西而已";
-			next;
-			mes "[嘉巴魯]";
-			mes "只是我身體有點不太好，";
-			mes "那老伯叫我找的東西";
-			mes "我還沒找到啊";
-			next;
-			mes "[嘉巴魯]";
-			mes "所以請你到老伯那裡去";
-			mes "把那些東西拿給他後，";
-			mes "再把那老伯所做的東西重新拿回來~";
-			mes "給我的話就可以啦";
+			mes "[Zabaroo]";
+			mes "It hurts so bad! But it's";
+			mes "especially painful right";
+			mes "when I'm about to finish";
+			mes "sentences in which I intend to";
+			mes "tell you important informat--";
+			mes "ARRRGH! Find Absar! Quickly!";
 			next;
 			while(1) {
-				mes "我想委託你的事情只有這些而已，";
-				mes "請問還有什麼疑問要問我嗎?";
+				mes "[Zabaroo]";
+				mes "Wait, wait...";
+				mes "Maybe I can answer";
+				mes "a few of your questions";
+				mes "before my body is wracked";
+				mes "with throbbing pain. Let's...";
+				mes "Let's at least give it a try.";
 				next;
-				switch(select("請問那些石頭是什麼?:請問製作東西的老伯在哪裡:沒有疑問")) {
+				switch(select("What's with these stones?:Where's the old man?:Nothing.")) {
 				case 1:
-					mes "[嘉巴魯]";
-					mes "你說這個嗎?";
-					mes "嗯.. 像我們這種人哪會知道啊，";
-					mes "本來這個石頭很容易加工";
-					mes "色彩也很美麗，";
-					mes "或許也可以說成村落的特產品吧?";
+					mes "[Zabaroo]";
+					mes "Well, we use these dark";
+					mes "stones because they're";
+					mes "pretty and easy to process.";
+					mes "They're sort of a specialty";
+					mes "of this town. I get paid to";
+					mes "harvest these handy rocks.";
 					next;
-					mes "[嘉巴魯]";
-					mes "就做成一些東西";
-					mes "賣給老百姓了，";
-					mes "不知道從何時開始";
-					mes "外地來的人開始大量的採購，";
-					mes "自從那以後工廠就開始進駐了";
-					mes "就開始大量的採購這些東西";
+					mes "[Zabaroo]";
+					mes "We can sell these to tourists,";
+					mes "and we even have a factory";
+					mes "that uses these stones.";
+					mes "Still, it's not like the";
+					mes "townspeople are getting";
+					mes "rich off these stones.";
 					next;
-					mes "[嘉巴魯]";
-					mes "所幸村落裡的人們";
-					mes "能適當的賺到一些錢了 只是....";
-					mes "其實大家只是";
-					mes "勉強的糊口水準而已啊...";
-					close2;
+					mes "[Zabaroo]";
+					mes "All of us are still";
+					mes "barely making a living...";
+					next;
 					break;
 				case 2:
-					mes "[嘉巴魯]";
-					mes "那老伯在村落裡道具店裡";
-					mes "大概看就知道是那個人";
-					mes "會馬上被你";
-					mes "認出來的";
-					close2;
+					mes "[Zabaroo]";
+					mes "Absar? He's inside";
+					mes "the Tool Shop. You";
+					mes "can't miss him... Just";
+					mes "look for the man with";
+					mes "the crazy eyes!";
+					next;
 					break;
 				case 3:
-					mes "[嘉巴魯]";
-					mes "那就麻煩你啦，";
-					mes "假如那老伯不在道具店的話，";
-					mes "就請你到酒店裡看一看吧";
+					mes "[Zabaroo]";
+					mes "Thanks for your help.";
+					mes "If you can't find Absar";
+					mes "in the Tool Shop, then";
+					mes "you might want to stop";
+					mes "by the Tavern. A-auuugh!";
 					set veins_stone,1;
 					close;
 				}
@@ -155,14 +191,17 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		}
 	}
 	else if (veins_stone == 1) {
-		mes "[嘉巴魯]";
-		mes "假如那老伯不在道具店的話，";
-		mes "就請你到酒店裡看一看吧，會在兩個地方的其中之一";
+		mes "[Zabaroo]";
+		mes "Thanks for your help.";
+		mes "If you can't find Absar";
+		mes "in the Tool Shop, then";
+		mes "you might want to stop";
+		mes "by the Tavern. A-auuugh!";
 		close;
 	}
-	else if (veins_stone < 4) {
-		mes "[嘉巴魯]";
-		mes "Geez, 阿沙樂 sure can";
+	else if ((veins_stone > 1) && (veins_stone < 4)) {
+		mes "[Zabaroo]";
+		mes "Geez, Absar sure can";
 		mes "be fussy. Still, do your";
 		mes "best to get what he wants.";
 		mes "He won't help me otherwise!";
@@ -171,13 +210,13 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		close;
 	}
 	else if (veins_stone == 4) {
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Oh good, you're back!";
 		mes "Did you bring what";
-		mes "阿沙樂 made for me?";
+		mes "Absar made for me?";
 		next;
 		select("Yes, here...");
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "So this is what he";
 		mes "was talking about?";
 		mes "How does it... Ah!";
@@ -185,7 +224,7 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		mes "the handle, that end of";
 		mes "the stick will pick stuff up!";
 		next;
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "This is great! I won't";
 		mes "have to bend over to pick";
 		mes "up stones anymore! Heh,";
@@ -193,27 +232,27 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		mes "of this useful invention~";
 		mes "I can imagine him strutting.";
 		next;
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Um, did he have anything";
 		mes "to say after he gave this";
 		mes "to you? I'm just curious.";
 		next;
 		select("This message...");
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Oh... I thought he";
 		mes "would forget all about";
 		mes "that. Well, it's a relief";
 		mes "to know that now. That's";
 		mes "really very nice of him.";
 		next;
-		mes "嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "I hate to ask you...";
 		mes "But would you mind";
 		mes "helping me out one";
 		mes "more time?";
 		next;
 		select("Huh? What is it?");
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Don't worry, it's not";
 		mes "too hard. Would you just";
 		mes "deliver the stones I gathered";
@@ -224,9 +263,9 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		close;
 	}
 	else if (veins_stone < 7) {
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Thanks again for your help!";
-		mes "What did Asbar call this";
+		mes "What did Absar call this";
 		mes "thing again? A Tactile...";
 		mes "Extendable... Damn it...";
 		mes "Why's the name so long?";
@@ -234,7 +273,7 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		close;
 	}
 	else if (veins_stone == 7) {
-		mes "[嘉巴魯]";
+		mes "[Zabaroo]";
 		mes "Oh, you're back!";
 		mes "I really appreciate all";
 		mes "of your help. I don't have";
@@ -242,171 +281,157 @@ ve_fild05,257,130,4	script	敲打腰部的 老人#ve	945,{
 		mes "expecting a reward, but I'd";
 		mes "like to give you something.";
 		next;
-		mes "[嘉巴魯]";
-		mes "之前收集這些石頭的時候";
-		mes "很巧遇的撿到了這個傢伙，";
-		mes "是個非常寶貴的礦物，";
-		mes "尤其是對你這樣的旅行者來說，";
-		mes "拜託請你收下這個好嗎";
-		mes "就想成是我最起碼的誠意啊";
+		mes "[Zabaroo]";
+		mes "Ah, here we are. I found";
+		mes "these while harvesting stones";
+		mes "I was told that adventurers";
+		mes "find these useful. Anyway,";
+		mes "I hope you like these rocks...";
 		set veins_stone,8;
-		getexp 300000,0;
-		getitem 985,3; //鋁
+		getexp 30000,0;
+		getitem 985,3; //Elunium
 		close;
 	}
 	else if (veins_stone > 7) {
-		mes "[嘉巴魯]";
-		mes "Thanks to you and Asbar,";
+		mes "[Zabaroo]";
+		mes "Thanks to you and Absar,";
 		mes "my poor back hasn't been";
 		mes "bothering me at all lately.";
 		mes "I should be taking better";
 		mes "care of myself at my age...";
 		close;
 	}
-	mes "[嘉巴魯]";
-	mes "抱歉啊，年青人，你看起那麼瘦弱，應該沒辦法勝任這工作吧";
-	mes "多鍛鍊點肌肉後再來找我吧";
-	close;
 }
 
-ve_in,169,310,6	script	看起來怪異的 爺爺#ve	121,{
+ve_in,169,310,6	script	Strange Old Man#ve	121,{
 	if (veins_stone == 0) {
-		mes "[阿沙樂]";
+		mes "[Absar]";
 		mes "Bwahahaha!";
 		mes "Once... Once this is completed, I'll...";
 		mes "Mwahahahahahahahah!";
 		close;
 	}
 	else if (veins_stone == 1) {
-		mes "[阿沙樂]";
-		mes "嗚喜喜喜喜喜，";
-		mes "";
-		mes "沒剩多少了... 嗚喜喜喜";
-		mes "只要做這個的話...";
+		mes "[Absar]";
+		mes "I'm so close to";
+		mes "completion. Now, if";
+		mes "I just turn this here...";
 		next;
-		if (select("請問...:.......") == 1) {
-			mes "[阿沙樂]";
-			mes "什麼呀?!";
-			next;
-			mes "[阿沙樂]";
-			mes "喔?!?!?";
+		if (select("Excuse me...:........") == 1) {
+			mes "[Absar]";
+			mes "What?! Who dares";
+			mes "disturb me?! N-no!";
+			mes "Look! Look what you did!";
+			mes "You made me screw up!";
 			next;
 			specialeffect EF_LORD;
-			percentheal 30,0;
+			percentheal -30,0;
 			next;
-			mes "[阿沙樂]";
-			mes "那不是 我xxxxx 嗶~ 嗶~";
-			mes "嗶嗶~ 嗶嗶嗶...";
-			next;
-			mes "[阿沙樂]";
-			mes "洽啊!";
-			next;
-			mes "[阿沙樂]";
-			mes "你到底什麼玩意啊!!!";
-			mes "請你閃一邊去吧";
+			mes "[Absar]";
+			mes "!@#$%#@#$!*~";
+			mes "F$#@#%^^^&&!";
 			close2;
 			warp "ve_in",262,309;
 			end;
 		}
-		mes "[阿沙樂]";
-		mes "...........";
-		mes "這個真是的...";
+		mes "[Absar]";
+		mes "Oh, no...";
 		next;
 		specialeffect EF_ASPERSIO;
 		next;
-		mes "[阿沙樂]";
-		mes "喀啊!";
-		mes "又失敗啦!";
-		mes "啊 這個真是的...嗶~ 嗶嗶..";
-		mes "嗶嗶嗶~ 嗶~~~";
+		mes "[Absar]";
+		mes "How...?!";
+		mes "No! I failed again!";
+		mes "D-DAAAAAAAAAAAMN IIIII--";
 		next;
-		mes "[阿沙樂]";
-		mes "喀啊!";
-		mes "泣?";
-		mes "你是誰啊?";
+		mes "[Absar]";
+		mes "Huh? What are you...";
+		mes "What do you want?";
 		next;
-		select("啊 我..我..");
-		mes "[阿沙樂]";
-		mes "啊 我不管你是什麼樣的傢伙";
-		mes "找我有什麼事嗎?";
-		mes "泣? 這什麼玩意一直在煩我啊";
-		mes "洽啊!";
+		select("Oh, I-I'm...");
+		mes "[Absar]";
+		mes "Spit it out. Tell me";
+		mes "what you want, not your";
+		mes "name. Hurry, can't you";
+		mes "see that I'm busy?";
 		next;
-		if (select("抱..抱歉:我是受嘉巴魯先生的委託...") == 1) {
-			mes "[阿沙樂]";
-			mes "嗚嗚....";
-			mes "只要你在妨礙我一點點";
-			mes "啊喔...";
+		if (select("I... I'm sorry.:I'm here for Mr. Zabaroo...") == 1) {
+			mes "[Absar]";
+			mes "If only you didn't";
+			mes "interrupt me! Then";
+			mes "I'd already have...";
+			mes "Ugh! Back to work!";
 			close;
 		}
-		mes "[阿沙樂]";
-		mes "什麼? 是受 嘉巴魯老伯";
-		mes "委託而來的啊?";
-		mes "那老伯有什麼樣的委託...";
+		mes "[Absar]";
+		mes "Zabaroo? What does...";
+		mes "Oh. Never mind. I think";
+		mes "I remember what he asked";
+		mes "me to make him. So did";
+		mes "you bring all the materials?";
 		next;
-		mes "[阿沙樂]";
-		mes "嗯嗯.... 那死老伯";
-		mes "之前有叫我幫他";
-		mes "製作一個奇怪的東西，";
-		mes "那麼材料有帶來嗎?";
-		next;
-		if (select("是的 材料有帶來:材料嗎? 我沒聽說過耶...") == 1) {
-			mes "[阿沙樂]";
-			mes "呵噢，真的有帶材料來嗎?";
-			mes "讓我看看? ...............洽啊~!";
-			mes "你這傢伙是什麼啊? 我從來沒有對";
-			mes "嘉巴魯說過材料的事情啊 洽啊!";
-			mes "真是的 嗶~ 嗶嗶~ 馬上給我出去!";
+		if (select("Yes:What materials...?") == 1) {
+			mes "[Absar]";
+			mes "Great, we can get";
+			mes "started and m--";
+			mes "Liar. You don't even know";
+			mes "what you're supposed to";
+			mes "bring me, do you?!";
+			mes "Get out of here!";
 			close2;
 			warp "ve_in",262,309;
 			end;
 		}
-		mes "[阿沙樂]";
-		mes "當然沒聽說過吧，";
-		mes "因為我沒告訴過他啊，呵呵呵";
-		mes "所以請你馬上幫我尋找";
-		mes "把我所說的材料帶回來吧";
+		mes "[Absar]";
+		mes "Of course. I didn't tell him";
+		mes "what materials I needed";
+		mes "anyway. Heh heh! Now, this";
+		mes "is what I need you to bring.";
+		mes "Listen up, okay? And hurry.";
 		next;
-		mes "[阿沙樂]";
-		mes "若不趕快準備帶回來的話";
-		mes "我就不會幫你製作的，你就這樣知道吧，";
-		mes "嗯嘻嘻，所需要的材料是 '^4D4DFF5鋼鐵 5個、";
-		mes "噬人樹根 5個、冰心臟 2個^000000";
-		mes "要製作出什麼東西";
-		mes "你這傢伙是沒必要知道的";
-		mes "你去把材料帶來吧";
+		mes "[Absar]";
+		mes "^4D4DFF5 Maneater Roots^000000,";
+		mes "^4D4DFF2 Glacial Hearts^000000, and";
+		mes "^4D4DFF5 Steel^000000. If you don't";
+		mes "come back soon, then";
+		mes "I won't help you. I've got";
+		mes "projects I'm working on!";
 		set veins_stone,2;
 		close;
 	}
 	else if (veins_stone == 2) {
-		if (countitem(999) > 4 && 7561 > 1 && countitem(1033) > 4) {
-			mes "[阿沙樂]";
+		if (countitem(999) > 4 && countitem(7561) > 1 && countitem(1033) > 4) {
+			mes "[Absar]";
 			mes "Good, you finally";
 			mes "brought everthing.";
 			mes "I was just about to";
 			mes "give up on you, so";
 			mes "consider yourself lucky!";
 			next;
-			mes "[阿沙樂]";
+			mes "[Absar]";
 			mes "Give me a second.";
 			mes "You won't have to";
 			mes "wait long to see";
 			mes "my great invention!";
-			delitem 999,5; //鋼鐵
-			delitem 1033,5; //噬人樹根
-			delitem 7561,2; //冰心臟
+			delitem 999,5; //Steel
+			delitem 1033,5; //Root_Of_Maneater
+			delitem 7561,2; //Ice_Heart
 			set veins_stone,3;
 			close2;
 			specialeffect EF_FIRESPLASHHIT;
 			end;
 		}
-		mes "[阿沙樂]";
-		mes "啊?! 這是什麼 都還沒收集到嘛!";
-		mes "馬上出去幫我收集回來!";
+		mes "[Absar]";
+		mes "What the hell?";
+		mes "Hurry and bring";
+		mes "^4D4DFF5 Maneater Roots^000000,";
+		mes "^4D4DFF2 Glacial Hearts^000000, and";
+		mes "^4D4DFF5 Steel^000000! Do you think";
+		mes "I'm doing this for fun?!";
 		close;
 	}
 	else if (veins_stone == 3) {
-		mes "[阿沙樂]";
+		mes "[Absar]";
 		mes "Here you are...";
 		mes "Well, I don't know";
 		mes "if you appreciate";
@@ -417,21 +442,21 @@ ve_in,169,310,6	script	看起來怪異的 爺爺#ve	121,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Tack... What...?";
 		next;
-		mes "[阿沙樂]";
+		mes "[Absar]";
 		mes "...............................";
 		mes "You can use this to pick";
 		mes "things up. From a distance.";
 		next;
-		mes "[阿沙樂]";
+		mes "[Absar]";
 		mes "Anyway, when you get back";
-		mes "to 嘉巴魯, let me him know";
+		mes "to Zabaroo, let me him know";
 		mes "that he doesn't owe me";
 		mes "anything anymore. He'll...";
 		mes "He'll know what I mean...";
 		set veins_stone,4;
 		close;
 	}
-	mes "[阿沙樂]";
+	mes "[Absar]";
 	mes "It's a ''Tactile Extendable";
 	mes "Clamp-Release Mechanism.''";
 	mes "What's so hard to understand";
@@ -441,9 +466,9 @@ ve_in,169,310,6	script	看起來怪異的 爺爺#ve	121,{
 	close;
 }
 
-ve_in02,37,28,4	script	工廠 管理人	898,{
+ve_in02,37,28,4	script	Factory Manager	898,{
 	if (veins_stone < 5) {
-		mes "[米勒喜]";
+		mes "[Mirhen]";
 		mes "Hey, employees only beyond this point!";
 		mes "Geez, don't we have a sigh that says that?";
 		mes "We should get one...";
@@ -453,7 +478,7 @@ ve_in02,37,28,4	script	工廠 管理人	898,{
 		end;
 	}
 	else if (veins_stone == 5) {
-		mes "[米勒喜]";
+		mes "[Mirhen]";
 		mes "Hey, employees only";
 		mes "beyond this point!";
 		mes "Geez, don't we have";
@@ -462,40 +487,40 @@ ve_in02,37,28,4	script	工廠 管理人	898,{
 		mes "Anyway, get out of here.";
 		next;
 		if (select("I'm sorry.:I've brought these...") == 1) {
-			mes "[米勒喜]";
+			mes "[Mirhen]";
 			mes "You're sorry,";
 			mes "I get it. Ummm...";
 			mes "Aren't you leaving?";
 			close;
 		}
-		mes "[米勒喜]";
+		mes "[Mirhen]";
 		mes "Huh? What's this name";
-		mes "tag? 嘉巴魯? Wait a sec...";
+		mes "tag? Zabaroo? Wait a sec...";
 		mes "You're definitely not him!";
 		next;
 		select("I'm here on his behalf.");
-		mes "[米勒喜]";
-		mes "Ah, I get it. 嘉巴魯's";
+		mes "[Mirhen]";
+		mes "Ah, I get it. Zabaroo's";
 		mes "back has really been";
 		mes "bothering him lately.";
 		mes "Okay, we can bend the";
 		mes "rules a bit in this situation.";
 		next;
-		mes "[米勒喜]";
+		mes "[Mirhen]";
 		mes "Bring those rocks over";
-		mes "to 巴希特 over there.";
+		mes "to Bahed over there.";
 		mes "He'll take care of them.";
 		set veins_stone,6;
 		close;
 	}
-	mes "[米勒喜]";
+	mes "[Mirhen]";
 	mes "Hetarium ...";
 	mes "What's so special about";
 	mes "it? I mean, it looks just like";
 	mes "Iron Ore. Why the hell is";
 	mes "it like classified info?";
 	next;
-	mes "[米勒喜]";
+	mes "[Mirhen]";
 	mes "I wish I could return to";
 	mes "Rekenber Headquarters...";
 	mes "I hate being stuck here";
@@ -506,48 +531,48 @@ ve_in02,37,28,4	script	工廠 管理人	898,{
 
 ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 	if (veins_stone < 6) {
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "lately, I've been feeling so weak...";
 		mes "I heard the guy before me had to quit because he also started feeling weak.";
 		next;
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "It couldn't be...";
 		mes "It couldn't be because of this 'Hetarium'...";
 		mes "That's just plain crazy...";
 		close;
 	}
 	else if (veins_stone == 6) {
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Oh, you got the rocks?";
-		mes "You brought them for 嘉巴魯?";
+		mes "You brought them for Zabaroo?";
 		mes "Oh, how is he doing? I hear";
 		mes "he threw out his back.";
 		next;
 		select("He still hurts.");
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Oh no... I'm so sorry";
 		mes "to hear that. I hope he";
 		mes "feels better soon. Anyway,";
 		mes "why don't you bring the";
 		mes "rocks over here?";
 		next;
-		mes "[巴希特]";
-		mes "Let me confirm 嘉巴魯's";
+		mes "[Bahed]";
+		mes "Let me confirm Zabaroo's";
 		mes "quota for today. Ah, and";
-		mes "don't worry, We pay him";
+		mes "don't worry, we pay him";
 		mes "for his quotas regularly.";
 		next;
 		select("I have a question...");
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Hm? What'd you want";
 		mes "to know? I can't say that";
 		mes "I know everything, but";
 		mes "I'll try my best to tell you";
 		mes "what I know. I mean,";
-		mes "you helped 嘉巴魯, so...";
+		mes "you helped Zabaroo, so...";
 		next;
 		select("What's this Hetarium??");
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Well, it hasn't been that";
 		mes "long since these rocks";
 		mes "attracted attention outside";
@@ -555,7 +580,7 @@ ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 		mes "the townspeople just";
 		mes "made carvings out of them.";
 		next;
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Then, all of a sudden,";
 		mes "these people from--I guess";
 		mes "it was Schwaltzvalt--came";
@@ -563,14 +588,14 @@ ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 		mes "stones. Later, they even built";
 		mes "this factory to process them!";
 		next;
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "Oh, they tried using machines";
 		mes "to harvest these stones, but";
 		mes "they all broke down too soon.";
 		mes "That's why they hired people";
 		mes "in Veins to collect them.";
 		next;
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "I'm not sure many people";
 		mes "know who owns this factory.";
 		mes "Maybe it's Rekenber? Yes,";
@@ -579,7 +604,7 @@ ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 		mes "I think it might be them.";
 		next;
 		select("How do they use Hetarium??");
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "I'm not really sure. I just";
 		mes "happened to overhear some";
 		mes "of the higher ups mention";
@@ -587,7 +612,7 @@ ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 		mes "Pieces of hearts? Doesn't";
 		mes "make any sense to me.";
 		next;
-		mes "[巴希特]";
+		mes "[Bahed]";
 		mes "All I gathered was that";
 		mes "they were using the stones";
 		mes "to build a machine related";
@@ -597,7 +622,7 @@ ve_in02,54,49,2	script	Factory Worker#ve1	943,{
 		set veins_stone,7;
 		close;
 	}
-	mes "[巴希特]";
+	mes "[Bahed]";
 	mes "Everyday I feel";
 	mes "weaker and weaker...";
 	mes "Could this be chronic";
@@ -613,185 +638,207 @@ ve_in02,68,39,7	script	Factory Worker#ve2	943,{
 	close;
 }
 
-// 吟遊詩人的故事
+// Spy Quest
 //============================================================ 
-prontera,202,122,0	script	小孩#sch	703,{
+prontera,202,122,0	script	Kid#sch	703,{
 	if (que_sch == 0) {
-		mes "[盧尼]";
-		mes "嗯.....";
-		mes "到底在哪裡啊..";
-		mes "唉呦 真是的...";
+		mes "[Rooney]";
+		mes "Where the heck";
+		mes "is it? I don't... Where...?";
+		mes "He's got to be around here";
+		mes "somewhere, I think...";
 		next;
-		if (select("有發生什麼事嗎?:...") == 1) {
-			mes "[盧尼]";
-			mes "是?";
-			mes "我是幫人家跑腿的";
-			mes "但不知道要往哪裡去啊，";
-			mes "因為叫我跑腿的那位叔叔";
-			mes "沒有詳細的告訴我啊...";
+		if (select("What's wrong?:...") == 1) {
+			mes "[Rooney]";
+			mes "Oh, it's just...";
+			mes "Some guy sent me on a";
+			mes "delivery errand, but I can't";
+			mes "find the recipient. He said";
+			mes "that I can't miss him, but";
+			mes "I still can't figure it out.";
 			next;
-			mes "[盧尼]";
-			mes "他說直接去那邊去找就好了，";
-			mes "所以我就在這邊找";
-			mes "不過在哪裡就是看不到啊，";
-			mes "只要把這個東西傳遞出去的話，";
-			mes "那位叔叔說 會給我跑路費的";
+			mes "[Rooney]";
+			mes "I should have asked for";
+			mes "the exact location. I mean,";
+			mes "if I don't find him, then I'll";
+			mes "never get paid for doing";
+			mes "this delivery. ^333333*Sigh*^000000";
 			next;
-			if (select("辛苦你啦，好好加油吧:需要我的幫忙嗎?") == 1) {
-				mes "[盧尼]";
-				mes "是，";
-				mes "唉呦，要去哪裡找呢";
+			if (select("Sounds tough. Good luck!:Do you need any help?") == 1) {
+				mes "[Rooney]";
+				mes "Thanks. I think";
+				mes "I just might need it.";
+				mes "Where could this guy";
+				mes "be? If he's expecting";
+				mes "a delivery, he should";
+				mes "make himself easy to find...";
 				close;
 			}
-			mes "[盧尼]";
-			mes "嗚哇! 真的嗎?";
-			mes "若能幫助我的話 真的謝謝你啊，嘿嘿";
-			mes "嗚嗯";
+			mes "[Rooney]";
+			mes "Yeah, sure, it'd be great";
+			mes "if you could help me. Let's";
+			mes "see, I need to deliver this";
+			mes "letter to a bard named...";
+			mes "It was... Ah, ^FF0000Lasda Midar^000000!";
 			next;
-			mes "[盧尼]";
-			mes "正確要跑腿的事情是，";
-			mes "把這封信傳遞給";
-			mes "某位 吟遊詩人叔叔即可，";
-			mes "名字叫...拉. 拉斯....";
-			mes "啊! '^FF0000拉斯達 米達勒^000000'的樣子";
-			next;
-			mes "[盧尼]";
-			mes "說是在村落裡";
-			mes "怎麼找就是看不到啊，";
-			mes "能找的地方都找遍了";
-			next;
-			mes "[盧尼]";
-			mes "那麼我也會繼續尋找，";
-			mes "也請你多多的幫忙吧";
+			mes "[Rooney]";
+			mes "I've looked everywhere";
+			mes "in town for someone that";
+			mes "looks like a Bard, but I'm";
+			mes "not having any luck. If you";
+			mes "find him, would you tell me?";
 			set que_sch,1;
 			close;
 		}
 		close;
 	}
 	else if (que_sch == 1) {
-		mes "[盧尼]";
-		mes "還沒有找到嗎?";
-		mes "唉呦 真是...";
-		mes "到底是在哪裡啊?";
+		mes "[Rooney]";
+		mes "I still haven't";
+		mes "found Lasda Midar.";
+		mes "Would you let me know";
+		mes "if you find him so that";
+		mes "I can deliver his letter?";
 		close;
 	}
 	else if (que_sch == 2) {
 		if (Zeny < 100) {
-			mes "[盧尼]";
-			mes "拉斯達 Midar...";
+			mes "[Rooney]";
+			mes "Lasda Midar...";
 			mes "Where the heck";
 			mes "could that guy be?";
 			close;
 		}
 		else {
-			mes "[盧尼]";
-			mes "嗚哇! 找到那個人了嗎?";
-			mes "怎樣找就是找不到啊，";
-			mes "嘿嘿 謝謝你的幫忙";
+			mes "[Rooney]";
+			mes "Wow, did you really";
+			mes "find Lasda Midar?";
+			mes "Why couldn't I find him?";
+			mes "Anyway, thank you so much";
+			mes "for your help. I thought I was";
+			mes "going to fail my delivery!";
 			next;
-			select("他說要把這個轉交給你");
-			mes "[盧尼]";
-			mes "嗚哇~";
-			mes "真的謝謝你，";
-			mes "嘻嘻";
+			select("He asked me to give you this.");
+			mes "[Rooney]";
+			mes "Hey, alright! Thanks";
+			mes "for the cash! Heh heh~";
 			set zeny,zeny-100;
 			set que_sch,3;
 			close;
 		}
 	}
-	mes "[盧尼]";
-	mes "嘿嘿，";
-	mes "是不錯的一天啊?";
+	mes "[Rooney]";
+	mes "Nice day out, isn't it?";
 	close;
 }
 
-prt_church,89,108,6	script	吟遊詩人#sch	741,{
-	if ((MaxWeight-Weight) < 2000) {
-		mes "^3355FF負重量不足!^000000";
+prt_church,89,108,6	script	Bard#sch	741,{
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
+		mes "^3355FFWait a second!";
+		mes "Right now, you're carrying";
+		mes "too many things with you.";
+		mes "Please come back after";
+		mes "using the Kafra Service";
+		mes "to store some of your items.^000000";
 		close;
 	}
+
 	if (que_sch < 1) {
-		mes "[拉斯達]";
-		mes "你好~";
-		mes "真的是一個好天吧?";
-		mes "這種天在心裡面";
-		mes "會湧起很多詩詞，";
-		mes "不得不唱起歌來";
+		mes "[Lasda]";
+		mes "Hello there, isn't today";
+		mes "such a wonderful day?";
+		mes "Nice weather always";
+		mes "inspires the poet in me,";
+		mes "and I can't seem to stop";
+		mes "singing my heart out~";
 		close;
 	}
 	else if (que_sch == 1) {
-		mes "[拉斯達]";
-		mes "啊啊..";
-		mes "這種天就要唱歌啊，";
-		mes "啊啊..";
+		mes "[Lasda]";
+		mes "Why, what a glorious";
+		mes "day! I should sing a song";
+		mes "in praise of its wonder!";
+		mes "Ooooh... La la la-la~";
+		mes "Girls, girls, giiiirls...";
 		next;
-		mes "[拉斯達]";
-		mes "這種天~ 要唱歌~";
-		mes "嗯嗯~~ 嗯嗯~~";
-		next;
-		switch(select("請問...:......")) {
+		switch(select("Excuse me...:......")) {
 		case 1:
-			mes "[拉斯達]";
-			mes "去外面旅行囉~ 魯盧啦啦~";
-			mes "嗯?";
-			mes "喂 你聽不到我在唱歌嗎?";
-			mes "等到我唱完歌之後再來找我吧，";
-			mes "嗯哼嗯哼~";
+			mes "[Lasda]";
+			mes "Why, what a glorious";
+			mes "day! I should sing a song";
+			mes "in praise of its wonder!";
+			mes "Ooooh... La la la-la~";
+			mes "Girls, girls, giiiirls...";
 			close;
 		case 2:
-			mes "[拉斯達]";
-			mes "去外面旅行囉~ 嚕盧啦啦~";
-			mes "快樂的去旅行囉~ 嚕盧啦啦~";
-			mes ".....";
+			mes "[Lasda]";
+			mes "Girls, girls, giiiirls...";
+			mes "Making my heart";
+			mes "beat like... Like it's";
+			mes "going too fast. My heart's";
+			mes "racing... And you're at the";
+			mes "finish line--Love Champion!";
 			next;
-			mes "[拉斯達]";
-			mes "喂 你這樣的瞪眼看我";
-			mes "我會害羞的，若沒有什麼事的話";
-			mes "請你到別的地方去吧";
+			mes "[Lasda]";
+			mes "Oh? Don't stare at me";
+			mes "like that, you're making";
+			mes "me blush. Did you need to";
+			mes "talk to me or something?.";
 			next;
-			switch(select("打擾了:請問你就是^ff0000拉斯達 米達勒^000000嗎?")) {
+			switch(select("I'm sorry.:Are you ^ff0000Lasda Midar^000000?")) {
 			case 1:
-				mes "[拉斯達]";
-				mes "對嘛";
-				mes "對嘛，不要打擾到我的寶貴時間嘛";
+				mes "[Lasda]";
+				mes "Oh, that's alright.";
+				mes "...............................";
+				mes "Girl, I'll laugh at all your";
+				mes "jokes, and agree with yourv";
+				mes "politics~ You're hot! But";
+				mes "baby, you're dumb as bricks~";
 				close;
 			case 2:
-				mes "[拉斯達]";
-				mes "嗯?";
-				mes "呵呵... 有什麼事情嗎?";
+				mes "[Lasda]";
+				mes "Oh? Oh, yes, that's me.";
+				mes "How can I help you?";
 				next;
-				select("我想把這個交給你 正在找你呢");
-				mes "[拉斯達]";
-				mes "嗯....這個...";
-				mes "啊哈... 是那位朋友送來的嘛，";
-				mes "讓我看看，啊啊 請你稍等一下";
+				select("I'm here to deliver this to you.");
+				mes "[Lasda]";
+				mes "Ah! He must have finally";
+				mes "sent it. Would you please";
+				mes "give me a second? Let's see...";
 				next;
-				mes "^3355FF拉斯達馬上拆開信封開始閱讀了^000000";
+				mes "^3355FFLasda opened the letter";
+				mes "and started reading it.^000000";
 				next;
-				mes "[拉斯達]";
-				mes "嗯嗯...";
-				mes "這樣...";
+				mes "[Lasda]";
+				mes "Umm...";
+				mes "Oh, no...";
 				next;
-				mes "[拉斯達]";
-				mes "啊，我讓你久等了，";
-				mes "請把這個交給那個小孩吧，";
-				mes "嗯..";
-				mes "那麼...";
+				mes "[Lasda]";
+				mes "Ah, I'm sorry for";
+				mes "making you wait.";
+				mes "Here, please give";
+				mes "this money to that";
+				mes "kid that was supposed";
+				mes "to come find me here.";
 				set que_sch,2;
 				set zeny,zeny+100;
 				next;
-				mes "[拉斯達]";
-				mes "並且以後有空的話請再來一趟吧";
+				mes "[Lasda]";
+				mes "I'd like you to come";
+				mes "talk to me again later";
+				mes "if you have the time";
+				mes "See you around~";
 				close;
 			}
 		}
 	}
 	else if (que_sch == 2) {
-		mes "他進入到沉思的狀態中";
+		mes "^3355FFLasda seems to be";
+		mes "lost in deep thought.^000000";
 		close;
 	}
 	else if (que_sch == 3) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "Oh good, you came back!";
 		mes "Thanks for delivering that";
 		mes "letter for me. Listen, you";
@@ -800,15 +847,15 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		mes "for your help with something.";
 		next;
 		if (select("Sure.:No.") == 1) {
-			mes "[拉斯達]";
+			mes "[Lasda]";
 			mes "You see, the letter you";
 			mes "brought me was from my old";
 			mes "best friend. I haven't heard";
 			mes "from him for a while, so";
 			mes "I was pretty worried...";
 			next;
-			mes "[拉斯達]";
-			mes "畢德萊 said in his letter";
+			mes "[Lasda]";
+			mes "Vitre said in his letter";
 			mes "that he's in jail under";
 			mes "false charges so he wants";
 			mes "me to help him out. However,";
@@ -816,23 +863,23 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 			mes "Do you think you can help him?";
 			next;
 			if (select("Sure.:No.") == 1) {
-				mes "[拉斯達]";
-				mes "啊，真的謝謝你，";
-				mes "那麼首先請你去 ^FF0000夢羅克^000000";
-				mes "見一下我那位朋友吧，";
-				mes "聽說被關在那邊的監獄裡，";
-				mes "先去見那個傢伙";
-				mes "聽一聽詳細的細節吧";
+				mes "[Lasda]";
+				mes "Thank you so much!";
+				mes "I guess the best thing";
+				mes "to do for now is to find";
+				mes "my friend in a prison in";
+				mes "^FF0000Morroc^000000, and see what";
+				mes "you can do to help him..";
 				set que_sch,4;
 				close;
 			}
-			mes "[拉斯達]";
+			mes "[Lasda]";
 			mes "I... I guess...";
 			mes "You must not be";
 			mes "able to help him too...";
 			close;
 		}
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "I suppose that you";
 		mes "must already be busy";
 		mes "doing something else.";
@@ -840,24 +887,24 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		close;
 	}
 	else if (que_sch < 8) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "I still can't believe";
-		mes "畢德萊 is being held";
+		mes "Vitre is being held";
 		mes "in prison in Morroc. I mean,";
 		mes "what could have happened?";
 		mes "I hope you can help him...";
 		close;
 	}
 	else if (que_sch == 8) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "He was arrested because";
 		mes "he's suspected of espionage?";
 		mes "That doesn't make any sense.";
 		mes "What could be going on?";
 		next;
-		select("^ff0000克理科^000000 told me that.");
-		mes "[拉斯達]";
-		mes "克理科? Do you mean 克理科";
+		select("^ff0000Krieg^000000 told me that.");
+		mes "[Lasda]";
+		mes "Krieg? Do you mean Krieg";
 		mes "Laje Mandi? I know him quite";
 		mes "well, actually. Let me write";
 		mes "you a letter or recommendation.";
@@ -867,32 +914,32 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		close;
 	}
 	else if (que_sch == 9) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "Hurry and go bring";
-		mes "my letter to 克理科.";
+		mes "my letter to Krieg.";
 		mes "I wonder what happened...";
 		mes "There must be some kind";
 		mes "of weird misunderstanding.";
 		close;
 	}
 	else if (que_sch < 19) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "He really asked you";
 		mes "to break him out of jail?";
 		mes "Well, I know that's a morally";
 		mes "hazy area, but I hope that";
-		mes "you do your best to help 畢德萊.";
+		mes "you do your best to help Vitre.";
 		close;
 	}
 	else if (que_sch < 25) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "Thanks for offering";
 		mes "to help me out. I still";
-		mes "can't believe 畢德萊 had";
+		mes "can't believe Vitre had";
 		mes "the gall to just break";
 		mes "out of prison, though...";
 		next;
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "I still can't do";
 		mes "anything to help him,";
 		mes "so please do what you";
@@ -901,22 +948,22 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		close;
 	}
 	else if (que_sch == 25) {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "Ah, you're back. I'm sure";
 		mes "you have a lot to ask me";
 		mes "right now. You deserve to";
 		mes "know that everything I asked";
 		mes "you to do was part of a plan";
-		mes "to confirm 畢德萊's guilt.";
+		mes "to confirm Vitre's guilt.";
 		next;
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "We arrested him once";
 		mes "we learned that he was";
 		mes "an Arunafeltz spy, but we";
 		mes "couldn't punish him since";
 		mes "we lacked concrete proof.";
 		next;
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "That's why we allowed";
 		mes "him to escape: we planned";
 		mes "on following him to get the";
@@ -924,7 +971,7 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		mes "sting was even able to round";
 		mes "up all of his compatriots!";
 		next;
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "I'm sorry for keeping";
 		mes "you in the dark, but it was";
 		mes "essential to the plan. We";
@@ -933,14 +980,14 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 		mes "reward with our sincere thanks.";
 		set que_sch,26;
 		getitem 12106,1; //Accessory_Box
-		getexp 600000,0;
+		getexp 60000,0;
 		close;
 	}
 	else {
-		mes "[拉斯達]";
+		mes "[Lasda]";
 		mes "We're having too many";
 		mes "cases involving spies";
-		mes "like 畢德萊 lately. This";
+		mes "like Vitre lately. This";
 		mes "might be a sign that";
 		mes "Arunafeltz is planning";
 		mes "to move against us...";
@@ -948,9 +995,9 @@ prt_church,89,108,6	script	吟遊詩人#sch	741,{
 	}
 }
 
-morocc,53,87,7	script	監獄 獄卒#sch	707,{
+morocc,53,87,7	script	Prison Ward#sch	707,{
 	if (que_sch < 4) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Only authorized";
 		mes "personnel can enter";
 		mes "this prison. You need";
@@ -959,7 +1006,7 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 		close;
 	}
 	else if (que_sch == 4) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "What? You want to meet";
 		mes "the prisoner? I'm sorry,";
 		mes "but he's not allowed to";
@@ -970,14 +1017,14 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 		close;
 	}
 	else if (que_sch == 5) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Huh. You're awfully";
 		mes "persistent. Alright,";
 		mes "if you can do me a favor,";
 		mes "I'll let you in. Bring me";
 		mes "1 dish of ^FF0000Fried Monkey Tails^000000";
 		next;
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Of course, I can only let";
 		mes "you inside. Whether they'll";
 		mes "actually let you meet the";
@@ -988,18 +1035,18 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 	}
 	else if (que_sch == 6) {
 		if (countitem(12066) > 0) {
-			mes "[杰思]";
+			mes "[Jesse]";
 			mes "Ah, that's the stuff!";
 			mes "Thanks for the Fried";
 			mes "Monkey Tails~ Alright,";
-			mes "go talk to ^FF0000Sir 克理科^000000 in";
+			mes "go talk to ^FF0000Sir Krieg^000000 in";
 			mes "Morroc Castle. Get his";
 			mes "approval, and I'll let you in.";
 			delitem 12066,1; //Luk_Dish01
 			set que_sch,7;
 			close;
 		}
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Bring me a plate of";
 		mes "^FF0000Fried Monkey Tails^000000.";
 		mes "Do it, or I won't help";
@@ -1009,9 +1056,9 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 		close;
 	}
 	else if (que_sch < 10) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "You didn't get approval";
-		mes "from Sir 克理科 yet? You'd";
+		mes "from Sir Krieg yet? You'd";
 		mes "better do it, or there's no";
 		mes "point in entering this prison.";
 		mes "You can't just sneak around";
@@ -1019,20 +1066,20 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 		close;
 	}
 	else if (que_sch == 10) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Did you really get";
-		mes "Sir 克理科's approval?";
+		mes "Sir Krieg's approval?";
 		mes "Alright, you may enter now.";
 		close2;
 		warp "ra_in01",48,355;
 		end;
 	}
 	else if (que_sch < 19) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Do you want to enter?";
 		next;
 		if (select("Yes.:No") == 1) {
-			mes "[杰思]";
+			mes "[Jesse]";
 			mes "Be careful when you talk";
 			mes "to that guy: he's a smooth";
 			mes "talker, and almost charmed";
@@ -1042,7 +1089,7 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 			warp "ra_in01",48,355;
 			end;
 		}
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Take your time.";
 		mes "If you're not mentally";
 		mes "prepared, then it's not";
@@ -1051,15 +1098,15 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 		close;
 	}
 	else if (que_sch < 19) {
-		mes "[杰思]";
+		mes "[Jesse]";
 		mes "Argh, I'm in trouble.";
 		mes "The prisoner escaped.";
 		mes "How could I let this...";
 		mes "happen?! Damn, I need to";
-		mes "report this to Mr. 克理科";
+		mes "report this to Mr. Krieg";
 		close;
 	}
-	mes "[杰思]";
+	mes "[Jesse]";
 	mes "What a relief! They";
 	mes "really set it up so that";
 	mes "the prisoner could escape?";
@@ -1068,9 +1115,9 @@ morocc,53,87,7	script	監獄 獄卒#sch	707,{
 	close;
 }
 
-morocc_in,79,163,0	script	治安管理	748,{
+morocc_in,79,163,0	script	Public Security Officer	748,{
 	if (que_sch < 7) {
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "I'm in charge of public";
 		mes "security here in Morroc.";
 		mes "Lately, there have been";
@@ -1080,67 +1127,67 @@ morocc_in,79,163,0	script	治安管理	748,{
 		close;
 	}
 	else if (que_sch == 7) {
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "Hello, adventurer.";
 		mes "How may I help you?";
 		next;
-		select("I'd like to see a prisoner, Mr. 畢德萊.");
-		mes "[克理科]";
-		mes "畢德萊? I'm sorry, but";
+		select("I'd like to see a prisoner, Mr. Vitre.");
+		mes "[Krieg]";
+		mes "Vitre? I'm sorry, but";
 		mes "I can't approve of that.";
 		mes "I'd allow visitors for normal";
 		mes "prisoners, but not for people";
 		mes "suspected of espionage.";
 		mes "That's why he's in jail.";
 		next;
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "If I knew you personally,";
 		mes "or if someone I trust can";
 		mes "vouch for you, then I'd";
 		mes "reconsider letting you";
-		mes "meet 畢德萊. Otherwise,";
+		mes "meet Vitre. Otherwise,";
 		mes "I just can't do it.";
 		set que_sch,8;
 		close;
 	}
 	else if (que_sch == 8) {
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "I can't let you meet";
-		mes "畢德萊 until I'm absolutely";
+		mes "Vitre until I'm absolutely";
 		mes "sure that you're not involved";
 		mes "with any espionage activities.";
 		close;
 	}
 	else if (que_sch == 9) {
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "I can't let you meet";
-		mes "畢德萊 until I'm absolutely";
+		mes "Vitre until I'm absolutely";
 		mes "sure that you're not involved";
 		mes "with any espionage activities.";
 		next;
-		select("Here's a letter from 拉斯達.");
-		mes "[克理科]";
-		mes "拉斯達? Now there's a";
+		select("Here's a letter from Lasda.");
+		mes "[Krieg]";
+		mes "Lasda? Now there's a";
 		mes "man I hold in high regard.";
 		mes "Please let me read what";
 		mes "he has to say. Hmmm...";
 		next;
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "Alright, I'll let you visit";
-		mes "畢德萊. I'll send a message";
+		mes "Vitre. I'll send a message";
 		mes "to the prison ward so that";
 		mes "he'll let you talk to him.";
 		set que_sch,10;
 		close;
 	}
 	else if (que_sch < 26) {
-		mes "[克理科]";
+		mes "[Krieg]";
 		mes "Hmm... This is almost too";
 		mes "difficult for me to handle.";
 		mes "What should I do?";
 		close;
 	}
-	mes "[克理科]";
+	mes "[Krieg]";
 	mes "I understand that you were";
 	mes "instrumental in solving a";
 	mes "problem regarding public";
@@ -1152,52 +1199,52 @@ morocc_in,79,163,0	script	治安管理	748,{
 
 ra_in01,48,352,0	warp	que_sch_jail	1,1,morocc,56,89
 
-ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
+ra_in01,50,387,4	script	Upset Looking Bard#sch	51,{
 	if (que_sch < 10) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes ".............";
 		close;
 	}
 	else if (que_sch == 10) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "...............................";
 		mes "...............................";
 		mes "...............................";
 		mes "Damn, what should I do?";
 		next;
 		select("Excuse me...");
-		mes "[畢德萊]";
-		mes "Hm? I'm 畢德萊 Bizlita.";
+		mes "[Vitre]";
+		mes "Hm? I'm Vitre Bizlita.";
 		mes "As you can see, I'm not in";
 		mes "any real position to help";
 		mes "you. Still, did you want";
 		mes "to ask me something?";
 		next;
-		switch(select("Nothing.:I'm here on behalf of Mr. 拉斯達.")) {
+		switch(select("Nothing.:I'm here on behalf of Mr. Lasda.")) {
 		case 1:
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Well...";
 			mes "It's nice to";
 			mes "receive visitors.";
 			mes "Jail can be lonely....";
 			close;
 		case 2:
-			mes "[畢德萊]";
-			mes "Oh, good. 拉斯達 finally";
+			mes "[Vitre]";
+			mes "Oh, good. Lasda finally";
 			mes "got my letter, eh? I don't";
 			mes "know what the hell's going";
 			mes "on. I mean, all I remember";
 			mes "is that these strange men";
 			mes "came and brought me here.";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "I... I don't think";
 			mes "they'll let me out";
 			mes "of here. I mean, they";
 			mes "jailed me and there's no";
 			mes "proof I did anything wrong.";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "My life is in danger as";
 			mes "long as I'm here, so I have";
 			mes "to get out as soon as I can.";
@@ -1205,7 +1252,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 			mes "I can open these doors if";
 			mes "I just had 2 things.";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "I just need a ^FF0000Megaphone^000000";
 			mes "and a ^FF0000Violin^000000. Luckily, they're";
 			mes "pretty mundane objects, so no";
@@ -1213,7 +1260,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 			mes "you brought them here. Um...";
 			mes "You will help me, won't you?";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "I understand if you have any";
 			mes "doubts about my innocence.";
 			mes "But think about it: wouldn't";
@@ -1223,7 +1270,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 			next;
 			mes "^3355FFYou can hear someone";
 			mes "mumbling from the cell";
-			mes "next to 畢德萊's.^000000";
+			mes "next to Vitre's.^000000";
 			next;
 			mes "[????]";
 			mes "I wonder how the lady";
@@ -1234,7 +1281,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 		}
 	}
 	else if (que_sch < 18) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Didn't you bring the";
 		mes "Megaphone and Violin?";
 		mes "The longer I sit here,";
@@ -1244,7 +1291,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 	}
 	else if (que_sch == 18) {
 		if (countitem(7040) > 0 && countitem(1901) > 0) {
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "You brought me a";
 			mes "Megaphone and Violin?";
 			mes "Perfect! Now, step aside";
@@ -1254,47 +1301,47 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 			mes "...............................";
 			mes "...............................";
 			next;
-			mes "^3355FF畢德萊 drew in a deep";
+			mes "^3355FFVitre drew in a deep";
 			mes "breath, and then smashed";
 			mes "the steel bars of his cell";
 			mes "with the Violin. Surprisingly,";
 			mes "the door swings open with";
 			mes "a very loud noise.^000000";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Heh! That was a little";
 			mes "harder than I thought,";
 			mes "but it looks like I'm free~";
 			mes "Alright, let's get a move on.";
 			next;
-			mes "[杰思]";
+			mes "[Jesse]";
 			mes "What?! What's this noise?!";
 			next;
-			enablenpc "杰思#sch";
-			mes "[杰思]";
+			enablenpc "Jesse#sch";
+			mes "[Jesse]";
 			mes "Hey! How did you";
 			mes "get out of your cell?!";
 			mes "Get back in there, NOW!";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "If you were me, would";
 			mes "you go back in your cell";
 			mes "just because someone's";
 			mes "yelling at you? Forget it~";
 			next;
-			mes "^3355FF畢德萊 raised the Megaphone";
+			mes "^3355FFVitre raised the Megaphone";
 			mes "to his mouth, and drew in";
 			mes "another deep breath.^000000";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Wah!";
 			next;
-			mes "[杰思]";
+			mes "[Jesse]";
 			mes "Arg...";
 			mes "Oh Lord...!";
 			mes "M-my ears...";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Heh! I love it when";
 			mes "a plan comes together~";
 			mes "Let's get out of here!";
@@ -1303,11 +1350,11 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 			delitem 7040,1; //Megaphone
 			set que_sch,19;
 			close2;
-			disablenpc "杰思#sch";
+			disablenpc "Jesse#sch";
 			warp "morocc",294,153;
 			end;
 		}
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Didn't you bring";
 		mes "a Megaphone and";
 		mes "a Violin? Please";
@@ -1316,7 +1363,7 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 		close;
 	}
 	else {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Heh! I love it when";
 		mes "a plan comes together~";
 		mes "Let's get out of here!";
@@ -1326,42 +1373,42 @@ ra_in01,50,387,4	script	看起來不舒服的 吟遊詩人	51,{
 	}
 }
 
-ra_in01,58,389,0	script	杰思#sch	707,{
+ra_in01,58,389,0	script	Jesse#sch	707,{
 	end;
 
 OnInit:
-	disablenpc "杰思#sch";
+	disablenpc "Jesse#sch";
 	end;
 }
 
-ra_in01,58,389,0	script	身體不像個樣子的 罪犯	929,{
+ra_in01,58,389,0	script	Guant Prisoner#sch	929,{
 	if (que_sch < 11) {
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "This stinks. Why am";
 		mes "I locked up in here?";
 		mes "I didn't do anything";
 		mes "to deserve this!";
 		next;
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "It's getting to be so";
 		mes "bad that I even miss the";
-		mes "sound of 惠安娜's voice.";
+		mes "sound of Hianna's voice.";
 		mes "It's freakishly loud.";
 		mes "You couldn't outyell her";
 		mes "even with a Megaphone.";
 		close;
 	}
 	else if (que_sch == 11) {
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "This stinks. Why am";
 		mes "I locked up in here?";
 		mes "I didn't do anything";
 		mes "to deserve this!";
 		next;
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "It's getting to be so";
 		mes "bad that I even miss the";
-		mes "sound of 惠安娜's voice.";
+		mes "sound of Hianna's voice.";
 		mes "It's freakishly loud.";
 		mes "You couldn't outyell her";
 		mes "even with a Megaphone.";
@@ -1370,12 +1417,12 @@ ra_in01,58,389,0	script	身體不像個樣子的 罪犯	929,{
 		mes "What...?!";
 		next;
 		select("Where I can find that Megaphone?");
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "Huh? Why would you";
 		mes "want to know that?";
 		next;
 		select("I really need one!");
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "Uh, you can get one from";
 		mes "that Dancer Job Change";
 		mes "place in Comodo. They're";
@@ -1385,7 +1432,7 @@ ra_in01,58,389,0	script	身體不像個樣子的 罪犯	929,{
 		close;
 	}
 	else if (que_sch < 20) {
-		mes "[盧安]";
+		mes "[Ruan]";
 		mes "Nobody knows what";
 		mes "will happen tomorrow.";
 		mes "I mean, this is a world of";
@@ -1394,29 +1441,35 @@ ra_in01,58,389,0	script	身體不像個樣子的 罪犯	929,{
 		mes "You will never know what will happen.";
 		close;
 	}
-	mes "[盧安]";
+	mes "[Ruan]";
 	mes "........";
 	close;
 }
 
 // Escort Dancers to Schwaltzvalt Republic
-job_duncer,93,106,6	script	舞孃 講師#sch	892,{
-
-	if ((MaxWeight-Weight) < 2000) {
-		mes "負重量不足";
+job_duncer,93,106,6	script	Dance Instructor#sch	892,{
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
+		mes "^3355FFWait a second!";
+		mes "Right now, you're carrying";
+		mes "too many things with you.";
+		mes "Please come back after";
+		mes "using the Kafra Service";
+		mes "to store some of your items.^000000";
 		close;
 	}
 
 	if (que_sch < 11) {
-		mes "[惠安娜]";
-		mes "來來 大家一起要努力啊，";
-		mes "距離表演也沒有剩下幾天啦!";
-		mes "喂 那裡! 怎麼在那邊這樣子做呢!.";
-		mes "再扭轉一點身體啊!";
+		mes "[Hianna]";
+		mes "Keep up the good work,";
+		mes "everyone! There's only";
+		mes "a few days left until the";
+		mes "big performance! Hey...";
+		mes "You! Can't you do it right?";
+		mes "Turn your waist quicker!";
 		close;
 	}
 	else if (que_sch == 11) {
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Hey, who are you?";
 		mes "We already have enough";
 		mes "problems with too many";
@@ -1425,7 +1478,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		mes "come to watch us practice.";
 		next;
 		if (select("I want a Megaphone.:Eeek...") == 2) {
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "If you really want to";
 			mes "watch us dance, come to";
 			mes "the show and buy a ticket.";
@@ -1433,7 +1486,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 			mes "exactly supporting the arts.";
 			close;
 		}
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "You want a Megaphone?";
 		mes "Well, I'm sorry, but it's";
 		mes "not just something I can";
@@ -1442,13 +1495,13 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		mes "anywhere else, either.";
 		next;
 		if (select("Please! I'll do anything!:Later.") == 2) {
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "Alright, then.";
 			mes "I'm sorry that";
 			mes "I can't help you.";
 			close;
 		}
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Anything, huh?";
 		mes "Well, you just said";
 		mes "the magic word. Listen";
@@ -1456,14 +1509,14 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		mes "you to do for me.";
 		next;
 		if (select("Listen:Reconsider") == 1) {
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "First, I want a little";
 			mes "cash. Consider it a rental";
 			mes "fee. 500,000 zeny should be";
 			mes "just about enough. Then,";
 			mes "I want you to do me a favor.";
 			next;
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "The Schwaltzvalt Republic";
 			mes "requested me to send some";
 			mes "Dancers for some party, but";
@@ -1471,7 +1524,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 			mes "to protect them on their";
 			mes "way over there.";
 			next;
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "If you act as bodyguard";
 			mes "to my Dancers on the way";
 			mes "to the Schwaltzvalt Republic,";
@@ -1480,7 +1533,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 			mes "How does that sound?";
 			next;
 			if (select("Sounds good.:Like a ripoff.") == 1) {
-				mes "[惠安娜]";
+				mes "[Hianna]";
 				mes "I'm glad you agree~";
 				mes "Okay, the Dancers are";
 				mes "waiting are the entrance,";
@@ -1490,20 +1543,20 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 				set que_sch,12;
 				close;
 			}
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "So... I guess you";
 			mes "didn't need that";
 			mes "Megaphone as";
 			mes "badly as I thought.";
 			close;
 		}
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Alright, take your";
 		mes "time. I'm in no rush.";
 		close;
 	}
 	else if (que_sch < 17) {
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "What are you still doing";
 		mes "here? Shouldn't you be";
 		mes "escorting the Dancers to";
@@ -1512,7 +1565,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		close;
 	}
 	else if (que_sch == 17) {
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Thanks for all your";
 		mes "hard work. The Dancers";
 		mes "told me that you did a good";
@@ -1521,14 +1574,14 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		next;
 		if (select("Yes:No") == 1) {
 			if (Zeny < 500000) {
-				mes "[惠安娜]";
+				mes "[Hianna]";
 				mes "What's this? Hmm...";
 				mes "I think you made a mistake.";
 				mes "This isn't enough money.";
 				mes "Remember, 500,000 zeny~";
 				close;
 			}
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "Perfect. Well, here's";
 			mes "your Megaphone. Thanks";
 			mes "for everything, and I'll see";
@@ -1538,7 +1591,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 			getitem 7040,1; //Megaphone
 			close;
 		}
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "I can't have you breaking";
 		mes "your promises, so I won't";
 		mes "give you the Megaphone";
@@ -1548,7 +1601,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		close;
 	}
 	else if (que_sch == 18) {
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Thanks for escorting";
 		mes "my Dancers over to the";
 		mes "Schwaltzvalt Republic.";
@@ -1556,7 +1609,7 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 		mes "you with today?";
 		next;
 		if (select("I'd like another Megaphone.:No thanks.") == 1) {
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "Well, I guess I can let";
 			mes "you have another one if";
 			mes "you pay me 500,000 zeny.";
@@ -1565,14 +1618,14 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 			next;
 			if (select("Yes:No") == 1) {
 				if (Zeny < 500000) {
-					mes "[惠安娜]";
+					mes "[Hianna]";
 					mes "I'm sorry, but this";
 					mes "isn't enough money for";
 					mes "a Megaphone. Be sure";
 					mes "to bring me 500,000 zeny.";
 					close;
 				}
-				mes "[惠安娜]";
+				mes "[Hianna]";
 				mes "Here you are. The fact is...";
 				mes "These Megaphones are";
 				mes "considered guild property,";
@@ -1583,19 +1636,19 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 				getitem 7040,1; //Megaphone
 				close;
 			}
-			mes "[惠安娜]";
+			mes "[Hianna]";
 			mes "Alright~";
 			mes "Take care, and";
 			mes "travel safely~";
 			close;
 		}
-		mes "[惠安娜]";
+		mes "[Hianna]";
 		mes "Alright~";
 		mes "Take care, and";
 		mes "travel safely~";
 		close;
 	}
-	mes "[惠安娜]";
+	mes "[Hianna]";
 	mes "Trust me, we've made";
 	mes "good use of the money";
 	mes "that you've ''donated.''";
@@ -1604,21 +1657,22 @@ job_duncer,93,106,6	script	舞孃 講師#sch	892,{
 	close;
 }
 
-job_duncer,85,49,0	script	看起來年幼的 舞孃#sch1	724,{
+job_duncer,85,49,0	script	Young Dancer#sch1	724,{
 	if (que_sch < 12) {
-		mes "[舞孃]";
-		mes "歡迎光臨，";
-		mes "有沒有很快樂?";
+		mes "[Dancer]";
+		mes "Hi there~";
+		mes "Are you enjoying";
+		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 12) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Ah, you must be the";
 		mes "bodyguard. So are you";
 		mes "ready to go now?";
 		next;
 		if (select("Yes:No") == 1) {
-			mes "[舞孃]";
+			mes "[Dancer]";
 			mes "Alright, then.";
 			mes "Here we go~";
 			set que_sch,13;
@@ -1626,13 +1680,13 @@ job_duncer,85,49,0	script	看起來年幼的 舞孃#sch1	724,{
 			warp "airplane",75,55;
 			end;
 		}
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "We need to depart soon,";
 		mes "so please hurry. I'll be";
 		mes "waiting for you here~";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "Oh, that was such a fun";
 	mes "performance. I can still";
 	mes "see the dazzling decorations";
@@ -1641,21 +1695,22 @@ job_duncer,85,49,0	script	看起來年幼的 舞孃#sch1	724,{
 	close;
 }
 
-job_duncer,83,52,6	script	看起來活潑的 舞孃#sch1	724,{
+job_duncer,83,52,6	script	Cheerful Dancer#sch1	724,{
 	if (que_sch < 12) {
-		mes "[舞孃]";
-		mes "歡迎光臨，";
-		mes "有沒有很快樂?";
+		mes "[Dancer]";
+		mes "Hi there~";
+		mes "Are you enjoying";
+		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 12) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Ah, you must be the";
 		mes "bodyguard. So are you";
 		mes "ready to go now?";
 		next;
 		if (select("Yes:No") == 1) {
-			mes "[舞孃]";
+			mes "[Dancer]";
 			mes "Alright, then.";
 			mes "Here we go~";
 			set que_sch,13;
@@ -1663,13 +1718,13 @@ job_duncer,83,52,6	script	看起來活潑的 舞孃#sch1	724,{
 			warp "airplane",75,55;
 			end;
 		}
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "We need to depart soon,";
 		mes "so please hurry. I'll be";
 		mes "waiting for you here~";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "I guess it's pretty";
 	mes "fun to perform on stage~";
 	mes "But I still need to practice";
@@ -1677,21 +1732,22 @@ job_duncer,83,52,6	script	看起來活潑的 舞孃#sch1	724,{
 	close;
 }
 
-job_duncer,87,50,2	script	看起來成熟的 舞孃#s1	724,{
+job_duncer,87,50,2	script	Mature Looking Dancer#s1	724,{
 	if (que_sch < 12) {
-		mes "[舞孃]";
-		mes "歡迎光臨，";
-		mes "有沒有很快樂?";
+		mes "[Dancer]";
+		mes "Hi there~";
+		mes "Are you enjoying";
+		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 12) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Ah, you must be the";
 		mes "bodyguard. So are you";
 		mes "ready to go now?";
 		next;
 		if (select("Yes:No") == 1) {
-			mes "[舞孃]";
+			mes "[Dancer]";
 			mes "Alright, then.";
 			mes "Here we go~";
 			set que_sch,13;
@@ -1699,13 +1755,13 @@ job_duncer,87,50,2	script	看起來成熟的 舞孃#s1	724,{
 			warp "airplane",75,55;
 			end;
 		}
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "We need to depart soon,";
 		mes "so please hurry. I'll be";
 		mes "waiting for you here~";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "I sure learned a lot from";
 	mes "that trip. I hope that the new";
 	mes "girls also gained something";
@@ -1713,16 +1769,16 @@ job_duncer,87,50,2	script	看起來成熟的 舞孃#s1	724,{
 	close;
 }
 
-airplane,76,56,4	script	看起來年幼的 舞孃#sch2	724,{
+airplane,76,56,4	script	Young Dancer#sch2	724,{
 	if (que_sch < 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Hi there~";
 		mes "Are you enjoying";
 		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "This will be my";
 		mes "first performance...";
 		mes "I guess that's why";
@@ -1730,23 +1786,23 @@ airplane,76,56,4	script	看起來年幼的 舞孃#sch2	724,{
 		mes "in my stomach...";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "I wonder which beautiful";
 	mes "place we'll get to perform in";
 	mes "next time! Ooh, I can't wait!";
 	close;
 }
 
-airplane,75,53,0	script	看起來活潑的 舞孃#sch2	724,{
+airplane,75,53,0	script	Cheerful Dancer#sch2	724,{
 	if (que_sch < 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Hi there~";
 		mes "Are you enjoying";
 		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "I've performed at many";
 		mes "venues, but this is the";
 		mes "frist time I'll be dancing";
@@ -1755,23 +1811,23 @@ airplane,75,53,0	script	看起來活潑的 舞孃#sch2	724,{
 		mes "an airship. How exciting!";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "Traveling is really";
 	mes "thrilling... It's almost as";
 	mes "fun as dancing on stage~";
 	close;
 }
 
-airplane,79,55,2	script	看起來成熟的 舞孃#s2	724,{
+airplane,79,55,2	script	Mature Looking Dancer#s2	724,{
 	if (que_sch < 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Hi there~";
 		mes "Are you enjoying";
 		mes "yourself? I hope so!";
 		close;
 	}
 	else if (que_sch == 13) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "This is the first time that";
 		mes "the Schwaltzvalt Republic";
 		mes "requested a performance";
@@ -1785,7 +1841,7 @@ airplane,79,55,2	script	看起來成熟的 舞孃#s2	724,{
 		mes "Passengers to Einbroch,";
 		mes "please get ready to land.";
 		next;
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Oh! We're finally here!";
 		mes "Alright, I'll give this next";
 		mes "performance my all!";
@@ -1794,7 +1850,7 @@ airplane,79,55,2	script	看起來成熟的 舞孃#s2	724,{
 		warp "ein_in01",278,223;
 		end;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "I've been dancing on";
 	mes "stage for a long time, but";
 	mes "I always feel so nervous";
@@ -1803,9 +1859,9 @@ airplane,79,55,2	script	看起來成熟的 舞孃#s2	724,{
 	close;
 }
 
-ein_in01,174,266,0	script	看起來年幼的 舞孃#sch3	724,{
+ein_in01,174,266,0	script	Young Dancer#sch3	724,{
 	if (que_sch < 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Oh, the dinner";
 		mes "party isn't finished yet.";
 		mes "It'll be over before";
@@ -1813,7 +1869,7 @@ ein_in01,174,266,0	script	看起來年幼的 舞孃#sch3	724,{
 		close;
 	}
 	else if (que_sch == 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Hooray! My first";
 		mes "onstage performance";
 		mes "was a success! Oh";
@@ -1822,30 +1878,30 @@ ein_in01,174,266,0	script	看起來年幼的 舞孃#sch3	724,{
 		mes "of myself now!";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "Without dance,";
 	mes "my life has no";
 	mes "meaning at all.";
 	close;
 }
 
-ein_in01,172,266,0	script	看起來活潑的 舞孃#sch3	724,{
+ein_in01,172,266,0	script	Cheerful Dancer#sch3	724,{
 	if (que_sch < 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "The dinner party isn't";
 		mes "even finished yet, but";
 		mes "I'm already exhausted~";
 		close;
 	}
 	else if (que_sch == 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "^333333*Whew*^000000 We gave a good";
 		mes "performance this time.";
 		mes "I was worried since that";
 		mes "airship trip really drained me.";
 		close;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "Dancing is really";
 	mes "hard work, and all that";
 	mes "practicing wears you out,";
@@ -1854,9 +1910,9 @@ ein_in01,172,266,0	script	看起來活潑的 舞孃#sch3	724,{
 	close;
 }
 
-ein_in01,170,266,0	script	看起來成熟的 舞孃#s3	724,{
+ein_in01,170,266,0	script	Mature Looking Dancer#s3	724,{
 	if (que_sch < 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Oh, the dinner";
 		mes "party isn't finished yet.";
 		mes "It'll be over before";
@@ -1864,7 +1920,7 @@ ein_in01,170,266,0	script	看起來成熟的 舞孃#s3	724,{
 		close;
 	}
 	else if (que_sch == 17) {
-		mes "[舞孃]";
+		mes "[Dancer]";
 		mes "Well well, it looks like our";
 		mes "performance was a success.";
 		mes "The new girls did a really";
@@ -1874,7 +1930,7 @@ ein_in01,170,266,0	script	看起來成熟的 舞孃#s3	724,{
 		warp "comodo",191,146;
 		end;
 	}
-	mes "[舞孃]";
+	mes "[Dancer]";
 	mes "Dancing is so fun, but";
 	mes "sometimes it's hard to";
 	mes "keep up with the audience's";
@@ -1882,7 +1938,7 @@ ein_in01,170,266,0	script	看起來成熟的 舞孃#s3	724,{
 	close;
 }
 
-ein_in01,279,221,0	script	飯店 管理人#sch	903,5,5,{
+ein_in01,279,221,0	script	Hotel Manager#sch	903,5,5,{
 	if (que_sch < 15) {
 		mes "[Manager]";
 		mes "It'd be a really great";
@@ -1914,7 +1970,6 @@ ein_in01,279,221,0	script	飯店 管理人#sch	903,5,5,{
 	}
 	end;
 
-//OnTouch2:
 OnTouch:
 	if (que_sch == 14) {
 		mes "[Manager]";
@@ -1972,8 +2027,7 @@ ein_in01,166,282,4	script	Employee#sch	904,{
 	close;
 }
 
-ein_in01,176,285,0	script	匙肅 杻燧資#sch	-1,1,1,{
-//OnTouch2:
+ein_in01,176,285,0	script	Bard Trigger#sch	-1,1,1,{
 OnTouch:
 	if (que_sch == 15) {
 		disablenpc "Corporate Figure#sch";
@@ -2084,9 +2138,8 @@ ein_in01,170,284,4	script	Arunafeltz Figure#sch	920,{
 	close;
 }
 
-morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
-
-	if ((MaxWeight-Weight) < 2000) {
+morocc,297,154,0	script	Thin-Faced Bard#sch	51,{
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -2102,7 +2155,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 19) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Thanks for your help.";
 		mes "This country's government";
 		mes "should know better than to";
@@ -2111,7 +2164,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		mes "Do you think you can help me?";
 		next;
 		select("Sure.:I may as well...");
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "I just need you to talk";
 		mes "to a few people, and let";
 		mes "me know what they said.";
@@ -2119,7 +2172,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		mes "understand that I've got";
 		mes "to keep a low profile.";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Please meet these people";
 		mes "in the order that I tell you.";
 		mes "I've sent messengers to let";
@@ -2127,14 +2180,14 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		mes "but I had to send them out";
 		mes "at different times... Anyway...";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "First, go to Prontera";
-		mes "and talk to 恰達. Second,";
+		mes "and talk to Chada. Second,";
 		mes "go to Geffen and speak to";
-		mes "丐茲. Lastly, please go to";
-		mes "Comodo and meet 諾斯坦.";
+		mes "Ghez. Lastly, please go to";
+		mes "Comodo and meet Nosdan.";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Each one of them will";
 		mes "sing you a song. Listen";
 		mes "carefully, and sing me their";
@@ -2145,8 +2198,8 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 20) {
-		mes "[畢德萊]";
-		mes "恰達 is probably near";
+		mes "[Vitre]";
+		mes "Chada is probably near";
 		mes "the middle of Prontera.";
 		mes "The messenger I sent to";
 		mes "him should have reached";
@@ -2155,9 +2208,9 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 21) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Ah, now you've got to";
-		mes "talk to 丐茲. He should";
+		mes "talk to Ghez. He should";
 		mes "be in Northeast Geffen";
 		mes "somewhere. Hopefully";
 		mes "you won't have too much";
@@ -2165,8 +2218,8 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 22) {
-		mes "[畢德萊]";
-		mes "Trying to find 諾斯坦?";
+		mes "[Vitre]";
+		mes "Trying to find Nosdan?";
 		mes "I think he's probably in the";
 		mes "Northern Cave in Comodo.";
 		mes "Please talk to him, and let";
@@ -2174,20 +2227,20 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 23) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Welcome back.";
 		mes "So did you listen";
 		mes "to all of their songs?";
 		next;
 		if (select("Yes:No") == 1) {
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Perfect~ Here's a little";
 			mes "something to show my";
 			mes "gratitude. Hope you like it.";
 			set que_sch,24;
 			getitem 603,1; //Old_Blue_Box
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Now, tell me, what";
 			mes "exactly did they si--";
 			next;
@@ -2197,18 +2250,18 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 			enablenpc "????#sch1";
 			enablenpc "????#sch2";
 			enablenpc "????#sch3";
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "What? Wh-who the";
 			mes "hell are you guys?!";
 			next;
 			mes "[????]";
 			mes "Rune-Midgarts";
 			mes "Secret Service!";
-			mes "畢德萊 Bizlleta--";
+			mes "Vitre Bizlleta--";
 			mes "you're under arrest";
 			mes "for espionage!";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Again? Didn't you just";
 			mes "arrest me just for being";
 			mes "suspected of espionage?";
@@ -2223,7 +2276,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 			mes "enough to imprison you";
 			mes "for life. Happy now?";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "You're bluffing.";
 			next;
 			mes "[????]";
@@ -2231,21 +2284,21 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 			mes "that unsuspecting adventurer";
 			mes "to your news sources. We've";
 			mes "taken them into custody";
-			mes "恰達, 丐茲, 諾斯坦.";
+			mes "Chada, Ghez, Nosdan.";
 			mes "That's them, right?";
 			next;
-			mes "[畢德萊]";
+			mes "[Vitre]";
 			mes "Nooooooooo!";
 			next;
-			mes "[首敦]";
+			mes "[Suden]";
 			mes "Adventurer, thank you for";
 			mes "your cooperation. I am";
-			mes "首敦 Griea, Secret Service";
+			mes "Suden Griea, Secret Service";
 			mes "agent. I'm sure you have";
-			mes "a lot of questions, but ^FF0000拉斯達";
+			mes "a lot of questions, but ^FF0000Lasda";
 			mes "Midar^000000 will answer them.";
 			next;
-			mes "[首敦]";
+			mes "[Suden]";
 			mes "I'd explain here and now,";
 			mes "but I better dispose of";
 			mes "this trash with the rest of";
@@ -2257,7 +2310,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 			disablenpc "????#sch3";
 			end;
 		}
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Would you please hurry?";
 		mes "Staying in one place like";
 		mes "this makes me nervous...";
@@ -2265,7 +2318,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		close;
 	}
 	else if (que_sch == 24) {
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Now, tell me, what";
 		mes "exactly did they si--";
 		next;
@@ -2275,18 +2328,18 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		enablenpc "????#sch1";
 		enablenpc "????#sch2";
 		enablenpc "????#sch3";
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "What? Wh-who the";
 		mes "hell are you guys?!";
 		next;
 		mes "[????]";
 		mes "Rune-Midgarts";
 		mes "Secret Service!";
-		mes "畢德萊 Bizlleta--";
+		mes "Vitre Bizlleta--";
 		mes "you're under arrest";
 		mes "for espionage!";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Again? Didn't you just";
 		mes "arrest me just for being";
 		mes "suspected of espionage?";
@@ -2301,7 +2354,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		mes "enough to imprison you";
 		mes "for life. Happy now?";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "You're bluffing.";
 		next;
 		mes "[????]";
@@ -2309,21 +2362,21 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 		mes "that unsuspecting adventurer";
 		mes "to your news sources. We've";
 		mes "taken them into custody";
-		mes "恰達, 丐茲, 諾斯坦.";
+		mes "Chada, Ghez, Nosdan.";
 		mes "That's them, right?";
 		next;
-		mes "[畢德萊]";
+		mes "[Vitre]";
 		mes "Nooooooooo!";
 		next;
-		mes "[首敦]";
+		mes "[Suden]";
 		mes "Adventurer, thank you for";
 		mes "your cooperation. I am";
-		mes "首敦 Griea, Secret Service";
+		mes "Suden Griea, Secret Service";
 		mes "agent. I'm sure you have";
-		mes "a lot of questions, but ^FF0000拉斯達";
+		mes "a lot of questions, but ^FF0000Lasda";
 		mes "Midar^000000 will answer them.";
 		next;
-		mes "[首敦]";
+		mes "[Suden]";
 		mes "I'd explain here and now,";
 		mes "but I better dispose of";
 		mes "this trash with the rest of";
@@ -2337,7 +2390,7 @@ morocc,297,154,0	script	看起來緊張的 吟遊詩人	51,{
 	}
 	mes "[Bard]";
 	mes "Oh, uh...";
-	mes "I'm not really 畢德萊.";
+	mes "I'm not really Vitre.";
 	mes "I'm just a lookalike that's";
 	mes "been planted here in case";
 	mes "his hoodlum buddies come";
@@ -2376,23 +2429,23 @@ OnInit:
 	end;
 }
 
-prontera,109,161,6	script	青年#sch	83,{
+prontera,109,161,6	script	Young Man#sch	83,{
 	if (que_sch < 20) {
-		mes "[恰達]";
-		mes "好無聊啊，";
-		mes "呵嗯..這時候要唱歌，";
-		mes "呵嗯....";
+		mes "[Chada]";
+		mes "What a boring day...";
+		mes "Perhaps I'll stave the";
+		mes "dreariness with song~";
 		close;
 	}
 	else if (que_sch == 20) {
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "Are you the one that";
-		mes "畢德萊 sent? Good, good.";
+		mes "Vitre sent? Good, good.";
 		mes "Let me treat you to my";
 		mes "wonderful song. Listen...";
 		mes "And learn... And love...";
 		next;
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "La la la la la la la la~";
 		mes "A curse plagues the";
 		mes "royal family, and it's";
@@ -2400,21 +2453,21 @@ prontera,109,161,6	script	青年#sch	83,{
 		mes "second child... la la la...";
 		mes "No one can cure it... Oooh~";
 		next;
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "Hahaha! Isn't that";
 		mes "such a wonderful song?";
-		mes "Let 畢德萊 know each and";
+		mes "Let Vitre know each and";
 		mes "every word to it, okay?";
 		set que_sch,21;
 		close;
 	}
 	else if (que_sch < 30) {
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "Did you need to hear";
 		mes "the song again? Alright,";
 		mes "listen carefully this time~";
 		next;
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "La la la la la la la la~";
 		mes "A curse plagues the";
 		mes "royal family, and it's";
@@ -2422,37 +2475,37 @@ prontera,109,161,6	script	青年#sch	83,{
 		mes "second child... la la la...";
 		mes "No one can cure it... Oooh~";
 		next;
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "Hahaha! Isn't that";
 		mes "such a wonderful song?";
-		mes "Let 畢德萊 know each and";
+		mes "Let Vitre know each and";
 		mes "every word to it, okay?";
 		close;
 	}
 	else {
-		mes "[恰達]";
+		mes "[Chada]";
 		mes "...........";
 		mes "I have nothing to say to you.";
 		close;
 	}
 }
 
-geffen,196,167,4	script	女子#sch	101,{
+geffen,196,167,4	script	Young Woman#sch	101,{
 	if (que_sch < 21) {
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "When is he going";
 		mes "to send someone to";
 		mes "listen to my song?";
 		close;
 	}
 	else if (que_sch == 21) {
-		mes "[丐茲]";
-		mes "Oh, 畢德萊 send you?";
+		mes "[Ghez]";
+		mes "Oh, Vitre send you?";
 		mes "Great, I've been waiting";
 		mes "for you. Check out this";
 		mes "new song I wrote. It's great.";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Sha la la la la la";
 		mes "Prontera Knights gotta";
 		mes "protect the palace~";
@@ -2460,7 +2513,7 @@ geffen,196,167,4	script	女子#sch	101,{
 		mes "Geffen Knights gotta";
 		mes "protect the magic tower~";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Na na na nan nan naaa";
 		mes "Prontera! Geffen! Knights";
 		mes "together! Protect the palace!";
@@ -2468,20 +2521,20 @@ geffen,196,167,4	script	女子#sch	101,{
 		mes "And crush their foes to the west!";
 		mes "That's the secret plan! La la la~";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Wasn't that poetic?";
 		mes "Now sing that song exactly";
-		mes "as you heard it to 畢德萊.";
+		mes "as you heard it to Vitre.";
 		set que_sch,22;
 		close;
 	}
 	else if (que_sch < 30) {
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "You want to hear my song";
 		mes "again? Fine, but make sure";
 		mes "to memorize it all this time.";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Sha la la la la la";
 		mes "Prontera Knights gotta";
 		mes "protect the palace~";
@@ -2489,7 +2542,7 @@ geffen,196,167,4	script	女子#sch	101,{
 		mes "Geffen Knights gotta";
 		mes "protect the magic tower~";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Na na na nan nan naaa";
 		mes "Prontera! Geffen! Knights";
 		mes "together! Protect the palace!";
@@ -2497,23 +2550,23 @@ geffen,196,167,4	script	女子#sch	101,{
 		mes "And crush their foes to the west!";
 		mes "That's the secret plan! La la la~";
 		next;
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "Wasn't that poetic?";
 		mes "Now sing that song exactly";
-		mes "as you heard it to 畢德萊.";
+		mes "as you heard it to Vitre.";
 		close;
 	}
 	else {
-		mes "[丐茲]";
+		mes "[Ghez]";
 		mes "I'm doomed...";
 		mes ".......";
 		close;
 	}
 }
 
-comodo,135,299,0	script	青年#sch2	809,{
+comodo,135,299,0	script	Young Man#sch2	809,{
 	if (que_sch < 22) {
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Have you come to hear";
 		mes "my song? Ah, it's good";
 		mes "that you've come to enjoy";
@@ -2522,18 +2575,18 @@ comodo,135,299,0	script	青年#sch2	809,{
 		close;
 	}
 	else if (que_sch == 22) {
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Ah, are you the one";
-		mes "that 畢德萊 mentioned";
+		mes "that Vitre mentioned";
 		mes "in his message? Okay,";
 		mes "please give me a moment.";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "^333333*Ahem ahem*^000000";
 		mes "I'm ready. Now";
 		mes "please listen..";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Who dares stop the fearless";
 		mes "warrior? Baphomet? Drake?";
 		mes "No, they're too weak! His";
@@ -2541,7 +2594,7 @@ comodo,135,299,0	script	青年#sch2	809,{
 		mes "of evil men trying to revive";
 		mes "Satan Morroc. I mean, come on!";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Sad news from an old comrade,";
 		mes "the evil group discovered...";
 		mes "Time to stop Satan Morroc's";
@@ -2549,24 +2602,24 @@ comodo,135,299,0	script	青年#sch2	809,{
 		mes "la la la la la la la la la la";
 		mes "la la la la la la la la la la";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "What'd you think?";
 		mes "Um, don't ask me about";
 		mes "the lyrics. Just a weird";
 		mes "artistic quirk I guess.";
 		mes "Oh, please sing that song";
-		mes "to 畢德萊 for me, okay?";
+		mes "to Vitre for me, okay?";
 		set que_sch,23;
 		close;
 	}
 	else if (que_sch < 30) {
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Oh, you need to";
 		mes "hear my song again?";
 		mes "No problem! I guess";
 		mes "you really like it~";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Who dares stop the fearless";
 		mes "warrior? Baphomet? Drake?";
 		mes "No, they're too weak! His";
@@ -2574,7 +2627,7 @@ comodo,135,299,0	script	青年#sch2	809,{
 		mes "of evil men trying to revive";
 		mes "Satan Morroc. I mean, come on!";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Sad news from an old comrade,";
 		mes "the evil group discovered...";
 		mes "Time to stop Satan Morroc's";
@@ -2582,17 +2635,17 @@ comodo,135,299,0	script	青年#sch2	809,{
 		mes "la la la la la la la la la la";
 		mes "la la la la la la la la la la";
 		next;
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "What'd you think?";
 		mes "Um, don't ask me about";
 		mes "the lyrics. Just a weird";
 		mes "artistic quirk I guess.";
 		mes "Oh, please sing that song";
-		mes "to 畢德萊 for me, okay?";
+		mes "to Vitre for me, okay?";
 		close;
 	}
 	else {
-		mes "[諾斯坦]";
+		mes "[Nosdan]";
 		mes "Oh, no! I didn't!";
 		mes "do anything wrong.";
 		mes "I swear!";
@@ -2602,10 +2655,10 @@ comodo,135,299,0	script	青年#sch2	809,{
 
 // Siblings Quest
 //============================================================ 
-veins,327,185,3	script	小孩#camelcamel	944,{
+veins,327,185,3	script	Kid#camelcamel	944,{
 	if (MISC_QUEST & 8192) {
 		if (rachel_camel == 0) {
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "*Sob*";
 			next;
 			mes "^3355FFThis sobbing child";
@@ -2616,7 +2669,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "crying? Are you lost?";
 			mes "Where's your mommy?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "My... Mom's";
 			mes "at home...";
 			next;
@@ -2630,7 +2683,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "trouble finding";
 			mes "your way back home?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "No! I'm ten years old!";
 			mes "I can find my way home,";
 			mes "even with my eyes closed!";
@@ -2643,7 +2696,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "Can you tell me";
 			mes "why you're crying?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I... ^333333*Sniff*^000000";
 			mes "I-I went to... Th-...";
 			mes "Volcan.... w-w-with";
@@ -2655,7 +2708,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "you can tell me about what";
 			mes "happened a little more slowly.";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "*^333333Sob*^000000 ...It's just...";
 			mes "I went to Thor Volcano";
 			mes "with my little sister to see";
@@ -2663,25 +2716,25 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "But then, we met some...";
 			mes "Scary people there... and...";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I got scared, so... So...";
 			mes "My sister... Wah~! *Sob*";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "*Sob*";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I-I ran away from them...";
 			mes "But I left my sister over";
 			mes "there with those weird men...";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Mom's sick, and dad's";
 			mes "always at work... He's";
 			mes "the captain of a ship, so...";
 			mes "I don't think they can help.";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Can you help me please,";
 			mes "and bring my sister back?";
 			mes "*Sniff* Please? I promise";
@@ -2696,7 +2749,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "like? Are you sure that there";
 			mes "were people there?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I... I don't know!";
 			mes "I got so scared, I just";
 			mes "ran away! I... I didn't";
@@ -2715,7 +2768,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "someone else will come";
 				mes "along to save your sister.";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "Wah~";
 				close;
 			case 2:
@@ -2724,7 +2777,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "I can do. I'll try my best";
 				mes "to find your sister.";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "Thank you so much!";
 				mes "Please find my sister";
 				mes "Curdie soon! Oh, I hope";
@@ -2738,6 +2791,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "I'll go search Thor";
 				mes "Volcano to find your";
 				mes "little sister Curdie.";
+				setquest 3060;
 				set rachel_camel,1;
 				close;
 			}
@@ -2750,7 +2804,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			close;
 		}
 		else if (rachel_camel == 2) {
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "W-were you able";
 			mes "to find my sister?";
 			mes "Is she alright?";
@@ -2760,7 +2814,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "I found her,";
 			mes "she's alright but...";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "What? Why isn't";
 			mes "she with you?";
 			next;
@@ -2772,21 +2826,37 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "a forge or a locksmith that";
 			mes "might be able to help her?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Oh! Oh, there's a";
 			mes "locksmith in the market";
 			mes "street! You can ask him";
 			mes "to help free Curdie!";
+			changequest 3061,3062;
 			set rachel_camel,3;
 			close;
 		}
-		else if (rachel_camel <= 5) {
-			mes "["+strcharinfo(0)+"]";
+		else if (rachel_camel == 3) {
+			mes "[Kid Karyn]";
 			mes "Let's see...";
 			mes "I'd better find the";
 			mes "locksmith in the market";
 			mes "street, and ask him to help";
 			mes "me unlock Curdie's shackles.";
+			close;
+		}
+		else if (rachel_camel == 4) {
+			mes "[Kid Karyn]";
+			mes "Huh... I'd better talk";
+			mes "to Mr. Lockenlock first, the";
+			mes "locksmith in the market street.";
+			close;
+		}
+		else if (rachel_camel == 5) {
+			mes "["+strcharinfo(0)+"]";
+			mes "Hmm... I'd better talk";
+			mes "to Ms. Ivory, the organic";
+			mes "soap maker if I want to help";
+			mes "Karyn free his sister Curdie.";
 			close;
 		}
 		else if (rachel_camel == 6) {
@@ -2855,7 +2925,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "if I want to free Curdie.";
 			close;
 		}
-		else if (rachel_camel <= 16) {
+		else if (rachel_camel > 11 && rachel_camel < 17) {
 			mes "["+strcharinfo(0)+"]";
 			mes "Well... I found the";
 			mes "camel. Now I need to get";
@@ -2883,7 +2953,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 		}
 		else if (rachel_camel == 19) {
 			mes "["+strcharinfo(0)+"]";
-			mes "I have the 綢緞沙漠駱駝";
+			mes "I have the Silk Sand Camel";
 			mes "Soap now, so I should go";
 			mes "bring it to Mr. Lockenlock.";
 			close;
@@ -2917,7 +2987,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "to free Curdie. I'm";
 			mes "gonna go save her now.";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Thank you so much!";
 			mes "Please bring back Curdie";
 			mes "as soon as you can! ^333333*Sob*^000000";
@@ -2930,21 +3000,21 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "with a Butterfly Wing.";
 			mes "Did she come back safe?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Yes, Curdie's back";
 			mes "and she's resting in";
 			mes "the hospital right now.";
 			mes "Thank you so much for";
 			mes "all of your help!";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I'm not sure what's wrong";
 			mes "with Curdie, though. Ever";
 			mes "since she got back, she gets";
 			mes "frightened whenever she";
 			mes "sees the soldiers in town.";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "I promise to tell my dad";
 			mes "about what you did after he";
 			mes "comes back from overseas.";
@@ -2957,7 +3027,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "when Curdie's released";
 			mes "from the hospital.";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Yes, please do.";
 			mes "I promise to help you";
 			mes "whenever you need me!";
@@ -2969,22 +3039,33 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 			mes "take good care of your mother";
 			mes "and sister. You got that?";
 			next;
-			mes "[嘉琳]";
+			mes "[Kid Karyn]";
 			mes "Got it!";
 			next;
 			mes "["+strcharinfo(0)+"]";
 			mes "Good, good...";
 			mes "It's a promise, then.";
 			mes "I'll see you later~";
+			completequest 3083;
 			set rachel_camel,25;
 			specialeffect2 EF_ABSORBSPIRITS;
-			getexp 1000000,700000;
+			getexp 100000,70000;
 			close;
 		}
 		else {
 // Start Nameless Island Access Quest Addition
-			if (aru_monas == 15) {
-				mes "[嘉琳]";
+			if (aru_monas < 15) {
+				mes "[Kid Karyn]";
+				mes "Oh, hello! Thank you";
+				mes "so much for helping me";
+				mes "last time! When I get";
+				mes "older, I'm gonna do my";
+				mes "best to help you the same";
+				mes "way that you helped me!";
+				close;
+			}
+			else if (aru_monas == 15) {
+				mes "[Kid Karyn]";
 				mes "Hi! It's good to see";
 				mes "you again! Kurdi just came";
 				mes "back home from the hospital,";
@@ -2996,7 +3077,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "Really? That's good";
 				mes "You should be proud~";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "^666666*Blush*^000000 Heh heh!";
 				next;
 				mes "["+strcharinfo(0)+"]";
@@ -3007,21 +3088,21 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "asking him if I could";
 				mes "borrow his boat?";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "Well... Actually...";
 				mes "The pope said that my";
 				mes "dad isn't allowed to use";
 				mes "his boat for a while...";
 				mes "I'm not sure why...";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "So yeah. Dad's not allowed";
 				mes "to go out to sea right now.";
 				mes "But it should be okay if it's";
 				mes "you, right? Hey, you helped";
 				mes "me, so I hafta help you, right?";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "My dad is really mad that";
 				mes "he can't use his boat so";
 				mes "maybe we better not tell";
@@ -3031,7 +3112,7 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "["+strcharinfo(0)+"]";
 				mes "S-sure thing!";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "Anyway, his boat is the";
 				mes "only one on the south beach";
 				mes "since all the other fishermen";
@@ -3047,32 +3128,33 @@ veins,327,185,3	script	小孩#camelcamel	944,{
 				mes "boat. I only need it for";
 				mes "a little while, anyway.";
 				next;
-				mes "[嘉琳]";
+				mes "[Kid Karyn]";
 				mes "Heh heh! Thanks!";
 				mes "I'm happy that";
 				mes "I can help you too!";
 				set aru_monas,16;
 				close;
 			}
-			else if (aru_monas > 15) {
-				mes "[嘉琳]";
+			else if (aru_monas < 26) {
+				mes "[Kid Karyn]";
 				mes "Hi! How do you like";
 				mes "fishing on my dad's boat?";
 				mes "Oh, and Kurdi says hi!";
 				close;
 			}
+			else {
+				mes "[Kid Karyn]";
+				mes "Dad says that he'll";
+				mes "be able to go fishing";
+				mes "again soon! I hope that";
+				mes "he'll catch a lot of fish!";
+				close;
+			}
 // End Nameless Island Access Quest Addition.
-			mes "[嘉琳]";
-			mes "Hello, hello!";
-			mes "Hey, did you need";
-			mes "me to help you? No...?";
-			mes "Awww, there must be";
-			mes "something I can do...";
-			close;
 		}
 	}
 	else {
-		mes "[嘉琳]";
+		mes "[Kid Karyn]";
 		mes "^333333*Sob*^000000...";
 		mes "^333333*Sob*^000000...";
 		close;
@@ -3161,6 +3243,7 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "in town will know of a way";
 		mes "to unlock your shackles.";
 		mes "I'll be back as soon as I can!";
+		changequest 3060,3061;
 		set rachel_camel,2;
 		close;
 	}
@@ -3173,7 +3256,7 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "from these chains.^000000";
 		close;
 	}
-	else if (rachel_camel == 3) {
+	else if (rachel_camel == 3 || rachel_camel == 6 || rachel_camel == 8 || rachel_camel == 22) {
 		mes "^3355FFCurdie is lying";
 		mes "feebly on the ground.^000000";
 		close;
@@ -3198,20 +3281,10 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "the Rachel soldiers.^000000";
 		close;
 	}
-	else if (rachel_camel == 6) {
-		mes "^3355FFCurdie is lying";
-		mes "feebly on the ground.^000000";
-		close;
-	}
 	else if (rachel_camel == 7) {
 		mes "^3355FFIt seems that someone";
 		mes "has come by to give";
 		mes "Curdie food and water.^000000";
-		close;
-	}
-	else if (rachel_camel == 8) {
-		mes "^3355FFCurdie is lying";
-		mes "feebly on the ground.^000000";
 		close;
 	}
 	else if (rachel_camel == 9) {
@@ -3224,7 +3297,7 @@ que_thor,36,66,5	script	Little Curdie	941,{
 	}
 	else if (rachel_camel == 10) {
 		mes "^3355FFYou'd better find the";
-		mes "綢緞沙漠駱駝 and get";
+		mes "Silk Sand Camel and get";
 		mes "the soap ingredients if";
 		mes "you really want to free";
 		mes "Curdie from her shackles.^000000";
@@ -3240,7 +3313,7 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "if I want to free Curdie.";
 		close;
 	}
-	else if (rachel_camel <= 16) {
+	else if (rachel_camel > 11 && rachel_camel < 17) {
 		mes "^3355FFYou already found the";
 		mes "camel, so you need to collect";
 		mes "the soap ingredients if you";
@@ -3266,7 +3339,7 @@ que_thor,36,66,5	script	Little Curdie	941,{
 	}
 	else if (rachel_camel == 19) {
 		mes "^3355FFNow that you have the";
-		mes "綢緞沙漠駱駝 Soap,";
+		mes "Silk Sand Camel Soap,";
 		mes "you should bring it";
 		mes "over to Mr. Lockenlock.^000000";
 		close;
@@ -3347,12 +3420,13 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "to hurry a little bit.";
 		mes "Alright, it's time to go.";
 		next;
-		mes "^3355FFYou extract the soup";
+		mes "^3355FFYou extract the soap";
 		mes "from the lock, and";
 		mes "carefully wrap it.";
 		mes "Now you need to take";
 		mes "the mold back to town";
 		mes "to Mr. Lockenlock.^000000";
+		changequest 3079,3080;
 		set rachel_camel,21;
 		close;
 	}
@@ -3362,11 +3436,6 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "key mold to Mr. Lockenlock";
 		mes "so that he can make a key";
 		mes "to unlock Curdie's shackles.^000000";
-		close;
-	}
-	else if (rachel_camel == 22) {
-		mes "^3355FFCurdie is lying";
-		mes "feebly on the ground.^000000";
 		close;
 	}
 	else if (rachel_camel == 23) {
@@ -3422,18 +3491,27 @@ que_thor,36,66,5	script	Little Curdie	941,{
 		mes "volcano? It must have been";
 		mes "dangerous... Something";
 		mes "related to the Rachel Army...";
+		changequest 3082,3083;
 		set rachel_camel,24;
 		close;
 	}
 	else {
 		mes "[Little Curdie]";
-		mes " .......";
+		mes " ...Wah....";
 		close;
 	}
 }
 
 veins,181,166,3	script	Lockenlock	900,{
-	if (rachel_camel == 4) {
+	if (rachel_camel && rachel_camel < 4) {
+		mes "^3355FFIt's a drunkard...";
+		mes "The scent of pure";
+		mes "alcohol wafts around him.";
+		mes "There's a certain beauty";
+		mes "to his disheveled misery.^000000";
+		close;
+	}
+	else if (rachel_camel == 4) {
 		if (countitem(503) > 0) {
 			mes "["+strcharinfo(0)+"]";
 			mes "Excuse me...?";
@@ -3564,6 +3642,7 @@ veins,181,166,3	script	Lockenlock	900,{
 			mes "["+strcharinfo(0)+"]";
 			mes "...........";
 			delitem 503,1; //Yellow_Potion
+			changequest 3063,3064;
 			set rachel_camel,5;
 			close;
 		}
@@ -3576,14 +3655,6 @@ veins,181,166,3	script	Lockenlock	900,{
 			mes "a Yellow Potion first.^000000";
 			close;
 		}
-	}
-	else if (rachel_camel <= 3) {
-		mes "^3355FFIt's a drunkard...";
-		mes "The scent of pure";
-		mes "alcohol wafts around him.";
-		mes "There's a certain beauty";
-		mes "to his disheveled misery.^000000";
-		close;
 	}
 	else if (rachel_camel == 5) {
 		mes "[Locksmith Lockenlock]";
@@ -3682,7 +3753,7 @@ veins,181,166,3	script	Lockenlock	900,{
 		mes "sooner I can help Curdie.";
 		close;
 	}
-	else if (rachel_camel <= 16) {
+	else if (rachel_camel > 12 && rachel_camel < 17) {
 		mes "^3355FFYou already found the";
 		mes "camel, so you need to collect";
 		mes "the soap ingredients if you";
@@ -3754,6 +3825,7 @@ veins,181,166,3	script	Lockenlock	900,{
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "Alright.";
+		changequest 3078,3079;
 		set rachel_camel,20;
 		close;
 	}
@@ -3800,6 +3872,7 @@ veins,181,166,3	script	Lockenlock	900,{
 		mes "the key, so I can get it done";
 		mes "as soon as you can bring";
 		mes "me the Steel. I'll be waiting.";
+		changequest 3080,3081;
 		set rachel_camel,22;
 		close;
 	}
@@ -3893,6 +3966,7 @@ veins,181,166,3	script	Lockenlock	900,{
 			mes "Make sure that you";
 			mes "bring that child back";
 			mes "safe to her family!";
+			changequest 3081,3082;
 			set rachel_camel,23;
 			close;
 		}
@@ -3904,6 +3978,7 @@ veins,181,166,3	script	Lockenlock	900,{
 			mes "the key, so I can get it done";
 			mes "as soon as you can bring";
 			mes "me the Steel. I'll be waiting.";
+			close;
 		}
 	}
 	else if (rachel_camel == 23) {
@@ -3985,7 +4060,17 @@ veins,181,166,3	script	Lockenlock	900,{
 }
 
 veins,227,127,5	script	Ivory	940,{
-	if (rachel_camel == 5) {
+	if (rachel_camel && rachel_camel < 5) {
+		mes "[Organic Soap Maker Ivory]";
+		mes "I need to make more of";
+		mes "my soap, but I've run out";
+		mes "of ingredients. Well, there's";
+		mes "not much I can do without them,";
+		mes "so maybe it'd be better if";
+		mes "I just close up shop today...";
+		close;
+	}
+	else if (rachel_camel == 5) {
 		mes "["+strcharinfo(0)+"]";
 		mes "Excuse me...?";
 		next;
@@ -4061,6 +4146,7 @@ veins,227,127,5	script	Ivory	940,{
 		mes "^4D4DFF5 Empty Bottles^000000.";
 		mes "Then we can move";
 		mes "on to the hard part.";
+		changequest 3064,3065;
 		set rachel_camel,6;
 		close;
 	}
@@ -4079,7 +4165,7 @@ veins,227,127,5	script	Ivory	940,{
 			next;
 			mes "[Organic Soap Maker Ivory]";
 			mes "Please tell the";
-			mes "綢緞沙漠駱駝 farm";
+			mes "Silk Sand Camel farm";
 			mes "owner in town that I sent";
 			mes "you, and show him the";
 			mes "ingredients that you've";
@@ -4106,6 +4192,7 @@ veins,227,127,5	script	Ivory	940,{
 			mes "Okay, so I need to visit";
 			mes "him if I really need you";
 			mes "to make the soap...";
+			changequest 3065,3066;
 			set rachel_camel,7;
 			close;
 		}
@@ -4128,23 +4215,11 @@ veins,227,127,5	script	Ivory	940,{
 			close;
 		}
 	}
-	else if (rachel_camel <= 4) {
-		mes "[Organic Soap Maker Ivory]";
-		mes "I need to make more of";
-		mes "my soap, but I've run out";
-		mes "of ingredients. Well, there's";
-		mes "not much I can do without them,";
-		mes "so maybe it'd be better if";
-		mes "I just close up shop today...";
-		close;
-	}
 	else if (rachel_camel == 7) {
-		mes "[Beautiful Lady]";
-		mes "Hm? Did you need";
-		mes "something? I'm still";
-		mes "setting up shop now";
-		mes "so I'm not really ready";
-		mes "to sell anything yet.";
+		mes "["+strcharinfo(0)+"]";
+		mes "I need to talk to";
+		mes "someone named Saraman";
+		mes "to get the soap ingredients...";
 		close;
 	}
 	else if (rachel_camel == 8) {
@@ -4200,7 +4275,7 @@ veins,227,127,5	script	Ivory	940,{
 		mes "sooner I can help Curdie.";
 		close;
 	}
-	else if (rachel_camel <= 16) {
+	else if (rachel_camel > 12 && rachel_camel < 17) {
 		mes "^3355FFYou already found the";
 		mes "camel, so you need to collect";
 		mes "the soap ingredients if you";
@@ -4263,7 +4338,7 @@ veins,227,127,5	script	Ivory	940,{
 		next;
 		mes "[Organic Soap Maker Ivory]";
 		mes "And um... Don't let";
-		mes "anyone 	else know what";
+		mes "anyone else know what";
 		mes "I use to make this soap.";
 		mes "People won't buy it if they";
 		mes "knew they were washing their";
@@ -4275,20 +4350,21 @@ veins,227,127,5	script	Ivory	940,{
 		mes "for making the soap! ";
 		next;
 		mes "^3355FFNow that you have the";
-		mes "綢緞沙漠駱駝 Soap.";
+		mes "Silk Sand Camel Soap.";
 		mes "you should bring it";
 		mes "to Mr. Lockenlock.^000000";
+		changequest 3077,3078;
 		set rachel_camel,19;
 		close;
 	}
 	else if (rachel_camel == 19) {
 		mes "^3355FFNow that you have the";
-		mes "綢緞沙漠駱駝 Soap.";
+		mes "Silk Sand Camel Soap.";
 		mes "you should bring it";
 		mes "to Mr. Lockenlock.^000000";
 		close;
 	}
-	else if (rachel_camel <= 25) {
+	else if (rachel_camel > 19 && rachel_camel < 26) {
 		mes "[Organic Soap Maker Ivory]";
 		mes "^333333*Phew!*^000000 It's been";
 		mes "a long day. I think";
@@ -4306,8 +4382,8 @@ veins,227,127,5	script	Ivory	940,{
 	}
 }
 
-veins,115,59,5	script	莎拉曼	847,{
-	if (rachel_camel < 7) {
+veins,115,59,5	script	Saraman	847,{
+	if (rachel_camel && rachel_camel < 7) {
 		mes "[Saraman]";
 		mes "Zzzzz...";
 		mes "Zzz... Zzzzzz...";
@@ -4359,7 +4435,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "in certain countries.";
 		next;
 		mes "[Camel Farm Owner Saraman]";
-		mes "Sadly, 綢緞沙漠駱駝s";
+		mes "Sadly, Silk Sand Camels";
 		mes "are almost extinct, so I only";
 		mes "have one on this farm. That's";
 		mes "why we have a special contract^FFFFFF ^000000 with Ms. Ivory to make her soap.";
@@ -4423,6 +4499,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "^4D4DFF5 Monster's Feed^000000,";
 		mes "^4D4DFF1 Empty Bottle^000000, and";
 		mes "^4D4DFF1 Yellow Potion^000000.";
+		changequest 3066,3067;
 		set rachel_camel,8;
 		close;
 	}
@@ -4467,6 +4544,7 @@ veins,115,59,5	script	莎拉曼	847,{
 			delitem 503,1; //Yellow_Potion
 			delitem 619,1; //Unripe_Apple
 			delitem 713,1; //Empty_Bottle
+			changequest 3067,3068;
 			set rachel_camel,9;
 			close;
 		}
@@ -4522,7 +4600,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "Oh, yes, well...";
 		mes "One of my workers";
 		mes "just came by, and told me";
-		mes "that my 綢緞沙漠駱駝";
+		mes "that my Silk Sand Camel";
 		mes "disappeared somewhere...";
 		mes "This is terrible news!";
 		next;
@@ -4549,6 +4627,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "so she shouldn't be far from";
 		mes "here. Please find my camel";
 		mes "Soony as soon as you can!";
+		changequest 3069,3070;
 		set rachel_camel,11;
 		close;
 	}
@@ -4575,7 +4654,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "sooner I can help Curdie.";
 		close;
 	}
-	else if (rachel_camel <= 16) {
+	else if (rachel_camel > 12 && rachel_camel < 17) {
 		mes "^3355FFYou already found the";
 		mes "camel, so you need to collect";
 		mes "the soap ingredients if you";
@@ -4618,6 +4697,7 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "what you've done for me.";
 		mes "Good luck with getting";
 		mes "that soap you want made.";
+		changequest 3076,3077;
 		getitem 617,1; //Old_Violet_Box
 		set rachel_camel,18;
 		close;
@@ -4629,10 +4709,10 @@ veins,115,59,5	script	莎拉曼	847,{
 		mes "to see Ms. Ivory now?";
 		close;
 	}
-	else if (rachel_camel <= 23) {
+	else if (rachel_camel > 18 && rachel_camel < 24) {
 		mes "[Camel Farm Owner Saraman]";
 		mes "Thank you for finding my";
-		mes "precious 綢緞沙漠駱駝";
+		mes "precious Silk Sand Camel";
 		mes "Soony. Come again sometime,";
 		mes "and maybe we can special my";
 		mes "special camel yogurt together.";
@@ -4650,12 +4730,13 @@ veins,115,59,5	script	莎拉曼	847,{
 	}
 }
 
-veins,78,226,5	script	駱駝#camelcc1::VeinsCamel	938,{
+veins,78,226,5	script	Camel#camelcc1::VeinsCamel	938,{
 	if (rachel_camel == 9) {
 		mes "^3355FFThe camel sniffed the";
 		mes "appetite stimulant, but";
 		mes "brusquely turned its";
 		mes "nose away from it.^000000";
+		changequest 3068,3069;
 		set rachel_camel,10;
 		close;
 	}
@@ -4666,24 +4747,23 @@ veins,78,226,5	script	駱駝#camelcc1::VeinsCamel	938,{
 		mes "nose away from it.";
 		mes "This probably isn't the";
 		mes "camel you're looking for.^000000";
-		set rachel_camel,10;
 		close;
 	}
 	else {
-		mes "[駱駝]";
+		mes "[Camel]";
 		mes "*Neigh* ~";
 		mes "*Chew Chew*";
 		close;
 	}
 }
 
-veins,72,227,3	duplicate(VeinsCamel)	駱駝#camelcc3	938
-veins,81,222,1	duplicate(VeinsCamel)	駱駝#camelcc4	938
-veins,77,219,5	duplicate(VeinsCamel)	駱駝#camelcc5	938
-veins,73,215,8	duplicate(VeinsCamel)	駱駝#camelcc6	938
-veins,68,215,5	duplicate(VeinsCamel)	駱駝#camelcc7	938
+veins,72,227,3	duplicate(VeinsCamel)	Camel#camelcc3	938
+veins,81,222,1	duplicate(VeinsCamel)	Camel#camelcc4	938
+veins,77,219,5	duplicate(VeinsCamel)	Camel#camelcc5	938
+veins,73,215,8	duplicate(VeinsCamel)	Camel#camelcc6	938
+veins,68,215,5	duplicate(VeinsCamel)	Camel#camelcc7	938
 
-ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
+ve_fild07,235,42,3	script	Silk Sand Camel	938,{
 	if (rachel_camel == 11) {
 		mes "^3355FFThis camel's leg is";
 		mes "wounded. Although it";
@@ -4692,7 +4772,7 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 		mes "the camel appetite stimulant,";
 		mes "and it smacked its lips.^000000";
 		next;
-		mes "[駱駝]";
+		mes "[Camel]";
 		mes "^333333*Chew Chew~*^000000";
 		mes "^333333*Smacks lips*^000000";
 		next;
@@ -4704,27 +4784,28 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "This must be the";
-		mes "綢緞沙漠駱駝...";
+		mes "Silk Sand Camel...";
 		mes "I guess all I need to";
 		mes "do is collect some of";
 		mes "that precious camel dung.";
+		changequest 3070,3071;
 		set rachel_camel,12;
 		close;
 	}
-	else if (rachel_camel >= 12 && rachel_camel <= 16) {
+	else if (rachel_camel > 11 && rachel_camel < 17) {
 		if (countitem(519) > 1 && countitem(511) > 19 && countitem(909) > 9 && countitem(713) > 0) {
 			mes "^3355FFThe camel can smell";
 			mes "that you have food for";
 			mes "it, and started salivating.";
 			mes "You may as well just feed it.^000000";
 			next;
-			mes "[綢緞沙漠駱駝]";
-			mes "^333333*Chew Chew~*^000000";
-			mes "^333333*Smacks lips*^000000";
-			next;
-			switch(rand(1,7)) {
+			switch(rand(3)) {
 			case 1:
 				if (rachel_camel == 12) {
+					mes "[Silk Sand Camel]";
+					mes "^333333*Chew Chew~*^000000";
+					mes "^333333*Smacks lips*^000000";
+					next;
 					mes "^3355FFThe camel ate everything,";
 					mes "but it doesn't seem like";
 					mes "it'll go through any bowel";
@@ -4744,69 +4825,10 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 				delitem 909,10; //Jellopy
 				close;
 			case 2:
-				mes "^3355FFThe camel grimaced";
-				mes "as if it were suffering";
-				mes "from a stomachache...";
-				mes "And... Out pops a Sweet";
-				mes "Potato. It's probably";
-				mes "safe to eat... Maybe.^000000";
-				delitem 519,2; //Milk
-				delitem 511,20; //Green_Herb
-				delitem 909,10; //Jellopy
-				getitem 516,1; //Sweet_Potato
-				close;
-			case 3:
-				mes "^3355FFThe camel grimaced";
-				mes "as if it were suffering";
-				mes "from a stomachache...";
-				if (rachel_camel == 12) {
-					mes "And... Out pops 3 Sweet";
-					mes "Potatoes. They're probably";
-				}
-				else {
-					mes "And... Out pops a Sweet";
-					mes "Potato. It's probably";
-				}
-				mes "safe to eat... Hopefully.^000000";
-				delitem 519,2; //Milk
-				delitem 511,20; //Green_Herb
-				delitem 909,10; //Jellopy
-				if (rachel_camel == 12) {
-					getitem 516,3; //Sweet_Potato
-				}
-				else {
-					getitem 516,1; //Sweet_Potato
-				}
-				close;
-			case 4:
-				mes "[綢緞沙漠駱駝]";
+				mes "[Silk Sand Camel]";
 				mes "^333333*Chew Chew~*^000000";
 				mes "^333333*Smacks lips*^000000";
 				next;
-				mes "^3355FFThe camel grimaced";
-				mes "as if it were suffering";
-				mes "from a stomachache...";
-				if (rachel_camel == 12) {
-					mes "And... Out pops 7 Sweet";
-					mes "Potatoes. They're probably";
-				}
-				else {
-					mes "And... Out pops a Sweet";
-					mes "Potato. It's probably";
-				}
-				mes "safe to eat... Hopefully.^000000";
-				delitem 519,2; //Milk
-				delitem 511,20; //Green_Herb
-				delitem 909,10; //Jellopy
-				if (rachel_camel == 12) {
-					getitem 516,7; //Sweet_Potato
-				}
-				else {
-					getitem 516,1; //Sweet_Potato
-				}
-
-				close;
-			case 5:
 				mes "^3355FFThe camel grimaced";
 				mes "as if it were suffering";
 				mes "from a stomachache...";
@@ -4814,28 +4836,32 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 				mes "of steaming camel dung!";
 				mes "This is cause for celebration!^000000";
 				next;
-				mes "["+strcharinfo(0)+"]";
+				mes "[" + strcharinfo(0) + "]";
 				if (rachel_camel == 12) {
 					mes "Now all I need is";
 					mes "just 4 more lumps";
 					mes "of this nasty old dung.";
+					set rachel_camel, 13;
 				}
 				else if (rachel_camel == 13) {
 					mes "Awesome! I got";
 					mes "2 glorious camel dung";
 					mes "lumps! Only 3 more to go!";
+					set rachel_camel, 14;
 				}
 				else if (rachel_camel == 14) {
 					mes "Yes! Now I have";
 					mes "3 camel dung lumps.";
 					mes "Just 2 more... I'm more";
 					mes "than halfway done!";
+					set rachel_camel, 15;
 				}
 				else if (rachel_camel == 15) {
 					mes "4 lumps of camel dung...";
 					mes "Heh heh! This is going";
 					mes "better than I thought!";
 					mes "Only 1 more to go!";
+					set rachel_camel, 16;
 				}
 				else if (rachel_camel == 16) {
 					mes "In my hands...";
@@ -4843,7 +4869,7 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 					mes "5 lumps of camel dung.";
 					mes "This is my finest moment.";
 					next;
-					mes "["+strcharinfo(0)+"]";
+					mes "[" + strcharinfo(0) + "]";
 					mes "Never, in all my years";
 					mes "of adventuring, saving the";
 					mes "oppressed, protecting the";
@@ -4851,7 +4877,7 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 					mes "that I'd accomplish such";
 					mes "a magnificent feat.";
 					next;
-					mes "["+strcharinfo(0)+"]";
+					mes "[" + strcharinfo(0) + "]";
 					mes "I am so happy--nay--";
 					mes "^4D4DFFproud^000000 that my strength, my";
 					mes "valor, and my determination";
@@ -4861,32 +4887,15 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 					next;
 					mes "^3355FFIt's time for you to";
 					mes "return to Mr. Saraman.^000000";
-
+					set rachel_camel, 17;
 				}
 				delitem 519,2; //Milk
 				delitem 511,20; //Green_Herb
 				delitem 909,10; //Jellopy
 				delitem 713,1; //Empty_Bottle
-				set rachel_camel,rachel_camel+1;
 				close;
-			case 6:
-				mes "[綢緞沙漠駱駝]";
-				mes "^333333*Chew Chew~*^000000";
-				mes "^333333*Smacks lips*^000000";
-				next;
-				mes "^3355FFThe camel grimaced";
-				mes "as if it were suffering";
-				mes "from a stomachache...";
-				mes "And... Out pops a Sweet";
-				mes "Potato. It's probably";
-				mes "safe to eat... Maybe.^000000";
-				delitem 519,2; //Milk
-				delitem 511,20; //Green_Herb
-				delitem 909,10; //Jellopy
-				getitem 516,1; //Sweet_Potato
-				close;
-			case 7:
-				mes "[綢緞沙漠駱駝]";
+			default:
+				mes "[Silk Sand Camel]";
 				mes "^333333*Chew Chew~*^000000";
 				mes "^333333*Smacks lips*^000000";
 				next;
@@ -4905,20 +4914,28 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 		}
 		else {
 			mes "["+strcharinfo(0)+"]";
-			mes "I need to feed this camel if";
-			mes "I ever want to get any dung";
-			mes "from it. Let's see, Mr. Saraman";
-			mes "mentioned that the items I got";
-			mes "for Ms. Ivory were actually";
-			mes "camel feed. I need to have...";
+			if (rachel_camel == 12) {
+				mes "I need to feed this camel if";
+				mes "I ever want to get any dung";
+				mes "from it. Let's see, Mr. Saraman";
+				mes "mentioned that the items I got";
+				mes "for Ms. Ivory were actually";
+				mes "camel feed. I need to have...";
+			}
+			else {
+				mes "Did I run out of feed";
+				mes "already? Nuts, if I want";
+				mes "to feed this camel again,";
+				mes "then I need to bring it...";
+			}
 			next;
 			mes "["+strcharinfo(0)+"]";
-			mes "^4D4DFF10 Milk^000000,";
-			mes "^4D4DFF100 Green Herbs^000000,";
-			mes "^4D4DFF50 Jellopies^000000, and";
-			mes "^4D4DFF5 Empty Bottles^000000.";
+			mes "^4D4DFF2 Milk^000000,";
+			mes "^4D4DFF20 Green Herbs^000000,";
+			mes "^4D4DFF10 Jellopies^000000, and";
+			mes "^4D4DFF1 Empty Bottles^000000.";
 			next;
-			mes "[綢緞沙漠駱駝]";
+			mes "[Silk Sand Camel]";
 			mes "*Chew Chew*";
 			mes "*Neigh Neigh*~";
 			close;
@@ -4935,7 +4952,7 @@ ve_fild07,235,42,3	script	綢緞沙漠駱駝	938,{
 		close;
 	}
 	else {
-		mes "[綢緞沙漠駱駝]";
+		mes "[Silk Sand Camel]";
 		mes "*Neigh Neigh*~";
 		next;
 		mes "^3355FFSilly camel.^000000";
@@ -4999,6 +5016,7 @@ veins,221,120,5	script	Young Town Native	943,{
 		mes "^3355FFFind Mr. Lockenlock";
 		mes "in the market street, and";
 		mes "bring him a Yellow Potion.^000000";
+		changequest 3062,3063;
 		set rachel_camel,4;
 		close;
 	}
@@ -5035,10 +5053,10 @@ veins,221,120,5	script	Young Town Native	943,{
 	}
 }
 
-// 托爾火山基地任務
+// Thor Volcano Base Quest
 //============================================================ 
 
-ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
+ra_temin,87,133,1	script	Rachel Guard#vol1	934,5,2,{
 	if (aru_vol == 2) {
 		mes "[Guard Karlum]";
 		mes "High Priest Vildt isn't";
@@ -5065,7 +5083,7 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 		mes "Of course! I should";
 		mes "talk to him about ^FF0000"+.@input$+"^000000 !!";
 		next;
-		if (.@input$ != "拉密樂") {
+		if (.@input$ != "Lamir") {
 			mes "["+strcharinfo(0)+"]";
 			mes "What the...?";
 			mes "Where did I think of that?";
@@ -5074,7 +5092,7 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 		}
 		mes "["+strcharinfo(0)+"]";
 		mes "That's right! I talked";
-		mes "to 拉密樂 a while ago.";
+		mes "to Lamir a while ago.";
 		mes "If she's right, then this";
 		mes "guy must be Karlum, the guy";
 		mes "who's totally in love with her.";
@@ -5093,11 +5111,11 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 		mes "too much time on the job...";
 		next;
 		mes "["+strcharinfo(0)+"]";
-		mes "You know ^3131FF拉密樂^000000, right?";
+		mes "You know ^3131FFLamir^000000, right?";
 		next;
 		emotion e_omg;
 		mes "[Guard Karlum]";
-		mes "拉密樂? Oh... My.";
+		mes "Lamir? Oh... My.";
 		mes "Oh no! Did something";
 		mes "bad happen to her?";
 		mes "Quick, tell me!";
@@ -5128,16 +5146,16 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 		mes "Screw this stupid job!";
 		mes "I've made my choice, and";
 		mes "I choose true love! I can't";
-		mes "keep 拉密樂 waiting any longer!";
+		mes "keep Lamir waiting any longer!";
 		set aru_vol,3;
 		donpcevent "vol_time::OnEnable";
 		close2;
-		disablenpc "拉赫 警衛兵#vol1";
+		disablenpc "Rachel Guard#vol1";
 		end;
 	}
 	else if ((aru_vol> 2) && (aru_vol < 5)) {
 		mes "[Guard Karlum]";
-		mes "Hey! 拉密樂 told me that";
+		mes "Hey! Lamir told me that";
 		mes "she didn't want to see";
 		mes "me at all! What's your";
 		mes "game, huh? Do you think";
@@ -5160,7 +5178,7 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 		mes "her and play hard to get too!";
 		donpcevent "vol_time::OnEnable";
 		close2;
-		disablenpc "拉赫 警衛兵#vol1";
+		disablenpc "Rachel Guard#vol1";
 		end;
 	}
 	else {
@@ -5173,16 +5191,15 @@ ra_temin,87,133,1	script	拉赫 警衛兵#vol1	934,5,2,{
 	}
 
 OnInit:
-	enablenpc "拉赫 警衛兵#vol1";
+	enablenpc "Rachel Guard#vol1";
 	end;
 
 OnTouch:
-//OnTouch2:
 	warp "ra_temin",85,137;
 	close;
 }
 
-ra_temin,82,133,7	script	拉赫 警衛兵#vol2	934,5,2,{
+ra_temin,82,133,7	script	Rachel Guard#vol2	934,5,2,{
 	mes "[Guard Krodger]";
 	mes "High Priest Vildt isn't";
 	mes "here right now. Please";
@@ -5191,11 +5208,10 @@ ra_temin,82,133,7	script	拉赫 警衛兵#vol2	934,5,2,{
 	close;
 
 OnInit:
-	enablenpc "拉赫 警衛兵#vol2";
+	enablenpc "Rachel Guard#vol2";
 	end;
 
 OnTouch:
-//OnTouch2:
 	warp "ra_temin",85,137;
 	close;
 }
@@ -5216,8 +5232,8 @@ ra_temin,115,140,1	script	Flower Vase#vol	111,{
 			next;
 			mes "[Guard Krodger]";
 			mes "Who's there?!";
-			disablenpc "拉赫 警衛兵#vol2";
-			enablenpc "拉赫 警衛兵#vol2_1";
+			disablenpc "Rachel Guard#vol2";
+			enablenpc "Rachel Guard#vol2_1";
 			donpcevent "vol_time2::OnEnable";
 			set aru_vol,4;
 			disablenpc "Flower Vase#vol";
@@ -5244,7 +5260,6 @@ ra_temin,115,140,1	script	Flower Vase#vol	111,{
 
 ra_temin,85,131,0	script	path_vol1	-1,5,0,{
 OnTouch:
-//OnTouch2:
 	if ((aru_vol != 3) && (aru_vol != 4)) {
 		warp "ra_temin",85,137;
 	}
@@ -5253,7 +5268,6 @@ OnTouch:
 
 ra_temin,82,131,0	script	path_vol1#2	-1,5,0,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol != 4) {
 		warp "ra_temin",85,137;
 	}
@@ -5262,21 +5276,20 @@ OnTouch:
 
 ra_temin,82,127,0	script	path_vol1#3	-1,5,1,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol == 5) {
 		warp "ra_temin",84,124;
 	}
 	end;
 }
 
-ra_temin,40,124,3	script	女子 信徒#vol	920,{
-	mes "[拉密樂]";
+ra_temin,40,124,3	script	Female Follower#vol	920,{
+	mes "[Lamir]";
 	mes "^333333*Sigh*^000000 High Priest Vildt";
 	mes "left over so much food after";
 	mes "eating. Didn't he learn to";
 	mes "finish all of his food?";
 	next;
-	mes "[拉密樂]";
+	mes "[Lamir]";
 	mes "You know, my mother used";
 	mes "to threaten that she'd force";
 	mes "me to marry Karlum if I didn't";
@@ -5285,7 +5298,7 @@ ra_temin,40,124,3	script	女子 信徒#vol	920,{
 	mes "leave any leftovers that way~";
 	next;
 	select("Who's Karlum?");
-	mes "[拉密樂]";
+	mes "[Lamir]";
 	mes "Karlum? Oh, he's been";
 	mes "chasing me ever since we";
 	mes "were kids, declaring his";
@@ -5293,7 +5306,7 @@ ra_temin,40,124,3	script	女子 信徒#vol	920,{
 	mes "after we grew up, he's still";
 	mes "stubborn about that point.";
 	next;
-	mes "[拉密樂]";
+	mes "[Lamir]";
 	mes "Ugh! Even today, he";
 	mes "still gets on my nerves!";
 	mes "I mean, it's great that he's";
@@ -5306,11 +5319,11 @@ ra_temin,40,124,3	script	女子 信徒#vol	920,{
 	close;
 }
 
-ra_temin,42,124,3	script	拉赫 警衛兵#vol1_1	934,{
+ra_temin,42,124,3	script	Rachel Guard#vol1_1	934,{
 	end;
 
 OnInit:
-	disablenpc "拉赫 警衛兵#vol1_1";
+	disablenpc "Rachel Guard#vol1_1";
 	end;
 }
 
@@ -5321,23 +5334,23 @@ OnInit:
 
 OnEnable:
 	initnpctimer;
-	enablenpc "拉赫 警衛兵#vol1_1";
+	enablenpc "Rachel Guard#vol1_1";
 	end;
 
 OnTimer10000:
-	mapannounce "ra_temin","Guard Karlum: 拉密樂! It's Karlum! Your love is here!",bc_map,"0xFFCE00";
+	mapannounce "ra_temin","Guard Karlum: Lamir! It's Karlum! Your love is here!",bc_map,"0xFFCE00";
 	end;
 
 OnTimer15000:
-	mapannounce "ra_temin","拉密樂: Karlum? What are you doing here?",bc_map,"0xFFCE00";
+	mapannounce "ra_temin","Lamir: Karlum? What are you doing here?",bc_map,"0xFFCE00";
 	end;
 
 OnTimer20000:
-	mapannounce "ra_temin","Guard Karlum: 拉密樂, you can stop pretending now. I've come to realize that your coldness masks your love~",bc_map,"0xFFCE00";
+	mapannounce "ra_temin","Guard Karlum: Lamir, you can stop pretending now. I've come to realize that your coldness masks your love~",bc_map,"0xFFCE00";
 	end;
 
 OnTimer30000:
-	mapannounce "ra_temin","拉密樂: What are you talking about? Sorry, Karlum, but I don't have any special feelings for you.",bc_map,"0xFFCE00";
+	mapannounce "ra_temin","Lamir: What are you talking about? Sorry, Karlum, but I don't have any special feelings for you.",bc_map,"0xFFCE00";
 	end;
 
 OnTimer35000:
@@ -5349,7 +5362,7 @@ OnTimer40000:
 	end;
 
 OnTimer45000:
-	mapannounce "ra_temin","拉密樂: Karlum, when will you realize that I haven't, and won't ever fall in love with you?",bc_map,"0xFFCE00";
+	mapannounce "ra_temin","Lamir: Karlum, when will you realize that I haven't, and won't ever fall in love with you?",bc_map,"0xFFCE00";
 	end;
 
 OnTimer50000:
@@ -5359,12 +5372,12 @@ OnTimer50000:
 OnTimer55000:
 	mapannounce "ra_temin","Guard Karlum: Wha--? But I thought...? Huh, sorry. I should get going...",bc_map,"0xFFCE00";
 	stopnpctimer;
-	disablenpc "拉赫 警衛兵#vol1_1";
-	enablenpc "拉赫 警衛兵#vol1";
+	disablenpc "Rachel Guard#vol1_1";
+	enablenpc "Rachel Guard#vol1";
 	end;
 }
 
-ra_temin,113,140,1	script	拉赫 警衛兵#vol2_1	934,{
+ra_temin,113,140,1	script	Rachel Guard#vol2_1	934,{
 	mes "[Guard Krodger]";
 	mes "What's with this vase?";
 	mes "They always send me out";
@@ -5375,7 +5388,7 @@ ra_temin,113,140,1	script	拉赫 警衛兵#vol2_1	934,{
 	close;
 
 OnInit:
-	disablenpc "拉赫 警衛兵#vol2_1";
+	disablenpc "Rachel Guard#vol2_1";
 	end;
 }
 
@@ -5391,8 +5404,8 @@ OnEnable:
 OnTimer30000:
 	mapannounce "ra_temin","Guard Krodger: Phew~, now I'm done cleaning up this mess.",bc_map,"0xFFCE00";
 	stopnpctimer;
-	disablenpc "拉赫 警衛兵#vol2_1";
-	enablenpc "拉赫 警衛兵#vol2";
+	disablenpc "Rachel Guard#vol2_1";
+	enablenpc "Rachel Guard#vol2";
 	enablenpc "Flower Vase#vol";
 	end;
 }
@@ -5408,16 +5421,7 @@ ra_temin,87,118,3	script	Drawer#vol1::VeinsDrawer	111,{
 ra_temin,83,118,3	duplicate(VeinsDrawer)	Drawer#vol2	111
 
 ra_temin,85,118,3	script	Drawer#vol3	111,{
-	//if (max_max_c1 == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many things with you.";
-	//	mes "Please come back after";
-	//	mes "using the Kafra Service";
-	//	mes "to store some of your items.^000000";
-	//	close;
-	//}
-	if ((MaxWeight-Weight) < 2000) {
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -5455,6 +5459,7 @@ ra_temin,85,118,3	script	Drawer#vol3	111,{
 			mes "Research Institute'' on";
 			mes "the cover, and then you";
 			mes "close the drawer.^000000";
+			changequest 2114,2115;
 			set aru_vol,5;
 			getitem 7342,1; //File01
 			close;
@@ -5520,7 +5525,6 @@ ra_temin,73,126,1	script	Ladder#vol1	111,{
 
 ve_in,280,223,0	script	#volroom	-1,2,2,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol == 6) {
 		mes "^3355FFThis house looks like";
 		mes "it's been abandoned for";
@@ -5560,27 +5564,26 @@ OnTouch:
 	end;
 }
 
-veins,159,171,3	script	村落 居民#vol	945,{
-	mes "[村落 居民]";
-	mes "這武器店2樓有個小小的地質學研究所的辦公室啊，他說他是學者，每天卻在酒店裡喝著酒過活啊?";
+veins,159,171,3	script	Towner#vol	945,{
+	mes "[Towner]";
+	mes "The small office on the";
+	mes "2nd floor of this weapon";
+	mes "shop is occupied by a";
+	mes "geologist. At least, he's";
+	mes "supposed to be one...";
 	next;
-	mes "[村落 居民]";
-	mes "學者的話應該是每天晚上盯著書做研究的人不是嗎?";
-	mes "我絕對不會讓我的孫子去當學者啊~";
+	mes "[Towner]";
+	mes "The guy might be a quack:";
+	mes "all he does is drink and";
+	mes "flirt with skanky women";
+	mes "all day. I thought scholars";
+	mes "are supposed to read and study";
+	mes "and discover things, you know?";
 	close;
 }
 
-ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
-	//if (max_max_c1 == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many things with you.";
-	//	mes "Please come back after";
-	//	mes "using the Kafra Service";
-	//	mes "to store some of your items.^000000";
-	//	close;
-	//}
-	if ((MaxWeight-Weight) < 2000) {
+ve_in,233,116,3	script	Drunken Man#vol	901,{
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -5590,29 +5593,29 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		close;
 	}
 	if (aru_vol < 7) {
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "So... ^333333*Urp*^000000";
 		mes "So then I said...";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "''^3131FFHey, buddy! A man";
 		mes "uses his back to talk,";
 		mes "not his fists! You wanna";
 		mes "piece of me? Bring it on!^000000''";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Then he got all";
 		mes "scared, and ran away!";
 		mes "Hahahaha! Guess I look";
 		mes "pretty tough, don't I?";
 		next;
-		donpcevent "Drunken Lady#1::OnEmote";
-		donpcevent "Drunken Lady#2::OnEmote";
+		emotion e_lv,0,"Drunken Lady#1";
+		emotion e_lv,0,"Drunken Lady#2";
 		mes "[Ladies]";
 		mes "Oh, my God!";
 		mes "You're so cool~!";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Well... Anyone would";
 		mes "have done it. I was just";
 		mes "being a gentleman.";
@@ -5620,29 +5623,29 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		close;
 	}
 	else if (aru_vol == 7) {
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "So... ^333333*Urp*^000000";
 		mes "So then I said...";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "''^3131FFHey, buddy! A man";
 		mes "uses his back to talk,";
 		mes "not his fists! You wanna";
 		mes "piece of me? Bring it on!^000000''";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Then he got all";
 		mes "scared, and ran away!";
 		mes "Hahahaha! Guess I look";
 		mes "pretty tough, don't I?";
 		next;
-		donpcevent "Drunken Lady#1::OnEmote";
-		donpcevent "Drunken Lady#2::OnEmote";
+		emotion e_lv,0,"Drunken Lady#1";
+		emotion e_lv,0,"Drunken Lady#2";
 		mes "[Ladies]";
 		mes "Oh, my God!";
 		mes "You're so cool~!";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Well... Anyone would";
 		mes "have done it. I was just";
 		mes "being a gentleman.";
@@ -5653,7 +5656,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "you the executive director";
 		mes "of the Veins Geological Team?";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Yeah, sure! Executive";
 		mes "director, deputy director,";
 		mes "director, researcher, CEO,";
@@ -5661,7 +5664,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "doesn't sound right. Hah!";
 		mes "I'm all of those~";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "I'm the executive director...";
 		mes "I'm the only one that works";
 		mes "at the institute, really.";
@@ -5679,7 +5682,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "Maybe...";
 		mes "Maybe even ^FF0000urgent^000000.";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Wha--? Hey, what day";
 		mes "is it today? Damn it!";
 		mes "Fine, fine, time to get";
@@ -5687,7 +5690,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "really enjoying myself too!";
 		mes "Argh, I never wanna be sober!";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "But... Working is the";
 		mes "only way for me to afford";
 		mes "all this drinking... Such";
@@ -5699,17 +5702,17 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "longer and talk with";
 		mes "us? Pleeeeeease?";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Sorry, ladies,";
 		mes "but duty calls.";
 		mes "Hahahahahahha~";
 		next;
-		donpcevent "Drunken Lady#1::OnEmote";
-		donpcevent "Drunken Lady#2::OnEmote";
+		emotion e_lv,0,"Drunken Lady#1";
+		emotion e_lv,0,"Drunken Lady#2";
 		mes "[Ladies]";
 		mes "Please don't go~";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Ahem!";
 		mes "Let's see now.";
 		mes "What'd be best...?";
@@ -5717,19 +5720,19 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "..............................";
 		mes "..............................";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "..............................";
 		mes "..............................";
 		mes "........................Right!";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Hey, you.";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "Yes?";
 		next;
 		emotion e_no1;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "I hereby promote you as";
 		mes "chief researcher of the";
 		mes "Veins Geological Research";
@@ -5741,7 +5744,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "I don't understand";
 		mes "what you're talking about!";
 		next;
-		mes "[喝醉酒的 男人]";
+		mes "[Drunken Man]";
 		mes "Heh! You should be grateful";
 		mes "that I'm accepting you as my";
 		mes "student! Everyone'd be proud";
@@ -5752,7 +5755,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Hey, I never--";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Ah-ah! Now that you're";
 		mes "my student, I expect you";
 		mes "to work hard if you're going";
@@ -5760,7 +5763,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "first--go to my office and";
 		mes "clear up my belated business.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Here, take this ^FF0000reference";
 		mes "guide^000000 with you to my office.";
 		mes "When you check my desk, you'll";
@@ -5768,13 +5771,13 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "form^000000. You'll need to bring all";
 		mes "that stuff to Thor Volcano.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "When you get to Thor Volcano,";
 		mes "use the pryometer to check the";
 		mes "volcano's temperature, and";
 		mes "fill out the report form.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Take the filled report";
 		mes "form to the geology camp";
 		mes "that's deep inside the volcano";
@@ -5782,20 +5785,20 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "confirmation on it. That's";
 		mes "not so hard now, is it?";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Ahh, I've also decided";
 		mes "to take these lovely ladies";
 		mes "on as my students as well~";
 		mes "I should stay here and";
 		mes "entreat them to a lecture.";
 		next;
-		donpcevent "Drunken Lady#1::OnEmote";
-		donpcevent "Drunken Lady#2::OnEmote";
+		emotion e_lv,0,"Drunken Lady#1";
+		emotion e_lv,0,"Drunken Lady#2";
 		mes "[Ladies]";
 		mes "Oh~! You'll really";
 		mes "teach us geology?";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Oh, right! When they";
 		mes "ask you about the volcano's";
 		mes "temperature when you submit";
@@ -5803,7 +5806,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "camp, make something up.";
 		mes "Make sure it sounds bad!";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Words like ''explosion,''";
 		mes "''disaster,'' and ''collatoral";
 		mes "damage'' would be perfect.";
@@ -5816,12 +5819,13 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "the feeling that this will";
 		mes "all turn out in your favor.";
 		mes "You know that feeling, right?^000000";
+		changequest 2116,2117;
 		set aru_vol,8;
 		getitem 7705,1; //Note_Of_Geologist
 		close;
 	}
 	else if ((aru_vol > 7) && (aru_vol < 24)) {
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Hey, you'd better hurry";
 		mes "it up. I mean, you're the";
 		mes "one that found that notice";
@@ -5829,7 +5833,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "You know how important";
 		mes "this work is to us!";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Get the pyrometer,";
 		mes "and go to Thor Volcano";
 		mes "to fill out the report";
@@ -5838,7 +5842,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		close;
 	}
 	else if (aru_vol == 24) {
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Well, those are";
 		mes "nice legs, but they're";
 		mes "not the best pair I've see--";
@@ -5846,13 +5850,13 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "["+strcharinfo(0)+"]";
 		mes "I'm back.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "*Ahem* And that's how";
 		mes "erosion... Works. Tomorrow,";
 		mes "I'll teach you ladies all";
 		mes "about rocks. All of them.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Welcome back! So,";
 		mes "how was the volcanic";
 		mes "temperature report?";
@@ -5864,7 +5868,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "exaggerate the temperature?";
 		mes "What about the camp?";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Oh, don't worry about";
 		mes "the temperature. It's";
 		mes "supposed to go up.";
@@ -5875,14 +5879,14 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "maybe the pryometer";
 		mes "might be broken.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Heh! You're right~";
 		mes "I broke it on purpose.";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "What?!";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "You know, it's hard for";
 		mes "scholars like me to make";
 		mes "a decent living. Hell, I was";
@@ -5890,7 +5894,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "temperature measuring job";
 		mes "from the geological camp.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Those guys've been trying";
 		mes "to fire me ever since they";
 		mes "realized the volcano became";
@@ -5898,7 +5902,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "fire me if there's proof that";
 		mes "it might go off anytime!";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Then, when they're all";
 		mes "panicked, I calmly and";
 		mes "suavely offer a solution";
@@ -5910,13 +5914,13 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "So...";
 		mes "You're a con man.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Awww, don't look at";
 		mes "me like that. I'm a real";
 		mes "scientist. Come on...";
 		mes "Oh, come on...";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Look, why don't you head";
 		mes "back to my institute and";
 		mes "check out my bookshelf?";
@@ -5924,7 +5928,7 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "where I keep all sorts";
 		mes "of nifty little goodies.";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "You can have the very";
 		mes "first thing that pops out";
 		mes "of that box. I wonder if the";
@@ -5932,41 +5936,42 @@ ve_in,233,116,3	script	喝醉酒的 男人#vol	901,{
 		mes "with good fortune. You";
 		mes "might get something good~";
 		next;
-		mes "[地質學家 基歐]";
+		mes "[Geologist Gio]";
 		mes "Consider it your";
 		mes "payment for a job";
 		mes "well done. Good work!";
 		mes "I expected nothing less";
 		mes "from my star pupil!";
+		changequest 60211,60212;
 		set aru_vol,25;
 		delitem 7342,1; //File01
 		delitem 7704,1; //Broken_Thermometer
 		delitem 7705,1; //Note_Of_Geologist
 		close;
 	}
-	mes "[喝醉酒的 男人]";
+	mes "[Drunken Man]";
 	mes "So... ^333333*Urp*^000000";
 	mes "So then I said...";
 	next;
-	mes "[喝醉酒的 男人]";
+	mes "[Drunken Man]";
 	mes "''^3131FFHey, buddy! A man";
 	mes "uses his back to talk,";
 	mes "not his fists! You wanna";
 	mes "piece of me? Bring it on!^000000''";
 	next;
-	mes "[喝醉酒的 男人]";
+	mes "[Drunken Man]";
 	mes "Then he got all";
 	mes "scared, and ran away!";
 	mes "Hahahaha! Guess I look";
 	mes "pretty tough, don't I?";
 	next;
-	donpcevent "Drunken Lady#1::OnEmote";
-	donpcevent "Drunken Lady#2::OnEmote";
+	emotion e_lv,0,"Drunken Lady#1";
+	emotion e_lv,0,"Drunken Lady#2";
 	mes "[Ladies]";
 	mes "Oh, my God!";
 	mes "You're so cool~!";
 	next;
-	mes "[喝醉酒的 男人]";
+	mes "[Drunken Man]";
 	mes "Well... Anyone would";
 	mes "have done it. I was just";
 	mes "being a gentleman.";
@@ -5981,10 +5986,6 @@ ve_in,232,117,5	script	Drunken Lady#1	940,{
 	mes "I get free drinks if";
 	mes "I can put up with him~";
 	close;
-
-OnEmote:
-	emotion e_lv;
-	end;
 }
 
 ve_in,234,115,3	script	Drunken Lady#2	940,{
@@ -5995,23 +5996,10 @@ ve_in,234,115,3	script	Drunken Lady#2	940,{
 	mes "I can mix better drinks";
 	mes "at home, no sweat at all~";
 	close;
-
-OnEmote:
-	emotion e_lv;
-	end;
 }
 
 ve_in,277,229,3	script	Wall Closet#vol	111,{
-	//if (max_max_c1 == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many things with you.";
-	//	mes "Please come back after";
-	//	mes "using the Kafra Service";
-	//	mes "to store some of your items.^000000";
-	//	close;
-	//}
-	if ((MaxWeight-Weight) < 2000) {
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -6038,16 +6026,7 @@ ve_in,277,229,3	script	Wall Closet#vol	111,{
 }
 
 ve_in,281,214,3	script	Bookshelf#vol	111,{
-	//if (max_max_c1 == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many things with you.";
-	//	mes "Please come back after";
-	//	mes "using the Kafra Service";
-	//	mes "to store some of your items.^000000";
-	//	close;
-	//}
-	if ((MaxWeight-Weight) < 2000) {
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -6091,6 +6070,7 @@ ve_in,281,214,3	script	Bookshelf#vol	111,{
 		mes "your eyes, and reach inside";
 		mes "Gio's purple box of goodies.^000000";
 		next;
+		changequest 60212,60213;
 		set aru_vol,26;
 		set .@box_box,rand(1,20);
 		if (.@box_box < 7) {
@@ -6105,7 +6085,7 @@ ve_in,281,214,3	script	Bookshelf#vol	111,{
 		else {
 			getitem 12103,1; //Bloody_Dead_Branch
 		}
-		getexp 800000,0;
+		getexp 80000,0;
 		mes "^3355FFWell, you've done all";
 		mes "that you could here.";
 		mes "Now would be a good time";
@@ -6119,7 +6099,7 @@ ve_in,281,214,3	script	Bookshelf#vol	111,{
 	close;
 }
 
-thor_v01,37,234,3	script	熱騰騰的 地表#1	111,{
+thor_v01,37,234,3	script	Hot Land Surface#1	111,{
 	if (aru_vol == 8) {
 		if ((countitem(7704) > 0) && (countitem(7342) > 0)) {
 			mes "^3355FFYou use the pyrometer";
@@ -6134,6 +6114,7 @@ thor_v01,37,234,3	script	熱騰騰的 地表#1	111,{
 			mes "^3355FFYou record the";
 			mes "temperature in";
 			mes "your report.^000000";
+			changequest 2117,2118;
 			set aru_vol,9;
 			next;
 			mes "["+strcharinfo(0)+"]";
@@ -6171,6 +6152,7 @@ thor_v02,165,37,3	script	Hot Land Surface#2	111,{
 			mes "^3355FFYou record the";
 			mes "temperature in";
 			mes "your report.^000000";
+			changequest 2118,2119;
 			set aru_vol,10;
 			close;
 		}
@@ -6208,6 +6190,7 @@ thor_v02,170,100,3	script	Hot Land Surface#3	111,{
 			mes "measurements. I should";
 			mes "submit this report to the";
 			mes "geological camp now~";
+			changequest 2119,2120;
 			set aru_vol,11;
 			close;
 		}
@@ -6251,9 +6234,10 @@ que_thor,145,66,3	script	Guard#vol::VeinsGuard	939,{
 		mes "Oh, I see. Well, I'm";
 		mes "not the one that stamps";
 		mes "reports. Go inside and";
-		mes "ask 莎惠蒂 to help you.";
+		mes "ask Sahedi to help you.";
 		mes "He's at the airship just";
 		mes "south of the train station.";
+		changequest 2120,2121;
 		set aru_vol,12;
 		close2;
 		warp "thor_camp",248,190;
@@ -6289,17 +6273,8 @@ que_thor,145,66,3	script	Guard#vol::VeinsGuard	939,{
 que_thor,136,66,3	duplicate(VeinsGuard)	Guard#vol2	939
 que_thor,127,60,5	duplicate(VeinsGuard)	Guard#vol3	939
 
-thor_camp,250,104,3	script	莎惠蒂#vol	934,{
-	//if (max_max_c1 == 1) {
-	//	mes "^3355FFWait a second!";
-	//	mes "Right now, you're carrying";
-	//	mes "too many things with you.";
-	//	mes "Please come back after";
-	//	mes "using the Kafra Service";
-	//	mes "to store some of your items.^000000";
-	//	close;
-	//}
-	if ((MaxWeight-Weight) < 2000) {
+thor_camp,250,104,3	script	Sahedi#vol	934,{
+	if ((MaxWeight-Weight) < 2000 || checkweight(1201,1) == 0) {
 		mes "^3355FFWait a second!";
 		mes "Right now, you're carrying";
 		mes "too many things with you.";
@@ -6309,7 +6284,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		close;
 	}
 	if (aru_vol == 12) {
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "I'm sorry, but I don't";
 		mes "think I know you. Only";
 		mes "authorized personnel is";
@@ -6331,7 +6306,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "had me fill out this report";
 		mes "form and submit it for him.";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Ah, so that's why his";
 		mes "report's late this time.";
 		mes "I'm sorry to hear that.";
@@ -6339,11 +6314,11 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "just wasting his time on";
 		mes "women and alcohol...";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Let's see...";
 		next;
 		emotion e_omg;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Oh God! Why is the";
 		mes "temperature so high?!";
 		mes "We've had a few reports";
@@ -6357,7 +6332,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "higher than normal...";
 		mes "It might be bad?";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "What should I do?";
 		mes "Should I activate";
 		mes "the alarm? I don't...";
@@ -6370,17 +6345,18 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "don't say anything that will";
 		mes "make anyone else panic for now.";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Okay...";
 		mes "Please go ahead, and";
 		mes "see if this camp will be";
 		mes "safe from any disaster.";
+		changequest 2121,2122;
 		set aru_vol,13;
 		delitem 7342,1; //File01
 		close;
 	}
 	else if ((aru_vol > 12) && (aru_vol < 23)) {
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "So, are we in any";
 		mes "danger? Does it look";
 		mes "like this volcano will";
@@ -6391,7 +6367,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "investigating yet. Would";
 		mes "you please wait a bit longer?";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Sure, sure. Just make";
 		mes "sure that you do a real";
 		mes "thorough check of everything";
@@ -6399,7 +6375,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		close;
 	}
 	else if (aru_vol == 23) {
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "So, are we in any";
 		mes "danger? Does it look";
 		mes "like this volcano will";
@@ -6432,7 +6408,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 			}
 		}
 		emotion e_omg;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Huh? Are you serious?";
 		mes "Thor Volcano's gonna";
 		mes "erupt?! We-we have to";
@@ -6447,7 +6423,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "explosion that'll cause";
 		mes "a lot of collateral damage.";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "What are our chances?";
 		mes "How much time do we";
 		mes "have to evacuate?";
@@ -6460,7 +6436,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "chance of eruption within";
 		mes "the next thirty days.";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "What?! We must report";
 		mes "this to the high priest";
 		mes "immediately! Aitra!";
@@ -6469,7 +6445,7 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes "[Aitra]";
 		mes "Yes, sir!";
 		next;
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "This is an emergency.";
 		mes "Bring this message to";
 		mes "the high priest as soon";
@@ -6482,18 +6458,19 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 		mes " ...Yes, sir.";
 		next;
 		disablenpc "Aitra#vol";
-		mes "[莎惠蒂]";
+		mes "[Sahedi]";
 		mes "Oh, this is a nightmare...";
 		mes "Will you please take your";
 		mes "report to your director, Gio?";
 		mes "Hopefully he'll have some";
 		mes "advice for what we can";
 		mes "do about this disaster...";
+		changequest 2128,60211;
 		set aru_vol,24;
 		getitem 7342,1; //File01
 		close;
 	}
-	mes "[莎惠蒂]";
+	mes "[Sahedi]";
 	mes "Argh, I'm so busy!";
 	close;
 }
@@ -6501,9 +6478,8 @@ thor_camp,250,104,3	script	莎惠蒂#vol	934,{
 
 thor_camp,194,220,0	script	#Colonel1	-1,5,5,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol == 13) {
-		enablenpc "上校 畢圖#1";
+		enablenpc "Colonel Vito#1";
 		mes "[????]";
 		mes "You...!";
 		mes "What are you doing";
@@ -6516,7 +6492,7 @@ OnTouch:
 		mes "Are you talking to me?";
 		mes "No, I'm from the Veins Geo--";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Look at you. You don't";
 		mes "even have your uniform";
 		mes "yet. Still a rookie, eh?";
@@ -6527,25 +6503,28 @@ OnTouch:
 		mes "["+strcharinfo(0)+"]";
 		mes "But I'm not--";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "You should be honored to";
 		mes "have the rare opportunity";
 		mes "to be trained by me, the";
-		mes "great 上校 畢圖. I'll mold";
+		mes "great Colonel Vito. I'll mold";
 		mes "you into a true warrior for";
 		mes "Freya! Now follow me!";
+		changequest 2122,2123;
 		set aru_vol,14;
 		close2;
-		disablenpc "上校 畢圖#1";
+		disablenpc "Colonel Vito#1";
 		warp "thor_camp",156,68;
 		end;
 	}
 	else if (aru_vol == 14) {
-		mes "[上校 畢圖]";
+		enablenpc "Colonel Vito#1";
+		mes "[Colonel Vito]";
 		mes "What are you still";
 		mes "doing standing there?";
 		mes "Don't slack off! Come!";
 		close2;
+		disablenpc "Colonel Vito#1";
 		warp "thor_camp",156,68;
 		end;
 	}
@@ -6554,10 +6533,8 @@ OnTouch:
 
 thor_camp,162,182,0	script	#Colonel2	-1,7,7,{
 OnTouch:
-//OnTouch2:
-
 	if (aru_vol == 13) {
-		enablenpc "上校 畢圖#2";
+		enablenpc "Colonel Vito#2";
 		mes "[????]";
 		mes "You...!";
 		mes "What are you doing";
@@ -6570,7 +6547,7 @@ OnTouch:
 		mes "Are you talking to me?";
 		mes "No, I'm from the Veins Geo--";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Look at you. You don't";
 		mes "even have your uniform";
 		mes "yet. Still a rookie, eh?";
@@ -6581,48 +6558,54 @@ OnTouch:
 		mes "["+strcharinfo(0)+"]";
 		mes "But I'm not--";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "You should be honored to";
 		mes "have the rare opportunity";
 		mes "to be trained by me, the";
-		mes "great 上校 畢圖. I'll mold";
+		mes "great Colonel Vito. I'll mold";
 		mes "you into a true warrior for";
 		mes "Freya! Now follow me!";
+		changequest 2122,2123;
 		set aru_vol,14;
-		disablenpc "上校 畢圖#2";
+		disablenpc "Colonel Vito#2";
 		close2;
 		warp "thor_camp",156,68;
 		end;
 	}
 	else if (aru_vol == 14) {
-		mes "[上校 畢圖]";
+		enablenpc "Colonel Vito#1";
+		mes "[Colonel Vito]";
 		mes "What are you still";
 		mes "doing standing there?";
 		mes "Don't slack off! Come!";
 		close2;
-		disablenpc "上校 畢圖#2";
+		disablenpc "Colonel Vito#2";
 		warp "thor_camp",156,68;
 		end;
 	}
 	end;
 }
 
-thor_camp,187,228,5	script	上校 畢圖#1	946,{
+thor_camp,187,228,5	script	Colonel Vito#1	946,{
+	end;
+
 OnInit:
-	disablenpc "上校 畢圖#1";
+	disablenpc "Colonel Vito#1";
 	end;
 }
 
-thor_camp,155,175,7	script	上校 畢圖#2	946,{
+thor_camp,155,175,7	script	Colonel Vito#2	946,{
+	end;
+
 OnInit:
-	disablenpc "上校 畢圖#2";
+	disablenpc "Colonel Vito#2";
 	end;
 }
 
-thor_camp,159,74,3	script	上校 畢圖#3	946,{
+thor_camp,159,74,3	script	Colonel Vito#3	946,{
 	if (aru_vol == 14) {
-		mes "[上校 畢圖]";
-		mes "I am 上校 畢圖,";
+		mes "[Colonel Vito]";
+		mes "I am Colonel Vito,";
 		mes "and I'm in charge of";
 		mes "the Arunafeltz camp";
 		mes "here in Thor Volcano.";
@@ -6631,7 +6614,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "["+strcharinfo(0)+"]";
 		mes ""+strcharinfo(0)+", sir.";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Hmpf! That's a weakling's";
 		mes "name! I can tell that your";
 		mes "mind and body are too weak!";
@@ -6639,7 +6622,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "be worthy of serving the";
 		mes "beautiful, graceful Freya?";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "You need more training.";
 		mes "Take a break first, and";
 		mes "prepare yourself. We will";
@@ -6648,7 +6631,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		close;
 	}
 	else if (aru_vol == 15) {
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "First, we need to take";
 		mes "care of that weak mind";
 		mes "of yours. This first";
@@ -6656,21 +6639,21 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "be verbal based.";
 		next;
 		while(1) {
-			mes "[上校 畢圖]";
+			mes "[Colonel Vito]";
 			mes "Question one!";
 			mes "Who do we fight for?";
 			mes "Who do we live for?";
 			next;
-			if (select("奧丁:菲依雅:托爾") == 2) {
+			if (select("Odin:Freya:Thor") == 2) {
 				break;
 			}
-			mes "[上校 畢圖]";
+			mes "[Colonel Vito]";
 			mes "You idiot!";
 			percentheal -10,0;
 			specialeffect2 EF_HIT2;
 			next;
 		}
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Right! Freya is not only";
 		mes "a goddess of love, but she's";
 		mes "also a goddess of war.";
@@ -6678,7 +6661,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "to recover the pieces of";
 		mes "Ymir's Heart for her sake.";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Freya was greatly wounded";
 		mes "in the war among gods,";
 		mes "humans, and demons.";
@@ -6686,7 +6669,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "gods, tried to help her, but";
 		mes "even his power wasn't enough.";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Odin did advise her to";
 		mes "obtain Ymir's Heart, as";
 		mes "it would fully recover her";
@@ -6694,13 +6677,13 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "preparing for war: we must";
 		mes "obtain Ymir's Heart for Freya!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "DO YOU UNDERSTAND?!";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "Yes, sir!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Now, there's a country";
 		mes "called the Rune-Midgarts";
 		mes "Kingdom that's full of fools.";
@@ -6708,7 +6691,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "as heretics and drove us";
 		mes "to this deserted land.";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "We cannot forgive how they";
 		mes "denied us our freedom to";
 		mes "worship Freya. Our people";
@@ -6716,114 +6699,129 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "Mark my word, soldier.";
 		mes "Now, repeat after me.";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "I, "+strcharinfo(0)+",";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "I, "+strcharinfo(0)+",";
 		next;
 		while(1) {
-			mes "[上校 畢圖]";
-			mes "^FF0000大 阿盧納貝茲教國 菲依雅女神忠誠的侍從";
+			mes "[Colonel Vito]";
+			mes "^FF0000as a devoted servant";
+			mes "of Goddess Freya";
 			next;
 			input .@input$;
-			set .@answer$,"大 阿盧納貝茲教國 菲依雅女神忠誠的侍從";
+			set .@answer$,"as a devoted servant of Goddess Freya";
 			if (.@input$ == .@answer$) {
 				mes "["+strcharinfo(0)+"]";
-				mes "大 阿盧納貝茲教國 菲依雅女神忠誠的侍從^000000";
+				mes "as a devoted servant";
+				mes "of Goddess Freya, the";
+				mes "patron saint of the";
+				mes "great Arunafeltz,^000000";
 				next;
 				break;
 			}
 			else {
-				mes "[上校 畢圖]";
+				mes "[Colonel Vito]";
 				mes "Wrong! Try again!";
 				next;
 			}
 		}
 		while(1) {
-			mes "[上校 畢圖]";
-			mes "^FF0000把宿敵 盧恩--米德加茲王國打倒";
+			mes "[Colonel Vito]";
+			mes "^FF0000I pledge my honor to";
+			mes "overthrow our mortal enemy";
 			next;
 			input .@input$;
-			set .@answer$,"把宿敵 盧恩--米德加茲王國打倒";
+			set .@answer$,"I pledge my honor to overthrow our mortal enemy";
 			if (.@input$ == .@answer$) {
 				mes "["+strcharinfo(0)+"]";
-				mes "把宿敵 盧恩--米德加茲王國打倒";
+				mes "I pledge my honor to";
+				mes "overthrow our mortal enemy,";
+				mes "the Rune-Midgarts Kingdom.";
 				next;
 				break;
 			}
 			else {
-				mes "[上校 畢圖]";
+				mes "[Colonel Vito]";
 				mes "Wrong! Try again!";
 				next;
 			}
 		}
 		while(1) {
-			mes "[上校 畢圖]";
-			mes "^FF0000為了 菲依雅女神完全的復活^000000";
+			mes "[Colonel Vito]";
+			mes "^FF0000I will show no mercy^000000";
 			next;
 			input .@input$;
-			set .@answer$,"為了 菲依雅女神完全的復活";
+			set .@answer$,"I will show no mercy";
 			if (.@input$ == .@answer$) {
 				mes "["+strcharinfo(0)+"]";
-				mes "為了 菲依雅女神完全的復活^000000";
+				mes "I will show no mercy.";
+				mes "Nothing will stay my hand.^000000";
 				next;
 				break;
 			}
 			else {
-				mes "[上校 畢圖]";
+				mes "[Colonel Vito]";
 				mes "Wrong! Try again!";
 				next;
 			}
 		}
 		while(1) {
-			mes "[上校 畢圖]";
-			mes "^FF0000直到生命被結束的最後一刻為止 發誓絕對不會放下刀的^000000";
+			mes "[Colonel Vito]";
+			mes "^FF0000I shall devote";
+			mes "my entire life^000000";
 			next;
 			input .@input$;
-			set .@answer$,"直到生命被結束的最後一刻為止 發誓絕對不會放下刀的";
+			set .@answer$,"I shall devote my entire life";
 			if (.@input$ == .@answer$) {
 				mes "["+strcharinfo(0)+"]";
-				mes "直到生命被結束的最後一刻為止 發誓絕對不會放下刀的^000000";
+				mes "I shall devote my";
+				mes "entire life to the";
+				mes "full recovery of";
+				mes "Goddess Freya.^000000";
 				next;
 				break;
 			}
 			else {
-				mes "[上校 畢圖]";
+				mes "[Colonel Vito]";
 				mes "Wrong! Try again!";
 				next;
 			}
 		}
 		while(1) {
-			mes "[上校 畢圖]";
-			mes "^FF0000打倒 盧恩--米德加茲 !!^000000";
+			mes "[Colonel Vito]";
+			mes "^FF0000Down with the";
+			mes "Rune-Midgarts Kingdom!^000000";
 			next;
 			input .@input$;
-			set .@answer$,"打倒 盧恩--米德加茲 !!";
+			set .@answer$,"Down with the Rune-Midgarts Kingdom!";
 			if (.@input$ == .@answer$) {
 				mes "["+strcharinfo(0)+"]";
-				mes "打倒 盧恩--米德加茲 !!^000000";
+				mes "Down with the";
+				mes "Rune-Midgarts Kingdom!^000000";
 				next;
 				break;
 			}
 			else {
-				mes "[上校 畢圖]";
+				mes "[Colonel Vito]";
 				mes "Wrong! Try again!";
 				next;
 			}
 		}
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Good. Now you know the";
 		mes "kind of attitude that you";
 		mes "must have as a holy warrior";
 		mes "in Freya's service. That";
 		mes "is all for the first exercise,";
 		mes "but there's one more left.";
+		changequest 2123,2124;
 		set aru_vol,16;
 		close;
 	}
 	else if (aru_vol == 16) {
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Before we actually do";
 		mes "the 2nd training exercise,";
 		mes "I have a duty to assign to";
@@ -6834,7 +6832,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		close;
 	}
 	else if (aru_vol == 17) {
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Inspect the machines";
 		mes "in the pipe zone to the";
 		mes "north of this building.";
@@ -6842,7 +6840,7 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		close;
 	}
 	else if (aru_vol == 18) {
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Good work. Remember";
 		mes "that your first priority is to";
 		mes "check the control panel.";
@@ -6853,23 +6851,24 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Yes, sir!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Now it's time for the";
 		mes "second training exercise";
 		mes "which will strengthen your";
 		mes "body. See the dummy in";
 		mes "front of you? Practice by";
 		mes "chopping it 10 times. Go!";
+		changequest 2125,2126;
 		set aru_vol,19;
 		next;
 		if (select("Yes, sir!:What do you mean by chop?") == 1) {
-			mes "[上校 畢圖]";
+			mes "[Colonel Vito]";
 			mes "Focus your energy in";
 			mes "your yell when you strike!";
 			mes "Chop! 10 Times! Do it!";
 			close;
 		}
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Chop...? It's a hand chop.";
 		mes "You strike the enemy with";
 		mes "the bottom of your hand";
@@ -6877,14 +6876,14 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "did you join the army";
 		mes "without knowing that?";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Focus your energy in";
 		mes "your yell when you strike!";
 		mes "Chop! 10 Times! Do it!";
 		close;
 	}
 	else if (aru_vol == 20) {
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "The more you train,";
 		mes "the stronger you become.";
 		mes "As you grow stronger, so";
@@ -6895,25 +6894,26 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 		mes "["+strcharinfo(0)+"]";
 		mes "Yes, sir!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "That is all for your";
 		mes "training. If you have";
 		mes "any questions about camp";
-		mes "life, go ask 莎惠蒂 right";
+		mes "life, go ask Sahedi right";
 		mes "outside this building.";
 		mes "You are dismissed.";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "(^333333Well... I think";
 		mes "I will go back to";
-		mes "莎惠蒂. Hopefully,";
+		mes "Sahedi. Hopefully,";
 		mes "he'll think of me as";
 		mes "a geological researcher";
 		mes "instead of as a soldier.^000000)";
+		changequest 2126,2127;
 		set aru_vol,21;
 		close;
 	}
-	mes "[上校 畢圖]";
+	mes "[Colonel Vito]";
 	mes "We must be ever";
 	mes "vigilant in our training.";
 	mes "You can never know when";
@@ -6923,7 +6923,6 @@ thor_camp,159,74,3	script	上校 畢圖#3	946,{
 
 thor_camp,141,62,0	script	#vol_study1::VeinsWarp	-1,3,3,{
 OnTouch:
-//OnTouch2:
 	if ((aru_vol >= 14 && aru_vol <= 16) || (aru_vol == 19)) {
 		warp "thor_camp",156,67;
 	}
@@ -6935,7 +6934,6 @@ thor_camp,172,38,0	duplicate(VeinsWarp)	#vol_study3	-1,3,3
 
 thor_camp,172,132,0	script	#sita_vol	-1,3,3,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol == 21) {
 		mes "^3355FFThere's a stream of";
 		mes "magma running down";
@@ -6954,7 +6952,6 @@ OnTouch:
 
 thor_camp,148,310,0	script	#buki_vol	-1,5,5,{
 OnTouch:
-//OnTouch2:
 	if (aru_vol == 22) {
 		mes "^3355FFPeople are carrying";
 		mes "many heavy wooden boxes";
@@ -6965,7 +6962,8 @@ OnTouch:
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "I should go back";
-		mes "to 莎惠蒂 now.";
+		mes "to Sahedi now.";
+		changequest 2127,2128;
 		set aru_vol,23;
 		close;
 	}
@@ -7021,6 +7019,7 @@ thor_camp,109,167,3	script	Control Panel#vol	111,{
 		mes "No problems here.";
 		mes "I guess I can go";
 		mes "back to that colonel.";
+		changequest 2124,2125;
 		set aru_vol,18;
 		close;
 	}
@@ -7043,7 +7042,7 @@ thor_camp,150,65,3	script	Dummy#1::VeinsDummy	111,{
 		mes "be doing this. Isn't this";
 		mes "considered treason?^000000)";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "I can't hear you,";
 		mes "soldier! Make your";
 		mes "voice loud and clear!";
@@ -7099,7 +7098,7 @@ thor_camp,150,65,3	script	Dummy#1::VeinsDummy	111,{
 		specialeffect EF_HIT2;
 		emotion e_omg,1;
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Soldier...";
 		mes "How many times";
 		mes "did I order you to";
@@ -7108,7 +7107,7 @@ thor_camp,150,65,3	script	Dummy#1::VeinsDummy	111,{
 		mes "["+strcharinfo(0)+"]";
 		mes "10 times, sir!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "And how many times";
 		mes "did you actually";
 		mes "chop the dummy?";
@@ -7116,7 +7115,7 @@ thor_camp,150,65,3	script	Dummy#1::VeinsDummy	111,{
 		mes "["+strcharinfo(0)+"]";
 		mes "11 times, sir!";
 		next;
-		mes "[上校 畢圖]";
+		mes "[Colonel Vito]";
 		mes "Unacceptable!";
 		mes "Listen to your orders";
 		mes "this time, and do it";
@@ -7230,7 +7229,7 @@ thor_camp,98,213,5	script	Thor Volcano Soldier#vo8	939,{
 	close;
 }
 
-thor_camp,98,213,5	script	Thor Volcano Soldier#vo9	939,{
+thor_camp,98,209,5	script	Thor Volcano Soldier#vo9	939,{
 	mes "[Soldier]";
 	mes "Why am I always";
 	mes "stationed here?!";
@@ -7240,7 +7239,7 @@ thor_camp,98,213,5	script	Thor Volcano Soldier#vo9	939,{
 }
 
 thor_v02,143,78,0	script	#totcamp	45,2,2,{
-OnTouch:
+OnTouch_:
 	if (rachel_camel < 24) {
 		warp "que_thor",65,55;
 		end;
@@ -7250,20 +7249,19 @@ OnTouch:
 }
 
 que_thor,69,56,0	script	#tov_1	45,2,2,{
-OnTouch:
+OnTouch_:
 	warp "thor_v02",146,84;
 	end;
 }
 
 que_thor,187,56,0	script	#tov_2	45,2,2,{
-OnTouch:
+OnTouch_:
 	warp "thor_v02",146,84;
 	end;
 }
 
 thor_camp,62,98,0	script	#volbq	-1,5,5,{
 OnTouch:
-//OnTouch2:
 	mes "^3355FFThere is an old man";
 	mes "in high priest robes";
 	mes "in front of you.^000000";
@@ -7294,7 +7292,7 @@ thor_camp,246,191,3	script	Guard#goto	939,{
 }
 
 veins,302,166,0	script	#whoau	-1,2,2,{
-OnTouch:
+OnTouch_:
 	mes "[House Owner]";
 	mes "Wh-who the hell";
 	mes "are you? Honey!";

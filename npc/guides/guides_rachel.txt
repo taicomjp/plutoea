@@ -1,103 +1,126 @@
-//==========================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ------------------------------------------
-// - 拉赫 導遊 腳本 -
-// ------------------------------------------
-// 版本 1.2a
-//==========================
+//===== rAthena Script ======================================= 
+//= Rachel Guides
+//===== By: ================================================== 
+//= L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena  SVN
+//===== Description: ========================================= 
+//= [Aegis Conversion]
+//= Guide for the city of Rachel
+//===== Additional Comments: ================================= 
+//= 1.0 First version, Renewal guide.
+//============================================================ 
 
-rachel,138,146,5	script	拉赫 導遊	934,{
-	mes "[拉赫 導遊]";
-	mes "歡迎您來到 有著女神菲依雅溫和的氣息";
-	mes "阿盧納貝茲的首都 拉赫，";
-	mes "第一次接受我們介紹的旅客們，先按選單";
-	mes "'聽取注意事項'，了解必須注意的事情";
-	set .@loop1,1;
-	while(.@loop1) {
-		next;
-		switch(select("開始由導遊說明城市:刪掉小地圖上全部的記號:聽取注意事項:取消")) {
+rachel,138,146,5	script	Rachel Guide#rachel	934,{
+	mes "[Rachel Guide]";
+	mes "Welcome to the capital of Arunafeltz, ^8B4513Rachel^000000 where the warm breath of the goddess Freya reaches.";
+	mes "If this is the first time for you to use the guide services, I suggest you ask many questions.";
+	next;
+	while (1) {
+		switch(select("[ Main Facilities ]:[ Merchants & Helpers ]:Remove Marks from Mini-Map:Cancel")) {
 		case 1:
-			mes "[拉赫 導遊]";
-			mes "好的，現在就為你導遊城市";
-			if (.@compass_check == 0) {
-				mes "要在小地圖上留下記號嗎?";
-				next;
-				if (select("好的:不要") == 1) set .@compass_check,1;
-			}
-			set .@loop2,1;
-			while(.@loop2) {
-				if (.@wait_button_chk == 0) set .@wait_button_chk,1;
-				else next;
-
-				switch(select("瑟斯隆尼勒:飯店:武器店:工具商店:飛空艇:取消")) {
+			set .@loop,1;
+			while (.@loop) {
+				switch(select("[ Inn ]:[ Weapon Shop ]:[ Tool Shop ]:[ Airport ]:[ Cheshrumnir ]:[ Priest Zed's Mansion ]:Previous Menu")) {
 				case 1:
-					mes "[拉赫 導遊]";
-					mes "瑟斯隆尼勒神殿是女神菲依雅的化身";
-					mes "教皇聖人所居住的神聖場所，";
-					mes "往北邊跟著路走的話，就會看到的";
-					if (.@compass_check == 1) viewpoint 1,150,249,1,0xFF0000;
+					mes "[Rachel Guide]";
+					mes "You can rest your fatigue of the journey in the Inn. The left building next to me is the Inn of Rachel.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,115,144,0,0xFF0000;
+					next;
 					break;
 				case 2:
-					mes "[拉赫 導遊]";
-					mes "為了恢復旅行帶來的疲勞，旅館還是首選";
-					mes "在左邊的建築物就是旅館了";
-					if (.@compass_check == 1) viewpoint 1,115,149,2,0xFF00FF;
+					mes "[Rachel Guide]";
+					mes "Do you want to check out the weapons that are sold in Rachel? The Weapon Shop is located near the west gate.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,42,82,1,0xFF4500;
+					next;
 					break;
 				case 3:
-					mes "[拉赫 導遊]";
-					mes "想在拉赫買到好武器嗎?";
-					mes "武器店就在西門的附近";
-					if (.@compass_check == 1) viewpoint 1,42,87,3,0x99FFFF;
+					mes "[Rachel Guide]";
+					mes "Rachel's Tool Shop sells the best quality potions. It's located near the west gate.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,83,73,2,0xDAA520;
+					next;
 					break;
 				case 4:
-					mes "[拉赫 導遊]";
-					mes "只使用優質的最高級藥水的拉赫道具店在西門的附近";
-					if (.@compass_check == 1) viewpoint 1,83,78,4,0x0000FF;
+					mes "[Rachel Guide]";
+					mes "The Airport is located outside of the east gate.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,272,125,3,0x008000;
+					next;
 					break;
 				case 5:
-					mes "[拉赫 導遊]";
-					mes "飛空艇停靠站是位於在拉赫的東門外面";
-					if (.@compass_check == 1) viewpoint 1,273,125,5,0x00FF00;
+					mes "[Rachel Guide]";
+					mes "Cheshrumnir is a holy ground where pope, the incarnation of goddess Freya stays.";
+					mes "Take the road to the north to find the building.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,150,243,4,0x0000FF;
+					next;
 					break;
 				case 6:
-					mes "[拉赫 導遊]";
-					mes "需要刪除記號請選擇「刪掉小地圖上全部的記號」";
-					set .@loop2,0;
+					mes "[Rachel Guide]";
+					mes "I will mark the location";
+					mes "of the ^000080Priest Zed's Mansion^000000";
+					mes "on your mini-map.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,98,238,5,0x000080;
+					next;
+					break;
+				case 7:
+					set .@loop,0;
 					break;
 				}
 			}
 			break;
-
 		case 2:
-			viewpoint 2,150,249,1,0xFF0000;
-			viewpoint 2,115,149,2,0xFF00FF;
-			viewpoint 2,42,87,3,0x99FFFF;
-			viewpoint 2,83,78,4,0x0000FF;
-			viewpoint 2,273,125,5,0x00FF00;
-			mes "[拉赫 導遊]";
-			mes "已刪掉小地圖上所有標誌了";
-			mes "如果想要重新在地圖上做標誌的話，";
-			mes "請隨時來找我吧";
+			set .@loop,1;
+			while (.@loop) {
+				switch(select("[ Cool Event Corp. Staff ]:[ Eden Teleport Officer ]:Previous Menu")) {
+				case 1:
+					mes "[Rachel Guide]";
+					mes "I will mark the location";
+					mes "of the ^803232Cool Event Corp. Staff^000000";
+					mes "on your mini map.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,110,138,7,0x803232;
+					next;
+					break;
+				case 2:
+					mes "[Rachel Guide]";
+					mes "I will mark the location";
+					mes "of the ^556B2FEden Teleport Officer^000000";
+					mes "on your mini-map.";
+					mes "Would you like to check any other locations?";
+					viewpoint 1,125,144,8,0x556B2F;
+					next;
+					break;
+				case 3:
+					set .@loop,0;
+					break;
+				}
+			}
 			break;
 		case 3:
-			mes "[拉赫 導遊]";
-			mes "我們廢除了原來較差的指引方式，採用最現代化的";
-			mes "無論您在哪裡都可以籍由小地圖知道您的位置";
+			mes "[Rachel Guide]";
+			mes "Sure, I'll remove all marks from your mini-map.";
+			mes "Is there anything else I can do for you?";
+			viewpoint 2,115,144,0,0xFFFFFF;
+			viewpoint 2,42,82,1,0xFFFFFF;
+			viewpoint 2,83,73,2,0xFFFFFF;
+			viewpoint 2,272,125,3,0xFFFFFF;
+			viewpoint 2,150,243,4,0xFFFFFF;
+			viewpoint 2,98,238,5,0xFFFFFF;
+			viewpoint 2,110,138,7,0xFFFFFF;
+			viewpoint 2,125,144,8,0xFFFFFF;
 			next;
-			mes "[拉赫 導遊]";
-			mes "在瀏覽之前，必須先參考右上方的小地圖";
-			mes "如果看不見小地圖的話，請按「Ctrl + Tab」或者選取基本情報視窗內的「map」";
-			mes "微型地圖出現之後，在地圖上按「-」幾下可以看見所有城市";
 			break;
 		case 4:
-			mes "[拉赫 導遊]";
-			mes "那麼，祝你有個愉快的旅行";
-			close2;
-			set .@loop1,0;
-			break;
+			mes "[Rachel Guide]";
+			mes "Have a safe journey!";
+			close;
 		}
 	}
-	close;
-	end;
 }

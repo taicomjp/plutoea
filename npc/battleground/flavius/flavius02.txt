@@ -1,11 +1,11 @@
-//===== eAthena Script ======================================= 
+//===== rAthena Script ======================================= 
 // BattleGround System - Flavius Second
 //===== By: ================================================== 
 //= L0ne_W0lf
 //===== Current Version: ===================================== 
-//= 1.3
+//= 1.4
 //===== Compatible With: ===================================== 
-//= eAthena 1.0
+//= rAthena 1.0
 //===== Description: ========================================= 
 //= [AEGIS Conversion]
 //= Flavius Battleground.
@@ -16,6 +16,7 @@
 //= 1.1 Fixed NPCs being called for waiting rooms. (bugreport:4395)
 //= 1.2 Fixed pink crystal spawning as blue. [L0ne_W0lf]
 //= 1.3 Updated 'waitingroom' to support required zeny/lvl. [Kisuka]
+//= 1.4 Removed MaxLvl check in waitingrooms. Replaced setwall with setcell.
 //============================================================
 
 // Waiting Room NPCs
@@ -23,7 +24,7 @@
 bat_room,142,227,4	script	Lieutenant Huvas	418,{
 	end;
 OnInit:
-	waitingroom "Battle Station",10,"start#bat_b02::OnReadyCheck",1,0,80,99;
+	waitingroom "Battle Station",10,"start#bat_b02::OnReadyCheck",1,0,80;
 	end;
 OnEnterBG:
 	set $@FlaviusBG2_id1, waitingroom2bg("bat_b02",10,290,"start#bat_b02::OnGuillaumeQuit","");
@@ -33,7 +34,7 @@ OnEnterBG:
 bat_room,142,204,0	script	Lieutenant Yukon	414,{
 	end;
 OnInit:
-	waitingroom "Battle Station",10,"start#bat_b02::OnReadyCheck",1,0,80,99;
+	waitingroom "Battle Station",10,"start#bat_b02::OnReadyCheck",1,0,80;
 	end;
 OnEnterBG:
 	set $@FlaviusBG2_id2, waitingroom2bg("bat_b02",390,10,"start#bat_b02::OnCroixQuit","");
@@ -251,33 +252,25 @@ OnMyMobDead:
 
 bat_b02,1,4,3	script	cell#bat_b02_a	844,{
 Onred:
-	setwall "bat_b02",60,149,2,6,0,"Guillaume_wall1-1";
-	setwall "bat_b02",62,149,2,0,0,"Guillaume_wall1-2";
-	setwall "bat_b02",62,151,2,2,0,"Guillaume_wall1-3";
-	setwall "bat_b02",60,151,2,4,0,"Guillaume_wall1-4";
+	setcell "bat_b02",62,149,60,151,cell_basilica,1;
+	setcell "bat_b02",62,149,60,151,cell_walkable,0;
 	end;
 
 Ongreen:
-	delwall "Guillaume_wall1-1";
-	delwall "Guillaume_wall1-2";
-	delwall "Guillaume_wall1-3";
-	delwall "Guillaume_wall1-4";
+	setcell "bat_b02",62,149,60,151,cell_basilica,0;
+	setcell "bat_b02",62,149,60,151,cell_walkable,1;
 	end;
 }
 
 bat_b02,1,5,3	script	cell#bat_b02_b	844,{
 Onred:
-	setwall "bat_b02",327,149,2,6,0,"Croix_wall1-1";
-	setwall "bat_b02",329,149,2,0,0,"Croix_wall1-2";
-	setwall "bat_b02",329,151,2,2,0,"Croix_wall1-3";
-	setwall "bat_b02",327,151,2,4,0,"Croix_wall1-4";
+	setcell "bat_b02",327,151,329,149,cell_basilica,1;
+	setcell "bat_b02",327,151,329,149,cell_walkable,0;
 	end;
 
 Ongreen:
-	delwall "Croix_wall1-1";
-	delwall "Croix_wall1-2";
-	delwall "Croix_wall1-3";
-	delwall "Croix_wall1-4";
+	setcell "bat_b02",327,151,329,149,cell_basilica,0;
+	setcell "bat_b02",327,151,329,149,cell_walkable,1;
 	end;
 }
 
@@ -557,29 +550,29 @@ OnTimer1900000:
 	end;
 }
 
-bat_b02,81,83,3	script	¦N¥Ã°}Àç#flag32	973,{ end; }
-bat_b02,94,83,3	script	¦N¥Ã°}Àç#flag33	973,{ end; }
-bat_b02,81,66,3	script	¦N¥Ã°}Àç#flag34	973,{ end; }
-bat_b02,94,66,3	script	¦N¥Ã°}Àç#flag35	973,{ end; }
-bat_b02,139,142,3	script	¦N¥Ã°}Àç#flag36	973,{ end; }
-bat_b02,139,158,3	script	¦N¥Ã°}Àç#flag37	973,{ end; }
-bat_b02,110,161,3	script	¦N¥Ã°}Àç#flag38	973,{ end; }
-bat_b02,110,137,3	script	¦N¥Ã°}Àç#flag39	973,{ end; }
-bat_b02,63,135,3	script	¦N¥Ã°}Àç#flag40	973,{ end; }
-bat_b02,63,165,3	script	¦N¥Ã°}Àç#flag41	973,{ end; }
-bat_b02,10,296,3	script	¦N¥Ã°}Àç#flag42	973,{ end; }
+bat_b02,81,83,3	script	Guillaume Camp#flag32	973,{ end; }
+bat_b02,94,83,3	script	Guillaume Camp#flag33	973,{ end; }
+bat_b02,81,66,3	script	Guillaume Camp#flag34	973,{ end; }
+bat_b02,94,66,3	script	Guillaume Camp#flag35	973,{ end; }
+bat_b02,139,142,3	script	Guillaume Camp#flag36	973,{ end; }
+bat_b02,139,158,3	script	Guillaume Camp#flag37	973,{ end; }
+bat_b02,110,161,3	script	Guillaume Camp#flag38	973,{ end; }
+bat_b02,110,137,3	script	Guillaume Camp#flag39	973,{ end; }
+bat_b02,63,135,3	script	Guillaume Camp#flag40	973,{ end; }
+bat_b02,63,165,3	script	Guillaume Camp#flag41	973,{ end; }
+bat_b02,10,296,3	script	Guillaume Camp#flag42	973,{ end; }
 
-bat_b02,306,233,3	script	§J°Ç¨È°}Àç#flag32	974,{ end; }
-bat_b02,317,233,3	script	§J°Ç¨È°}Àç#flag33	974,{ end; }
-bat_b02,306,216,3	script	§J°Ç¨È°}Àç#flag34	974,{ end; }
-bat_b02,317,216,3	script	§J°Ç¨È°}Àç#flag35	974,{ end; }
-bat_b02,257,158,3	script	§J°Ç¨È°}Àç#flag36	974,{ end; }
-bat_b02,257,141,3	script	§J°Ç¨È°}Àç#flag37	974,{ end; }
-bat_b02,297,164,3	script	§J°Ç¨È°}Àç#flag38	974,{ end; }
-bat_b02,297,136,3	script	§J°Ç¨È°}Àç#flag39	974,{ end; }
-bat_b02,336,161,3	script	§J°Ç¨È°}Àç#flag40	974,{ end; }
-bat_b02,336,139,3	script	§J°Ç¨È°}Àç#flag41	974,{ end; }
-bat_b02,389,16,3	script	§J°Ç¨È°}Àç#flag42	974,{ end; }
+bat_b02,306,233,3	script	Croix Camp#flag32	974,{ end; }
+bat_b02,317,233,3	script	Croix Camp#flag33	974,{ end; }
+bat_b02,306,216,3	script	Croix Camp#flag34	974,{ end; }
+bat_b02,317,216,3	script	Croix Camp#flag35	974,{ end; }
+bat_b02,257,158,3	script	Croix Camp#flag36	974,{ end; }
+bat_b02,257,141,3	script	Croix Camp#flag37	974,{ end; }
+bat_b02,297,164,3	script	Croix Camp#flag38	974,{ end; }
+bat_b02,297,136,3	script	Croix Camp#flag39	974,{ end; }
+bat_b02,336,161,3	script	Croix Camp#flag40	974,{ end; }
+bat_b02,336,139,3	script	Croix Camp#flag41	974,{ end; }
+bat_b02,389,16,3	script	Croix Camp#flag42	974,{ end; }
 
 bat_b02,10,294,3	script	Vintenar#bat_b02_aover	419,{
 	set .@A_B_gap,$@Guill_ScoreBG2 - $@Croix_ScoreBG2;

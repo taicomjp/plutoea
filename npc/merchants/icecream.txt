@@ -1,60 +1,86 @@
-//======================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// -------------------------------------
-// - 冰淇淋製造商 腳本 -
-//======================================
-//= 版本: 1.4
-//= 翻譯: 5511
-//======================================
+//===== rAthena Script =======================================
+//= Ice Cream Maker
+//===== By: ==================================================
+//= KOOK SWU, Kisuka
+//===== Current Version: =====================================
+//= 1.5
+//===== Compatible With: =====================================
+//= rAthena SVN
+//===== Description: =========================================
+//= A man makes you ice-cream
+//===== Additional Comments: =================================
+//= 1.1 Optimized, changed overlapping coords in Alberta [Lupus]
+//= 1.2 According to the patch, IceCream seller has been removed from Morocc [Lupus]
+//= 1.3 No more label menu and updated to match AEGIS script. [Kisuka]
+//= 1.4 Duplicates now spawn from floating NPCs. [L0ne_W0lf]
+//= 1.5 Fixed small checkweight issue. [Kisuka]
+//============================================================
 
--	script	冰淇淋製造商::IceCreamer	-1,{
-	mes "[冰淇淋製造商]";
-	mes "美味的冰淇淋是用盧鐵的雪製作";
-	mes "的哦! 快來買呦, 正在熱銷中! ";
-	mes "^0000FF100 Zeny^000000 的冰淇淋,";
-	mes "冰淇淋哦!";
+-	script	Ice Cream Maker::IceCreamer	-1,{
+	mes "[Ice Cream Maker]";
+	mes "Fresh Ice Cream made with snow from Lutie!";
+	mes "Enjoy it now, it won't be on sale for long!";
+	mes "^3355FF100 Zeny^000000 Ice Cream,";
+	mes "Ice Cream!";
 	next;
-	menu "買冰淇淋!",-,"取消",L_End;
-	
-		mes "[冰淇淋製造商]";
-		mes "美味的冰淇淋是用盧鐵的雪製作";
-		mes "的哦! 每個人都喜歡我們的冰淇";
-		mes "淋, 但是我有販賣的數量限制, ";
-		mes "所以你一次最多能買5 支!!";
-		next;
-		input @input;
-		mes "[冰淇淋製造商]";
-		if(@input<1) goto L_inpC;
-		if(@input>5) goto L_inpM;
-		if(Zeny< @input*100) goto L_NoZ;
-		set Zeny,Zeny-100*@input;
-		getitem 536,@input;
-		mes "這是你的" +@input+ " 支冰淇淋.";
+	if(select("Gimme Ice Cream!:Cancel Trade") == 2) {
+		mes "Are you sure you don't want any?";
+		mes "I won't be selling it for long,";
+		mes "and once I run out,";
+		mes "there won't be any more!!!";
 		close;
-		
-		L_inpC:
-			mes "交易被取消了.";
+	}
+	mes "[Ice Cream Maker]";
+	mes "Fresh Ice Cream made with snow from Lutie!";
+	mes "Everyone wants our delicious ice cream, ";
+	mes "but we have a limited amount,";
+	mes "so you can only purchase 5 at a time!!";
+	next;
+	while(1) {
+		input .@input;
+		if(.@input < 1) {
+			mes "[Ice Cream Maker]";
+			mes "If you don't want to buy any,";
+			mes "could you please let the next customer";
+			mes "make a purchase?";
+			mes "Thank you.";
 			close;
-		L_inpM:
-			mes "抱歉, 你一次最多能買5 支.";
-			close;
-		L_NoZ:
-			mes "抱歉, 看來你還需要跟多的錢. ";
-			close;
-	L_End:
-		mes "[冰淇淋製造商]";
-		mes "你確定你不想來一些嗎?";
-		mes "我不會銷售冰淇淋很長時間, 所";
-		mes "以一旦我離開了, 可就沒有了!!!";
+		}
+		if(.@input > 5) {
+			mes "[Ice Cream Maker]";
+			mes "Ouch";
+			mes "You expect too much.";
+			mes "Dear customer,";
+			mes "If you eat more than 5 Ice creams,";
+			mes "If you might haveto make a lot of trips";
+			mes "to the bathroom tonight.";
+			next;
+		}
+	}
+	if(Zeny<.@input*100) {
+		mes "[Ice Cream Maker]";
+		mes "Dear customer, your wallet seems to be light.";
+		mes "Price is ^3355FF100 Zeny^000000 per ice cream.";
 		close;
+	}
+	if(checkweight(536,.@input) == 0) {
+		mes "[Ice Cream Maker]";
+		mes "Dear customer,you look like you're carrying a lot.";
+		mes "Ice Cream is fine,";
+		mes "but you must consider your weight";
+		mes "before making a purchase.";
+		close;
+	}
+	set Zeny,Zeny-100*.@input;
+	getitem 536,.@input;	// Ice_Cream
+	close;
 }
 
-// 艾爾貝塔
-alberta,120,45,2	duplicate(IceCreamer)	冰淇淋製造商#1	85
+// Alberta
+alberta,120,45,2	duplicate(IceCreamer)	Ice Cream Maker#1	85
 
-//夢羅克 原野
-moc_fild16,88,304,4	duplicate(IceCreamer)	冰淇淋製造商#2	85
+// Morroc Field
+moc_fild16,88,304,4	duplicate(IceCreamer)	Ice Cream Maker#2	85
 
-//夢羅克
-//morocc,160,144,4	duplicate(IceCreamer)	冰淇淋製造商#3	85
+// Morroc
+//morocc,160,144,4	duplicate(IceCreamer)	Ice Cream Maker#3	85

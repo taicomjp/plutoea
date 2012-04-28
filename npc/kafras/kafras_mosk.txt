@@ -1,41 +1,44 @@
-//===== eAthena Script ======================================= 
+//===== rAthena Script ======================================= 
 //= Moscovia Kafras
 //===== By: ================================================== 
 //= Kisuka
 //===== Current Version: ===================================== 
 //= 1.0
 //===== Compatible With: ===================================== 
-//= eAthena SVN
+//= rAthena SVN
 //===== Description: ========================================= 
 //= Kafras for the town of Moscovia.
 //===== Additional Comments: ================================= 
 //= 1.0 First Version. [Kisuka]
-//= Translated v1.0 to Chinese. [5511]
 //============================================================ 
 
-moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
+moscovia,223,191,4	script	Kafra Staff#mosk	114,{
 	cutin "kafra_04",2;
-	mes "[卡普拉服務人員]";
-	mes "歡迎來到卡普拉公司.";
-	mes "卡普拉服務人員與您同行.";
-	mes "我能為您做點什麼呢?";
+	mes "[Kafra Staff]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "The Kafra services";
+	mes "are always on your side.";
+	mes "How may I assist you?";
 	next;
-	switch(select("存儲:使用倉庫:租賃一輛手推車:查看其它信息:取消")) {
+	switch(select("Save:Use Storage:Rent a Pushcart:Check Other Information:Cancel")) {
 		case 1:
-			mes "[卡普拉服務人員]";
-			mes "您的記憶點已經存儲在莫斯科維";
-			mes "亞的城市裡. 感謝您使用卡普拉";
-			mes "服務.";
+			mes "[Kafra Staff]";
+			mes "Your Respawn Point has";
+			mes "been saved in the city of";
+			mes "Moscovia. Thank you for";
+			mes "using the Kafra Service.";
 			savepoint "moscovia",221,194;
 			close2;
 			cutin "", 255;
 			end;
 		case 2:
 			if(basicskillcheck() && getskilllv("NV_BASIC") < 6){
-				mes "[卡普拉服務人員]";
-				mes "很抱歉, 你的初學者的基本技能";
-				mes "需要在6 級以上, 才能使用倉庫";
-				mes "服務.";
+				mes "[Kafra Staff]";
+				mes "I'm sorry, but you";
+				mes "need the Novice's";
+				mes "Basic Skill Level 6 to";
+				mes "use the Storage Service.";
 				close2;
 				cutin "", 255;
 				end;
@@ -43,10 +46,11 @@ moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
 			if(countitem(7059)) delitem 7059,1;
 			else {
 				if(Zeny<80){
-					mes "[卡普拉服務人員]";
-					mes "我很抱歉, 您沒有足夠的金錢來";
-					mes "使用倉庫服務. 我們倉庫的費用";
-					mes "為80 Zeny.";
+					mes "[Kafra Staff]";
+					mes "I'm sorry, but you don't";
+					mes "have enough zeny to use";
+					mes "the Storage Service. Our";
+					mes "Storage access fee is 80 zeny.";
 					close2;
 					cutin "", 255;
 					end;
@@ -54,11 +58,13 @@ moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
 				set Zeny, Zeny-80;
 				set RESRVPTS, RESRVPTS + (80/5);
 			}
-			mes "[卡普拉服務人員]";
-			mes "嗨, 就讓我來為您打開您的倉庫.";
-			mes "感謝您使用卡普拉服務.";
+			mes "[Kafra Staff]";
+			mes "Here, let me open";
+			mes "your Storage for you.";
+			mes "Thank you for using";
+			mes "the Kafra Service.";
 			
-			callfunc("F_CheckKafCode");	// 如果設置了倉庫密碼, 則檢查下
+			callfunc("F_CheckKafCode");	//check your storage password, if set
 			
 			close2;
 			openstorage;
@@ -66,20 +72,24 @@ moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
 			end;
 		case 3:
 			if(baseClass != Job_Merchant){
-				mes "[卡普拉服務人員]";
-				mes "我很抱歉, 手推車租賃服務只對";
-				mes "商人, 鐵匠, 銀匠, 煉金術士和";
-				mes "生化學家提供.";
+				mes "[Kafra Staff]";
+				mes "I'm sorry, but the";
+				mes "Pushcart rental service";
+				mes "is only available to Merchants,";
+				mes "Blacksmiths, Master Smiths,";
+				mes "Alchemists and Biochemists.";
 				close2;
 				cutin "", 255;
 				end;
 			}
 
 			else if(checkcart() == 1){
-				mes "[卡普拉服務人員]";
-				mes "你已經有了一輛手推車了.";
-				mes "所以很遺憾, 我們不能一次租賃";
-				mes "很多輛手推車給同一位用戶.";
+				mes "[Kafra Staff]";
+				mes "You already have";
+				mes "a Pushcart equipped.";
+				mes "Unfortunately, we can't";
+				mes "rent more than one to";
+				mes "each customer at a time.";
 				close2;
 				cutin "", 255;
 				end;
@@ -87,15 +97,18 @@ moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
 
 			if(countitem(7061) > 0) delitem 7061,1;
 			else {
-				mes "[卡普拉服務人員]";
-				mes "手推車的租賃費為700 Zeny.";
-				mes "你想要租賃一輛手推車嗎?";
+				mes "[Kafra Staff]";
+				mes "The Pushcart rental";
+				mes "fee is 700 zeny. Would";
+				mes "you like to rent a Pushcart?";
 				next;
-				if(select("租賃一輛手推車.:取消.") == 1) {
+				if(select("Rent a Pushcart.:Cancel.") == 1) {
 					if(Zeny<700){
-						mes "[卡普拉服務人員]";
-						mes "我很抱歉, 您沒有足夠的金錢來";
-						mes "支付700 Zeny 的手推車租賃費.";
+						mes "[Kafra Staff]";
+						mes "I'm sorry, but you";
+						mes "don't have enough";
+						mes "zeny to pay the Pushcart";
+						mes "rental fee of 700 zeny.";
 						close2;
 						cutin "", 255;
 						end;
@@ -113,29 +126,26 @@ moscovia,223,191,4	script	卡普拉服務人員#mosk	114,{
 			cutin "", 255;
 			end;
 		case 4:
-			if(select("查看特殊存儲點.:取消") == 2) {
+			if(select("Check Special Reserve Points.:Cancel") == 2) {
 				cutin "", 255;
 				close;
 			}
-			mes "[卡普拉服務人員]";
-			mes strcharinfo(0) + ", 您總共擁有";
-			mes RESRVPTS+ " 點的特殊存儲點.";
+			mes "[Kafra Staff]";
+			mes strcharinfo(0) + ", you have a total of";
+			mes RESRVPTS+ " Special Reserve Points.";
 			next;
-			mes "[卡普拉服務人員]";
-			mes "您可以在艾爾帕蘭的卡普拉公司";
-			mes "總部那裡把你的特殊存儲點換成";
-			mes "物品. 請使用我們很多便利的服";
-			mes "務來獲取特殊存儲點, 以便換取";
-			mes "更多的報酬.";
+			mes "[Kafra Staff]";
+			mes "You can exchange your";
+			mes "Special Reserve Points for";
+			mes "rewards at the Kafra Main Office in Al De Baran. Please use our";
+			mes "convenient services to see the benefits of our rewards program.";
 			close2;
 			cutin "", 255;
 			end;
 		case 5:
-			mes "[卡普拉服務人員]";
-			mes "我們, 卡普拉公司, 會盡力為您";
-			mes "提供最優質的服務. 希望我們能";
-			mes "滿足您旅行的需要並且能達到最";
-			mes "高的標準.";
+			mes "[Kafra Staff]";
+			mes "We, here at Kafra Corporation,";
+			mes "are always endeavoring to provide you with the best services. We hope that we meet your adventuring needs and standards of excellence.";
 			close2;
 			cutin "", 255;
 			end;

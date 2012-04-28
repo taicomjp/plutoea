@@ -1,24 +1,36 @@
-//===== eAthena Script =======================================
-//= 第二期攻城戰
+//===== rAthena Script =======================================
+//= War of Emperium Second Edition
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
 //= 2.0
 //===== Compatible With: =====================================
-//= eAthena SVN
+//= rAthena SVN
 //===== Description: =========================================
-//= WoE SE 阿盧納貝茲 教國 Castle 1 (馬勒杜)
+//= WoE SE Arunafeltz Castle 1
+//===== Additional Comments: =================================
+//= 1.0 First Version [L0ne_W0lf]
+//= 1.1 Swaped an end for a close in eco investing. [L0ne_W0lf]
+//=     Fixed improper label used in guaridan stone.
+//= 1.2 Fixed double message in defense investing. [L0ne_W0lf]
+//= 1.3 Fixed a guardian spawning NPCs. [L0ne_W0lf]
+//= 1.4 Fixed investment period not resetting. [L0ne_W0lf]
+//=     Made it so treasure won't spawn if castle is empty.
+//=     Treasure will now be killed before spawning.
+//= 1.5 Fixed error with control devices. [L0ne_W0lf]
+//= 1.6 Implemented new Wall System. [Zephyrus]
+//= 1.7 Replaced effect numerics with constants. [L0ne_W0lf]
+//= 1.8 Applied updated eco/def systems. [L0ne_W0lf]
+//= 1.9 Fixed eco/def not actually incrementing. [L0ne_W0lf]
+//=     Can no longer gain eco/def higher than 100.
+//= 2.0 Fixed a possible exploit in guild castle investment. [Brian]
 //============================================================
 
 arug_cas01,1,1,0	script	Manager#aru01_02	111,{
 	end;
 
-OnInterIfInitOnce:
-	GetCastleData "arug_cas01",0,"::OnRecvCastleAr01";
-	end;
-
+OnAgitInit2:
 OnRecvCastleAr01:
-	RequestGuildInfo GetCastleData("arug_cas01",1);
 	if (GetCastleData("arug_cas01",1) == 0) {
 		donpcevent "Manager#aru01_02::Onstart";
 	}
@@ -41,9 +53,9 @@ OnAgitStart2:
 OnAgitEnd2:
 	GvgOff "arug_cas01";
 	if (GetCastleData("arug_cas01",1)) {
-		KillMonster "arug_cas01","管理人#aru01::OnStartArena";
+		KillMonster "arug_cas01","Steward#aru01::OnStartArena";
 		donpcevent "Manager#aru01_02::Onreset";
-		donpcevent "管理人#aru01::Onstop";
+		donpcevent "Steward#aru01::Onstop";
 	}
 	end;
 
@@ -62,7 +74,7 @@ Onstart:
 		donpcevent "#aru01_RL02::OnEnable";
 		donpcevent "#aru01_RL03::OnEnable";
 	}
-	monster "arug_cas01",87,219,"華麗金屬",1288,1,"管理人#aru01::OnStartArena";
+	monster "arug_cas01",87,219,"Emperium",1288,1,"Steward#aru01::OnStartArena";
 	end;
 
 Onreset:
@@ -74,11 +86,11 @@ Onreset:
 	donpcevent "#aru01_RL01::OnDisable";
 	donpcevent "#aru01_RL02::OnDisable";
 	donpcevent "#aru01_RL03::OnDisable";
-	donpcevent "第1守護石#aru01::OnDisable";
-	donpcevent "第2守護石#aru01::OnDisable";
-	donpcevent "控制裝置01#aru01::OnDisable";
-	donpcevent "控制裝置02#aru01::OnDisable";
-	donpcevent "控制裝置03#aru01::OnDisable";
+	donpcevent "1st Guardian Stone#aru01::OnDisable";
+	donpcevent "2nd Guardian Stone#aru01::OnDisable";
+	donpcevent "Control Device01#aru01::OnDisable";
+	donpcevent "Control Device02#aru01::OnDisable";
+	donpcevent "Control Device03#aru01::OnDisable";
 	if (agitcheck2()) {
 		setarray $agit_ar01[0],0,0,1,1,1,0;
 	}
@@ -86,10 +98,10 @@ Onreset:
 
 Onchange:
 	setarray $agit_ar01[0],2,2,1,1,2,0;
-	monster "arug_cas01",87,219,"華麗金屬",1288,1,"管理人#aru01::OnStartArena";
-	donpcevent "控制裝置03#aru01::OnEnable";
-	donpcevent "第1守護石#aru01::OnEnable";
-	donpcevent "第2守護石#aru01::OnEnable";
+	monster "arug_cas01",87,219,"Emperium",1288,1,"Steward#aru01::OnStartArena";
+	donpcevent "Control Device03#aru01::OnEnable";
+	donpcevent "1st Guardian Stone#aru01::OnEnable";
+	donpcevent "2nd Guardian Stone#aru01::OnEnable";
 	end;
 
 OnClock0001:
@@ -111,50 +123,50 @@ OnClock0001:
 
 	set .@Treasure,GetCastleData("arug_cas01",2)/5+4;
 	if (.@Treasure) {
-		monster "arug_cas01",251,369,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
-		monster "arug_cas01",251,369,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
-		monster "arug_cas01",253,369,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
-		monster "arug_cas01",254,369,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",251,369,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",251,369,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",253,369,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",254,369,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 5) end;
-		monster "arug_cas01",255,368,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",255,368,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 6) end;
-		monster "arug_cas01",256,368,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",256,368,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 7) end;
-		monster "arug_cas01",257,368,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",257,368,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 8) end;
-		monster "arug_cas01",258,368,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",258,368,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 9) end;
-		monster "arug_cas01",251,367,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",251,367,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 10) end;
-		monster "arug_cas01",252,367,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",252,367,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 11) end;
-		monster "arug_cas01",253,367,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",253,367,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 12) end;
-		monster "arug_cas01",254,367,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",254,367,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 13) end;
-		monster "arug_cas01",255,366,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",255,366,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 14) end;
-		monster "arug_cas01",256,366,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",256,366,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 15) end;
-		monster "arug_cas01",257,366,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",257,366,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 16) end;
-		monster "arug_cas01",258,366,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",258,366,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 17) end;
-		monster "arug_cas01",251,365,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",251,365,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 18) end;
-		monster "arug_cas01",252,365,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",252,365,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 19) end;
-		monster "arug_cas01",253,365,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",253,365,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 20) end;
-		monster "arug_cas01",254,365,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",254,365,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 21) end;
-		monster "arug_cas01",255,364,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",255,364,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 22) end;
-		monster "arug_cas01",256,364,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",256,364,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 23) end;
-		monster "arug_cas01",257,364,"寶物箱子",1943,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",257,364,"Treasure Chest",1943,1,"Manager#aru01_02::OnTreasureDied";
 		if (.@Treasure < 24) end;
-		monster "arug_cas01",258,364,"寶物箱子",1324,1,"Manager#aru01_02::OnTreasureDied";
+		monster "arug_cas01",258,364,"Treasure Chest",1324,1,"Manager#aru01_02::OnTreasureDied";
 	}
 	end;
 
@@ -162,37 +174,41 @@ OnTreasureDied:
 	end;
 }
 
-arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
+arug_cas01,112,193,1	script	Brace#aru01_01	868,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (.@GID == 0) {
-		mes "[布雷依斯]";
-		mes "何許人物?";
-		mes "請你快一點離開這座城池吧!";
+		mes "[Brace]";
+		mes "Great job. Now, all you";
+		mes "need to do is destroy this";
+		mes "Emperium to gain ownership";
+		mes "over this stronghold.";
 		close;
 	}
 	if (getcharid(2) == .@GID) {
 		if (strcharinfo(0) != getguildmaster(.@GID)) {
-			mes "[布雷依斯]";
-			mes "我是負責城池的守護,";
-			mes "詳細的內容我想跟主人說";
+			mes "[Brace]";
+			mes "As guardian of this";
+			mes "stronghold, I answer only";
+			mes "to the master of the guild";
+			mes "that controls this place.";
 			close;
 		}
 		else {
 			if (agitcheck2() == 0) {
-				mes "[布雷依斯]";
+				mes "[Brace]";
 				mes "I am Brace, guardian of";
 				mes "this stronghold. For now,";
 				mes "all is quiet in this place.";
 				next;
-				switch(select("Converse:取消")) {
+				switch(select("Converse:Cancel")) {
 				case 1:
-					mes "[布雷依斯]";
+					mes "[Brace]";
 					mes "Do you have any questions";
 					mes "about this stronghold?";
 					next;
-					switch(select("守護石:防禦線:空間移動系統:Battle Strategy:取消")) {
+					switch(select("Guardian Stones:Fortress Gates:Link Flags:Battle Strategy:Cancel")) {
 					case 1:
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "There is one Emperium";
 						mes "and two Guardian Stones in";
 						mes "each fortress. These stones";
@@ -200,7 +216,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "and must be destroyed before";
 						mes "enemies can even enter.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "The stones are located in";
 						mes "^4D4DFFGate Houses^000000 which must be";
 						mes "protected to prevent enemies";
@@ -208,26 +224,26 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "Guardian Stones can ^4D4DFFrecall";
 						mes "your Guardians^000000 for protection.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Fortresses with higher levels";
 						mes "of defense can summon more";
 						mes "Guardians: this is why it is";
 						mes "so important for guilds to";
 						mes "invest in Defense Growth.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Guardian Stones that have";
 						mes "been destroyed can be revived";
 						mes "after a certain time, but one of^FFFFFF ^000000 the guild members must give";
 						mes "me the order. I can also report^FFFFFF ^000000 the status of the Guardian Stones.";
 						close;
 					case 2:
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "^4D4DFFFortress Gates^000000 are the second ^FFFFFF ^000000 line of guild stronghold defense,";
 						mes "and are protected by extra barricades activated by the Guardian Stones.";
 						mes "These gates are located in three different parts of the fortress.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Barricades are protected by";
 						mes "Guardian Stones, and are";
 						mes "restored when the Guardian";
@@ -235,7 +251,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "it is not as easy to restore";
 						mes "destroyed Fortress Gates.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Fortress Gates can only be";
 						mes "restored when the ^4D4DFFguild";
 						mes "master of a stronghold";
@@ -244,7 +260,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "master of the stronghold^000000.";
 						close;
 					case 3:
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Strongholds have many";
 						mes "Link Flags that allow you";
 						mes "to access vital areas within";
@@ -252,7 +268,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "Barricades. Usually, ^4D4DFFFlag 1";
 						mes "links to the Gate House^000000.";
 						next;
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Many flags link directly to";
 						mes "the flag near the Emperium.";
 						mes "The final numbered flag is";
@@ -261,7 +277,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "owner. Keep this in mind.";
 						close;
 					case 4:
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "Strategy? It would be better";
 						mes "to develop your battle plan to";
 						mes "exploit your guild's advantages";
@@ -269,14 +285,14 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						mes "Use the Gate Houses and Barricades, and rebuild as quickly as you can!";
 						close;
 					case 5:
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "You have no questions";
 						mes "to ask of me? Well, I'm";
 						mes "here to serve your needs.";
 						close;
 					}
 				case 2:
-					mes "[布雷依斯]";
+					mes "[Brace]";
 					mes "I'm always here, so";
 					mes "feel free to request my";
 					mes "assistance whenever";
@@ -285,15 +301,15 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 				}
 			}
 			else {
-				mes "[布雷依斯]";
+				mes "[Brace]";
 				mes "Greetings, "+strcharinfo(0)+".";
 				mes "What are your orders?";
 				next;
-				switch(select("Increase Stronghold Defense:檢查防禦狀態:取消")) {
+				switch(select("Increase Stronghold Defense:Situational Briefing:Cancel")) {
 				case 1:
 					if ($agit_ar01[5] == 0) {
 						if (getgdskilllv(.@GID,10002) == 0) {
-							mes "[布雷依斯]";
+							mes "[Brace]";
 							mes "I'm sorry, but the Guardian";
 							mes "Stones aren't powerful enough";
 							mes "to summon Guardians yet. We";
@@ -303,7 +319,7 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 							close;
 						}
 						else {
-							mes "[布雷依斯]";
+							mes "[Brace]";
 							mes "I shall endeavor to summon";
 							mes "a Guardian through a Guardian";
 							mes "Stone. However, keep in mind";
@@ -320,74 +336,74 @@ arug_cas01,112,193,1	script	布雷依斯#aru01_01	868,{
 						}
 					}
 					else {
-						mes "[布雷依斯]";
+						mes "[Brace]";
 						mes "You've already commanded";
 						mes "me to summon a Guardian";
 						mes "to defend the stronghold.";
 						close;
 					}
 				case 2:
-					mes "[布雷依斯]";
-					mes "我們的防禦狀態是...";
+					mes "[Brace]";
+					mes "Our defense status is...";
 					if ($agit_ar01[0] == 1) {
-						mes "第1守護石: ^FF0000被破壞^000000";
+						mes "1st Guardian Stone: ^FF0000Destroyed^000000";
 					}
 					else if ($agit_ar01[0] == 2) {
-						mes "第1守護石: ^008000修復中^000000";
+						mes "1st Guardian Stone: ^008000Repairing^000000";
 					}
 					else {
-						mes "第1守護石: ^4D4DFF正常^000000";
+						mes "1st Guardian Stone: ^4D4DFFOperational^000000";
 					}
 					if ($agit_ar01[1] == 1) {
-						mes "第2守護石: ^FF0000被破壞^000000";
+						mes "2nd Guardian Stone: ^FF0000Destroyed^000000";
 					}
 					else if ($agit_ar01[1] == 2) {
-						mes "第2守護石: ^008000修復中^000000";
+						mes "2nd Guardian Stone: ^008000Repairing^000000";
 					}
 					else {
-						mes "第2守護石: ^4D4DFF正常^000000";
+						mes "2nd Guardian Stone: ^4D4DFFOperational^000000";
 					}
 					if ($agit_ar01[2] == 1) {
-						mes "第1防禦線: ^FF0000被破壞^000000";
+						mes "1st Fortress Gate: ^FF0000Destroyed^000000";
 					}
 					else if ($agit_ar01[2] == 2) {
-						mes "第1防禦線: ^008000修復中^000000";
+						mes "1st Fortress Gate: ^008000Repairing^000000";
 					}
 					else {
-						mes "第1防禦線: ^4D4DFF正常^000000";
+						mes "1st Fortress Gate: ^4D4DFFOperational^000000";
 					}
 					if ($agit_ar01[3] == 1) {
-						mes "第2防禦線: ^FF0000被破壞^000000";
+						mes "2nd Fortress Gate: ^FF0000Destroyed^000000";
 					}
 					else if ($agit_ar01[3] == 2) {
-						mes "第2防禦線: ^008000修復中^000000";
+						mes "2nd Fortress Gate: ^008000Repairing^000000";
 					}
 					else {
-						mes "第2防禦線: ^4D4DFF正常^000000";
+						mes "2nd Fortress Gate: ^4D4DFFOperational^000000";
 					}
 					if ($agit_ar01[4] == 1) {
-						mes "第3防禦線: ^FF0000被破壞^000000";
+						mes "3rd Fortress Gate: ^FF0000Destroyed^000000";
 					}
 					else if ($agit_ar01[4] == 2) {
-						mes "第3防禦線: ^008000修復中^000000";
+						mes "3rd Fortress Gate: ^008000Repairing^000000";
 					}
 					else {
-						mes "第3防禦線: ^4D4DFF正常^000000";
+						mes "3rd Fortress Gate: ^4D4DFFOperational^000000";
 					}
 					close;
 				case 3:
-					mes "[布雷依斯]";
-					mes "我隨時在此,";
-					mes "等候您的指示";
+					mes "[Brace]";
+					mes "I'll be standing by,";
+					mes "awaiting your orders.";
 					close;
 				}
 			}
 		}
 	}
 	else {
-		mes "[布雷依斯]";
-		mes "何許人物?";
-		mes "請你快一點離開這座城池吧!";
+		mes "[Brace]";
+		mes "Who are you? Scoundrel!";
+		mes "Leave this stronghold now!";
 		close;
 	}
 
@@ -398,65 +414,65 @@ OnInit:
 
 arug_cas01,1,1,0	script	#aru01_gard01	-1,{
 OnEnable:
-	set .@Defence,GetCastleData("arug_cas01",3);
-	guardian "arug_cas01",233,83,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //0;
-	if ((.@Defense > 10) && (.@Defense < 31)) {
+	set .@defence,GetCastleData("arug_cas01",3);
+	guardian "arug_cas01",233,83,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //0;
+	if ((.@defence > 10) && (.@defence < 31)) {
 		set .MyMobCount,2;
-		guardian "arug_cas01",252,81,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //1;
+		guardian "arug_cas01",252,81,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //1;
 	}
-	else if ((.@Defense > 30) && (.@Defense < 51)) {
+	else if ((.@defence > 30) && (.@defence < 51)) {
 		set .MyMobCount,3;
-		guardian "arug_cas01",252,81,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //1;
-		guardian "arug_cas01",232,108,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //2;
+		guardian "arug_cas01",252,81,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //1;
+		guardian "arug_cas01",232,108,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //2;
 	}
-	else if ((.@Defense > 50) && (.@Defense < 71)) {
+	else if ((.@defence > 50) && (.@defence < 71)) {
 		set .MyMobCount,4;
-		guardian "arug_cas01",252,81,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //1;
-		guardian "arug_cas01",232,108,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //2;
-		guardian "arug_cas01",201,130,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //3;
+		guardian "arug_cas01",252,81,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //1;
+		guardian "arug_cas01",232,108,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //2;
+		guardian "arug_cas01",201,130,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //3;
 	}
-	else if (.@Defense > 70) {
+	else if (.@defence > 70) {
 		set .MyMobCount,5;
-		guardian "arug_cas01",252,81,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //1;
-		guardian "arug_cas01",232,108,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //2;
-		guardian "arug_cas01",201,130,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //3;
-		guardian "arug_cas01",224,168,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //4;
+		guardian "arug_cas01",252,81,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //1;
+		guardian "arug_cas01",232,108,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //2;
+		guardian "arug_cas01",201,130,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //3;
+		guardian "arug_cas01",224,168,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //4;
 	}
 	else {
 		set .MyMobCount,2;
-		guardian "arug_cas01",195,250,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //1;
+		guardian "arug_cas01",195,250,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //1;
 	}
 	initnpctimer;
 	end;
 
 OnTimer300000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",196,137,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //5;
-	mapannounce "arug_cas01","在據點那裡 第1次追加的召喚出監護人魔物了",bc_map,"0xff4500";
+	guardian "arug_cas01",196,137,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //5;
+	mapannounce "arug_cas01","The 1st Guardian has been summoned from the Gate House.",bc_map,"0xff4500";
 	end;
 
 OnTimer900000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",269,89,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //6;
-	mapannounce "arug_cas01","在據點那裡 第2次追加的召喚出監護人魔物了",bc_map,"0xff4500";
+	guardian "arug_cas01",269,89,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //6;
+	mapannounce "arug_cas01","The 2nd Guardian has been summoned from the Gate House.",bc_map,"0xff4500";
 	end;
 
 OnTimer1800000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",252,81,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //7;
-	mapannounce "arug_cas01","在據點那裡 第3次追加的召喚出監護人魔物了",bc_map,"0xff4500";
+	guardian "arug_cas01",252,81,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //7;
+	mapannounce "arug_cas01","The 3rd Guardian has been summoned from the Gate House.",bc_map,"0xff4500";
 	end;
 
 OnTimer2700000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",201,130,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //8;
-	mapannounce "arug_cas01","在據點那裡 第4次追加的召喚出監護人魔物了",bc_map,"0xff4500";
+	guardian "arug_cas01",201,130,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //8;
+	mapannounce "arug_cas01","The 4th Guardian has been summoned from the Gate House.",bc_map,"0xff4500";
 	end;
 
 OnTimer3600000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",224,168,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //9;
-	mapannounce "arug_cas01","在據點那裡 第5次追加的召喚出監護人魔物了",bc_map,"0xff4500";
+	guardian "arug_cas01",224,168,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //9;
+	mapannounce "arug_cas01","The 5th Guardian has been summoned from the Gate House.",bc_map,"0xff4500";
 	stopnpctimer;
 	end;
 
@@ -464,7 +480,7 @@ OnGuardianDied:
 	set .MyMobCount,.MyMobCount-1;
 	if (.MyMobCount < 2) {
 		set .MyMobCount,.MyMobCount+1;
-		guardian "arug_cas01",222,129,"劍士監護人魔物",1899,"#aru01_gard01::OnGuardianDied"; //10;
+		guardian "arug_cas01",222,129,"Guardian Soldier",1899,"#aru01_gard01::OnGuardianDied"; //10;
 	}
 	end;
 
@@ -476,60 +492,60 @@ Onreset:
 
 arug_cas01,1,2,0	script	#aru01_gard02	-1,{
 OnEnable:
-	set .@Defence,GetCastleData("arug_cas01",3);
-	guardian "arug_cas01",294,210,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //11;
-	if ((.@Defense > 10) && (.@Defense < 31)) {
+	set .@defence,GetCastleData("arug_cas01",3);
+	guardian "arug_cas01",294,210,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //11;
+	if ((.@defence > 10) && (.@defence < 31)) {
 		set .MyMobCount,2;
-		guardian "arug_cas01",256,203,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //12;
+		guardian "arug_cas01",256,203,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //12;
 	}
-	else if ((.@Defense > 30) && (.@Defense < 51)) {
+	else if ((.@defence > 30) && (.@defence < 51)) {
 		set .MyMobCount,3;
-		guardian "arug_cas01",256,203,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //12;
-		guardian "arug_cas01",240,133,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //13;
+		guardian "arug_cas01",256,203,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //12;
+		guardian "arug_cas01",240,133,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //13;
 	}
-	else if ((.@Defense > 50) && (.@Defense < 71)) {
+	else if ((.@defence > 50) && (.@defence < 71)) {
 		set .MyMobCount,4;
-		guardian "arug_cas01",256,203,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //12;
-		guardian "arug_cas01",240,133,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //13;
-		guardian "arug_cas01",246,92,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //14;
+		guardian "arug_cas01",256,203,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //12;
+		guardian "arug_cas01",240,133,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //13;
+		guardian "arug_cas01",246,92,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //14;
 	}
-	else if (.@Defense > 70) {
+	else if (.@defence > 70) {
 		set .MyMobCount,5;
-		guardian "arug_cas01",256,203,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //12;
-		guardian "arug_cas01",240,133,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //13;
-		guardian "arug_cas01",246,92,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //14;
-		guardian "arug_cas01",235,132,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //15;
+		guardian "arug_cas01",256,203,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //12;
+		guardian "arug_cas01",240,133,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //13;
+		guardian "arug_cas01",246,92,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //14;
+		guardian "arug_cas01",235,132,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //15;
 	}
 	else {
 		set .MyMobCount,2;
-		guardian "arug_cas01",292,188,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //12;
+		guardian "arug_cas01",292,188,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //12;
 	}
 	initnpctimer;
 	end;
 
 OnTimer600000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",235,132,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //16;
+	guardian "arug_cas01",235,132,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //16;
 	end;
 
 OnTimer1200000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",246,92,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //17;
+	guardian "arug_cas01",246,92,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //17;
 	end;
 
 OnTimer2100000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",240,133,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //18;
+	guardian "arug_cas01",240,133,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //18;
 	end;
 
 OnTimer3000000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",256,203,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //19;
+	guardian "arug_cas01",256,203,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //19;
 	end;
 
 OnTimer3900000:
 	set .MyMobCount,.MyMobCount+1;
-	guardian "arug_cas01",254,95,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //20;
+	guardian "arug_cas01",254,95,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //20;
 	stopnpctimer;
 	end;
 
@@ -537,7 +553,7 @@ OnGuardianDied:
 	set .MyMobCount,.MyMobCount-1;
 	if (.MyMobCount < 2) {
 		set .MyMobCount,.MyMobCount+1;
-		guardian "arug_cas01",242,151,"劍士監護人魔物",1899,"#aru01_gard02::OnGuardianDied"; //21;
+		guardian "arug_cas01",242,151,"Guardian Soldier",1899,"#aru01_gard02::OnGuardianDied"; //21;
 	}
 	end;
 
@@ -549,7 +565,7 @@ Onreset:
 
 arug_cas01,1,3,0	script	#aru01_df01	-1,{
 OnEnable:
-	guardian "arug_cas01",210,234,"第 1 守護石",1907,"#aru01_df01::OnGuardianStoneDied"; //22;
+	guardian "arug_cas01",210,234,"1st Guardian Stone",1907,"#aru01_df01::OnGuardianStoneDied"; //22;
 	end;
 
 OnDisable:
@@ -568,97 +584,117 @@ OnGuardianStoneDied:
 		set .@destroyed,.@destroyed + 1;
 	}
 	if (.@destroyed == 2) {
-		mapannounce "arug_cas01","守護石全部 都被破壞掉了!",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","All of the Guardian Stones have been destroyed!",bc_map,"0x00ff00";
 		donpcevent "#aru01_RL00::OnDisable";
 		donpcevent "#aru01_gard01::Onreset";
 	}
 	else {
-		mapannounce "arug_cas01","第1守護石 被破壞掉了!",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","The 1st Guardian Stone has been destroyed!",bc_map,"0x00ff00";
 		donpcevent "#aru01_gard01::Onreset";
 	}
 	initnpctimer;
 	end;
 
 OnTimer300000:
-	donpcevent "第1守護石#aru01::OnEnable";
+	donpcevent "1st Guardian Stone#aru01::OnEnable";
 	setarray $agit_ar01[0],2; //Global Variable
 	stopnpctimer;
 	end;
 }
 
-arug_cas01,211,234,0	script	第1守護石#aru01	844,{
+arug_cas01,211,234,0	script	1st Guardian Stone#aru01	844,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "把破壞掉的守護石要重新形成了,";
-		mes "若要重新形成時 如下所需下列礦石";
+		mes "^3355FFYou will need the";
+		mes "following materials to";
+		mes "rebuild a destroyed";
+		mes "Guardian Stone.^000000";
 		next;
-		mes "神之金屬 1個,";
-		mes "鋁 1個,";
-		mes "石頭 30個,";
-		mes "藍色魔力礦石 5個,";
-		mes "黃色魔力礦石 5個,";
-		mes "紅色魔力礦石 5個";
+		mes "1 Oridecon";
+		mes "1 Elunium";
+		mes "30 Stones";
+		mes "5 Blue Gemstones";
+		mes "5 Yellow Gemstones";
+		mes "5 Red Gemstones";
 		next;
-		mes "請問要繼續的進行作業嗎?";
-		switch(select("結束:進行")) {
+		mes "^3355FFDo you want to continue?^000000";
+		switch(select("No:Continue")) {
 		case 1:
-			mes "所有的作業都被取消了";
+			mes "^3355FFWork canceled.^000000";
 			close;
 		case 2:
 			if ((countitem(984) > 0) && (countitem(985) > 0) && (countitem(7049) > 29) && (countitem(717) > 4) && (countitem(715) > 4) && (countitem(716) > 4)) {
-				mes "中央要依據";
-				mes "石頭,鋁,神之金屬的順序來配置,";
-				mes "為了要重新形成";
-				mes "要配置有魔力的魔力礦石";
+				mes "^3355FFArrange Stones, Elunium, and";
+				mes "Oridecon, in that order, in the";
+				mes "center. Then you must arrange";
+				mes "the enchanted Gemstones to";
+				mes "rebuild the Guardian Stone.^000000";
 				next;
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "在中央放上鋁";
+					mes "^3355FFElunium has been";
+					mes "placed in the center.^000000";
 					next;
 					break;
 				case 2:
-					mes "在中央放上神之金屬";
+					mes "^3355FFOridecon has been";
+					mes "placed in the center.^000000";
 					next;
 					break;
 				case 3:
-					mes "在中央放上石頭";
+					mes "^3355FFStones have been";
+					mes "placed in the center.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				}
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "配置鋁";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
+					mes "with some Elunium.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				case 2:
-					mes "配置神之金屬";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
+					mes "with some Oridecon.^000000";
 					next;
 					break;
 				case 3:
-					mes "配置石頭";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
+					mes "with some Stones.^000000";
 					next;
 					break;
 				}
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "把鋁放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Elunium.^000000";
 					next;
 					break;
 				case 2:
-					mes "把神之金屬放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Oridecon.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				case 3:
-					mes "把石頭放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Stones.^000000";
 					next;
 					break;
 				}
-				mes "不違背魔法式";
-				mes "要配置有魔力的魔力礦石,";
-				mes "魔力的性質用準備的效果以便可得知";
+				mes "^3355FFNow you need to arrange";
+				mes "the enchanted Gemstones";
+				mes "accordingly. You can identify";
+				mes "their Magic properties by";
+				mes "their casting effect.^000000";
 				next;
 				while(1) {
 					if (.@roof0 > 7) {
@@ -668,18 +704,26 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 						switch(rand(1,3)) {
 						case 1:
 							specialeffect EF_BEGINSPELL2;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
@@ -689,43 +733,59 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 							break;
 						case 2:
 							specialeffect EF_VOLCANO;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
 								next;
 								break;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							}
 							break;
 						case 3:
 							specialeffect EF_BEGINSPELL4;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
 								next;
 								break;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							}
 						}
@@ -733,18 +793,23 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 				}
 				if (.@nice > 90) {
 					if ($agit_ar01[0] == 0) {
-						mes "守護石重新的形成已經被完成了";
+						mes "^3355FFThe Guardian Stone";
+						mes "Repair System has";
+						mes "already completed.^000000";
 						close;
 					}
 					else {
 						if (agitcheck2() == 0) {
-							mes "因魔力互相的衝突";
-							mes "對守護石重新的形成失敗了";
+							mes "^3355FFIt is impossible to";
+							mes "rebuild the Guardian";
+							mes "Stone because the";
+							mes "Emperium is not present.^000000";
 							close;
 						}
 						else {
-							mes "已完成了魔力礦石的配置,";
-							mes "守護石的重新形成是成功的!!!";
+							mes "^3355FFThe Gemstones have been";
+							mes "arranged, and the Guardian";
+							mes "Stone is successfully repaired.^000000";
 							delitem 984,1; //Oridecon
 							delitem 985,1; //Elunium
 							delitem 7049,30; //Stone
@@ -754,15 +819,15 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 							close2;
 							donpcevent "#aru01_df01::OnEnable";
 							specialeffect EF_ICECRASH;
-							disablenpc "第1守護石#aru01";
+							disablenpc "1st Guardian Stone#aru01";
 							setarray $agit_ar01[0],0;
 							set .@df_all,$agit_ar01[0]+$agit_ar01[1];
 							if (.@df_all == 0) {
-								mapannounce "arug_cas01","守護石已完全的修復 開始強化警戒了",bc_map,"0x00ff00";
+								mapannounce "arug_cas01","Both Guardian Stones have been erected, bolstering this stronghold's defenses!",bc_map,"0x00ff00";
 								donpcevent "#aru01_RL00::OnEnable";
 							}
 							else {
-								mapannounce "arug_cas01","第1守護石重新形成 已成功了!",bc_map,"0x00ff00";
+								mapannounce "arug_cas01","The 1st Guardian Stone has been repaired successfully.",bc_map,"0x00ff00";
 							}
 							if ($agit_ar01[5] == 1) {
 								donpcevent "#aru01_gard01::OnEnable";
@@ -772,10 +837,10 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 					}
 				}
 				else {
-					mes "所有的作業都做完後.. 碰咚碰咚的響著";
-					mes "沒有任何的反應";
-					mes "看樣子是失敗的樣子,";
-					mes "失去了部分的材料";
+					mes "^3355FFAfter all of that work...";
+					mes "It looks like you failed";
+					mes "to fix the Guardian Stone,";
+					mes "and lost some materials.^000000";
 					delitem 7049,10; //Stone
 					delitem 717,2; //Blue_Gemstone
 					delitem 715,2; //Yellow_Gemstone
@@ -784,7 +849,9 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 				}
 			}
 			else {
-				mes "材料並不是很充分";
+				mes "^3355FFYou don't have enough";
+				mes "materials to repair";
+				mes "the Guardian Stone.^000000";
 				close;
 			}
 		}
@@ -792,22 +859,22 @@ arug_cas01,211,234,0	script	第1守護石#aru01	844,{
 	end;
 
 OnInit:
-	disablenpc "第1守護石#aru01";
+	disablenpc "1st Guardian Stone#aru01";
 	end;
 
 OnEnable:
-	enablenpc "第1守護石#aru01";
+	enablenpc "1st Guardian Stone#aru01";
 	specialeffect EF_MAPPILLAR2;
 	end;
 
 OnDisable:
-	disablenpc "第1守護石#aru01";
+	disablenpc "1st Guardian Stone#aru01";
 	end;
 }
 
 arug_cas01,1,4,0	script	#aru01_df02	-1,{
 OnEnable:
-	guardian "arug_cas01",308,189,"第 2 守護石",1908,"#aru01_df02::OnGuardianStoneDied"; //23;
+	guardian "arug_cas01",308,189,"2nd Guardian Stone",1908,"#aru01_df02::OnGuardianStoneDied"; //23;
 	end;
 
 OnDisable:
@@ -826,98 +893,117 @@ OnGuardianStoneDied:
 		set .@destroyed,.@destroyed + 1;
 	}
 	if (.@destroyed == 2) {
-		mapannounce "arug_cas01","守護石全部 都被破壞掉了!",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","All of the Guardian Stones have been destroyed!",bc_map,"0x00ff00";
 		donpcevent "#aru01_RL00::OnDisable";
 		donpcevent "#aru01_gard02::Onreset";
 	}
 	else {
-		mapannounce "arug_cas01","第2守護石 被破壞掉了!",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","The 2nd Guardian Stone have been destroyed!",bc_map,"0x00ff00";
 		donpcevent "#aru01_gard02::Onreset";
 	}
 	initnpctimer;
 	end;
 
 OnTimer300000:
-	donpcevent "第2守護石#aru01::OnEnable";
+	donpcevent "2nd Guardian Stone#aru01::OnEnable";
 	setarray $agit_ar01[1],2; //Global Variable
 	stopnpctimer;
 	end;
 }
 
-arug_cas01,308,189,0	script	第2守護石#aru01	844,{
+arug_cas01,308,189,0	script	2nd Guardian Stone#aru01	844,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "把破壞掉的守護石要重新形成了,";
-		mes "若要重新形成時 如下所需下列礦石";
+		mes "^3355FFYou will need the";
+		mes "following materials to";
+		mes "rebuild a destroyed";
+		mes "Guardian Stone.^000000";
 		next;
-		mes "神之金屬 1個,";
-		mes "鋁 1個,";
-		mes "石頭 30個,";
-		mes "藍色魔力礦石 5個,";
-		mes "黃色魔力礦石 5個,";
-		mes "紅色魔力礦石 5個";
+		mes "1 Oridecon";
+		mes "1 Elunium";
+		mes "30 Stones";
+		mes "5 Blue Gemstones";
+		mes "5 Yellow Gemstones";
+		mes "5 Red Gemstones";
 		next;
-		mes "請問要繼續的進行作業嗎?";
-		switch(select("結束:進行")) {
+		mes "^3355FFDo you want to continue?^000000";
+		switch(select("No:Continue")) {
 		case 1:
-			mes "所有的作業都被取消了";
+			mes "^3355FFWork canceled.^000000";
 			close;
 		case 2:
 			if ((countitem(984) > 0) && (countitem(985) > 0) && (countitem(7049) > 29) && (countitem(717) > 4) && (countitem(715) > 4) && (countitem(716) > 4)) {
-				mes "中央要依據";
-				mes "石頭,鋁,神之金屬的順序來配置,";
-				mes "為了要重新形成";
-				mes "要配置有魔力的魔力礦石";
+				mes "^3355FFArrange Stones, Elunium, and";
+				mes "Oridecon, in that order, in the";
+				mes "center. Then you must arrange";
+				mes "the enchanted Gemstones to";
+				mes "rebuild the Guardian Stone.^000000";
 				next;
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "在中央放上鋁";
+					mes "^3355FFElunium has been";
+					mes "placed in the center.^000000";
 					next;
 					break;
 				case 2:
-					mes "在中央放上神之金屬";
+					mes "^3355FFOridecon has been";
+					mes "placed in the center.^000000";
 					next;
 					break;
 				case 3:
-					mes "在中央放上石頭";
+					mes "^3355FFStones have been";
+					mes "placed in the center.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				}
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "配置鋁";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
+					mes "with some Elunium.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				case 2:
-					mes "配置神之金屬";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
 					mes "with some Oridecon.^000000";
 					next;
 					break;
 				case 3:
-					mes "配置石頭";
+					mes "^3355FFYou have lined the";
+					mes "outside of the center";
+					mes "with some Stones.^000000";
 					next;
 					break;
 				}
-				switch(select("鋁:神之金屬:石頭")) {
+				switch(select("Elunium:Oridecon:Stone")) {
 				case 1:
-					mes "把鋁放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Elunium.^000000";
 					next;
 					break;
 				case 2:
-					mes "把神之金屬放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Oridecon.^000000";
 					set .@nice,.@nice+10;
 					next;
 					break;
 				case 3:
-					mes "把石頭放在最上位";
+					mes "^3355FFYou covered the";
+					mes "rest of the materials";
+					mes "with some Stones.^000000";
 					next;
 					break;
 				}
-				mes "不違背魔法式";
-				mes "要配置有魔力的魔力礦石,";
-				mes "魔力的性質用準備的效果以便可得知";
+				mes "^3355FFNow you need to arrange";
+				mes "the enchanted Gemstones";
+				mes "accordingly. You can identify";
+				mes "their Magic properties by";
+				mes "their casting effect.^000000";
 				next;
 				while(1) {
 					if (.@roof0 > 7) {
@@ -927,18 +1013,26 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 						switch(rand(1,3)) {
 						case 1:
 							specialeffect EF_BEGINSPELL2;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
@@ -948,43 +1042,59 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 							break;
 						case 2:
 							specialeffect EF_VOLCANO;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
 								next;
 								break;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							}
 							break;
 						case 3:
 							specialeffect EF_BEGINSPELL4;
-							mes "請配置跟魔力一樣的魔法式";
-							mes "魔力礦石吧";
+							mes "^3355FFThe Gemstones must";
+							mes "be arranged in the correct";
+							mes "order according to their";
+							mes "magic properties and power.^000000";
 							next;
-							switch(select("紅色魔力礦石:黃色魔力礦石:藍色魔力礦石")) {
+							switch(select("Red Gemstone:Yellow Gemstone:Blue Gemstone")) {
 							case 1:
-								mes "配置紅色魔力礦石了";
+								mes "^3355FFYou placed the Red Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							case 2:
-								mes "配置黃色魔力礦石了,";
+								mes "^3355FFYou placed the Yellow Gemstone.^000000";
 								set .@nice,.@nice+10;
 								set .@roof0,.@roof0 + 1;
 								specialeffect EF_STEAL;
 								next;
 								break;
 							case 3:
-								mes "配置藍色魔力礦石了,";
+								mes "^3355FFYou placed the Blue Gemstone.";
+								mes "However, the Guardian Stone";
+								mes "Repair System failed because";
+								mes "of a magic power conflict.^000000";
 								close;
 							}
 						}
@@ -992,18 +1102,23 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 				}
 				if (.@nice > 90) {
 					if ($agit_ar01[1] == 0) {
-						mes "守護石重新的形成已經被完成了";
+						mes "^3355FFThe Guardian Stone";
+						mes "Repair System has";
+						mes "successfully completed.^000000";
 						close;
 					}
 					else {
 						if (agitcheck2() == 0) {
-							mes "因魔力互相的衝突";
-							mes "對守護石重新的形成失敗了";
+							mes "^3355FFIt is impossible to";
+							mes "rebuild the Guardian";
+							mes "Stone because the";
+							mes "Emperium is not present.^000000";
 							close;
 						}
 						else {
-							mes "已經完成魔力礦石的配置,";
-							mes "守護石的重新形成是成功的!!!";
+							mes "^3355FFThe Gemstones have been";
+							mes "arranged, and the Guardian";
+							mes "Stone is successfully repaired.^000000";
 							delitem 984,1; //Oridecon
 							delitem 985,1; //Elunium
 							delitem 7049,30; //Stone
@@ -1013,15 +1128,15 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 							close2;
 							donpcevent "#aru01_df02::OnEnable";
 							specialeffect EF_ICECRASH;
-							disablenpc "第2守護石#aru01";
+							disablenpc "2nd Guardian Stone#aru01";
 							setarray $agit_ar01[1],0;
 							set .@df_all,$agit_ar01[0]+$agit_ar01[1];
 							if (.@df_all == 0) {
-								mapannounce "arug_cas01","守護石已完全的修復 開始強化警戒了",bc_map,"0x00ff00";
+								mapannounce "arug_cas01","Both Guardian Stones have been erected, bolstering this stronghold's defenses!",bc_map,"0x00ff00";
 								donpcevent "#aru01_RL00::OnEnable";
 							}
 							else {
-								mapannounce "arug_cas01","第2守護石重新形成 已成功了!",bc_map,"0x00ff00";
+								mapannounce "arug_cas01","The 2nd Guardian Stone has been repaired successfully.",bc_map,"0x00ff00";
 							}
 							if ($agit_ar01[5] == 1) {
 								donpcevent "#aru01_gard02::OnEnable";
@@ -1031,10 +1146,10 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 					}
 				}
 				else {
-					mes "所有的作業都做完後.. 碰咚碰咚的響著";
-					mes "沒有任何的反應";
-					mes "看樣子是失敗的樣子,";
-					mes "失去了部分的材料";
+					mes "^3355FFAfter all of that work...";
+					mes "It looks like you failed";
+					mes "to fix the Guardian Stone,";
+					mes "and lost some materials.^000000";
 					delitem 7049,10; //Stone
 					delitem 717,2; //Blue_Gemstone
 					delitem 715,2; //Yellow_Gemstone
@@ -1043,7 +1158,9 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 				}
 			}
 			else {
-				mes "材料並不是很充分";
+				mes "^3355FFYou don't have enough";
+				mes "materials to repair";
+				mes "the Guardian Stone.^000000";
 				close;
 			}
 		}
@@ -1051,16 +1168,16 @@ arug_cas01,308,189,0	script	第2守護石#aru01	844,{
 	end;
 
 OnInit:
-	disablenpc "第2守護石#aru01";
+	disablenpc "2nd Guardian Stone#aru01";
 	end;
 
 OnEnable:
-	enablenpc "第2守護石#aru01";
+	enablenpc "2nd Guardian Stone#aru01";
 	specialeffect EF_MAPPILLAR2;
 	end;
 
 OnDisable:
-	disablenpc "第2守護石#aru01";
+	disablenpc "2nd Guardian Stone#aru01";
 	end;
 }
 
@@ -1098,7 +1215,7 @@ OnBarrierDestroyed:
 	set .MyMobCount,.MyMobCount-1;
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[2],1;
-		mapannounce "arug_cas01","第1防禦線 被突破掉了",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","The 1st Fortress Gate is destroyed.",bc_map,"0x00ff00";
 		delwall "aru01_RL01";
 	}
 	end;
@@ -1125,7 +1242,7 @@ OnBarrierDestroyed:
 	set .MyMobCount,.MyMobCount-1;
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[3],1;
-		mapannounce "arug_cas01","第2防禦線 被突破掉了",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","The 2nd Fortress Gate is destroyed.",bc_map,"0x00ff00";
 		delwall "aru01_RL02";
 	}
 	end;
@@ -1150,7 +1267,7 @@ OnBarrierDestroyed:
 	set .MyMobCount,.MyMobCount-1;
 	if (.MyMobCount == 0) {
 		setarray $agit_ar01[4],1;
-		mapannounce "arug_cas01","第3防禦線 被突破掉了!!",bc_map,"0x00ff00";
+		mapannounce "arug_cas01","The 3rd Fortress Gate is destroyed!",bc_map,"0x00ff00";
 		delwall "aru01_RL03";
 	}
 	end;
@@ -1161,7 +1278,7 @@ OnDisable:
 	end;
 }
 
-arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
+arug_cas01,247,52,0	script	Control Device01#aru01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
 		if (strcharinfo(0) == getguildmaster(.@GID)) {
@@ -1171,10 +1288,10 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 				mes "but you will need to gather";
 				mes "the following materials.^000000";
 				next;
-				mes "鋼鐵 10個,";
-				mes "瑪哪樹枝 30個,";
-				mes "強化武器金屬-級數二 5個,";
-				mes "神之金屬 10個";
+				mes "^4D4DFF10 Steel^000000,";
+				mes "^4D4DFF30 Trunks^000000,";
+				mes "^4D4DFF5 Oridecon^000000, and";
+				mes "^4D4DFF10 Emveretarcon^000000.";
 				next;
 				select("Continue");
 				if ((countitem(1019) > 29) && (countitem(999) > 9) && (countitem(1011) > 9) && (countitem(984) > 4)) {
@@ -1198,7 +1315,7 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 								mes "fixing this part";
 								mes "is a top priority.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFThe frame has been";
 									mes "reinforced with wood.^000000";
@@ -1230,7 +1347,7 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 								mes "overall endurance needs to";
 								mes "be reinforced with something.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood";
 									mes "to reinforce the gate.^000000";
@@ -1266,7 +1383,7 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 								mes "cracks. You'll have to";
 								mes "weld them solid somehow.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1301,7 +1418,7 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 								mes "sure that the gate is held";
 								mes "together pretty solidly.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1353,8 +1470,8 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 							delitem 984,5; //Oridecon
 							close2;
 							donpcevent "#aru01_RL01::OnEnable";
-							disablenpc "控制裝置01#aru01";
-							mapannounce "arug_cas01","第 1 防禦線 重新建置成功了!",bc_map,"0x00ff00";
+							disablenpc "Control Device01#aru01";
+							mapannounce "arug_cas01","The 1st Fortress Gate has been reconstructed!",bc_map,"0x00ff00";
 							setarray $agit_ar01[2],0;
 							end;
 						}
@@ -1384,19 +1501,19 @@ arug_cas01,247,52,0	script	控制裝置01#aru01	111,{
 	end;
 
 OnInit:
-	disablenpc "控制裝置01#aru01";
+	disablenpc "Control Device01#aru01";
 	end;
 
 OnEnable:
-	enablenpc "控制裝置01#aru01";
+	enablenpc "Control Device01#aru01";
 	end;
 
 OnDisable:
-	disablenpc "控制裝置01#aru01";
+	disablenpc "Control Device01#aru01";
 	end;
 }
 
-arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
+arug_cas01,118,131,0	script	Control Device02#aru01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
 		if (strcharinfo(0) == getguildmaster(.@GID)) {
@@ -1406,10 +1523,10 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 				mes "but you will need to gather";
 				mes "the following materials.^000000";
 				next;
-				mes "鋼鐵 10個,";
-				mes "瑪哪樹枝 30個,";
-				mes "強化武器金屬-級數二 5個,";
-				mes "神之金屬 10個";
+				mes "^4D4DFF10 Steel^000000,";
+				mes "^4D4DFF30 Trunks^000000,";
+				mes "^4D4DFF5 Oridecon^000000, and";
+				mes "^4D4DFF10 Emveretarcon^000000.";
 				next;
 				select("Continue");
 				if ((countitem(1019) > 29) && (countitem(999) > 9) && (countitem(1011) > 9) && (countitem(984) > 4)) {
@@ -1433,7 +1550,7 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 								mes "fixing this part";
 								mes "is a top priority.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFThe frame has been";
 									mes "reinforced with wood.^000000";
@@ -1467,7 +1584,7 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 								mes "overall endurance needs to";
 								mes "be reinforced with something.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood";
 									mes "to reinforce the gate.^000000";
@@ -1503,7 +1620,7 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 								mes "cracks. You'll have to";
 								mes "weld them solid somehow.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1538,7 +1655,7 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 								mes "sure that the gate is held";
 								mes "together pretty solidly.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1590,11 +1707,11 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 							delitem 984,5; //Oridecon
 							close2;
 							donpcevent "#aru01_RL02::OnEnable";
-							disablenpc "控制裝置02#aru01";
-							mapannounce "arug_cas01","第 2 防禦線 重新建置成功了!",bc_map,"0x00ff00";
+							disablenpc "Control Device02#aru01";
+							mapannounce "arug_cas01","The 2nd Fortress Gate has been reconstructed!",bc_map,"0x00ff00";
 							setarray $agit_ar01[3],0; //Global Variable
 							setarray $agit_ar01[2],2; //Global Variable
-							donpcevent "控制裝置01#aru01::OnEnable";
+							donpcevent "Control Device01#aru01::OnEnable";
 							end;
 						}
 						else {
@@ -1623,19 +1740,19 @@ arug_cas01,118,131,0	script	控制裝置02#aru01	111,{
 	end;
 
 OnInit:
-	disablenpc "控制裝置02#aru01";
+	disablenpc "Control Device02#aru01";
 	end;
 
 OnEnable:
-	enablenpc "控制裝置02#aru01";
+	enablenpc "Control Device02#aru01";
 	end;
 
 OnDisable:
-	disablenpc "控制裝置02#aru01";
+	disablenpc "Control Device02#aru01";
 	end;
 }
 
-arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
+arug_cas01,82,172,0	script	Control Device03#aru01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
 		if (strcharinfo(0) == getguildmaster(.@GID)) {
@@ -1645,10 +1762,10 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 				mes "but you will need to gather";
 				mes "the following materials.^000000";
 				next;
-				mes "鋼鐵 10個,";
-				mes "瑪哪樹枝 30個,";
-				mes "強化武器金屬-級數二 5個,";
-				mes "神之金屬 10個";
+				mes "^4D4DFF10 Steel^000000,";
+				mes "^4D4DFF30 Trunks^000000,";
+				mes "^4D4DFF5 Oridecon^000000, and";
+				mes "^4D4DFF10 Emveretarcon^000000.";
 				next;
 				select("Continue");
 				if ((countitem(1019) > 29) && (countitem(999) > 9) && (countitem(1011) > 9) && (countitem(984) > 4)) {
@@ -1672,7 +1789,7 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 								mes "fixing this part";
 								mes "is a top priority.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFThe frame has been";
 									mes "reinforced with wood.^000000";
@@ -1706,7 +1823,7 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 								mes "overall endurance needs to";
 								mes "be reinforced with something.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood";
 									mes "to reinforce the gate.^000000";
@@ -1742,7 +1859,7 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 								mes "cracks. You'll have to";
 								mes "weld them solid somehow.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1777,7 +1894,7 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 								mes "sure that the gate is held";
 								mes "together pretty solidly.^000000";
 								next;
-								switch(select("瑪哪樹枝:鋼鐵:強化武器金屬-級數二:神之金屬")) {
+								switch(select("Trunk:Steel:Emveretarcon:Oridecon")) {
 								case 1:
 									mes "^3355FFYou tried using wood to fix";
 									mes "this problem, but it seems";
@@ -1829,11 +1946,11 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 							delitem 984,5; //Oridecon
 							close2;
 							donpcevent "#aru01_RL03::OnEnable";
-							disablenpc "控制裝置03#aru01";
-							mapannounce "arug_cas01","第 3 防禦線 重新建置成功了!",bc_map,"0x00ff00";
+							disablenpc "Control Device03#aru01";
+							mapannounce "arug_cas01","The 3rd Fortress Gate has been reconstructed!",bc_map,"0x00ff00";
 							setarray $agit_ar01[4],0;
 							setarray $agit_ar01[3],2;
-							donpcevent "控制裝置02#aru01::OnEnable";
+							donpcevent "Control Device02#aru01::OnEnable";
 							end;
 						}
 						else {
@@ -1862,15 +1979,15 @@ arug_cas01,82,172,0	script	控制裝置03#aru01	111,{
 	end;
 
 OnInit:
-	disablenpc "控制裝置03#aru01";
+	disablenpc "Control Device03#aru01";
 	end;
 
 OnEnable:
-	enablenpc "控制裝置03#aru01";
+	enablenpc "Control Device03#aru01";
 	end;
 
 OnDisable:
-	disablenpc "控制裝置03#aru01";
+	disablenpc "Control Device03#aru01";
 	end;
 }
 
@@ -1878,9 +1995,11 @@ OnDisable:
 arug_cas01,74,232,0	script	LF-01#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("第 1 據點:第 2 據點:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("First Gate House:Second Gate House:Cancel")) {
 		case 1:
 			warp "arug_cas01",158,237;
 			end;
@@ -1897,9 +2016,11 @@ arug_cas01,74,232,0	script	LF-01#arug_cas01	111,{
 arug_cas01,77,232,0	script	LF-02#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("防禦地區 1-1:防禦地區 1-2:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Defense Area 1-1:Defense Area 1-2:Cancel")) {
 		case 1:
 			warp "arug_cas01",197,144;
 			end;
@@ -1916,9 +2037,11 @@ arug_cas01,77,232,0	script	LF-02#arug_cas01	111,{
 arug_cas01,80,232,0	script	LF-03#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("防禦地區 2-1:防禦地區 2-2:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Defense Area 2-1:Defense Area 2-2:Cancel")) {
 		case 1:
 			warp "arug_cas01",256,35;
 			end;
@@ -1935,9 +2058,11 @@ arug_cas01,80,232,0	script	LF-03#arug_cas01	111,{
 arug_cas01,83,232,0	script	LF-04#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("防禦地區 2-3:防禦地區 2-4:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Defense Area 2-3:Defense Area 2-4:Cancel")) {
 		case 1:
 			warp "arug_cas01",146,65;
 			end;
@@ -1954,9 +2079,11 @@ arug_cas01,83,232,0	script	LF-04#arug_cas01	111,{
 arug_cas01,86,232,0	script	LF-05#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("防禦地區 3-1:防禦地區 3-2:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Defense Area 3-1:Defense Area 3-2:Cancel")) {
 		case 1:
 			warp "arug_cas01",94,126;
 			end;
@@ -1973,9 +2100,11 @@ arug_cas01,86,232,0	script	LF-05#arug_cas01	111,{
 arug_cas01,89,232,0	script	LF-06#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("防禦地區 3-3:防禦地區 3-4:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Defense Area 3-3:Defense Area 3-4:Cancel")) {
 		case 1:
 			warp "arug_cas01",68,171;
 			end;
@@ -1992,9 +2121,11 @@ arug_cas01,89,232,0	script	LF-06#arug_cas01	111,{
 arug_cas01,92,232,0	script	LF-07#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("據點:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Gate House Fork:Cancel")) {
 		case 1:
 			warp "arug_cas01",233,130;
 			end;
@@ -2008,9 +2139,11 @@ arug_cas01,92,232,0	script	LF-07#arug_cas01	111,{
 arug_cas01,95,232,0	script	LF-08#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("區域 1-1:區域 2-1:區域 3-1:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Area 1-1:Area 2-1:Area 3-1:Cancel")) {
 		case 1:
 			warp "arug_cas01",197,144;
 			end;
@@ -2030,9 +2163,11 @@ arug_cas01,95,232,0	script	LF-08#arug_cas01	111,{
 arug_cas01,98,232,0	script	LF-09#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "請選擇要移動的場所";
-		switch(select("區域 1-2:區域 2-2:區域 3-3:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Please";
+		mes "choose a destination";
+		mes "within the stronghold.^000000";
+		switch(select("Area 1-2:Area 2-2:Area 3-3:Cancel")) {
 		case 1:
 			warp "arug_cas01",245,103;
 			end;
@@ -2052,10 +2187,12 @@ arug_cas01,98,232,0	script	LF-09#arug_cas01	111,{
 arug_cas01,101,232,0	script	LF-10#arug_cas01	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "可以移動到為了會員們的便利所形成的區域,";
-		mes "請問你要移動嗎?";
-		switch(select("移動到便利的區域:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Would";
+		mes "you like to teleport to the";
+		mes "Convenience Facility for";
+		mes "guild members?^000000";
+		switch(select("Go to Convenience Facility:Cancel")) {
 		case 1:
 			warp "arug_cas01",121,357;
 			end;
@@ -2066,13 +2203,14 @@ arug_cas01,101,232,0	script	LF-10#arug_cas01	111,{
 	end;
 }
 
-arug_cas01,72,176,0	script	馬勒杜#LF_ar01_1::LF_ar01_1	111,{
+arug_cas01,72,176,0	script	Mardol#LF_ar01_1::LF_ar01_1	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "移動到有華麗金屬中央的戰略地區,";
-		mes "請問你要使用嗎?";
-		switch(select("移動:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Would";
+		mes "you like to teleport to";
+		mes "the Emperium Center?^000000";
+		switch(select("Teleport:Cancel")) {
 		case 1:
 			warp "arug_cas01",67,193;
 			end;
@@ -2083,15 +2221,16 @@ arug_cas01,72,176,0	script	馬勒杜#LF_ar01_1::LF_ar01_1	111,{
 	end;
 }
 
-arug_cas01,103,186,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_2	111,{
+arug_cas01,103,186,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_2	111,{
 
-arug_cas01,92,126,4	script	馬勒杜#LF_ar01_3::LF_ar01_2	111,{
+arug_cas01,92,126,4	script	Mardol#LF_ar01_3::LF_ar01_2	111,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID) {
-		mes "-秘密基地內部 空間移動系統-";
-		mes "移動到有華麗金屬中央的戰略地區,";
-		mes "請問你要使用嗎?";
-		switch(select("移動:取消")) {
+		mes "^3355FFThis is the Stronghold";
+		mes "Teleport Service. Would";
+		mes "you like to teleport to";
+		mes "the Emperium Center?^000000";
+		switch(select("Teleport:Cancel")) {
 		case 1:
 			warp "arug_cas01",67,193;
 			end;
@@ -2106,56 +2245,67 @@ OnRecvCastleAr01:
 	end;
 }
 
-arug_cas01,127,126,4	duplicate(LF_ar01_2)	馬勒杜#LF_ar01_3	111
-arug_cas01,150,102,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_4	111
-arug_cas01,208,68,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_5	111
-arug_cas01,249,52,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_6	111
-arug_cas01,234,76,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_7	111
-arug_cas01,249,76,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_8	111
-arug_cas01,204,142,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_9	111
-arug_cas01,183,244,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_10	111
-arug_cas01,292,219,0	duplicate(LF_ar01_1)	馬勒杜#LF_ar01_11	111
-arug_cas01,102,120,4	duplicate(LF_ar01_2)	馬勒杜#LF_ar01_12	722
-arug_cas01,117,120,4	duplicate(LF_ar01_2)	馬勒杜#LF_ar01_13	722
-arug_cas01,233,140,4	duplicate(LF_ar01_2)	馬勒杜#LF_ar01_14	722
+arug_cas01,127,126,4	duplicate(LF_ar01_2)	Mardol#LF_ar01_3	111
+arug_cas01,150,102,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_4	111
+arug_cas01,208,68,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_5	111
+arug_cas01,249,52,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_6	111
+arug_cas01,234,76,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_7	111
+arug_cas01,249,76,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_8	111
+arug_cas01,204,142,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_9	111
+arug_cas01,183,244,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_10	111
+arug_cas01,292,219,0	duplicate(LF_ar01_1)	Mardol#LF_ar01_11	111
+arug_cas01,102,120,4	duplicate(LF_ar01_2)	Mardol#LF_ar01_12	722
+arug_cas01,117,120,4	duplicate(LF_ar01_2)	Mardol#LF_ar01_13	722
+arug_cas01,233,140,4	duplicate(LF_ar01_2)	Mardol#LF_ar01_14	722
 
 // Guild Manager
-arug_cas01,92,380,3	script	管理人#aru01	55,{
+arug_cas01,92,380,3	script	Steward#aru01	55,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (.@GID == 0) {
-		mes "[ 管理人 ]";
-		mes "我在此等待我的主人... 勇敢的冒險者啊! 追隨你的命運吧!";
+		mes "[ Steward ]";
+		mes "I await for the master";
+		mes "whom destiny will choose";
+		mes "for me. Do you think you";
+		mes "have to courage and strength";
+		mes "to conquer this stronghold?";
 		close;
 	}
 	if (getcharid(2) != .@GID || strcharinfo(0) != getguildmaster(.@GID)) {
-		mes "[ 管理人 ]";
-		mes "不管你們怎麼威脅我,我只願意追隨我的主人 ^FF0000" + getguildmaster(.@GID) + "^000000 !";
-		mes "監護人你們在哪裡呀!";
-		mes "趕快把這些無理的傢伙們趕走吧!";
+		mes "[ Steward ]";
+		mes "Hmpf. Your threats don't";
+		mes "scare me! Guardians, drive";
+		mes "this infidel away from here!";
+		mes "I will always be loyal to the";
+		mes "master of this stronghold,";
+		mes "the one and only ^FF0000" + getguildmaster(.@GID) + "^000000.";
 		close;
 	}
-	mes "[ 管理人 ]";
-	mes "歡迎光臨,我的主人 ^FF0000" + getguildmaster(.@GID) + "^000000先生/小姐...";
-	mes "請儘管吩咐,我將忠誠地為你完成任務";
+	mes "[ Steward ]";
+	mes "Ah, Master ^FF0000" + getguildmaster(.@GID) + "^000000...";
+	mes "How shall I serve you today?";
+	mes "Was there an aspect of this";
+	mes "stronghold's maintenance";
+	mes "you wanted to discuss?";
 	next;
-	switch(select("查看秘密基地狀況:投資商業發展度:投資防禦度:雇用 / 解雇 倉庫職員:進入主人房間")) {
+	switch(select("Stronghold Briefing:Invest in Commercial Growth:Invest in Defense growth:Hire/Fire Storage Staff:Go to Master's room")) {
 	case 1:
-		mes "[ 管理人 ]";
-		mes "現在向你報告秘密基地的狀況";
-		mes "現在商業發展度是 ^0000ff" + GetCastleData("arug_cas01",2) + " ";
+		mes "[ Steward ]";
+		mes "The Commercial Growth";
+		mes "Level of the stronghold is ^0000ff" + GetCastleData("arug_cas01",2) + ".";
 		if (GetCastleData("arug_cas01",4) > 0) {
-			mes "在過去一天之內,";
-			mes "投資了 " + GetCastleData("arug_cas01",4) + " 次";
+			mes "Last time, you invested in";
+			mes "Commercial Growth " + GetCastleData("arug_cas01",4) + ".";
 		}
 		next;
-		mes "[ 管理人 ]";
-		mes "現在的防禦度是 " + GetCastleData("arug_cas01",3) + " ";
+		mes "[ Steward ]";
+		mes "Our stronghold's";
+		mes "safeguard level is " + GetCastleData("arug_cas01",3) + ".";
 		if (GetCastleData("arug_cas01",5) > 0) {
-			mes "在過去一天之內,";
-			mes "投資了 " + GetCastleData("arug_cas01",5) + " 次";
+			mes "Last time, you invested";
+			mes "in defense " + GetCastleData("arug_cas01",5) + " times.";
 		}
 		mes " ";
-		mes "報告完畢";
+		mes "That is all, master.";
 		close;
 	case 2:
 		set .@Economy,GetCastleData("arug_cas01",2);
@@ -2183,35 +2333,59 @@ arug_cas01,92,380,3	script	管理人#aru01	55,{
 		if (GetCastleData("arug_cas01",4)) {
 			set .@eco_invest,.@eco_invest*4;
 		}
-		mes "[ 管理人 ]";
-		mes "提高商業發展度的話,在工會裡生產的物品數量會增加,為了以後著想的話,不能不投資啊";
-		mes " ";
-		mes "照原先的方式,一天只能投資一次,假如多付一點金錢的話,一天可以投資兩次";
-		mes " ";
+		mes "[ Steward ]";
+		mes "Raising the stronghold's";
+		mes "commercial growth will";
+		mes "increase the quantity of";
+		mes "goods produced for the guild.";
+		mes "Investing in commercial growth";
+		mes "will help the guild's future.";
+		next;
+		mes "[ Steward ]";
+		mes "You can make one investment";
+		mes "each day, but if you can make";
+		mes "two investments if you pay";
+		mes "more zeny: this will speed";
+		mes "up commercial development,";
+		mes "but can be quite expensive.";
+		next;
 		if (.@Economy == 100) {
-			mes "[ 管理人 ]";
-			mes "^FF0000目前防禦度以經是100了,你已經不需要再加入任何投資了^000000";
+			mes "[ Steward ]";
+			mes "However, our stronghold's";
+			mes "commerical growth level is";
+			mes "at 100%. It's not possible to";
+			mes "develop commercial growth";
+			mes "any further than that.";
 			close;
 		}
 		if (GetCastleData("arug_cas01",4) >= 2) {
-			mes "[ 管理人 ]";
-			mes "^FF0000可是你已經在今天之內投資了兩次再不能投資了,^000000讓發展度趕快上升期待著富貴的日子囉";
+			mes "[ Steward ]";
+			mes "You've already made two";
+			mes "investments today, so you'll";
+			mes "have to wait until tomorrow";
+			mes "to make another investment.";
 			close;
 		}
 		if (GetCastleData("arug_cas01",4) == 0) {
-			mes "[ 管理人 ]";
-			mes "現在需要投資的金額是 ^FF0000" + .@eco_invest + "^000000 金幣,請問你要投資嗎?";
+			mes "[ Steward ]";
+			mes "You must pay ^FF0000" + .@eco_invest + "^000000 zeny";
+			mes "to make an investment";
+			mes "Will you invest in this";
+			mes "stronghold's commerical";
+			mes "development now?";
 		}
 		else {
-			mes "現在你已經投資一次了...";
-			mes "還要再投資嗎? 還需要追加^FF0000" + .@eco_invest + "^000000";
-			mes "金幣噢";
+			mes "[ Steward ]";
+			mes "You must pay ^FF0000" + .@eco_invest + "^000000";
+			mes "more zeny to make a second";
+			mes "investment today. Will you";
+			mes "invest one more time?";
 		}
 		next;
-		switch(select("投資商業發展度:取消")) {
+		switch(select("Invest in Commercial Growth:Cancel")) {
 		case 1:
 			if (GetCastleData("arug_cas01",4) >= 2) {
-				mes "[ 管理人 ]";
+				mes "[ Steward ]";
 				mes "You've already made two";
 				mes "investments today, so you'll";
 				mes "have to wait until tomorrow";
@@ -2219,20 +2393,24 @@ arug_cas01,92,380,3	script	管理人#aru01	55,{
 				close;
 			}
 			if (Zeny < .@eco_invest) {
-				mes "[ 管理人 ]";
-				mes "主人,你沒有足夠的資金可以投資商業發展度";
-				end;
+				mes "[ Steward ]";
+				mes "I'm sorry, Master, but";
+				mes "you do not have enough";
+				mes "zeny to make an investment";
+				mes "for the guild today.";
+				close;
 			}
 			set zeny,zeny-.@eco_invest;
 			SetCastleData "arug_cas01",4,GetCastleData("arug_cas01",4)+1;
-			mes "[ 管理人 ]";
-			mes "順利地完成投資了!";
-			mes "期待著我們往後要面臨的未來,明天的話發展度會上升";
+			mes "[ Steward ]";
+			mes "A wise use of the guild's";
+			mes "funds, Master. We can expect";
+			mes "to see the results of this";
+			mes "investment by tomorrow.";
 			close;
 		case 2:
-			mes "[ 管理人 ]";
-			mes "我將依照你的吩咐去執行,是我的主人";
-			mes "... 不需要太著急,我們會做得很好";
+			mes "[ Steward ]";
+			mes "As you command, Master.";
 			close;
 		}
 	case 3:
@@ -2261,32 +2439,53 @@ arug_cas01,92,380,3	script	管理人#aru01	55,{
 		if (GetCastleData("arug_cas01",5)) {
 			set .@def_invest,.@def_invest*4;
 		}
-		mes "[ 管理人 ]";
-		mes "提高防禦程度的話,監護人和華麗金屬的耐久度會增加,考慮到往後的戰爭,不得不投資啊,";
-		mes " ";
-		mes "照原先的方式,一天只能投資一次,假如多付一點金錢的話,一天可以投資兩次";
-		mes " ";
+		mes "[ Steward ]";
+		mes "Investing in our stronghold's";
+		mes "defense will enhance the";
+		mes "durability of our Guardians";
+		mes "and the Emperium. We'll need";
+		mes "every advantage to protect";
+		mes "ourselves from our enemies.";
+		next;
+		mes "[ Steward ]";
+		mes "You can invest in defense";
+		mes "once per day, but if you pay";
+		mes "more zeny, you can invest";
+		mes "a maximum of two times daily.";
+		next;
+		mes "[ Steward ]";
 		if (GetCastleData("arug_cas01",3) == 100) {
-			mes "^FF0000目前防禦度以經是100了,你已經不需要再加入任何投資了^000000";
+			mes "The Defense Level of this";
+			mes "stronghold is 100%, and";
+			mes "cannot be increased further.";
 			close;
 		}
 		if (GetCastleData("arug_cas01",5) >= 2) {
-			mes "^FF0000可是你已經在今天之內投資了兩次再不能投資了,^000000讓發展度趕快上升期待著富貴的日子囉";
+			mes "Master, you've already";
+			mes "invested in Defense twice";
+			mes "today. You'll need to wait";
+			mes "until tomorrow if you really";
+			mes "want to increase our defenses.";
 			close;
 		}
 		if (GetCastleData("arug_cas01",5) == 0) {
-			mes "現在需要投資的金額是 ^FF0000" + .@def_invest + "^000000 金幣,請問你要投資嗎?";
+			mes "We need ^FF0000" + .@def_invest + "^000000";
+			mes "zeny to invest in our";
+			mes "stronghold's defenses.";
+			mes "Will you invest now?";
 		}
 		else {
-			mes "現在你已經投資一次了...";
-			mes "還要再投資嗎? 還需要追加 ^FF0000" + .@def_invest + "^000000";
-			mes "金幣噢";
+			mes "We need ^FF0000" + .@def_invest + "^000000";
+			mes "zeny to invest in our";
+			mes "stronghold's defenses";
+			mes "a second time today.";
+			mes "Will you invest now?";
 		}
 		next;
-		switch(select("投資防禦度:取消")) {
+		switch(select("Invest in Defense:Cancel")) {
 		case 1:
 			if (GetCastleData("arug_cas01",5) >= 2) {
-				mes "[ 管理人 ]";
+				mes "[ Steward ]";
 				mes "Master, you've already";
 				mes "invested in Defense twice";
 				mes "today. You'll need to wait";
@@ -2295,117 +2494,176 @@ arug_cas01,92,380,3	script	管理人#aru01	55,{
 				close;
 			}
 			if (Zeny < .@def_invest) {
-				mes "[ 管理人 ]";
-				mes "主人,你沒有足夠的資金可以投資防禦度";
+				mes "[ Steward ]";
+				mes "I'm sorry, Master, but";
+				mes "you do not have enough";
+				mes "zeny to make an investment";
+				mes "for the guild today.";
 				close;
 			}
 			set zeny,zeny-.@def_invest;
 			SetCastleData "arug_cas01",5,GetCastleData("arug_cas01",5)+1;
-			mes "[ 管理人 ]";
-			mes "順利地完成投資了!";
-			mes "期待著我們往後要面臨的未來,明天的話發展度會上升";
+			mes "[ Steward ]";
+			mes "A wise use of the guild's";
+			mes "funds, Master. Increasing";
+			mes "the frequency of treasure";
+			mes "procured by the guild will";
+			mes "definitely help us all.";
 			close;
 		case 2:
-			mes "[ 管理人 ]";
-			mes "我將依照你的吩咐去執行,是我的主人";
-			mes "... 不需要太著急,我們會做得很好";
+			mes "[ Steward ]";
+			mes "As you command, Master.";
 			close;
 		}
 	case 4:
 		if (GetCastleData("arug_cas01",9) == 1) {
-			mes "[ 管理人 ]";
-			mes "請問您要解雇卡普拉服務人員嗎?";
+			mes "[ Steward ]";
+			mes "Do you wish to dismiss";
+			mes "the Kafra Employee that";
+			mes "we've hired for the guild?";
 			next;
-			switch(select("解雇:取消")) {
+			switch(select("Dismiss:Cancel")) {
 			case 1:
 				cutin "kafra_01",2;
-				mes "[ 卡普拉 職員 ]";
-				mes "我做錯了什麼事嗎?如果我有做錯事的話,能請您原諒我,再給我一次機會嗎?";
+				mes "[ Hired Kafra Employee ]";
+				mes "Master, please reconsider!";
+				mes "I've been working very hard";
+				mes "for the success of the guild!";
+				mes "I'll try harder to serve the";
+				mes "guild members of this";
+				mes "stronghold, I promise!";
 				next;
-				switch(select("解雇:取消")) {
+				switch(select("Dismiss:Cancel")) {
 				case 1:
-					mes "[ 卡普拉 職員 ]";
-					mes "不能夠繼續為您服務真是我最大的遺憾...";
+					mes "[ Hired Kafra Employee ]";
+					mes "Why?! What have I done";
+					mes "to deserve this? Waaah~!";
 					next;
 					cutin "kafra_01",255;
 					break;
 				case 2:
-					mes "[ 卡普拉 職員 ]";
-					mes "我會努力勤奮的為您服務的!";
+					mes "[ Hired Kafra Employee ]";
+					mes "Thank you, Master!";
+					mes "I'll obey your every";
+					mes "command as best I can!";
+					mes "You won't regret this!";
 					close;
 				}
 				break;
 			case 2:
-				mes "[ 管理人 ]";
-				mes "主人,我想我們應該要留下現在這位卡普拉職員,因為她已經竭盡所能地為我們服務了!";
+				mes "[ Steward ]";
+				mes "She works very hard,";
+				mes "in my opinion. It was in";
+				mes "all of our best interests to";
+				mes "allow her to stay with us.";
 				close;
 			}
-			disablenpc "卡普拉 職員#aru01";
+			disablenpc "Kafra Employee#aru01";
 			SetCastleData "arug_cas01",9,0;
-			mes "[ 管理人 ]";
-			mes "卡普拉職員已經解雇了... 不過為了辛苦的會員著想,雇用卡普拉職員為上策啊";
+			mes "[ Steward ]";
+			mes "That Kafra Employee";
+			mes "has been dismissed.";
+			mes "Were really dissatisfied";
+			mes "by the quality of her service?";
 			close;
 		}
 		else {
-			mes "[ 管理人 ]";
-			mes "和卡普拉總公司訂契約後,想要在秘密基地裡面,雇用卡普拉職員嗎?";
-			mes "想要雇用的話,需要 ^FF000010,000 金幣^000000";
+			mes "[ Steward ]";
+			mes "Will you hire a";
+			mes "Kafra Employee to serve";
+			mes "our stronghold? You must";
+			mes "pay ^FF000010,000 zeny^000000 to hire one.";
 			next;
-			switch(select("雇用:取消")) {
+			switch(select("Hire:Cancel")) {
 			case 1:
 				if (getgdskilllv(.@GID,10001) == 0) {
-					mes "[ 管理人 ]";
-					mes "主人,如今還沒跟卡普拉總公司訂契約狀況,所以還不能雇用卡普拉職員,假如想要跟卡普拉總公司簽訂契約的話,先學會工會技能中 ^FF0000和卡普拉訂契約^000000的技能吧";
+					mes "[ Steward ]";
+					mes "Master, we cannot hire a";
+					mes "Kafra Employee because";
+					mes "you have not yet attained";
+					mes "the ^FF0000Contract with Kafra^000000";
+					mes "guild skill.";
 					close;
 				}
 				if (Zeny < 10000) {
-					mes "[ 管理人 ]";
-					mes "主人,你沒有足夠的資金可以雇用卡普拉職員";
+					mes "[ Steward ]";
+					mes "Master, we cannot hire a";
+					mes "Kafra Employee because";
+					mes "we do not have enough";
+					mes "funds to pay the contract fee.";
 					close;
 				}
 				set zeny,zeny-10000;
-				enablenpc "卡普拉 職員#aru01";
+				enablenpc "Kafra Employee#aru01";
 				SetCastleData "arug_cas01",9,1;
-				mes "[ 管理人 ]";
-				mes "成功的和卡普拉總公司簽訂契約了,您雇用了一位卡普拉職員!";
+				mes "[ Steward ]";
+				mes "Very well. We have formed";
+				mes "a contract with the Kafra";
+				mes "Head Office, and hired a";
+				mes "Kafra Employee for our";
+				mes "stronghold. Here she is~";
 				next;
 				cutin "kafra_01",2;
-				mes "[ 卡普拉 職員 ]";
-				mes "您好嗎?我是總公司派來的卡普拉職員!我將會竭盡所能地為您服務!";
+				mes "[ Hired Kafra Employee ]";
+				mes "How do you do? I've";
+				mes "been dispatched by the";
+				mes "Kafra Head Office to";
+				mes "serve your guild's needs.";
+				mes "I'll do my best to follow";
+				mes "your every command, Master.";
 				next;
 				cutin "kafra_01",255;
-				mes "[ 管理人 ]";
-				mes "雇用的卡普拉職員將有^FF00001 個月的時間^000000在此服務,時間到了之後必須重新簽訂契約";
+				mes "[ Steward ]";
+				mes "Our contract will expire";
+				mes "after one month, so we must";
+				mes "pay additional fees to keep";
+				mes "this Kafra Employee in";
+				mes "the service of our guild.";
 				close;
 			case 2:
-				mes "[ 管理人 ]";
-				mes "我已經按照你的吩咐做了,不過也要為了辛苦的會員著想,早日雇用卡普拉職員為上策啊";
+				mes "[ Steward ]";
+				mes "As you command, Master.";
+				mes "However, I suggest hiring";
+				mes "a Kafra Employee as soon";
+				mes "as possible since our guild";
+				mes "would greatly benefit from";
+				mes "the convenient Kafra services.";
 				close;
 			}
 		}
 	case 5:
-		mes "[ 管理人 ]";
-		mes "要到我們生產品囤積的,真貴物品房間嗎?";
-		mes "那個地方是為了我們的主人,的專屬於你的地方...";
-		mes "除了你之外,其它人都不能其門而入";
+		mes "[ Steward ]";
+		mes "Do you wish to enter the";
+		mes "Guild Treasure Room?";
+		mes "Only you, the Guild Master,";
+		mes "are permitted to enter.";
 		next;
-		mes "[ 管理人 ]";
-		mes "會有物品消失的情形,敬請特別注意,";
-		mes "所以為了我們公會發展,請挪出時間來收取物品";
+		mes "[ Steward ]";
+		mes "Please remember to open";
+		mes "the Treasure Boxes at the";
+		mes "proper time. Otherwise, the";
+		mes "treasure may disappear if";
+		mes "something unexpected happens.";
 		next;
-		switch(select("要進入主人的房間:取消")) {
+		switch(select("Go to Treasure Room:Cancel")) {
 		case 1:
-			mes "[ 管理人 ]";
-			mes "我將為你服務到祕密通道那裡,請跟我來,";
-			mes "回來的時候按下秘密按鈕即可";
+			mes "[ Steward ]";
+			mes "Allow me to guide you";
+			mes "on the secret path to";
+			mes "the Treasure Room.";
+			mes "Press the secret switch";
+			mes "when you wish to return here.";
 			close2;
 			warp "arug_cas01",250,363;
 			end;
 		case 2:
-			mes "[ 管理人 ]";
-			mes "生產品一天只生產一次...";
-			mes "假如沒有即時收走的話,下一次就不能進來了";
-			mes "所以說為了我們工會的發展,盡量花點時間去收取啊";
+			mes "[ Steward ]";
+			mes "Items in the Treasure Room";
+			mes "are produced once each day.";
+			mes "Therefore, you must obtain";
+			mes "the treasure items everyday.";
+			mes "For the sake of the guild,";
+			mes "prioritize treasure harvesting!";
 			close;
 		}
 	}
@@ -2430,16 +2688,16 @@ OnStartArena:
 	for( set .@i, 4; .@i <= 9; set .@i, .@i+1 )
 		SetCastleData "arug_cas01", .@i, 0;
 	// Disable Kafra
-	disablenpc "卡普拉 職員#aru01";
+	disablenpc "Kafra Employee#aru01";
 
 	set .msg,2;
 	if (.msg == 1) {
-		announce "秘密基地 [" + GetCastleName("arug_cas01") + "]的 '馬勒杜'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all|bc_woe;
+		announce "Fortress [" + GetCastleName("arug_cas01") + "]'s 'Valfreyja' was captured by [" + getguildname(.@gid) + "] Guild.",bc_all|bc_woe;
 		donpcevent "Manager#aru01_02::Onstart";
 	}
 	else if (.msg == 2) {
-		announce "秘密基地 [" + GetCastleName("arug_cas01") + "]的 '馬勒杜'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all|bc_woe;
-		mapannounce "arug_cas01","華麗金屬已被破壞掉了",bc_map,"0x00FF00",FW_NORMAL,20,0,40;
+		announce "The [" + getguildname(.@gid) + "] conquered the [Valfreyja 1] stronghold of " + GetCastleName("arug_cas01"),bc_all|bc_woe;
+		mapannounce "arug_cas01","The emperium has been shattered!",bc_map,"0x00FF00",FW_NORMAL,20,0,40;
 		if (agitcheck2()) {
 			donpcevent "Manager#aru01_02::Onreset";
 			initnpctimer;
@@ -2450,52 +2708,57 @@ OnStartArena:
 		}
 	}
 	else if (.msg == 0) {
-		announce "秘密基地 [" + GetCastleName("arug_cas01") + "]的 '馬勒杜'被 [" + getguildname(.@gid) + "] 公會所佔領了",bc_all|bc_woe;
+		announce "Fortress [" + GetCastleName("arug_cas01") + "]'s 'Valfreyja' was captured by [" + getguildname(.@gid) + "] Guild.",bc_all|bc_woe;
 		donpcevent "Manager#aru01_02::Onreset";
 		stopnpctimer;
 		end;
 	}
 	MapRespawnGuildID "arug_cas01",GetCastleData("arug_cas01",1),2;
-	GetCastleData "arug_cas01",0,"::OnRecvCastleAr01";
+	donpcevent "::OnRecvCastleAr01";
 	end;
 
 OnTimer10000:
 	donpcevent "Manager#aru01_02::Onchange";
-	mapannounce "arug_cas01","在各個據點和防禦線的修復點數 已登場了",bc_map,"0x00FF00",FW_NORMAL,20,0,40;
+	mapannounce "arug_cas01","Rebuild this stronghold's Guardian Stones and Fortress Gates to secure your guild's new aquisition!",bc_map,"0x00FF00",FW_NORMAL,20,0,40;
 	end;
 }
 
 // Guild Kafra
-arug_cas01,31,362,3	script	卡普拉 職員#aru01	117,{
+arug_cas01,31,362,3	script	Kafra Employee#aru01	117,{
 	cutin "kafra_01",2;
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (getcharid(2) == .@GID && getgdskilllv(.@GID,10001)) {
-		mes "[卡普拉 職員]";
-		mes "歡迎光臨 ^FF0000" + GetGuildName(.@GID) + "^000000 會員們,";
-		mes "卡普拉服務";
-		mes "永遠在各位身邊為您服務的";
+		mes "[Kafra Employee]";
+		mes "Welcome, proud member";
+		mes "of the ^FF0000" + GetGuildName(.@GID) + "^000000 Guild!";
+		mes "The Kafra Corporation is ready";
+		mes "to assist you wherever you go!";
 		next;
-		switch(select("使用倉庫服務:使用空間移動服務:使用手推車服務:結束")) {
+		switch(select("Use Storage:Use Warp Service:Rent Pushcart:Cancel")) {
 		case 1:
-			if (basicskillcheck() && getskilllv(1) < 6) {
-				mes "[卡普拉 職員]";
-				mes "對不起";
-				mes "想要使用倉庫服務的話,初學者的基本技能等級要到達6級以上";
+			if (basicskillcheck() && getskilllv("NV_BASIC") < 6) {
+				mes "[Kafra Employee]";
+				mes "I'm so sorry, but you must";
+				mes "have at least Novice Skill";
+				mes "Lv.6 to use the Storage.";
 			}
 			else {
 				openstorage;
 			}
 			break;
 		case 2:
-			mes "[卡普拉 職員]";
-			mes "請說出目的地吧";
+			mes "[Kafra Employee]";
+			mes "Please tell me your";
+			mes "Warp destination.";
 			next;
-			switch(select("拉赫  -> 200 z:取消")) {
+			switch(select("Rachel -> 200 z:Cancel")) {
 			case 1:
 				if (Zeny < 200) {
-					mes "[卡普拉 職員]";
-					mes "您的金額不足,";
-					mes "請再確認";
+					mes "[Kafra Employee]";
+					mes "I'm sorry, but you don't";
+					mes "have enough zeny to pay";
+					mes "the warp fee. Would you";
+					mes "please check your funds again?";
 					close2;
 					cutin "kafra_01",255;
 					end;
@@ -2509,25 +2772,30 @@ arug_cas01,31,362,3	script	卡普拉 職員#aru01	117,{
 			break;
 		case 3:
 			if (BaseClass != Job_Merchant) {
-				mes "[卡普拉 職員]";
-				mes "很抱歉,";
-				mes "手推車是商人和鐵匠,鍊金術師專用的服務";
+				mes "[Kafra Employee]";
+				mes "I'm sorry, but the Pushcart";
+				mes "rental service can only be";
+				mes "used by Merchant, Blacksmith,";
+				mes "and Alchemist class characters.";
 			}
 			else if (checkcart() == 1) {
-				mes "[卡普拉 職員]";
-				mes "您已經租過手推車了";
+				mes "[Kafra Employee]";
+				mes "Hm? You've already";
+				mes "rented a Pushcart.";
 			}
 			else {
-				mes "[卡普拉 職員]";
-				mes "手推車使用費用是 800 金幣";
-				mes "您要使用嗎?";
+				mes "[Kafra Employee]";
+				mes "The Pushcart rental fee";
+				mes "is 800 zeny. Would you";
+				mes "like to rent a Pushcart?";
 				next;
-				switch(select("使用:取消")) {
+				switch(select("Rent Pushcart:Cancel")) {
 				case 1:
 					if (Zeny < 800) {
-						mes "[卡普拉 職員]";
-						mes "您的金額不足,";
-						mes "手推車使用費用是 800 金幣";
+						mes "[Kafra Employee]";
+						mes "I'm sorry, but you don't";
+						mes "have enough zeny to rent";
+						mes "one of our Pushcarts.";
 						close2;
 						cutin "kafra_01",255;
 						end;
@@ -2541,9 +2809,11 @@ arug_cas01,31,362,3	script	卡普拉 職員#aru01	117,{
 			}
 			break;
 		case 4:
-			mes "[卡普拉 職員]";
-			mes "我們卡普拉服務會提供更完美的服務和嚴格的業務管理,讓各位顧客安心便利的使用為最大的目標";
-			mes "感謝你使用卡普拉服務";
+			mes "[Kafra Employee]";
+			mes "Thank you for using the";
+			mes "Kafra Service. Wherever";
+			mes "you go, Kafra will be";
+			mes "there to support you!";
 			close2;
 			cutin "kafra_01",255;
 			end;
@@ -2553,8 +2823,13 @@ arug_cas01,31,362,3	script	卡普拉 職員#aru01	117,{
 		end;
 	}
 	else {
-		mes "[卡普拉 職員]";
-		mes "我已簽訂契約專為^FF0000" + GetGuildName(.@GID) + "^000000會員服務,請使用我們其它地方的卡普拉職員,如有不便之處敬請見諒";
+		mes "[Kafra Employee]";
+		mes "I'm sorry, but I've been";
+		mes "exclusively contracted";
+		mes "to the members of the";
+		mes "^FF0000" + GetGuildName(.@GID) + "^000000 Guild.";
+		mes "You'll have to ask another";
+		mes "Kafra Employee to help you...";
 		close2;
 		cutin "kafra_01",255;
 		end;
@@ -2562,31 +2837,32 @@ arug_cas01,31,362,3	script	卡普拉 職員#aru01	117,{
 
 OnRecvCastleAr01:
 	if (GetCastleData("arug_cas01",1) == 0) {
-		monster "arug_cas01",0,0,"闇神官",1117,10;
-		monster "arug_cas01",0,0,"卡利斯格",1132,4;
-		monster "arug_cas01",0,0,"深淵騎士",1219,3;
-		monster "arug_cas01",0,0,"行刑者",1205,1;
-		monster "arug_cas01",0,0,"梅納海葵",1216,10;
-		monster "arug_cas01",0,0,"鐘怪",1193,18;
-		monster "arug_cas01",0,0,"古鐘魔",1269,9;
-		monster "arug_cas01",0,0,"幽靈弓箭手",1276,12;
-		monster "arug_cas01",0,0,"邪骸浪人",1208,3;
-		monster "arug_cas01",0,0,"愛麗絲女僕",1275,1;
-		monster "arug_cas01",0,0,"血腥騎士",1268,2;
-		monster "arug_cas01",0,0,"黑暗之王",1272,2;
-		monster "arug_cas01",0,0,"鐘塔守護者",1270,4;
+		monster "arug_cas01",0,0,"Evil Druid",1117,10;
+		monster "arug_cas01",0,0,"Khalitzburg",1132,4;
+		monster "arug_cas01",0,0,"Abysmal Knight",1219,3;
+		monster "arug_cas01",0,0,"Executioner",1205,1;
+		monster "arug_cas01",0,0,"Penomena",1216,10;
+		monster "arug_cas01",0,0,"Alarm",1193,18;
+		monster "arug_cas01",0,0,"Clock",1269,9;
+		monster "arug_cas01",0,0,"Raydric Archer",1276,12;
+		monster "arug_cas01",0,0,"Wanderer",1208,3;
+		monster "arug_cas01",0,0,"Alice",1275,1;
+		monster "arug_cas01",0,0,"Bloody Knight",1268,2;
+		monster "arug_cas01",0,0,"Dark Lord",1272,2;
+		monster "arug_cas01",0,0,"Tower Keeper",1270,4;
 	}
 	if (GetCastleData("arug_cas01",9) < 1) {
-		disablenpc "卡普拉 職員#aru01";
+		disablenpc "Kafra Employee#aru01";
 	}
 	end;
 }
 
 arug_cas01,259,371,0	script	#aru01_switch	111,{
 	mes " ";
-	mes "有個某種小的裝置,請問你要操作嗎?";
+	mes "^3355FFWill you pull";
+	mes "this small lever?^000000";
 	next;
-	switch(select("操作:結束")) {
+	switch(select("Pull Lever:Cancel")) {
 	case 1:
 		warp "arug_cas01",121,357;
 		end;
@@ -2595,10 +2871,10 @@ arug_cas01,259,371,0	script	#aru01_switch	111,{
 	}
 }
 
-aru_gld,164,270,4	script	馬勒杜#flag_Ar01_1::Ar01_Flag	722,{
+aru_gld,164,270,4	script	Mardol#flag_Ar01_1::Ar01_Flag	722,{
 	set .@GID, GetCastleData("arug_cas01",1);
 	if (.@GID == 0) {
-		mes "[ 阿盧納貝茲 教國 公告令 ]";
+		mes "[ Arunafeltz Royal Edict ]";
 		mes "The Holy Kingdom of";
 		mes "Arunafeltz declares that";
 		mes "one has yet to claim lordship";
@@ -2609,11 +2885,12 @@ aru_gld,164,270,4	script	馬勒杜#flag_Ar01_1::Ar01_Flag	722,{
 	}
 	else {
 		if (getcharid(2) == .@GID) {
-			mes "[ 響亮的聲音 ]";
-			mes "勇敢者們...";
-			mes "你要回到你的 那名譽的時刻嗎?";
+			mes "[ Ringing Voice ]";
+			mes "Courageous one,";
+			mes "do you wish to return";
+			mes "to your stronghold?";
 			next;
-			switch(select("回到秘密基地:結束")) {
+			switch(select("Return to the Stronghold:Cancel")) {
 			case 1:
 				set .@GID, GetCastleData("arug_cas01",1);
 				if (getcharid(2) == .@GID) {
@@ -2625,17 +2902,19 @@ aru_gld,164,270,4	script	馬勒杜#flag_Ar01_1::Ar01_Flag	722,{
 				close;
 			}
 		}
-		mes "[ 阿盧納貝茲 教國 公告令 ]";
-		mes " ";
-		mes "1. 根據這裡的,阿盧納貝茲 教國令";
-		mes "這裡被認定為 ^FF0000" + GetGuildName(.@GID) + "^000000公會的";
-		mes "私有物";
-		mes " ";
-		mes "2. ^FF0000" + GetGuildName(.@GID) + "^000000 公會的主人是";
-		mes "　　^FF0000" + GetGuildMaster(.@GID) + "^000000,無論是誰";
-		mes "　　對這件事情有意見者";
-		mes " ";
-		mes "請你舉起您的劍,提高自己的名譽吧";
+		mes "[ Arunafeltz Royal Edict ]";
+		mes "The Holy Kingdom of";
+		mes "Arunafeltz decrees that";
+		mes "this stronghold is owned";
+		mes "by the ^FF0000" + GetGuildName(.@GID) + "^000000 Guild.";
+		next;
+		mes "[ Arunafeltz Royal Edict ]";
+		mes "^FF0000" + GetGuildMaster(.@GID) + "^000000 is";
+		mes "Guild Master of ^FF0000" + GetGuildName(.@GID) + "^000000.";
+		mes "Any that object must claim this";
+		mes "stronghold through strength of";
+		mes "steel and magic during the";
+		mes "appointed Guild Siege times.";
 		close;
 	}
 
@@ -2644,6 +2923,6 @@ OnRecvCastleAr01:
 	end;
 }
 
-aru_gld,142,235,4	duplicate(Ar01_Flag)	馬勒杜#flag_Ar01_2	722
-aru_gld,164,245,5	duplicate(Ar01_Flag)	馬勒杜#flag_Ar01_3	722
-aru_gld,182,255,5	duplicate(Ar01_Flag)	馬勒杜#flag_Ar01_4	722
+aru_gld,142,235,4	duplicate(Ar01_Flag)	Mardol#flag_Ar01_2	722
+aru_gld,164,245,5	duplicate(Ar01_Flag)	Mardol#flag_Ar01_3	722
+aru_gld,182,255,5	duplicate(Ar01_Flag)	Mardol#flag_Ar01_4	722

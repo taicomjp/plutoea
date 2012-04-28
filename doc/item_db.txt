@@ -1,133 +1,149 @@
-- 解釋Item_db格式
+(FIXME: Someone give this file better formatting)
 
-- 繁化 by Cancer
+- Explanation of the item_db.txt file and structure.
 
-ID: 物品ID
+ID: Item id
 
-AegisName: 英文名稱，請勿使用空格鍵
+AegisName: Server name to reference the item in scripts and lookups,
+           should use no spaces.
 
-Name: 中文名稱
+Name: Name in english for displaying as output for @ and script commands.
 
 Type: 
-	0	補品
-	2	使用
-	3	垃圾
-	4	武器
-	5	除了武器以外的裝備 ( 頭盔/盔甲/披風/鞋子/裝飾品 )
-	6	卡片
-	7	寵物蛋
-	8	寵物裝飾品
-	10	箭矢 / 子彈類
-	11	類似技能卷軸這類型
-	18	消費型物品，使用前先確認
+	0	Healing item.
+	2	Usable item.
+	3	Etc item
+	4	Weapon
+	5	Armor/Garment/Boots/Headgear
+	6	Card
+	7	Pet egg
+	8	Pet equipment
+	10	Ammo (Arrows/Bullets/etc)
+	11	Usable with delayed consumption (item is lost from inventory
+		after selecting a target, for use with skills and pet lures)
+	18	Another delayed consume that requires user confirmation before
+		using item.
 
-Buy: 購買價格
+Buy: Default buying price. When not specified, becomes double the sell price.
 
-Sell: 出售價格
+Sell: Default selling price. When not specified, becomes half the buy price.
 
-Weight: 物品重量(小數點後1位)
+Weight: Item's weight. Each 10 is 1 weight.
 
-ATK: 武器攻擊力
+ATK: Weapon's attack
 
-DEF: 裝備防禦力
+DEF: Armor's defense
 
-Range: 武器攻擊範圍
+Range: Weapon's attack range
 
-Slots: 物品洞數
+Slots: Amount of slots the item possesses.
 
-Job: 可使用職業
+Job: Equippable jobs. Uses the following bitmask table:
 
-	初心者		(2^00): 0x00000001
-	劍士    	(2^01): 0x00000002
-	法師		(2^02): 0x00000004
-	弓箭手		(2^03): 0x00000008
-	服士		(2^04): 0x00000010
-	商人		(2^05): 0x00000020
-	盜賊		(2^06): 0x00000040
-	騎士		(2^07): 0x00000080
-	祭司		(2^08): 0x00000100
-	巫師		(2^09): 0x00000200
-	鐵匠		(2^10): 0x00000400
-	獵人		(2^11): 0x00000800
-	刺客		(2^12): 0x00001000
-	無用		(2^13): 0x00002000
-	聖殿		(2^14): 0x00004000
-	武道家		(2^15): 0x00008000
-	賢者		(2^16): 0x00010000
-	流氓		(2^17): 0x00020000
-	煉金術士	(2^18): 0x00040000
-	詩人/舞孃	(2^19): 0x00080000
-	無用		(2^20): 0x00100000
-	跆拳道		(2^21): 0x00200000
-	拳聖		(2^22): 0x00400000
-	悟靈師		(2^23): 0x00800000
-	槍手		(2^24): 0x01000000
-	忍者		(2^25): 0x02000000
+	(S.) Novice    (2^00): 0x00000001
+	Swordman       (2^01): 0x00000002
+	Magician       (2^02): 0x00000004
+	Archer         (2^03): 0x00000008
+	Acolyte        (2^04): 0x00000010
+	Merchant       (2^05): 0x00000020
+	Thief          (2^06): 0x00000040
+	Knight         (2^07): 0x00000080
+	Priest         (2^08): 0x00000100
+	Wizard         (2^09): 0x00000200
+	Blacksmith     (2^10): 0x00000400
+	Hunter         (2^11): 0x00000800
+	Assassin       (2^12): 0x00001000
+	Unused         (2^13): 0x00002000
+	Crusader       (2^14): 0x00004000
+	Monk           (2^15): 0x00008000
+	Sage           (2^16): 0x00010000
+	Rogue          (2^17): 0x00020000
+	Alchemist      (2^18): 0x00040000
+	Bard/Dancer    (2^19): 0x00080000
+	Unused         (2^20): 0x00100000
+	Taekwon        (2^21): 0x00200000
+	Star Gladiator (2^22): 0x00400000
+	Soul Linker    (2^23): 0x00800000
+	Gunslinger     (2^24): 0x01000000
+	Ninja          (2^25): 0x02000000
+	Gangsi         (2^26): 0x04000000
+	Death Knight   (2^27): 0x08000000
+	Dark Collector (2^28): 0x10000000
+	Kagerou/Oboro  (2^29): 0x20000000
 
-Upper: 職業階級
-	1: 普通職業
-	2: 進階職業
-	4: 寶寶
+Upper: Equippable upper-types. Uses the following bitmasks:
+	1: Normal jobs
+	2: Upper jobs
+	4: Baby jobs
+	8: Third jobs
 
-Gender: 性別 ( 0=女 1=男 2=都可 )
+Gender: Gender restriction. 0 is female, 1 is male, 2 for both.
 
-Loc: 裝備位置
+Loc: Equipment's placement. Values are:
+	2^12 4096 = Costume Low Headgear
+	2^11 2048 = Costume Mid Headgear
+	2^10 1024 = Costume Top Headgear
+	2^8  256 = Upper Headgear
+	2^9  512 = Middle Headgear
+	2^0  001 = Lower Headgear
+	2^4  016 = Armor
+	2^1  002 = Weapon
+	2^5  032 = Shield
+	2^2  004 = Garment
+	2^6  064 = Footgear
+	2^3  008 = Accessory 1
+	2^7  128 = Accessory 2
 
-	2^8 256 = 頭上
-	2^9 512 = 頭中
-	2^0 001 = 頭下
-	2^4 016 = 衣服
-	2^1 002 = 武器
-	2^5 032 = 盾牌
-	2^2 004 = 披肩
-	2^6 064 = 鞋子
-	2^3 008 = 裝飾品
-	2^7 128 = 裝飾品
+wLV: Weapon level.
 
-wLV: 武器等級 (決定衝裝時用的東西)
+eLV: Base level required to be able to equip.
 
-eLV: 能使用等級 (大於eLV才可使用)
+Refineable: 1 if the item can be refined, 0 otherwise.
 
-Refineable: 能否被精煉 (1=可 0=不可)
+View: For normal items, defines a replacement view-sprite for the item (eg:
+      Making apples look like apple juice). The special case are weapons
+      and ammo where this value indicates the weapon-class of the item.
 
-View: 外觀
-
-	武器外觀為:
-		0: 空手
-		1: 短劍
-		2: 單手劍
-		3: 雙手劍
-		4: 單手槍
-		5: 雙手槍
-		6: 單手斧
-		7: 雙手斧
-		8: 錘子
-		9: 未使用
-		10: 手杖
-		11: 弓
-		12: 拳套
-		13: 樂器
-		14: 鞭子
-		15: 書
-		16: 拳刃
-		17: 手槍
-		18: 來福槍
-		19: 機關槍
-		20: 散彈槍
-		21: 榴彈槍
-		22: 飛鏢
+	For weapons, the types are:
+		0: bare fist
+		1: Daggers
+		2: One-handed swords
+		3: Two-handed swords
+		4: One-handed spears
+		5: Two-handed spears
+		6: One-handed axes
+		7: Two-handed axes
+		8: Maces
+		9: Unused
+		10: Staves
+		11: Bows
+		12: Knuckles
+		13: Musical Instruments
+		14: Whips
+		15: Books
+		16: Katars
+		17: Revolvers
+		18: Rifles
+		19: Gatling guns
+		20: Shotguns
+		21: Grenade launchers
+		22: Fuuma Shurikens
 
 	For ammo, the types are:
-		1: 箭矢類
-		2: 投擲類 ( 毒刃 )
-		3: 子彈類
+		1: Arrows
+		2: Throwable daggers
+		3: Bullets
 		4: Shells
-		5: 榴彈
-		6: 飛鏢
-		7: 飛刀
+		5: Grenades
+		6: Shuriken
+		7: Kunai
+		7: Cannonballs
+		7: Throwable Items (Sling Item)
 
-Script: 武品效果 ( 使用 / 裝備 )
+Script: Script to execute when the item is used/equipped.
 
-OnEquip_Script: 當物品裝備的時候
+OnEquip_Script: Script to execute when the item is equipped.
+                Warning, not all item bonuses will work here as expected.
 
-OnUnequip_Script: 當物品脫掉的時候
+OnUnequip_Script: Script to execute when the item is unequipped.
+                  Warning, not all item bonuses will work here as expected.

@@ -1,0 +1,129 @@
+//========================
+// [冥] The PlutoEA Project [王]
+// http://opensvn.csie.org/PlutoEA
+// -----------------------------------------
+// - 深淵湖泊 傳送腳本 -
+//========================
+//= 版本：1.4
+//========================
+
+hu_fild05,168,304,0	script	梁柱#abyss1	111,{
+	if ((countitem(1035) < 1) || (countitem(1036) < 1) || (countitem(1037) < 1)) { 
+		mes "-在梁柱的表面上-";
+		mes "-好像有類似脫落的一些小凹槽-";
+		mes "-整體的形狀和龍的形象類似-";
+		mes "-好像是從這三個小凹槽中-";
+		mes "-物品各自脫落出來似的-";
+		close;
+	}
+	mes "-在梁柱的表面上-";
+	mes "-好像有類似脫落的小凹槽-";
+	mes "-那和龍的形象類似-";
+	next;
+	if (select("在梁柱的凹槽上放入物品:在你的嘴裡放入物品")==1){
+		mes "-把龍牙小心翼翼地-";
+		mes "-嵌入凹槽中-";
+		mes "-梁柱上發出嘶吼的聲音-";
+		specialeffect 72;
+		next;
+		mes "-這次在別的凹槽上-";
+		mes "-小心翼翼地把龍鱗嵌入-";
+		mes "-梁柱上發出嘶吼聲及聳動一下-";
+		specialeffect 72;
+		next;
+		mes "-最後把龍尾小心翼翼地-";
+		mes "-嵌入到剩餘的凹槽內-";
+		mes "-結果發出嘶吼聲的同時-";
+		mes "-從梁柱裂縫中開始滲出光線來-";
+		mes "-光線纏繞著你的全身-";
+		specialeffect 72;
+		next;
+		mes "-似乎往某處被拉走般-";
+		mes "-感覺腳底消失不見一樣-";
+		specialeffect 99;
+		donpcevent "AbyssWarp::OnWarp";
+		specialeffect2 61;
+		delitem 1035,1;
+		delitem 1036,1;
+		delitem 1037,1;
+		close2;
+		warp "hu_fild05",184,204;
+		end;
+	}
+	mes "-你把那些小心翼翼地-";
+	mes "-放入到你的嘴巴裡-";
+	mes "-結果發出嘶吼聲的同時-";
+	mes "-肚子開始騷動起來-";
+	next;
+	emotion 23,1;
+	delitem 1035,1;
+	delitem 1036,1;
+	delitem 1037,1;
+	percentheal -10,0;
+	close;
+}
+
+hu_fild05,171,211,0	script	梁柱#abyss2	111,{
+
+	mes "-和湖邊看過的梁柱類似-";
+	mes "-原本凹槽的位置上發出藍光-";
+	next;
+	if(select("在發亮的位置上用手去觸碰:在發亮的位置上把物品挖出來")==1){
+		mes "-(咚咚咚)-";
+		next;
+		mes "-光線被扭曲後-";
+		mes "-從裡面傳出聲音來-";
+		specialeffect 72;
+		next;
+		mes "-(咯咯咯咯咯咯咯)-";
+		mes "-(砰)-";
+		next;
+		mes "-在凹槽的地方一陣搖晃後-";
+		mes "-從梁柱內射出光線來-";
+		mes "-似乎往某處被拉走般-";
+		mes "-感覺腳底消失不見一樣-";
+		next;
+		specialeffect 99;
+		specialeffect2 61;
+		close2;
+		warp "hu_fild05",169,305;
+		end;
+	}
+	mes "-(喀嚓!)-";
+	mes "-挖出來的物品碎掉了-";
+	specialeffect 72;
+	next;
+	mes "-(砰砰砰砰砰砰砰砰)-";
+	next;
+	mes "-光線被扭曲後梁柱搖晃著-";
+	mes "-好像往某處被吸走般-";
+	mes "-腳底經過一陣搖晃後-";
+	mes "-你就朝某處逃之夭夭了-";
+	next;
+	specialeffect 99;
+	specialeffect2 61;
+	close2;
+	warp "hu_fild05",157,284;
+	end;
+}
+
+hu_fild05,196,210,1	script	AbyssWarp	45,2,2,{
+
+OnInit:
+	disablenpc "AbyssWarp";
+	end;
+
+OnTouch:
+	warp "abyss_01",260,268;
+	end;
+
+OnWarp:
+	initnpctimer;
+	enablenpc "AbyssWarp";
+	end;
+
+OnTimer30000:
+	stopnpctimer;
+	disablenpc "AbyssWarp";
+	end;
+}

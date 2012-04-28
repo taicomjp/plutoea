@@ -1,385 +1,430 @@
-//==================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ---------------------------------
-// - 飛空艇 相關任務腳本 - 
-//===================================
-// 版本：1.6
-//====================================
-//= *失散的過去 (尋找女兒)
-//=   獎勵: -飛空艇免費搭乘券 4個
-//=	    -可使用 [未知的 機器] 修理裝備
-//= *伊美樂心臟碎片 (飛空艇動力來源)
-//=   獎勵: -基本經驗值 200,000
-//=	      -職業經驗值 10,000
-//====================================
+//===== rAthena Script ======================================= 
+//= Airship Related Quests
+//===== By: ================================================== 
+// Samuray22
+//===== Current Version: ===================================== 
+//= 1.8
+//===== Compatible With: ===================================== 
+//= rAthena SVN
+//===== Description: ========================================= 
+//= Quest from the airplane to einbroch and einbech.
+//= Reward: -Free Ticket for Flyship.
+//=	    -Free System to Repair.
+//= Quest about how work the airship
+//= Reward: -Base Experience 200,000
+//=	    -Job Experience 10,000
+//===== Additional Comments: ================================= 
+//= 1.0 First Beta.
+//= 1.1 Added Heart Fragment quest. [SinSloth]
+//= 1.2 Change the laboratory code text to make it easier to
+//= understand. [SinSloth]
+//= 1.3 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
+//= 1.3a Corrected a Typo error ";;". [Samuray22]
+//= 1.4 Fixed incorrect variable type used. [L0ne_W0lf]
+//= 1.5 Replaced effect numerics with constants. [Samuray22]
+//= 1.6 Changed some variables to scope instead of permanent char. [brianluau]
+//= 1.7 some minor cleanup updates to the airship invasion. [L0ne_W0lf]
+//= 1.8 Added quest log entries for:
+//=     - Airship Ticket Quest
+//=     - How the Airship Works
+//============================================================ 
 
-//====================================
-// 失散的過去 (尋找女兒)
-//====================================
+//=======================================================================================================//
+//					Airship Ticket Quest
+//=======================================================================================================//
 
-//==凱因 希每勒==
+//====================Kain Himere=============================
 
-airplane,47,61,1	script	機組員	833,{
+airplane,47,61,1	script	Crewman	833,{
 	if(kain_ticket==4) {
-		mes "[凱因 希每勒]";
-		mes "不久前有一位旅客在飛空艇裡忘記把行李帶走，他是艾音布羅克的居民，前幾天他打電話到飛空艇辦公室確認";
-		mes "不過他說有急事，不方便親自過來領取";
+		mes "[Kain Himere]";
+		mes "Ah...";
+		mes "Here it is!";
 		next;
-		mes "[凱因 希每勒]";
-		mes "旅客名字叫迪普盧 雅科，目前投宿在艾音布羅克的飯店裡..";
+		mes "[Kain Himere]";
+		mes "A few days ago, a customer from Einbroch left this on the Airship. He contacted us later to let us know that he can't come back to the Airship to get it.";
 		next;
-		mes "[凱因 希每勒]";
-		mes "麻煩你請幫忙送給他吧，轉達後我會表達一點心意的";
+		mes "[Kain Himere]";
+		mes "His name is Defru Ark. Currently, he's staying at the Einbroch Hotel. Would you be willing to deliver this for me?";
 		next;
-		mes "[凱因 希每勒]";
-		mes "-^3355FF你得到了一件^000000-";
-		mes "-^3355FF包裝好的小型包裹了^000000-";
-		set kain_ticket,5;
+		mes "[Kain Himere]";
+		mes "It's a strange favor to ask, but I'll pay you back as soon as you return.";
+		next;
+		setquest 2079;
+		set kain_ticket, 5;
+		mes "^3355FFKain Himere has given you a small box.^000000";
 		close;
 	}
-	mes "[凱因 希每勒]";
-	mes "你好嗎，我是這架飛空艇的機組員，我叫凱因 希每勒，假如搭乘飛空艇有任何不便之處時，請向我反應吧";
+	mes "[Kain Himere]";
+	mes "Welcome to the Airship. If you have any questions or need any assistnace, please don't hesisitate to let me or one of the other crewman know.";
 	next;
-	switch (kain_ticket) {
-	case 0:
-	case 1:
-	case 2:
-		switch( select( "詢問有關飛空艇的事情:我要留言" )) {
+	if(kain_ticket==0) {
+		switch( select( "About the Airship...", "Leave a Comment" )) {
 		case 1:
-			switch (kain_ticket) {
-			case 0:
-				set kain_ticket,1;
-				mes "[凱因 希每勒]";
-				mes "請問你是，第一次翱翔天空嗎?";
-				mes "呵呵.. 說得也是，想起我第一次搭乘飛空艇時，";
-				mes "也非常緊張呢，沒錯";
-				next;
-				mes "[凱因 希每勒]";
-				mes "告訴你這個國家的科技，經歷了一場突破性的發展";
-				next;
-				mes "[凱因 希每勒]";
-				mes "聽說，盧恩--米德加茲王國的百姓，";
-				mes "他們會施展各種新奇的魔法，";
-				mes "試著和那個東西生活的很融洽呢";
-				next;
-				mes "[凱因 希每勒]";
-				mes "我們秀發茲發德共和國裡擁有許多學者們，";
-				mes "藉由'伊美樂的碎片'，製造出翱翔天空的船，";
-				mes "並可以遊走各個村落了";
-				next;
-				mes "[凱因 希每勒]";
-				mes "飛空艇儼然成為秀發茲發德中，";
-				mes "具有代表科學力的自豪設備了";
-				next;
-				select "請問沒有飛空艇以外的交通工具嗎?";
-				mes "[凱因 希每勒]";
-				mes "這個嘛...艾音貝赫和艾音布羅克之間有火車行駛著，";
-				mes "除此之外，只能靠你健康的兩雙大腿了?呵呵!";
-				close;
-			case 1:
-				set kain_ticket,2;
-				mes "[凱因 希每勒]";
-				mes "你還要我講有關飛空艇的故事啊?嗯.. 這個嗎，";
-				mes "我也不知道太多有關飛空艇的故事耶";
-				next;
-				mes "[凱因 希每勒]";
-				mes "這國家有一個龐大的企業，";
-				mes "聽說它的規模大到會嚇死人耶";
-				next;
-				mes "[凱因 希每勒]";
-				mes "聽說飛空艇也是那家企業所管理的領域之一耶.. ";
-				mes "我想能負責經營一個國家的重要交通運輸的話，";
-				mes "一定可以獲取相當可觀的收益不是嗎?";
-				mes "真是羨慕啊!! ";
-				close;
-			case 2:
-				mes "[凱因 希每勒]";
-				mes "..你還想打聽有關飛空艇的故事啊?你對此器具真的很關心耶不過，我好像已經沒有可以告訴你的故事了";
-				next;
-				mes "[凱因 希每勒]";
-				mes "我看你乾脆直接變成朱諾的學者，去仔細做飛空艇的相關研究會更好呢. ..不過呢..";
-				next;
-				mes "[凱因 希每勒]";
-				mes "哈啊...";
-				next;
-				mes "[凱因 希每勒]";
-				mes "請問你，喜歡.. 閒聊嗎?有沒有空，可以聽一下我說的故事嗎?";
-				next;
-				switch( select("拒絕聽故事:聽故事" )) {
-				case 1:
-					mes "[凱因 希每勒]";
-					mes "啊啊，是嗎，你不必用不好意思的表情啦，";
-					mes "我對一位忙於旅行的旅客竟然留了你這麼久，";
-					mes "反而讓我感到不好意思啊，你別在意啊";
-					close;
-				case 2:
-					mes "[凱因 希每勒]";
-					mes "真的謝謝你....每天望著他們搭乘飛空艇，飛向未開拓的空間邁出腳步，流露出那充滿希望的眼神時，讓我這個老人家更顯得孤獨..";
-					next;
-					mes "[凱因 希每勒]";
-					mes "其實我曾是一個位於鋼鐵之都艾音布羅克隔壁村落，艾音貝赫的礦工";
-					next;
-					mes "[凱因 希每勒]";
-					mes "當時我是血氣方剛的一個平凡年輕的礦工，我和我的同事們把所有的希望，全都寄託在緊握雙手的十字鎬上";
-					next;
-					mes "[凱因 希每勒]";
-					mes "我從這眼前廣闊地上，邊感受著一股敬畏之心，邊努力地往內部挖下去了";
-					next;
-					mes "[凱因 希每勒]";
-					mes "你知道嗎? 艾音貝赫的礦脈甚至延伸到那遙遠的盧恩--米德加茲王國妙勒尼 的山脈上，面積遼闊而且資源非常豐富";
-					next;
-					mes "[凱因 希每勒]";
-					mes "這小型的都市艾音貝赫，對這礦脈主宰了一切";
-					next;
-					mes "[凱因 希每勒]";
-					mes "但是不知道從哪一天開始，艾音貝赫附近逐步蓋起了幾家工廠來，他們把艾音貝赫礦工們所採到的礦物，大部分都運送到工廠去了，";
-					mes "之後工廠煙囪所排出的煙霧就從來沒停過..";
-					next;
-					mes "[凱因 希每勒]";
-					mes "其中有幾位同事捨棄了危險的採礦工作，說是寧願選擇較安全的工廠工作而離開了礦山..";
-					next;
-					mes "[凱因 希每勒]";
-					mes "真是的!!!我不太喜歡他們，我想不透他們為什麼要放棄曾經共同汗流浹背奮鬥的意義，和喪失抵禦險峻的大自然之勇氣呢!?";
-					next;
-					mes "[凱因 希每勒]";
-					mes "...............";
-					next;
-					mes "[凱因 希每勒]";
-					mes "可是，過不久我也沒資格批評他們了，我也辭掉礦工的工作了，因為出事了，..我的左手臂受傷後到現在還不大能使喚..";
-					next;
-					select "我想那是一件很嚴重的事情吧";
-					mes "[凱因 希每勒]";
-					mes "沒錯.. 好像被打入十八層地獄一般絕望透了...";
-					next;
-					mes "[凱因 希每勒]";
-					mes "即使這樣我對這塊大地仍是充滿感恩呢，因我曾經勇敢過，雖然我輸了，但卻是得到難忘的經驗了";
-					next;
-					mes "[凱因 希每勒]";
-					mes "我的故事好像有點偏離主題了...其實我真正想講的故事不是這個，另外還有呢";
-					next;
-					mes "[凱因 希每勒]";
-					mes "當時我放棄採礦的工作時傷心極了，我那旺盛的血氣也就這樣破碎消失不見了";
-					next;
-					mes "[凱因 希每勒]";
-					mes "失去礦工身份的我難過的無法想像..我只好每天借酒澆愁，..現在回想起來後悔莫及..";
-					mes "我把我的悲傷和憤怒全發洩在家人身上，並央求他們傾聽我絕望而焦急的心聲";
-					next;
-					mes "[凱因 希每勒]";
-					mes "不是，其實我的家人...我的太太一直不斷地安慰我，我.. 我，但我完全陷入感傷之中而無法自拔，未能體會她的溫情";
-					next;
-					mes "[凱因 希每勒]";
-					mes "................................";
-					next;
-					mes "[凱因 希每勒]";
-					mes "哼哼......我的太太為了照顧因絕望而徬徨的我和家庭，結果生了病丟下我和年幼的女兒就這樣上天堂去了..";
-					next;
-					mes "[凱因 希每勒]";
-					mes "而我失去太太後懊悔不已，不過為時已晚，受到痛失太太打擊和悲傷的我再次犯下了滔天大罪";
-					next;
-					mes "[凱因 希每勒]";
-					mes "就是我把女兒托付別人後，像逃亡一樣，迅速遠離了家庭....";
-					next;
-					mes "[凱因 希每勒]";
-					mes "從此之後我就到處過著徬徨的生活，直到今天搭上飛空艇為止，整整過了20餘年的歲月..我甚至連女兒的名字都記不起來了，";
-					mes "我至今究竟都做些什麼了呢，年輕人...";
-					next;
-					select "請問你女兒目前在哪兒呢?";
-					next;
-					mes "[凱因 希每勒]";
-					mes "我也不清楚耶，我不久之前去找過托付女兒的家，可是主人已經換了.....只不過，即使我現在和女兒相遇了，";
-					mes "我哪有臉在她面前抬得起頭來呢...";
-					next;
-					mes "[凱因 希每勒]";
-					mes "呵哼.. 我的故事到此為止啦，真是一場不光彩的人生故事啊，謝謝你的傾聽，我們只見過幾次面而已我怎麼會跟你提起這故事呢..";
-					next;
-					mes "[凱因 希每勒]";
-					mes "算了，請問你要去哪裡呢?";
-					next;
-					switch( select( "艾音布羅克:朱諾" )) {
-					case 1:
-						set kain_ticket, 4;
-						mes "["+strcharinfo(0)+"]";
-						mes "我要去艾音布羅克";
-						next;
-						mes "[凱因 希每勒]";
-						mes "噢，是真的嗎!那麼.. ";
-						mes "我可以拜託你一件事情嗎?";
-						mes "請你稍等一下..";
-						close;
-					case 2:
-						set kain_ticket,3;
-						mes "["+strcharinfo(0)+"]";
-						mes "我要去朱諾";
-						next;
-						mes "[凱因 希每勒]";
-						mes "是嗎.. 我有份要送到艾音布羅克的東西..";
-						mes "反正謝謝你聆聽我的故事，祝你旅途愉快囉";
-						close;
-					}
-				}
-			}
+			set kain_ticket, 1;
+			mes "[Kain Himere]";
+			mes "Is this your first time flying? Hahaha, I understand how nervous you might be since I used to feel the same way.";
+			next;
+			mes "[Kain Himere]";
+			mes "Our country has made rapid progress in the field of science. Scientific advances have obviously affected our way of life, sort of like how magic improved life in Rune-Migarts.";
+			next;
+			mes "[Kain Himere]";
+			mes "In the Schwaltzwald Republic, we have many scholars who've invented a ship that can fly between towns.";
+			next;
+			mes "[Kain Himere]";
+			mes "It's powered through just a little piece from the Heart of Ymir. This flying ship is a source of pride and joy for our nation.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Is there any other transportation?";
+			next;
+			mes "[Kain Himere]";
+			mes "Weeeell, there's a train that runs between Einbech and Einbroch. But other than that, I guess you'd have to walk. Hahahaha~";
+			close;
 		case 2:
-			mes "[凱因 希每勒]";
-			mes "想留言的話，請現在留言，";
-			mes "若要取消留言的話，請輸入'0'";
+			mes "[Kain Himere]";
+			mes "You wish to leave";
+			mes "a comment about our";
+			mes "service? Tell me your";
+			mes "message and I'll report";
+			mes "it to the higher ups.";
+			mes "To cancel, press '0'.";
 			next;
 			input @comment$;
 			if (@comment$ == "0") {
-				mes "[凱因 希每勒]";
-				mes "我看你沒什麼抱怨嘛!";
-				mes "祝你旅途愉快了..";
+				mes "[Kain Himere]";
+				mes "Ah, well, if you";
+				mes "have any helpful criticism about our service, feel free to leave me with your comments at any time.";
 				close;
 			} else {
 				mes "["+strcharinfo(0)+"]";
 				mes @comment$+".";
 				next;
-				mes "[凱因 希每勒]";
-				mes "呵嗯.. 是嗎，我明白了，";
-				mes "我會往上面反映的";
+				mes "[Kain Himere]";
+				mes "Hmmmm...";
+				mes "I see. Well, I'll";
+				mes "send your message";
+				mes "to my superiors as";
+				mes "soon as possible.";
+				mes "Thank you very much.";
 				close;
 			}
 		}
-	case 3:
-		mes "[凱因 希每勒]";
-		mes "噢，你好嗎，嗯.. 我想拜託你一件事情，";
-		mes "請問你要去哪裡呢?";
+	} else if(kain_ticket==1) {
+		switch( select( "About the Airship...", "Make a remark" )) {
+		case 1:
+			set kain_ticket, 2;
+			mes "[Kain Himere]";
+			mes "You want to hear more";
+			mes "about the Airship? Hmm, I don't know too many stories that I could tell you.";
+			next;
+			mes "[Kain Himere]";
+			mes "Well, it's rumored that this really huge corporation runs this Airship. Supposedly, they've got their hands in all sorts of enterprises.";
+			next;
+			mes "[Kain Himere]";
+			mes "Since the Airships are our form of national transportation, I guess that corporation makes a lot of money. Good news for them, huh?";
+			close;
+		case 2:
+			mes "[Kain Himere]";
+			mes "You wish to leave";
+			mes "a comment about our";
+			mes "service? Tell me your";
+			mes "message and I'll report";
+			mes "it to the higher ups.";
+			mes "To cancel, press '0'.";
+			next;
+			input @comment$;
+			if (@comment$=="0") {
+				mes "[Kain Himere]";
+				mes "Ah, well, if you";
+				mes "have any helpful criticism about our service, feel free to leave me with your comments at any time.";
+				close;
+			} else {
+				mes "["+strcharinfo(0)+"]";
+				mes @comment$+".";
+				next;
+				mes "[Kain Himere]";
+				mes "Hmmmm...";
+				mes "I see. Well, I'll";
+				mes "send your message";
+				mes "to my superiors as";
+				mes "soon as possible.";
+				mes "Thank you very much.";
+				close;
+			}
+		}
+	} else if(kain_ticket==2) {
+		mes "["+strcharinfo(0)+"]";
+		mes "About the Airship...";
 		next;
-		switch( select( "艾音布羅克:朱諾" )) {
+		mes "[Kain Himere]";
+		mes "You must really want to know all about the Airship, don't you? I'm sorry, but I don't know much more than what I've already told you.";
+		next;
+		mes "[Kain Himere]";
+		mes "I guess if you'd want to know more, you should study to become a Sage in Juno and do your own Airship research...";
+		next;
+		mes "[Kain Himere]";
+		mes "^666666*Sob...*^000000";
+		mes "E-excuse me...";
+		mes "^666666*Sniff*^000000";
+		next;
+		switch( select( "What the hell...?", "What's wrong?" )) {
+		case 1:
+			mes "[Kain Himere]";
+			mes "Oh, no there's no";
+			mes "need to apologize. I've kept you long enough as it is. I hope you travel safely, adventurer.";
+			close;
+		case 2:
+			mes "[Kain Himere]";
+			mes "You...";
+			mes "I'm sorry, it's";
+			mes "a long story.";
+			mes "But... if you understand me, thanks a lot to listen my story.";
+			next;
+			mes "[Kain Himere]";
+			mes "Oh alright.";
+			mes "I might as well";
+			mes "get this off my chest.";
+			mes "I guess my story begins";
+			mes "when I was a very young man...";
+			next;
+			mes "[Kain Himere]";
+			mes "I...";
+			mes "I used to be a miner in Einbech, a small mining town beside of Einbroch. I was hot-blooded and short-tempered.";
+			next;
+			mes "[Kain Himere]";
+			mes "But working with my friends and staking our lives on our mining picks brought me peace of mind. It was good, hard work.";
+			next;
+			mes "[Kain Himere]";
+			mes "The lode of Einvech is so huge, it even connects to Mount Mjolnir in Rune-Midgard. It's full of ores and that lode used to be everything to our little town...";
+			next;
+			mes "[Kain Himere]";
+			mes "Then the factories started popping up. All the ores were mined were moved to those factories, and the smokestacks never stopped churning.";
+			next;
+			mes "[Kain Himere]";
+			mes "More miners moved to the factories and the work got a little lonelier. But I kept at it-- I loved working on the land that much.";
+			next;
+			mes "[Kain Himere]";
+			mes "But then, the accident happened and I couldn't use my right arm the way I used to. So I had to quit my job as a miner...";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "I'm sorry to hear that.";
+			next;
+			mes "[Kain Himere]";
+			mes "Yeah...";
+			mes "I felt horrible when it happened. That was the worst time in my life...";
+			next;
+			mes "[Kain Himere]";
+			mes "Right after I quit mining, I was deeply depressed. I couldn't think of life without mining and suffered from depression.";
+			next;
+			mes "[Kain Himere]";
+			mes "I pretty much lost my enthusiasm for life. I started turning to drink and away from my family. It was such a stupid thing to do.";
+			next;
+			mes "[Kain Himere]";
+			mes "My wife was so supportive. Even though I spent my days drinking, so took on a job and tried her best to sooth my sorrow.";
+			next;
+			mes "[Kain Himere]";
+			mes "^666666*Sob*^000000";
+			mes "I only realized how much I made her suffer after she died.";
+			next;
+			mes "[Kain Himere]";
+			mes "Then it was me and just my daughter. I had to leave her behind with a neighbor while I tried to find work and inner peace.";
+			next;
+			mes "[Kain Himere]";
+			mes "I wandered from town to town and lived a pretty wild life before I could pick myself back up again.";
+			next;
+			mes "[Kain Himere]";
+			mes "Finally, I became a crewman on this Airship. It's been twenty years... I can't even remember my daughter's name.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Where is she by now?";
+			next;
+			mes "[Kain Himere]";
+			mes "I went to the house where my neighbor lived, but they're not there anymore. But it's not like I deserve to see her again...";
+			next;
+			mes "[Kain Himere]";
+			mes "^666666*Sob*^000000 I've lived such a terrible life! But thank you for listening to me.";
+			next;
+			mes "[Kain Himere]";
+			mes "I'm sorry that you had to hear all of that. Now tell me, where are you headed?";
+			next;
+			mes "[Kain Himere]";
+			mes "By the way, where are you heading to?";
+			next;
+			switch( select( "Einbroch", "Juno" )) {
+			case 1:
+				set kain_ticket, 4;
+				mes "["+strcharinfo(0)+"]";
+				mes "I'm heading";
+				mes "to Einbroch.";
+				next;
+				mes "[Kain Himere]";
+				mes "Perfect...!";
+				mes "Now, let me find";
+				mes "that thing. Hold on...";
+				close;
+			case 2:
+				set kain_ticket, 3;
+				mes "["+strcharinfo(0)+"]";
+				mes "I'm heading";
+				mes "to Juno.";
+				next;
+				mes "[Kain Himere]";
+				mes "Ah, I see...";
+				mes "There was something";
+				mes "I needed sent to Einbroch. Anyway, I hope you have a good trip. Oh, and thanks for listening.";
+				close;
+			}
+		}
+	} else if(kain_ticket==3) {
+		mes "[Kain Himere]";
+		mes "Oh, how are you?";
+		mes "Right, there's a favor I have to ask of you. Where are you heading?";
+		next;
+		switch( select( "Einbroch", "Juno" )) {
 		case 1:
 			set kain_ticket, 4;
 			mes "["+strcharinfo(0)+"]";
-			mes "我要去艾音布羅克";
+			mes "I'm heading";
+			mes "to Einbroch.";
 			next;
-			mes "[凱因 希每勒]";
-			mes "噢，是真的嗎!那麼.. ";
-			mes "我可以拜託你一件事情嗎?";
-			mes "請你稍等一下..";
+			mes "[Kain Himere]";
+			mes "Perfect...!";
+			mes "Now, let me find";
+			mes "that thing. Hold on...";
 			close;
+
 		case 2:
 			mes "["+strcharinfo(0)+"]";
-			mes "我要去朱諾";
+			mes "I am heading to Juno.";
 			next;
-			mes "[凱因 希每勒]";
-			mes "是嗎.. 我有份要送到艾音布羅克的東西..";
-			mes "反正謝謝你聆聽我的故事，祝你旅途愉快囉";
+			mes "[Kain Himere]";
+			mes "Ah, I see...";
+			mes "There was something";
+			mes "I needed sent to Einbroch. If you're not going there, then don't worry about it.";
 			close;
 		}
-	default:
-		mes "[凱因 希每勒]";
-		mes "唉呦呦 .. 我今天好忙喔，對呀對呀.. 請問你把東西好好的送到飯店了嗎?啊!客人!請你等一下!!!";
+	} else if(kain_ticket > 4 && kain_ticket < 10) {
+		mes "[Kain Himere]";
+		mes "Oh hello!";
+		mes "Things are a little busy right now, but did you delive-- Oh! Wait, mister!";
 		next;
-		mes "- ^3355FF他看來很忙碌沒空說話的樣子^000000 -";
+		mes "^3355FFKain seems too busy to speak to you right now...^000000";
 		close;
-	case 10:
-		mes "[凱因 希每勒]";
-		mes "歡迎光臨，請問你把東西順利的送到了嗎?";
+	} else if(kain_ticket== 10) {
+		mes "[Kain Himere]";
+		mes "Welcome back to the Airship. So did you deliver that little box safely?";
 		next;
 		mes "["+strcharinfo(0)+"]";
-		mes "沒有耶，因為他不在家啊..所以我現在把東西再還給你";
+		mes "No, unfortunately. He was away when I got there. Let me give this box back to you.";
 		next;
-		mes "[凱因 希每勒]";
-		mes "怎麼可以這樣呢..客人也真是的.. 拜託了我竟不在家，呵呵，這樣我很為難耶，真抱歉讓你白跑了一趟";
+		mes "[Kain Himere]";
+		mes "Oh...";
+		mes "What should I do now? Oh well, sorry for putting you through so much trouble.";
 		next;
-		switch( select( "請問你知道'礦工之歌'嗎?:請問你記得'泰蕾莎'這個名字嗎?" )) {
+		switch( select( "Do you know 'Miner's Song?'", "Do you remember 'Tarsha?'" )) {
 		case 1:
-			mes "[凱因 希每勒]";
-			mes "'礦工之歌'.. 好懷念的歌名啊，";
-			mes "這是我年輕時常唱的歌呢";
+			mes "[Kain Himere]";
+			mes "'Miner's Song...'";
+			mes "I miss that singing that at the mines. It was my very favorite when I was young.";
 			next;
-			mes "[凱因 希每勒]";
-			mes "我想起當我唱著'礦工之歌'時，";
-			mes "我女兒就跑過來，";
-			mes "用好奇心的小眼神看著我後就跟隨我唱";
-			break;
+			mes "[Kain Himere]";
+			mes "I think that when I used to sing it, my daughter would run to me and sing along. Yeah...";
+			close;
 		case 2:
-			mes "[凱因 希每勒]";
-			mes "嗯.. 泰蕾莎.. 泰蕾莎...";
-			mes "好像在哪裡聽過似的..";
-			mes "泰蕾莎是誰啊?";
-			break;
+			mes "[Kain Himere]";
+			mes "T-Tarsha?";
+			mes "Why is that name";
+			mes "so familiar...?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "I met a little girl in Einbroch who was singing 'Miner's Song.' Apparently, her mother, Tarsha, taught it to her.";
+			next;
+			mes "[Kain Himere]";
+			mes "Interesting.";
+			mes "But usually only";
+			mes "miners know that";
+			mes "song. What does this";
+			mes "have to do with me?";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Well, Tarsha remembers her father singing her song, so it's possible that ^000066he^000000 was a miner. And since her father disappeared years ago...";
+			next;
+			mes "[Kain Himere]";
+			mes "Poor girl...!";
+			mes "Her father";
+			mes "just left her?";
+			mes "Why, she's just like...";
+			next;
+			mes "[Kain Himere]";
+			mes "Wait...";
+			mes "Sweet Christ...";
+			mes "The miner who taught Tarsha that song might have been ^0000FFme^000000.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "I guess we can't be too sure for now. Do you have anything that might prove you're Tarsha's father?";
+			next;
+			mes "[Kain Himere]";
+			mes "Ehhmmm...";
+			mes "Before I left town, I buried some of my stuff ^3131FFunderneath a tree in Einbech^000000. I can't remember where, but I did bury my wife's journal with my things.";
+			next;
+			mes "[Kain Himere]";
+			mes "Since she kept track of everything, I think there'd be something about our daughter in there. I'm sorry, but I can't leave the Airship.";
+			next;
+			mes "[Kain Himere]";
+			mes "Would be so kind as to help me by finding that journal and seeing if Tarsha is my daughter?";
+			changequest 2081,2082;
+			set kain_ticket, 11;
+			close;
 		}
-		mes "["+strcharinfo(0)+"]";
-		mes "我在艾音布羅克遇到一位本地的小女孩正唱著'礦工之歌'呢";
-		mes "[凱因 希每勒]";
-		mes "呵呵.. 是個小女孩唱著礦工之歌啊.. 呵呵呵";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "那個小女孩的母親名字叫泰蕾莎，聽說礦工之歌是透過母親學會的";
-		mes "[凱因 希每勒]";
-		mes "呵呵.. 礦工之歌本來只是一般礦工們所唱的.. 真是希奇";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "那位，泰蕾莎小姐好像是從父親在唱歌時學會的，因小時後分離，不太記得父親的容貌了..";
-		next;
-		mes "[凱因 希每勒]";
-		mes "!!";
-		next;
-		mes "[凱因 希每勒]";
-		mes "難道是..噢噢.. 天啊...";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "我現在還不是很確定啦，有沒有什麼方法可以證明是不是一家人呢?";
-		next;
-		mes "[凱因 希每勒]";
-		mes "嗯嗯...我強烈的覺悟到我曾是個壞父親，即使與家人相見也無法確認是不是家人 ..";
-		next;
-		mes "[凱因 希每勒]";
-		mes "啊，對了!我在很久以前的某一天，當我離開村落時我把家裡的幾樣東西，埋藏在艾音貝赫的一棵樹底下";
-		next;
-		mes "[凱因 希每勒]";
-		mes "雖然我不記得是哪一棵樹了..但是所埋藏的東西之中，有一件是我太太的日記簿";
-		next;
-		mes "[凱因 希每勒]";
-		mes "我太太是位很細心的人，我相信日記中肯定有記載有關女兒的事情，實在很抱歉，你也知道我不方便離開飛空艇，";
-		next;
-		mes "[凱因 希每勒]";
-		mes "你可以替我去找一下那日記簿，確認她是不是我女兒好嗎?拜託你了";
-		set kain_ticket, 11;
+	} else if(kain_ticket == 11 || kain_ticket == 12) {
+		mes "[Kain Himere]";
+		mes "My wife's journal is buried ^3131FFunderneath a tree in Einbech^000000. Please find it and see if Tarsha is my daughter.";
 		close;
-	case 11:
-	case 12:
-		mes "[凱因 希每勒]";
-		mes "我太太的的日記簿，應該埋在 ^3131FF艾音貝赫樹叢^000000中的某一棵下，請你幫我找找，確認是不是我女兒吧";
-		close;
-	case 13:
+	} else if(kain_ticket == 13) {
 		mes "^3355FFYou better fulfill Kain's request to find his wife's journal in Einbech before you speak to him again.^000000";
 		close;
-	case 14:
-		if (countitem(7276)) {
-			mes "- 你把艾樂的插圖信件和-";
-			mes "- 太太的日記簿交給了他，-";
-			mes "- 並告知他女兒的名字叫-";
-			mes "- 泰蕾莎，目前在-";
-			mes "- 艾音布羅克工作";
+	} else if(kain_ticket == 14) {
+		if (countitem(7276)==1) {
+			mes "^3355FFYou gave Kain his wife's journal and told him that Tarsha really is is daughter, and currently has a job in Einbech.^000000";
 			next;
-			mes "-凱因捲曲著身軀，流下了-";
-			mes "-感佩的熱淚，你悄悄地望著-";
-			mes "-顫抖的他，並輕拍他的肩膀-";
-			mes "-以表安慰 -";
+			mes "^3355FFKain's eyes welled with tears as he trembled with joy.^000000";
 			next;
-			mes "[凱因 希每勒]";
-			mes "啊啊，這都怪我犯下的大錯才會讓小孩吃盡苦頭，沒想到她卻沒有埋怨我..";
+			mes "[Kain Himere]";
+			mes "She must have";
+			mes "had a hard time...";
+			mes "But she doesn't";
+			mes "hate me at all.";
 			next;
-			mes "[凱因 希每勒]";
-			mes "娜雪.. 妳看到了嗎?妳說我能享受這麼大的福氣嗎? 我很對不起妳...咳嗚..";
+			mes "[Kain Himere]";
+			mes "Rashelle?";
+			mes "Can you see me?";
+			mes "Can I be this happy?";
+			mes "I'm so sorry, my love...";
+			mes "^666666*Sob...*^000000";
 			next;
-			mes "[凱因 希每勒]";
-			mes "年輕人，我這次欠你很大的人情呀，非常謝謝你，可惜我只是個糟老頭身上東西所剩不多，恩情難以回報我對你滿是虧歉，";
-			mes "我會永遠向神明祈禱祝福你行大運的，真的謝謝你!";
+			mes "[Kain Himere]";
+			mes "Thank you for all of your help, youngster. And please take this as a token of my gratitude.";
+			next;
+			mes "[Kain Himere]";
+			mes "I know this isn't much, but please understand that it's all I can give you. God bless you for your all your help!";
 			delitem 7276, 1;
+			completequest 2085;
 			set kain_ticket, 15;
 			getitem 7311, 4;
 			close;
+		} else {
+			mes "^3355FFHmmm...";
+			mes "It would be better if you approached Kain and bring the Doodled Letter that you received.^000000";
+			close;
 		}
-		mes "- 當我剛想向凱因問話時，-";
-		mes "- 想起我忘了帶回-";
-		mes "- 插圖信件的事情-";
-		close;
-
-	case 15:
-		mes "[凱因 希每勒]";
-		mes "噢噢，年輕人你好嗎，托你的福我終能幸福的安享晚年了，謝謝你，祝你旅途愉快s";
+	} else if(kain_ticket >= 15) {
+		mes "[Kain Himere]";
+		mes "Oh, how are you";
+		mes "lately, my friend?";
+		mes "I've been doing great,";
+		mes "especially since you've";
+		mes "helped me find my daughter.";
+		mes "Enjoy your travels~";
 		close;
 	}
 }
@@ -409,11 +454,11 @@ OnTouch:
 	}
 }
 
-//====================艾樂 其魯諾=============================
+//====================Elle Cherno=============================
 
-ein_in01,261,241,5	script	艾樂 其魯諾	703,3,3,{
+ein_in01,261,241,5	script	Elle Cherno	703,3,3,{
 OnTouch:
-	mes "[艾樂 其魯諾]";
+	mes "[Elle Cherno]";
 	mes "Let's get to work";
 	mes "fear-less comraaades~!";
 	mes "Do our best! Nothing";
@@ -422,42 +467,43 @@ OnTouch:
 		next;
 		switch( select( "Hello!", "What are you singing?")) {
 		case 1:
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Let's get to work";
 			mes "fear-less comraaades~!";
 			mes "Do our best! Nothing";
 			mes "can stop us, lads~!";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "I like this song lots!";
 			mes "Especially when I yell";
 			mes "out 'comrades!'";
 			close;
 		case 2:
+			changequest 2079,2080;
 			set kain_ticket, 7;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "This...?";
 			mes "It's the Miner's Song!";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Daddy doesn't like it too much, but mommy likes it a lot and she sings it too!";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "I think my mommy remembers something about this song. I think it's something sad.";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Jus' today she heard it and she looked like she was going to cry. ^333333*Gasp!*^000000 Do you think she's sick?!";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Oh no! Hey, you're a grownup! Can see if my mommy is sick for me? Please?";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Our house is behind the Hotel. So can see my mommy and tell me if she's not feeling good?";
 			close;
 		}
 	} else if(kain_ticket == 7) {
 		next;
-		mes "[艾樂 其魯諾]";
+		mes "[Elle Cherno]";
 		mes "Our house is";
 		mes "right behind";
 		mes "the Hotel. Will";
@@ -468,23 +514,24 @@ OnTouch:
 		next;
 		//Check if you can carry the Picture Letter.
 		 if (checkweight(7276,1)) {
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "You saw my grandpa?";
 			mes "You're his friend,";
 			mes "right? A-are you";
 			mes "gonna see him later?";
 			next;
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "I made something for him. I don't know how to write, but I made this letter as best I can. Will you promise to give this to him for me? Please?";
 			next;
 			mes "^3355FFElle put a big";
 			mes "doodled message";
 			mes "in your hand.^000000";
+			changequest 2084,2085;
 			set kain_ticket, 14;
 			getitem 7276, 1; //Picture Letter,
 			close;
 		} else {
-			mes "[艾樂 其魯諾]";
+			mes "[Elle Cherno]";
 			mes "Hey! I have something to give you, but you have too much stuff already. Will you come back later?";
 			close;
 		}
@@ -492,37 +539,34 @@ OnTouch:
 	close;
 }
 
-//====================德奧 其魯諾=============================
+//====================Theo Cherno=============================
 
-ein_in01,123,94,1	script	德奧 其魯諾	851,{
-	switch (kain_ticket) {
-	case 7:
+ein_in01,123,94,1	script	Theo Cherno	851,{
+	if(kain_ticket == 7) {
 		callfunc "cherno";
 		set kain_ticket, 8;
 		close;
-	case 8:
-	case 9:
-		mes "[德奧 其魯諾]";
+	} else if(kain_ticket > 7 && kain_ticket < 10) {
+		mes "[Theo Cherno]";
 		mes "You are very kind.";
 		close;
-	case 10:
-	case 11:
-	case 12:
-		mes "[德奧 其魯諾]";
+	} else if(kain_ticket > 9 && kain_ticket < 13) {
+		mes "[Theo Cherno]";
 		mes "Are you sure";
 		mes "that you can find";
 		mes "her father? Oh...!";
 		mes "You're a godsend!";
 		close;
-	case 13:
-	case 14:
-	case 15:
-		Emotion 18, "德奧 其魯諾";
-		mes "[德奧 其魯諾]";
-		mes "看到我太太高興的樣子，我更覺得幸福起來了呢，真的非常謝謝你";
+	} else if(kain_ticket > 12) {
+		Emotion 18, "Theo Cherno";
+		mes "[Theo Cherno]";
+		mes "I'm so happy";
+		mes "for my wife.";
+		mes "I... I don't know";
+		mes "how to thank you.";
 		close;
-	dafault:
-		mes "[德奧 其魯諾]";
+	} else {
+		mes "[Theo Cherno]";
 		mes "Hmm...";
 		mes "Shall we talk";
 		mes "later? I'm pretty";
@@ -532,38 +576,38 @@ ein_in01,123,94,1	script	德奧 其魯諾	851,{
 	}
 }
 
-//====================泰蕾莎 其魯諾===========================
+//====================Tarsha Cherno===========================
 
-ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
+ein_in01,125,99,3	script	Tarsha Cherno	850,{
 	if(kain_ticket == 7) {
 		callfunc "cherno";
 		set kain_ticket, 8;
 		close;
 	} else if(kain_ticket == 8) {
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "Although these contraptions aren't worth showing off, we've put a lot of work into inventing these machines.";
 		close;
 	} else if(kain_ticket == 9) {
 		mes "["+strcharinfo(0)+"]";
 		mes "Ma'am, you have a scar on your shoulder. Is that from an accident?";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "Oh this...?";
 		mes "It's from years ago.";
 		mes "I guess I was quite";
 		mes "the trouble maker to";
 		mes "the people who raised me.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "You see, I lose my parents when I was very young. It was only later that I realized that I was raised by foster parents.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "My foster-mother told me that my real mother died long ago, but no one's sure if my real father is still alive.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "I tried my best to make my foster-mother happy, but sadly, I was too hot headed and rebellious.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "In the end, I left home and studied mechanics. That's how I met my husband. Meeting him is the greating thing that's ever happened to me!";
 		next;
 		mes "["+strcharinfo(0)+"]";
@@ -572,24 +616,24 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 		mes "daughter singing";
 		mes "some sort of Miner's Song.";
 		next;
-		mes "[德奧 其魯諾]";
+		mes "[Theo Cherno]";
 		mes "I don't understand";
 		mes "why that she likes";
 		mes "such a robust song";
 		mes "for men! Haha, this";
 		mes "is all your fault, Tarsha.";
-		Emotion 29, "德奧 其魯諾";
+		Emotion 29, "Theo Cherno";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "Hoho.";
 		mes "I was too young to remember it clearly, but I'm sure my real father loved that song.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "I barely recall that he used to sing it while cleaning our old house. Yes, I don't remember what he looked like, but he must have been a miner.";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "A miner...?";
-		mes "(Wait, that crewman, 凱因 希每勒! He's a miner who lost his daughter!)";
+		mes "(Wait, that crewman, Kain Himere! He's a miner who lost his daughter!)";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes " !!!!!!";
@@ -600,11 +644,12 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 		mes "may still be";
 		mes "alive!";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "...What?";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "I've got to go check something now, but hopefully I'll be back soon with good news!";
+		changequest 2080,2081;
 		set kain_ticket, 10;
 		close;
 	} else if(kain_ticket == 10 || kain_ticket == 11) {
@@ -612,7 +657,7 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 		mes "I know someone who might be your father! Just wait for me, hopefully I'll bering good news soon!";
 		close;
 	} else if(kain_ticket == 12) {
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "Oh, welcome back.";
 		mes "So did you bring";
 		mes "good news...?";
@@ -625,7 +670,7 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 			mes "^3355FFUh oh...";
 			mes "Nothing's there!^000000";
 			next;
-			mes "[德奧 其魯諾]";
+			mes "[Theo Cherno]";
 			mes "H-how rude!";
 			mes "Touching another";
 			mes "man's wife...?!";
@@ -647,40 +692,39 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 			mes "that you can forgive";
 			mes "him... Someday.";
 			next;
-			mes "[泰蕾莎 其魯諾]";
+			mes "[Tarsha Cherno]";
 			mes "Are...";
 			mes "Are you serious?";
 			mes "My father's alive!";
 			mes "Oh thank god! Thank";
 			mes "you so much!";
 			next;
-			mes "[泰蕾莎 其魯諾]";
+			mes "[Tarsha Cherno]";
 			mes "...........";
 			mes "That means, my";
 			mes "real name would be";
-			mes "^3131FF泰蕾莎 希每勒^000000.";
+			mes "^3131FFTarsha Himere^000000.";
 			next;
-			mes "[泰蕾莎 其魯諾]";
-			mes "至今生死未卜的父親，透過偶然遇見的你相助如今又能重逢，這一定是神明所賜給我的奇蹟般的禮物";
+			mes "[Tarsha Cherno]";
+			mes "Oh, you're a godsend! I'll never forgot what you've done for me! I must repay you, but all I know is mechanical engineering!";
 			next;
-			mes "[泰蕾莎 其魯諾]";
-			mes "你的恩惠畢生難忘!我擁有的東西不多..只有努力研讀的機械學方面的知識而已";
+			mes "[Tarsha Cherno]";
+			mes "Oh, if you have ^3131FFany broken equipment^000000, I can fix it with this ^FF0000<Expert Repairman>^000000. It's one of our best inventions!";
 			next;
-			mes "[泰蕾莎 其魯諾]";
-			mes "往後你若把 ^3131FF故障品或破碎品^000000帶來的話，我會用不久前跟先生所發明的 ^FF0000<萬能修理工具>^000000來替你修好的";
+			mes "[Tarsha Cherno]";
+			mes "Oh, I must go see my real father soon! I've missed him for years! Thank you for all your help!";
 			next;
-			mes "[泰蕾莎 其魯諾]";
-			mes "我想立刻和先生去尋找父親啊，我長久以來內心飽受折磨的空洞不安，這都是太懷念父親的緣故啊，真心的謝謝你了";
-			next;
-			mes "[泰蕾莎 其魯諾]";
-			mes "啊，對了，上次你來過之後，艾樂有交代過我你下次再來時，請你一定要去見她，她應該還在原來的地方，請你去見一下好嗎?";
+			mes "[Tarsha Cherno]";
+			mes "Ah, right.";
+			mes "Elle wants to see you again. Would you be so kind as to see her before you go?";
+			changequest 2083,2084;
 			set kain_ticket, 13;
 			close;
 		case 3:
 			mes "^3355FFUh oh...";
 			mes "Nothing's there!^000000";
 			next;
-			mes "[德奧 其魯諾]";
+			mes "[Theo Cherno]";
 			mes "H-how rude!";
 			mes "Touching another";
 			mes "man's wife...?!";
@@ -692,7 +736,7 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 			mes "^3355FFUh oh...";
 			mes "Nothing's there!^000000";
 			next;
-			mes "[德奧 其魯諾]";
+			mes "[Theo Cherno]";
 			mes "H-how rude!";
 			mes "Touching another";
 			mes "man's wife...?!";
@@ -702,11 +746,15 @@ ein_in01,125,99,3	script	泰蕾莎 其魯諾	850,{
 			close;
 		}
 	} else if(kain_ticket > 12) {
-		mes "[泰蕾莎 其魯諾]";
-		mes "托你的福現在過著活力十足的日子呢，心情比以前更是輕鬆自在、神采奕奕啊";
+		mes "[Tarsha Cherno]";
+		mes "I've been feeling";
+		mes "great after all you've";
+		mes "done for us. Once again,";
+		mes "I'd like to thank you,";
+		mes "kind adventurer.";
 		close;
 	} else {
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "I'm sorry, but";
 		mes "we're pretty busy.";
 		mes "Please excuse us~";
@@ -727,42 +775,42 @@ function	script	cherno	{
 	misceffect 20;
 	mes "^33355F*Crash!*^000000";
 	mes "....."; 
-	emotion 4, "德奧 其魯諾";
-	Emotion 4, "泰蕾莎 其魯諾";
+	emotion 4,0,"Theo Cherno";
+	Emotion 4,0,"Tarsha Cherno";
 	next;
-	mes "[德奧 其魯諾]";
+	mes "[Theo Cherno]";
 	mes "Honey...";
 	mes "I think there's";
 	mes "a critical structural";
 	mes "problem with the joint.";
 	next;
-	mes "[泰蕾莎 其魯諾]";
+	mes "[Tarsha Cherno]";
 	mes "I think they're";
 	mes "not connected right...";
 	next;
-	mes "[德奧 其魯諾]";
+	mes "[Theo Cherno]";
 	mes "Well, let's call";
 	mes "it a day and finish";
 	mes "this tomorrow.";
 	next;
-	Emotion 1, "泰蕾莎 其魯諾";
-	mes "[泰蕾莎 其魯諾]";
+	Emotion 1, "Tarsha Cherno";
+	mes "[Tarsha Cherno]";
 	mes "Elle is playing outside.";
 	mes "Oh, I didn't know we had";
 	mes "a guest? Hello, how are you?";
 	next;
 	switch( select( "Nothing.", "Your daughter asked me to visit you.")) {
 	case 1:
-		mes "[德奧 其魯諾]";
+		mes "[Theo Cherno]";
 		mes "As you see, my wife and I are pretty";
 		mes "busy to study a research.";
 		mes "If you do not have any urgent business,";
 		mes "will you please leave us alone?";
 		close;
 	case 2:
-		Emotion 4, "泰蕾莎 其魯諾";
-		Emotion 4, "德奧 其魯諾";
-		mes "[泰蕾莎 其魯諾]";
+		Emotion 4, "Tarsha Cherno";
+		Emotion 4, "Theo Cherno";
+		mes "[Tarsha Cherno]";
 		mes "Excuse me?";
 		mes "What did she say?";
 		next;
@@ -773,36 +821,36 @@ function	script	cherno	{
 		mes "was sick or sad";
 		mes "...Or something?";
 		next;
-		Emotion 23, "泰蕾莎 其魯諾";
-		mes "[泰蕾莎 其魯諾]";
+		Emotion 23, "Tarsha Cherno";
+		mes "[Tarsha Cherno]";
 		mes "Oh my god...!";
 		mes "What is she";
 		mes "thinking...?";
 		next;
-		mes "[德奧 其魯諾]";
+		mes "[Theo Cherno]";
 		mes "wait, darling.";
 		mes "I agree that sometimes you look sad and lonely, gazing out that window with those wistful eyes.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "Oh, I must be making my family very anxious. But don't you worry, love. I'm very happy with you and Elle.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "And...";
 		mes "Kind adventurer,";
 		mes "May I ask your name?";
 		next;
 		mes "["+strcharinfo(0)+"]";
 		mes "I am called,";
-		mes strcharinfo(0)+",";
+		mes strcharinfo(0)+".";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes strcharinfo(0)+",";
 		mes "I appreciate your concerns~ Would you please stay for a cup of tea?";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "My husband and I have been studying mechanical engineering. You see, there are many Einbech miners risking their lives everyday.";
 		next;
-		mes "[泰蕾莎 其魯諾]";
+		mes "[Tarsha Cherno]";
 		mes "If we could create a machine that could reduce the risk of mining ores, we could really help them. But we're pretty far from reaching that goal.";
 		next;
 		mes "["+strcharinfo(0)+"]";
@@ -882,6 +930,7 @@ einbech,45,113,5	script	Tree#t1-1::Tree	111,{
 			close;
 		} else {
 			callfunc "diary";
+			changequest 2082,2083;
 			set kain_ticket, 12;
 			close;
 		}
@@ -1030,331 +1079,424 @@ einbech,53,94,5	duplicate(Tree)	Tree#t1-4	111
 
 
 //=============Monsters Attack======================
-airplane_01,1,1,0	script	Quest_Izl	-1,{
-OnInit:
-	disablenpc "飛空艇 船長#02";
-OnInvasion:
-while($@mobinv >= 9 && $@mobrand == 3)
-{
-	Initnpctimer;
+airplane_01,1,1,0	script	Airship#airplane02	-1,{
 	end;
-OnTimer6000:
-	mapannounce "airplane_01","觀測兵 : 哦...哦哦呃! 前方有一群不明物體朝這裡接近中!",1,0x00FF00;
+OnEnable:
+	initnpctimer;
 	end;
-OnTimer10000:
-	mapannounce "airplane_01","機內廣播 : 各位乘客, 目前有一群身分不明的魔物, 企圖要入侵本飛空艇中",1,0x00ff00;
+OnTimer25000:
+	mapannounce "airplane_01","We are heading to Izlude.",bc_map,0x00FF00;
 	end;
-OnTimer12000:
-	mapannounce "airplane_01","機內廣播 : 位於甲板上的乘客們請趕快躲入船內",1,0x00ff00;
-	disablenpc "飛空艇 工作人員#info";
+OnTimer30000:
+	mapannounce "airplane_01","Captain: Attention, all passengers.",bc_map,0x00FF00;
 	end;
-OnTimer16000:
-	monster "airplane_01",245,57,"小妖精",1632,1;
-	monster "airplane_01",247,59,"小妖精",1632,1;
-	monster "airplane_01",249,52,"小妖精",1632,1;
-	monster "airplane_01",243,62,"小妖精",1632,1;
-	monster "airplane_01",239,52,"惡魔之眼",1633,1;
-	monster "airplane_01",234,56,"惡魔之眼",1633,1;
-	monster "airplane_01",227,49,"惡魔之眼",1633,1;
-	monster "airplane_01",233,41,"惡魔之眼",1633,1;
-	switch (rand(5)) {
-	case 0:
-		monster "airplane_01",251,47,"紅蝙蝠",1434,1;
-		monster "airplane_01",245,53,"紅蝙蝠",1434,1;
-		monster "airplane_01",234,46,"紅蝙蝠",1434,1;
-		monster "airplane_01",233,58,"紅蝙蝠",1434,1;
-		monster "airplane_01",243,60,"紅蝙蝠",1434,1;
-		monster "airplane_01",228,54,"紅蝙蝠",1434,1;
-		monster "airplane_01",232,41,"紅蝙蝠",1434,1;
-		end;
-	case 1:
-		monster "airplane_01",251,47,"直升機哥布靈",1557,1;
-		monster "airplane_01",245,53,"直升機哥布靈",1557,1;
-		monster "airplane_01",234,46,"直升機哥布靈",1557,1;
-		monster "airplane_01",233,58,"直升機哥布靈",1557,1;
-		monster "airplane_01",243,60,"直升機哥布靈",1557,1;
-		monster "airplane_01",228,54,"直升機哥布靈",1557,1;
-		monster "airplane_01",232,41,"直升機哥布靈",1557,1;
-		end;
-	case 2:
-		monster "airplane_01",251,47,"吸血蝙蝠",1419,1;
-		monster "airplane_01",245,53,"吸血蝙蝠",1419,1;
-		monster "airplane_01",234,46,"吸血蝙蝠",1419,1;
-		monster "airplane_01",233,58,"吸血蝙蝠",1419,1;
-		monster "airplane_01",243,60,"吸血蝙蝠",1419,1;
-		monster "airplane_01",228,54,"吸血蝙蝠",1419,1;
-		monster "airplane_01",232,41,"吸血蝙蝠",1419,1;
-		end;
-	case 3:
-		monster "airplane_01",251,47,"蛋殼小雞",1050,1;
-		monster "airplane_01",245,53,"蛋殼小雞",1050,1;
-		monster "airplane_01",234,46,"蛋殼小雞",1050,1;
-		monster "airplane_01",233,58,"蛋殼小雞",1050,1;
-		monster "airplane_01",243,60,"蛋殼小雞",1050,1;
-		monster "airplane_01",228,54,"蛋殼小雞",1050,1;
-		monster "airplane_01",232,41,"蛋殼小雞",1050,1;
-		end;
-	case 4:
-		monster "airplane_01",251,47,"綠蒼蠅",1042,1;
-		monster "airplane_01",245,53,"綠蒼蠅",1042,1;
-		monster "airplane_01",234,46,"綠蒼蠅",1042,1;
-		monster "airplane_01",233,58,"綠蒼蠅",1042,1;
-		monster "airplane_01",243,60,"綠蒼蠅",1042,1;
-		monster "airplane_01",228,54,"綠蒼蠅",1042,1;
-		monster "airplane_01",232,41,"綠蒼蠅",1042,1;
-		end;
-	}
-OnTimer16010:
-	monster "airplane_01",238,56,"小妖精",1632,1;
-	monster "airplane_01",239,56,"小妖精",1632,1;
-	monster "airplane_01",240,50,"小妖精",1632,1;
-	monster "airplane_01",241,56,"小妖精",1632,1;
-	monster "airplane_01",247,51,"小妖精",1632,1;
-	monster "airplane_01",237,44,"惡魔之眼",1633,1;
-	monster "airplane_01",233,54,"惡魔之眼",1633,1;
-	monster "airplane_01",237,62,"惡魔之眼",1633,1;
-	end;
-OnTimer21000:
-	mapannounce "airplane_01", "機組員 : 裴陸 船長不好了! 小妖精們跑進推進器裡!!",1,0x00FF00;
-	end;
-OnTimer26000:
-	mapannounce "airplane_01", "裴陸船長 : 什麼?! 這些傢伙太不像話了! 我要親自去處裡!",1,0x70DBDB;
-	end;
-OnTimer31000:
-	disablenpc "飛空艇 船長#01";
-	enablenpc "飛空艇 船長#02";
-	end;
-OnTimer36000:
-	emotion 6, "飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 你們這些傢伙!! 趕快給我下來!!",1,0x70DBDB;
-	end;
-OnTimer36500:
-	mapannounce "airplane_01", "- 叩叩叩..敲敲打打....砰砰. 轟隆轟隆-",1,0x00FF00;
-	donpcevent "boom#air-6::OnAttack"; //6
-	end;
-OnTimer37000:
-	donpcevent "boom#air-7::OnAttack"; //7
-	end;
-OnTimer37500:
-	donpcevent "boom#air-8::OnAttack"; //8
+OnTimer34000:
+	mapannounce "airplane_01","Captain: We are being approached by a group of unidentified creatures.",bc_map,0x00ff00;
 	end;
 OnTimer38000:
-	donpcevent "boom#air-9::OnAttack"; //9
+	mapannounce "airplane_01", "Captain: All passengers on deck, please find shelter inside the ship!",bc_map,0x00ff00;
+	hideonnpc "Airship Staff#airplane01";
 	end;
-OnTimer38500:
-	donpcevent "boom#air-10::OnAttack"; //10
+OnTimer48000:
+	monster "airplane_01",245,57,"Gremlin",1632,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",247,59,"Gremlin",1632,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",249,52,"Gremlin",1632,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",243,62,"Gremlin",1632,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",239,52,"Beholder",1633,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",234,56,"Beholder",1633,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",227,49,"Beholder",1633,1,"Airship#airplane02::OnMyMobDead";
+	monster "airplane_01",233,41,"Beholder",1633,1,"Airship#airplane02::OnMyMobDead";
+	switch(rand(1,5)) {
+	case 1: monster "airplane_01",251,47,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 2: monster "airplane_01",251,47,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 3: monster "airplane_01",251,47,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 4: monster "airplane_01",251,47,"Picky",1049,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 5: monster "airplane_01",251,47,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead"; break;
+	}
+	switch(rand(1,5)) {
+	case 1: monster "airplane_01",245,53,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 2: monster "airplane_01",245,53,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 3: monster "airplane_01",245,53,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 4: monster "airplane_01",245,53,"Picky",1049,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 5: monster "airplane_01",245,53,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead"; break;
+	}
+	switch(rand(1,5)) {
+	case 1: monster "airplane_01",234,46,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 2: monster "airplane_01",234,46,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 3: monster "airplane_01",234,46,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 4: monster "airplane_01",234,46,"Picky",1049,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 5: monster "airplane_01",234,46,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead"; break;
+	}
+	switch(rand(1,5)) {
+	case 1: monster "airplane_01",233,58,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 2: monster "airplane_01",233,58,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 3: monster "airplane_01",233,58,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 4: monster "airplane_01",233,58,"Picky",1049,1,"Airship#airplane02::OnMyMobDead"; break;
+	case 5: monster "airplane_01",233,58,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead"; break;
+	}
+	// it's possible this is an error, but in aegis it stops resetting the random var.
+	switch(rand(1,5)) {
+	case 1:
+		monster "airplane_01",243,60,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",228,54,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",232,41,"Drainliar",1111,1,"Airship#airplane02::OnMyMobDead";
+		break;
+	case 2:
+		monster "airplane_01",243,60,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",228,54,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",232,41,"Rotar Zairo",1392,1,"Airship#airplane02::OnMyMobDead";
+		break;
+	case 3:
+		monster "airplane_01",243,60,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",228,54,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",232,41,"Farmiliar",1005,1,"Airship#airplane02::OnMyMobDead";
+		break;
+	case 4:
+		monster "airplane_01",243,60,"Picky",1049,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",228,54,"Picky",1049,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",232,41,"Picky",1049,1,"Airship#airplane02::OnMyMobDead";
+		break;
+	case 5:
+		monster "airplane_01",243,60,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",228,54,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead";
+		monster "airplane_01",232,41,"Steel Chonchon",1042,1,"Airship#airplane02::OnMyMobDead";
+		break;
+	}
 	end;
-OnTimer39000:
-	donpcevent "boom#air-6::OnAttack"; //6
+OnTimer48010:
+	monster "airplane_01",238,56,"Gremlin",1632,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",239,56,"Gremlin",1632,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",240,50,"Gremlin",1632,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",241,56,"Gremlin",1632,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",247,51,"Gremlin",1632,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",237,44,"Beholder",1633,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",233,54,"Beholder",1633,1,"Airship#airplane02::OnCaptainMobDead";
+	monster "airplane_01",237,62,"Beholder",1633,1,"Airship#airplane02::OnCaptainMobDead";
 	end;
-OnTimer39500:
-	donpcevent "boom#air-7::OnAttack"; //7
+OnTimer53000:
+	mapannounce "airplane_01", "Attendant: Captain Tarlock, we're in trouble! The monsters are heading to the propellers!",bc_map,0x00FF00;
 	end;
-OnTimer40000:
-	donpcevent "boom#air-8::OnAttack"; //8
+OnTimer58000:
+	mapannounce "airplane_01", "Captain Tarlock: What?! I've got to stop them!",bc_map,0x70DBDB;
 	end;
-OnTimer40500:
-	donpcevent "boom#air-9::OnAttack"; //9
-	end;
-OnTimer41000:
-	donpcevent "boom#air-10::OnAttack"; //10
-	end;
-OnTimer41500:
-	donpcevent "boom#air-6::OnAttack"; //6
-	mapannounce "airplane_01", "輪機長 : 嗚哇!! 1號後方的引擎...!",1,0x00FF00;
-	end;
-OnTimer42500:
-	donpcevent "boom#air-7::OnAttack"; //7
-	end;
-OnTimer43500:
-	donpcevent "boom#air-8::OnAttack"; //8
-	end;
-OnTimer44500:
-	donpcevent "boom#air-9::OnAttack"; //9
-	end;
-OnTimer45500:
-	donpcevent "boom#air-10::OnAttack"; //10
-	end;
-OnTimer46500:
-	mapannounce "airplane_01", "舵手 : 先把老弱婦孺疏散到安全的地方! 要快點!",1,0x00FF00;
-	end;
-OnTimer47500:
-	donpcevent "boom#air-6::OnAttack"; //6
-	end;
-OnTimer48500:
-	donpcevent "boom#air-7::OnAttack"; //7
-	end;
-OnTimer49500:
-	donpcevent "boom#air-8::OnAttack"; //8
-	end;
-OnTimer50500:
-	donpcevent "boom#air-7::OnAttack"; //7
-	end;
-OnTimer51500:
-	Emotion 6, "飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 好吧.. 好言相勸, 竟不理我....",1,0x70DBDB;
-	end;
-OnTimer56500:
-	Emotion 6, "飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 敢在我艇上放肆, 我會讓你好看的",1,0x70DBDB;
-	end;
-OnTimer61500:
-	Emotion 29, "飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 我用特別製造的艾索德斯 裘卡 XIII世的來福槍來解決你們!!",1,0x70DBDB;
-	end;
-OnTimer66500:
-	mapannounce "airplane_01", "砰! 砰砰! 砰砰! 砰砰砰!",1,0x00FF00;
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer67000:
-	donpcevent "boom#air-1::OnAttack"; //1
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer67500:
-	donpcevent "boom#air-2::OnAttack"; //2
-	donpcevent "飛空艇 船長#02::OnAttack";
+OnTimer63000:
+	hideonnpc "Airship Captain#01";
+	hideoffnpc "Airship Captain#02";
 	end;
 OnTimer68000:
-	donpcevent "boom#air-3::OnAttack"; //3
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer68500:
-	donpcevent "boom#air-4::OnAttack"; //4
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer69000:
-	donpcevent "boom#air-5::OnAttack"; //5
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer69500:
-	donpcevent "boom#air-0::OnAttack"; //0
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer70000:
-	donpcevent "boom#air-1::OnAttack"; //1
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer70500:
-	donpcevent "boom#air-2::OnAttack"; //2
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer71000:
-	donpcevent "boom#air-4::OnAttack"; //4
-	donpcevent "飛空艇 船長#02::OnAttack";
-	end;
-OnTimer71500:
-	donpcevent "boom#air-5::OnAttack"; //5
-	end;
-OnTimer72000:
-	Emotion 6, "飛空艇 船長#02";
-	mapannounce "airplane_01","裴陸船長 : 呵哈哈哈! 怎樣, 滋味如何啊?!!",1,0x70DBDB;
-	end;
-OnTimer72500:
-	mapannounce "airplane_01", "砰! 砰砰! 砰砰! 砰砰砰!",1,0x00FF00;
-	donpcevent "飛空艇 船長#02::OnAttack";
+	emotion e_ag,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: You ugly, godforsaken creatures... Get off my ship!",bc_map,0x70DBDB;
 	end;
 OnTimer73000:
-	donpcevent "boom#air-6::OnAttack"; //6
-	donpcevent "飛空艇 船長#02::OnAttack";
+	mapannounce "airplane_01", "*Kzzz...Drrrr...Boom! CRASH!*",bc_map,0x00FF00;
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
 	end;
 OnTimer73500:
-	donpcevent "boom#air-7::OnAttack"; //7
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
 	end;
 OnTimer74000:
-	donpcevent "boom#air-8::OnAttack"; //8
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
 	end;
 OnTimer74500:
-	donpcevent "boom#air-9::OnAttack"; //9
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
 	end;
 OnTimer75000:
-	donpcevent "boom#air-10::OnAttack"; //10
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom10#airplane";
 	end;
 OnTimer75500:
-	donpcevent "boom#air-6::OnAttack"; //6
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
 	end;
 OnTimer76000:
-	donpcevent "boom#air-7::OnAttack"; //7
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
 	end;
 OnTimer76500:
-	donpcevent "boom#air-8::OnAttack"; //8
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
 	end;
 OnTimer77000:
-	donpcevent "boom#air-9::OnAttack"; //9
-	donpcevent "飛空艇 船長#02::OnAttack";
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
 	end;
 OnTimer77500:
-	donpcevent "boom#air-8::OnAttack"; //8
-	mapannounce "airplane_01", "砰! 砰砰! 砰砰砰! 砰!",1,0x00FF00;
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom10#airplane";
 	end;
 OnTimer78000:
-	donpcevent "boom#air-9::OnAttack"; //9
-	end;
-OnTimer78500:
-	donpcevent "boom#air-10::OnAttack"; //10
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
+	mapannounce "airplane_01", "Engineer: Oh no! We've got a problem with the Number One Rear Engine!",bc_map,0x00FF00;
 	end;
 OnTimer79000:
-	donpcevent "boom#air-6::OnAttack"; //6
-	end;
-OnTimer79500:
-	donpcevent "boom#air-7::OnAttack"; //7
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
 	end;
 OnTimer80000:
-	Emotion 26,"飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 呃呃..?! 這些傢伙快把引擎破壞殆盡了?!!",1,0x70DBDB;
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
+	end;
+OnTimer81000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
+	end;
+OnTimer82000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom10#airplane";
+	end;
+OnTimer83000:
+	mapannounce "airplane_01", "Pilot: Hurry! Get the women, old people and children somewhere safe first! Hurry!",bc_map,0x00FF00;
+	end;
+OnTimer84000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
 	end;
 OnTimer85000:
-	mapannounce "airplane_01", "舵手 : 唉喲喲..反而是船長的槍擊, 快把引擎破壞了啦",1,0x00FF00;
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
 	end;
-OnTimer100000:
-	Emotion 4,"飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 嗯嗯..是嗎?! 難免會有失手的時候嘛, 嗯哈哈",1,0x70DBDB;
+OnTimer86000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
+	end;
+OnTimer87000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
+	end;
+OnTimer88000:
+	emotion e_ag,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: You dirty monsters are dealing with this ship's captain...",bc_map,0x70DBDB;
+	end;
+OnTimer93000:
+	emotion e_ag,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: I'll protect this ship and my crew with my life!",bc_map,0x70DBDB;
+	end;
+OnTimer98000:
+	emotion e_pif,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: Here goes! Special Exodus Joker XIII Doom Rifle!",bc_map,0x70DBDB;
+	end;
+OnTimer103000:
+	mapannounce "airplane_01", "*Bang! Bang Bang! Bang Bang! Bang Bang Bang!*",bc_map,0x00FF00;
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer103500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom1#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer104000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom2#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer104500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom3#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer105000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom4#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer105500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom5#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer106000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom0#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer106500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom1#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer107000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom2#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer107500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom4#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer108000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom5#airplane";
+	killmonster "airplane_01","Airship#airplane02::OnCaptainMobDead";
+	end;
+OnTimer113000:
+	emotion e_pif,0,"Airship Captain#02";
+	mapannounce "airplane_01","Captain Tarlock: Filthy animals! Stop ruining my ship!",bc_map,0x70DBDB;
+	end;
+OnTimer118000:
+	mapannounce "airplane_01", "*Bang! Bang Bang! Bang Bang! Bang Bang Bang!*",bc_map,0x00FF00;
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer118500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer119000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer119500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer120000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer120500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom10#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer121000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer121500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer122000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer122500:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
+	specialeffect EF_HIT5,AREA,"Airship Captain#02";
+	end;
+OnTimer123000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom8#airplane";
+	mapannounce "airplane_01", "*Boom! Boom Boom! Boom Boom! Boom!*",bc_map,0x00FF00;
+	end;
+OnTimer124000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom9#airplane";
 	end;
 OnTimer125000:
-	Emotion 26,"飛空艇 船長#02";
-	mapannounce "airplane_01", "裴陸船長 : 總之, 這裡就交給你們善後, 噗呵呵嗯",1,0x70DBDB;
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom10#airplane";
 	end;
-OnTimer130000:
-	disablenpc "飛空艇 船長#02";
-	enablenpc "飛空艇 船長#01";
-	enablenpc "飛空艇 工作人員#info";
-	donpcevent "YunoIzl_Airship::OnReturn";
+OnTimer126000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom6#airplane";
+	end;
+OnTimer127000:
+	specialeffect EF_SUI_EXPLOSION,AREA,"boom7#airplane";
+	end;
+OnTimer128000:
+	emotion e_an,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: There's... Too many to handle!",bc_map,0x70DBDB;
+	end;
+OnTimer133000:
+	mapannounce "airplane_01", "Pilot: Captain, sir, the situation is getting critical!",bc_map,0x00FF00;
+	end;
+OnTimer138000:
+	emotion e_swt,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: We'll need all the help we can get!",bc_map,0x70DBDB;
+	end;
+OnTimer143000:
+	emotion e_sry,0,"Airship Captain#02";
+	mapannounce "airplane_01", "Captain Tarlock: All hands and any passenger who can fight! We've got to drive away these monsters!",bc_map,0x70DBDB;
+	end;
+OnTimer148000:
+	hideonnpc "Airship Captain#02";
+	hideoffnpc "Airship Captain#01";
+	end;
+OnTimer400000:
+	killmonster "airplane_01","Airship#airplane02::OnMyMobDead";
+	end;
+OnTimer405000:
+	mapannounce "airplane_01","Monster threat eliminated. The Airship is now returning to normal operation.",bc_map,0x00FF00;
+	hideoffnpc "Airship Staff#airplane01";
+	end;
+OnTimer410000:
+	mapannounce "airplane_01","We will arrive in Izlude shortly.",bc_map,"0x00ff00";
+	end;
+OnTimer420000:
+	set $@airplanelocation2,1;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","Welcome to Izlude. Have a safe trip.",bc_map,"0x00ff00";
+	end;
+OnTimer430000:
+	mapannounce "airplane_01","We are currently in Izlude. The Airship will take off shortly.",bc_map,"0x00ff00";
+	end;
+OnTimer440000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","The Airship is now taking off. Our next destination is Juno.",bc_map,"0x70dbdb";
+	end;
+OnTimer465000:
+	mapannounce "airplane_01","We are heading to Juno.",bc_map,"0x70dbdb";
+	end;
+OnTimer490000:
+	mapannounce "airplane_01","We will arrive in Juno shortly.",bc_map,"0x70dbdb";
+	end;
+OnTimer500000:
+	set $@airplanelocation2,2;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","Welcome to Juno. Have a safe trip.",bc_map,"0x70dbdb";
+	end;
+OnTimer510000:
+	mapannounce "airplane_01","We are currently in Juno. The Airship will leave shorty.",bc_map,"0x70dbdb";
+	end;
+OnTimer520000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","The Airship is leaving the ground. Our next destination is Rachel.",bc_map,"0xFF8200";
+	end;
+OnTimer545000:
+	mapannounce "airplane_01","We are heading to Rachel.",bc_map,"0xFF8200";
+	end;
+OnTimer570000:
+	mapannounce "airplane_01","We will arrive in Rachel shortly.",bc_map,"0xFF8200";
+	end;
+OnTimer580000:
+	set $@airplanelocation2,0;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","Welcome to Rachel. Have a safe trip.",bc_map,"0xFF8200";
+	end;
+OnTimer590000:
+	mapannounce "airplane_01","We are currently in Rachel. The Airship will take off shortly.",bc_map,"0xFF8200";
+	end;
+OnTimer600000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","The Airship is now taking off. Our next destination is Izlude.",bc_map,"0x00ff00";
+	stopnpctimer;
+	set getvariableofnpc(.moninv, "International_Airship"),2;
+	donpcevent "International_Airship::OnEnable";
+	end;
+
+OnMyMobDead:
+OnCaptainMobDead:
 	end;
 }
-}
 
-//========Captain Tarlock (Outside the Captain Cabin)=======================
-
-airplane_01,246,54,5	script	飛空艇 船長#02	873,{
+airplane_01,246,54,3	script	Airship Captain#02	873,{
 	cutin "fly_felrock",2;
-	mes "[裴陸]";
-	mes "我是這艘飛空艇的船長叫裴陸,";
-	mes "因我被這些小妖精搞得焦頭爛額,";
-	mes "所以盡量別跟我說話!";
-	close;
+	mes "[Tarlock]";
+	mes "I am Tarlock,";
+	mes "captain of this";
+	mes "Airship. Go and";
+	mes "fight with the";
+	mes "Gremlins!";
+	close2;
 	cutin "",255;
-OnAttack:
-	misceffect 4;
+	end;
+	
+OnInit:
+	hideonnpc "Airship Captain#02";
 	end;
 }
+
+airplane_01,249,50,0	script	boom0#airplane	139,{ end; }
+airplane_01,239,62,0	script	boom1#airplane	139,{ end; }
+airplane_01,244,55,0	script	boom2#airplane	139,{ end; }
+airplane_01,239,50,0	script	boom3#airplane	139,{ end; }
+airplane_01,245,59,0	script	boom4#airplane	139,{ end; }
+airplane_01,245,48,0	script	boom5#airplane	139,{ end; }
+airplane_01,235,39,0	script	boom6#airplane	139,{ end; }
+airplane_01,252,41,0	script	boom7#airplane	139,{ end; }
+airplane_01,252,63,0	script	boom8#airplane	139,{ end; }
+airplane_01,234,65,0	script	boom9#airplane	139,{ end; }
+airplane_01,227,67,0	script	boom10#airplane	139,{ end; }
 
 //========Captain Tarlock (Inside the Captain Cabin)=======================
-
-airplane_01,238,154,3	script	飛空艇 船長#01	873,{
-
+airplane_01,238,154,3	script	Airship Captain#01	873,{
 	cutin "fly_felrock",2;
-	mes "[裴陸]";
-	mes "我是這艘飛空艇得船長叫裴陸,";
-	mes "請問找我有事嗎? 呃?!";
+	mes "[Tarlock]";
+	mes "I am Tarlock,";
+	mes "captain of this";
+	mes "Airship. Did you";
+	mes "have a question?";
 	next;
 	if (lght_air >= 0 && lght_air <= 3 || lght_air == 7) {
-		set .@question$, "飛空艇是如何飛行的呢?";
+		set .@question$, "How does this Airship fly?";
 	} else if(lght_air == 4) {
 		set .@question$, "I handed the letter to Captain Ferlock.";
 	} else if(lght_air == 5) {
@@ -1362,28 +1504,28 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 	} else if(lght_air == 6) {
 		set .@question$, "Already finished reading?";
 	}
-	switch( select( "船長竟是馴鹿?", .@question$, "取消" )){
+	switch (select("Y-you're a reindeer?!", .@question$, "No, not really.")) {
 	case 1:
-		mes "[裴陸]";
-		mes "說什麼馴鹿啦!";
-		mes "所以我說人類小孩都太孤陋寡聞,";
-		mes "沒禮貌! 沒規矩!!";
-		mes "你再無禮我就把你丟下去囉!!";
+		mes "[Tarlock]";
+		mes "Hm? Oh, that";
+		mes "We reindeer are a proud";
+		mes "race who like to travel the";
+		mes "world. But that should be";
+		mes "obvious if you think of the";
+		mes "reindeer working for Claus.";
 		next;
-		mes "[裴陸]";
-		mes "我們族類代代都是擁有高貴血統的貴族,";
-		mes "其水準與你們人類是不能相提並論的!";
-		mes "你以為能夠擔任這巨大飛空艇的船長是談";
-		mes "何容易啊!";
-		next;
-		mes "[裴陸]";
-		mes "搭著飛空艇去環遊世界,";
-		mes "才是我人生的一大樂趣與目標囉";
+		mes "[Tarlock]";
+		mes "Well, reindeer or";
+		mes "not, I've earned the";
+		mes "captaincy of this ship";
+		mes "and the loyalty of my crew.";
+		mes "We'll do everything we can to";
+		mes "make sure your flight is safe.";
 		close2;
 		cutin "",255;
 		end;
 	case 2:
-		if(lght_air == 1) {
+		if (lght_air == 1) {
 			if (BaseLevel <= 59) {
 				mes "[Tarlock]";
 				mes "Mm...?";
@@ -1401,7 +1543,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 				mes "before? Are you just curious";
 				mes "or did you really want to know?";
 				next;
-				switch( select( "No, not really...", "Yes, I really want to know!")) {
+				switch (select("No, not really...:Yes, I really want to know!")) {
 				case 1:
 					mes "[Tarlock]";
 					mes "Hahahaha~";
@@ -1429,7 +1571,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 					mes "you that classified info if you";
 					mes "do a little favor for me first.";
 					next;
-					switch( select( "Let me think about it.", "Sure.")) {
+					switch (select("Let me think about it.:Sure.")) {
 					case 1:
 						mes "[Tarlock]";
 						mes "Alright. But don't";
@@ -1441,6 +1583,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 						cutin "",255;
 						end;
 					case 2:
+						setquest 8032;
 						set lght_air, 2;
 						mes "[Tarlock]";
 						mes "Ha-hah! I like you";
@@ -1474,8 +1617,9 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 					}
 				}
 			}
-		} else if(lght_air == 4) {
+		} else if (lght_air == 4) {
 			set lght_air, 5;
+			changequest 8034,8035;
 			mes "[Tarlock]";
 			mes "Oh!";
 			mes "And he answer you? Really?!";
@@ -1486,7 +1630,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			close2;
 			cutin "",255;
 			end;
-		} else if(lght_air == 5) {
+		} else if (lght_air == 5) {
 			set lght_air, 6;
 			mes "[Tarlock]";
 			mes "Um... Ha ha ha~!";
@@ -1501,7 +1645,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			close2;
 			cutin "",255;
 			end;
-		} else if(lght_air== 6) {
+		} else if (lght_air == 6) {
 			mes "[Tarlock]";
 			mes "Yes, I finished.";
 			mes "Even if I understand him";
@@ -1526,62 +1670,59 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			mes "That turns the propeller.";
 			mes "That's all. Did you understand?";
 			next;
-			switch( select( "Um? Only that? There's no more?")) {
-			case 1:
-				mes "[Tarlock]";
-				mes "Ha ha ha!";
-				mes "I explained it roughtly to";
-				mes "make it easier to understand";
-				mes "by you. Still, you aren't";
-				mes "pleased? I said it in plain";
-				mes "english that everyone could";
-				mes "understand.";
-				next;
-				mes "[Tarlock]";
-				mes "Obviously, only with a steam";
-				mes "is impossible to make this fly.";
-				mes "Therefore, it uses an amplifier";
-				mes "called ^ff0000Rune Mechanism^000000.";
-				next;
-				switch( select( "Uh? What's a Rune Mechanism?")) {
-				case 1:
-					mes "[Tarlock]";
-					mes "It's a device that uses a";
-					mes "magic stone as power source.";
-					mes "However, I don't know how";
-					mes "this work...";
-					mes "I forgot the details probably";
-					mes "because I didn't paid much attention.";
-					next;
-					mes "[Tarlock]";
-					mes "The only I remember is";
-					mes "that the energy is amplified";
-					mes "while it passes through the";
-					mes "Rune that is attached to a";
-					mes "steam engine.";
-					next;
-					mes "[Tarlock]";
-					mes "In fact, all this airship";
-					mes "floats thanks to the power";
-					mes "given by the stone, no";
-					mes "exaggeration.";
-					mes "It has really a strong power.";
-					next;
-					specialeffect2 EF_ABSORBSPIRITS;
-					mes "[Tarlock]";
-					mes "Did you understand?";
-					mes "I'll rest a little.";
-					mes "I'm tired for reading";
-					mes "and writing those long";
-					mes "letters.";
-					set lght_air, 7;
-					getexp 200000, 10000;
-					close2;
-					cutin "",255;
-					end;
-				}
-			}
-		} else if(lght_air == 7) {
+			select("Um? Only that? There's no more?");
+			mes "[Tarlock]";
+			mes "Ha ha ha!";
+			mes "I explained it roughtly to";
+			mes "make it easier to understand";
+			mes "by you. Still, you aren't";
+			mes "pleased? I said it in plain";
+			mes "english that everyone could";
+			mes "understand.";
+			next;
+			mes "[Tarlock]";
+			mes "Obviously, only with a steam";
+			mes "is impossible to make this fly.";
+			mes "Therefore, it uses an amplifier";
+			mes "called ^ff0000Rune Mechanism^000000.";
+			next;
+			select("Uh? What's a Rune Mechanism?");
+			mes "[Tarlock]";
+			mes "It's a device that uses a";
+			mes "magic stone as power source.";
+			mes "However, I don't know how";
+			mes "this work...";
+			mes "I forgot the details probably";
+			mes "because I didn't paid much attention.";
+			next;
+			mes "[Tarlock]";
+			mes "The only I remember is";
+			mes "that the energy is amplified";
+			mes "while it passes through the";
+			mes "Rune that is attached to a";
+			mes "steam engine.";
+			next;
+			mes "[Tarlock]";
+			mes "In fact, all this airship";
+			mes "floats thanks to the power";
+			mes "given by the stone, no";
+			mes "exaggeration.";
+			mes "It has really a strong power.";
+			next;
+			specialeffect2 EF_MAPPILLAR;
+			mes "[Tarlock]";
+			mes "Did you understand?";
+			mes "I'll rest a little.";
+			mes "I'm tired for reading";
+			mes "and writing those long";
+			mes "letters.";
+			completequest 8035;
+			set lght_air, 7;
+			getexp 20000, 1000;
+			close2;
+			cutin "",255;
+			end;
+		} else if (lght_air == 7) {
 			mes "[Tarlock]";
 			mes "Didn't I teach you before?";
 			mes "I won't explain such a long";
@@ -1589,7 +1730,7 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 			close2;
 			cutin "",255;
 			end;
-		} else if(lght_air == 2) {
+		} else {
 			mes "[Tarlock]";
 			mes "Hahahah! Don't worry, I'll";
 			mes "tell you know this Airship";
@@ -1612,8 +1753,11 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 		cutin "",255;
 		end;
 	case 3:
-		mes "[裴陸]";
-		mes "哼! 我很忙沒事別來煩我啦!";
+		mes "[Tarlock]";
+		mes "Alright, then.";
+		mes "Thanks for flying";
+		mes "with us, and I hope";
+		mes "you enjoy your travels.";
 		close2;
 		cutin "",255;
 		end;
@@ -1623,9 +1767,8 @@ airplane_01,238,154,3	script	飛空艇 船長#01	873,{
 
 //===========Captain Ferlock=======================
 
-airplane,236,163,5	script	飛空艇 船長#03	873,{
-
-	cutin "fly_trock",2;
+airplane,236,163,5	script	Airship Captain#03	873,{
+	cutin "fly_trock.bmp",2;
 	if(hg_ma1 == 3 || hg_ma1 == 4)
 	{
 		mes "[Ferlock]";
@@ -1694,6 +1837,7 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 		next;
 		mes "[Ferlock]";
 		mes "And if you ever meet him, please send him my gratitude and regards.";
+		changequest 8045,8046;
 		set hg_ma1,5;
 		close2;
 		cutin "",255;
@@ -1915,8 +2059,9 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 		mes "is goodbye for now, adventurer.";
 		close2;
 		specialeffect2 EF_ABSORBSPIRITS;
+		completequest 8043;
 		set lhz_heart,13;
-		getexp 700000,400000;
+		getexp 70000,40000;
 		cutin "",255;
 		end;
 	}
@@ -1932,95 +2077,104 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 		cutin "",255;
 		end;
 	}
-	mes "[杜陸]";
-	mes "歡迎搭乘我們的飛空艇，我是本飛空艇的";
-	mes "船長叫做杜陸，請問需要什麼幫忙呢?";
+	mes "[Ferlock]";
+	mes "Hey there, welcome";
+	mes "aboard the Airship. I'm";
+	mes "Ferlock, your captain";
+	mes "on this flight. How can";
+	mes "I be of service to you?";
 	next;
 	if(lght_air == 2) {
 		set .@question2$, "Give him Tarlock's Letter.";
-		set .@question3$, "取消";
+		set .@question3$, "Cancel.";
 	} else if(lght_air == 3) {
 		set .@question2$, "Here are the items I've found.";
-		set .@question3$, "取消";
+		set .@question3$, "Cancel.";
 	} else {
-		set .@question2$, "取消";
+		set .@question2$, "Cancel.";
 	}
-	switch( select( "請問飛空艇是如何飛行的呢?", .@question2$, .@question3$)) {
+	switch( select( "How does this Airship fly?", .@question2$, .@question3$)) {
 	case 1:
-		mes "[杜陸]";
-		mes "很抱歉，那部份是屬於只有船長們才知道";
-		mes "的機密，請諒解無法向外人透露";
+		mes "[Ferlock]";
+		mes "I'm sorry, but I can't";
+		mes "give you that kind of";
+		mes "classified information.";
+		mes "It's too important to the";
+		mes "security and safety of";
+		mes "this Airship, you see.";
 		close2;
 		cutin "",255;
 		end;
 		
 	case 2:
 		if (lght_air == 2) {
-		set lght_air, 3;
-		mes "^3131FFYou give Captain Ferlock";
-		mes "the letter that his brother";
-		mes "Tarlock has written for him.^000000";
-		next;
-		mes "[Ferlock]";
-		mes "Oh, this is from my";
-		mes "brother? Hey, thanks so";
-		mes "much for bringing this to";
-		mes "me for him. Ah, give me";
-		mes "a minute to read all of";
-		mes "this, would you now?";
-		next;
-		mes "[Ferlock]";
-		mes "...";
-		mes "So that's what he's been";
-		mes "up to. Huh. Hahaha! Oh, that's";
-		mes "funny. Ah, it's always good to";
-		mes "hear from Tarlock. Anyway,";
-		mes "I'm sorry to make you wait.";
-		next;
-		mes "[Ferlock]";
-		mes "Anyway, my brother wrote";
-		mes "about the usual stuff, but";
-		mes "he mentioned that he was";
-		mes "hoping to finally return a few";
-		mes "things he borrowed from me.";
-		mes "However, he lost them...";
-		next;
-		mes "[Ferlock]";
-		mes "It turns that those nasty";
-		mes "gremlins that sometimes";
-		mes "attack his ship stole my";
-		mes "things, so was he actually";
-		mes "hoping that you would";
-		mes "help me get them back.";
-		next;
-		mes "[Ferlock]";
-		mes "Yeah, yeah. He specifically";
-		mes "mentioned that I shouldn't";
-		mes "give you my reply until you";
-		mes "hunt those monsters and get";
-		mes "my stuff back. I'm sorry, but";
-		mes "I guess you owe big bro, huh?";
-		next;
-		mes "[Ferlock]";
-		mes "Well, if you're willing to";
-		mes "help me, would you get my";
-		mes "^ff00002 Will of the Darkness^000000 and";
-		mes "^ff00002 Prickly Fruit^000000 back for me?";
-		next;
-		mes "[Ferlock]";
-		mes "The monsters that attack";
-		mes "Tarlock's Airship should";
-		mes "have them. I'd appreciate";
-		mes "it if you'd help me out on";
-		mes "this, adventurer. Thanks";
-		mes "in advance and good luck~";
-		close2;
-		cutin "",255;
-		end;
+			changequest 8032,8033;
+			set lght_air, 3;
+			mes "^3131FFYou give Captain Ferlock";
+			mes "the letter that his brother";
+			mes "Tarlock has written for him.^000000";
+			next;
+			mes "[Ferlock]";
+			mes "Oh, this is from my";
+			mes "brother? Hey, thanks so";
+			mes "much for bringing this to";
+			mes "me for him. Ah, give me";
+			mes "a minute to read all of";
+			mes "this, would you now?";
+			next;
+			mes "[Ferlock]";
+			mes "...";
+			mes "So that's what he's been";
+			mes "up to. Huh. Hahaha! Oh, that's";
+			mes "funny. Ah, it's always good to";
+			mes "hear from Tarlock. Anyway,";
+			mes "I'm sorry to make you wait.";
+			next;
+			mes "[Ferlock]";
+			mes "Anyway, my brother wrote";
+			mes "about the usual stuff, but";
+			mes "he mentioned that he was";
+			mes "hoping to finally return a few";
+			mes "things he borrowed from me.";
+			mes "However, he lost them...";
+			next;
+			mes "[Ferlock]";
+			mes "It turns that those nasty";
+			mes "gremlins that sometimes";
+			mes "attack his ship stole my";
+			mes "things, so was he actually";
+			mes "hoping that you would";
+			mes "help me get them back.";
+			next;
+			mes "[Ferlock]";
+			mes "Yeah, yeah. He specifically";
+			mes "mentioned that I shouldn't";
+			mes "give you my reply until you";
+			mes "hunt those monsters and get";
+			mes "my stuff back. I'm sorry, but";
+			mes "I guess you owe big bro, huh?";
+			next;
+			mes "[Ferlock]";
+			mes "Well, if you're willing to";
+			mes "help me, would you get my";
+			mes "^ff00002 Will of the Darkness^000000 and";
+			mes "^ff00002 Prickly Fruit^000000 back for me?";
+			next;
+			mes "[Ferlock]";
+			mes "The monsters that attack";
+			mes "Tarlock's Airship should";
+			mes "have them. I'd appreciate";
+			mes "it if you'd help me out on";
+			mes "this, adventurer. Thanks";
+			mes "in advance and good luck~";
+			close2;
+			cutin "",255;
+			end;
 		} else if(lght_air == 3) {
 			if (countitem(7340) >= 2 && countitem(576) >= 2) {
 				delitem 7340, 2;
 				delitem 576, 2;
+				changequest 8033,8034;
 				set lght_air, 4;
 				mes "[Ferlock]";
 				mes "You brought the items!";
@@ -2039,19 +2193,23 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 				cutin "",255;
 				end;
 			}
-				mes "[Ferlock]";
-				mes "Oh, I'm sorry, but it looks";
-				mes "like you're missing something.";
-				mes "Would you please go and find";
-				mes "^ff00002 Will of the Darkness^000000 and";
-				mes "^ff00002 Prickly Fruit^000000? Thanks,";
-				mes "brave adventurer~";
-				close2;
-				cutin "",255;
-				end;
+			mes "[Ferlock]";
+			mes "Oh, I'm sorry, but it looks";
+			mes "like you're missing something.";
+			mes "Would you please go and find";
+			mes "^ff00002 Will of the Darkness^000000 and";
+			mes "^ff00002 Prickly Fruit^000000? Thanks,";
+			mes "brave adventurer~";
+			close2;
+			cutin "",255;
+			end;
 		}
-		mes "[杜陸]";
-		mes "那麼祝你旅途平安愉快";
+		mes "[Ferlock]";
+		mes "Well, I hope that";
+		mes "you enjoy your time";
+		mes "here on the Airship";
+		mes "and that you have a";
+		mes "very pleasant journey.";
 		close2;
 		cutin "",255;
 		end;
@@ -2072,14 +2230,14 @@ airplane,236,163,5	script	飛空艇 船長#03	873,{
 //				Heart Fragment Quest
 //=======================================================================================================//
 
-airplane,236,63,4	script	海倫	706,{
+airplane,236,63,4	script	Hallen	706,{
 
 	if(hg_ma1 == 3)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Sha Sha~ ";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Just let me handle this! Hehe. ";
 		next;
 		switch( select( "Ask whether he knows Thierry" ) )
@@ -2087,14 +2245,14 @@ airplane,236,63,4	script	海倫	706,{
 			case 1:
 				break;
 		}
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Hmm?! Thierry?! I'm not sure. Why don't you ask the crew of the airship.";
 		mes "Kaci might know this person.";
 		close;
 	}
 	if(BaseLevel < 60)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "If you need me to";
 		mes "do anything, just";
 		mes "give me a holler.";
@@ -2103,7 +2261,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	if(!lhz_heart)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Howdy, howdy~";
 		mes "Welcome to the Airship.";
 		next;
@@ -2111,7 +2269,7 @@ airplane,236,63,4	script	海倫	706,{
 		{
 			case 1:
 				emotion e_what,0;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Does that mean you're";
 				mes "one of the crewmen, then?";
 				mes "I don't think we've met before,";
@@ -2119,7 +2277,7 @@ airplane,236,63,4	script	海倫	706,{
 				mes "everyone working here by now...";
 				next;
 				emotion e_gasp,0;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Hey...!";
 				mes "If you're on duty,";
 				mes "shouldn't you be in";
@@ -2127,7 +2285,7 @@ airplane,236,63,4	script	海倫	706,{
 				mes "don't work here after all!";
 				mes "Heh, figured it out myself~";
 				next;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Eh, I need to finish";
 				mes "sweeping this deck. Then,";
 				mes "on my break, I can play a";
@@ -2137,7 +2295,7 @@ airplane,236,63,4	script	海倫	706,{
 				break;
 				
 			case 2:
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Ummm... Isn't it obvious?";
 				mes "I'm sweeping the deck. I'm";
 				mes "the youngest crewman, so";
@@ -2152,7 +2310,7 @@ airplane,236,63,4	script	海倫	706,{
 			case 1:
 				break;
 		}
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Kaci... You know, the";
 		mes "dealer of the Dice game?";
 		mes "You should try it out: just";
@@ -2160,7 +2318,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "to win some Apples. Hey,";
 		mes "you could get really lucky!";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Heh, there's one guy that";
 		mes "won so many Apples from Kaci";
 		mes "that he was able to become";
@@ -2173,7 +2331,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 1)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Oh hey, it's you~";
 		mes "We talked earlier,";
 		mes "didn't we? Yeah...";
@@ -2182,7 +2340,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "take quite a while.";
 		next;
 		emotion e_gasp,0;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "It doesn't look like";
 		mes "I'm gonna finish this";
 		mes "anytime soon. Hey, do";
@@ -2193,7 +2351,7 @@ airplane,236,63,4	script	海倫	706,{
 		switch( select( "Sorry, but I'm busy...","What is it?" ) )
 		{
 			case 1:
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Eh, alright. I guess";
 				mes "I can understand. But";
 				mes "still, I coulda made it";
@@ -2202,7 +2360,7 @@ airplane,236,63,4	script	海倫	706,{
 				close;
 
 			case 2:
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Don't worry, it's not much";
 				mes "work. I'm supposed to deliver";
 				mes "letters from Juno Airport to";
@@ -2210,7 +2368,7 @@ airplane,236,63,4	script	海倫	706,{
 				mes "got the time. Now, I have";
 				mes "this letter for Kaci here...";
 				next;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Would you go and";
 				mes "deliver this letter";
 				mes "to her for me? It's";
@@ -2218,12 +2376,13 @@ airplane,236,63,4	script	海倫	706,{
 				mes "Mr. Mawong, her mentor";
 				mes "or something like that.";
 				next;
-				mes "^3355FF海倫 gave you";
+				mes "^3355FFHallen gave you";
 				mes "Mawong's letter to";
 				mes "be delivered to Kaci.^000000";
+				setquest 8036;
 				set lhz_heart,2;
 				next;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Hey, thanks a lot, pal~";
 				mes "You can find Kaci hosting";
 				mes "the Dice game in the Airship.";
@@ -2232,7 +2391,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 2)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "^333333*Sigh...*^000000";
 		mes "I'm so sick and";
 		mes "tired of sweeping.";
@@ -2240,7 +2399,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "kinda lame cabin boy.";
 		mes "But... I guess I am!";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Oh hey, were you";
 		mes "able to give that";
 		mes "letter to Kaci yet?";
@@ -2251,7 +2410,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 3)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "^333333*Sigh...*^000000";
 		mes "I'm so sick and";
 		mes "tired of sweeping.";
@@ -2262,7 +2421,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 4)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Hey, thanks for delivering";
 		mes "that letter to Kaci for me.";
 		mes "She wasn't too happy that";
@@ -2270,7 +2429,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "it, but she understood that";
 		mes "I'm totally swamped with work.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Wouldn't you agree";
 		mes "that people should";
 		mes "help each other in";
@@ -2279,7 +2438,7 @@ airplane,236,63,4	script	海倫	706,{
 		switch( select( "Not at all. Every man for himself!","Yes, I do." ) )
 		{
 			case 1:
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Wh-what...?";
 				mes "I can't think";
 				mes "that you really";
@@ -2288,7 +2447,7 @@ airplane,236,63,4	script	海倫	706,{
 				close;
 
 			case 2:
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "Aww, really?";
 				mes "I knew that you'd";
 				mes "feel the same way";
@@ -2297,7 +2456,7 @@ airplane,236,63,4	script	海倫	706,{
 				next;
 				if(checkweight(501,1) != 1)
 				{
-					mes "[海倫]";
+					mes "[Hallen]";
 					mes "Oh... Hey, I was";
 					mes "going to give you";
 					mes "a little something,";
@@ -2307,7 +2466,7 @@ airplane,236,63,4	script	海倫	706,{
 				}
 				set lhz_heart,5;
 				getitem 501,1;
-				mes "[海倫]";
+				mes "[Hallen]";
 				mes "I know this isn't";
 				mes "much, but I'd like you";
 				mes "to have it. Besides, you";
@@ -2319,7 +2478,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 5)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Hey, hey~ How's it going?";
 		mes "I know, I know, I'm supposed";
 		mes "to be sweeping, and I'm not";
@@ -2327,7 +2486,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "you know, you just have to";
 		mes "rest and take a break, yeah?";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Ahh, busy days like these";
 		mes "remind me of working back";
 		mes "home in Juno with my neighbor,";
@@ -2335,7 +2494,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "you know, and sort of like";
 		mes "a hero or role model to me.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Guyver is so brilliant,";
 		mes "he can pretty much make";
 		mes "anything he wants. Someday,";
@@ -2343,7 +2502,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "create things that will help";
 		mes "people and make them happy.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "That's pretty much my";
 		mes "life ambition-- you know,";
 		mes "the kind of thing I want to";
@@ -2356,20 +2515,20 @@ airplane,236,63,4	script	海倫	706,{
 			case 1:
 				break;
 		}
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Yeah, Varmunt... He's like";
 		mes "one of the greatest Sages in";
 		mes "history. Well, nobody know too";
 		mes "much about him, but 300 years";
 		mes "ago, he was responsible for most ground breaking accomplishments.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Supposedly, he single handedly";
 		mes "revolutionized science. Many of";
 		mes "the machines that are convenient to life today are his inventions.";
 		mes "Sadly, he disappeared from history and no one know how he vanished.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "The great Sage Varmunt...";
 		mes "It's a pretty well known";
 		mes "legend in the Schwaltzvalt";
@@ -2377,19 +2536,20 @@ airplane,236,63,4	script	海倫	706,{
 		mes "project, I wanted to learn";
 		mes "more about these Airships.";
 		next;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "These Airships are so huge";
 		mes "and heavy, and I can scarcely";
 		mes "believe that they can fly. How";
 		mes "is it even possible? Well, if";
 		mes "you could find out for me, ";
 		mes "it'd be a really big help.";
+		changequest 8038,8039;
 		set lhz_heart,6;
 		close;
 	}
 	else if(lhz_heart == 6)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Hey, have you learned";
 		mes "what makes such a big,";
 		mes "heavy Airship like this fly";
@@ -2402,19 +2562,19 @@ airplane,236,63,4	script	海倫	706,{
 				case 1:
 					break;
 			}
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "Really...?";
 			mes "Are you serious?";
 			mes "So what's the secret?";
 			mes "Tell me, I'm dying to know!";
 			next;
-			mes "^3355FFYou tell 海倫 everything";
+			mes "^3355FFYou tell Hallen everything";
 			mes "that you've learned from";
 			mes "Captain Tarlock, but you're";
 			mes "careful not to make any";
 			mes "mention of Ymir's Heart Piece.^000000";
 			next;
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "So... The propellers are";
 			mes "powered through steam?";
 			mes "That doesn't make sense.";
@@ -2429,11 +2589,11 @@ airplane,236,63,4	script	海倫	706,{
 			mes "^3355FFYou reveal what you";
 			mes "learn about the Rune Stone,";
 			mes "an imitation of Ymir's Heart";
-			mes "Piece: 海倫 is a well meaning";
+			mes "Piece: Hallen is a well meaning";
 			mes "kid who probably won't use this";
 			mes "knowledge for evil purposes.";
 			next;
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "A-awesome! So there is";
 			mes "some special magic power";
 			mes "source that helps this Airship";
@@ -2441,11 +2601,12 @@ airplane,236,63,4	script	海倫	706,{
 			mes "it called again? Ah, the";
 			mes "Rune Stone, right?";
 			next;
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "An imitation of Ymir's";
 			mes "Heart Piece. Now where";
 			mes "have I heard about that";
 			mes "before? Mm, let me think...";
+			changequest 8039,8040;
 			set lhz_heart,7;
 			close;
 		}
@@ -2456,7 +2617,7 @@ airplane,236,63,4	script	海倫	706,{
 				case 1:
 					break:;
 			}
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "You didn't learn anything";
 			mes "about the Airship yet, huh?";
 			mes "Maybe Captain Ferlock might";
@@ -2464,7 +2625,7 @@ airplane,236,63,4	script	海倫	706,{
 			mes "of the other Airship captains.";
 			mes "Hopefully, one will tell you...";
 			next;
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "I know that the secrets of";
 			mes "Airship flight is considered";
 			mes "classified information, but if";
@@ -2475,7 +2636,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 7)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "So the Rune Stone";
 		mes "is an imitation of just";
 		mes "a piece of Ymir's Heart.";
@@ -2483,7 +2644,7 @@ airplane,236,63,4	script	海倫	706,{
 		mes "about that before...?";
 		next;
 		emotion e_gasp,0;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Oh, that's right!";
 		mes "Kaci told me about a";
 		mes "drunkard that always";
@@ -2502,7 +2663,7 @@ airplane,236,63,4	script	海倫	706,{
 			mes "It's worth investigating...^000000)";
 			next;
 		}
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Anyway, it's not much,";
 		mes "but let me give you a little";
 		mes "something for going through";
@@ -2511,7 +2672,7 @@ airplane,236,63,4	script	海倫	706,{
 		next;
 		if(checkweight(501,1) != 1)
 		{
-			mes "[海倫]";
+			mes "[Hallen]";
 			mes "Aw, nuts...";
 			mes "You don't have";
 			mes "enough room to";
@@ -2522,8 +2683,9 @@ airplane,236,63,4	script	海倫	706,{
 		}
 		if(Shinokas_Quest > 9) set lhz_heart,9;
 		else set lhz_heart,8;
+		changequest 8040,8041;
 		getitem 501,1;
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Here you go~";
 		mes "I know it's pretty paltry";
 		mes "compared to the rewards ";
@@ -2534,7 +2696,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else if(lhz_heart == 8)
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Hey, why don't you";
 		mes "ask Kaci about that";
 		mes "drunkard that's always";
@@ -2545,7 +2707,7 @@ airplane,236,63,4	script	海倫	706,{
 	}
 	else
 	{
-		mes "[海倫]";
+		mes "[Hallen]";
 		mes "Thanks for helping me";
 		mes "out that last time. I guess";
 		mes "learning about the Rune Stone";
@@ -2616,6 +2778,7 @@ airplane,33,69,4	script	Kaci	73,{
 		mes "As for Euslan, please tell her about me and let her know that I hope she gets well soon.";
 		next;
 		mes "^3355FFSince she's begging, I guess I should send her message.";
+		changequest 8044,8045;
 		set hg_ma1,4;
 		close;
 	}
@@ -2633,19 +2796,20 @@ airplane,33,69,4	script	Kaci	73,{
 		mes "How would you like";
 		mes "to play a game of Dice?";
 		next;
-		switch( select( "Give her the letter from 海倫." ) )
+		switch( select( "Give her the letter from Hallen." ) )
 		{
 			case 1:
 				break;
 		}
 		mes "[Kaci]";
-		mes "Oh, 海倫 must have";
+		mes "Oh, Hallen must have";
 		mes "asked you to deliver this.";
 		mes "He should be doing this sort";
 		mes "of thing himself, instead of";
 		mes "asking customers for favors!";
 		mes "But still, he's really busy...";
 		next;
+		changequest 8036,8037;
 		set lhz_heart,3;
 		mes "[Kaci]";
 		mes "Thank you for bringing";
@@ -2661,17 +2825,17 @@ airplane,33,69,4	script	Kaci	73,{
 		mes "Oh, hello. Thanks for";
 		mes "delivering that letter from";
 		mes "Mr. Mawong to me, especially";
-		mes "since 海倫 was too busy to";
+		mes "since Hallen was too busy to";
 		mes "do it himself. Reading that";
 		mes "letter really made my day~";
 		next;
 L_Ask:
-		switch( select( "Ask about 海倫","Ask about Mawong","Ask about the Airship" ) )
+		switch( select( "Ask about Hallen","Ask about Mawong","Ask about the Airship" ) )
 		{
 			case 1:
 				set .@mesa,1;
 				mes "[Kaci]";
-				mes "海倫? Well, he and I are";
+				mes "Hallen? Well, he and I are";
 				mes "pretty close. Did you know";
 				mes "that we're cousins? In fact,";
 				mes "his dad, my uncle, brought";
@@ -2682,14 +2846,14 @@ L_Ask:
 				mes "There was some kind of";
 				mes "mine explosion accident in";
 				mes "Einbech. I don't remember.";
-				mes "Anyway, me and 海倫 are";
+				mes "Anyway, me and Hallen are";
 				mes "like sister and brother, and";
 				mes "we always stick together.";
 				next;
 				mes "[Kaci]";
 				mes "When Captain Ferlock saw me";
 				mes "host a Dice game by coincidence";
-				mes "and then hired me to work on his Airship, 海倫 insisted on coming";
+				mes "and then hired me to work on his Airship, Hallen insisted on coming";
 				mes "along. He's stubborn like that,";
 				mes "but he's also very sweet.";
 				next;
@@ -2750,7 +2914,7 @@ L_Ask:
 		next;
 		if(!.@mesa || !.@mesb || !.@mesc) goto L_Ask;
 		mes "[Kaci]";
-		mes "By the way, if 海倫";
+		mes "By the way, if Hallen";
 		mes "bothers you with another";
 		mes "request, please refuse to";
 		mes "help him next time, okay?";
@@ -2762,6 +2926,7 @@ L_Ask:
 		mes "back to work now.";
 		mes "Have a nice day,";
 		mes "and I'll see you later~";
+		changequest 8037,8038;
 		set lhz_heart,4;
 		close;
 	}
@@ -2813,6 +2978,7 @@ L_Ask:
 		mes "that laboratory in Einbroch";
 		mes "as soon as I can, even if it's";
 		mes "a heavily restricted area.^000000)";
+		changequest 8041,8042;
 		set lhz_heart,9;
 		close;
 	}
@@ -2864,6 +3030,7 @@ OnTouch:
 }
 
 ein_in01,263,35,3	script	Ferlock#lab	873,{
+	end;
 
 OnInit:
 	disablenpc "Ferlock#lab";
@@ -2873,10 +3040,6 @@ OnInit:
 OnEnter:
 	enablenpc "Ferlock#lab";
 	initnpctimer;
-	end;
-	
-OnEmote:
-	emotion e_omg,0;
 	end;
 
 OnTimer120000:
@@ -3002,7 +3165,7 @@ L_Input:
 			mes "Airship. Wait, wait...";
 			mes "You look familiar...";
 			next;
-			donpcevent "Ferlock#lab::OnEmote";
+			emotion e_omg,0,"Ferlock#lab";
 			mes "[Ferlock]";
 			mes "That's right, aren't you the";
 			mes "one who brought me my";
@@ -3028,6 +3191,7 @@ L_Input:
 			mes "Airship, alright? Now hurry!";
 			close2;
 			donpcevent "Ferlock#lab::OnInit";
+			changequest 8042,8043;
 			set lhz_heart,11;
 			end;
 		}
@@ -3061,22 +3225,3 @@ L_Input:
 		goto L_Input;
 	}
 }
-
-//========Explosions=======================
-
-airplane_01,239,62,0	script	boom#air-1::boom	139,{
-OnAttack:
-	misceffect 183;
-	end;
-}
-//==========Duplicates=============
-airplane_01,244,55,0	duplicate(boom)	boom#air-2	139
-airplane_01,239,50,0	duplicate(boom)	boom#air-3	139
-airplane_01,245,59,0	duplicate(boom)	boom#air-4	139
-airplane_01,245,48,0	duplicate(boom)	boom#air-5	139
-airplane_01,235,39,0	duplicate(boom)	boom#air-6	139
-airplane_01,252,41,0	duplicate(boom)	boom#air-7	139
-airplane_01,252,63,0	duplicate(boom)	boom#air-8	139
-airplane_01,234,65,0	duplicate(boom)	boom#air-9	139
-airplane_01,227,67,0	duplicate(boom)	boom#air-10	139
-airplane_01,249,50,0	duplicate(boom)	boom#air-0	139

@@ -1,27 +1,27 @@
-//===== eAthena Script ========================================
+//===== rAthena Script ========================================
 //= Izlude Arena lvl 70
 //===== By: ==================================================
 //= SinSloth
 //===== Current Version: =====================================
-//= 1.0
+//= 1.1
 //===== Compatible With: =====================================
 //= Any Athena Version
 //===== Description: =========================================
 //= Izlude Battle Arena Level 70
 //===== Additional Comments: =================================
 //= 1.0 First version.
+//= 1.1 Replaced effect numerics with constants. [Samuray22]
 //============================================================
 
 arena_room,52,42,7	script	lvl 70s Waiting Room	124,{
 	end;
 
 OnInit:
-	waitingroom "Individual ; lvl 70 or higher",50,"lvl 70s Waiting Room::OnStartArena",1;
+	waitingroom "Individual : lvl 70 or higher",50,"lvl 70s Waiting Room::OnStartArena",1,1000,70;
 	enablewaitingroomevent;
 	end;
 
 OnStartArena:
-	enablenpc "ArenaFee#70";
 	warpwaitingpc "force_3-1",99,12;
 	donpcevent "arena#70::Onstart";
 	disablewaitingroomevent;
@@ -32,23 +32,11 @@ Onstart:
 	end;
 }
 
-force_3-1,99,12,1	script	ArenaFee#70	139,1,1,{
-
-OnInit:
-	disablenpc "ArenaFee#70";
-	end;
-
-OnTouch:
-	set Zeny,Zeny -1000;
-	disablenpc "ArenaFee#70";
-	end;
-}
-
 force_3-1,99,20,4	script	Cadillac#arena	124,{
 	end;
 	
 OnInit:
-	set $@mapcount70, 0;	
+	set $@mapcount70, 0;
 	end;
 	
 Onstart:
@@ -70,47 +58,47 @@ OnTimer7000:
 	end;
 	
 OnTimer60000:
-	set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 6 minutes ",0;
 	end;
 	
 OnTimer120000:
-	 set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	 set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 5 minutes ",0;
 	end;
 	
 OnTimer180000:
-	 set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	 set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 4 minutes ",0;
 end;
 OnTimer240000:
-	 set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	 set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 3 minutes ",0;
 	end;
 
 OnTimer300000:
-	 set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	 set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 2 minutes ",0;
 	end;
 
 OnTimer360000:
-	 set $@mapcount70, getmapusers ("force_3-1");	
-	if ($@mapcount70 == 0) {	
+	 set $@mapcount70, getmapusers ("force_3-1");
+	if ($@mapcount70 == 0) {
 		donpcevent "Cadillac#arena::Onfailclearstage";
 	}
 	mapannounce "force_3-1","Remaining Time : 1 minute ",0;
@@ -447,7 +435,7 @@ Onreset:
 
 OnMobDeath:
 	set $force_01_70,$force_01_70 -1;
-	if ($force_01_70 < 1) {	
+	if ($force_01_70 < 1) {
 		donpcevent "Cadillac#arena::On01_end";
 		donpcevent "arena#70::Onreset_01";
 	}
@@ -501,7 +489,7 @@ Onon:
 
 OnMobDeath:
 	set $force_02_70,$force_02_70 -1;
-	if ($force_02_70 < 1) {	
+	if ($force_02_70 < 1) {
 		donpcevent "Cadillac#arena::On02_end";
 		donpcevent "arena#70::Onreset_02";
 	}
@@ -547,7 +535,7 @@ Onreset:
 OnMobDeath:
 	set $force_03_70,$force_03_70 -1;
 	donpcevent "force_03ex#70::Onsummonmob_03";
-	if ($force_03_70 < 1) {	
+	if ($force_03_70 < 1) {
 		donpcevent "Cadillac#arena::On03_end";
 		donpcevent "arena#70::Onreset_03";
 	}
@@ -597,7 +585,7 @@ Onreset:
 	
 OnMobDeath:
 	set $force_04_70,$force_04_70 -1;
-	if ($force_04_70 < 1) {	
+	if ($force_04_70 < 1) {
 		donpcevent "Cadillac#arena::On04_end";
 		donpcevent "arena#70::Onreset_04";
 	}
@@ -618,7 +606,7 @@ Onreset:
 	end;
 	
 Onsummonmob_05:
-	set $@randmonster70,rand(1,2);	
+	set $@randmonster70,rand(1,2);
 	switch($@randmonster70) {
 	case 1:
 		monster "force_3-1",174,174,"Ride Word",1478,1,"force_05ex#70::OnMobEx";
@@ -650,7 +638,7 @@ Onreset:
 
 OnMobDeath:
 	set $force_05_70,$force_05_70 -1;
-	if ($force_05_70 < 1) {	
+	if ($force_05_70 < 1) {
 		donpcevent "Cadillac#arena::On05_end";
 		donpcevent "arena#70::Onreset_05";
 	}
@@ -707,7 +695,7 @@ Onreset:
 
 OnMobDeath:
 	set $force_06_70,$force_06_70 -1;
-	if ($force_06_70 < 1) {	
+	if ($force_06_70 < 1) {
 		donpcevent "Cadillac#arena::On06_end";
 		donpcevent "arena#70::Onreset_06";
 	}
@@ -761,7 +749,7 @@ Onreset:
 
 OnMobDeath:
 	set $force_07_70,$force_07_70 -1;
-	if ($force_07_70 < 1) {	
+	if ($force_07_70 < 1) {
 		donpcevent "Cadillac#arena::On07_end";
 		donpcevent "arena#70::Onreset_07";
 	}
@@ -833,7 +821,7 @@ Onreset:
 	
 OnMobDeath:
 	set $force_09_70,$force_09_70 -1;
-	if ($force_09_70 < 1) {	
+	if ($force_09_70 < 1) {
 		donpcevent "Cadillac#arena::On09_end";
 		donpcevent "arena#70::Onreset_09";
 		donpcevent "arena#70::Onreset_all";
@@ -845,22 +833,22 @@ OnMobDeath:
 
 prt_are_in,129,83,3	script	Staff#70-1	67,{
 
-	mes "[Staff]";	
-	mes "You did a good job.";	
-	mes "Even if you have failed to clear a time attack battle, I will reward you with a small amount of arena points.";	
+	mes "[Staff]";
+	mes "You did a good job.";
+	mes "Even if you have failed to clear a time attack battle, I will reward you with a small amount of arena points.";
 	next;
-	if (arena_point == 30000) {	
-		mes "[Staff]";	
-		mes "Uh huh!";	
-		mes "You already have enough arena points.";	
-		mes "Please spend some arena points later. When I see you next time, I will make sure to give you some reward.";	
+	if (arena_point == 30000) {
+		mes "[Staff]";
+		mes "Uh huh!";
+		mes "You already have enough arena points.";
+		mes "Please spend some arena points later. When I see you next time, I will make sure to give you some reward.";
 		next;
 	}
 	else set arena_point, arena_point + 1;
-	mes "[Staff]";	
-	mes "Let me guide you outside. I hope you had a good time.";	
+	mes "[Staff]";
+	mes "Let me guide you outside. I hope you had a good time.";
 	close2;
-	specialeffect2 7;	
+	specialeffect2 EF_EXIT;
 	warp "arena_room",100,75;
 	end;
 }
@@ -894,51 +882,51 @@ prt_are_in,25,84,3	script	Staff#70-2	67,{
 		}
 	}
 	set @gap70,(60 * $top_70min + $top_70sec) - (60 * @record_min70 + @record_sec70);
-	mes "[Staff]";	
-	mes "Wow, you did a good job~ ";	
-	mes "Your name is...^3131FF" + strcharinfo(0) +"^000000, isn't it?";	
-	mes "^3131FF"+ strcharinfo(0) +"^000000, total time you spent to pass the battle..";	
+	mes "[Staff]";
+	mes "Wow, you did a good job~ ";
+	mes "Your name is...^3131FF" + strcharinfo(0) +"^000000, isn't it?";
+	mes "^3131FF"+ strcharinfo(0) +"^000000, total time you spent to pass the battle..";
 	next;
-	mes "[Staff]";	
-	mes "is "+@record_min70+"minutes "+@record_sec70+"seconds.";	
-	mes "Congratulations!";	
+	mes "[Staff]";
+	mes "is "+@record_min70+"minutes "+@record_sec70+"seconds.";
+	mes "Congratulations!";
 	next;
-	mes "[Staff]";	
-	mes "The fastest player among people who cleared lvl 70s arena time force battle is ^3131FF"+$arena_70topn$+"^000000.";	
+	mes "[Staff]";
+	mes "The fastest player among people who cleared lvl 70s arena time force battle is ^3131FF"+$arena_70topn$+"^000000.";
 	next;
-	mes "[Staff]";	
-	mes "^3131FF"+$arena_70topn$+"^000000's running time was ^3131FF"+$top_70min+"^000000minutes ^3131FF"+$top_70sec+"^000000seconds.";	
+	mes "[Staff]";
+	mes "^3131FF"+$arena_70topn$+"^000000's running time was ^3131FF"+$top_70min+"^000000minutes ^3131FF"+$top_70sec+"^000000seconds.";
 	next;
 	if (@gap70 < 0) {
-		mes "[Staff]";	
-		mes "Although you failed to make a new record, I hope you will succeed next time.";	
+		mes "[Staff]";
+		mes "Although you failed to make a new record, I hope you will succeed next time.";
 		next;
-		if (arena_point > 29980) {	
-			mes "[Staff]";	
-			mes "Then let me reward you with some arena points....eh?";	
-			mes "Your arena points have exceeded the maximum amount. I cannot give you more points until you spend some points.";	
+		if (arena_point > 29980) {
+			mes "[Staff]";
+			mes "Then let me reward you with some arena points....eh?";
+			mes "Your arena points have exceeded the maximum amount. I cannot give you more points until you spend some points.";
 			next;
-			mes "[Staff]";	
-			mes "You can check the amount of arena points you have in the arena waiting room.";	
+			mes "[Staff]";
+			mes "You can check the amount of arena points you have in the arena waiting room.";
 			next;
-			mes "[Staff]";	
-			mes "I hope you had a good time and let me guide you to the entrance of arena.";	
-			mes "Thank you.";	
+			mes "[Staff]";
+			mes "I hope you had a good time and let me guide you to the entrance of arena.";
+			mes "Thank you.";
 			close2;
 		}
 		else
 		{
 			set arena_point, arena_point + 20;
-			mes "[Staff]";	
-			mes "Let me reward you some arena points.";	
-			mes "If you wish to check the amount of arena points you have, please go talk to ^3131FFVendigos^000000 at the arena entrance.";	
+			mes "[Staff]";
+			mes "Let me reward you some arena points.";
+			mes "If you wish to check the amount of arena points you have, please go talk to ^3131FFVendigos^000000 at the arena entrance.";
 			next;
-			mes "[Staff]";	
-			mes "Let me guide you to the entrance of arena.";	
-			mes "See you later~";	
+			mes "[Staff]";
+			mes "Let me guide you to the entrance of arena.";
+			mes "See you later~";
 			close2;
 		}
-		specialeffect2 7;	
+		specialeffect2 EF_EXIT;
  		donpcevent "cast#70::Onnomal1";
 		warp "arena_room",100,75;
 		donpcevent "#arn_timer_70::Onstop";
@@ -949,54 +937,54 @@ prt_are_in,25,84,3	script	Staff#70-2	67,{
 	else
 	{
 		emotion e_omg;
-		mes "[Staff]";	
-		mes "Wow! You have renewed the record!";	
-		mes "What a great job!";	
+		mes "[Staff]";
+		mes "Wow! You have renewed the record!";
+		mes "What a great job!";
 		next;
-		mes "[Staff]";	
-		mes "You have been recorded as the fastest player among people who cleared ^FF0000Arena Time Force Battle lvl 70s^000000, ^3131FF"+strcharinfo(0)+"^000000.";	
+		mes "[Staff]";
+		mes "You have been recorded as the fastest player among people who cleared ^FF0000Arena Time Force Battle lvl 70s^000000, ^3131FF"+strcharinfo(0)+"^000000.";
 		set $top_70min, @record_min70;
 		set $top_70sec, @record_sec70;
-		set $arena_70topn$,strcharinfo(0);	
+		set $arena_70topn$,strcharinfo(0);
 		donpcevent "Vendigos::Onlinerec_70";
 		next;
-		if (arena_point > 29970) {	
-			mes "[Staff]";	
-			mes "Then let me reward you with some arena points....eh?";	
-			mes "Your arena points have exceeded the maximum amount. I cannot give you more points until you spend some points.";	
+		if (arena_point > 29970) {
+			mes "[Staff]";
+			mes "Then let me reward you with some arena points....eh?";
+			mes "Your arena points have exceeded the maximum amount. I cannot give you more points until you spend some points.";
 			next;
-			mes "[Staff]";	
-			mes "You can check the amount of arena points you have in the arena waiting room.";	
+			mes "[Staff]";
+			mes "You can check the amount of arena points you have in the arena waiting room.";
 			next;
-			mes "[Staff]";	
-			mes "I hope you had a good time and let me guide you to the entrance of arena.";	
-			mes "Thank you.";	
+			mes "[Staff]";
+			mes "I hope you had a good time and let me guide you to the entrance of arena.";
+			mes "Thank you.";
 			close2;
 		}
 		else
 		{
 			mes "[Staff]";
-			mes "Let me reward you with some arena points.";	
-			mes "At the same time, since you have renewed the record you will receive an extra amount of the points this time.";	
+			mes "Let me reward you with some arena points.";
+			mes "At the same time, since you have renewed the record you will receive an extra amount of the points this time.";
 			next;
 			set arena_point, arena_point + 50;
-			mes "[Staff]";	
-			mes "Let me reward you some arena points.";	
-			mes "If you wish to check the amount of arena points you have, please go talk to ^3131FFVendigos^000000 at the arena entrance.";	
+			mes "[Staff]";
+			mes "Let me reward you some arena points.";
+			mes "If you wish to check the amount of arena points you have, please go talk to ^3131FFVendigos^000000 at the arena entrance.";
 			next;
-			mes "[Staff]";	
-			mes "Let me guide you to the entrance of arena.";	
-			mes "See you later~";	
+			mes "[Staff]";
+			mes "Let me guide you to the entrance of arena.";
+			mes "See you later~";
 			close2;
 		}
-		specialeffect2 4;	
+		specialeffect2 EF_HIT5;
  		donpcevent "cast#70::Onnomal2";
 		warp "arena_room",100,75;
 		donpcevent "#arn_timer_70::Onstop";
 		donpcevent "alloff#70::Onon";
 		donpcevent "lvl 70s Waiting Room::Onstart";
 		end;
-	}	
+	}
 }
 
 prt_are_in,14,195,3	script	#arn_timer_70	139,{
@@ -1092,7 +1080,7 @@ Onon:
 	enablenpc "arena#70";
 	end;
 
-OnInit:	
+OnInit:
 	if(!$top_70min && !$top_70sec) set $top_70min,7;
 	end;
 

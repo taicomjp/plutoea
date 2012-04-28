@@ -1,151 +1,225 @@
-//==================================
-// [冥] The PlutoEA Project [王]
-// http://opensvn.csie.org/PlutoEA
-// ---------------------------------
-// - 外地區 卡普拉腳本 - 
-//===================================
-// 版本：3.1-c
-//===================================
+//===== rAthena Script ===========
+//= New Kafras
+//===== By: =========================
+//= rAthena Dev Team
+//===== Current Version: ===================
+//= 3.1
+//===== Compatible With: =====================
+//= rAthena 1.0
+//===== Description: ============================================
+//= Description of argument settings for callfunc "F_Kafra".
+//=  arg(0): When set at 0 the default Kafra message is displayed.
+//=    When set to 1 the Niflhiem Kafra message is displayed.
+//=    When set to 2 the Guild Kafra message is displayed. 
+//=  arg(1): Set to 1 to disable teleport menu option.  Otherwise set to 0.
+//=  arg(2): Set to 1 to disable info menu.  Otherwise set to 0.
+//=  arg(3): Cost of Storage service
+//=  arg(4): Cost of Rent a Pushcart service
+//===== Additional Comments: ==============================================
+//= v1.1 Now using functions
+//= v2.1 Added Niflheim Kafra by Dizzy
+//= v2.1b Minor changes to function calls.  Using arguments.
+//= This version uses arrays .[kobra_k88]
+//= 2.2 Added Louyang Kafra, fixed other kafras not saving players coords [Lupus]
+//= 2.3 Added temp Amatsu + Ayothaya Kafra (wrong coords and sprite) [Lupus]
+//= 2.4 Added correct Ayothaya, Louyang & Amatsu Kafras. [Lupus]
+//= 2.5 Added 2 Einbroch Kafras. [Lupus]
+//= 2.6 Added the Einbech Kafra [MasterOfMuppets]
+//= 2.7 Added the Lighthalzen Kafras [MasterOfMuppets]
+//= 2.7b Chanced the Sprite of the Einbech Kafra. [Poki#3]
+//= 2.7c Added missing kafra in Lighthalzen, thanks to Muad_Dib [Vicious]
+//= 2.8 Removed warps from Umbala and Gonryun, thanks Drakee [Evera]
+//= 2.9 Fixed an incorrect savepoint (inside the hotel) the map was wrong.
+//= 3.0 Updated function calls with new arguments. [L0ne_W0lf]
+//=	Added unique Kafra Welcome messages.
+//= 3.1 Fixed one of Einbroch (east) kafras not displaying a name, bugreport:857 [Brainstorm]
+//==========================================================================
 
-// 天津
-amatsu,102,149,4	script	卡普拉 職員::kaf_amatsu	116,{
+// Amatsu ------------------------------------------------------------------
+amatsu,102,149,4	script	Kafra Employee::kaf_amatsu	116,{
 	cutin "kafra_02",2;
-	callfunc "F_Kafra",3,3,1,50,700;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "Kafra's Employees are";
+	mes "always ready to serve you.";
+	mes "How can I help you today?";
+	callfunc "F_Kafra",5,3,1,50,700;
 
 	M_Save:
 		savepoint "amatsu",116,94;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Amatsu";
 }
 
-// 哎喲泰雅
-ayothaya,212,169,5	script	卡普拉服務人員::kaf_ayothaya	116,{
+// Ayothaya ----------------------------------------------------------------
+ayothaya,212,169,5	script	Kafra Employee::kaf_ayothaya	116,{
 	cutin "kafra_02",2;
-	callfunc "F_Kafra",3,3,1,50,700;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "Kafra's Employees are";
+	mes "always ready to serve you.";
+	mes "How can I help you today?";
+	callfunc "F_Kafra",5,3,1,50,700;
 
 	M_Save:
 		savepoint "ayothaya",149,69;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Ayotaya";
 }
 
-// 艾音貝赫
-einbech,181,132,5	script	卡普拉服務人員::kaf_einbech	860,{
+// Einbech -----------------------------------------------------------------
+
+einbech,181,132,5	script	Kafra Employee#ein3::kaf_einbech	860,{
 	cutin "kafra_08",2;
-	callfunc "F_Kafra",4,13,1,40,850;
+	mes "[Kafra Employee]";
+	mes "Welcome~!";
+	mes "The Kafra Services";
+	mes "are always on your side.";
+	mes "So how can I help you?";
+	callfunc "F_Kafra",5,4,1,40,850;
 
 	M_Save:
 		savepoint "einbech",182,124;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the town of Einbech";
 }
 
-// 艾音布羅克 (東南)
-einbroch,242,205,5	script	卡普拉服務人員::kaf_einbroch	860,{
+// Einbroch (North-East) ---------------------------------------------------
+einbroch,242,205,5	script	Kafra Employee#ein2::kaf_einbroch	860,{
 	cutin "kafra_08",2;
-	callfunc "F_Kafra",4,13,1,50,800;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "Kafra's Employees are";
+	mes "always ready to serve you.";
+	mes "How can I help you today?";
+	callfunc "F_Kafra",5,4,1,50,800;
 
 	M_Save:
 		savepoint "einbroch",238,198;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Einbroch";
 }
 
-// 艾音布羅克 (東)
-einbroch,59,203,6	script	卡普拉服務人員::kaf_einbroch2	861,{
+// Einbroch (East) ---------------------------------------------------------
+einbroch,59,203,6	script	Kafra Employee#ein1::kaf_einbroch2	861,{
 	cutin "kafra_09",2;
-	callfunc "F_Kafra",4,13,1,50,800;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "The Kafra services";
+	mes "are always on your side.";
+	mes "How may I assist you?";
+	callfunc "F_Kafra",5,4,1,50,800;
 
 	M_Save:
 		savepoint "einbroch",240,197;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Einbroch";
 }
 
-// 崑崙
-gonryun,159,122,4	script	卡普拉 職員::kaf_gonryun	116,{
+// Gonryun -----------------------------------------------------------------
+gonryun,159,122,4	script	Kafra Employee::kaf_gonryun	116,{
 	cutin "kafra_02",2;
-	callfunc "F_Kafra",3,14,1,50,700;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "Kafra's Employees are";
+	mes "always ready to serve you.";
+	mes "How can I help you today?";
+	callfunc "F_Kafra",5,3,1,50,700;
 
 	M_Save:
 		savepoint "gonryun",160,62;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Kunlun";
 }
 
-// 莫斯科比亞
-moscovia,223,191,4	script	卡普拉 職員::kaf_mosco	114,{
-	cutin "kafra_04",2;
-	callfunc "F_Kafra",3,14,1,50,700;
+// Lighthalzen--------------------------------------------------------------
 
-	M_Save:
-		savepoint "moscovia",219,193;
-		callfunc "F_KafEnd",0,1," ";
-}
-
-// 里希塔樂鎮
-
-//旅館外
-lighthalzen,164,100,4	script	卡普拉 服務人員::kaf_lighthalzen	860,{
+//Outside the hotel
+lighthalzen,164,100,4	script	Kafra Employee::kaf_lighthalzen	860,{
 	cutin "kafra_08",2;
-	callfunc "F_Kafra",6,12,1,40,800;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "The Kafra services";
+	mes "are always on your side.";
+	mes "How may I assist you?";
+	callfunc "F_Kafra",5,4,1,40,800;
 
 	M_Save:
 		savepoint "lighthalzen",158,94;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Lighthalzen";
 }
 
-// 入口
-lighthalzen,191,320,4	script	卡普拉 服務人員::kaf_lighthalzen2	861,{
+// Entrance
+lighthalzen,191,320,4	script	Kafra Employee::kaf_lighthalzen2	861,{
 	cutin "kafra_09",2;
-	callfunc "F_Kafra",6,12,1,40,800;
+	mes "[Kafra Employee]";
+	mes "Welcome~!";
+	mes "The Kafra Services";
+	mes "are always on your side.";
+	mes "So how can I help you?";
+	callfunc "F_Kafra",5,4,1,40,800;
 
 	M_Save:
 		savepoint "lighthalzen",194,313;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Lighthalzen";
 }
 
-// 旅館內
-lhz_in02,237,284,4	script	卡普拉 服務人員::kaf_lhz_in02	861,{
+//Inside the hotel
+lhz_in02,237,284,4	script	Kafra Employee::kaf_lhz_in02	861,{
 	cutin "kafra_09",2;
-	callfunc "F_Kafra",6,12,1,40,800;
+	mes "[Kafra Employee]";
+	mes "Welcome~!";
+	mes "The Kafra Services";
+	mes "are always on your side.";
+	mes "So how can I help you?";
+	callfunc "F_Kafra",5,4,1,40,800;
 
 	M_Save:
 		savepoint "lhz_in02",278,215;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Lighthalzen";
 }
 
-// 龍之城
-louyang,210,104,5	script	卡普拉服務人員::kaf_louyang	117,{
+// Louyang -----------------------------------------------------------------
+louyang,210,104,5	script	Kafra Employee::kaf_louyang	117,{
 	cutin "kafra_01",2;
-	callfunc "F_Kafra",3,14,1,50,700;
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "Kafra's Employees are";
+	mes "always ready to serve you.";
+	mes "How can I help you today?";
+	callfunc "F_Kafra",5,3,1,50,700;
 
 	M_Save:
 		savepoint "louyang",217,92;
-		callfunc "F_KafEnd",0,1," ";
+		callfunc "F_KafEnd",0,1,"in the city of Louyang";
 }
 
-// 汶巴拉
-umbala,87,160,6	script	卡普拉服務人員::kaf_umbala	721,{
+// Umbala Kafra ------------------------------------------------------------
+umbala,128,133,4	script	Kafra Employee::kaf_umbala	721,{
 	cutin "kafra_07",2;
 	cleararray @wrpC$[0],"",getarraysize(@wrpC$);
-	setarray @wrpD$[0], "克魔島";
+	setarray @wrpD$[0], "Comodo";
 	setarray @wrpP[0], 1800;
-	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0]+" z";
-	set @wrpC$[1], "取消";
-	mes "[卡普拉服務人員]";
-	mes "我們卡普拉西部中心";
-	mes "通過改編程序";
-	mes "提供更好品質的服務.";
-	mes "謝謝大家~";
-	next;
-	mes "[卡普拉服務人員]";
-	mes "需要什麼服務嗎?";
-	callfunc "F_Kafra",5,10,1,80,0;
+	set @wrpC$[0], @wrpD$[0]+" -> "+@wrpP[0];
+	set @wrpC$[1], "Cancel";
+	mes "[Kafra Employee]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "You know that our";
+	mes "service is always";
+	mes "on your side~";
+	callfunc "F_Kafra",5,0,1,80,0;
 	M_Save:
-		savepoint "umbala",100,154;
-		callfunc "F_KafEnd",0,1," ";
+		savepoint "umbala",126,131;
+		callfunc "F_KafEnd",0,1,"in the city of Umbala";
 }
 
-// 尼芙菲姆
-niflheim,202,180,3	script	卡普拉服務人員::kaf_niflheim	791,{
+// Niflheim ----------------------------------------------------------------
+niflheim,202,180,3	script	Kafra Employee::kaf_niflheim	791,{
 	callfunc "F_Kafra",1,2,1,150,0;
 
 	M_Save:
 		savepoint "niflheim",192,182;
-		callfunc "F_KafEnd",1,1," ";
+		callfunc "F_KafEnd",1,1,"in the city of Niflheim";
 }
