@@ -4,7 +4,7 @@
 //= Masao
 //= Credits: Muad_Dib
 //===== Current Version: ===================================== 
-//= 1.1
+//= 1.0
 //===== Compatible With: ===================================== 
 //= Any rAthena SVN
 //===== Description: ========================================= 
@@ -12,321 +12,359 @@
 //= Job change Quest from Sage / Professor -> Sorcerer.
 //===== Additional Comments: ================================= 
 //= 1.0 First Version.
-//= 1.1 Cleaning. [Euphy]
 //============================================================
+//===== PlutoEA: =============================================
+//= D.weizhe 非官方中文化，部分名稱為官方
+//============================================================ 
 
-gef_tower,102,34,5	script	Merito	742,{
+gef_tower,102,34,5	script	瑪莉	742,{
 
 	if(checkweight(1201,1) == 0){
-		mes "You packed so much in your bag. Try again after emptying your bag.";
+		mes "你背包裡面有太多的東西了，請清空一些在來找我!";
 		close;
 	}
-	mes "[Merito]";
-	if (Class == Job_Sorcerer || Class == Job_Sorcerer_T || Class == Job_Baby_Sorcerer){
-		mes "Please get on with the sprits well~ You should~!";
+	if ((Class >= 4023) && (Class <= 4045)){
+		mes "[瑪莉]";
+		mes "你好阿，你叫啥名子阿?";
+		close;
+	}
+	if (Class == Job_Sorcerer || Class == Job_Sorcerer_T){
+		mes "[瑪莉]";
+		mes "你好像不應該來找我唷...";
 		close;
 	}
 	if (JobLevel < 50 || SkillPoint != 0 || BaseLevel < 99){
-		mes "Wow~ you are a young adventurer. I envy you.";
+		mes "[瑪莉]";
+		mes "年輕的冒險家阿...我真羨慕你!";
 		close;
 	}
-	if ((Class != Job_Sage) && (Class != Job_Professor) && (Class != Job_Baby_Sage)){
-		mes "Wow~ you are a young adventurer. I envy you.";
+	if ((Class != Job_Sage) && (Class != Job_Professor)){
+		mes "[瑪莉]";
+		mes "年輕的冒險家阿...我真羨慕你!";
 		close;
 	}
-	if (job_soc < 1){
-		mes "Welcome. What can I help you with?";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc < 1)){
+		mes "[瑪莉]";
+		mes "你好阿，有什麼我能幫忙的嗎?";
 		next;
-		select("Do you know about Sorcerers?");
-		mes "[Merito]";
-		mes "Wouldn't it be more comfortable to just live as a scholar? Sorcerers are busy communicating with the spirits and don't have much time to read books...";
+		menu "你知道什麼是巫術嗎?",-;
+		mes "[瑪莉]";
+		mes "你這樣像學者一般的求學真好阿，我就告訴你吧!:巫術者是很忙碌於精神交流的，他們可沒有空看書阿!";
 		next;
-		mes "[Merito]";
-		mes "What made you want to be a sorcerer?";
+		mes "[瑪莉]";
+		mes "你為什麼想要問有關巫術的問題呢?";
 		next;
-		if(select("The spirit of fire led me here.:The spirit of water led me here.:The spirit of earth led me here:The spirit of meat led me here.")==4) {
-			mes "[Merito]";
-			mes "That kind of spirit doesn't exist!";
+		switch(select("火的靈魂帶領我來此:水的靈魂帶領我來此:地的靈魂帶領我來此:肉的靈魂帶領我來此")){
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			mes "[瑪莉]";
+			mes "屙...大哥...沒有這種東西唷...";
 			close;
 		}
-		mes "[Merito]";
-		mes "Oh, I see.";
-		mes "You must be born with the natural ability to see that you already communicated with the spirits, or you must be an excellent liar.";
+		mes "[瑪莉]";
+		mes "喔!我知道";
+		mes "你一定是出生就有自然靈力讓你可以看到靈魂的交流，不然你就是個大騙子!";
 		next;
-		mes "[Merito]";
-		mes "Hmm... Then first, can you write down your name on this list?";
+		mes "[瑪莉]";
+		mes "嗯...首先，你可以先把你的名子寫在這清單上嗎?";
 		next;
-		if(select("Write name.:I won't.")==2){
-			mes "[Merito]";
-			mes "Well, okay. See you again when you get a chance.";
+		switch(select("寫下名子:我就是不想哩")){
+		case 1:
+			break;
+		case 2:
+			mes "[瑪莉]";
+			mes "好的，等你想要的時候再來";
 			close;
 		}
-		mes "[Merito]";
-		mes "So, you are ["+strcharinfo(0)+"].";
+		mes "[瑪莉]";
+		mes "所以你叫... ["+strcharinfo(0)+"] !";
 		next;
-		mes "[Merito]";
-		mes "Give me a second to register your name.";
-		mes "Talk to me again in a second.";
+		mes "[瑪莉]";
+		mes "給我幾秒中記錄你的名子...";
+		mes "等等再來找我...";
 		set job_soc,1;
 		close;
 	}
-	else if (job_soc == 1){
-		mes "Good, then I'll give you a short explanation about the Sorcerer.";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc == 1)){
+		mes "[瑪莉]";
+		mes "好的，給我幾秒鐘解釋什麼是'巫術者'";
 		next;
-		mes "[Merito]";
-		mes "["+strcharinfo(0)+"], can you handle magic skillfully?";
+		mes "[瑪莉]";
+		mes "["+strcharinfo(0)+"],你可以很熟練的使用魔法嗎?";
 		next;
-		if(select("Yes, I can.:No, I'm not really good at it.")==2){
-			mes "[Merito]";
-			mes "What!? You don't know how to use magic?";
-			mes "What are you doing here then? Get out of here. Right now!";
+		switch(select("當然阿，小事一樁:不能...我是手殘...")){
+		case 1:
+			break;
+		case 2:
+			mes "[瑪莉]";
+			mes "三小!??你不會用魔法?";
+			mes "那你來這邊幹嘛?還不快滾!";
 			close;
 		}
-		mes "[Merito]";
-		mes "Okay, that should be obvious.";
-		mes "Of course, Sorcerers use magic, too. But, do you know the main difference Sorcerers have from other magical jobs?";
+		mes "[瑪莉]";
+		mes "嗯，這很明顯";
+		mes "'巫術者'當然也要使用魔法.但是你懂'巫術者'和其他職業的不同嗎?";
 		next;
-		switch(select("They know how to sing.:They're all old fogies.:They can deal with the spirits.")){
+		switch(select("他們知道怎麼詠倡?:他們都很老?:他們可以和靈魂交流?")){
 		case 1:
-			mes "[Merito]";
-			mes "Well maybe some but that's not the main difference.";
+			mes "[瑪莉]";
+			mes "屙...或許吧...但這不是主要差別!";
 			close;
 		case 2:
-			mes "[Merito]";
-			mes "What! How dare you!?!";
+			mes "[瑪莉]";
+			mes "三小?";
 			close;
 		case 3:
 			break;
 		}
-		mes "[Merito]";
-		mes "That's right. That is the most distinguishing feature that Sorcerers have.";
+		mes "[瑪莉]";
+		mes "是的.這就是最大的不同之處，你說對了!";
 		next;
-		mes "[Merito]";
-		mes "When the people who want to be a Sorcerer come, the first thing we do is to check whether they can communicate with spirits or not.";
+		mes "[瑪莉]";
+		mes "所以通常想成為巫術者的人，我們第一步都會先確認他們是否可以和靈魂交流";
 		next;
-		mes "[Merito]";
-		mes "So that's the basic introduction, so you just need to decide whether or not you want to take the qualification test.";
+		mes "[瑪莉]";
+		mes "所以你必須證明你可以和靈魂交流，我們才會承認你也是巫術者";
 		next;
-		mes "[Merito]";
-		mes "Well, it's all up to you. What are you going to do?";
+		mes "[瑪莉]";
+		mes "我都解釋完了，那你明白了嗎?";
 		next;
-		switch(select("I will take the test.:I'll do it later.")){
+		switch(select("我已經準備好接受考驗了:我還是回家種田好了...")){
 		case 1:
-			mes "[Merito]";
-			mes "Okay. ";
-			mes "Then I'll hand it over to Karacas who is on the 4th floor. He will guide you through the process of the test.";
+			mes "[瑪莉]";
+			mes "好的!";
+			mes "那你去4樓找卡利卡. 他會帶領你完成試驗的.";
 			set job_soc,2;
 			setquest 12096;
 			close;
 		case 2:
-			mes "[Merito]";
-			mes "What? I was sure that you wanted to become a Sorcerer.";
+			mes "[瑪莉]";
+			mes "...";
 			close;
 		}
 	}
-	else if (job_soc > 1){
-		mes "How about your test? Well, Karacas is a little lazy, so that might bother you some...";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc > 1)){
+		mes "[瑪莉]";
+		mes "試驗完成了嗎?卡利卡他是不是很懶阿!?應該讓你很困擾吧，哈哈.";
 		close;
 	}
 }
 
-gef_tower,113,161,5	script	Karacas	754,{
+gef_tower,113,161,5	script	卡利卡	754,{
 
 	if(checkweight(1201,1) == 0){
-		mes "You packed so much in your bag. Try again after emptying your bag.";
+		mes "你背包裡面有太多垃圾，請清空一點再來找我";
 		close;
 	}
-	mes "[Karacas]";
-	if (Class == Job_Sorcerer || Class == Job_Sorcerer_T || Class == Job_Baby_Sorcerer){
-		mes "You look happy. Have a great journey.";
+	if ((Class >= 4023) && (Class <= 4045)){
+		mes "[卡利卡]";
+		mes "孩子，你叫什麼名子阿?";
+		close;
+	}
+	if (Class == Job_Sorcerer || Class == Job_Sorcerer_T){
+		mes "[卡利卡]";
+		mes "你看起來很快樂，有個好職業對吧!?";
 		close;
 	}
 	if (JobLevel < 50 || SkillPoint != 0 || BaseLevel < 99){
-		mes "Is there anything I can do for you?";
+		mes "[卡利卡]";
+		mes "你看起來不需要我的幫助!";
 		close;
 	}
-	if ((Class != Job_Sage) && (Class != Job_Professor) && (Class != Job_Baby_Sage)){
-		mes "Is there anything I can do for you?";
+	if (Class != Job_Sage && Class != Job_Professor){
+		mes "[卡利卡]";
+		mes "你看起來不需要我的幫助!";
 		close;
 	}
-	if (job_soc < 2){
-		mes "More people are visiting Geffen Tower thesedays.";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc < 2)){
+		mes "[卡利卡]";
+		mes "你看起來不需要我的幫助!";
 		close;
 	}
-	else if (job_soc == 2){
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc == 2)){
+		mes "[卡利卡]";
 		mes "....";
 		next;
-		select("Ah... excuse me~");
-		mes "[Karacas]";
+		menu "Ah... excuse me~",-;
+		mes "[卡利卡]";
 		mes "... (Z z z~)";
 		next;
-		selecT("Hm hm!!!~");
-		mes "[Karacas]";
-		mes "Aaaak!! ";
-		mes "Oh, my... ";
+		menu "ㄟ!!!~",-;
+		mes "[卡利卡]";
+		mes "蛤!!? ";
+		mes "別突然大叫阿，嚇死我了... ";
 		next;
-		mes "[Karacas]";
-		mes "Wh... where are you from?";
+		mes "[卡利卡]";
+		mes "你是誰阿?來這幹麻?";
 		next;
-		select("Merito told me to visit you.");
-		mes "[Karacas]";
-		mes "I see, give me a moment.";
-		mes "The list... has already arrived.";
+		menu "瑪莉 叫我來這邊找你u.",-;
+		mes "[卡利卡]";
+		mes "喔 你等我一下.";
+		mes "清單上似乎有紀錄...你要來這.";
 		next;
-		mes "[Karacas]";
-		mes "So, you are ["+strcharinfo(0)+"]... right?";
+		mes "[卡利卡]";
+		mes "所以你是 ["+strcharinfo(0)+"]... 對吧?";
 		next;
-		if(select("Yes, I am.:No, I'm not!")==2){
-			mes "[Karacas]";
-			mes "Oh, there must be some mistake in the list, I think. Will you come again later?";
+		switch(select("當然，不然這名子是誰?:他是誰?你搞錯了!")){
+		case 1:
+			break;
+		case 2:
+			mes "[卡利卡]";
+			mes "那一定是我搞錯了，你等等再來!";
 			close;
 		}
-		mes "[Karacas]";
-		mes "Before you take the Sorcerer test, let me give you the basic information.";
+		mes "[卡利卡]";
+		mes "在你試驗之前我要先告訴你一些資訊.";
 		next;
-		mes "[Karacas]";
-		mes "The way to get a Sorcerer registration ticket is really simple. You just need to go and find one of each spirit scattered around the world, and then convert their power into the shape of a certain material.";
+		mes "[卡利卡]";
+		mes "要成為巫術者其實是一件簡單的事. 你只需要可以和世間的靈魂交流即可, 然後轉換他們的能量到自己的身上!";
 		next;
-		mes "[Karacas]";
-		mes "Sounds easy, right?";
+		mes "[卡利卡]";
+		mes "聽起來很簡單對吧!";
 		next;
-		select("Ahh... sir. Is that really possible?");
-		mes "[Karacas]";
-		mes "Well, it is impossible to meet every spirit by yourself. You need to train yourself very hard to give a shape to the spirits and see them clearly through your eyes.";
+		menu "嗯...聽起來很簡單，但是做起來呢?",-;
+		mes "[卡利卡]";
+		mes "你要自己去與靈魂交流是不可能的!你必須要努力的訓練，讓自己可以清楚的看出靈魂的型態.";
 		next;
-		mes "[Karacas]";
-		mes "So, usually we perform a certain ceremony parade toward the place where we can feel the spirits.";
+		mes "[卡利卡]";
+		mes "所以我們通常都會通過一個儀式來讓你感受到靈魂的存在.";
 		next;
-		mes "[Karacas]";
-		mes "I will tell you how to do that. So listen carefully.";
+		mes "[卡利卡]";
+		mes "讓我來告訴你該怎麼做，你可要聽清楚了!";
 		next;
-		mes "[Karacas]";
-		mes "Usually we cannot see the spirits with our eyes but there is a way to realize the part of the spirits through a special medium.";
+		mes "[卡利卡]";
+		mes "通常我們無法透過眼睛看見靈魂，但是靈魂是確實可以穿過你的身體的.";
 		next;
-		mes "[Karacas]";
-		mes "For example, if you visit the place where the spirit of wind stays with a certain amount of Wind of Verdure, the reaction of the spirit is amplified.";
+		mes "[卡利卡]";
+		mes "舉例來說,你有一個靈魂用風的型態存在著，那你可以放大這個靈魂.";
 		next;
-		mes "[Karacas]";
-		mes "Likewise, if you approach the place where the spirit of fire seems to stay while you have a certain amount of Red Blood, the spirit will show the adverse reaction.";
+		menu "所以這樣可以和靈魂交流...",-;
+		mes "[卡利卡]";
+		mes "沒錯";
+		mes "這個職業基本上就是在使用靈魂的力量..";
 		next;
-		mes "[Karacas]";
-		mes "Sorcerers use this basic principle, this is the essential knowledge that Sorcerers need to have to reach the spirits.";
+		mes "[卡利卡]";
+		mes "但是...這可能對你們這些只會看書的人來說有點困難了...";
 		next;
-		select("So communicating with spirits...");
-		mes "[Karacas]";
-		mes "Right~";
-		mes "This job is based on the power of spirits.";
+		mes "[卡利卡]";
+		mes "首先，這個試煉必須要用到一些東西";
 		next;
-		mes "[Karacas]";
-		mes "Hmm, but it might be hard for someone like you who's focused only on reading books...";
+		mes "[卡利卡]";
+		mes "風靈礦石*3.";
+		mes "火靈礦石*2.";
+		mes "地靈礦石*3.";
+		mes "水靈礦石*3.";
 		next;
-		mes "[Karacas]";
-		mes "First, you need to bring the following materials needed for the test.";
-		next;
-		mes "[Karacas]";
-		mes "3 Wind of Verdure.";
-		mes "3 Crystal Blue.";
-		mes "3 Red Blood.";
-		mes "3 Green Live.";
-		next;
-		mes "[Karacas]";
-		mes "When you bring these materials, I'll tell you the next step.";
+		mes "[卡利卡]";
+		mes "等你把這些東西帶來我們就可以進行下一步.";
 		set job_soc,3;
 		changequest 12096,12097;
 		close;
 	}
-	else if (job_soc == 3){
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc == 3)){
 		if ((countitem(992) > 2) && (countitem(991) > 2) && (countitem(990) > 2) && (countitem(993) > 2)){
-			mes "Oh, you have all the materials.";
+			mes "[卡利卡]";
+			mes "你終於來了，等你好久了";
 			next;
-			select("What should I do next?");
-			mes "[Karacas]";
-			mes "I'll tell you about it now. First, I'll tell you the places for the test. You better write them down.";
+			menu "所以我下一步該做什麼?",-;
+			mes "[卡利卡]";
+			mes "首先，我要告訴你一個可以完成試煉的地方，你最好記下來.";
 			next;
-			mes "[Karacas]";
-			mes "1. 1st floor of Ice Cave";
-			mes "2. 1st floor of Thor Volcano Dungeon";
-			mes "3. 3rd floor of Mjolnir Dead Pit";
-			mes "4. 2nd floor of Kunlun Dungeon";
+			mes "[卡利卡]";
+			mes "1. 1樓的冰雪洞窟";
+			mes "2. 1樓的火焰地牢";
+			mes "3. 3樓的死亡坑洞";
+			mes "4. 2樓的崑崙地牢";
 			next;
-			mes "[Karacas]";
-			mes "We have set up the detecting poles in these 4 places so that ordinary people can communicate with the spirits.";
+			mes "[卡利卡]";
+			mes "你必須要設置偵查點在這4個位置，這樣正常人也可以和靈魂交流了.";
 			next;
-			mes "[Karacas]";
-			mes "Be aware that these detecting poles are activated only when you have more than the certain amount of property stones.";
+			mes "[卡利卡]";
+			mes "當你擁有一些特定石頭時，這些偵查點才會被啟動.";
 			next;
-			mes "[Karacas]";
-			mes "You need to prepare at least 3 small stones for each property. For example, you need Wind of Verdure, not Rough Wind.";
+			mes "[卡利卡]";
+			mes "你必須最少準備3顆以上的特定小石頭. 舉例來說，你要啟動風屬性偵測點必須要擁有3顆'風靈礦石'，並非'風靈原石'.";
 			next;
-			select("So I need the property stones...");
-			mes "[Karacas]";
-			mes "Yes, you have quick wits!";
+			menu "所以我必須要準備這些石頭?...",-;
+			mes "[卡利卡]";
+			mes "是的，快去吧!";
 			next;
-			mes "[Karacas]";
-			mes "Once you bring the stones to the poles, put them into the property decomposing machine which is attached to the pole. The detecting pole will be activated, and you can communicate with the spirit.";
+			mes "[卡利卡]";
+			mes "第一步你先拿石頭去那邊，然後把它們放到機器裡面之後偵測點就會啟動，然後你就可以看到靈魂了";
 			next;
-			mes "[Karacas]";
-			mes "If you succeed, you can extract a part of the spirit as a reagent. If you fail, the property stone will break up.";
+			mes "[卡利卡]";
+			mes "如果成功了，你就可以提煉出靈魂試劑:但是如果失敗了石頭就會消失";
 			next;
-			mes "[Karacas]";
-			mes "Of course if you are lucky enough, if you fail, a Wind of Verdure can be changed into a Rough Wind... Well, that's not a common situation so let's leave that out of the discussion for now.";
+			mes "[卡利卡]";
+			mes "當然，如果你夠幸運就算失敗了礦石也可以變成原石... 但那是不一樣的情況，如果這樣就離開那邊.";
 			next;
-			select("What if I run out of stones?");
-			mes "[Karacas]";
-			mes "Ahahaha... If you run out of property stones, you simply have to get more.";
+			menu "那如果我提煉出石頭之後呢?",-;
+			mes "[卡利卡]";
+			mes "嗯...如果你提煉出了特定石頭，理所當然的就可以拿到更多.";
 			next;
-			mes "[Karacas]";
-			mes "So people who have this test usually start with as many property stones as they can carry. The amount I told you to get is just the bare minimum.";
+			mes "[卡利卡]";
+			mes "所以人們通常在開始之前就會準備好一大堆的石頭. 所以我剛叫你要帶過來的數量是最少需要的數量.";
 			next;
-			mes "[Karacas]";
-			mes "If you are an advanced Sorcerer, you will be able to talk with spirits without going through this process again. But beginners need to use that kind of medium to talk with them.";
+			mes "[卡利卡]";
+			mes "如果你想要快點完成任務，你最好多帶一些需要的物品. 但是需要用的石頭種類還是要符合要求.";
 			next;
-			select("So the reagent is...?");
-			mes "[Karacas]";
-			mes "We don't know which reagent is going to be made from the spirits. It differs by the state of spirits.";
+			menu "所以試劑是...?",-;
+			mes "[卡利卡]";
+			mes "我們不知道哪些試劑是由你些靈魂提煉出來的. 這是整個任務最困難的地方.";
 			next;
-			mes "[Karacas]";
-			mes "When you succeed in getting 3 different kinds of reagents, you can come back.";
+			mes "[卡利卡]";
+			mes "當你成功的提煉出三種不一樣的試劑之後你就可以來找我了.";
 			next;
-			mes "[Karacas]";
-			mes "A reagent that one spirit makes won't be over 2 kinds so if you're going to make 3 kinds of reagents, I suggest you go around several places.";
+			mes "[卡利卡]";
+			mes "一種靈魂做出來的試劑不會超過兩種，所以如果你要製作三種試劑的話，我建議你多去幾個地點.";
 			next;
-			mes "[Karacas]";
-			mes "Have any questions?";
+			mes "[卡利卡]";
+			mes "我該說的都說完了，你有任何問題嗎??";
 			next;
-			if(select("No.:Please explain it again.")==2){
-				mes "[Karacas]";
-				mes "Haha, then can I have a cup of water for a minute? Please come and find me again later.";
+			switch(select("應該沒有!:能再解釋一次嗎?")){
+			case 1:
+				break;
+			case 2:
+				mes "[卡利卡]";
+				mes "屙...可以讓我喝個水休息一下嗎?你等等再來找我.";
 				next;
+				break;
 			}
-			mes "[Karacas]";
-			mes "Then I'll write down the progress that I've summarized shortly. Wait...";
+			mes "[卡利卡]";
+			mes "那我要記下你的進度，等你回來的時候可以會報，請稍等...";
 			next;
-			mes "^000099You got a paper on which the way of communicating with spirits is written. For more information please open your quest window^000000.";
+			mes "^000099你拿到一張紙上面記錄著有關靈魂的事情，如果有任何問題請打開你的視窗^000000.";
 			set job_soc,4;
 			changequest 12097,12098;
 			close;
 		}
-		mes "Before I let you know the progressing way, you'll need to bring some required material.";
+		mes "[卡利卡]";
+		mes "在我讓你瞭解進度方法之前，你必須要帶一些我要求的東西過來.";
 		next;
-		mes "[Karacas]";
-		mes "3 Wind of Verdure.";
-		mes "3 Crystal Blue.";
-		mes "3 Red Blood.";
-		mes "3 Green Live.";
+		mes "[卡利卡]";
+		mes "風靈礦石*3.";
+		mes "火靈礦石*2.";
+		mes "地靈礦石*3.";
+		mes "水靈礦石*3.";
 		next;
-		mes "[Karacas]";
-		mes "When you bring these basic things, I'll guide you to the next step.";
+		mes "[卡利卡]";
+		mes "等你帶來的時候我會告訴你下一步該做什麼.";
 		close;
 	}
-	else if (job_soc == 4){
-		if (countitem(6276) && countitem(6278) && countitem(6277)){
-			mes "Wow~ your skill is good.";
-			mes "I thought you'd be overwhelmed by the spirits but you've managed to get the effective medicine!";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc == 4)){
+		if ((countitem(6276) > 0) && (countitem(6278) > 0) && (countitem(6277) > 0)){
+			mes "[卡利卡]";
+			mes "哇!你的技術真不錯.";
+			mes "我想你應該很快速的與靈魂接觸了吧，但你還沒有拿到藥水!";
 			next;
-			select("Is this all I need to do?");
-			mes "[Karacas]";
-			mes "Well done. First, I will organize the miraculous medicine so please wait a moment.";
+			menu "這是我最後要做的嗎?",-;
+			mes "[卡利卡]";
+			mes "是的! 首先我要先混何一些藥水，所以請等一下...";
 			delitem 6276,1;
 			delitem 6278,1;
 			delitem 6277,1;
@@ -334,252 +372,258 @@ gef_tower,113,161,5	script	Karacas	754,{
 			completequest 12098;
 			close;
 		}
-		mes "It's not an easy thing to get the desired effect by communicating with spirits.";
+		mes "[卡利卡]";
+		mes "獲得與靈魂交流的能力是一件不簡單的事.";
 		next;
-		mes "[Karacas]";
-		mes "Don't give up and keep on trying~";
+		mes "[卡利卡]";
+		mes "別放棄，再試一次吧!";
 		close;
 	}
-	else if (job_soc == 5){
-		mes "Originally my teacher needs to check the Sorcerer job change but after he went out to find the spirit of fish, I can't see him. So I'll check it myself.";
+	if (Class == Job_Sage || Class == Job_Professor && (job_soc == 5)){
+		mes "[卡利卡]";
+		mes "原本我老師必須要確認巫術者的職業，但自從她出去尋找靈魂以後我就沒有見到他了，所以就換我來確認.";
 		next;
-		mes "[Karacas]";
-		mes "Dear ["+strcharinfo(0)+"],";
-		mes "you went around the rough wilds to open the door as a Sorcerer and passed all the requirements that our Academy has given.";
+		mes "[卡利卡]";
+		mes "勇者 ["+strcharinfo(0)+"],";
+		mes "你依照了我的要求去附近打開了所有的門.";
 		next;
-		mes "[Karacas]";
-		mes "Of course it is just a beginning, we don't know which spirit you're going to commune with or what kind of hardships await you.";
+		mes "[卡利卡]";
+		mes "當然，這只是個開始，我們不知道靈魂們何去何從，也不知道他們會用著什麼型態出現...";
 		next;
-		mes "[Karacas]";
-		mes "But with the ability you've shown until now, you will be capable to do anything from now on. Dear ["+strcharinfo(0)+"]";
+		mes "[卡利卡]";
+		mes "但以你現在的表現，我相信你之後能夠有更偉大的成就. 勇者 ["+strcharinfo(0)+"]";
 		next;
-		mes "[Karacas]";
-		mes "Moreover, I formally acknowledge that you've completed all the job transfer tests of the Sorcerer Academy.";
+		mes "[卡利卡]";
+		mes "另外，我答應你的拜師，你已經完成了我的考驗，也證明了你自己.";
 		next;
-		mes "[Karacas]";
-		mes "Congratulations, ["+strcharinfo(0)+"]";
-		jobchange roclass(eaclass()|EAJL_THIRD);
+		mes "[卡利卡]";
+		mes "恭喜你阿, ["+strcharinfo(0)+"]";
+		if (Class == Job_Sage){
+			jobchange Job_Sorcerer;
+		}else if (Class == Job_Professor){
+			jobchange Job_Sorcerer_T;
+		}
 		getitem 5756,1;
 		getitem 2795,1;
 		next;
-		mes "[Karacas]";
-		mes "I hope that you gain more communion with spirits from now on.";
+		mes "[卡利卡]";
+		mes "我期許你以後對這世界會有更偉大的貢獻!";
 		close;
 	}
 }
 
-thor_v01,64,252,0	script	Spirit Detecting Staff#1	836,{
+thor_v01,64,252,0	script	靈魂偵測#1	836,{
 
 	if ((job_soc == 4) && (countitem(990) > 2)){
 		progressbar "ffff00",5;
 		set .@rand,rand(1,70);
 		if (.@rand < 10){
 			if ((job_soc == 4) && (countitem(990) > 2) && (countitem(6276) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 990,3;
 				getitem 6276,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(990) > 2) && (countitem(6276) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 990,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if ((.@rand > 9) && (.@rand < 16)){
 			if ((job_soc == 4) && (countitem(990) > 2) && (countitem(6278) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 990,3;
 				getitem 6278,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(990) > 2) && (countitem(6278) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 990,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if (.@rand == 56){
 			if ((job_soc == 4) && (countitem(990) > 2)){
-				mes "The spirit combined the property stones into a huge property stone.";
+				mes "靈魂們組了屬性石使他們變成了更大的石頭.";
 				delitem 990,3;
 				getitem 994,1;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}
-		mes "You used the property stones but it looks like you failed to communicate with the spirits.";
+		mes "你使用了屬性石與靈魂交流，但你似乎失敗了....";
 		delitem 990,3;
 		close;
 	}else if ((job_soc == 4) && (countitem(990) < 3)){
-		mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+		mes "你可以感覺到靈魂但似乎缺少了一些東西讓你可以和他們交流.";
 		next;
-		mes "If you have the suitable property stones, you should be able to commune with the spirits.";
+		mes "如果你有足夠的屬性石，你或許就可以和他們交流了.";
 		close;
 	}
-	mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+	mes "我可以感受到靈魂的存在!";
 	close;
 }
 
-ice_dun01,274,274,0	script	Spirit Detecting Staff#2	836,{
+ice_dun01,274,274,0	script	靈魂偵測#2	836,{
 
 	if ((job_soc == 4) && (countitem(991) > 2)){
 		progressbar "ffff00",5;
 		set .@rand,rand(1,70);
 		if (.@rand < 10){
 			if ((job_soc == 4) && (countitem(991) > 2) && (countitem(6278) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 991,3;
 				getitem 6278,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(991) > 2) && (countitem(6278) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 991,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if ((.@rand > 9) && (.@rand < 16)){
 			if ((job_soc == 4) && (countitem(991) > 2) && (countitem(6276) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 991,3;
 				getitem 6276,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(991) > 2) && (countitem(6276) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 991,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if (.@rand == 56){
 			if ((job_soc == 4) && (countitem(991) > 2)){
-				mes "The spirit combined the property stones into a huge property stone.";
+				mes "靈魂們組了屬性石使他們變成了更大的石頭.";
 				delitem 991,3;
 				getitem 995,1;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}
-		mes "You used the property stones but it looks like you failed to communicate with the spirits.";
+		mes "你使用了屬性石與靈魂交流，但你似乎失敗了....";
 		delitem 991,3;
 		close;
 	}else if ((job_soc == 4) && (countitem(991) < 3)){
-		mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+		mes "你可以感覺到靈魂但似乎缺少了一些東西讓你可以和他們交流.";
 		next;
-		mes "If you have the suitable property stones, you should be able to commune with the spirits.";
+		mes "如果你有足夠的屬性石，你或許就可以和他們交流了.";
 		close;
 	}
-	mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+	mes "我可以感受到靈魂的存在!";
 	close;
 }
 
-mjo_dun03,200,141,0	script	Spirit Detecting Staff#3	836,{
+mjo_dun03,200,141,0	script	靈魂偵測#3	836,{
 
 	if ((job_soc == 4) && (countitem(993) > 2)){
 		progressbar "ffff00",5;
 		set .@rand,rand(1,70);
 		if (.@rand < 10){
 			if ((job_soc == 4) && (countitem(993) > 2) && (countitem(6277) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 993,3;
 				getitem 6277,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(993) > 2) && (countitem(6277) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 993,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if ((.@rand > 9) && (.@rand < 16)){
 			if ((job_soc == 4) && (countitem(993) > 2) && (countitem(6276) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 993,3;
 				getitem 6276,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(993) > 2) && (countitem(6276) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 993,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if (.@rand == 56){
 			if ((job_soc == 4) && (countitem(993) > 2)){
-				mes "The spirit combined the property stones into a huge property stone.";
+				mes "靈魂們組了屬性石使他們變成了更大的石頭.";
 				delitem 993,3;
 				getitem 997,1;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}
-		mes "You used the property stones but it looks like you failed to communicate with the spirits.";
+		mes "你使用了屬性石與靈魂交流，但你似乎失敗了....";
 		delitem 993,3;
 		close;
 	}else if ((job_soc == 4) && (countitem(993) < 3)){
-		mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+		mes "你可以感覺到靈魂但似乎缺少了一些東西讓你可以和他們交流.";
 		next;
-		mes "If you have the suitable property stones, you should be able to commune with the spirits.";
+		mes "如果你有足夠的屬性石，你或許就可以和他們交流了.";
 		close;
 	}
-	mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+	mes "我可以感受到靈魂的存在!";
 	close;
 }
 
-gon_dun02,195,190,0	script	Spirit Detecting Staff#4	836,{
+gon_dun02,195,190,0	script	靈魂偵測#4	836,{
 
 	if ((job_soc == 4) && (countitem(992) > 2)){
 		progressbar "ffff00",5;
 		set .@rand,rand(1,70);
 		if (.@rand < 10){
 			if ((job_soc == 4) && (countitem(992) > 2) && (countitem(6277) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 992,3;
 				getitem 6277,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(992) > 2) && (countitem(6277) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 992,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if ((.@rand > 9) && (.@rand < 16)){
 			if ((job_soc == 4) && (countitem(992) > 2) && (countitem(6278) < 1)){
-				mes "You got a reagent by communicating with an unseen spirit.";
+				mes "你與靈魂交流，從靈魂身上得到了一個試劑.";
 				delitem 992,3;
 				getitem 6278,1;
 				close;
 			}else if ((job_soc == 4) && (countitem(992) > 2) && (countitem(6278) > 0)){
-				mes "It doesn't seem like you got anything special from the spirits.";
+				mes "你與靈魂交流了，但似乎沒有得到任何東西....";
 				delitem 992,3;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}else if (.@rand == 56){
 			if ((job_soc == 4) && (countitem(992) > 2)){
-				mes "The spirit combined the property stones into a huge property stone.";
+				mes "靈魂們組了屬性石使他們變成了更大的石頭.";
 				delitem 992,3;
 				getitem 996,1;
 				close;
 			}
-			mes "The spirit is mad at you.";
+			mes "靈魂生氣了!";
 			close;
 		}
-		mes "You used the property stones but it looks like you failed to communicate with the spirits.";
+		mes "你使用了屬性石與靈魂交流，但你似乎失敗了....";
 		delitem 992,3;
 		close;
 	}else if ((job_soc == 4) && (countitem(992) < 3)){
-		mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+		mes "你可以感覺到靈魂但似乎缺少了一些東西讓你可以和他們交流.";
 		next;
-		mes "If you have the suitable property stones, you should be able to commune with the spirits.";
+		mes "如果你有足夠的屬性石，你或許就可以和他們交流了.";
 		close;
 	}
-	mes "I can see the detecting staff that's been installed by the Sorcerer Union to communicate with the spirits .";
+	mes "我可以感受到靈魂的存在!";
 	close;
 }
