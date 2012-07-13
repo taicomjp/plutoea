@@ -1,187 +1,170 @@
 //===== rAthena Script =======================================
-//= Arch Bishop Job Quest
+//= ä¸»æ•™ è·æ¥­è½‰è·ä»»å‹™ = Arch Bishop Job change Quest
 //===== By: ==================================================
 //= L0ne_W0lf
 //= Credits: Gepard
 //===== Current Version: =====================================
-//= 1.1
+//= 1.5
 //===== Compatible With: =====================================
 //= rAthena SVN
 //===== Description: =========================================
-//= [Aegis Conversion]
-//= Job change script fr Third class (Arch Bishop)
-//= Does not entirely support changing to Baby Third Class.
+//= [Translated from the Official]
+//= Job change Quest from Priest / High Priest -> Arch Bishop.
 //===== Additional Comments: =================================
 //= 1.0 First version.
 //= 1.1 Fixed class checks for arch bishops.
 //= 1.2 Fixed Job tags typos.
+//= 1.3 Made some NPC's into duplicates and fixed some && / || checks. [Masao]
+//= 1.4 Fixed Job_Archbishop/Job_Archbishop_T typos. [Euphy]
+//= 1.5 Redone the whole Script. [Masao]
+//===== PlutoEA: ==================================================
+//= å“²å°è«: ä¸­æ–‡åŒ–
 //============================================================
-//===== PlutoEA: =============================================
-//= D.weizhe «D©x¤è¤¤¤å¤Æ¡A³¡¤À¦WºÙ¬°©x¤è
-//============================================================ 
 
-prt_church,103,88,3	script	¬èºÖªª®v#arch	60,{
-	if (BaseJob != 8) {
+prt_church,103,88,3	script	ç¥ˆç¦±çš„ç¥çˆ¶#arch	60,{
+	if ((Class != Job_Priest) && (Class != Job_High_Priest) && (Class != Job_Baby_Priest)) {
 		if (Class == Job_Arch_Bishop || Class == Job_Arch_Bishop_T || Class == Job_Baby_Bishop) {
-			mes "[¬èºÖªª®v]";
-			mes "§A¬O...¤j¥D±Ğ!.";
-			mes "§A¤w¸g¹F¨ì¤F³Ì°ªªº¹Ò¬Éª¬ºA.";
-			mes "§Ú§Æ±æ§A¯à°÷µ¹¤©¦b«_ÀIªº¤H§ó¦hªº©¯ºÖ»PºaÄ£.";
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "Ah! An Archbishop.";
+			mes "You have reached the state of light.";
+			mes "I hope you give happiness and honor to people during your adventures.";
 			close;
 		}
-		else {
-			mes "[¬èºÖªª®v]";
-			mes "¦b¥ş¯àªº¯«¶ø¤B«e¡A¤£±o¦³¥ô¦ó¤H¤ñ¥L§óÁo©ú¡B§ó¤¯·O.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¶ø¤Bªº©Ò¦³³¡ªø³£À³¸Ó¬O¶Ô¾Ä¡A¦Ó¤£¬OÃi±o¬°¶ø¤B¥I¥X.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "³o´X¤Ñ§ÚÅ¥»¡¹L¡A³¡ªø­Ì¦¨¬°¥L­ÌªºÂ¾³d¤£ÄY¶ø¤B©M¸Ë¹¢¦Û¤v»P¥@¬Éªº½÷·×.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¦pªG§A¬İ¨ì³o¨Ç³¡ªø¡A¥i¥H½Ğ±z±a¥L­Ì¥h´¶¶©¼w©Ô±Ğ°ó¶Ü?";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¥L­Ìµ¹¤F¤@­Ó¯S®íªºÆF®ğ¡A©Ò¥H§A«Ü®e©ö´N¥i¥H»{¥X¥L­Ì.";
-			mes "§Ú¥´ºâÅı¥L­Ì¦³¦ì¿D¤B¥I¥Xªº»ù­È.";
-			close;
-		}
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "In front of the Almighty God Odin, there shall be no person smarter than him, and there will be no person more merciful than him.";
+		next;
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "All ministers of Odin should be diligent. They should never be too lazy to serve Odin.";
+		next;
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "Thesedays, I've heard that ministers are becoming lax in their duty to Odin and adorn themselves with the splendors of the world.";
+		next;
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "If you see any of these ministers, can you ask to them to go to the church in prontera?";
+		next;
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "They give out a special aura so you can easily recognize them.";
+		mes "I'm going to make them ministers worthy of serving Odin.";
+		close;
 	}
-	else {
-		if (Upper == 4) {
-			mes "[¬èºÖªª®v]";
-			mes "¦b¥ş¯àªº¯«¶ø¤B«e¡A¤£±o¦³¥ô¦ó¤H¤ñ¥L§óÁo©ú¡B§ó¤¯·O.";
+	if ((BaseLevel == 99) && (JobLevel > 49)) {
+		if (job_arch == 0) {
+			if (SkillPoint) {
+				mes "You can't change jobs without using all your skill points. Please use all of your skill points before applying to change jobs~";
+				close;
+			}
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "In front of the Almighty God Odin, there shall be no person smarter than him, and there will be no person more merciful than him.";
 			next;
-			mes "[¬èºÖªª®v]";
-			mes "¶ø¤Bªº©Ò¦³³¡ªø³£À³¸Ó¬O¶Ô¾Ä¡A¦Ó¤£¬OÃi±o¬°¶ø¤B¥I¥X.";
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "All ministers of Odin should be diligent. They should never be too lazy to serve Odin.";
 			next;
-			mes "[¬èºÖªª®v]";
-			mes "³o´X¤Ñ§ÚÅ¥»¡¹L¡A³¡ªø­Ì¦¨¬°¥L­ÌªºÂ¾³d¤£ÄY¶ø¤B©M¸Ë¹¢¦Û¤v»P¥@¬Éªº½÷·×.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¦pªG§A¬İ¨ì³o¨Ç³¡ªø¡A¥i¥H½Ğ±z±a¥L­Ì¥h´¶¶©¼w©Ô±Ğ°ó¶Ü?";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¥L­Ìµ¹¤F¤@­Ó¯S®íªºÆF®ğ¡A©Ò¥H§A«Ü®e©ö´N¥i¥H»{¥X¥L­Ì.";
-			mes "§Ú¥´ºâÅı¥L­Ì¦³¦ì¿D¤B¥I¥Xªº»ù­È.";
-			close;
-		}
-		if ((BaseLevel == 99) && (JobLevel > 49)) {
-			if (job_arch == 0) {
-				if (SkillPoint) {
-					mes "§A§Ş¯àÂI©|¥¼¤À°t¡A½Ğ¤À°t§¹¤§«á¦A¨Ó§ä§Ú!";
-					close;
-				}
-				mes "[¬èºÖªª®v]";
-				mes "¦b¥ş¯àªº¯«¶ø¤B«e¡A¤£±o¦³¥ô¦ó¤H¤ñ¥L§óÁo©ú¡B§ó¤¯·O.";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "¶ø¤Bªº©Ò¦³³¡ªø³£À³¸Ó¬O¶Ô¾Ä¡A¦Ó¤£¬OÃi±o¬°¶ø¤B¥I¥X.";
-				next;
-				mes "[¬èºÖªª®v]";
-				if (Sex == 1)
-					mes "§A³Ìªñ¹Lªº¦p¦ó?";
-				else
-					mes "§A³Ìªñ¹Lªº¦p¦ó?";
-				mes "§A¬O§_¦³µÛ¥R¹êªº¥Í¬¡?";
-				mes "§A´¿¸g¦b¿D¤Bªº¥Í¬¡¹Lªº¦n¶Ü?";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§Ú­Ìªº³¡ªø©M§Ú­Ìªº¤@Á|¤@°Ê³£·|³Q²³¯«¬İ¨ìªº.";
-				mes "§Ú­ÌÀ³¸Ó¥Ã»·»Ê°O³o¤@ÂI.";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§Ú­ÌÀ³¸Ó¥Ã»·»¡¯u¸Ü.";
-				mes "§Ú­Ì¤£À³¸Ó¬¡¦bÁÀ¨¥©M´ÛÄF¤¤.";
-				next;
-				mes "[¬èºÖªª®v]";
-				if (Sex == 1)
-					mes "¥S§Ì...";
-				else 
-					mes "©j©f...";
-				mes "§Y¨Ï§Ú­Ì¬°¶ø¤B¡A¦ı§Ú­Ì³£¬O´¶³qªº¤H.";
-				mes "¾¨ºŞ§Ú­Ì¦A«ç»ò±»»\¦Û¤v¡A§Ú­Ì³£¥²¶·­n©ú¥Õ.";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§Ú­Ì­n¨c°O§Ú­Ìªºªì°J©M¶Ç¼½¶ø¤Bªº³W«h.";
-				next;
-				select("§ÚÀ³¸Ó­n«ç»ò°µ©O?");
-				mes "[¬èºÖªª®v]";
-				mes "³o¬O­Ó¦n°İÃD!";
-				mes "§Ú­Ì¦³³\¦hªº¤èªk.";
-				mes "¦ı§Ú«ØÄ³§A....";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§A´¿¸g¦³Å¥»¡¹L¤@­Ó";
-				mes "^3131FF´Â¸t¤§¦a^000000?";
-				mes "¤@­Ó¸t¦a´N¬O¤@­Ó¯«¸tªº¦a¤è¡A¥H¬è¨D«OÅ@©M®¦¨åªº¯«¶ø¤B.";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§A­Ì¹³µÛ¶ø¤B¸t¦aÃ«§iªº¦a¤è¡A§A·|Ä±±o§A³QÀò­«¥Í¤F.";
-				next;
-				mes "[¬èºÖªª®v]";
-				mes "§A¤]³o»ò»{¬°¶Ü?";
-				mes "§A·Q¹³§Ú­Ì¤@¼Ë¹³µÛ³Ó¦aÃ«§i¶Ü?";
-				next;
-				switch(select("¬Oªº.:§Ú¤£»{¬°.")) {
-				case 1:
-					mes "[¬èºÖªª®v]";
-					mes "§A³o¬O¥¿½TªººA«×.";
-					mes "¤H®a¦í¦b¤@­Ó¤Hªº¥@«U¥Í¬¡¡A§ó¦n¦a¦³¤@­Ó·sªº¨­Åé©Mºë¯«¡A¨ÃºtÅÜ¬°¯u¥¿ªº¶ø¤Bªª®v.";
-					next;
-					mes "[¬èºÖªª®v]";
-					mes "§i¶D§A¡A¦³¤@­Ó¤p§ø²ø¡A©R¦W¨Z¤Ú©Ô»·.";
-					mes "³o­Ó§ø¬O¨ä¤¤¤@­Ó³¡¸¨ªº¥Í¬¡»P¦ÛµM©M¿Ó¬Û³Bªº.";
-					next;
-					mes "[¬èºÖªª®v]";
-					mes "¥h¨º¸Ì§äªª®v­}­C.";
-					mes "§i¶D¥L¡A ''^3131FF§Ú¦b¬O¬°¤F¸t¦a´Â¸t¦Ó¨Ó^000000.''";
-					next;
-					mes "[¬èºÖªª®v]";
-					mes "¥L«Ü¦Ñ¡A¦Ó¥B¦³ÂI­«Å¥.";
-					mes "§AÀ³¸Ó­n»¡¤jÁn¤@ÂI¦Ó¥B²M·¡¤@ÂI¡AÀ´¶Ü?";
-					mes "§Ú§Æ±æ³o±ø¸ôµ¹¤w±N§A¥u¦V¥ú©úªº¶ø¤Bªª®v....";
-					set job_arch,1;
-					setquest 2187;
-					close;
-				case 2:
-					mes "[¬èºÖªª®v]";
-					mes "­n¥h´Â¸t¤§¦a¨ä¹ê¤£Ãø.";
-					mes "¥u¬O­nª`·N¡A¤@¥¹¦¨¬°¤F¶ø¤Bªª®v¡A§A´NµLªk¦^ÀY!.";
-					next;
-					mes "[¬èºÖªª®v]";
-					mes "¦pªG§A§ïÅÜ¥D·N¡AÀH®É¨Ó±´±æ§Ú.";
-					mes "§Ú¥Ã»·³£·|¦b³oÃäµ¥µÛ§A.";
-					close;
-				}
+			if (Sex == 1) {
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Brother, how has your life been?";
 			}
 			else {
-				mes "[¬èºÖªª®v]";
-				mes "®È³~¦p¦óªü?";
-				mes "§A¹J¨ì­}­Cªª®v¤F¶Ü??";
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Sister, how has your life been?";
+			}
+			mes "Have you lived it to it's fullest?";
+			mes "Have you served your life in the light of Odin?";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "We are ministers and our behavior is seen as acts of the Gods.";
+			mes "We should always be mindful of this.";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "We should always tell the truth.";
+			mes "We should not fall prey to lies and deceit.";
+			next;
+			if (Sex == 1) {
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Brother...";
+			}
+			else {
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Sister...";
+			}
+			mes "Even though we serve Odin, we are normal people.";
+			mes "We can be degraded in spite of ourselves and we must realize that.";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "We always try to keep our original intention in mind and spread Odin's rule.";
+			next;
+			menu "How do I become like that?",-;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "That's a good question.";
+			mes "We have lots of methods.";
+			mes "But, I recommend this.";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "Have you ever heard of a";
+			mes "^3131FFHoly Pilgrimage^000000?";
+			mes "A Holy Pilgrimage means going to a holy place to pray to the God Odin for protection and grace.";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "When you pray to Odin in the holy place, you will feel that you are born again.";
+			next;
+			mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+			mes "What do you think?";
+			mes "Would you like to do a Holy Pilgrimage?";
+			next;
+			switch (select("Yes I want to.:I'll think about it.")) {
+			case 1:
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "That's the correct attitude.";
+				mes "A person who lives in one's mundane life would better have a new mind and body and evolve to the way of a true minister of Odin.";
+				next;
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "There is a small village named Umbala far from here.";
+				mes "That village is a where a tribe lives in harmony with nature.";
+				next;
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Go there and find Priest Dayan.";
+				mes "Tell him exactly, ''^3131FFI'm here for the Holy Pilgrimage^000000.''";
+				next;
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "He's very old so he is hard of hearing.";
+				mes "You have to speak loud and clearly. You got it?";
+				mes "I hope that this paves the way for you to live in the light of Odin......";
+				set job_arch,1;
+				setquest 2187;
+				close;
+			case 2:
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "A Holy Pilgrimage isn't that difficult.";
+				mes "Just be mindful that once you start the path you will be on your way to the way of a true minister of Odin.";
+				next;
+				mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+				mes "Feel free to visit me if you change your mind.";
+				mes "I'll always be here for you.";
 				close;
 			}
 		}
-		else {
-			mes "[¬èºÖªª®v]";
-			mes "¦b¥ş¯àªº¯«¶ø¤B«e¡A¤£±o¦³¥ô¦ó¤H¤ñ¥L§óÁo©ú¡B§ó¤¯·O.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¶ø¤Bªº©Ò¦³³¡ªø³£À³¸Ó¬O¶Ô¾Ä¡A¦Ó¤£¬OÃi±o¬°¶ø¤B¥I¥X.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "³o´X¤Ñ§ÚÅ¥»¡¹L¡A³¡ªø­Ì¦¨¬°¥L­ÌªºÂ¾³d¤£ÄY¶ø¤B©M¸Ë¹¢¦Û¤v»P¥@¬Éªº½÷·×.";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¦pªG§A¬İ¨ì³o¨Ç³¡ªø¡A¥i¥H½Ğ±z±a¥L­Ì¥h´¶¶©¼w©Ô±Ğ°ó¶Ü?";
-			next;
-			mes "[¬èºÖªª®v]";
-			mes "¥L­Ìµ¹¤F¤@­Ó¯S®íªºÆF®ğ¡A©Ò¥H§A«Ü®e©ö´N¥i¥H»{¥X¥L­Ì.";
-			mes "§Ú¥´ºâÅı¥L­Ì¦³¦ì¿D¤B¥I¥Xªº»ù­È.";
-			close;
-		}
+		mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+		mes "How's it going?";
+		mes "Did you meet Priest Dayan in Umbala?";
+		close;
 	}
+	mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+	mes "æ²’æœ‰æ¯”å…¨èƒ½çš„å¥§ä¸ç¥";
+	mes "æ›´æœ‰æ™ºæ…§ï¼Œ";
+	mes "åŠæ›´æ…ˆæ‚²";
+	next;
+	mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+	mes "èº«ç‚ºç¥è·è€…çš„æˆ‘å€‘å‡¡æ˜¯éƒ½è¦éå¸¸å‹¤å¥®ï¼Œé‚„è¦æ•¬å¥‰ç¥æ˜åŠå®£æšç¥‚çš„åŠŸç¸¾";
+	next;
+	mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+	mes "æ“šèªªæœ€è¿‘æœ‰éƒ¨åˆ†çš„é«˜ç´šç¥è·è€…è¢«ä¸–ä¿—æ‰€è¿·æƒ‘ï¼Œåªé‡é–€é¢è€Œä¸ä¿®å…§æ¶µ";
+	next;
+	mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+	mes "å¦‚æœä½ åœ¨è·¯ä¸Šæœ‰ç¢°åˆ°é¡ä¼¼çš„ç¥è·è€…æ™‚ï¼Œè«‹è½‰å‘Šä»–åˆ°æ™®éš†å¾·æ‹‰çš„æ•™å ‚å¥½å—?";
+	next;
+	mes "[ç¥ˆç¦±çš„ç¥çˆ¶]";
+	mes "ä»–å€‘æœƒæ•£ç™¼ç‰¹æ®Šçš„æ°£å ´ï¼Œæ‡‰è©²ä¸é›£åˆ†è¾¨ï¼Œ";
+	mes "æˆ‘æœƒå¹«ä»–å€‘è„«é›¢ä¸–ä¿—çš„çœ·æˆ€ï¼Œè®Šæˆç¹¼çºŒæ•¬å¥‰å¥§ä¸ç¥çš„å¿ å¯¦ç¥è·è€…";
+	close;
 }
 
 umbala,137,227,5	script	Utan Boy#arch	787,{
@@ -190,340 +173,346 @@ umbala,137,227,5	script	Utan Boy#arch	787,{
 	close;
 }
 
-umbala,139,227,3	script	ªª®v#arch	60,{
+umbala,139,227,3	script	Priest#arch	60,{
 	if (job_arch < 1) {
-		mes "[ªª®v]";
-		mes "¯Î..¯Î..¯Î§a?...";
+		mes "[Priest]";
+		mes "Un...ba... Unba?";
 		close;
 	}
-	else if (job_arch == 1) {
-		mes "[ªª®v]";
-		mes "¯Î..¯Î..¯Î§a?...";
+	if (job_arch == 1) {
+		mes "[Priest]";
+		mes "Un...ba... Umba?";
 		next;
 		mes "[Utan Boy]";
 		mes "...............";
 		next;
-		mes "[ªª®v]";
-		mes "¬O³o¼Ë»¡...¹ï§a?";
-		mes "¶â...©Ò¥H...";
-		mes "¯Î...¶Ü? ¯Î...¶Ü?";
-		emotion e_swt,"ªª®v#arch";
+		mes "[Priest]";
+		mes "Is that... right?";
+		mes "Hmm... so...";
+		mes "Um...ma? Umau...ma?";
+		emotion e_swt;
 		next;
 		mes "[Utan Boy]";
 		mes "...............";
 		next;
-		mes "[ªª®v]";
-		mes "«Î......";
-		mes "§ÚÄ±±o¦n¹¡.";
-		mes "§q.§q.§q.§q.";
+		mes "[Priest]";
+		mes "Huuuuuu......";
+		mes "Oh, dear . I feel heavy.";
+		mes "hohohoho.";
 		next;
-		mes "- ³ä³ä¦Û»y~ -";
+		mes "- mumbling~ -";
 		next;
-		mes "[ªª®v]";
-		mes "«¢«¢«¢«¢«¢.";
-		mes "­ó­ó­ó­ó. ­ó­ó­ó­ó.";
+		mes "[Priest]";
+		mes "hahahahaha.";
+		mes "huhuhuhu. humhum.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§A¦n. §A¬O...ªª®v­}­C?";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Hello. are you... Priest Dayan?";
 		next;
-		mes "[ªª®v]";
-		mes "µğ?";
+		mes "[Priest]";
+		mes "Huh?";
 		next;
-		mes "¥LÂàÀY­±¦V§A.";
+		mes "He turns his head towards you.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "©p¬O­}­Cªª®v¶Ü";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Aren't you Priest Dayan?";
 		next;
-		mes "[ªª®v]";
-		mes "³ä³ä¦Û»y...";
+		mes "[Priest]";
+		mes "muttering...";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "ªª®v! ¤j~¶­! ¹ï§a!?";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Priest! Da~yan! Right!?";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "³á~, ¬Oªü.";
-		mes "§Ú¬Oªü.";
-		if (Sex == 1)
-			mes "§Ú¬O­}­C. §A¦nªü¡A¥S§Ì.";
-		else
-			mes "§Ú¬O­}­C. §A¦nªü¡A©n©f.";
+		mes "[Priest Dayan]";
+		mes "Ah~, yes.";
+		mes "Yes, I am.";
+		if (Sex == 1) {
+			mes "I'm Dayan. Nice to meet you Brother.";
+		}
+		else {
+			mes "I'm Dayan. Nice to meet you Sister.";
+		}
 		next;
-		mes "¦Ñªª®v¹ïµÛ§A·L¯º. ";
+		mes "The old priest gives you an ear to ear grin. ";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "§Ú§Ñ¤F¬ï§Úªº§UÅ¥¾¹¡C«¢«¢.";
-		mes "¹ï¤F¡A§A¬°¤°»ò¨Ó³o¸Ì?";
+		mes "[Priest Dayan]";
+		mes "I forgot to wear my hearing aid. hehe.";
+		mes "Anyway, why have you come here?";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¶â...§Ú­n¸ò§A»¡...";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Hmm, I wanted to tell you...";
 		next;
-		input .@input$;
-		mes "["+strcharinfo(0)+"]";
-		mes ""+.@input$+"";
+		input .@inputstr$;
+		mes "[" + strcharinfo(0) + "]";
+		mes "" + .@inputstr$ + "";
 		next;
-		set .@urans$,.@input$;
-		set .@myans$,"§Ú¬O±q´¶¶©¼w©Ô¨Ó´Â¸tªº";
-		set .@sungzi,compare(.@urans$,.@myans$);
-		if (.@sungzi == 0) {
-			mes "ªª®v­}­C¦ü¥G¨Ã¤£²z¸Ñ§A¡C¥L¥u¬O¨nµÛ§Aªº·L¯º.";
+		if (.@inputstr$ != "I'm here for the Holy Pilgrimage") {
+			mes "Priest Dayan doesn't seem to understand you. He just stares at you and smiles.";
 			next;
-			mes "[ªª®v]";
-			mes "Ô£?";
+			mes "[Priest]";
+			mes "Eh? Say what?";
 			close;
 		}
-		mes "[ªª®v ­}­C]";
+		mes "[Priest Dayan]";
 		mes "..............?";
 		next;
-		mes "¥L§â¥Lªº¦Õ¦h­±¦V§A.";
+		mes "He cups his ears towards you.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "^FF0000§Ú¬O±q´¶¶©¼w©Ô¨Ó´Â¸tªº!^000000";
-		mes "^FF0000§Ú¬O±q´¶¶©¼w©Ô¨Ó´Â¸tªº!^000000";
-		mes "^FF0000§Ú¬O±q´¶¶©¼w©Ô¨Ó´Â¸tªº!^000000";
-		mes "^FF0000§Ú¬O±q´¶¶©¼w©Ô¨Ó´Â¸tªº!^000000";
+		mes "[" + strcharinfo(0) + "]";
+		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
+		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
+		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
+		mes "^FF0000I'm here for the Holy Pilgrimage!^000000";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "§A¬O?...";
-		mes "­n¨Ó³oÃä´Â¸tªº...";
-		mes "§Ú¤w¸g«Ü¤[¨S¦³¬İ¨ì¹³§A³o¼Ëªºªª®v­n¨Ó³oÃä´Â¸t¤F!.";
-		if (Sex == 1)
-			mes "§A¦nªü¡A¥S§Ì.";
-		else
-			mes "§A¦nªü¡A©j©f.";
+		mes "[Priest Dayan]";
+		mes "Eh... are you?";
+		mes "A pilgrimage to the Holy Land...";
+		mes "It has been a long time since I've seen such a devout minister.";
+		if (Sex == 1) {
+			mes "Welcome. Brother.";
+			next;
+		}
+		else {
+			mes "Welcome. Sister.";
+			next;
+		}
+		mes "The old priest gives you a gracious smile.";
 		next;
-		mes "¦Ñªª®vµ¹§A¤@­Ó¿Ë¤Áªº·L¯º.";
+		mes "[Priest Dayan]";
+		mes "See this village with the huge forest surrounding it.";
+		mes "Can you see a giant tree?";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "<§A¬İ¨ì¤F¤@­Ó¥¨¤jªº´ËªL³òÂ¶µÛ³o­Ó§ø²ø>.";
-		mes "§A¬İ¨ì¤F³o¨Ç°ª¤jªº¾ğ¤ì¶Ü?";
+		mes "[Priest Dayan]";
+		mes "That big tree is called The ^3131FFYggdrasil^000000.";
+		mes "That tree was created from Ymir's body after Odin created the world as you know it, Rune Midgard.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "³o´Ê¤j¾ğ³QºÙ¬° ^3131FF¨Ì¼w©Ô´µº¸^000000.";
-		mes "¨º´Ê¾ğ³Æ¨È¦Ìº¸³Ğ³y«á¡A¶ø¤B³Ğ³y¤F¥@¬É¡A¦p§A©Òª¾¡A²Å¤å¹Ğ¥@.";
+		mes "[Priest Dayan]";
+		mes "A fountain pours out from the end of Yggdrasil's roots that spread to every world.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "¼Q¬u¬Öº¡²Úº¡¡A±q¨Ì¼w©Ô´µº¸ªº®Ú¡A½¯©µ¨ì¨C¤@­Ó¥@¬É.";
+		mes "[Priest Dayan]";
+		mes "The roots head to Nifflheim where you can find Hvergelmir spring.";
+		mes "In Rune Midgard there is Mimir's spring. And in Asgard, the world of the Gods, there is the Word spring.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "§A±q¸òÀY¥i¥H§ä¨ì¬K¤Ñªº¨Ó·½.";
-		mes "¬O¦b²Å¦Ì¼w¥[¼w¦³±K¦Ìº¸ªº¬K¤Ñ¡C¦b¥P®c¡A½Ñ¯«ªº¥@¬É¡A¦³¦rªº¬K¤Ñ.";
+		mes "[Priest Dayan]";
+		mes "Mimir spring wells with intelligence, myth says that if Odin lets you have his eye that you will gain all of the knowledge within that spring.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "±K¦Ìº¸¬u¤«»P±¡³ø¡A¯«¸Ü»¡¡A¦pªG¶ø¤BÅı§A¦³¥Lªº²´·ú¡A§A·|Àò±o©Ò¦³ªºª¾ÃÑ¦b¨º­Ó¬K¤Ñ.";
+		mes "[Priest Dayan]";
+		if (Sex == 1) {
+			mes "Brother.";
+		}
+		else {
+			mes "Sister.";
+		}
+		mes "Through the Holy Pilgrimage, we can make ourselves pious by cleansing our bodies and souls.";
 		next;
-		mes "[ªª®v ­}­C]";
-		if (Sex == 1)
-			mes "¥S§Ì.";
-		else
-			mes "©j©f.";
-		mes "³q¹L¸tÆFªº´Â¸t¤¤¡A§Ú­Ì¥i¥H¨Ï¦Û¤vªº°@¸Û¡A²M¼ä§Ú­Ìªº¨­Åé©MÆF»î.";
+		mes "[Priest Dayan]";
+		mes "Enter the Yggdrasil.";
+		mes "You may be assaulted by creatures in there but be mindful that their intentions are only to protect the Yggdrasil.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "¶i¤J¨Ì¼w©Ô´µº¸.";
-		mes "§A¥i¯à·|¦b¨º¸Ìªº¥Íª«Å§À»¡A¦ı­n¯d·N¡A¥L­Ìªº·N¹Ï¬O¥u«OÅ@¨Ì¼w©Ô´µº¸ªº.";
+		mes "[Priest Dayan]";
+		mes "Follow your steps with purpose.";
+		mes "If Odin doesn't abandon you, you can reach the beginning of the world at the stem of the Yggdrasil.";
+		mes "When you arrive there, find a quiet place.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "´ÂµÛ§Aªº¥Ø¼Ğ«e¶i.";
-		mes "¦pªG¶ø¤B¨S¦³©ß±ó§A¡A§A±N¥i¥H©è¹F¤Ñ¦a¾ğªº®Ú³¡.";
-		mes "·í§A¨ì¹F¨º¸Ì¡A§ä¤@­Ó¦wÀRªº¦a¤è.";
+		mes "[Priest Dayan]";
+		mes "Pray for a life of faith and expiate your sins with a pious mind.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "¥Î°@¸ÛªººA«×¬è¨D¡A§Aªº¸oÄ^±N±o¨ì±ÏÅ«.";
+		mes "[Priest Dayan]";
+		mes "Admire Odin's omniscience and omnipotence and pray for a wisdom to choose the right path.";
+		mes "^3131FFFeel free to ask me about how to pray^000000.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "¨ØªA¶ø¤BªºµL©Ò¤£ª¾µL©Ò¤£¯à¡A¨Ã¬è¨D¯à°÷¼Wªø´¼¼z¡A¯à¿ï¾Ü¥¿½Tªº¹D¸ô.";
-		mes "^3131FF¦pªG§A¤£À´¡A§A¥i¥H°İ§Ú¸Ó¦p¦ó¬èÃ«^000000.";
+		mes "[Priest Dayan]";
+		mes "Lets see, go to the place of the most famous creature from Odin.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "Åı§Ú­Ì¤@°_¥h¶ø¤B³ÌµÛ¦Wªº¦a¤è¬İ¬İ.";
+		mes "[Priest Dayan]";
+		mes "After making your pilgrimage, let's have a drink together and talk about your experience.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "·í§A´Â¸t«á¡AÅı§Ú­Ì³Ü¤@ªM¡A½Í½Í§Aªº¸gÅç.";
-		next;
-		mes "- ­}­C¦A¦¸ÅS¥X·L¯º. -";
+		mes "- Priest Dayan smiles again. -";
 		set job_arch,2;
 		changequest 2187,2188;
 		close;
 	}
-	else if (job_arch == 2) {
-		mes "[ªª®v ­}­C]";
-		mes "¶i¤J³o¥@¬É¤W³Ì¯«¸t¤§¤@ªº¤Ñ¦a³N¤º³¡«á¡A¸÷¤U¦V¯«¬èÃ«§a!.";
-		mes "³o¯«¸tªº¤@¬O·|·Ó«G§AªºÆF»î";
+	if (job_arch == 2) {
+		mes "[Priest Dayan]";
+		mes "This place is the holiest place in the world, Yggdrasil.";
+		mes "This holy ceremony will brighten your soul.";
 		next;
-		switch(select("Ãö©ó¬èÃ«ªº¶¶§Ç?:¨ú®ø.")) {
+		switch (select("How should I pray?:Cancel.")) {
 		case 1:
-			mes "[ªª®v ­}­C]";
-			mes "§Ú­Ì¥i¥H«ö·Ó¥|­Ó¨BÆJ¥hÃ«§i.";
-			mes "°O¦í±µ¤U¨Ó§Ú§i¶D§Aªº¨BÆJ.";
+			mes "[Priest Dayan]";
+			mes "Through prayer, we can follow four paths.";
+			mes "Remember what I say to you now.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "²Ä¤@­Ó¤èªk^3131FF­ß·Q^000000.";
-			mes "§Q¥Î­ß·Qªº¤è¦¡, §Ú­Ì¥²¶·°İ¤ßµL·\ªºªï±µ¶ø¤B.";
+			mes "[Priest Dayan]";
+			mes "The 1st way is the ^3131FFway of meditation^000000.";
+			mes "In the way of meditation, we have to be ready to greet Odin with a clear conscience.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "­ß·Q±N¯à^3131FFÂíÀR^000000§Aªº¸£³U.";
+			mes "[Priest Dayan]";
+			mes "Meditation starts with a ^3131FFBlessing^000000 which calms your mind down.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "²Ä¤G­Ó¤èªk^3131FFµh­W^000000.";
-			mes "³z¹Lµh­W¡A§Ú­Ì¥i¥H¤Ï¬Ù¡BÄb®¬§Ú­Ì«e¥b¥Íªº¿ù»~.";
+			mes "[Priest Dayan]";
+			mes "The 2nd is the ^3131FFway of agony^000000.";
+			mes "Through the way of agony, we reflect on ourselves with confession about our retribution for the deeds of a former life.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "¤£­n®`©È¯kµh¡A³o±N¬O²Mºâ¹L¥hªº³Ğ¶Ëªº²Ä¤@¨B.";
+			mes "[Priest Dayan]";
+			mes "Don't be afraid of pain. That is a necessity and will be a first step to enter a way to liquidate past wounds.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "²Ä¤T­Ó¤èªk^3131FF³ß®®^000000.";
-			mes "Â\²æ¦Û¨­ªºµh­W¡A§A±N·|ÅéÅç¨ì¥Í¬¡ªº¼ö¥h¡Aµ¹¤©¥L¤H¦w¼¢»PÀ°§U.";
+			mes "[Priest Dayan]";
+			mes "The 3rd way is the ^3131FFway of joy^000000.";
+			mes "As you rid yourself of pain, your mind will suffer less and you will experience the joy of life as you help and console others.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "¥L­Ì·|¯¬ºÖ§A¡A¦]¬°§A§JªA¤Fµh­W»P³ß®®ªº¦s¦b§Ú­ÌºÙ¤§¬°^3131FFÅx¤ô¤§½çºÖ^000000.";
-			mes "§A¥²¶·­n³Ü¤U¤@ªM½çºÖ¹Lªº^3131FF¸t¤ô^000000.";
+			mes "[Priest Dayan]";
+			mes "They will bless you because you are an existence of joy overcoming an affliction. We call that ^3131FFAspersio^000000.";
+			mes "You must drink a ^3131FFHoly Water^000000 with appreciation of Aspersio.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "³Ì«á¤@­Ó¤èªk^3131FF¥ú¨~^000000.";
-			mes "§A±N±q¸o´c·í¤¤Àò±oÄÀ©ñ¡A¦]¬°§Aªº¯¬ºÖ»P³Ğ³y.";
+			mes "[Priest Dayan]";
+			mes "The last way is the ^3131FFway of light^000000.";
+			mes "You are free from all sin because you were blessed from all creation.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "§A±N·|¦b¥ú¨~¤U­«¥Í.";
+			mes "[Priest Dayan]";
+			mes "You were reborn as light, sing a ^3131FFGloria^000000 of joy and soul that loves you.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "¦b³o¨ÇÃ«§iµ²§ô«á, .";
-			mes "§A±N·|±o¨ì¶ø¤B­Éµ¹§Aªº´¼¼z.";
+			mes "[Priest Dayan]";
+			mes "After finishing all of these prayers, just stand up with a pious mind.";
+			mes "If your prayer is truthful, Odin will lend you his wisdom.";
 			next;
-			mes "[ªª®v ­}­C]";
-			mes "§A·Ç³Æ¦n¤F¹À?";
-			mes "¬O®É­Ô§A¸ÓÂ÷¶}¤F.";
-			mes "·í§A¬èÃ«µ²§ô«á¦A¦^¨Ó§ä§Ú§a.";
+			mes "[Priest Dayan]";
+			mes "Are you ready?";
+			mes "Okay, it's time to leave and exculpate yourself.";
+			mes "If your prayer is finished, let's talk.";
 			close;
 		case 2:
-			mes "[ªª®v ­}­C]";
-			mes "§Ú§Æ±æ§Úªº¬èÃ«¯à´î¤Ö§Aªºµh­W...";
+			mes "[Priest Dayan]";
+			mes "I hope that my prayer can weaken your agony...";
 			close;
 		}
-		close;
 	}
-	else if (job_arch == 3) {
-		mes "[ªª®v ­}­C]";
-		mes "¾¾¡A§A¦^¨Ó¤F.";
-		mes "§Ú¥i¥H·PÄ±¨ì§A¦³¹ñ·sªº¯à¶q. §Ú·Q§A¤w¸g«D±`°@¸Ûªº¬èÃ«¤F.";
+	if (job_arch == 3) {
+		mes "[Priest Dayan]";
+		mes "Oh, you've come back.";
+		mes "I can feel that you have a fresh energy. Maybe you did pray truthfully.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§Ú·P¨ì­«¥Í¯ë»´ÃP...";
+		mes "[" + strcharinfo(0) + "]";
+		mes "I feel light-hearted. Like I was just reborn...";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "§Aªº¦Û«Hµ¹§A«H¤ß»P«i®ğ.";
-		mes "¥Î·L¯º¥h­±¹ï¨C­Ó¤H¡A§A±N¯à¨ø°£±¼¨C­Ó¤Hªº§Ù¤ß.";
-		mes "½ĞºÉ¥ş¤O¥h·R³o¥@¬É¤W¨C­Ó¤H.";
+		mes "[Priest Dayan]";
+		mes "Your faith gives you confidence and courage.";
+		mes "A smile from a peaceful mind will easily rid people of their wariness.";
+		mes "Please, inspire people with love and energy.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "·PÁÂ§AªºÆg¬ü.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Thanks for your kind words.";
 		next;
-		mes "[ªª®v ­}­C]";
-		if (Sex == 1)
-			mes "¥S§Ì.";
-		else
-			mes "©n©f.";
-		mes "²{¦b¡A§AÀ³¸Ó¥h¤@­Ó¦a¤è.";
+		mes "[Priest Dayan]";
+		if (Sex == 1) {
+			mes "Brother.";
+		}
+		else {
+			mes "Sister.";
+		}
+		mes "Now, there is a place you should go to.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "­×µo¯÷¦@©M°êªº·´¸¯§ø.";
-		mes "¨º¸Ì¦³¤@¦ìªª®v¥s°µVinue, ¦o¬O¤@­Ó¯u¥¿ªº¥D±Ğ¡A¦b¥@¬É¤W¥¼¨ü­W¨üÃøªº¤H­Ì¬èÃ«.";
-		mes "¦ı§Ú³Ì«á¤@¦¸¬İ¨ì¦o®É¡A¥L¦ü¥G«Ü¶Ë¤ß.";
+		mes "[Priest Dayan]";
+		mes "That place is Hugel in Schwaltzvalt.";
+		mes "There is a Nun praying there named Vinue, she is a true minister who prays for the suffering people in the world.";
+		mes "But the last time I saw her she seemed sad.";
 		next;
-		mes "[ªª®v ­}­C]";
-		mes "§A¥i¥H»¡ªA¦o¦^¨Ó¤Ñ¦a¾ğ´Â¸t¹À?";
-		mes "§Ú·Q¦o¤w¸g¦]¬°¬è¨D®ø¯Ó¤F¤Ó¦h¯à¶q¡A§Ú§Æ±æ¤Ñ¦a¾ğªºªÅ®ğ·|À°§U¥L.";
+		mes "[Priest Dayan]";
+		mes "Can you convince her to make a pilgrimage to Yggdrasil?";
+		mes "I think she is exhausted due to praying too much. I hope the air of Yggdrasil will be helpful to her.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§O¾á¤ß.";
-		mes "§Ú²{¦b´N¥h§ä¦o.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Don't worry.";
+		mes "I'll go and meet her.";
 		next;
-		mes "[ªª®v ­}­C]";
-		if (Sex == 1)
-			mes "¥S§Ì, ³o¸ÌÀH®ÉÅwªï§A¦^¨Ó.";
-		else
-			mes "©n©f, , ³o¸ÌÀH®ÉÅwªï§A¦^¨Ó.";
-		mes "¨C·í¦³ªB¤Í¨Ó³o¸Ì°Ñ³X¡A§ÚÁ`¬O·P¨ì«Ü©¯ºÖ.";
+		mes "[Priest Dayan]";
+		if (Sex == 1) {
+			mes "Feel free to visit here when you want to pray, brother.";
+		}
+		else {
+			mes "Feel free to visit here when you want to pray, sister.";
+		}
+		mes "A visit from a friend always makes me happy.";
 		set job_arch,4;
 		changequest 2188,2189;
 		close;
 	}
-	else {
-		mes "[­}­C]";
-		mes "§A§ä¨ì¤FHugelªº Vinue¶Ü?";
-		close;
-	}
+	mes "[Dayan]";
+	mes "Did you find Vinue in Hugel?";
+	close;
 }
 
 yggdrasil01,220,47,0	script	#A pilgrimage to the Ho	139,5,5,{
+
 OnTouch:
 	if (job_arch == 2) {
-		mes "["+strcharinfo(0)+"]";
-		mes "³o¬O Hvergelmir ªº¬K¤Ñ!";
-		mes "³o­Ó¦a¤è¬O¤@­Ó«D±`¥Í°Ê©M¹çÀRªº¦a¤è.";
-		mes "³o¤~¬O¬èÃ«ªº¦a¤è.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Is it the spring of Hvergelmir.";
+		mes "This place is a very vivid and peaceful place.";
+		mes "It's proper to pray.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¬O®É­Ô¸Ó¸÷¤U¤F...";
-		mes "¶â...ªª®v¬O«ç»ò¸ò§Ú»¡ªº©O?...";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Time to genuflect...";
+		mes "Hmm, what did that priest say to me?";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¶â...²Ä¤@¥ó¨Æ¸Ó°µ?...";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Hmm... What is the first way?";
 		next;
-		switch(select("À³¸Ó­n¨IÀq.:À³¸Ó­n»¡¥X¨Ó.:À³¸Ó­n­ß·Q.")) {
+		switch (select("The way of silence.:The way of confession.:The way of meditation.")) {
 		case 1:
-			mes "["+strcharinfo(0)+"]";
+			mes "[" + strcharinfo(0) + "]";
 			mes "";
-			mes "¦n¹³¤£¬O³o¼Ë­ò...";
+			mes "I don't think so.";
 			close;
 		case 2:
-			mes "["+strcharinfo(0)+"]";
+			mes "[" + strcharinfo(0) + "]";
 			mes "The way of confession...?";
-			mes "¦n¹³¤£¬O³o¼Ë­ò...";
+			mes "I don't think so.";
 			close;
 		case 3:
-			mes "["+strcharinfo(0)+"]";
-			mes "¬O­ß·Q¶Ü...?";
-			mes "¹ï!§Ú·Q¨ì¤F¡A¤@©w¬O­ß·Q!";
+			mes "[" + strcharinfo(0) + "]";
+			mes "The way of meditation...?";
+			mes "Yes, it's the way of meditation.";
 			next;
 			break;
 		}
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF²Ä¤@¥ó¨Æ´N¬O­n­ß·Q.^000000";
-		mes "^3131FF¦b­ß·Qªº¹Lµ{¤¤, §Ú­Ì¤º¤ß¥²¶·ªï±µ°¶¤jªº¶ø¤B.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFThe 1st way is the way of meditation.^000000";
+		mes "^3131FFIn the way of meditation, we have to be ready to greet Odin with a clear conscience.^000000";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF­ß·Q¶}©lÂíÀR§AªºÀY¸£»P¯¬ºÖ.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFMeditation starts with a Blessing which calms your mind down.^000000";
 		next;
-		mes "- §A³¬¤W¤FÂù²´¡A¨Ã¥B½w½wªº©I§l. -";
+		mes "- You close your eyes slowly and take a deep breath. -";
 		next;
-		mes "- * ¯¬ºÖ! * -";
+		mes "- * BLESSING! * -";
 		specialeffect2 EF_BLESSING;
 		next;
-		mes "§Aªº¤ßÆF³Qªş¥[¤F¯¬ºÖ®ÄªG.";
-		mes "±zÄ~Äò¥´§¤¡A¸Õ¹ÏÅı§AªºÀY¸£Â\²æ¥ô¦ó¤zÂZ.";
+		mes "Your mind is refreshed with the blessing effect.";
+		mes "You continue to meditate trying to rid your mind of any ill feelings.";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF²Ä¤G¥ó¨Æ´N¬O¤F¸Ñµh­W^000000.";
-		mes "^3131FF¸g¹Lµh­Wªº¤è¦¡¡A§Ú­Ì¤Ï¬M¤F§Ú­Ìªº«e¥b¥Í¨ÆÂİªº³ø´_¡A§Ú­Ì¹ï¦Û¤vªº¨Ñ»{.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFThe 2nd is the way of agony^000000.";
+		mes "^3131FFThrough the way of agony, we reflect on ourselves with confession about our retribution for the deeds of a former life.^000000";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF¤£­n®`©È¯kµh¡C³o¬O¥²­nªº¡A±N¬O¶i¤J²Mºâ¹L¥hªº³Ğ¶Ëªº²Ä¤@¨B.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFDon't be afraid of pain. That is a necessity and will be a first step to enter a way to liquidate past wounds.^000000";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "µh­W......¥ô¦ó§Ú¾Ö¦³¹Lªº¸o´c..";
-		input .@input$;
+		mes "[" + strcharinfo(0) + "]";
+		mes "Pain... What kind of faults have I had?";
+		input .@inputstr$;
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§Ú©Ó»{§Ú¦³¸o¡A¥ş¯àªº¯«¶ø¤B.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "I confess my guilt to the Almighty God Odin.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "^3131FF"+.@input$+".^000000";
+		mes "[" + strcharinfo(0) + "]";
+		mes "^3131FF" + .@inputstr$ + ".^000000";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¤¯·Oªº¶ø¤B¡A¹ï§Úªº¼¦¼§©M¦P±¡§Ú¡A¦]¬°§Ú¦b¼i¦æ§ÚªºÂ¾³d§@¬°¤@¦Wªª®v.";
-		mes "½Ğ±a¸ô¡A¨Ã«O¦s§Aªº´¼¼z»P¼¦¼§.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Oh benevolent Odin, Take mercy on me and pity me because I'm remiss in the discharge of my duties as a minister.";
+		mes "Please, lead the way and save a foolish minister with your wisdom.";
 		next;
-		mes "§Aªí¥Õ¥ş³¡¡A¨Ã¦A¦¸³´¤J¤F¨I«ä.";
+		mes "You ruminate about your confession and are lost in thought again.";
 		next;
 		mes ".............................";
 		next;
@@ -534,22 +523,22 @@ OnTouch:
 		mes ".........................";
 		mes ".....................";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF²Ä¤T¥ó¨Æ¡A¬O§Ö¼Öªº¤è¦¡.^000000";
-		mes "^3131FF¥¿¦p§A¦Û¤vÂ\²æµh­W¡A§AªºÀY¸£·|¤Ö¨ü¸o¡A§A·|ÅéÅç¨ì¥Í¬¡ªº¼Ö½ì¡A§AªºÀ°§U©M¦w¼¢§O¤H.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFThe 3rd way is the way of joy.^000000";
+		mes "^3131FFAs you rid yourself of pain, your mind will suffer less and you will experience the joy of life as you help and console others.^000000";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF¨Ã¥B¥L­Ì·|«O¦ö§A¡A¦]¬°§A¬O¤@­Ó¦s¦b§JªA¤Fµh­Wªº³ß®®¡C§Ú­Ì©IÆ~¡Aªü´µ»á¦è¼Ú^000000.";
-		mes "^3131FF±µµÛ§A¥²¶·³Ü'ªü´µ»á¦è¼Ú'ªº¤@­Ó¯«¸tªº¤ô.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFAnd also they will bless you because you are an existence of joy overcoming an affliction. We call that Aspersio^000000.";
+		mes "^3131FFYou must drink a Holy Water with appreciation of Aspersio.^000000";
 		next;
-		if (!countitem(523)) {
-			mes "["+strcharinfo(0)+"]";
-			mes "ªü!§Ú§Ñ°O­n·Ç³Æ¸t¤ô¤F!";
+		if (countitem(523) == 0) {
+			mes "[" + strcharinfo(0) + "]";
+			mes "Oh no! I forgot to bring a Holy Water!";
 			close;
 		}
-		mes "- §A§CÀY®¥®¥·q·q¦aÁ|¦æ¤F§â¸t¤ô³Ü¤U¥h. -";
+		mes "- You bow respectfully holding up a Holy Water and put the glass to your lips. -";
 		next;
-		mes "- * ¬èÃ« ! * -";
+		mes "- * ASPERSIO ! * -";
 		specialeffect2 EF_ASPERSIO;
 		next;
 		specialeffect2 EF_RECOVERY;
@@ -562,838 +551,590 @@ OnTouch:
 		mes ".........................";
 		mes ".....................";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF³Ì«á¤@ºØ¡A¬O¯«¸tªº¤@ºØ¤è¦¡^000000.^000000.";
-		mes "^3131FF§A¬O±q©Ò¦³ªº¸o¡A¦]¬°§Aªº¯¬ºÖ©Ò¦³ªº³Ğ³y.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFThe last way is a way of light^000000.^000000.";
+		mes "^3131FFYou are free from all sin because you were blessed from all creation.^000000";
 		next;
-		mes "^3131FF[ªª®v ­}­C]^000000";
-		mes "^3131FF§A¨ü¨ì¤F­«¥Í¡AÆF»î¤]¬°§AÅwºq.^000000";
+		mes "^3131FF[Priest Dayan]^000000";
+		mes "^3131FFYou were reborn as light, sing a Gloria of joy and soul that love you.^000000";
 		next;
-		mes "- ¦b²`ªº©I§l¡A¶}©lºq¹|.";
-		mes "§Aºq¹|ªº©M©¶µ¹¨ä¥L¤H²M¤ßªº·PÄ±¡A§Ï©»Àò±o¤F­«¥Í. -";
+		mes "- You breath in deep and start to sing a Gloria.";
+		mes "A chord crashs out in the spring of Hvergelmir and a waterfall sound gives you a refreshing feeling. -";
 		specialeffect2 EF_GLORIA;
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "~§A¬°©Ò¦³¤H¬èÃ«.~";
-		mes "~§A½á¤©¾ã­Ó¥@¬É¤@­Ó·sªº­±»ª.~";
+		mes "[" + strcharinfo(0) + "]";
+		mes "~Descendants of Heimdal gather under the Ash tree Yggdrasil.~";
+		mes "~The Curdan bird which sits on a branch brings me the wisdom of whole world.~";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "~§A«OÅ@¤F¥@¬É¤Wªº©Ò¦³«Â¯Ù.~";
+		mes "[" + strcharinfo(0) + "]";
+		mes "~The Curdan wolf protects me from all threats in the world.~";
 		specialeffect2 EF_GLORIA;
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "~§AÅı¾ã­Ó¥@¬É©I³Ûªº³ß®®.~";
+		mes "[" + strcharinfo(0) + "]";
+		mes "~The host of ballascalf, rise up from your seat. The whole world shouts for joy.~";
+		mes "~The father of light, the poet of wisdom, sing for me.~";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "~§Aµ¹¤F¤@­Ó¯«¸tªº¹w´ú.~";
+		mes "[" + strcharinfo(0) + "]";
+		mes "~The host of a glittering glass, give me a holy prediction.~";
 		specialeffect2 EF_GLORIA;
 		next;
-		mes "- ·í§A§¹¦¨³o­ººq¡A§AÄ±±o¥Rº¡¶§¥ú¡A¨ã¦³Â×´Iªº©^Äm. -";
+		mes "- After you finish the song, you feel light and strong with abundant devotion. -";
 		specialeffect2 EF_BLESSING;
 		specialeffect2 EF_RESURRECTION;
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¥O¤H¦Õ¥Ø¤@·s.";
-		mes "§Ú·Q§ÚÀ³¸Ó­n¦^¥h§ä ªª®v ­}­C.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "That was refreshing.";
+		mes "I guess I should go back to Priest Dayan.";
 		set job_arch,3;
 		close2;
 		warp "umbala",138,219;
 		end;
 	}
-	else if (job_arch == 3) {
-		mes "["+strcharinfo(0)+"]";
-		mes "§Ú·Q§ÚÀ³¸Ó­n¦^¥h§ä ªª®v ­}­C.";
+	if (job_arch == 3) {
+		mes "[" + strcharinfo(0) + "]";
+		mes "The song is over. It's time to go back to Priest Dayan.";
 		close2;
 		warp "umbala",138,219;
 		end;
 	}
+	end;
 }
 
 hu_in01,205,204,7	script	Praying Nun#benew	79,{
 	if (job_arch == 4) {
-		mes "- ¦³­Ó¤H³¬¤W¤F¦oªº²´·ú¡A¦o³ä³ä¦a»¡³oÅ¥°_¨Ó¹³¤@­Ó¬èÃ«ªºªF¦è. -";
+		mes "- There is a nun closing her eyes as she murmurs something which sounds like a prayer. -";
 		next;
-		switch(select("©M¥L»¡¸Ü.:«O«ù¨IÀq.")) {
+		switch (select("Talk to her.:Stay Quiet.")) {
 		case 1:
 			break;
 		case 2:
-			mes "- §A¨S·P¨ü¨ì¥Lªº¤£¦w -";
+			mes "- You don't feel like disturbing her -";
 			close;
 		}
-		mes "["+strcharinfo(0)+"]";
-		mes "§A¦nªü?";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Umm, hello sister?";
 		next;
 		mes "[Vinue]";
-		mes "®¦¡A§A¦n.";
-		mes "²{¦b¦ü¥G®É¶¡ÁÙ¨S¨ì...";
-		if (Sex == 1)
-			mes "§A¬O­n¨Ó³oÃäÃ«§iªº¶Ü?";
-		else
-			mes "§A¬O­n¨Ó³oÃäÃ«§iªº¶Ü?";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§Ú¬O±q´¶Às¼w©Ô­n¨Ó§ä ªª®v ­}­C ªº.";
-		next;
-		mes "[Vinue]";
-		mes "³á¡Aªª®v ­}­C.";
-		mes "¥L«Ü´Î§a?";
-		mes "¥¦¬O­Ó¦n¤Hªü!.";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¥L§i¶D§Ú¥L«Ü¾á¤ß¡A¦]¬°·í¥L³Ì«á¤@¦¸¨£¨ì§A¡A§A¦ü¥G¶Ë¤ß.";
-		mes "¥L­n§A¥h¯«¸tªº¸t¦a.";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¤]´N¬O¨Z¤Ú©Ô!";
-		next;
-		mes "[Vinue]";
-		mes "¶â...";
-		if (Sex == 1)
-			mes "¥L¤H¯uªº«Ü¦n.";
-		else
-			mes "¥L¤H¯uªº«Ü¦n.";
-		next;
-		mes "[Vinue]";
-		mes "¤£­n¾á¤ß§Ú.";
-		mes "§Ú¥u¬O¦³ÂI²Ö¤F¡A¦]¬°¤@­Ó¾µ¹Ú.";
-		next;
-		mes "[Vinue]";
-		mes "¨¸´cÁ`¬Oª`µøµÛ§Ú­ÌªºÆF»î.";
-		mes "¦pªG§A±M¤ßªº¬èÃ«¡A¨º§A±q¤£¿ù¹L¥ô¦ó¤@­Ó¾÷·|.";
-		next;
-		switch(select("¤@­Ó¹Ú¶Ü?¤°»ò¼Ëªº¹Ú·Q?:§AªºÆF»î¤£·|¦³¨Æªº.")) {
-		case 1:
-			break;
-		case 2:
-			mes "[Vinue]";
-			mes "¦ı§ÚÁÙ¬O«Ü¾á¤ß...";
-			mes "ÁöµM§A³o¼Ë¦w¼¢§Ú.";
-			mes "ÁÂÁÂ§A´£¨Ñªº®ø®§.";
-			mes "§ÚÁÙ¬OÄ~Äò¬èÃ«¦n¤F.";
-			close;
+		mes "Ah, Welcome.";
+		mes "It's not time to have a service yet...";
+		if (Sex == 1) {
+			mes "Are you here to pray, brother?";
 		}
-		mes "[Vinue]";
-		mes "¨º¬O...";
-		mes "¨ä¹ê¡A§Ú±q§Ú³Q¥ô©R¤§¤é°_¶}©l¦³¤@­Ó¾µ¹Ú.";
+		else {
+			mes "Are you here to pray, sister?";
+		}
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "I came here to say hello from Priest Dayan from Prontera.";
 		next;
 		mes "[Vinue]";
-		mes "°_ªì¥¦¬O¤@­Ó¹Ú¡AÃö©ó¤kªZ¯«¬O´d¶Ë©M¶Â·t.";
+		mes "Ah, Priest Dayan.";
+		mes "Is he good?";
+		mes "He is so cute even though he's old.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¤kªZ¯«?";
+		mes "[" + strcharinfo(0) + "]";
+		mes "He told me that he was worried because when he saw you last time, you seemed sad.";
+		mes "He asks you to go on a Holy Pilgrimage.";
 		next;
-		mes "[Vinue]";
-		mes "¬Oªº...";
-		mes "¥L¦b¤@­Ó¶Â·tªº©Ğ¶¡¸Ì­±­úª_.";
-		mes "¥L´N¹³««±¾¤U¨Óªº¤@°¦³¾¡A¥¦ªº¯Í»H«d´î.";
-		next;
-		mes "[Vinue]";
-		mes "¦ı¬O¡AÀHµÛ®É¶¡ªº±À²¾¡A¹Ú·Q¦¨¬°¥i©È¡C²{¦bªZ¯«¥ÎÅKÁå³Q¶e®·¡A¦o²×©ó¯}·À¦¨¸H¤ù.";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Umbala has the vital power of nature!";
 		next;
 		mes "[Vinue]";
-		mes "¦h»ò´İ§Ô©Ê¯à¡I§Ú¬ğµM¤£¯à¥¿±`©I§l¡AµM«á§Ú¿ô¨Ó.";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¦³¬İ¨ìªZ¯«¦º¤`ªº¡A³q±`³£¬O¤@­Óµh­Wªº¹Ú.";
-		next;
-		mes "[Vinue]";
-		mes "³o¬O¤@­Ó¥i©Èªº¾µ¹Ú¹ï§a?";
-		mes "©ÎªÌ§A»{¬°³o¬O­Ó¹w¥ü?";
-		next;
-		mes "[Vinue]";
-		mes "§Ú¤@ª½·Q¦b¶ø¤Bªº¯«ªÀ¬èÃ«¡A¹Ú·QµÛÂ÷¶}¡C.";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¯«ªÀ¶Ü?";
-		mes "¨S¦³¤H¥i¥H±»»\¸o´c?";
+		mes "Ah...";
+		if (Sex == 1) {
+			mes "He's very kind. As are you brother.";
+		}
+		else {
+			mes "He's very kind. As are you sister.";
+		}
 		next;
 		mes "[Vinue]";
-		mes "¤£©¯ªº¡A§Ú¬O¨S¦³¥ô¦óÅXÅ]§Ş¯àªº¥D±Ğ...";
-		mes "«BªG©~¥Á¥u¬O¯¸¦bªº´º¶HÅå§b¤F¡A¦]¬°¥L­Ì¤£¼ô±x»P«_ÀI.";
+		mes "But don't worry.";
+		mes "I'm just a little tired because of a bad dream.";
 		next;
 		mes "[Vinue]";
-		mes "³o´X¤Ñ¡A¦³«Ü¦h¤H¦]¬°¶ø¤B¯«·µªºµo®i¡A¦ı¥L­Ìªº³B¹Ò¤]¤£¬O¨º»ò¦n.";
+		mes "Evil is always watching for our souls.";
+		mes "If you are indifferent to praying, it never misses an opportunity.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¬O»P¨¸´cªº¶ø¤B¯«·µ¦³Ãöªº¹Ú·Q?";
-		next;
-		mes "[Vinue]";
-		mes "®¦...¬Oªü.";
-		mes "§Ú§ä¤£¨ì¥ô¦óªº¥X¤f.";
-		mes "§Ú¨S¦³¥ô¦óªº¤èªk...§Ú¥u¯àÃ«§i...";
-		next;
-		switch(select("§Ú·|À°§Aªº.:§Ú·|±Ğ§A«ç»òÃ«§i.")) {
+		switch (select("A dream? What kind of dream?:Your soul should be fine.")) {
 		case 1:
 			break;
 		case 2:
 			mes "[Vinue]";
-			mes "ÁÂ¤F.";
-			mes "§Ú¤w¸gÃ«§i°÷¤[¤F.";
-			mes "§Ú§Æ±æ§A¦b³oÃä¯à¦³­Ó¦n®Èµ{.";
+			mes "Oh but that's where you're wrong.";
+			mes "My soul may be the most at risk.";
+			mes "Thank you for delivering the message.";
+			mes "I'll go back to my prayers.";
 			close;
 		}
 		mes "[Vinue]";
-		mes "¯uªº¶Ü?";
-		mes "¦ı¬O³o¬O¤@¥ó«Ü®£©Æªº¨Æ!";
-		mes "§A½T©w§A­nÀ°§Ú!?";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¦]¬°§Ú¤£¯à°²¸Ë©¿²¤¤F¤@­Ó³´¤J³Â·Ğªº©f©f";
-		mes "ÁöµM§Ú¥u¬O­Ó¥D±Ğ¡A¦ı§Ú¤@©w¥i¥HÀ°§Aªº¦£!";
+		mes "That is...";
+		mes "Actually I started to have a bad dream from the date I was appointed.";
 		next;
 		mes "[Vinue]";
-		mes "®¦...§Ú¤Ó¾á¤ß¤F....";
-		mes "§Ú¥Ã»·¤£·|§Ñ°O§A·Å·xªº¤ß.";
+		mes "At first, it was a dream that Valkyrie was sad and in darkness.";
 		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "§ÚÀ³¸Ó­n«ç»òÀ°§A©O?";
-		next;
-		mes "[Vinue]";
-		mes "±Ğ°ó¥k°¼¦³¤@­Ó´ç½ü.";
-		next;
-		mes "["+strcharinfo(0)+"]";
-		mes "¦nªº¡Aµ¥§Úªº¦n®ø®§§a!";
+		mes "[" + strcharinfo(0) + "]";
+		mes "Valkyrie?";
 		next;
 		mes "[Vinue]";
-		mes "§Ú·|¬°§A¬èÃ«ªº.";
-		mes "§Ú§Æ±æ¡A¶ø¤Bµ¹§A«OÅ@...";
-		set job_arch,5;
+		mes "Yeah...";
+		mes "She was crying in a pitch-black room.";
+		mes "Hanging down like a bird that had its wings cut.";
+		next;
+		mes "[Vinue]";
+		mes "But, as time went by, the dream became scarier. Now Valkyrie is arrested with chains and then finally she is dashed to pieces.";
+		next;
+		mes "[Vinue]";
+		mes "What a cruel performance! I suddenly can't breathe properly and then I wake up.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "To have to see the death of Valkyrie, must be a tormenting dream.";
+		next;
+		mes "[Vinue]";
+		mes "Is it just a nightmare?";
+		mes "Or do you think it is an omen?";
+		next;
+		mes "[Vinue]";
+		mes "I've been wanting to pray at Odin's shrine to make the dream go away. But that shrine became a den of evil a long time ago.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "The shrine?";
+		mes "Nobody tried to subdue the evil?";
+		next;
+		mes "[Vinue]";
+		mes "Unfortunely, I'm a nun who doesn't have any exorcism skill...";
+		mes "Residents of Hugel just stood aghast of the sight because they are not familiar with adventure.";
+		next;
+		mes "[Vinue]";
+		mes "Thesedays, there are a lot of people because of the development of the Odin shrine, but their situation is not so good.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "Is the dream related with the evil in the Odin shrine?";
+		next;
+		mes "[Vinue]";
+		mes "Hum... well.";
+		mes "I don't have any way to find out.";
+		mes "I don't have a method, so I just pray.";
+		next;
+		switch (select("I'll investgate for you.:I'll pray with you.")) {
+		case 1:
+			break;
+		case 2:
+			mes "[Vinue]";
+			mes "Thank you.";
+			mes "I'll pray that the darkness stays away.";
+			mes "I hope you have a good time with the festival here in Hugel.";
+			close;
+		}
+		mes "[Vinue]";
+		mes "Yeah?";
+		mes "But, it'll be scary inside!";
+		mes "There are lots of devils inside!";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "But I can't pretend to ignore a Sister who is in trouble?";
+		mes "I'm a minister who copes with lots of asceticism!";
+		mes "Entrust me.";
+		next;
+		mes "[Vinue]";
+		mes "Ah... I'm so worried....";
+		mes "I'll never forget your warm heart.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "How do I get to Odin shrine?";
+		next;
+		mes "[Vinue]";
+		mes "There is a ferry on the right side of the church.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "Ok, wait for good news!";
+		next;
+		mes "[Vinue]";
+		mes "I'll pray for your safe return.";
+		mes "I hope that Odin gives you his protection as well.";
+		set job_arch, 5;
 		changequest 2189,2190;
 		close;
 	}
-	else if ((job_arch > 4) && (job_arch < 100)) {
+	if ((job_arch > 4) && (job_arch < 100)) {
 		mes "[Vinue]";
-		mes "§Ú·|¬°§A¬èÃ«ªº...";
+		mes "I'll pray for your safe return.";
 		close;
 	}
-	else {
-		mes "[Vinue]";
-		mes "§Ú·PÄ±¦n¦h¤F.";
-		mes "³oºâ¬O­Ó¦n®ø®§§a!!?";
-		mes "ÁÂÁÂ§A.";
-		close;
-	}
+	mes "[Vinue]";
+	mes "I feel refreshed.";
+	mes "It must be good news?";
+	mes "Thanks the Gods.";
+	close;
 }
 
-odin_tem02,282,263,0	script	#find_val	-1,3,3,{
+odin_tem02,282,263,0	script	#find_val	139,3,3,{
+
 OnTouch:
-	if ((job_arch > 4) && (job_arch < 100))
-		enablenpc "Valkyrie Illusion#arch";
+	if ((job_arch > 4) && (job_arch < 100)) {
+		hideoffnpc "Valkyrie Illusion#arch";
+	}
 	end;
 }
 
 odin_tem02,281,275,3	script	Valkyrie Illusion#arch	403,{
 	if ((job_arch > 4) && (job_arch < 100)) {
-		mes "§A¥i¥H¬İ¨ìªZ¯«¦³µ´±æªºÁy.";
+		mes "You can see Valkyrie who has a despairing face.";
 		next;
-		switch(select("Ä²ºN¤kªZ¯«ªºÁy.:Â÷¶}.")) {
+		switch (select("Touch Valkyrie's Illusion.:Turn away.")) {
 		case 1:
-			mes "§A¥¢¥h¤F§Aªº·NÃÑ¡A¦ıÀò±oªº¤kªZ¯«ªºª¾Ä±.";
+			mes "You lose your consciousness while getting a closer view of Valkyrie's Illusion.";
 			close2;
 			specialeffect2 EF_CLOAKING;
 			warp "job3_arch01",29,29;
-			disablenpc "Valkyrie Illusion#arch";
-			break;
+			hideonnpc "Valkyrie Illusion#arch";
+			end;
 		case 2:
-			mes "¥Ñ©ó®£Äß¡A§A¹Ü¨«¤FªZ¯«ªºª¾Ä±.";
+			mes "Out of fear, you turn away from Valkyrie's illusion.";
 			close2;
-			disablenpc "Valkyrie Illusion#arch";
-			break;
+			hideonnpc "Valkyrie Illusion#arch";
+			end;
 		}
 	}
 	end;
 
 OnInit:
-	disablenpc "Valkyrie Illusion#arch";
+	hideonnpc "Valkyrie Illusion#arch";
 	end;
 }
 
 job3_arch01,29,34,3	script	Valkyrie#arch	403,{
-	if (Upper == 4) {
-		mes "[Valkyrie]";
+
+	if(checkweight(1201,2) == 1){
 		//Custom translation
-		mes "§A¬O°ß¤@ªº«Ä¤l.";
-		mes "³o¬O¤@­ÓÁ}Ãøªº¤u§@¡A½Ğ¤£­n¼J¯º§Ú!";
+		mes "- bags must be emptied before they can proceed. -";
 		close;
 	}
-	if (!checkweight(1201,2)) {
-		//Custom translation
-		mes "- ¥²¶·²MªÅ¥]¥]¡A¤~¥i¥HÄ~Äò. -";
-		close;
-	}
-	if ((BaseLevel != 99) || (JobLevel < 50)) {
+	if ((BaseLevel != 99) && (JobLevel < 50)) {
 		warp "odin_tem02",282,263;
 		end;
 	}
-	if (getmercinfo(0)) {
+	if (getmercinfo(1)) {
 		mes "[Valkyrie]";
-		mes "¦pªG§A·Q©M§Ú½Í¸Ü¡A§A¥²¶·­n¥ı^3131FF¸Ñ´²¶Ä§L^000000.";
+		mes "If you want to talk with me, you have to ^3131FFcancel all contracts^000000 with any mercenaries you have.";
 		close;
 	}
 	if (SkillPoint) {
-		mes "§A©|¥¼¤À°t§¹§Aªº§Ş¯àÂI¼Æ~";
+		mes "You can't progress without using all your skill points. Please use all of your skill points before progressing~";
 		close;
 	}
-	if (BaseJob != 8) {
-		warp "odin_tem02",282,263;
-		end;
+	if (checkweight(1201,4) == 0) {
+		mes "- Wait a moment! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please come back after -";
+		mes "- you put some items into Kafra Storage. -";
+		close;
 	}
-	else {
-		if (Class != Job_Arch_Bishop || Class != Job_Arch_Bishop_T || Class != Job_Baby_Bishop) {
-			if (job_arch < 5) {
+	if ((MaxWeight - Weight) < 2000) {
+		mes "- Wait a moment! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please come back after -";
+		mes "- you put some items into Kafra Storage. -";
+		close;
+	}
+	if ((Class != Job_Priest) && (Class != Job_High_Priest) && (Class == Job_Baby_Priest)) {
+		warp "odin_tem02",282,263;
+	}
+	if (Class != Job_Arch_Bishop || Class != Job_Arch_Bishop_T || Class == Job_Baby_Bishop) {
+		if (job_arch < 5) {
+			warp "odin_tem02",282,263;
+		}
+		if (job_arch == 5) {
+			mes "[Valkyrie]";
+			mes "In the heavens the sound of pipes spread out, but a bird that can't fly crawls and finally is crushed to pieces on the ground.";
+			mes "Ah, I'm resentful! so regretful!";
+			next;
+			mes "- Valkyrie holds its face, then she finds you and stares with a threatening face. -";
+			next;
+			mes "[Valkyrie]";
+			mes "You are a descendant of Heimdal living in pain as a mortal, why are you in here?";
+			mes "Are you here to ridicule my grim fate?";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "No way!";
+			mes "But it's true that I'm here for you.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "...me?";
+			mes "Of course I'm staying in Midgard, but we are under the yoke of fate that can't coexist in this world.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I see, is your goal to enter Valhalla?";
+			mes "If you do, it's the wrong place for you.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I was already expelled from Asgard.";
+			mes "My duty is protecting this small island from humans trying to take it from the Gods and even I don't have any energy to do so.";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "It's not that kind of problem.";
+			mes "But someone who perceives your painful situation has sent me here.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "Haha! You are going to help me?!";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "...................";
+			next;
+			mes "- Valkyrie gives you a fierce scowl. -";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "In fact, I can't do anything with my body now.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "Human, answer me. Are you here to sincerely help me?";
+			next;
+			switch (select("Yes:No")) {
+			case 1:
+				break;
+			case 2:
+				mes "[Valkyrie Anguhilde]";
+				mes "I knew that I couldn't trust a human!";
+				close2;
 				warp "odin_tem02",282,263;
 				end;
 			}
-			else if (job_arch == 5) {
-				mes "[Valkyrie]";
-				mes "Án­µ¦b¤ÑªÅ¤¤´²¶}¡A¦ı¤£¯à­¸ªº³¾ª¦¦æ¡A¨Ã³Ì²×³QÀ£¦º¦b¦a¤W¥ó.";
-				mes "°Ú¡A§Ú¤£¥Ì¤ß¡I©Ò¥H¿ò¾Ñ!";
-				next;
-				mes "- ªZ¯««ù¦³¥¦ªºÁy¡AµM«á¦oµo²{§A¦³«Â¯ÙªºÁy©M¾®µø. -";
-				next;
-				mes "[Valkyrie]";
-				mes "§A¬O¥Í¬¡¦bµh­Wªº¤@­Ó¤Z¤H¡A§@¬°¤@­Ó¤Z¤H¡A§A¬°¤°»ò¦b³o¸Ì?";
-				mes "§A¦b³o¸Ì¼J¯º§Úªº´dºG©R¹B?";
-				next;
-				mes "["+strcharinfo(0)+"]";
-				mes "¤£¬Oªº!";
-				mes "§Ú¦A³o¸Ì¦]¬°§Ú¬O¯u¹êªº.";
-				next;
+			mes "[Valkyrie Anguhilde]";
+			mes "Ok...";
+			mes "I don't have any energy to hold my own, so I have no choice but to trust you.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I was a normal Valkyrie that lead soldiers to Valhalla according to the order of Odin.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "But I harmed Freki, one of Odin's wolves, and I was expelled form Asgard without any energy as a Valkyrie with orders to protect this island.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I was disgraced, this island is important as a temple for Odin and the various Gods.";
+			mes "I tried to do my best to protect this holy place.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "But one day, the devil started to gain influence on this island.";
+			mes "I don't know why they came here and from where they came from.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "They seiged the temple and I exhausted my energy tring to fight them all myself.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "The holy shrine was tainted by the devils.";
+			mes "How long do I have to be under this dishonorable fate!";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "Mortal one, what is your name?";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "My name is " + strcharinfo(0) + ".";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "" + strcharinfo(0) + ",";
+			mes "You told me that you want to help me, right? Even though it disgraces me, I am asking for your help.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "This place may look like it was made my humans. Actually, it's a very important monument and also a part of the God's history.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I've lost all of my energy and my body is sealed so there is no way for me to protect the shrine.";
+			mes "You have to send a message to Valhalla to ask for help from a Valkyrie quickly.";
+			next;
+			menu "How can I do that?",-;
+			mes "[Valkyrie Anguhilde]";
+			mes "At the ^3131FFtop of the shrine^000000, You can contact to them with a ^3131FFGolden pipe^000000.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "I'm going to give you a scroll of paper written in an ancient language.";
+			mes "In that scroll, there is my impersonation.";
+			mes "^3131FFIf you go outside, you can summon a Valkyrie with that scroll.^000000";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "After you summon my impersonation, you have to find a ^3131FFBroken pipe^000000.";
+			mes "Maybe it'll be spread in the shrine...";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "You have to go to the top of the shrine, collecting all broken pipes from the impersonation.";
+			mes "And then I'm going to take care of the matter.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "An impersonation will help when you move or attack as you want through ^FF0000ALT+click^000000.";
+			mes "But you have to be careful if an imeprsonation falls down.";
+			next;
+			mes "[Valkyrie Anguhilde]";
+			mes "When you finish preparing to go on, talk to me again.";
+			mes "It'll be a long journey...";
+			set job_arch,6;
+			close;
+		}
+		if (job_arch == 6) {
+			if ($@archbs == 0) {
+				set $@archbs,1;
 				mes "[Valkyrie Anguhilde]";
-				mes "...§Ú?";
-				mes "·íµM¡A§Ú¦í¦b¹Ğ¥@¡A¦ı§Ú­Ì¤£¯à¦@¦s©ó³o­Ó¥@¬Éªº©R¹BªºÏEÂê¤U.";
+				mes "" + strcharinfo(0) + " Did you finish preparing for your way of asceticism?";
 				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§Ú©ú¥Õ¤F¡A§Aªº¥Ø¼Ğ¬O¶i¤J¥Ëº¸«¢©Ô?";
-				mes "¦pªG³o¬O§A­n°µªº¡A¨º§A¨Ó¿ù¦a¤è¤F!.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§Ú¤w¸g³Qªü´µ¥[¼w¶}°£¤F.";
-				mes "§ÚªºÂ¾³d¬O«OÅ@¤HÃş¸Õ¹Ï§â¥¦±q¯«³o­Ó¤p®q¤W¡A§Y¨Ï§Ú¤£³o¼Ë°µ¦³¥ô¦ó¯à·½.";
-				next;
-				mes "["+strcharinfo(0)+"]";
-				mes "³o¨Ã¤£¬O­Ó°İÃDªü.";
-				mes "¦ı½Ö»{ÃÑ§Aµh­Wªº§½­±¤w¸g¬£§Ú¨ì³o¸Ì.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "«¢!§A­n¨ÓÀ°§Ú?!";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "...................";
-				next;
-				mes "- ¤kªZ¯«µ¹§A¤F¿E¯Pªº«ã®e. -";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¨Æ¹ê¤W¡A§Ú²{¦bªº¨­Åé¤°»ò³£¤£¯à°µ.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¤Z¤H¡A¦^µª§Úªº°İÃD¡C§A¦b³o¸Ì¯u¸Û¦aÀ°§U§Ú?";
-				next;
-				switch(select("¬Oªº:¤£¬O")) {
-				case 1:
-					break;
-				case 2:
+				if (getmapusers("job3_arch02") > 0) {
 					mes "[Valkyrie Anguhilde]";
-					mes "§Ú´Nª¾¹D§Ú¤£À³¸Ó¬Û«H¤Z¤H!";
+					//Custom translation
+					mes "Ah, it seems someone is already combating the evil in the temple.";
+					mes "I will go see who it is, please wait a moment.";
+					set $@archbs,0;
+					close;
+				}
+				mes "[Valkyrie Anguhilde]";
+				mes "Ok. Now I'm going to send you there.";
+				mes "^FF0000When you go there, you have to summon my impersonation with the scroll^000000. Don't forget.";
+				set $@archbs,0;
+				close2;
+				nude;
+				if (countitem(2798) > 0) {
+					delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
+				}
+				donpcevent "start#arch::OnEnable";
+				set job_arch,7;
+				changequest 2190,2191;
+				warp "job3_arch02",119,49;
+				hideonnpc "Valkyrie#arch";
+				end;
+			}
+			mes "[Valkyrie Anguhilde]";
+			//Custom translation
+			mes "I am already talking to someone, please wait and talk to me again.";
+			close;
+		}
+		if (job_arch == 7) {
+			if (countitem(12381) > 0 || countitem(12382) > 0) {
+				if (countitem(12381) > 0) {
+					delitem 12381,countitem(12381); //ValkyrieA_Scroll
+				}
+				if (countitem(12382) > 0) {
+						delitem 12382,countitem(12382); //ValkyrieB_Scroll
+				}
+				if ($@archbs == 0) {
+					set $@archbs,1;
+					mes "[Valkyrie Anguhilde]";
+					mes "Are you ok human?";
+					mes "It was not as easy as I expected.";
+					mes "Will you challenge again?";
+					next;
+					if (getmapusers("job3_arch02") > 0) {
+						set $@archbs,0;
+						mes "[Valkyrie Anguhilde]";
+						//Custom translation
+						mes "Ah, it seems someone is already combating the evil in the temple.";
+						mes "I will see who it is, please wait a moment.";
+						close;
+					}
+					set $@archbs,0;
+					mes "[Valkyrie Anguhilde]";
+					mes "OK. now I'm going to send you there.";
+					mes "^FF0000When you go there, you have to summon my impersonation with the scroll^000000.";
+					mes "An impersonation will help when you move or attack as you want through ^FF0000ALT+click^000000.";
+					mes "But you have to be careful if an imeprsonation falls down.";
 					close2;
-					warp "odin_tem02",282,263;
+					nude;
+					if (countitem(2798) > 0) {
+						delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
+					}
+					donpcevent "start#arch::OnEnable";
+					set job_arch, 7;
+					warp "job3_arch02",119,49;
+					hideonnpc "Valkyrie#arch";
 					end;
 				}
 				mes "[Valkyrie Anguhilde]";
-				mes "¦nªº...";
-				mes "§Ú¨S¦³¥ô¦ó¯à¶q¡A¥H«O«ù¦Û¤vªº«¬ºA¡A©Ò¥H§Ú¨S¦³¨ä¥L¿ï¾Ü¡A¦ı§Ú¬Û«H§A.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§Ú¬O¤@­Ó´¶³qªº¤kªZ¯«¡A®Ú¾Ú¶ø¤B¬°¤F±a»â¾Ô¤h¨ì¥Ëº¸«¢©Ô.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¦ı§Ú¶Ë®`ªk©Ô©_¡A¶ø¤Bªº¯T¤§¤@¡A§Ú³Q±q¶ø¤Bªº²M³æ¤¤¶}°£¤F¡A©Ò¥H¨S¦³¥ô¦ó§@¬°ªº¤kªZ¯«ªº¯à¶q¡A¥H«OÅ@¥»®q.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§ÚÄ±±o§Ú¥áÁy¡A³o­Ó®qÀ¬¬O§@¬°¶ø¤B¦x¼q«D±`­«­n©M¦UºØ¯«ÆF.";
-				mes "§Ú¸Õ¹ÏºÉ§Ú©Ò¯à¡A¥H«OÅ@³o­Ó¯«¸tªº¦a¤è.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¦ı¬O¦³¤@¤Ñ¡AÅ]°­¶}©lÀò±o³o­Ó®qÀ¬¤Wªº¼vÅT.";
-				mes "§Ú¤£ª¾¹D¥L­Ì¬°¤°»ò¨Ó¨ì³o¸Ì¡A¥L­Ì¨Ó¦Û¦ó³B.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¥L­Ì¨Ï¥Î¨¸´cªº¤O¶q·Q³o¸Ì¡A§Ú¥ÎºÉ§Úªº¯à¶q¨Óªı¤î.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "Å]°­¬¿¦Ã¤F¸t¦a.";
-				mes "§ÚÁÙ­nÄ~Äò³o­Ó¤£¥ú±mªº©R¹B¦h¤[ªü!";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¤Z¤H¡A§A¥s¤°»ò¦W¦r?";
-				next;
-				mes "["+strcharinfo(0)+"]";
-				mes "§Ú¥s°µ "+strcharinfo(0)+".";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes ""+strcharinfo(0)+",";
-				mes "§A§i¶D§Ú¡A§A­nÀ°§Ú¡A¹ï¤£¹ï¡H§Y¨Ï§Ú¥áÁyªº½Ğ¨D§AªºÀ°§U.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "³o­Ó¦a¤è¬İ°_¨Ó´N¹³¬O§Úªº¤H¡C¹ê»Ú¤W¡A¥¦¬O¤@­Ó«D±`­«­nªº¬ö©À¸O¡A¤]¬O¯«ªº¾ú¥vªº¤@³¡¤À.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§Ú¥¢¥h¤F§Ú©Ò¦³ªº¯à¶q¡A§Úªº¨­Åé¬O±K«Êªº¡A©Ò¥H§Ú¨S¦³¿ìªk«OÅ@¹t°ê¯«ªÀ.";
-				mes "§A­nµo°e®ø®§¨ì¥Ëº¸«¢©Ô¡A­n¨D¨³³t±q¤@­Ó¤kªZ¯«ªºÀ°§U.";
-				next;
-				select("How can I do that?");
-				mes "[Valkyrie Anguhilde]";
-				mes "±q ^3131FF³Ì°ªªº¯«ªÀ^000000, ±z¥i¥H»P¥L­ÌÁpÃ´ ^3131FFª÷¦âªººŞ¹D^000000.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§Ú·Qµ¹§A¤@¯È¦b¤@­Ó¥j¦Ñªº»y¨¥½s¼gªº¨÷¶b.";
-				mes "¦b³o±²¶b¤º¦³§Ú°°³yªºªF¦è.";
-				mes "^3131FF¦pªG§A¨ì¥~­±¥h¡A§A¥i¥H¨Ï¥Î±²¶b¥l³êªZ¯«.^000000";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§A¥l³ê§Úªº¤À¨­«á¡A§A¥²¶·§ä¨ì¤@­Ó ^3131FFÃa±¼ªººŞ¤l^000000.";
-				mes "¤]³\¥¦·|³Q¤À´²¦b¯«ªÀ¤¤...";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "§A¦³¥h¯«ªÀ¤W¤è¡A¦¬¶°©Ò¦³ªºÃa±¼ªººŞ¤l.";
-				mes "µM«á«OÅ@³o¨ÇªF¦è.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "¤@­Ó¤À¨­±N¦³§U©ó·í§A²¾°Ê©Î§ğÀ»¡A¥u­n§A«ö¤U ^FF0000ALT+click^000000.";
-				mes "¦ı§A­n¤p¤ßªF¦è±¼¸¨.";
-				next;
-				mes "[Valkyrie Anguhilde]";
-				mes "·í±z§¹¦¨·Ç³Æ¦n¤F¡A¦A¦¸¹ï§Ú»¡¸Ü.";
-				mes "³o±N¬O¤@­Óº©ªøªº®Èµ{...";
-				set job_arch,6;
+				//Custom translation
+				mes "I am already talking to someone, please wait and talk to me again.";
 				close;
 			}
-			else if (job_arch == 6) {
-				if ($@archbs== 0) {
-					set $@archbs,1; //Global Variable
-					mes "[Valkyrie Anguhilde]";
-					mes ""+strcharinfo(0)+" §A·Ç³Æ¦n¶i¦æ§Aªº­W­×¤F¶Ü?";
-					next;
-					set .@exampc,getmapusers("job3_arch02");
-					if (.@exampc > 0) {
-						mes "[Valkyrie Anguhilde]";
-						//Custom translation
-						mes "°Ú¡A¬İ¨Ó¤w¸g¦³¤H¦b¦x¼q¥´À»¨¸´c¤F.";
-						mes "§Ú·|¥h¬İ¬İ¬O½Ö¡A½Ğµyµ¥¤ù¨è.";
-						set $@archbs,0; //Global Variable
-						close;
-					}
-					else {
-						mes "[Valkyrie Anguhilde]";
-						mes "½T©w²{¦b§Ú­n°e§A¹L¥h¤F?.";
-						mes "^FF0000·í§A¥h¨º¸Ì¡A§A¥²¶·¥l³ê§Úªº¤À¨­^000000. §O§Ñ¤F.";
-						set $@archbs,0; //Global Variable
-						close2;
-						nude;
-						if (countitem(2798))
-							delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
-						donpcevent "start#arch::OnEnable";
-						set job_arch,7;
-						changequest 2190,2191;
-						warp "job3_arch02",119,49;
-						disablenpc "Valkyrie#arch";
-						end;
-					}
-				}
-				else {
-					mes "[Valkyrie Anguhilde]";
-					//Custom translation
-					mes "§Ú¤w¸g»P¤H¥æ½Í¡A½Ğµy­Ô¦A¸ò§Ú.";
-					close;
-				}
-			}
-			else if (job_arch == 7) {
-				if (countitem(12381))
-					delitem 12381,countitem(12381); //ValkyrieA_Scroll
-				if (countitem(12382))
-					delitem 12382,countitem(12382); //ValkyrieB_Scroll
-				if ($@archbs == 0) {
-					set $@archbs,1; //Global Variable
-					mes "[Valkyrie Anguhilde]";
-					mes "§AÁÙ¦n§a¡A¤Z¤H?";
-					mes "¦p§Ú©Ò®Æ¡A³o¬O¤£®e©öªº.";
-					mes "­n±q·s»`¶°¤@¦¸¶Ü?";
-					next;
-					set .@exampc,getmapusers("job3_arch02");
-					if (.@exampc > 0) {
-						set $@archbs,0; //Global Variable
-						mes "[Valkyrie Anguhilde]";
-						//Custom translation
-						mes "°Ú¡A¬İ¨Ó¤w¸g¦³¤H¦b¦x¼q¥´À»¨¸´c.";
-						mes "§Ú¥h¬İ¬İ¥L¬O½Ö¡A½Ğµyµ¥¤ù¨è.";
-						close;
-					}
-					else {
-						set $@archbs,0; //Global Variable
-						mes "[Valkyrie Anguhilde]";
-						mes "¦nªº¡A§Ú­n°e§A¹L¥h¤F.";
-						mes "^FF0000µ¥§A¨ì¨ºÃä°O±o¥l³ê§Úªº¤À¨­^000000.";
-						mes "¤@­Ó¤À¨­±N¦³§U©ó·í§A²¾°Ê©Î§ğÀ»¡A¥u­n«ö¤U ^FF0000ALT+click^000000.";
-						mes "¦ı§A­n¤p¤ß±¼¸¨ªºªF¦è.";
-						close2;
-						nude;
-						if (countitem(2798))
-							delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
-						donpcevent "start#arch::OnEnable";
-						set job_arch,7;
-						warp "job3_arch02",119,49;
-						disablenpc "Valkyrie#arch";
-						end;
-					}
-				}
-				else {
-					mes "[Valkyrie Anguhilde]";
-					//Custom translation
-					mes "§Ú¤w¸g»P¥L¥æ½Í¡A½Ğµy­Ô¦A¸ò§Ú»¡¸Ü.";
-					close;
-				}
-			}
+			end;
 		}
+		end;
 	}
 	end;
 
-Onbc:
-	set $@archbs,0; //Global Variable
+OnInit:
+	set $@archbs,0;
+	end;
+
+OnBc:
+	set $@archbs,0;
 	//Custom translation
-	mapannounce "job3_arch01", "¤kªZ¯«ªº§o³Û¡G§ÚÅ¥¨ìÅ]°­ªº¯ºÁn¡A¦³¤H¦b¦x¼q¤º±¼¸¨¡C",bc_map,"0xFFCE00";
-	enablenpc "Valkyrie#arch";
+	mapannounce "job3_arch01","Valkyrie's Cry: I hear the laughter of the devil, someone has fallen in the temple.",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	hideoffnpc "Valkyrie#arch";
 	end;
 }
 
-job3_arch02,119,49,0	script	#arch_1_start	-1,6,6,{
+job3_arch02,119,49,0	script	#arch_1_start	139,6,6,{
+
 OnTouch:
-	if (!countitem(12381))
+	if (countitem(12381) == 0) {
 		getitem 12381,1; //ValkyrieA_Scroll
-	mapannounce "job3_arch02", "¤À¨­ªº§C»y¡G§ÚÄ±±o¨I­«¡IÅı§Ú¦Û¥Ñ¡I",bc_map,"0xFFCE00";
-	disablenpc "#arch_1_start";
+	}
+	mapannounce "job3_arch02","Whispering of an impersonation: I feel heavy! Set me free!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	hideonnpc "#arch_1_start";
 	end;
 }
 
-job3_arch02,112,73,0	script	#arch_1_01	-1,5,5,{
+-	script	#arch_1_01_0::archbjcq	139,5,5,{
+
 OnTouch:
-	if (countitem(12381)) {
+	if (countitem(12381) > 0) {
 		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h!",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 		end;
 	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Embodiment of the voice: They are close to you!",bc_map,"0xFFCE00"; //Custom translation
-			end;
+	if (getmercinfo(1) == 2037) {
+		set .@randht, rand(1,10);
+		if (.@randht < 8) {
+			mapannounce "job3_arch02","Whispering of an impersonation: I can feel the devil's spirits! Be careful!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
 		}
-		else {
-			mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
+		else if (.@randht == 8 || .@randht == 9) {
+			mapannounce "job3_arch02","Embodiment of the voice: They are close to you!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0 //Custom translation
 		}
+		end;
 	}
+	mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	mapwarp "job3_arch02","job3_arch01",29,29;
+	end;
 }
 
-job3_arch02,94,123,0	script	#arch_1_02	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
+job3_arch02,112,73,0	duplicate(archbjcq)	#arch_1_01	139,5,5
+job3_arch02,94,123,0	duplicate(archbjcq)	#arch_1_02	139,5,5
+job3_arch02,93,173,0	duplicate(archbjcq)	#arch_1_03	139,5,5
+job3_arch02,114,186,0	duplicate(archbjcq)	#arch_1_04	139,5,5
+job3_arch02,134,201,0	duplicate(archbjcq)	#arch_1_05	139,5,5
+job3_arch02,154,211,0	duplicate(archbjcq)	#arch_1_06	139,5,5
+job3_arch02,175,227,0	duplicate(archbjcq)	#arch_1_07	139,5,5
+job3_arch02,201,240,0	duplicate(archbjcq)	#arch_1_08	139,5,5
+job3_arch02,223,252,0	duplicate(archbjcq)	#arch_1_09	139,5,5
+job3_arch02,255,268,0	duplicate(archbjcq)	#arch_1_10	139,5,5
+job3_arch02,269,302,0	duplicate(archbjcq)	#arch_1_11	139,5,5
+job3_arch02,245,289,0	duplicate(archbjcq)	#arch_1_12	139,5,5
 
-job3_arch02,93,173,0	script	#arch_1_03	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
+job3_arch02,203,286,0	script	#arch_1_boss	139,5,5,{
 
-job3_arch02,114,186,0	script	#arch_1_04	-1,5,5,{
 OnTouch:
-	if (countitem(12381)) {
+	if (countitem(12381) > 0) {
 		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 		end;
 	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,134,201,0	script	#arch_1_05	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
+	if (GetMyMercenary == 2037) {
+		mapannounce "job3_arch02","Valkyrie's Nightmare: An incompetent illusion of Valkyrie came here with the assistance of humans. You wanna have that nightmare?",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+		donpcevent "mob#arch_1::OnKill";
 	}
 	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 	}
-}
-
-job3_arch02,154,211,0	script	#arch_1_06	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,175,227,0	script	#arch_1_07	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,201,240,0	script	#arch_1_08	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,223,252,0	script	#arch_1_09	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,255,268,0	script	#arch_1_10	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,269,302,0	script	#arch_1_11	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,245,289,0	script	#arch_1_12	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡I­n¤p¤ß¡I",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Án­µªºÅé²{¡G¥L­Ì¾aªñ§A¤F¡I",bc_map,"0xFFCE00"; //Custom translation
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,203,286,0	script	#arch_1_boss	-1,5,5,{
-OnTouch:
-	if (countitem(12381)) {
-		delitem 12381,1; //ValkyrieA_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2037) { //VALKYRIE_A
-			mapannounce "job3_arch02", "¤kªZ¯«ªº¹ÚÆL¡G¤@­Ó¤£ºÙÂ¾ªº¤kªZ¯«ªº¤Û·Q¨Ó¨ì³o¸Ì»P¤HÃşªº´©§U¡C§A·Q¸Ñ²æ³o­Ó¾µ¹Ú?",bc_map,"0xFF0000";
-			donpcevent "mob#arch_1::Onkill";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
+	end;
 }
 
 job3_arch02,390,390,1	script	#arch_redcell	844,{
@@ -1404,12 +1145,12 @@ OnInit:
 	setcell "job3_arch02",276,290,280,294,cell_shootable,0;
 	end;
 
-Ongreen:
+OnGreen:
 	setcell "job3_arch02",276,290,280,294,cell_walkable,1;
 	setcell "job3_arch02",276,290,280,294,cell_shootable,1;
 	end;
 
-Onred:
+OnRed:
 	setcell "job3_arch02",276,290,280,294,cell_walkable,0;
 	setcell "job3_arch02",276,290,280,294,cell_shootable,0;
 	end;
@@ -1419,32 +1160,32 @@ job3_arch02,390,389,1	script	#arch_val01	844,{
 	end;
 
 OnEnable:
-	areamonster "job3_arch02",108,322,118,332,"Valkyrie's Nightmare",2036,1,"#arch_val01::OnMyMobDead";
+	areamonster "job3_arch02",111,325,115,329,"Valkyrie's Nightmare",2036,1,"#arch_val01::OnMyMobDead";
 	end;
 
 OnMyMobDead:
-	if (mobcount("job_arch02","#arch_val01::OnMyMobDead") < 1) {
-		donpcevent "#arch_redcell::Ongreen";
-		mapannounce "job3_arch02", "¤kªZ¯«ªº´c¹Ú¡G§Aªº³Ó§Q¶È¶È¬O¤@­Ó°²¶H¡I«¢«¢«¢«¢¡I",bc_map,"0xFF0000";
-		enablenpc "Valkyrie#arch_01";
-		disablenpc "#arch_1_start";
-		disablenpc "#arch_1_01";
-		disablenpc "#arch_1_02";
-		disablenpc "#arch_1_03";
-		disablenpc "#arch_1_04";
-		disablenpc "#arch_1_05";
-		disablenpc "#arch_1_06";
-		disablenpc "#arch_1_07";
-		disablenpc "#arch_1_08";
-		disablenpc "#arch_1_09";
-		disablenpc "#arch_1_10";
-		disablenpc "#arch_1_11";
-		disablenpc "#arch_1_12";
-		disablenpc "#arch_1_boss";
+	if (mobcount ("job3_arch02","#arch_val01::OnMyMobDead") < 1) {
+		donpcevent "#arch_redcell::OnGreen";
+		mapannounce "job3_arch02","Valkyrie's Nightmare: Your win is only a false image! hahahaha!",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+		hideoffnpc "Valkyrie#arch_01";
+		hideonnpc "#arch_1_start";
+		hideonnpc "#arch_1_01";
+		hideonnpc "#arch_1_02";
+		hideonnpc "#arch_1_03";
+		hideonnpc "#arch_1_04";
+		hideonnpc "#arch_1_05";
+		hideonnpc "#arch_1_06";
+		hideonnpc "#arch_1_07";
+		hideonnpc "#arch_1_08";
+		hideonnpc "#arch_1_09";
+		hideonnpc "#arch_1_10";
+		hideonnpc "#arch_1_11";
+		hideonnpc "#arch_1_12";
+		hideonnpc "#arch_1_boss";
 	}
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","#arch_val01::OnMyMobDead";
 	end;
 }
@@ -1453,644 +1194,442 @@ job3_arch02,390,387,1	script	#arch_val02	844,{
 	end;
 
 OnEnable:
-	areamonster "job3_arch02",239,41,249,51,"Valkyrie's Nightmare",2036,1,"#arch_val02::OnMyMobDead";
+	areamonster "job3_arch02",242,44,246,48,"Valkyrie's Nightmare",2036,1,"#arch_val02::OnMyMobDead";
 	end;
 
 OnMyMobDead:
-	if (mobcount("job_arch02","#arch_val02::OnMyMobDead") < 1) {
-		mapannounce "job3_arch02", "¤kªZ¯«ªº´c¹Ú¡G§A¥u¬O­Ó«Ä¤l¡C§ÚÁÜ½Ğ¥[¤JÅ]°­³oÃä¡C§Ú½T©w§A·|³ßÅwªº...«¢«¢!",bc_map,"0xFF0000";
-		enablenpc "Valkyrie#arch_02";
-		disablenpc "#arch_2_boss";
-		viewpoint 1,279,234,1,0xFFFF99;
+	if (mobcount ("job3_arch02","#arch_val02::OnMyMobDead") < 1) {
+		mapannounce "job3_arch02","Valkyrie's Nightmare: You are so childish. I invite you to a devil's party. I'll make sure you have a fun!",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+		hideoffnpc "Valkyrie#arch_02";
+		hideonnpc "#arch_2_boss";
+		viewpoint 234,279,1,1,0xFFFF9900;
 	}
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","#arch_val02::OnMyMobDead";
 	end;
 }
 
 job3_arch02,113,327,5	script	Valkyrie#arch_01	403,{
-	if (getmercinfo(0)) {
+	if (getmercinfo(1)) {
 		mes "[Valkyrie]";
-		mes "¦pªG§A·Q©M§Ú½Í¸Ü¡A§A¥²¶· ^3131FF¨ú®ø©Ò¦³±z¹µ¥Îªº¶Ä§L^000000.";
+		mes "If you want to talk with me, you have to ^3131FFcancel all contracts^000000 with any mercenaries you have.";
 		close;
 	}
 	mes "[Valkyrie Anguhilde]";
-	mes "Å]°­Á`¬O§V¤O¹ª°Ê¤H­Ìªº·Qªk.";
-	mes "§A¤£¥²¥hÃö¤ß¥L­Ìªº§C»y.";
+	mes "The devil always makes an effort to agitate people's mind.";
+	mes "You don't have to care about their whisperings.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "¤£ºŞ«ç¼Ë¡A§Ú¯à·PÄ±¨ì§Úªº¯à¶q¦^¨Ó.";
-	mes "§i¶D§Ú¡A§Aµo²{ªºªF¦è.";
+	mes "Anyway I can feel my energy coming back.";
+	mes "Show me the stuff that you found.";
 	next;
-	mes "- §A¤@¶ôª÷¦âªººŞ¤l¡A¥H¤kªZ¯«. -";
-	next;
-	mes "[Valkyrie Anguhilde]";
-	mes "³á¡A´N¬O³o¶ôºŞ¤l!";
-	mes "¦pªG§A¦¬¶°ªº¸H¤ù¡A§A¥i¥H´M¨DÀ°§Uªº¨ä¥L¤kªZ¯«.";
+	mes "- You show a golden piece of pipe to Valkyrie. -";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "¦]¬°¤@­Óºò±Kªº¾Ô°«¡A§Ú¥u¯à±o¨ì¤@ÂIÂIªº¯à¶q.";
-	mes "§Ú­nµ¹§A¤@­Ó ^3131FF·sªº¥j¥N±²¶b^000000.";
-	mes "³o±N¦³§U©ó§ä¨ì¨ä¸H¤ù.";
+	mes "Oh, It's a piece of pipe!";
+	mes "If you collect pieces, you can ask other Valkyries for help.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "µM«á¡A§Ú´Á«İµÛ§Aªº¦n®ø®§.";
+	mes "Because of a close battle, I could only get a little energy.";
+	mes "I'm going to give a ^3131FFnew ancient scroll^000000.";
+	mes "It'll be helpful to find the rest of pieces.";
+	next;
+	mes "[Valkyrie Anguhilde]";
+	mes "Then I look forward a good news.";
 	close2;
 	getitem 12382,1; //ValkyrieB_Scroll
-	viewpoint 1,244,46,1,0xFFFF99;
-	disablenpc "Valkyrie#arch_01";
+	viewpoint 46,244,1,1,0xFFFF9900;
+	hideonnpc "Valkyrie#arch_01";
 	donpcevent "#arch_2_start::OnEnable";
 	end;
 }
 
 job3_arch02,244,46,5	script	Valkyrie#arch_02	403,{
 	mes "[Valkyrie Anguhilde]";
-	mes "§A§ä¨ì¨ä¾lªº¸H¤ù¤F¶Ü?";
+	mes "Did you find the rest of the pieces?";
 	next;
 	if (countitem(6154) < 2) {
 		mes "[Valkyrie Anguhilde]";
-		mes "¶â?";
-		mes "§Ú¥i¥H¬İ¨ìªF¦è¦b©p¨­Ãä.";
+		mes "Hum?";
+		mes "I can see this one beside you.";
 		getitem 6154,2; //Broken_Horn_Pipe
 		next;
 	}
 	mes "[Valkyrie Anguhilde]";
-	mes "¦nªº.";
-	mes "§Ú§Ö­n§¹¦¨¤F!";
+	mes "OK.";
+	mes "I'll complete the broken horn pipe!";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "¦ı¾Ô°«ÁÙ¨S¦³µ²§ô.";
-	mes "§AÁÙ°O±o ^3131FF·´¤Fªº¯«ªÀ¦b®q¤Wªº¤¤¤ß^000000¶Ü?";
-	mes "¥u¦³¦b§A¨Ï¥Î¥Lªº®É­Ô¤~¯à§¹¦¨.";
+	mes "But the battle is not finished yet.";
+	mes "You remember a ^3131FFruined shrine on the center of the island^000000?";
+	mes "It'll be completed only when you use a horn pipe.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "§Ú¯à·PÄ±¨ì§Ú©P³òªºªÅ®ğ¶V¨Ó¶V¸Ş²§.";
-	mes "¦Ó¥B·P¨ì´H§Nº£¶Âªº¶Â·t.";
-	mes "·PÄ±¦MÀI¦s¦b§Ú­Ìªº©P³ò.";
+	mes "I can feel the air around me is getting impure.";
+	mes "And feel the coldness of the pitch-black darkness.";
+	mes "This time will be dangerous.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "§Úµ¹§A¤@±ø¶µÁå§@¬°Â§ª«.";
-	mes "¦ı§Ú¤£½T©w¥¦¬O¤£¬O¦³¥Î....";
-	mes "¤p¤ßªü.";
-	mes "½Ğ§Ö¤@ÂI!!";
+	mes "I give you a necklace as a present.";
+	mes "But I'm not sure that It'll be helpful or not....";
+	mes "Take care.";
+	mes "Please, hurry up!";
 	close2;
 	getitem 2798,1; //Will_Of_Exhausted_Angel
-	disablenpc "Valkyrie#arch_02";
+	hideonnpc "Valkyrie#arch_02";
 	donpcevent "#arch_3_start::OnEnable";
 	end;
 }
 
-job3_arch02,279,234,0	script	#arch_end	-1,7,7,{
-OnInit:
-	disablenpc "#arch_end";
-	end;
+job3_arch02,279,234,0	script	#arch_end	139,7,7,{
 
 OnTouch:
-	donpcevent "#arch_3_01::Onkill";
-	donpcevent "#arch_3_02::Onkill";
-	donpcevent "#arch_3_03::Onkill";
-	donpcevent "mob#arch_2::Onkill";
-	enablenpc "Valkyrie Anguhilde#end";
-	if (!checkweight(1201,1)) {
-		mes "- µyµ¥¤ù¨è! -";
-		mes "- §A¥Ø«e±a¤F -";
-		mes "- ¤Ó¦hªºªF¦è. -";
-		mes "- ½Ğ²MªÅ¤@ÂI©ñ¨ì­Ü®w -";
-		mes "- ¤§«á¦A¨Ó§ä§Ú. -";
+	donpcevent "#arch_3_01::OnKill";
+	donpcevent "#arch_3_02::OnKill";
+	donpcevent "#arch_3_03::OnKill";
+	donpcevent "mob#arch_2::OnKill";
+	hideoffnpc "Valkyrie Anguhilde#end";
+	if (checkweight(1201,4) == 0) {
+		mes "- Wait a moment! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please come back after -";
+		mes "- you put some items into Kafra Storage. -";
+		close;
+	}
+	if ((MaxWeight - Weight) < 2000) {
+		mes "- Wait a moment! -";
+		mes "- Currently you are carrying -";
+		mes "- too many items with you. -";
+		mes "- Please come back after -";
+		mes "- you put some items into Kafra Storage. -";
 		close;
 	}
 	if (countitem(6154) < 2) {
 		mes "[Valkyrie Anguhilde]";
-		mes "§A»`¶°¤F©Ò¦³ªºªF¦è¤F¶Ü?";
+		mes "Did you collect all of the pieces of my horn pipe?";
 		next;
 		mes "[Valkyrie Anguhilde]";
-		mes "§Úª¾¹D§A§ä¨ì·½ÀY¨ÓÀ°§Ú¡A¦ı§Ú¤£¯à¯Ê¤Ö³o¨â­Ó¸H¤ù.";
+		mes "I know you bent over backwards to help me, but I can't do anything without 2 pieces of horn pipe.";
 		next;
 		mes "[Valkyrie Anguhilde]";
-		mes "¥L¬O«Ü¦MÀIªº¡A©Ò¥H§ÖÂI¦^¥h§ä§a.";
-		close;
+		mes "It can be dangerous, so let's go back.";
+		close2;
 		nude;
-		if (countitem(2798))
-			delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
+		if (countitem(2798) > 0) {
+			delitem 2798,(2798); //Will_Of_Exhausted_Angel
+		}
 		delitem 6154,countitem(6154); //Broken_Horn_Pipe
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapwarp "job3_arch02","job3_arch01",29,29;
 		end;
 	}
 	mes "[Valkyrie Anguhilde]";
-	mes "³Ì«á¡A§Ú­Ì§¹¦¨¤F©Ò¦³ªº·Ç³Æ¤u§@.";
+	mes "Finally we finished all the preparations.";
 	next;
-	mes "¤kªZ¯«¾Ö¦³¹ï¤ÑªÅªº§÷®Æ©MªZ¾¹.";
+	mes "Valkyrie holds the pipe and blows towards the sky.";
 	next;
-	mes "¸I - - - -";
+	mes "Booo - - - -";
 	next;
-	mes "¸I - - -";
+	mes "Booo - - -";
 	next;
-	enablenpc "Valkyrie of the heavens";
+	hideoffnpc "Valkyrie of the heavens";
 	mes "[Valkyrie Anguhilde]";
-	mes "¶ø¤Bªº´©§U¡I¤h§L¥Ëº¸«¢©Ô!";
-	mes "¶Â·tªg¬V¤F¯«³Óªº¶ø¤B¸t¦a!";
+	mes "Assistance of Odin! Soldiers of Valhalla!";
+	mes "The holy place of the God Odin is tainted by darkness!";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¤£­n¾á¤ß.";
-	mes "§AªºÄ@±æ¤w¸g¶Ç¨ì¤F¥Ëº¸«¢©Ô.";
-	mes "Å]°­±N³Q¨ä¥L¤kªZ¯«·´·À.";
+	mes "Don't worry, Anguhilde.";
+	mes "Your desire has reached Valhalla.";
+	mes "The devils were removed by other Valkyries as you wanted.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "²{¦b³o¸Ì¦w¥ş¤F¶Ü?";
+	mes "Valkyries! Then is it safe now?";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¬Oªº.";
-	mes "§Y¨Ï§A¦]¬°¤@­Ó¨Æ¥ó¦Ó³Q¶}°£¡A¦ı¬O¶ø¤B»¡¥L¥¿¦b­«·s¦Ò¼{§Aªº©ñ³v.";
+	mes "Yes Anguhilde.";
+	mes "Even though you were expelled because of a incident before, Odin said that he is reconsidering your banishment.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "¯uªº?§Ú¥i¥H¦^¥h¯«·µ¶Ü?!";
+	mes "Ah! I can go back to Asgard!";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¤£­n©ê¤Ó¤jªº´Á±æ.";
-	mes "¦ı¦pªG§Ú¦³¥ô¦ó¦n®ø®§±Nµo°e¨ì±zªº.";
+	mes "Don't make a hasty generalization.";
+	mes "But I think that good news will be sent to you.";
 	next;
 	mes "[Valkyrie Anguhilde]";
-	mes "¬°¶ø¤BªººaÄ£!";
-	mes "§ÚÄ±±o¥Rº¡®¦¨å.";
-	mes "¦p¦¹ªºÄ£²´¥B·Å·x....";
+	mes "Honor to Odin!";
+	mes "I feel full of grace.";
+	mes "So bright and warm....";
 	next;
-	mes "- «¦ -";
-	specialeffect EF_CLOAKING,"Valkyrie Anguhilde#end";
-	disablenpc "Valkyrie Anguhilde#end";
+	mes "- Shoooo -";
+	specialeffect EF_CLOAKING,AREA,"Valkyrie Anguhilde#end";
+	hideonnpc "Valkyrie Anguhilde#end";
 	emotion e_omg,1;
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "§A¾¨ºŞ©ñ¤ß§a.";
-	mes "¥L¥h¤F¥LÀ³¸Ó­n¥hªº¦a¤è¤F.";
+	mes "Set your mind at ease.";
+	mes "She went to a place where she is supposed to be.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "·PÁÂ§A¬°§Ú°µªº©Ò¦³¨Æ.";
+	mes "I think you don't get it.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¥L¬OªZ¯«¤¤Åv«Â³Ì°ªªº.";
-	mes "Ãø¹D§A¨S¬İ¨£¹LÅ]°­ÂĞ»\¯«ªÀ?";
-	mes "¤£©¯ªº¬O¡A¥LµLªkÀ³¥Iªº¥ô°È¡A©Ò¥H¥L¥¢±Ñ¤F.";
+	mes "Anguhilde is a Valkyrie who is dead for a long time ago.";
+	mes "Didn't you see a shrine covered by the devil?";
+	mes "Unfortunately, Anguhilde couldn't cope with the task and fell down.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "³o¬O¤@ºØ¿ùÄ±¡A¥L¤£§Æ±æ±o¨ì¥ô¦ó¤Hªº»{¦P.";
-	mes "¦o¤]¤£¯à¥h¦aº»¡A§Y¨Ï¦o¦º¤F¡A±q¦o¤£Â_ªº¾µ¹Ú°«ª§.";
+	mes "Here is an illusion of Anguhilde who doesn't want to be recognized.";
+	mes "She can't go to hell even when she is dead, and struggles from her constant nightmare.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¦ı¥Lªº©ñ³v¬O¹ï§A¦³¯qªº.";
-	mes "§Y¨Ï¥¦»P²{¹ê¤£¦P¡A¦ı²{¦b¦o¥i¥H¦w®§.";
+	mes "But she is relieved by your favor.";
+	mes "Even though It's different with reality but now she may be able to rest in peace.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¤Z¤H¡A¤kªZ¯«¤í§A¤@¦¸¡CÁÂÁÂ.";
-	mes "§Ú·Q§Ú¤£¯àÄ~Äò©M§A¹ï¸Ü¤F¡A¦ı¥Ñ¶ø¤B½á¤©Åv¤O«á¡A§Ú¥i¥HÄ~ÄòÀ°§U§A.";
+	mes "Human, the Valkyries are in your debt. Thank you.";
+	mes "I can't invite you as I want, but the power given by Odin can help you.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "²{¦b¡A¦^¨ì§Aªº¥@¬É¥h§a.";
-	mes "³o¥@¬É±N·|ºq°e§Aªº¨ÆÂİ.";
+	mes "Now, go back to your world.";
+	mes "The sound of the horn pipe and a bird's chirpings will be spread out for you.";
 	next;
 	mes "[Valkyrie of the heavens]";
-	mes "¤£­n§Ñ¤F¤µ¤Ñ³o¼Ë¤@ºØ§Q¥L¥D¸qªºªª®vªººë¯«¥Ã¦s.";
-	mes "§Ú§Æ±æ§Ú­Ì¥i¥H¬İ¨ì¹ï¤èªº¬Y­Ó®É­Ô¦b¥Ëº¸«¢©Ô.";
+	mes "Don't forget an altruistic minister's spirit like today forever.";
+	mes "I hope we see each other in Valhalla sometime.";
 	nude;
-	if (countitem(2798))
+	if (countitem(2798) > 0) {
 		delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
+	}
 	delitem 6154,countitem(6154); //Broken_Horn_Pipe
 	set job_arch,100;
 	completequest 2191;
 	getitem 5747,1; //Mitra
 	getitem 2795,1; //Green_Apple_Ring
-	callfunc "Job_Change",Job_Archbishop;
+	if(Class == Job_Baby_Priest){
+		jobchange Job_Baby_Bishop;
+	}
+	else if (Class == Job_Priest) {
+		jobchange Job_Arch_Bishop;
+	}
+	else {
+		jobchange Job_Arch_Bishop_T;
+	}
 	close;
+
+OnInit:
+	hideonnpc "#arch_end";
+	end;
 }
 
 job3_arch02,281,232,1	script	Valkyrie Anguhilde#end	403,{
 	end;
 
 OnInit:
-	disablenpc "Valkyrie Anguhilde#end";
+	hideonnpc "Valkyrie Anguhilde#end";
 	end;
 }
 
 job3_arch02,273,235,5	script	Valkyrie of the heavens	811,{
 	if (job_arch == 100) {
 		mes "[Valkyrie of the heavens]";
-		mes "²{¦b¡A¦^¨ì§Aªº¥@¬É§a.";
-		mes "³o¥@¬É±N·|ºq°e§Aªº¨ÆÂİ.";
+		mes "Now, go back to your world.";
+		mes "The sound of the horn pipe and a bird's chirpings will be spread out for you.";
 		next;
 		mes "[Valkyrie of the heavens]";
-		mes "¤£­n§Ñ¤F¤µ¤Ñ³o¼Ë¤@ºØ§Q¥L¥D¸qªºªª®vªººë¯«¥Ã¦s.";
-		mes "§Ú§Æ±æ§Ú­Ì¥i¥H¬İ¨ì¹ï¤èªº¬Y­Ó®É­Ô¦b¥Ëº¸«¢©Ô.";
+		mes "Don't forget an altruistic minister's spirit like today forever.";
+		mes "I hope we see each other in Valhalla sometime.";
 		close2;
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		end;
 	}
 	end;
 
 OnInit:
-	disablenpc "Valkyrie of the heavens";
+	hideonnpc "Valkyrie of the heavens";
 	end;
 }
 
-job3_arch02,132,323,0	script	#arch_2_01	-1,5,5,{
+job3_arch02,132,323,0	script	#arch_2_01	139,5,5,{
+
 OnTouch:
-	if (countitem(12382))
-		mapannounce "job3_arch02", "Whispering of Valkyrie: I see a new ancient scroll!",bc_map,"0x000000";
+	if (countitem(12382) > 0) {
+		mapannounce "job3_arch02","Whispering of Valkyrie: I see a new ancient scroll!",bc_map,"0x000000"; //FW_NORMAL 12 0 0
+	}
 	end;
 }
 
-job3_arch02,167,313,0	script	#arch_2_02	-1,5,5,{
+-	script	#arch_2_02_0::archbjcq2	139,5,5,{
+
 OnTouch:
-	if (countitem(12382)) {
+	if (countitem(12382) > 0) {
 		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 		end;
 	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ.",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
+	if (getmercinfo(1) == 2038) {
+		set .@randht, rand(1,10);
+		if (.@randht < 8) {
+			mapannounce "job3_arch02","Whispering of an impersonation: I can feel the devil's spirits. Can you hear? The sound of gathering in crowds.",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		}
+		else if (.@randht == 8 || .@randht == 9) {
+			mapannounce "job3_arch02","Embodiment of Sounds: Battle Stance!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0 //Custom translation
 		}
 		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
+			mapannounce "job3_arch02","Whispering of an impersonation: I can't leave you! Die!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
 		}
+		end;
 	}
+	mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	mapwarp "job3_arch02","job3_arch01",29,29;
+	end;
 }
 
-job3_arch02,127,304,0	script	#arch_2_03	-1,5,5,{
+job3_arch02,167,313,0	duplicate(archbjcq2)	#arch_2_02	139,5,5
+job3_arch02,127,304,0	duplicate(archbjcq2)	#arch_2_03	139,5,5
+job3_arch02,207,279,0	duplicate(archbjcq2)	#arch_2_04	139,5,5
+job3_arch02,239,281,0	duplicate(archbjcq2)	#arch_2_05	139,5,5
+job3_arch02,269,303,0	duplicate(archbjcq2)	#arch_2_06	139,5,5
+job3_arch02,288,283,0	duplicate(archbjcq2)	#arch_2_07	139,5,5
+job3_arch02,278,234,0	duplicate(archbjcq2)	#arch_2_08	139,5,5
+job3_arch02,234,179,0	duplicate(archbjcq2)	#arch_2_09	139,5,5
+job3_arch02,227,169,0	duplicate(archbjcq2)	#arch_2_10	139,5,5
+job3_arch02,190,146,0	duplicate(archbjcq2)	#arch_2_11	139,5,5
+
+job3_arch02,252,267,0	script	#arch_2_12	139,5,5,{
+
 OnTouch:
-	if (countitem(12382)) {
+	mapannounce "job3_arch02","Whispering of an impersonation: It's a crossroad. Let's go to the left side. I have to find my pipe.",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	end;
+}
+
+job3_arch02,250,290,0	script	#arch_2_13	139,5,5,{
+
+OnTouch:
+	mapannounce "job3_arch02","Whispering of an impersonation: I can see a ruined shrine. Take a rest in there.",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	end;
+}
+
+job3_arch02,206,113,0	script	#arch_2_boss	139,5,5,{
+
+OnTouch:
+	if (countitem(12382) > 0) {
 		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 		end;
+	}
+	if (getmercinfo(1) == 2038) {
+		mapannounce "job3_arch02","A shout of devil: You are so childish. I invite you a party of devil. I'll make you have a fun!",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
 	}
 	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
+		mapannounce "job3_arch02","Whispering of an impersonation: You can't do anything by yourself! Let's go back!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+		mapwarp "job3_arch02","job3_arch01",29,29;
 	}
+	end;
 }
 
-job3_arch02,207,279,0	script	#arch_2_04	-1,5,5,{
+job3_arch02,284,159,0	script	#arch_3_01	139,20,20,{
+
 OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
+	if ((Class != Job_Priest) && (Class != Job_Baby_Priest)) {
+		mapannounce "job3_arch02","Frus: Do you want to see God? Okay, I'll send you to the land of the dead by myself!",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+		areamonster "job3_arch02",242,44,246,48,"Frus",1762,1;
 	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,239,281,0	script	#arch_2_05	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,269,303,0	script	#arch_2_06	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,288,283,0	script	#arch_2_07	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,278,234,0	script	#arch_2_08	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,234,179,0	script	#arch_2_09	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,227,169,0	script	#arch_2_10	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,190,146,0	script	#arch_2_11	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) { //VALKYRIE_B
-			set .@randht,rand(1,10);
-			if (.@randht < 8)
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­§C»y¡G§Ú¯à·PÄ±¨ìÅ]°­ªººë¯«¡C§A¯àÅ¥¨ì¶Ü?¤@¸s»E¶°ªºÁn­µ",bc_map,"0xFFCE00";
-			else if ((.@randht == 8) && (.@randht == 9))
-				mapannounce "job3_arch02", "Åé²{ªºÁn­µ¡G¾Ô°««ººA¡I",bc_map,"0xFFCE00"; //Custom translation
-			else
-				mapannounce "job3_arch02", "¤@­Ó¤À¨­ªº§C»y¡G§Ú¤£¯àÂ÷¶}§A¡I¦º§a¡I",bc_map,"0xFFCE00";
-			end;
-		}
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-			end;
-		}
-	}
-}
-
-job3_arch02,206,113,0	script	#arch_2_boss	-1,5,5,{
-OnTouch:
-	if (countitem(12382)) {
-		delitem 12382,1; //ValkyrieB_Scroll
-		mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-		mapwarp "job3_arch02","job_arch01",29,29;
-		end;
-	}
-	else {
-		if (getmercinfo(1) == 2038) //VALKYRIE_B
-			mapannounce "job3_arch02", "¤@­ÓÅ]°­ªº©I³Û¡G§A¤£¹L¬O­Ó«Ä¤l¡C§ÚÁÜ½Ğ§A¥[¤J§Ú­Ì¡C§A¤@©w·|Ä±±o«Ü¦³½ìªº¡A«¢«¢¡I",bc_map,"0xFF0000";
-		else {
-			mapannounce "job3_arch02", "¤@¤À¨­ªº§C»y¡G§A¤£¯à°µ¦Û¤vªº¨Æ±¡¡IÅı§Ú¦^¥h¡I",bc_map,"0xFFCE00";
-			mapwarp "job3_arch02","job_arch01",29,29;
-		}
-		end;
-	}
-}
-
-job3_arch02,284,159,0	script	#arch_3_01	-1,20,20,{
-OnInit:
-	enablenpc "#arch_3_01";
+	hideonnpc "#arch_3_01";
 	end;
 
-OnTouch:
-	if (BaseJob != 8) {
-		mapannounce "job3_arch02", "¦òÃ¹´µ¡G§A­n¨£¤W«Ò?¦n§a¡A§Ú°e§A¨ì¦º¤`¤§¦a!",bc_map,"0xFF0000";
-		areamonster "job3_arch02",239,41,249,51,"Frus",1762,1,"#arch_3_01::OnMyMobDead";
-	}
-	disablenpc "#arch_3_01";
-	end;
-
-Onkill:
+OnKill:
 	killmonster "job3_arch02","#arch_3_01::OnMyMobDead";
 	end;
 
-OnMyMobDead:
+OnInit:
+	hideoffnpc "#arch_3_01";
 	end;
 }
 
-job3_arch02,307,200,0	script	#arch_3_02	-1,5,5,{
-OnInit:
-	enablenpc "#arch_3_02";
-	end;
+job3_arch02,307,200,0	script	#arch_3_02	139,5,5,{
 
 OnTouch:
-	if (BaseJob == 8) {
-		mapannounce "job3_arch02", "´µ¥d§J:§A¬O§Úªº«È¤H¡I",bc_map,"0xFF0000";
-		areamonster "job3_arch02",306,199,308,201,"Skogul",1761,1,"#arch_3_02::OnMyMobDead";
+	if (Class == Job_Priest || Class == Job_Baby_Priest) {
+		mapannounce "job3_arch02","Skogul: You are my guest!",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+		monster "job3_arch02",307,200,"Skogul",1761,1;
 	}
-	disablenpc "#arch_3_02";
+	hideonnpc "#arch_3_02";
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","#arch_3_02::OnMyMobDead";
 	end;
 
-OnMyMobDead:
+OnInit:
+	hideoffnpc "#arch_3_02";
 	end;
+
 }
 
-job3_arch02,296,216,0	script	#arch_3_03	-1,5,5,{
-OnInit:
-	disablenpc "#arch_3_03";
-	end;
+job3_arch02,296,216,0	script	#arch_3_03	139,5,5,{
 
 OnTouch:
-	mapannounce "job3_arch02", "¦òÃ¹´µ:¡G§Ú³ßÅw§Aªºªí±¡......§Ú¯à°½¨«¶Ü?",bc_map,"0xFF0000";
-	areamonster "job3_arch02",295,215,297,217,"Frus",1762,1,"#arch_3_03::OnMyMobDead";
-	disablenpc "#arch_3_03";
+	mapannounce "job3_arch02","Frus: I like your face... Can I steal it?",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0
+	monster "job3_arch02",296,216,"Frus",1762,1;
+	hideonnpc "#arch_3_03";
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","#arch_3_03::OnMyMobDead";
 	end;
 
-OnMyMobDead:
+OnInit:
+	hideonnpc "#arch_3_03";
 	end;
+
 }
 
 job3_arch02,389,390,1	script	mob#arch_1	844,{
+	end;
+
 OnEnable:
-	areamonster "job3_arch02",99,101,101,103,"Shrine Invader",1394,2,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",89,130,91,132,"Shrine Invader",1394,2,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",90,169,92,171,"Shrine Invader",1427,1,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",103,182,105,184,"Shrine Invader",1427,1,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",137,204,139,206,"Shrine Invader",1394,2,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",160,214,162,216,"Shrine Invader",1394,2,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",164,214,166,216,"Shrine Invader",1427,1,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",200,235,202,237,"Shrine Invader",1394,2,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",217,249,219,251,"Shrine Invader",1427,1,"mob#arch_1::OnMyMobDead";
-	areamonster "job3_arch02",253,292,255,294,"Shrine Invader",1427,1,"mob#arch_1::OnMyMobDead";
+	monster "job3_arch02",100,102,"Shrine Invader",1394,2;
+	monster "job3_arch02",90,131,"Shrine Invader",1394,2;
+	monster "job3_arch02",91,170,"Shrine Invader",1427,1;
+	monster "job3_arch02",104,183,"Shrine Invader",1427,1;
+	monster "job3_arch02",138,205,"Shrine Invader",1394,2;
+	monster "job3_arch02",161,215,"Shrine Invader",1394,2;
+	monster "job3_arch02",165,215,"Shrine Invader",1427,1;
+	monster "job3_arch02",201,236,"Shrine Invader",1394,2;
+	monster "job3_arch02",218,250,"Shrine Invader",1427,1;
+	monster "job3_arch02",254,293,"Shrine Invader",1427,1;
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","mob#arch_1::OnMyMobDead";
-	end;
-
-OnMyMobDead:
 	end;
 }
 
 job3_arch02,389,389,1	script	mob#arch_2	844,{
+	end;
+
 OnEnable:
-	areamonster "job3_arch02",155,320,157,322,"Shrine Invader",1480,2,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",169,304,171,306,"Shrine Invader",1480,2,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",182,292,184,294,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",199,286,201,288,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",255,292,257,294,"Shrine Invader",1480,2,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",285,283,287,285,"Shrine Invader",1480,2,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",277,235,279,237,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",291,184,293,186,"Shrine Invader",1480,2,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",280,169,282,171,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",226,165,228,167,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",189,145,191,147,"Shrine Invader",1480,1,"mob#arch_2::OnMyMobDead";
-	areamonster "job3_arch02",203,176,205,178,"Shrine Invader",1453,1,"mob#arch_2::OnMyMobDead";
+	monster "job3_arch02",156,321,"Shrine Invader",1480,2;
+	monster "job3_arch02",170,305,"Shrine Invader",1480,2;
+	monster "job3_arch02",183,293,"Shrine Invader",1453,1;
+	monster "job3_arch02",200,287,"Shrine Invader",1453,1;
+	monster "job3_arch02",256,293,"Shrine Invader",1480,2;
+	monster "job3_arch02",286,284,"Shrine Invader",1480,2;
+	monster "job3_arch02",278,236,"Shrine Invader",1453,1;
+	monster "job3_arch02",292,185,"Shrine Invader",1480,2;
+	monster "job3_arch02",281,170,"Shrine Invader",1453,1;
+	monster "job3_arch02",227,166,"Shrine Invader",1453,1;
+	monster "job3_arch02",190,146,"Shrine Invader",1480,1;
+	monster "job3_arch02",204,177,"Shrine Invader",1453,1;
 	end;
 
-Onkill:
+OnKill:
 	killmonster "job3_arch02","mob#arch_2::OnMyMobDead";
-	end;
-
-OnMyMobDead:
 	end;
 }
 
@@ -2103,89 +1642,143 @@ OnInit:
 
 OnEnable:
 	mapwarp "job3_arch02","job3_arch02",29,29;
-	enablenpc "#arch_1_start";
-	enablenpc "#arch_1_01";
-	enablenpc "#arch_1_02";
-	enablenpc "#arch_1_03";
-	enablenpc "#arch_1_04";
-	enablenpc "#arch_1_05";
-	enablenpc "#arch_1_06";
-	enablenpc "#arch_1_07";
-	enablenpc "#arch_1_08";
-	enablenpc "#arch_1_09";
-	enablenpc "#arch_1_10";
-	enablenpc "#arch_1_11";
-	enablenpc "#arch_1_12";
-	enablenpc "#arch_1_boss";
-	disablenpc "#arch_2_01";
-	disablenpc "#arch_2_02";
-	disablenpc "#arch_2_03";
-	disablenpc "#arch_2_04";
-	disablenpc "#arch_2_05";
-	disablenpc "#arch_2_06";
-	disablenpc "#arch_2_07";
-	disablenpc "#arch_2_08";
-	disablenpc "#arch_2_09";
-	disablenpc "#arch_2_10";
-	disablenpc "#arch_2_11";
-	disablenpc "#arch_2_boss";
-	disablenpc "#arch_3_01";
-	disablenpc "#arch_3_02";
-	disablenpc "#arch_3_03";
-	donpcevent "#arch_3_01::Onkill";
-	donpcevent "#arch_3_02::Onkill";
-	donpcevent "#arch_3_03::Onkill";
-	disablenpc "#arch_end";
-	disablenpc "Valkyrie#arch_01";
-	disablenpc "Valkyrie#arch_02";
-	disablenpc "Valkyrie Anguhilde#end";
-	disablenpc "Valkyrie of the heavens";
-	donpcevent "#arch_redcell::Onred";
-	donpcevent "mob#arch_1::Onkill";
-	donpcevent "mob#arch_2::Onkill";
-	donpcevent "start#arch::Ontimeoff";
-	donpcevent "start#arch::Ontimeon";
-	donpcevent "#arch_val01::Onkill";
-	donpcevent "#arch_val02::Onkill";
-	donpcevent "mob#arch_1::Onkill";
-	donpcevent "mob#arch_2::Onkill";
+	hideoffnpc "#arch_1_start";
+	hideoffnpc "#arch_1_01";
+	hideoffnpc "#arch_1_02";
+	hideoffnpc "#arch_1_03";
+	hideoffnpc "#arch_1_04";
+	hideoffnpc "#arch_1_05";
+	hideoffnpc "#arch_1_06";
+	hideoffnpc "#arch_1_07";
+	hideoffnpc "#arch_1_08";
+	hideoffnpc "#arch_1_09";
+	hideoffnpc "#arch_1_10";
+	hideoffnpc "#arch_1_11";
+	hideoffnpc "#arch_1_12";
+	hideoffnpc "#arch_1_boss";
+	hideonnpc "#arch_2_01";
+	hideonnpc "#arch_2_02";
+	hideonnpc "#arch_2_03";
+	hideonnpc "#arch_2_04";
+	hideonnpc "#arch_2_05";
+	hideonnpc "#arch_2_06";
+	hideonnpc "#arch_2_07";
+	hideonnpc "#arch_2_08";
+	hideonnpc "#arch_2_09";
+	hideonnpc "#arch_2_10";
+	hideonnpc "#arch_2_11";
+	hideonnpc "#arch_2_boss";
+	hideonnpc "#arch_3_01";
+	hideonnpc "#arch_3_02";
+	hideonnpc "#arch_3_03";
+	donpcevent "#arch_3_01::OnKill";
+	donpcevent "#arch_3_02::OnKill";
+	donpcevent "#arch_3_03::OnKill";
+	hideonnpc "#arch_end";
+	hideonnpc "Valkyrie#arch_01";
+	hideonnpc "Valkyrie#arch_02";
+	hideonnpc "Valkyrie Anguhilde#end";
+	hideonnpc "Valkyrie of the heavens";
+	donpcevent "#arch_redcell::OnRed";
+	donpcevent "mob#arch_1::OnKill";
+	donpcevent "mob#arch_2::OnKill";
+	donpcevent "start#arch::OnTimeoff";
+	donpcevent "start#arch::OnTimeon";
+	donpcevent "#arch_val01::OnKill";
+	donpcevent "#arch_val02::OnKill";
+	donpcevent "mob#arch_1::OnKill";
+	donpcevent "mob#arch_2::OnKill";
 	donpcevent "mob#arch_1::OnEnable";
 	donpcevent "#arch_val01::OnEnable";
 	end;
 
-Ontimeon:
+OnTimeon:
 	initnpctimer;
 	end;
 
-Ontimeoff:
+OnTimeoff:
 	stopnpctimer;
 	end;
 
 OnTimer60000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer120000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer180000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer240000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer300000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer360000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+	}
+	end;
+
 OnTimer420000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer480000:
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
+		stopnpctimer;
+	}
+	end;
+
 OnTimer540000:
-	set .@mapcount,getmapusers("job3_arch02");
-	if (.@mapcount == 0) {
-		mapwarp "job3_arch02","job_arch01",29,29;
-		donpcevent "Valkyrie#arch::Onbc";
+	if (getmapusers("job3_arch02") == 0) {
+		mapwarp "job3_arch02","job3_arch01",29,29;
+		donpcevent "Valkyrie#arch::OnBc";
 		stopnpctimer;
 	}
 	end;
 
 OnTimer600000:
-	mapannounce "job3_arch02", "´cÅ]¤@Án¡G¤ÓµL²á¤F¡A¦A¤]¤£¯à·Q¹³·|µo¥Í¤°»ò¨Æ¡IªB¤Í­Ì¡A§Ú­Ì¤@°_¥h¡A¥i¥H·M§Ë¶ÆºCªº³Ã¥ë¡A½T©wªº¸gÅç±Ğ°V©O¡H",bc_map,"0xFF0000";
+	mapannounce "job3_arch02","Demons cry: Too boring, can no longer imagine what will happen! Friends, we went to lessons learned that could fool arrogant guy, OK?",bc_map,"0xFF0000"; //FW_NORMAL 12 0 0 //Custom translation;
 	end;
 
 OnTimer605000:
-	mapannounce "job3_arch02", "¤kªZ¯«ªºÁn­µ¡G¤£¡I³o¤£¥i¯à¡C§Ú·|°e§A°¨¤W¦^¨Ó¡I",bc_map,"0xFFCE00";
-	mapwarp "job3_arch02","job_arch01",29,29;
-	donpcevent "Valkyrie#arch::Onbc";
+	mapannounce "job3_arch02","Valkyrie's voice: No! This can not be. I will send you back soon!",bc_map,"0xFFCE00"; //FW_NORMAL 12 0 0
+	mapwarp "job3_arch02","job3_arch01",29,29;
+	donpcevent "Valkyrie#arch::OnBc";
 	stopnpctimer;
 	end;
 }
@@ -2194,33 +1787,33 @@ job3_arch02,390,388,1	script	#arch_2_start	844,{
 	end;
 
 OnInit:
-	disablenpc "#arch_2_01";
-	disablenpc "#arch_2_02";
-	disablenpc "#arch_2_03";
-	disablenpc "#arch_2_04";
-	disablenpc "#arch_2_05";
-	disablenpc "#arch_2_06";
-	disablenpc "#arch_2_07";
-	disablenpc "#arch_2_08";
-	disablenpc "#arch_2_09";
-	disablenpc "#arch_2_10";
-	disablenpc "#arch_2_11";
-	disablenpc "#arch_2_boss";
+	hideonnpc "#arch_2_01";
+	hideonnpc "#arch_2_02";
+	hideonnpc "#arch_2_03";
+	hideonnpc "#arch_2_04";
+	hideonnpc "#arch_2_05";
+	hideonnpc "#arch_2_06";
+	hideonnpc "#arch_2_07";
+	hideonnpc "#arch_2_08";
+	hideonnpc "#arch_2_09";
+	hideonnpc "#arch_2_10";
+	hideonnpc "#arch_2_11";
+	hideonnpc "#arch_2_boss";
 	end;
 
 OnEnable:
-	enablenpc "#arch_2_01";
-	enablenpc "#arch_2_02";
-	enablenpc "#arch_2_03";
-	enablenpc "#arch_2_04";
-	enablenpc "#arch_2_05";
-	enablenpc "#arch_2_06";
-	enablenpc "#arch_2_07";
-	enablenpc "#arch_2_08";
-	enablenpc "#arch_2_09";
-	enablenpc "#arch_2_10";
-	enablenpc "#arch_2_11";
-	enablenpc "#arch_2_boss";
+	hideoffnpc "#arch_2_01";
+	hideoffnpc "#arch_2_02";
+	hideoffnpc "#arch_2_03";
+	hideoffnpc "#arch_2_04";
+	hideoffnpc "#arch_2_05";
+	hideoffnpc "#arch_2_06";
+	hideoffnpc "#arch_2_07";
+	hideoffnpc "#arch_2_08";
+	hideoffnpc "#arch_2_09";
+	hideoffnpc "#arch_2_10";
+	hideoffnpc "#arch_2_11";
+	hideoffnpc "#arch_2_boss";
 	donpcevent "#arch_val02::OnEnable";
 	donpcevent "mob#arch_2::OnEnable";
 	end;
@@ -2230,64 +1823,79 @@ job3_arch02,390,386,1	script	#arch_3_start	844,{
 	end;
 
 OnEnable:
-	enablenpc "#arch_3_01";
-	enablenpc "#arch_3_02";
-	enablenpc "#arch_3_03";
-	enablenpc "#arch_end";
-	enablenpc "#arch_end_eff";
+	hideoffnpc "#arch_3_01";
+	hideoffnpc "#arch_3_02";
+	hideoffnpc "#arch_3_03";
+	hideoffnpc "#arch_end";
+	hideoffnpc "#arch_end_eff";
 	end;
 }
 
 job3_arch02,290,221,0	script	#arch_end_eff	139,5,5,{
+
 OnTouch:
-	specialeffect EF_MAPPILLAR2,"#arch_end";
+	if (countitem(6154) > 0) {
+		delitem 6154,countitem(6154); //Broken_Horn_Pipe
+	}
+	if (countitem(12381) > 0) {
+		delitem 12381,countitem(12381); //ValkyrieA_Scroll
+	}
+	if (countitem(12381) > 0) {
+		delitem 12382,countitem(12382); //ValkyrieB_Scroll
+	}
+	if (countitem(2798) > 0) {
+		delitem 2798,countitem(2798); //Will_Of_Exhausted_Angel
+	}
 	end;
 }
 
 job3_arch01,29,24,0	warp	#archout	1,1,odin_tem02,282,263
 
 /*
-job3_arch01,1,1,1	script	?OOA#arch	844,{
-	mes "[Ic1?AETEE]";
-	mes "CeEaEeAUA?";
+job3_arch01,1,1,1	script	Â¿Ã˜Ã–Ã†#arch	844,{
+	mes "[ÃÃ§Â¹ÃŒÂµÃ„ÃŠÃÃˆÃ‹]";
+	mes "Ã‡Ã«ÃŠÃ¤ÃˆÃ«ÃƒÃœÃ‚Ã«Â¡Â£";
 	next;
-	input .@input; //,0,9999;
-	if (input == 1854) {
-		set archglo,090219_archbs;
-		mes "[?DD]";
-		mes "IOO?A???aA???";
-		mes "" + archglo + "!¢G";
-		mes "AaIeD?AAe?";
+	input .@input;
+	if (.@input == 1854) {
+		mes "[ÃÂ¨ÃÃ]";
+		mes "ÃÃ–Ã”ÃšÂµÃ„ÃˆÂ«Â¾Ã–Â±Ã¤ÃÂ¿Ã–ÂµÃÂª";
+		mes "" + $@archbs + "Â¡Â£";
+		mes "Ã„Ã£ÃÃ«ÃÃÂ¸Ã„Ã‚Ã°?";
 		next;
-		switch(select("0:1")) {
+		switch (select("0:1")) {
 		case 1:
-			set $@archbs,0; //Global Variable
-			enablenpc "Valkyrie#arch";
-			break;
+			set $@archbs,0;
+			hideoffnpc "Valkyrie#arch";
+			close;
 		case 2:
-			set $@archbs,1; //Global Variable
-			enablenpc "Valkyrie#arch";
-			break;
+			set $@archbs,1;
+			hideoffnpc "Valkyrie#arch";
+			close;
 		}
 	}
-	else {
-		mes "[Ic1?AETEE]";
-		mes "I??EC?1yAUAe?EaEeOy?A??!";
+	if (.@input < 0 || .@input > 9999) {
+		mes "[ÃÃ§Â¹ÃŒÂµÃ„ÃŠÃÃˆÃ‹]";
+		mes "ÃÃ’Â²Â»ÃŠÃ‡Ã‹ÂµÂ¹Ã½ÃƒÃœÃ‚Ã«Ã’ÂªÃŠÃ¤ÃˆÃ«Ã•Ã½ÃˆÂ·Ã‚Ã°Â£Â¡Â£Â¡";
 		close;
 	}
 }
 */
 
-odin_tem02,30,181,0	script	#wherearch01	-1,10,10,{
+odin_tem02,30,181,0	script	#wherearch01	139,10,10,{
+
 OnTouch:
-	if (job_arch == 5)
-		viewpoint 1,282,263,1,0xFFFF99;
+	if (job_arch == 5) {
+		viewpoint 263,282,1,1,0xFFFF9900;
+	}
 	end;
 }
 
-odin_tem02,30,335,0	script	#wherearch02	-1,10,10,{
+odin_tem02,30,335,0	script	#wherearch02	139,10,10,{
+
 OnTouch:
-	if (job_arch == 5)
-		viewpoint 1,282,263,1,0xFFFF99;
+	if (job_arch == 5) {
+		viewpoint 263,282,1,1,0xFFFF9900;
+	}
 	end;
 }
