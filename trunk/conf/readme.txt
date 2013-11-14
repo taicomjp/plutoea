@@ -1,33 +1,22 @@
-What is the import folder for?
+『import』資料夾的用處為何？
+-------------------------------------------------------------------------------
 
-Most people don't know the real use of the import folder. After you do, you will wonder 
-what you ever did without it.
+該資料夾提供讓你可以保存自己的設定，而不用煩惱每次更新是否會覆蓋到既有的檔案。
+你可以儲存自己的設定，而剩餘的設定就與 rAthena 保持同步。
 
-The main thing it does, is provide a way for you to change your config settings without
-having to update the files every time you update your server. You store your changes, and 
-the rest are updated with eA (usually though SVN).
+如何運行？
+-------------------------------------------------------------------------------
 
-How does this work?
+僅需把你要改變的設定放進 import 資料夾即可。
+舉例來說，若你想更改 /battle/exp.conf 的設定：
 
-Well, you place only the settings you have changed in the import files. I'll use 
-battle_athena.conf and battle_conf.txt for my example. Everytime you update you conf 
-folder, using the normal method, you have to go and edit the configs again. So, you have to
-redo your rates, redo your ip addresses, you have to redo it all. Well, not with the import
-system.
+	// 基礎經驗值倍率 (Note 2)
+	base_exp_rate: 700
 
-Say you want to change your base experience rate from the default (100)to 7x (700). Well 
-then you would place this in your import/battle_conf.txt:
+你只需要把這一條設定指令複製貼到 /import/battle_conf.txt 就可以囉！
+而剩下的設定就會維持原本的樣子，未來也不用擔心更新會造成不便。
 
-// Rate at which exp. is given. (Note 2)
-base_exp_rate: 700
+簡單又方便，對吧？
 
-You don't need the comment (duh, it's a commnet), but I usually leave them for clarity 
-sake.
-
-So, now this new setting take place over the setting in battle_athena.conf. You just keep 
-this file everytime you update, and your setting will always be there. Neat, isn't it?
-
-So, yeah, that's what the import folder is for. I hope to see a lot more people use it, to 
-make my life as a managed server runer better.
-
-Semi-guide by Ajarn
+- Semi-guide by Ajarn / Euphy
+- 翻譯 Yanpo

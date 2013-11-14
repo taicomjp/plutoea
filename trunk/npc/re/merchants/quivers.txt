@@ -1,178 +1,122 @@
 //===== rAthena Script =======================================
-//= Arrow Quiver Event
+//= Arrow Quivers
 //===== By: ==================================================
 //= Muad_Dib (Prometheus Project); L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.2
+//= 1.1
 //===== Compatible With: =====================================
 //= rAthena SVN
 //===== Description: =========================================
-//= [Aegis COnversion]
+//= [Official Conversion]
 //= Turns arrows into Arrow Quivers.
-// Breakdown of Subroutine "S_BuyQuiver"
-// arg(0): Type of Arrow to be packaged (item ID)
-// arg(1): How many of each 'getarg(0)' arrow per quiver
-// arg(2): The cost of making a 'getarg(0)' quiver.
-// arg(3): The quiver given by the NPC. (item ID)
+//= Breakdown of Subroutine "S_BuyQuiver"
+//= arg(0): Type of Arrow to be packaged (item ID).
+//= arg(1): How many of each 'getarg(0)' arrow per quiver.
+//= arg(2): The cost of making a 'getarg(0)' quiver.
+//= arg(3): The quiver given by the NPC (item ID).
 //===== Additional Comments: =================================
-//= 07/06/05 : Added 1st Version. [Muad_Dib]
-//= Converted to rAthena format by Dr.Evil
-//= added prize to quest - 500 Zeny
-//= Fixed a few spelling errors. [Nexon]
-//= 1.1 Added Holy Arrow Quivers [Playtester]
-//= 1.2 Rescripted to Aegis 10.3 standards. [L0ne_W0lf]
-//=	Removed "Holy Arrows" from the list.
+//= 1.0 Added Mora NPC. [Euphy]
+//= 1.1 Updated to match the official scripts. [Euphy]
 //============================================================
 
-payon_in01,5,134,5	script	Inventor Jaax	89,{
+mora,106,117,3	script	Quiver Maker#mora	516,{
 	if (checkweight(1201,1) == 0) {
-		mes "[Inventor Jaax]";
-		mes "Hey, you're carrying";
-		mes "way too much stuff. Why don't you stash it away in Kafra Storage? We can talk after you do that, right?";
+		mes "[Quiver Maker]";
+		mes "You have too many things with you.";
+		mes "Make some space in your inventory and come back. I'll tell you something interesting.";
 		close;
 	}
-	set .@now_weight,MaxWeight-Weight;
-	if (.@now_weight < 2000) {
-		mes "[Inventor Jaax]";
-		mes "Hey, you're carrying";
-		mes "way too much stuff. Why don't you stash it away in Kafra Storage? We can talk after you do that, right?";
+	if (MaxWeight - Weight < 2000) {
+		mes "[Quiver Maker]";
+		mes "You seem worn out with all that stuff.";
+		mes "Make some space in your inventory and come back. I'll tell you something interesting.";
 		close;
 	}
-	mes "[Inventor Jaax]";
-	mes "My name is Jaxx.";
-	mes "Without ego, I can";
-	mes "say that I am perhaps the";
-	mes "^663300greatest inventor of our time^000000.";
+	mes "[Quiver Maker]";
+	mes "Mora villagers ask what good quivers are. They just don't know how the world works.";
+	mes "No wonder they don't know a thing about quivers - spreading jam over leaves all day long.";
 	next;
-	mes "[Inventor Jaxx]";
-	mes "This time, I've";
-	mes "created something";
-	mes "truly extraordinary. I call them... ^663300Magic Quivers^000000 !! This will be remembered in history as an";
-	mes "arrow revolution!";
-	Emotion e_no1;
-	next;
-	mes "[Inventor Jaax]";
-	mes "I've studied magic and quivers for years, working night and day until I finally figured how to condense arrows with magic! With magic quivers, you'll be carrying more arrows, but with less weight!";
-	next;
-	mes "[Inventor Jaax]";
-	mes "Would you like to try using one of my arrow quivers? I have no doubt that someone like you can appreciate my genius!";
-	next;
-	switch(select("Quiver:Iron Arrow Quiver:Steel Arrow Quiver:Oridecon Arrow Quiver:Fire Arrow Quiver:Silver Arrow Quiver:Wind Arrow Quiver:Stone Arrow Quiver:Crystal Arrow Quiver:Shadow Arrow Quiver:Immaterial Arrow Quiver:Rusty Arrow Quiver")) {
-	case 1: callsub S_BuyQuiver,1750,500,500,12004;
-	case 2: callsub S_BuyQuiver,1770,500,500,12005;
-	case 3: callsub S_BuyQuiver,1753,500,500,12006;
-	case 4: callsub S_BuyQuiver,1765,500,500,12007;
-	case 5: callsub S_BuyQuiver,1752,500,500,12008;
-	case 6: callsub S_BuyQuiver,1751,500,500,12009;
-	case 7: callsub S_BuyQuiver,1755,500,500,12010;
-	case 8: callsub S_BuyQuiver,1756,500,500,12011;
-	case 9: callsub S_BuyQuiver,1754,500,500,12012;
-	case 10: callsub S_BuyQuiver,1767,500,500,12013;
-	case 11: callsub S_BuyQuiver,1757,500,500,12014;
-	case 12: callsub S_BuyQuiver,1762,500,500,12015;
-	}
-	//This doesn't seem to be accessable...
-	//mes "[Inventor Jaax]";
-	//mes "Is there";
-	//mes "anything you want?";
-	//close;
-
-S_BuyQuiver:
-	if (countitem(getarg(0)) > 499) {
-		mes "[Inventor Jaax]";
-		mes "Excellent!";
-		mes "Are you carrying any Arrows with you? I'll provide you with a quiver that can carry "+getarg(1)+" of your "+getitemname(getarg(0))+"s for only ^FF3131"+getarg(2)+" Zeny^000000.";
+	switch(select("Please make me a quiver.:What's a quiver?")) {
+	case 1:
+		mes "[Quiver Maker]";
+		mes "At last someone appreciates a quiver!";
+		mes "I can make Elven Quivers and Hunting Quivers.";
+		mes "Which do you need?";
 		next;
-		switch(select("Store as many Arrows in quivers as possible:Purchase 1 quiver:Cancel")) {
-		case 1:
-			set .@arrows,countitem(getarg(0));
-			set .@quiver,.@arrows / getarg(1);
-			set .@arrows_used,.@quiver * getarg(1);
-			set .@arrow_zeny01,.@quiver * getarg(2);
-			mes "Number of";
-			mes "Arrows: ^3131FF"+.@arrows+" ^000000";
-			mes "Maximum Number";
-			mes "of Purchasable";
-			mes "Quivers: ^3131FF"+.@quiver+" ^000000";
-			mes "Zeny required: ^3131FF"+.@arrow_zeny01+" Zeny^000000";
-			next;
-			mes "[Inventor Jaax]";
-			mes "Would you like to";
-			mes "buy as many Quivers";
-			mes "as you can for the Arrows";
-			mes "you are currently carrying?";
-			next;
-			if (select("Yes:Cancel") == 1) {
-				if (.@arrow_zeny01 < Zeny) {
-					mes "[Inventor Jaax]";
-					mes "There you go!";
-					mes "Just remember, ^FF0000you won't be able to use the Quiver when your carried weight is 90% of your maximum weight limit^000000.";
-					set zeny,zeny-.@arrow_zeny01;
-					delitem getarg(0),.@arrows_used; //Arrow
-					getitem getarg(3),.@quiver; //Quiver
-					next;
-					mes "[Inventor Jaax]";
-					mes "So...";
-					mes "Just keep track";
-					mes "of how much you're";
-					mes "carrying from time";
-					mes "to time and you should";
-					mes "be alright.";
-					close;
-				}
-				else {
-					mes "[Inventor Jaax]";
-					mes "I'm sorry, but you don't have enough Zeny. I can't just give these away after working years";
-					mes "to develop this revolutionary technology!";
-					close;
-				}
-			}
-			mes "[Inventor Jaax]";
-			mes "You changed your mind?";
-			mes "When the glory of owning";
-			mes "a quiver is so close?";
-			close;
-		case 2:
-			if (zeny > getarg(2)) {
-				mes "[Inventor Jaax]";
-				mes "There you go!";
-				mes "Just remember, ^FF0000you won't be able to use the Quiver when your carried weight is 90% of your maximum weight limit^000000.";
-				set zeny,zeny-getarg(2);
-				delitem getarg(0),getarg(1); //Arrow
-				getitem getarg(3),1; //Quiver
-				next;
-				mes "[Inventor Jaax]";
-				mes "So...";
-				mes "Just keep track";
-				mes "of how much you're";
-				mes "carrying from time";
-				mes "to time and you should";
-				mes "be alright.";
-				close;
-			}
-			else {
-				mes "[Inventor Jaax]";
-				mes "You don't even";
-				mes "have "+getarg(2)+" Zeny?";
-				mes "I'm so sorry. I had no";
-				mes "idea that you were so...";
-				mes "^333333Destitute^000000.";
-				close;
-			}
+		switch(select("An Elven Quiver:A Hunting Quiver:I don't need a quiver.")) {
+		case 1: callsub S_BuyQuiver,1773,500,500,12575; //Arrow_Of_Elf_Cntr
+		case 2: callsub S_BuyQuiver,1774,500,500,12576; //Hunting_Arrow_Cntr
 		case 3:
-			mes "[Inventor Jaax]";
-			mes "What...?";
-			mes "Do you not see that this invention can forever change the way Arrows are carried?! The future is now!";
+			mes "[Quiver Maker]";
+			mes "You can buy arrows off the tool merchant next to me.";
 			close;
 		}
-	}
-	else {
-		mes "[Inventor Jaax]";
-		mes "You can carry a maximum of 500 Arrows within this quiver. It was made using my secret method,";
-		mes "so the total weight of the Arrows and Quiver is less than carrying the Arrows alone.";
+	case 2:
+		mes "[Quiver Maker]";
+		mes "An arrow may be thin and light, but carrying hundreds and thousands of arrows is like carrying a whole log.";
 		next;
-		mes "[Inventor Jaax]";
-		mes "It's a miracle of science! One that you can experience for yourself if you bring me at least 500 Arrows and 500 Zeny for each Quiver.";
+		mes "[Quiver Maker]";
+		mes "But when you have quivers, you can put arrows in them and save weight and space.";
+		mes "If you're interested in one, I'll stitch one up for you.";
 		close;
 	}
+	end;
+
+S_BuyQuiver:
+	if (countitem(getarg(0)) < getarg(1)) {
+		mes "[Quiver Maker]";
+		mes "Bring more than "+getarg(1)+" "+getitemname(getarg(0))+" and I'll make you a quiver.";
+		close;
+	}
+	mes "[Quiver Maker]";
+	mes "Oh, I see you have "+getitemname(getarg(0))+" in your hand!";
+	mes "Are you interested in using a quiver? It's really convenient!";
+	mes "If you're interested, I can trade "+getarg(1)+" of those arrows for one of these quivers for ^FF3131"+getarg(2)+" zeny^000000.";
+	next;
+	switch(select("Trade all the arrows you have:Get only one quiver:Don't trade")) {
+	case 1:
+		set .@arrows, countitem(getarg(0));
+		set .@quiver, .@arrows / getarg(1);
+		set .@arrows_used, .@quiver * getarg(1);
+		set .@arrow_zeny01, .@quiver * getarg(2);
+		mes "The number of arrows you have : ^3131FF"+.@arrows+"^000000";
+		mes "The number of quivers available : ^3131FF"+.@quiver+"^000000";
+		mes "Zeny needed for trade : ^3131FF"+.@arrow_zeny01+" zeny^000000";
+		next;
+		mes "Trade?";
+		next;
+		if(select("Trade:Don't trade") == 2) {
+			mes "[Quiver Maker]";
+			mes "Hey, you don't doubt my skills, do you?";
+			close;
+		}
+		break;
+	case 2:
+		set .@quiver, 1;
+		set .@arrows_used, getarg(1);
+		set .@arrow_zeny01, getarg(2);
+		set .@zeny_mes,1;
+		break;
+	case 3:
+		mes "[Quiver Maker]";
+		mes "Hey, you don't doubt my skills, do you?";
+		close;
+	}
+	if (Zeny < .@arrow_zeny01) {
+		mes "[Quiver Maker]";
+		if (.@zeny_mes == 1)
+			mes "I said I'd accept human coins just for you, and you still don't want to spend the money?";
+		else
+			mes "You really don't expect to get your hands on a masterpiece for nothing, do you?";
+		close;
+	}
+	mes "[Quiver Maker]";
+	mes "Hey, here you are.";
+	mes "There is ^3131FFsomething you need to know^000000 - try to remember it.";
+	mes "^FF0000You can't use quivers when your encumbrance is over 70%.^000000";
+	mes "You'd better keep that in mind, or you might be in trouble later.";
+	set Zeny, Zeny-.@arrow_zeny01;
+	delitem getarg(0),.@arrows_used;
+	getitem getarg(3),.@quiver;
+	close;
 }
