@@ -1,24 +1,27 @@
 //===== rAthena Script =======================================
-// Eden Group Quest - Quests NPCs
+//= Eden Group Quest - Quests NPCs
 //===== By: ==================================================
 //= L0ne_W0lf
 //===== Current Version: =====================================
-//= 1.3
+//= 1.5
 //===== Compatible With: =====================================
 //= rAthena SVN
 //===== Description: =========================================
-//= Eden Group Headquarter NPC's.
+//= Eden Group Headquarter NPCs.
 //===== Additional Comments: =================================
 //= 1.0 First Version.
 //= 1.1 Removed unencoded comments (Korean -> Gibberish)
 //=     Readded the GM helper NPC, commented out.
 //= 1.2 Some little optimization here and there. [Masao]
 //= 1.3 Added Instructor Ur and the new Quests which come
-//= alongside him. Special thanks to Chilly for the base. [Masao]
+//=     alongside him. Special thanks to Chilly for the base. [Masao]
+//= 1.4 Partial cleaning and bug fixing. [Euphy]
+//= 1.4a Added 'npcskill' command. [Euphy]
+//= 1.4b Added 'disable_items' command. [Euphy]
+//= 1.5 Added GM management function. [Euphy]
 //============================================================
 
 moc_para01,25,35,4	script	Instructor Boya#para01	469,{
-
 	if (countitem(6219) > 0) {
 		if (para_suv01 == 0) {
 			mes "[Boya]";
@@ -1089,7 +1092,6 @@ moc_para01,25,35,4	script	Instructor Boya#para01	469,{
 }
 
 moc_fild11,180,253,5	script	Talking Dog#para03	972,{
-
 	if (para_suv01 == 1) {
 		mes "[Talking Dog]";
 		mes "kkkkuuuuahhh.";
@@ -1181,7 +1183,7 @@ moc_fild11,180,253,5	script	Talking Dog#para03	972,{
 		mes "Oh, if you are tired I will help you.";
 		next;
 		mes "-When the dog barked, your HP and SP recovered.-";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1219,7 +1221,7 @@ moc_fild11,180,253,5	script	Talking Dog#para03	972,{
 		mes "Oh, if you are tired I will help you.";
 		next;
 		mes "-When the dog barked, your HP and SP recovered.-";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1275,7 +1277,7 @@ moc_fild11,180,253,5	script	Talking Dog#para03	972,{
 		mes "Oh, if you are tired I will help you.";
 		next;
 		mes "-When the dog barked, your HP and SP recovered.-";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1421,8 +1423,8 @@ prt_sewb1,131,262,3	script	Timid Cat#para04	422,{
 		mes "[Timid Cat]";
 		mes "Take care to check your map so you don't get lost.";
 		mes "It's a service meeow.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
-		percentheal 0,100;
+		npcskill "AL_HEAL",11,99,60;
+		percentheal 100,100;
 		close;
 	}
 	if (para_suv01 == 8) {
@@ -1459,7 +1461,7 @@ prt_sewb1,131,262,3	script	Timid Cat#para04	422,{
 		mes "[Timid Cat]";
 		mes "I will help you a little.";
 		mes "Here, I have recovered your strengh meow..";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1494,8 +1496,8 @@ prt_sewb1,131,262,3	script	Timid Cat#para04	422,{
 		mes "It's the last course so cheer up.";
 		mes "I will help you a little.";
 		mes "Here, I have recovered your strengh meow..";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
-		percentheal 0,100;
+		npcskill "AL_HEAL",11,99,60;
+		percentheal 100,100;
 		close;
 	}
 	if (para_suv01 >= 10) {
@@ -1606,7 +1608,7 @@ pay_arche,41,136,3	script	Eden Member Karl#para05	904,{
 		mes "[Karl]";
 		mes "Just in case I will recover all your energy.";
 		mes "It's the last step so be careful.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1637,8 +1639,8 @@ pay_arche,41,136,3	script	Eden Member Karl#para05	904,{
 		mes "[Karl]";
 		mes "Just in case I will recover all your energy.";
 		mes "It's the last step so be careful.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
-		percentheal 0,100;
+		npcskill "AL_HEAL",11,99,60;
+		percentheal 100,100;
 		close;
 	}
 	if (para_suv01 >= 16) {
@@ -1659,7 +1661,6 @@ pay_arche,41,136,3	script	Eden Member Karl#para05	904,{
 }
 
 anthell01,29,264,5	script	Eden Member Cloud#para06	899,{
-
 	if (para_suv01 < 17) {
 		if (countitem(6219) > 0) {
 			mes "[Cloud]";
@@ -1760,7 +1761,7 @@ anthell01,29,264,5	script	Eden Member Cloud#para06	899,{
 		mes "What do you think of Ant Hell?";
 		mes "Can you stay longer?";
 		mes "Ok, I will recover your strengh so, keep going.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1799,7 +1800,7 @@ anthell01,29,264,5	script	Eden Member Cloud#para06	899,{
 		mes "[Cloud]";
 		mes "See, to cheer you up I will heal you until you finish the training.";
 		mes "Chin up and cheer up.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1827,7 +1828,7 @@ anthell01,29,264,5	script	Eden Member Cloud#para06	899,{
 		mes "[Cloud]";
 		mes "Just Vitata, isn't that an easy opponent?";
 		mes "If you see Maya just run away.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1942,7 +1943,7 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 		mes "[Hooksha]";
 		mes "You look tired I will recover your health.";
 		mes "If you are in trouble just come back here to safety.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1973,7 +1974,7 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 		mes "[Hooksha]";
 		mes "You look tired, I will recover your health.";
 		mes "If you are in trouble just come back here to safety.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -1999,7 +2000,7 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 		mes "[Hooksha]";
 		mes "You look tired, I will recover your health.";
 		mes "If you are in trouble just come back here to safety.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -2072,7 +2073,7 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 		mes "Can you stay longer?";
 		mes "You look tired, I will recover your health.";
 		mes "If you are in trouble just come back here to safety.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -2096,7 +2097,7 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 		mes "Can you stay longer?";
 		mes "You look tired I will recover your health.";
 		mes "If you are in trouble just come back here to safety.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -2119,7 +2120,6 @@ in_orcs01,38,175,3	script	Eden Member Hooksha	803,{
 }
 
 iz_dun04,43,46,3	script	Eden Member Callandiva	745,{
-
 	if (para_suv01 < 33) {
 		if (countitem(6219) > 0) {
 			mes "[Callandiva]";
@@ -2200,8 +2200,8 @@ iz_dun04,43,46,3	script	Eden Member Callandiva	745,{
 		mes "Oh are you tired?";
 		mes "Mermans are not easy opponents.";
 		mes "I will help you recover so cheer up.";
-//		UseSkillToPC 28 10 99 60; // Use Skill On Player <Skill ID>,<Lvl>,<x>,<y>
-		percentheal 0,100;
+		npcskill "AL_HEAL",11,99,60;
+		percentheal 100,100;
 		close;
 	}
 	if (para_suv01 == 35) {
@@ -2234,7 +2234,7 @@ iz_dun04,43,46,3	script	Eden Member Callandiva	745,{
 		mes "Oh are you tired?";
 		mes "Strouf are not easy opponents.";
 		mes "I can help you recover so cheer up.";
-//		UseSkillToPC 28 10 99 60
+		npcskill "AL_HEAL",11,99,60;
 		percentheal 100,100;
 		close;
 	}
@@ -2260,7 +2260,6 @@ iz_dun04,43,46,3	script	Eden Member Callandiva	745,{
 }
 
 moc_para01,112,96,5	script	Administrator Michael	967,{
-
 	mes "[Michael]";
 	mes "Why did you come here?";
 	next;
@@ -2332,7 +2331,7 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 				mes "Make enough space.";
 				close;
 			case 2:
-				if (Class == Job_Swordman || Class == Job_Swordman_High || Class == Job_Knight || Class == Job_Crusader){
+				if (Class == Job_Swordman || Class == Job_Swordman_High || Class == Job_Knight || Class == Job_Crusader) {
 					mes "[Michael]";
 					mes "What kind of weapon do you want?";
 					mes "We have one and Two-handed swords.";
@@ -2415,21 +2414,72 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 						mes "This is what we strive for.";
 						close;
 					}
-				}	if (Class == Job_Thief || Class == Job_Thief_High || Class == Job_Assassin || Class == Job_Rogue || Class == Job_Ninja || Class == Job_Novice || Class == Job_Novice_High) {
+				}
+				if (Class == Job_Thief || Class == Job_Thief_High || Class == Job_Assassin || Class == Job_Rogue || Class == Job_Ninja || Class == Job_Novice || Class == Job_Novice_High) {
+					mes "[Michael]";
+					mes "We only have 1 weapon for you.";
+					next;
+					mes "[Michael]";
+					mes "Eden Dagger I: Dagger. MATK+60, attack 124.";
+					mes "It is Lv. 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "It also can't be traded with other players or be refined.";
+					next;
+					mes "[Michael]";
+					mes "You'll receive the Eden Dagger I.";
+					next;
+					mes "[Michael]";
+					mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
+					next;
+					if (para_suv02 == 0) {
 						mes "[Michael]";
-						mes "We only have 1 weapon for you.";
+						mes "You don't have a record of receiving any supplies";
+						mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
+						set para_suv01,23;
+						set para_suv02,2;
+						getitem 13050,1; //P_Dagger1
+						getitem 2457,1; //Para_Team_Boots2
+						getitem 15010,1; //Para_Team_Uniform2
+						getitem 5583,1; //Para_Team_Hat
+						getitem 2560,1; //Para_Team_Manteau
 						next;
 						mes "[Michael]";
-						mes "Eden Dagger I: Dagger. MATK+60, attack 124.";
-						mes "It is Lv. 2 and the required level is 26.";
-						next;
+						mes "Check your supplies again and look after it.";
+						close;
+					}
+					mes "[Michael]";
+					mes "A Dagger, Uniform and Boots all 3 supplies.";
+					mes "Please check it again.";
+					set para_suv01,23;
+					set para_suv02,2;
+					getitem 13050,1; //P_Dagger1
+					getitem 2457,1; //Para_Team_Boots2
+					getitem 15010,1; //Para_Team_Uniform2
+					next;
+					mes "[Michael]";
+					mes "I hope they're useful to you.";
+					mes "This is what we strive for.";
+					close;
+				}
+				if (Class == Job_Merchant || Class == Job_Merchant_High || Class == Job_Blacksmith || Class == Job_Alchemist) {
+					mes "[Michael]";
+					mes "What kind of weapon do you want?";
+					mes "We have a mace and a One-handed sword.";
+					mes "Here are the options.";
+					next;
+					mes "[Michael]";
+					mes "Eden Saber I: One-handed sword. attack 147.";
+					mes "Eden Mace I: Mace. attack 142.";
+					mes "Both are level 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "They also can't be traded with other players or be refined.";
+					next;
+					switch (select("Eden Sabre I:Eden Mace I")) {
+					case 1:
 						mes "[Michael]";
-						mes "It also can't be traded with other players or be refined.";
-						next;
-						mes "[Michael]";
-						mes "You'll receive the Eden Dagger I.";
-						next;
-						mes "[Michael]";
+						mes "You've chosen the Eden Sabre I.";
 						mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
 						next;
 						if (para_suv02 == 0) {
@@ -2438,7 +2488,7 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 							mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
 							set para_suv01,23;
 							set para_suv02,2;
-							getitem 13050,1; //P_Dagger1
+							getitem 13423,1; //P_Sabre1
 							getitem 2457,1; //Para_Team_Boots2
 							getitem 15010,1; //Para_Team_Uniform2
 							getitem 5583,1; //Para_Team_Hat
@@ -2449,11 +2499,11 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 							close;
 						}
 						mes "[Michael]";
-						mes "A Dagger, Uniform and Boots all 3 supplies.";
+						mes "A One-handed Sword, Uniform and Boots all 3 supplies.";
 						mes "Please check it again.";
 						set para_suv01,23;
 						set para_suv02,2;
-						getitem 13050,1; //P_Dagger1
+						getitem 13423,1; //P_Sabre1
 						getitem 2457,1; //Para_Team_Boots2
 						getitem 15010,1; //Para_Team_Uniform2
 						next;
@@ -2461,115 +2511,18 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 						mes "I hope they're useful to you.";
 						mes "This is what we strive for.";
 						close;
-					}
-					if (Class == Job_Merchant || Class == Job_Merchant_High || Class == Job_Blacksmith || Class == Job_Alchemist) {
+					case 2:
 						mes "[Michael]";
-						mes "What kind of weapon do you want?";
-						mes "We have a mace and a One-handed sword.";
-						mes "Here are the options.";
-						next;
-						mes "[Michael]";
-						mes "Eden Saber I: One-handed sword. attack 147.";
-						mes "Eden Mace I: Mace. attack 142.";
-						mes "Both are level 2 and the required level is 26.";
-						next;
-						mes "[Michael]";
-						mes "They also can't be traded with other players or be refined.";
-						next;
-						switch (select("Eden Sabre I:Eden Mace I")) {
-						case 1:
-							mes "[Michael]";
-							mes "You've chosen the Eden Sabre I.";
-							mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
-							next;
-							if (para_suv02 == 0) {
-								mes "[Michael]";
-								mes "You don't have a record of receiving any supplies";
-								mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-								set para_suv01,23;
-								set para_suv02,2;
-								getitem 13423,1; //P_Sabre1
-								getitem 2457,1; //Para_Team_Boots2
-								getitem 15010,1; //Para_Team_Uniform2
-								getitem 5583,1; //Para_Team_Hat
-								getitem 2560,1; //Para_Team_Manteau
-								next;
-								mes "[Michael]";
-								mes "Check your supplies again and look after it.";
-								close;
-							}
-							mes "[Michael]";
-							mes "A One-handed Sword, Uniform and Boots all 3 supplies.";
-							mes "Please check it again.";
-							set para_suv01,23;
-							set para_suv02,2;
-							getitem 13423,1; //P_Sabre1
-							getitem 2457,1; //Para_Team_Boots2
-							getitem 15010,1; //Para_Team_Uniform2
-							next;
-							mes "[Michael]";
-							mes "I hope they're useful to you.";
-							mes "This is what we strive for.";
-							close;
-						case 2:
-							mes "[Michael]";
-							mes "You've chosen the Eden Mace I.";
-							mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
-							next;
-							if (para_suv02 == 0) {
-								mes "[Michael]";
-								mes "You don't have a record of receiving any supplies";
-								mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-								set para_suv01,23;
-								set para_suv02,2;
-								getitem 16004,1; //P_Mace1
-								getitem 2457,1; //Para_Team_Boots2
-								getitem 15010,1; //Para_Team_Uniform2
-								getitem 5583,1; //Para_Team_Hat
-								getitem 2560,1; //Para_Team_Manteau
-								next;
-								mes "[Michael]";
-								mes "Check your supplies again and look after it.";
-								close;
-							}
-							mes "[Michael]";
-							mes "A Mace, Uniform and Boots all 3 supplies.";
-							mes "Please check it again.";
-							set para_suv01,23;
-							set para_suv02,2;
-							getitem 16004,1; //P_Mace1
-							getitem 2457,1; //Para_Team_Boots2
-							getitem 15010,1; //Para_Team_Uniform2
-							next;
-							mes "[Michael]";
-							mes "I hope they're useful to you.";
-							close;
-						}
-					}
-					if (Class == Job_Archer || Class == Job_Archer_High || Class == Job_Hunter || Class == Job_Dancer || Class == Job_Bard) {
-						mes "[Michael]";
-						mes "We only have 1 weapon for you.";
-						next;
-						mes "[Michael]";
-						mes "Eden Bow I: Bow. attack 82.";
-						mes "It is Lv. 2 and the required level is 26.";
-						next;
-						mes "[Michael]";
-						mes "It also can't be traded with other players or be refined.";
-						next;
-						mes "[Michael]";
-						mes "You'll receive the Eden Bow I.";
-						next;
-						mes "[Michael]";
+						mes "You've chosen the Eden Mace I.";
 						mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
 						next;
 						if (para_suv02 == 0) {
 							mes "[Michael]";
 							mes "You don't have a record of receiving any supplies";
 							mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-							set para_suv01, 23;
-							set para_suv02, 2;
-							getitem 1747,1; //P_Bow1
+							set para_suv01,23;
+							set para_suv02,2;
+							getitem 16004,1; //P_Mace1
 							getitem 2457,1; //Para_Team_Boots2
 							getitem 15010,1; //Para_Team_Uniform2
 							getitem 5583,1; //Para_Team_Hat
@@ -2580,11 +2533,11 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 							close;
 						}
 						mes "[Michael]";
-						mes "A Bow, Uniform and Boots all 3 supplies.";
+						mes "A Mace, Uniform and Boots all 3 supplies.";
 						mes "Please check it again.";
 						set para_suv01,23;
 						set para_suv02,2;
-						getitem 1747,1; //P_Bow1
+						getitem 16004,1; //P_Mace1
 						getitem 2457,1; //Para_Team_Boots2
 						getitem 15010,1; //Para_Team_Uniform2
 						next;
@@ -2592,112 +2545,79 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 						mes "I hope they're useful to you.";
 						close;
 					}
-					if (Class == Job_Acolyte || Class == Job_Acolyte_High || Class == Job_Priest || Class == Job_Monk) {
+				}
+				if (Class == Job_Archer || Class == Job_Archer_High || Class == Job_Hunter || Class == Job_Dancer || Class == Job_Bard) {
+					mes "[Michael]";
+					mes "We only have 1 weapon for you.";
+					next;
+					mes "[Michael]";
+					mes "Eden Bow I: Bow. attack 82.";
+					mes "It is Lv. 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "It also can't be traded with other players or be refined.";
+					next;
+					mes "[Michael]";
+					mes "You'll receive the Eden Bow I.";
+					next;
+					mes "[Michael]";
+					mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
+					next;
+					if (para_suv02 == 0) {
 						mes "[Michael]";
-						mes "What kind of weapon do you want?";
-						mes "We have a mace and a staff.";
-						mes "Here are the options.";
+						mes "You don't have a record of receiving any supplies";
+						mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
+						set para_suv01, 23;
+						set para_suv02, 2;
+						getitem 1747,1; //P_Bow1
+						getitem 2457,1; //Para_Team_Boots2
+						getitem 15010,1; //Para_Team_Uniform2
+						getitem 5583,1; //Para_Team_Hat
+						getitem 2560,1; //Para_Team_Manteau
 						next;
 						mes "[Michael]";
-						mes "Eden Mace I: Mace. attack 142.";
-						mes "Eden Staff I: Staff. INT+2, MATK+125, attack 60.";
-						mes "Both are Lv. 2 and the required level is 26.";
-						next;
-						mes "[Michael]";
-						mes "They also can't be traded with other players or be refined.";
-						next;
-						switch (select("Eden Staff I:Eden Mace I")) {
-						case 1:
-							mes "[Michael]";
-							mes "You've chosen the Eden Staff I.";
-							mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
-							next;
-							if (para_suv02 == 0) {
-								mes "[Michael]";
-								mes "You don't have a record of receiving any supplies";
-								mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-								set para_suv01,23;
-								set para_suv02,2;
-								getitem 1650,1; //P_Staff1
-								getitem 2457,1; //Para_Team_Boots2
-								getitem 15010,1; //Para_Team_Uniform2
-								getitem 5583,1; //Para_Team_Hat
-								getitem 2560,1; //Para_Team_Manteau
-								next;
-								mes "[Michael]";
-								mes "Check your supplies again and look after it.";
-								close;
-							}
-							mes "[Michael]";
-							mes "A Staff, Uniform and Boots all 3 supplies.";
-							mes "Please check it again.";
-							set para_suv01,23;
-							set para_suv02,2;
-							getitem 1650,1; //P_Staff1
-							getitem 2457,1; //Para_Team_Boots2
-							getitem 15010,1; //Para_Team_Uniform2
-							next;
-							mes "[Michael]";
-							mes "I hope they're useful to you.";
-							close;
-						case 2:
-							mes "[Michael]";
-							mes "You've chosen the Eden Mace I.";
-							mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
-							next;
-							if (para_suv02 == 0) {
-								mes "[Michael]";
-								mes "You don't have a record of receiving any supplies";
-								mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-								set para_suv01,23;
-								set para_suv02,2;
-								getitem 16004,1; //P_Mace1
-								getitem 2457,1; //Para_Team_Boots2
-								getitem 15010,1; //Para_Team_Uniform2
-								getitem 5583,1; //Para_Team_Hat
-								getitem 2560,1; //Para_Team_Manteau
-								next;
-								mes "[Michael]";
-								mes "Check your supplies again and look after it.";
-								close;
-							}
-							mes "[Michael]";
-							mes "A Mace, Uniform and Boots all 3 supplies.";
-							mes "Please check it again.";
-							set para_suv01,23;
-							set para_suv02,2;
-							getitem 16004,1; //P_Mace1
-							getitem 2457,1; //Para_Team_Boots2
-							getitem 15010,1; //Para_Team_Uniform2
-							next;
-							mes "[Michael]";
-							mes "I hope they're useful to you.";
-							close;
-						}
+						mes "Check your supplies again and look after it.";
+						close;
 					}
-					if (Class == Job_Mage || Class == Job_Mage_High || Class == Job_Wizard || Class == Job_Sage) {
+					mes "[Michael]";
+					mes "A Bow, Uniform and Boots all 3 supplies.";
+					mes "Please check it again.";
+					set para_suv01,23;
+					set para_suv02,2;
+					getitem 1747,1; //P_Bow1
+					getitem 2457,1; //Para_Team_Boots2
+					getitem 15010,1; //Para_Team_Uniform2
+					next;
+					mes "[Michael]";
+					mes "I hope they're useful to you.";
+					close;
+				}
+				if (Class == Job_Acolyte || Class == Job_Acolyte_High || Class == Job_Priest || Class == Job_Monk) {
+					mes "[Michael]";
+					mes "What kind of weapon do you want?";
+					mes "We have a mace and a staff.";
+					mes "Here are the options.";
+					next;
+					mes "[Michael]";
+					mes "Eden Mace I: Mace. attack 142.";
+					mes "Eden Staff I: Staff. INT+2, MATK+125, attack 60.";
+					mes "Both are Lv. 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "They also can't be traded with other players or be refined.";
+					next;
+					switch (select("Eden Staff I:Eden Mace I")) {
+					case 1:
 						mes "[Michael]";
-						mes "We only have 1 weapon for you.";
-						next;
-						mes "[Michael]";
-						mes "Eden Staff I: Staff. INT+2, MATK+125, attack 60.";
-						mes "It is Lv. 2 and the required level is 26.";
-						next;
-						mes "[Michael]";
-						mes "It also can't be traded with other players or be refined.";
-						next;
-						mes "[Michael]";
-						mes "You'll receive the Eden Staff I.";
-						next;
-						mes "[Michael]";
+						mes "You've chosen the Eden Staff I.";
 						mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
 						next;
 						if (para_suv02 == 0) {
 							mes "[Michael]";
 							mes "You don't have a record of receiving any supplies";
 							mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-							set para_suv01, 23;
-							set para_suv02, 2;
+							set para_suv01,23;
+							set para_suv02,2;
 							getitem 1650,1; //P_Staff1
 							getitem 2457,1; //Para_Team_Boots2
 							getitem 15010,1; //Para_Team_Uniform2
@@ -2720,31 +2640,18 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 						mes "[Michael]";
 						mes "I hope they're useful to you.";
 						close;
-					}
-					if (Class == Job_Gunslinger) {
+					case 2:
 						mes "[Michael]";
-						mes "We only have 1 weapon for you.";
-						next;
-						mes "[Michael]";
-						mes "Eden Revolver I: Revolver. HIT-5, attack 44.";
-						mes "It is Lv. 2 and the required level is 26.";
-						next;
-						mes "[Michael]";
-						mes "It also can't be traded with other players or be refined.";
-						next;
-						mes "[Michael]";
-						mes "You'll receive the Eden Revolver I.";
-						next;
-						mes "[Michael]";
+						mes "You've chosen the Eden Mace I.";
 						mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
 						next;
 						if (para_suv02 == 0) {
 							mes "[Michael]";
 							mes "You don't have a record of receiving any supplies";
 							mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
-							set para_suv01, 23;
-							set para_suv02, 2;
-							getitem 13112,1; //P_Revolver1
+							set para_suv01,23;
+							set para_suv02,2;
+							getitem 16004,1; //P_Mace1
 							getitem 2457,1; //Para_Team_Boots2
 							getitem 15010,1; //Para_Team_Uniform2
 							getitem 5583,1; //Para_Team_Hat
@@ -2755,11 +2662,11 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 							close;
 						}
 						mes "[Michael]";
-						mes "A Revolver, Uniform and Boots all 3 supplies.";
+						mes "A Mace, Uniform and Boots all 3 supplies.";
 						mes "Please check it again.";
 						set para_suv01,23;
 						set para_suv02,2;
-						getitem 13112,1; //P_Revolver1
+						getitem 16004,1; //P_Mace1
 						getitem 2457,1; //Para_Team_Boots2
 						getitem 15010,1; //Para_Team_Uniform2
 						next;
@@ -2767,6 +2674,99 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 						mes "I hope they're useful to you.";
 						close;
 					}
+				}
+				if (Class == Job_Mage || Class == Job_Mage_High || Class == Job_Wizard || Class == Job_Sage) {
+					mes "[Michael]";
+					mes "We only have 1 weapon for you.";
+					next;
+					mes "[Michael]";
+					mes "Eden Staff I: Staff. INT+2, MATK+125, attack 60.";
+					mes "It is Lv. 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "It also can't be traded with other players or be refined.";
+					next;
+					mes "[Michael]";
+					mes "You'll receive the Eden Staff I.";
+					next;
+					mes "[Michael]";
+					mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
+					next;
+					if (para_suv02 == 0) {
+						mes "[Michael]";
+						mes "You don't have a record of receiving any supplies";
+						mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
+						set para_suv01, 23;
+						set para_suv02, 2;
+						getitem 1650,1; //P_Staff1
+						getitem 2457,1; //Para_Team_Boots2
+						getitem 15010,1; //Para_Team_Uniform2
+						getitem 5583,1; //Para_Team_Hat
+						getitem 2560,1; //Para_Team_Manteau
+						next;
+						mes "[Michael]";
+						mes "Check your supplies again and look after it.";
+						close;
+					}
+					mes "[Michael]";
+					mes "A Staff, Uniform and Boots all 3 supplies.";
+					mes "Please check it again.";
+					set para_suv01,23;
+					set para_suv02,2;
+					getitem 1650,1; //P_Staff1
+					getitem 2457,1; //Para_Team_Boots2
+					getitem 15010,1; //Para_Team_Uniform2
+					next;
+					mes "[Michael]";
+					mes "I hope they're useful to you.";
+					close;
+				}
+				if (Class == Job_Gunslinger) {
+					mes "[Michael]";
+					mes "We only have 1 weapon for you.";
+					next;
+					mes "[Michael]";
+					mes "Eden Revolver I: Revolver. HIT-5, attack 44.";
+					mes "It is Lv. 2 and the required level is 26.";
+					next;
+					mes "[Michael]";
+					mes "It also can't be traded with other players or be refined.";
+					next;
+					mes "[Michael]";
+					mes "You'll receive the Eden Revolver I.";
+					next;
+					mes "[Michael]";
+					mes "Additionally you'll receive the Eden Group Boots II and Uniform II.";
+					next;
+					if (para_suv02 == 0) {
+						mes "[Michael]";
+						mes "You don't have a record of receiving any supplies";
+						mes "so, you'll receive the Eden Group Hat and Manteau aswell.";
+						set para_suv01, 23;
+						set para_suv02, 2;
+						getitem 13112,1; //P_Revolver1
+						getitem 2457,1; //Para_Team_Boots2
+						getitem 15010,1; //Para_Team_Uniform2
+						getitem 5583,1; //Para_Team_Hat
+						getitem 2560,1; //Para_Team_Manteau
+						next;
+						mes "[Michael]";
+						mes "Check your supplies again and look after it.";
+						close;
+					}
+					mes "[Michael]";
+					mes "A Revolver, Uniform and Boots all 3 supplies.";
+					mes "Please check it again.";
+					set para_suv01,23;
+					set para_suv02,2;
+					getitem 13112,1; //P_Revolver1
+					getitem 2457,1; //Para_Team_Boots2
+					getitem 15010,1; //Para_Team_Uniform2
+					next;
+					mes "[Michael]";
+					mes "I hope they're useful to you.";
+					close;
+				}
 				mes "[Michael]";
 				mes "Let me see... you will receive..";
 				mes "the Eden Group Boots II and Uniform II.";
@@ -3360,8 +3360,10 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 		mes "[Michael]";
 		mes "You mean upgrading equipment, right?";
 		mes "We can only upgrade the Eden Group Hat.";
+		next;
 		if (para_suv02 == 3) {
 			if (countitem(5583) > 0) {
+				disable_items;
 				mes "[Michael]";
 				mes "What status bonus do you want to upgrade?";
 				next;
@@ -3535,7 +3537,6 @@ moc_para01,112,96,5	script	Administrator Michael	967,{
 }
 
 moc_para01,179,44,3	script	Chef	820,{
-
 	mes "[Chef]";
 	mes "What's up?";
 	mes "Do you want a Meal? Or do you have other business?";
@@ -3840,272 +3841,149 @@ moc_para01,179,44,3	script	Chef	820,{
 }
 
 moc_para01,23,35,4	script	Instructor Ur	468,{
+	mes "[Instructor Ur]";
 	if (countitem(6219) > 0) {
 		if (BaseLevel < 60) {
-			mes "[Instructor Ur]";
 			mes "Umm. You should raise your level more!";
 			mes "You need to be at least level 60!";
 			mes "I'm sorry but those are the rules.";
 			close;
 		}
 		if ((BaseLevel >= 60) && (BaseLevel < 70) && (para_suv01 < 39)) {
-			mes "[Instructor Ur]";
-			mes "You are just in time! I have a new quest for you, would you like to start it now?";
+			callsub L_GiveQuest;
+			mes "Great! I want you to go find ^0000FFRomeo in Comodo^000000.";
 			next;
-			switch(select("Yes!:No, thanks.")) {
-			case 1:
-				mes "[Instructor Ur]";
-				mes "Great! I want you to go find ^0000FFRomeo in Comodo^000000.";
-				next;
-				set para_suv01,39;
-				setquest 7214;
-				mes "[Instructor Ur]";
-				mes "You should see him near the entrance to the ^0000FFNorth Cave in Comodo^000000.";
-				close;
-			case 2:
-				mes "[Instructor Ur]";
-				mes "Thats to bad. I have some nice rewards i could have given to you for helping me.";
-				close;
-			}
+			set para_suv01,39;
+			setquest 7214;
+			mes "[Instructor Ur]";
+			mes "You should see him near the entrance to the ^0000FFNorth Cave in Comodo^000000.";
+			close;
 		}
 		if ((para_suv01 == 39) && (romeo < 4)) {
-			mes "[Instructor Ur]";
 			mes "What are you waiting for? Go find ^0000FFRomeo in Comodo^000000.";
 			next;
 			mes "[Instructor Ur]";
 			mes "You should see him near the entrance to the ^0000FFNorth Cave in Comodo^000000.";
 			close;
 		}
-		if ((para_suv01 == 40) && (romeo == 4)) {
-			mes "[Instructor Ur]";
-			mes "Done already? Great work!";
-			next;
-			set para_suv01,41;
-			completequest 7218;
-			if (para_suv02 < 5) {
-				set para_suv02,5;
-			}
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
-		if (para_suv01 == 41) {
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
-		if ((para_suv01 == 42) && (BaseLevel < 70)) {
-			mes "[Instructor Ur]";
-			mes "I'm sorry, I have no new quests available for you at this time. Come back when you are at least ^FF0000Base Level 70^000000.";
-			close;
-		}
+		if ((para_suv01 == 40) && (romeo == 4)) callsub L_CompleteQuest,7218,41,5;
+		if (para_suv01 == 41) callsub L_Toren;
+		if ((para_suv01 == 42) && (BaseLevel < 70)) callsub L_Level,70;
 		if ((BaseLevel >= 70) && (BaseLevel < 80) && (para_suv01 < 39 || para_suv01 == 42)) {
-			mes "[Instructor Ur]";
-			mes "You are just in time! I have a new quest for you, would you like to start it now?";
+			callsub L_GiveQuest;
+			mes "Great! I want you to go find ^0000FFJohan in Glast Heim^000000.";
 			next;
-			switch(select("Yes!:No, thanks.")) {
-			case 1:
-				mes "[Instructor Ur]";
-				mes "Great! I want you to go find ^0000FFJohan in Glast Heim^000000.";
-				next;
-				set para_suv01,43;
-				setquest 7219;
-				mes "[Instructor Ur]";
-				mes "You should see him near the entrance of the ^0000FFGlast Heim Church^000000.";
-				close;
-			case 2:
-				mes "[Instructor Ur]";
-				mes "Thats to bad. I have some nice rewards i could have given to you for helping me.";
-				close;
-			}
+			set para_suv01,43;
+			setquest 7219;
+			mes "[Instructor Ur]";
+			mes "You should see him near the entrance of the ^0000FFGlast Heim Church^000000.";
+			close;
 		}
 		if ((para_suv01 == 43) && (johan < 3)) {
-			mes "[Instructor Ur]";
 			mes "What are you waiting for? Go find ^0000FFJohan in Glast Heim^000000.";
 			next;
 			mes "[Instructor Ur]";
 			mes "You should see him near the entrance of the ^0000FFGlast Heim Church^000000.";
 			close;
 		}
-		if ((para_suv01 == 43) && (johan == 3)) {
-			mes "[Instructor Ur]";
-			mes "Done already? Great work!";
-			next;
-			set para_suv01,44;
-			completequest 7222;
-			if (para_suv02 < 7) {
-				set para_suv02,7;
-			}
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren and the Weapons Expert^000000 for your rewards!";
-			close;
-		}
-		if (para_suv01 == 44) {
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
-		if ((para_suv01 == 45) && (BaseLevel < 80)) {
-			mes "[Instructor Ur]";
-			mes "I'm sorry, I have no new quests available for you at this time. Come back when you are at least ^FF0000Base Level 80^000000.";
-			close;
-		}
+		if ((para_suv01 == 43) && (johan == 3)) callsub L_CompleteQuest,7222,44,7;
+		if (para_suv01 == 44) callsub L_Toren;
+		if ((para_suv01 == 45) && (BaseLevel < 80)) callsub L_Level,80;
 		if ((BaseLevel >= 80) && (BaseLevel < 90) && (para_suv01 < 39 || para_suv01 == 42 || para_suv01 == 45)) {
-			mes "[Instructor Ur]";
-			mes "You are just in time! I have a new quest for you, would you like to start it now?";
+			callsub L_GiveQuest;
+			mes "Great! I want you to go find ^0000FFKiren in Einbroch^000000.";
 			next;
-			switch(select("Yes!:No, thanks.")) {
-			case 1:
-				mes "[Instructor Ur]";
-				mes "Great! I want you to go find ^0000FFKiren in Einbroch^000000.";
-				next;
-				set para_suv01,46;
-				setquest 7223;
-				mes "[Instructor Ur]";
-				mes "You should see her near the ^0000FFSouth Enterance^000000 outside of town.";
-				close;
-			case 2:
-				mes "[Instructor Ur]";
-				mes "Thats to bad. I have some nice rewards i could have given to you for helping me.";
-				close;
-			}
+			set para_suv01,46;
+			setquest 7223;
+			mes "[Instructor Ur]";
+			mes "You should see her near the ^0000FFSouth Enterance^000000 outside of town.";
+			close;
 		}
 		if ((para_suv01 == 46) && (kiren < 3)) {
-			mes "[Instructor Ur]";
 			mes "What are you waiting for? Go find ^0000FFKiren in Einbroch^000000.";
 			next;
 			mes "[Instructor Ur]";
 			mes "You should see her near the ^0000FFSouth Enterance^000000 outside of town.";
 			close;
 		}
-		if ((para_suv01 == 46) && (kiren == 3)) {
-			mes "[Instructor Ur]";
-			mes "Done already? Great work!";
-			next;
-			set para_suv01,47;
-			completequest 7228;
-			if (para_suv02 < 9) {
-				set para_suv02,9;
-			}
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren and the Weapons Expert^000000 for your rewards!";
-			close;
-		}
-		if (para_suv01 == 47) {
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
-		if ((para_suv01 == 48) && (BaseLevel < 90)) {
-			mes "[Instructor Ur]";
-			mes "I'm sorry, I have no new quests available for you at this time. Come back when you are at least ^FF0000Base Level 90^000000.";
-			close;
-		}
+		if ((para_suv01 == 46) && (kiren == 3)) callsub L_CompleteQuest,7228,47,9;
+		if (para_suv01 == 47) callsub L_Toren;
+		if ((para_suv01 == 48) && (BaseLevel < 90)) callsub L_Level,90;
 		if ((BaseLevel >= 90) && (BaseLevel < 100) && (para_suv01 < 39 || para_suv01 == 42 || para_suv01 == 45 || para_suv01 == 48)) {
-			mes "[Instructor Ur]";
-			mes "You are just in time! I have a new quest for you, would you like to start it now?";
+			callsub L_GiveQuest;
+			mes "Great! I want you to go find ^0000FFNaomi in Ice Dungeon^000000.";
 			next;
-			switch(select("Yes!:No, thanks.")) {
-			case 1:
-				mes "[Instructor Ur]";
-				mes "Great! I want you to go find ^0000FFNaomi in Ice Dungeon^000000.";
-				next;
-				set para_suv01,49;
-				setquest 7229;
-				mes "[Instructor Ur]";
-				mes "You should see her near the ^0000FFEnterance^000000 when you enter the dungeon.";
-				close;
-			case 2:
-				mes "[Instructor Ur]";
-				mes "Thats to bad. I have some nice rewards i could have given to you for helping me.";
-				close;
-			}
+			set para_suv01,49;
+			setquest 7229;
+			mes "[Instructor Ur]";
+			mes "You should see her near the ^0000FFEntrance^000000 when you enter the dungeon.";
+			close;
 		}
 		if ((para_suv01 == 49) && (naomi < 3)) {
-			mes "[Instructor Ur]";
 			mes "What are you waiting for? Go find ^0000FFNaomi in Ice Dungeon^000000.";
 			next;
 			mes "[Instructor Ur]";
-			mes "You should see her near the ^0000FFEnterance^000000 when you enter the dungeon.";
+			mes "You should see her near the ^0000FFEntrance^000000 when you enter the dungeon.";
 			close;
 		}
-		if ((para_suv01 == 49) && (naomi == 3)) {
-			mes "[Instructor Ur]";
-			mes "Done already? Great work!";
-			next;
-			set para_suv01,50;
-			completequest 7232;
-			if (para_suv02 < 11) {
-				set para_suv02,11;
-			}
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren and the Weapons Expert^000000 for your rewards!";
-			close;
-		}
-		if (para_suv01 == 50) {
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
+		if ((para_suv01 == 49) && (naomi == 3)) callsub L_CompleteQuest,7232,50,11;
+		if (para_suv01 == 50) callsub L_Toren;
+		if ((para_suv01 == 51) && (BaseLevel < 100)) callsub L_Level,100;
 		if ((BaseLevel >= 100) && (para_suv01 < 39 || para_suv01 == 42 || para_suv01 == 45 || para_suv01 == 48 || para_suv01 == 51)) {
-			mes "[Instructor Ur]";
-			mes "You are just in time! I have a new quest for you, would you like to start it now?";
+			callsub L_GiveQuest;
+			mes "Great! I want you to go find ^0000FFMargaret in the Expedition Camp^000000.";
 			next;
-			switch(select("Yes!:No, thanks.")) {
-			case 1:
-				mes "[Instructor Ur]";
-				mes "Great! I want you to go find ^0000FFMargaret in the Expedition Camp^000000.";
-				next;
-				set para_suv01,52;
-				setquest 7233;
-				mes "[Instructor Ur]";
-				mes "You should see her near the ^0000FFBuilding in the Center^000000 of the Expedition Camp.";
-				close;
-			case 2:
-				mes "[Instructor Ur]";
-				mes "Thats too bad.  I had some nice rewards to give you.";
-				close;
-			}
+			set para_suv01,52;
+			setquest 7233;
+			mes "[Instructor Ur]";
+			mes "You should see her near the ^0000FFBuilding in the Center^000000 of the Expedition Camp.";
+			close;
 		}
 		if ((para_suv01 == 52) && (margaret < 7)) {
-			mes "[Instructor Ur]";
 			mes "What are you waiting for? Go find ^0000FFMargaret in the Expedition Camp^000000.";
 			next;
 			mes "[Instructor Ur]";
 			mes "You should see her near the ^0000FFBuilding in the Center^000000 of the Expedition Camp.";
 			close;
 		}
-		if ((para_suv01 == 52) && (margaret == 7)) {
-			mes "[Instructor Ur]";
-			mes "Done already? Great work!";
-			next;
-			set para_suv01,53;
-			completequest 7237;
-			if (para_suv02 < 13) {
-				set para_suv02,13;
-			}
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren and the Weapons Expert^000000 for your rewards!";
-			close;
-		}
-		if (para_suv01 == 53) {
-			mes "[Instructor Ur]";
-			mes "Go to the back room and talk to ^0000FFToren^000000 for your reward!";
-			close;
-		}
+		if ((para_suv01 == 52) && (margaret == 7)) callsub L_CompleteQuest,7237,53,13;
+		if (para_suv01 == 53) callsub L_Toren;
 		if (para_suv01 > 53) {
 			mes "[Instructor Ur]";
 			mes "I'm out of rewards to give to you. But don't worry, there are much better gears out there for you to obtain.";
 			close;
 		}
 	}
-	mes "[Instructor Ur]";
 	mes "You are not in my group are you?";
 	mes "I don't have anything to say to outsiders.";
 	mes "If you want something register with my group.";
 	next;
 	mes "[Instructor Ur]";
 	mes "To register with the Eden Group ask Laime Evenor next to me.";
+	close;
+
+L_GiveQuest:
+	mes "You are just in time! I have a new quest for you, would you like to start it now?";
+	next;
+	if(select("Yes!:No, thanks.") == 2) {
+		mes "[Instructor Ur]";
+		mes "Thats too bad. I had some nice rewards I could have given to you for helping me.";
+		close;
+	}
+	mes "[Instructor Ur]";
+	return;
+L_CompleteQuest:
+	mes "Done already? Great work!";
+	next;
+	set para_suv01, getarg(1);
+	completequest getarg(0);
+	if (para_suv02 < getarg(2)) set para_suv02, getarg(2);
+	mes "[Instructor Ur]";
+L_Toren:
+	mes "Go to the back room and talk to ^0000FFToren and the Weapons Expert^000000 for your rewards!";
+	close;
+L_Level:
+	mes "I'm sorry, I have no new quests available for you at this time. Come back when you are at least ^FF0000Base Level "+getarg(0)+"^000000.";
 	close;
 }
 
@@ -4567,446 +4445,149 @@ moc_para01,111,83,3	script	Toren	813,{
 	case 1:
 		if (para_suv02 == 5 || para_suv02 == 7 || para_suv02 == 9 || para_suv02 == 11 || para_suv02 == 13) {
 			mes "[Toren]";
-			mes "You must be ^0000FF" + strcharinfo(0) + "^000000, right?  Instructor Ur told me about you.";
+			mes "You must be ^0000FF" + strcharinfo(0) + "^000000, right? Instructor Ur told me about you.";
 			next;
 			mes "[Toren]";
 			mes "Here is a set of our advanced gears for you to use, wear them proudly as a member of the ^33CC33Paradise Group^000000 and don't think about selling them to anyone else.";
 			next;
-			if (BaseJob == Job_Swordman || BaseJob == Job_Knight || BaseJob == Job_Crusader || BaseJob == Job_Knight2 || BaseJob == Job_Crusader2 || Class == Job_Lord_Knight || Class == Job_Paladin || Class == Job_Lord_Knight2 || Class == Job_Paladin2) {
-				mes "[Toren]";
+			mes "[Toren]";
+			if (BaseClass == Job_Swordman) {
 				mes "Swordman Class gets a choice of weapons, would you like to have a sword or a spear?";
-				next;
-				mes "[Toren]";
-				mes "Slayer: Two-handed Sword, 200 Atk.";
-				mes " ";
-				mes "Saber: One-handed Sword, 185 Atk.";
-				mes " ";
-				mes "Spear: One-handed, 165 Atk.";
-				next;
-				switch(select("Slayer.:Saber.:Spear.")) {
-				case 1:
-					getitem 1197,1; //P.Slayer III
-					break;
-				case 2:
-					getitem 13434,1; //P.Saber III
-					break;
-				case 3:
-					getitem 1434,1; //P.Spear I
-					break;
-				}
+				callsub L_Select,
+					1197,"Slayer","Two-handed Sword, 200 Atk", //P.Slayer III
+					13434,"Saber","One-handed Sword, 185 Atk", //P.Saber III
+					1434,"Spear","One-handed, 165 Atk"; //P.Spear I
 			}
-			if (BaseJob == Job_Merchant || BaseJob == Job_Blacksmith || BaseJob == Job_Alchemist  || Class == Job_Whitesmith || Class == Job_Creator) {
-				mes "[Toren]";
-				mes "Merchant Class gets a choice of weapons, would you like to have a axe, dagger or a sword?";
-				next;
-				mes "[Toren]";
-				mes "Axe: Two-handed, 195 Atk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				mes " ";
-				mes "Sword: One-handed, 185 Atk.";
-				next;
-				switch(select("Axe.:Dagger.:Sword.")) {
-				case 1:
-					getitem 1391,1; //P.Two-Handed Axe I
-					break;
-				case 2:
-					getitem 13066,1; //P.Dagger III
-					break;
-				case 3:
-					getitem 13434,1; //P.Saber III
-					break;
-				}
+			else if (BaseClass == Job_Merchant) {
+				mes "Merchant Class gets a choice of weapons, would you like to have an axe, dagger or a sword?";
+				callsub L_Select,
+					1391,"Axe","Two-handed, 195 Atk", //P.Two-Handed Axe I
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+					13434,"Sword","One-handed, 185 Atk"; //P.Saber III
 			}
-			if (BaseJob == Job_Assassin || Class == Job_Assassin_Cross) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Assassin) {
 				mes "Assassin Class gets a choice of weapons, would you like to have a katar, dagger or a sword?";
-				next;
-				mes "[Toren]";
-				mes "Katar: Two-handed, 155 Atk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				mes " ";
-				mes "Sword: One-handed, 185 Atk.";
-				next;
-				switch(select("Katar.:Dagger.:Sword.")) {
-				case 1:
-					getitem 1289,1; //P.Katar I
-					break;
-				case 2:
-					getitem 13066,1; //P.Dagger III
-					break;
-				case 3:
-					getitem 13434,1; //P.Saber III
-					break;
-				}
+				callsub L_Select,
+					1289,"Katar","Two-handed, 155 Atk", //P.Katar I
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+					13434,"Sword","One-handed, 185 Atk"; //P.Saber III
 			}
-			if (BaseJob == Job_Rogue || Class == Job_Stalker) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Rogue) {
 				mes "Rogue Class gets a choice of weapons, would you like to have a dagger, bow or a sword?";
-				next;
-				mes "[Toren]";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				mes " ";
-				mes "Bow: Two-handed, 140 Atk.";
-				mes " ";
-				mes "Sword: One-handed, 185 Atk.";
-				next;
-				switch(select("Dagger.:Bow.:Sword")) {
-				case 1:
-					getitem 13066,1; //P.Dagger III
-					break;
-				case 2:
-					getitem 18106,1; //P.Bow III
-					break;
-				case 3:
-					getitem 13434,1; //P.Saber III
-					break;
-				}
+				callsub L_Select,
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+					18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+					13434,"Sword","One-handed, 185 Atk"; //P.Saber III
 			}
-			if (BaseJob == Job_Thief) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Thief) {
 				mes "Thief Class gets a choice of weapons, would you like to have a dagger or a sword?";
-				next;
-				mes "[Toren]";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				mes " ";
-				mes "Sword: One-handed, 185 Atk.";
-				next;
-				switch(select("Dagger.:Sword.")) {
-				case 1:
-					getitem 13066,1; //P.Dagger III
-					break;
-				case 2:
-					getitem 13434,1; //P.Saber III
-					break;
-				}
+				callsub L_Select,
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+					13434,"Sword","One-handed, 185 Atk"; //P.Saber III
 			}
-			if (BaseJob == Job_Bard || Class == Job_Clown) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Bard) {
 				mes "Bard Class gets a choice of weapons, would you like to have a guitar, bow or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Guitar: One-handed, 125 Atk.";
-				mes " ";
-				mes "Bow: Two-handed, 140 Atk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				next;
-				switch(select("Guitar.:Bow.:Dagger.")) {
-				case 1:
-					getitem 1931,1; //P.Guitar I
-					break;
-				case 2:
-					getitem 18106,1; //P.Bow III
-					break;
-				case 3:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					1931,"Guitar","One-handed, 125 Atk", //P.Guitar I
+					18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (BaseJob == Job_Dancer || Class == Job_Gypsy) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Dancer) {
 				mes "Dancer Class gets a choice of weapons, would you like to have a whip, bow or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Whip: One-handed, 125 Atk.";
-				mes " ";
-				mes "Bow: Two-handed, 140 Atk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				next;
-				switch(select("Whip.:Bow.:Dagger.")) {
-				case 1:
-					getitem 1986,1; //P.Tail I
-					break;
-				case 2:
-					getitem 18106,1; //P.Bow III
-					break;
-				case 3:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					1986,"Whip","One-handed, 125 Atk", //P.Tail I
+					18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (BaseJob == Job_Archer || BaseJob == Job_Hunter || Class == Job_Sniper) {
-				mes "[Toren]";
+			else if (BaseClass == Job_Archer) {
 				mes "Archer Class gets a choice of weapons, would you like to have a bow or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Bow: Two-handed, 140 Atk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-				next;
-				switch(select("Bow.:Dagger.")) {
-				case 1:
-					getitem 18106,1; //P.Bow III
-					break;
-				case 2:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (BaseJob == Job_Priest || Class == Job_High_Priest) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Priest) {
 				mes "Priest Class gets a choice of weapons, would you like to have a staff, mace or a book?";
-				next;
-				mes "[Toren]";
-				mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-				mes " ";
-				mes "Mace: One-handed, 172 Atk.";
-				mes " ";
-				mes "Book: One-handed, 135 Atk, Matk 110.";
-				next;
-				switch(select("Staff.:Mace.:Book.")) {
-				case 1:
-					getitem 1658,1; //P.Staff III
-					break;
-				case 2:
-					getitem 16014,1; //P.Mace III
-					break;
-				case 3:
-					getitem 1583,1; //P.Book I
-					break;
-				}
+				callsub L_Select,
+					1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+					16014,"Mace","One-handed, 172 Atk", //P.Mace III
+					1583,"Book","One-handed, 135 Atk, 110 Matk"; //P.Book I
 			}
-			if (BaseJob == Job_Monk || Class == Job_Champion) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Monk) {
 				mes "Monk Class gets a choice of weapons, would you like to have a knuckle, mace or a staff?";
-				next;
-				mes "[Toren]";
-				mes "Knuckle: One-handed, 120 Atk.";
-				mes " ";
-				mes "Mace: One-handed, 172 Atk.";
-				mes " ";
-				mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-				next;
-				switch(select("Knuckle.:Mace.:Staff.")) {
-				case 1:
-					getitem 1831,1; //P.Knuckle I
-					break;
-				case 2:
-					getitem 16014,1; //P.Mace III
-					break;
-				case 3:
-					getitem 1658,1; //P.Staff III
-					break;
-				}
+				callsub L_Select,
+					1831,"Knuckle","One-handed, 120 Atk", //P.Knuckle I
+					16014,"Mace","One-handed, 172 Atk", //P.Mace III
+					1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int"; //P.Staff III
 			}
-			if (BaseJob == Job_Acolyte) {
-				mes "[Toren]";
-				mes "Acolyte Class gets a choice of weapons, would you like to ave a staff or a mace?";
-				next;
-				mes "[Toren]";
-				mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-				mes " ";
-				mes "Mace: One-handed, 172 Atk.";
-				next;
-				switch(select("Staff.:Mace.")) {
-				case 1:
-					getitem 1658,1; //P.Staff III
-					break;
-				case 2:
-					getitem 16014,1; //P.Mace III
-					break;
-				}
+			else if (BaseJob == Job_Acolyte) {
+				mes "Acolyte Class gets a choice of weapons, would you like to have a staff or a mace?";
+				callsub L_Select,
+					1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+					16014,"Mace","One-handed, 172 Atk"; //P.Mace III
 			}
-			if (BaseJob == Job_Sage || Class == Job_Professor) {
-				mes "[Toren]";
+			else if (BaseJob == Job_Sage) {
 				mes "Sage Class gets a choice of weapons, would you like to have a staff, book or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-				mes " ";
-				mes "Book: One-handed, 135 Atk, 110 Matk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, Matk 80.";
-				next;
-				switch(select("Staff.:Book.:Dagger.")) {
-				case 1:
-					getitem 1658,1; //P.Staff III
-					break;
-				case 2:
-					getitem 1583,1; //P.Book I
-					break;
-				case 3:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+					1583,"Book","One-handed, 135 Atk, 110 Matk", //P.Book I
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (BaseJob == Job_Mage || BaseJob == Job_Wizard || Class == Job_High_Wizard || Class == Job_Soul_Linker) {
-				mes "[Toren]";
+			else if (BaseClass == Job_Mage || Class == Job_Soul_Linker) {
 				mes "Mage and Soul Linker Class gets a choice of weapons, would you like to have a staff or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, Matk 80.";
-				next;
-				switch(select("Staff.:Dagger.")) {
-				case 1:
-					getitem 1658,1; //P.Staff III
-					break;
-				case 2:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (Class == Job_Ninja) {
-				mes "[Toren]";
+			else if (Class == Job_Ninja) {
 				mes "Ninja Class gets a choice of weapons, would you like to have a huuma suriken or a dagger?";
-				next;
-				mes "[Toren]";
-				mes "Huuma Suriken: Two-handed, 170 Atk, 50 Matk.";
-				mes " ";
-				mes "Dagger: One-handed, 165 Atk, Matk 80.";
-				next;
-				switch(select("Huuma Suriken.:Dagger.")) {
-				case 1:
-					getitem 13310,1; //P.Huuma Suriken I
-					break;
-				case 2:
-					getitem 13066,1; //P.Dagger III
-					break;
-				}
+				callsub L_Select,
+					13310,"Huuma Suriken","Two-handed, 170 Atk, 50 Matk", //P.Huuma Suriken I
+					13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
 			}
-			if (Class == Job_Star_Gladiator || Class == Job_Star_Gladiator2) {
-				getitem 1583,1; //P.Book I
-			}
-			if (Class == Job_Gunslinger) {
-				getitem 13114,1; //P.Revolver III
-			}
-			if (BaseJob == Job_Novice || BaseJob == Job_SuperNovice || BaseJob == Job_SuperNovice2) {
-				getitem 13066,1; //P.Dagger III
-			}
+			else if (Class == Job_Star_Gladiator) getitem 1583,1; //P.Book I
+			else if (Class == Job_Gunslinger) getitem 13114,1; //P.Revolver III
+			else if (BaseClass == Job_Novice) getitem 13066,1; //P.Dagger III
 			getitem 18514,1; //Paradise Hat II
 			getitem 2571,1; //Paradise Mantle II
 			getitem 2473,1; //Paradise Boots IV
 			getitem 15031,1; //Paradise Uniform IV
-			if(para_suv02 == 5){
-				set para_suv02,6;
-			}
-			if(para_suv02 == 7){
-				set para_suv02,8;
-			}
-			if(para_suv02 == 9){
-				set para_suv02,10;
-			}
-			if(para_suv02 == 11){
-				set para_suv02,12;
-			}
-			if(para_suv02 == 13){
-				set para_suv02,14;
-			}
+			set para_suv02,14;
+			if (para_suv01 > 40)
+				set para_suv01, para_suv01+1;
 			if (Class == Job_Taekwon) {
-				mes "[Toren]";
 				mes "I'm sorry, but Teakwon Class can't wear any of our weapons...";
 				next;
 			}
-			mes "[Toren]";
 			mes "See you later, and good luck on your adventures!";
 			close;
 		}
-		if ((para_suv02 == 14) && (countitem(18514) < 1)) {
-			mes "[Toren]";
-			mes "Where is the Paradise Hat I gave you?";
-			next;
-			mes "[Toren]";
-			mes "... Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
-			next;
-			switch(select("Ok.","No, thanks.")) {
-			case 1:
-				if (Zeny >= 250000) {
-					set Zeny, Zeny - 250000;
-					getitem 18514,1; //Paradise Hat II
-					mes "[Toren]";
-					mes "These advanced gears are not easy to make, please take better care of this one.";
-					close;
-				}
-				mes "[Toren]";
-				mes "You dont have enough zeny.";
-				close;
-			case 2:
-				mes "[Toren]";
-				mes "Come back if you change your mind.";
-				close;
-			}
-		}
-		if ((para_suv02 == 14) && (countitem(2571) < 1)) {
-			mes "[Toren]";
-			mes "Where is the Paradise Mantle I gave you?";
-			next;
-			mes "[Toren]";
-			mes "... Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
-			next;
-			switch(select("Ok.","No, thanks.")) {
-			case 1:
-				if (Zeny >= 250000) {
-					set Zeny, Zeny - 250000;
-					getitem 2571,1; //Paradise Mantle II
-					mes "[Toren]";
-					mes "These advanced gears are not easy to make, please take better care of this one.";
-					close;
-				}
-				mes "[Toren]";
-				mes "You dont have enough zeny.";
-				close;
-			case 2:
-				mes "[Toren]";
-				mes "Come back if you change your mind.";
-				close;
-			}
-		}
-		if ((para_suv02 == 14) && (countitem(2473) < 1)) {
-			mes "[Toren]";
-			mes "Where is the Paradise Boots I gave you?";
-			next;
-			mes "[Toren]";
-			mes "... Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
-			next;
-			switch(select("Ok.","No, thanks.")) {
-			case 1:
-				if (Zeny >= 250000) {
-					set Zeny, Zeny - 250000;
-					getitem 2473,1; //Paradise Boots IV
-					mes "[Toren]";
-					mes "These advanced gears are not easy to make, please take better care of this one.";
-					close;
-				}
-				mes "[Toren]";
-				mes "You dont have enough zeny.";
-				close;
-			case 2:
-				mes "[Toren]";
-				mes "Come back if you change your mind.";
-				close;
-			}
-		}
-		if ((para_suv02 == 14) && (countitem(15031) < 1)) {
-			mes "[Toren]";
-			mes "Where is the Paradise Uniform I gave you?";
-			next;
-			mes "[Toren]";
-			mes "... Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
-			next;
-			switch(select("Ok.","No, thanks.")) {
-			case 1:
-				if (Zeny >= 250000) {
-					set Zeny, Zeny - 250000;
-					getitem 15031,1; //Paradise Uniform IV
-					mes "[Toren]";
-					mes "These advanced gears are not easy to make, please take better care of this one.";
-					close;
-				}
-				mes "[Toren]";
-				mes "You dont have enough zeny.";
-				close;
-			case 2:
-				mes "[Toren]";
-				mes "Come back if you change your mind.";
-				close;
-			}
-		}
 		if (para_suv02 == 14) {
+			setarray .@Check[0],18514,2571,2473,15031;
+			setarray .@Item$[0],"Hat","Mantle","Boots","Uniform";
+			for(set .@i,0; .@i<4; set .@i,.@i+1) 
+				if (countitem(.@Check[.@i]) < 1) {
+					mes "[Toren]";
+					mes "Where is the Paradise "+.@Item$[.@i]+" I gave you?";
+					next;
+					mes "[Toren]";
+					mes "...Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
+					next;
+					if(select("Ok.:No, thanks.") == 2) {
+						mes "[Toren]";
+						mes "Come back if you change your mind.";
+						close;
+					}
+					if (Zeny < 250000) {
+						mes "[Toren]";
+						mes "You dont have enough zeny.";
+						close;
+					}
+					set Zeny, Zeny - 250000;
+					getitem .@Check[.@i],1;
+					mes "[Toren]";
+					mes "These advanced gears are not easy to make, please take better care of this one.";
+					close;
+				}
 			mes "[Toren]";
 			mes "I already gave you the most advanced gears we have to offer.";
 			close;
@@ -5080,120 +4661,40 @@ moc_para01,111,83,3	script	Toren	813,{
 			mes "[Toren]";
 			mes "Now pick which gear you would like me to enchant.";
 			next;
-			switch(select("Paradise Mantle II.:Paradise Boots IV.:Paradise Uniform IV.")) {
-			case 1:
-				if (countitem(2571) < 1) {
-					mes "[Toren]";
-					mes "Bring one and I'll enchant it.";
-					close;
-				}
-				else {
-					set .@paragearcount,2571;
-				}
-				break;
-			case 2:
-				if (countitem(2473) < 1) {
-					mes "[Toren]";
-					mes "Bring one and I'll enchant it.";
-					close;
-				}
-				else {
-					set .@paragearcount,2473;
-				}
-				break;
-			case 3:
-				if (countitem(15031) < 1) {
-					mes "[Toren]";
-					mes "Bring one and I'll enchant it.";
-					close;
-				}
-				else {
-					set .@paragearcount,15031;
-				}
-				break;
+			setarray .@Item[0],2571,2473,15031;
+			set .@i, select("Paradise Mantle II.:Paradise Boots IV.:Paradise Uniform IV.")-1;
+			if (countitem(.@Item[.@i]) < 1) {
+				mes "[Toren]";
+				mes "Bring one and I'll enchant it.";
+				close;
 			}
+			set .@paragearcount, .@Item[.@i];
 			mes "[Toren]";
 			mes "Here we go!";
 			close2;
 			specialeffect2 EF_MAPPILLAR;
 			progressbar "ffff00",4;
 			set .@enc_paragear,rand(1,42);
-			if (.@enc_paragear == 1) {
-				set .@addpart,4763;
-			}
-			else if (.@enc_paragear == 2) {
-				set .@addpart,4765;
-			}
-			else if (.@enc_paragear == 3) {
-				set .@addpart,4790;
-			}
-			else if (.@enc_paragear == 4) {
-				set .@addpart,4794;
-			}
-			else if ((.@enc_paragear > 4) && (.@enc_paragear < 7)) {
-				set .@addpart,4762;
-			}
-			else if ((.@enc_paragear > 6) && (.@enc_paragear < 9)) {
-				set .@addpart,4764;
-			}
-			else if ((.@enc_paragear > 8) && (.@enc_paragear < 11)) {
-				set .@addpart,4789;
-			}
-			else if ((.@enc_paragear > 10) && (.@enc_paragear < 13)) {
-				set .@addpart,4793;
-			}
-			else if ((.@enc_paragear > 12) && (.@enc_paragear < 15)) {
-				set .@addpart,4701;
-			}
-			else if ((.@enc_paragear > 14) && (.@enc_paragear < 17)) {
-				set .@addpart,4711;
-			}
-			else if ((.@enc_paragear > 16) && (.@enc_paragear < 19)) {
-				set .@addpart,4721;
-			}
-			else if ((.@enc_paragear > 18) && (.@enc_paragear < 21)) {
-				set .@addpart,4731;
-			}
-			else if ((.@enc_paragear > 20) && (.@enc_paragear < 23)) {
-				set .@addpart,4741;
-			}
-			else if ((.@enc_paragear > 22) && (.@enc_paragear < 25)) {
-				set .@addpart,4751;
-			}
-			else if ((.@enc_paragear > 24) && (.@enc_paragear < 28)) {
-				set .@addpart,4788;
-			}
-			else if ((.@enc_paragear > 27) && (.@enc_paragear < 31)) {
-				set .@addpart,4792;
-			}
-			else if ((.@enc_paragear > 30) && (.@enc_paragear < 35)) {
-				set .@addpart,4787;
-			}
-			else if ((.@enc_paragear > 34) && (.@enc_paragear < 39)) {
-				set .@addpart,4791;
-			}
-			else if ((.@enc_paragear > 38) && (.@enc_paragear < 43)) {
-				set .@addpart,4786;
-			}
-			set .@enc_paragear2,rand(1,6);
-			if (.@enc_paragear2 == 1) {
-				set .@addpart2,4701;
-			}
-			else if (.@enc_paragear2 == 2) {
-				set .@addpart2,4711;
-			}
-			else if (.@enc_paragear2 == 3) {
-				set .@addpart2,4721;
-			}
-			else if (.@enc_paragear2 == 4) {
-				set .@addpart2,4731;
-			}
-			else if (.@enc_paragear2 == 5) {
-				set .@addpart2,4741;
-			}
-			else if (.@enc_paragear2 == 6) {
-				set .@addpart2,4751;
-			}
+			if (.@enc_paragear == 1) set .@addpart,4763;
+			else if (.@enc_paragear == 2) set .@addpart,4765;
+			else if (.@enc_paragear == 3) set .@addpart,4790;
+			else if (.@enc_paragear == 4) set .@addpart,4794;
+			else if (.@enc_paragear < 7) set .@addpart,4762;
+			else if (.@enc_paragear < 9) set .@addpart,4764;
+			else if (.@enc_paragear < 11) set .@addpart,4789;
+			else if (.@enc_paragear < 13) set .@addpart,4793;
+			else if (.@enc_paragear < 15) set .@addpart,4701;
+			else if (.@enc_paragear < 17) set .@addpart,4711;
+			else if (.@enc_paragear < 19) set .@addpart,4721;
+			else if (.@enc_paragear < 21) set .@addpart,4731;
+			else if (.@enc_paragear < 23) set .@addpart,4741;
+			else if (.@enc_paragear < 25) set .@addpart,4751;
+			else if (.@enc_paragear < 28) set .@addpart,4788;
+			else if (.@enc_paragear < 31) set .@addpart,4792;
+			else if (.@enc_paragear < 35) set .@addpart,4787;
+			else if (.@enc_paragear < 39) set .@addpart,4791;
+			else if (.@enc_paragear < 43) set .@addpart,4786;
+			set .@addpart2,4701+(10*rand(6));
 			delitem .@paragearcount,1;
 			getitem2 .@paragearcount, 1, 1, 0, 0, 0, 0, .@addpart2, .@addpart;
 			set paragearenchant,4;
@@ -5215,6 +4716,21 @@ moc_para01,111,83,3	script	Toren	813,{
 			close;
 		}
 	}
+	end;
+L_Select:
+	next;
+	mes "[Toren]";
+	set .@menu$,"";
+	for(set .@i,0; .@i<getargcount(); set .@i,.@i+3) {
+		set .@menu$, .@menu$+getarg(.@i+1)+".:";
+		mes getarg(.@i+1)+": "+getarg(.@i+2)+".";
+		mes " ";
+	}
+	next;
+	set .@i, select(.@menu$)-1;
+	getitem getarg(.@i*3),1;
+	mes "[Toren]";
+	return;
 }
 
 moc_para01,112,79,3	script	Weapons Expert	851,{
@@ -5237,329 +4753,117 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 			mes "Where is the Paradise Weapon I gave you?";
 			next;
 			mes "[Weapons Expert]";
-			mes "... Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
+			mes "...Fine, I will sell you another one for ^FF0000250,000 Zeny^000000. Don't lose it this time.";
 			next;
 			switch(select("Ok.","No, thanks.")) {
 			case 1:
-				if (Zeny >= 250000) {
-					if (Class == Job_Taekwon) {
-						mes "[Weapons Expert]";
-						mes "Wait... Your Class doesn't have a weapon.";
-						close;
-					}
-					set Zeny, Zeny - 250000;
-					if (BaseJob == Job_Swordman || BaseJob == Job_Knight || BaseJob == Job_Crusader || BaseJob == Job_Knight2 || BaseJob == Job_Crusader2 || Class == Job_Lord_Knight || Class == Job_Paladin || Class == Job_Lord_Knight2 || Class == Job_Paladin2) {
-						mes "[Weapons Expert]";
-						mes "Swordman Class gets a choice of weapons, would you like to have a sword or a spear?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Slayer: Two-handed Sword, 200 Atk.";
-						mes " ";
-						mes "Saber: One-handed Sword, 185 Atk.";
-						mes " ";
-						mes "Spear: One-handed, 165 Atk.";
-						next;
-						switch(select("Slayer.:Saber.:Spear.")) {
-						case 1:
-							getitem 1197,1; //P.Slayer III
-							break;
-						case 2:
-							getitem 13434,1; //P.Saber III
-							break;
-						case 3:
-							getitem 1434,1; //P.Spear I
-							break;
-						}
-					}
-					if (BaseJob == Job_Merchant || BaseJob == Job_Blacksmith || BaseJob == Job_Alchemist || Class == Job_Whitesmith || Class == Job_Creator) {
-						mes "[Weapons Expert]";
-						mes "Merchant Class gets a choice of weapons, would you like to have an axe, dagger or a sword?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Axe: Two-handed, 195 Atk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						mes " ";
-						mes "Sword: One-handed, 185 Atk.";
-						next;
-						switch(select("Axe.:Dagger.:Sword.")) {
-						case 1:
-							getitem 1391,1; //P.Two-Handed Axe I
-							break;
-						case 2:
-							getitem 13066,1; //P.Dagger III
-							break;
-						case 3:
-							getitem 13434,1; //P.Saber III
-							break;
-						}
-					}
-					if (BaseJob == Job_Assassin || Class == Job_Assassin_Cross) {
-						mes "[Weapons Expert]";
-						mes "Assassin Class gets a choice of weapons, would you like to have a katar, dagger or a sword?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Katar: Two-handed, 155 Atk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						mes " ";
-						mes "Sword: One-handed, 185 Atk.";
-						next;
-						switch(select("Katar.:Dagger.:Sword.")) {
-						case 1:
-							getitem 1289,1; //P.Katar I
-							break;
-						case 2:
-							getitem 13066,1; //P.Dagger III
-							break;
-						case 3:
-							getitem 13434,1; //P.Saber III
-							break;
-						}
-					}
-					if (BaseJob == Job_Rogue || Class == Job_Stalker) {
-						mes "[Weapons Expert]";
-						mes "Rogue Class gets a choice of weapons, would you like to have a dagger, bow or a sword?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						mes " ";
-						mes "Bow: Two-handed, 140 Atk.";
-						mes " ";
-						mes "Sword: One-handed, 185 Atk.";
-						next;
-						switch(select("Dagger.:Bow.:Sword")) {
-						case 1:
-							getitem 13066,1; //P.Dagger III
-							break;
-						case 2:
-							getitem 18106,1; //P.Bow III
-							break;
-						case 3:
-							getitem 13434,1; //P.Saber III
-							break;
-						}
-					}
-					if (BaseJob == Job_Thief) {
-						mes "[Weapons Expert]";
-						mes "Thief Class gets a choice of weapons, would you like to have a dagger or a sword?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						mes " ";
-						mes "Sword: One-handed, 185 Atk.";
-						next;
-						switch(select("Dagger.:Sword.")) {
-						case 1:
-							getitem 13066,1; //P.Dagger III
-							break;
-						case 2:
-							getitem 13434,1; //P.Saber III
-							break;
-						}
-					}
-					if (BaseJob == Job_Bard || Class == Job_Clown) {
-						mes "[Weapons Expert]";
-						mes "Bard Class gets a choice of weapons, would you like to have a guitar, bow or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Guitar: One-handed, 125 Atk.";
-						mes " ";
-						mes "Bow: Two-handed, 140 Atk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						next;
-						switch(select("Guitar.:Bow.:Dagger.")) {
-						case 1:
-							getitem 1931,1; //P.Guitar I
-							break;
-						case 2:
-							getitem 18106,1; //P.Bow III
-							break;
-						case 3:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (BaseJob == Job_Dancer || Class == Job_Gypsy) {
-						mes "[Weapons Expert]";
-						mes "Dancer Class gets a choice of weapons, would you like to have a whip, bow or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Whip: One-handed, 125 Atk.";
-						mes " ";
-						mes "Bow: Two-handed, 140 Atk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						next;
-						switch(select("Whip.:Bow.:Dagger.")) {
-						case 1:
-							getitem 1986,1; //P.Tail I
-							break;
-						case 2:
-							getitem 18106,1; //P.Bow III
-							break;
-						case 3:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (BaseJob == Job_Archer || BaseJob == Job_Hunter || Class == Job_Sniper) {
-						mes "[Weapons Expert]";
-						mes "Archer Class gets a choice of weapons, would you like to have a bow or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Bow: Two-handed, 140 Atk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, 80 Matk.";
-						next;
-						switch(select("Bow.:Dagger.")) {
-						case 1:
-							getitem 18106,1; //P.Bow III
-							break;
-						case 2:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (BaseJob == Job_Priest || Class == Job_High_Priest) {
-						mes "[Weapons Expert]";
-						mes "Priest Class gets a choice of weapons, would you like to have a staff, mace or a book?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-						mes " ";
-						mes "Mace: One-handed, 172 Atk.";
-						mes " ";
-						mes "Book: One-handed, 135 Atk, Matk 110.";
-						next;
-						switch(select("Staff.:Mace.:Book.")) {
-						case 1:
-							getitem 1658,1; //P.Staff III
-							break;
-						case 2:
-							getitem 16014,1; //P.Mace III
-							break;
-						case 3:
-							getitem 1583,1; //P.Book I
-							break;
-						}
-					}
-					if (BaseJob == Job_Monk || Class == Job_Champion) {
-						mes "[Weapons Expert]";
-						mes "Monk Class gets a choice of weapons, would you like to have a knuckle, mace or a staff?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Knuckle: One-handed, 120 Atk.";
-						mes " ";
-						mes "Mace: One-handed, 172 Atk.";
-						mes " ";
-						mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-						next;
-						switch(select("Knuckle.:Mace.:Staff.")) {
-						case 1:
-							getitem 1831,1; //P.Knuckle I
-							break;
-						case 2:
-							getitem 16014,1; //P.Mace III
-							break;
-						case 3:
-							getitem 1658,1; //P.Staff III
-							break;
-						}
-					}
-					if (BaseJob == Job_Acolyte) {
-						mes "[Weapons Expert]";
-						mes "Acolyte Class gets a choice of weapons, would you like to have a staff or a mace?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-						mes " ";
-						mes "Mace: One-handed, 172 Atk.";
-						next;
-						switch(select("Staff.:Mace.")) {
-						case 1:
-							getitem 1658,1; //P.Staff III
-							break;
-						case 2:
-							getitem 16014,1; //P.Mace III
-							break;
-						}
-					}
-					if (BaseJob == Job_Sage || Class == Job_Professor) {
-						mes "[Weapons Expert]";
-						mes "Sage Class gets a choice of weapons, would you like to have a staff, book or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-						mes " ";
-						mes "Book: One-handed, 135 Atk, 110 Matk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, Matk 80.";
-						next;
-						switch(select("Staff.:Book.:Dagger.")) {
-						case 1:
-							getitem 1658,1; //P.Staff III
-							break;
-						case 2:
-							getitem 1583,1; //P.Book I
-							break;
-						case 3:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (BaseJob == Job_Mage || BaseJob == Job_Wizard || Class == Job_High_Wizard || Class == Job_Soul_Linker) {
-						mes "[Weapons Expert]";
-						mes "Mage and Soul Linker Class gets a choice of weapons, would you like to have a staff or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Staff: One-handed, 60 Atk, 170 Matk, 4 Int.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, Matk 80.";
-						next;
-						switch(select("Staff.:Dagger.")) {
-						case 1:
-							getitem 1658,1; //P.Staff III
-							break;
-						case 2:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (Class == Job_Ninja) {
-						mes "[Weapons Expert]";
-						mes "Ninja Class gets a choice of weapons, would you like to have a huuma suriken or a dagger?";
-						next;
-						mes "[Weapons Expert]";
-						mes "Huuma Suriken: Two-handed, 170 Atk, 50 Matk.";
-						mes " ";
-						mes "Dagger: One-handed, 165 Atk, Matk 80.";
-						next;
-						switch(select("Huuma Suriken.:Dagger.")) {
-						case 1:
-							getitem 13310,1; //P.Huuma Suriken I
-							break;
-						case 2:
-							getitem 13066,1; //P.Dagger III
-							break;
-						}
-					}
-					if (Class == Job_Star_Gladiator || Class == Job_Star_Gladiator2) {
-						getitem 1583,1; //P.Book I
-					}
-					if (Class == Job_Gunslinger) {
-						getitem 13114,1; //P.Revolver III
-					}
-					if (BaseJob == Job_Novice || BaseJob == Job_SuperNovice || BaseJob == Job_SuperNovice2) {
-						getitem 13066,1; //P.Dagger III
-					}
-					mes "[Weapons Expert]";
-					mes "These weapons aren't easy to make, please take better care of this one.";
+				mes "[Weapons Expert]";
+				if (Zeny < 250000) {
+					mes "You dont have enough zeny.";
 					close;
 				}
-				mes "[Weapons Expert]";
-				mes "You dont have enough zeny.";
+				if (Class == Job_Taekwon) {
+					mes "Wait... Your Class doesn't have a weapon.";
+					close;
+				}
+				set Zeny, Zeny - 250000;
+				if (BaseClass == Job_Swordman) {
+					mes "Swordman Class gets a choice of weapons, would you like to have a sword or a spear?";
+					callsub L_Select,
+						1197,"Slayer","Two-handed Sword, 200 Atk", //P.Slayer III
+						13434,"Saber","One-handed Sword, 185 Atk", //P.Saber III
+						1434,"Spear","One-handed, 165 Atk"; //P.Spear I
+				}
+				else if (BaseClass == Job_Merchant) {
+					mes "Merchant Class gets a choice of weapons, would you like to have an axe, dagger or a sword?";
+					callsub L_Select,
+						1391,"Axe","Two-handed, 195 Atk", //P.Two-Handed Axe I
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+						13434,"Sword","One-handed, 185 Atk"; //P.Saber III
+				}
+				else if (BaseJob == Job_Assassin) {
+					mes "Assassin Class gets a choice of weapons, would you like to have a katar, dagger or a sword?";
+					callsub L_Select,
+						1289,"Katar","Two-handed, 155 Atk", //P.Katar I
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+						13434,"Sword","One-handed, 185 Atk"; //P.Saber III
+				}
+				else if (BaseJob == Job_Rogue) {
+					mes "Rogue Class gets a choice of weapons, would you like to have a dagger, bow or a sword?";
+					callsub L_Select,
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+						18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+						13434,"Sword","One-handed, 185 Atk"; //P.Saber III
+				}
+				else if (BaseJob == Job_Thief) {
+					mes "Thief Class gets a choice of weapons, would you like to have a dagger or a sword?";
+					callsub L_Select,
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk", //P.Dagger III
+						13434,"Sword","One-handed, 185 Atk"; //P.Saber III
+				}
+				else if (BaseJob == Job_Bard) {
+					mes "Bard Class gets a choice of weapons, would you like to have a guitar, bow or a dagger?";
+					callsub L_Select,
+						1931,"Guitar","One-handed, 125 Atk", //P.Guitar I
+						18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (BaseJob == Job_Dancer) {
+					mes "Dancer Class gets a choice of weapons, would you like to have a whip, bow or a dagger?";
+					callsub L_Select,
+						1986,"Whip","One-handed, 125 Atk", //P.Tail I
+						18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (BaseClass == Job_Archer) {
+					mes "Archer Class gets a choice of weapons, would you like to have a bow or a dagger?";
+					callsub L_Select,
+						18106,"Bow","Two-handed, 140 Atk", //P.Bow III
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (BaseJob == Job_Priest) {
+					mes "Priest Class gets a choice of weapons, would you like to have a staff, mace or a book?";
+					callsub L_Select,
+						1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+						16014,"Mace","One-handed, 172 Atk", //P.Mace III
+						1583,"Book","One-handed, 135 Atk, 110 Matk"; //P.Book I
+				}
+				else if (BaseJob == Job_Monk) {
+					mes "Monk Class gets a choice of weapons, would you like to have a knuckle, mace or a staff?";
+					callsub L_Select,
+						1831,"Knuckle","One-handed, 120 Atk", //P.Knuckle I
+						16014,"Mace","One-handed, 172 Atk", //P.Mace III
+						1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int"; //P.Staff III
+				}
+				else if (BaseJob == Job_Acolyte) {
+					mes "Acolyte Class gets a choice of weapons, would you like to have a staff or a mace?";
+					callsub L_Select,
+						1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+						16014,"Mace","One-handed, 172 Atk"; //P.Mace III
+				}
+				else if (BaseJob == Job_Sage) {
+					mes "Sage Class gets a choice of weapons, would you like to have a staff, book or a dagger?";
+					callsub L_Select,
+						1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+						1583,"Book","One-handed, 135 Atk, 110 Matk", //P.Book I
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (BaseClass == Job_Mage || Class == Job_Soul_Linker) {
+					mes "Mage and Soul Linker Class gets a choice of weapons, would you like to have a staff or a dagger?";
+					callsub L_Select,
+						1658,"Staff","One-handed, 60 Atk, 170 Matk, 4 Int", //P.Staff III
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (Class == Job_Ninja) {
+					mes "Ninja Class gets a choice of weapons, would you like to have a huuma suriken or a dagger?";
+					callsub L_Select,
+						13310,"Huuma Suriken","Two-handed, 170 Atk, 50 Matk", //P.Huuma Suriken I
+						13066,"Dagger","One-handed, 165 Atk, 80 Matk"; //P.Dagger III
+				}
+				else if (Class == Job_Star_Gladiator) getitem 1583,1; //P.Book I
+				else if (Class == Job_Gunslinger) getitem 13114,1; //P.Revolver III
+				else if (BaseClass == Job_Novice) getitem 13066,1; //P.Dagger III
+				mes "These weapons aren't easy to make, please take better care of this one.";
 				close;
 			case 2:
 				mes "[Weapons Expert]";
@@ -5599,59 +4903,9 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 			mes "[Weapons Expert]";
 			mes "There are only 2 to choose from, which one would you like?";
 			next;
-			switch(select("Atk + 3%","Matk + 3%")) {
-			case 1:
-				set paraweaponenchant,4767;
-				break;
-			case 2:
-				set paraweaponenchant,4806;
-				break;
-			}
-			if (countitem(1197) == 1) {
-				set paraweaponcount,1197;
-			}
-			if (countitem(1289) == 1) {
-				set paraweaponcount,1289;
-			}
-			if (countitem(1391) == 1) {
-				set paraweaponcount,1391;
-			}
-			if (countitem(1434) == 1) {
-				set paraweaponcount,1434;
-			}
-			if (countitem(1583) == 1) {
-				set paraweaponcount,1583;
-			}
-			if (countitem(1658) == 1) {
-				set paraweaponcount,1658;
-			}
-			if (countitem(1831) == 1) {
-				set paraweaponcount,1831;
-			}
-			if (countitem(1931) == 1) {
-				set paraweaponcount,1931;
-			}
-			if (countitem(1986) == 1) {
-				set paraweaponcount,1986;
-			}
-			if (countitem(13066) == 1) {
-				set paraweaponcount,13066;
-			}
-			if (countitem(13114) == 1) {
-				set paraweaponcount,13114;
-			}
-			if (countitem(13310) == 1) {
-				set paraweaponcount,13310;
-			}
-			if (countitem(13434) == 1) {
-				set paraweaponcount,13434;
-			}
-			if (countitem(16014) == 1) {
-				set paraweaponcount,16014;
-			}
-			if (countitem(18106) == 1) {
-				set paraweaponcount,18106;
-			}
+			if(select("Atk + 3%:Matk + 3%") == 1) set paraweaponenchant,4767;
+			else set paraweaponenchant,4806;
+			callsub L_GetWeapon;
 			mes "[Weapons Expert]";
 			mes "OK, gimmy a sec.";
 			close2;
@@ -5675,59 +4929,9 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 				mes "[Weapons Expert]";
 				mes "There are only 2 to choose from, which one would you like?";
 				next;
-				switch(select("Atk + 3%","Matk + 3%")) {
-				case 1:
-					set paraweaponenchant,4767;
-					break;
-				case 2:
-					set paraweaponenchant,4806;
-					break;
-				}
-				if (countitem(1197) == 1) {
-					set paraweaponcount,1197;
-				}
-				if (countitem(1289) == 1) {
-					set paraweaponcount,1289;
-				}
-				if (countitem(1391) == 1) {
-					set paraweaponcount,1391;
-				}
-				if (countitem(1434) == 1) {
-					set paraweaponcount,1434;
-				}
-				if (countitem(1583) == 1) {
-					set paraweaponcount,1583;
-				}
-				if (countitem(1658) == 1) {
-					set paraweaponcount,1658;
-				}
-				if (countitem(1831) == 1) {
-					set paraweaponcount,1831;
-				}
-				if (countitem(1931) == 1) {
-					set paraweaponcount,1931;
-				}
-				if (countitem(1986) == 1) {
-					set paraweaponcount,1986;
-				}
-				if (countitem(13066) == 1) {
-					set paraweaponcount,13066;
-				}
-				if (countitem(13114) == 1) {
-					set paraweaponcount,13114;
-				}
-				if (countitem(13310) == 1) {
-					set paraweaponcount,13310;
-				}
-				if (countitem(13434) == 1) {
-					set paraweaponcount,13434;
-				}
-				if (countitem(16014) == 1) {
-					set paraweaponcount,16014;
-				}
-				if (countitem(18106) == 1) {
-					set paraweaponcount,18106;
-				}
+				if(select("Atk + 3%:Matk + 3%") == 1) set paraweaponenchant,4767;
+				else set paraweaponenchant,4806;
+				callsub L_GetWeapon;
 				mes "[Weapons Expert]";
 				mes "Gotcha, now for the second enchantment.";
 				next;
@@ -5740,44 +4944,24 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 			next;
 			switch(select("Animal Type","Plant Type","Insect Type","Fish Type","Dragon Type","Healing Power")) {
 			case 1:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant2,4060;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant2,4472;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant2,4060;
+				if (paraweaponenchant == 4806) set paraweaponenchant2,4472;
 				break;
 			case 2:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant2,4068;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant2,4470;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant2,4068;
+				if (paraweaponenchant == 4806) set paraweaponenchant2,4470;
 				break;
 			case 3:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant2,4063;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant2,4476;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant2,4063;
+				if (paraweaponenchant == 4806) set paraweaponenchant2,4476;
 				break;
 			case 4:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant2,4080;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant2,4469;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant2,4080;
+				if (paraweaponenchant == 4806) set paraweaponenchant2,4469;
 				break;
 			case 5:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant2,4118;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant2,4471;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant2,4118;
+				if (paraweaponenchant == 4806) set paraweaponenchant2,4471;
 				break;
 			case 6:
 				set paraweaponenchant2,4805;
@@ -5806,59 +4990,9 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 				mes "[Weapons Expert]";
 				mes "There are only 2 to choose from, which one would you like?";
 				next;
-				switch(select("Atk + 3%","Matk + 3%")) {
-				case 1:
-					set paraweaponenchant,4767;
-					break;
-				case 2:
-					set paraweaponenchant,4806;
-					break;
-				}
-				if (countitem(1197) == 1) {
-					set paraweaponcount,1197;
-				}
-				if (countitem(1289) == 1) {
-					set paraweaponcount,1289;
-				}
-				if (countitem(1391) == 1) {
-					set paraweaponcount,1391;
-				}
-				if (countitem(1434) == 1) {
-					set paraweaponcount,1434;
-				}
-				if (countitem(1583) == 1) {
-					set paraweaponcount,1583;
-				}
-				if (countitem(1658) == 1) {
-					set paraweaponcount,1658;
-				}
-				if (countitem(1831) == 1) {
-					set paraweaponcount,1831;
-				}
-				if (countitem(1931) == 1) {
-					set paraweaponcount,1931;
-				}
-				if (countitem(1986) == 1) {
-					set paraweaponcount,1986;
-				}
-				if (countitem(13066) == 1) {
-					set paraweaponcount,13066;
-				}
-				if (countitem(13114) == 1) {
-					set paraweaponcount,13114;
-				}
-				if (countitem(13310) == 1) {
-					set paraweaponcount,13310;
-				}
-				if (countitem(13434) == 1) {
-					set paraweaponcount,13434;
-				}
-				if (countitem(16014) == 1) {
-					set paraweaponcount,16014;
-				}
-				if (countitem(18106) == 1) {
-					set paraweaponcount,18106;
-				}
+				if(select("Atk + 3%:Matk + 3%") == 1) set paraweaponenchant,4767;
+				else set paraweaponenchant,4806;
+				callsub L_GetWeapon;
 				mes "[Weapons Expert]";
 				mes "Gotcha, on to the next one.";
 				next;
@@ -5875,44 +5009,24 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 				next;
 				switch(select("Animal Type","Plant Type","Insect Type","Fish Type","Dragon Type","Healing Power")) {
 				case 1:
-					if (paraweaponenchant == 4767) {
-						set paraweaponenchant2,4060;
-					}
-					if (paraweaponenchant == 4806) {
-						set paraweaponenchant2,4472;
-					}
+					if (paraweaponenchant == 4767) set paraweaponenchant2,4060;
+					if (paraweaponenchant == 4806) set paraweaponenchant2,4472;
 					break;
 				case 2:
-					if (paraweaponenchant == 4767) {
-						set paraweaponenchant2,4068;
-					}
-					if (paraweaponenchant == 4806) {
-						set paraweaponenchant2,4470;
-					}
+					if (paraweaponenchant == 4767) set paraweaponenchant2,4068;
+					if (paraweaponenchant == 4806) set paraweaponenchant2,4470;
 					break;
 				case 3:
-					if (paraweaponenchant == 4767) {
-						set paraweaponenchant2,4063;
-					}
-					if (paraweaponenchant == 4806) {
-						set paraweaponenchant2,4476;
-					}
+					if (paraweaponenchant == 4767) set paraweaponenchant2,4063;
+					if (paraweaponenchant == 4806) set paraweaponenchant2,4476;
 					break;
 				case 4:
-					if (paraweaponenchant == 4767) {
-						set paraweaponenchant2,4080;
-					}
-					if (paraweaponenchant == 4806) {
-						set paraweaponenchant2,4469;
-					}
+					if (paraweaponenchant == 4767) set paraweaponenchant2,4080;
+					if (paraweaponenchant == 4806) set paraweaponenchant2,4469;
 					break;
 				case 5:
-					if (paraweaponenchant == 4767) {
-						set paraweaponenchant2,4118;
-					}
-					if (paraweaponenchant == 4806) {
-						set paraweaponenchant2,4471;
-					}
+					if (paraweaponenchant == 4767) set paraweaponenchant2,4118;
+					if (paraweaponenchant == 4806) set paraweaponenchant2,4471;
 					break;
 				case 6:
 					set paraweaponenchant2,4805;
@@ -5930,44 +5044,24 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 			next;
 			switch(select("Animal Type","Plant Type","Insect Type","Fish Type","Dragon Type","Healing Power")) {
 			case 1:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant3,4060;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant3,4472;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant3,4060;
+				if (paraweaponenchant == 4806) set paraweaponenchant3,4472;
 				break;
 			case 2:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant3,4068;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant3,4470;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant3,4068;
+				if (paraweaponenchant == 4806) set paraweaponenchant3,4470;
 				break;
 			case 3:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant3,4063;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant3,4476;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant3,4063;
+				if (paraweaponenchant == 4806) set paraweaponenchant3,4476;
 				break;
 			case 4:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant3,4080;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant3,4469;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant3,4080;
+				if (paraweaponenchant == 4806) set paraweaponenchant3,4469;
 				break;
 			case 5:
-				if (paraweaponenchant == 4767) {
-					set paraweaponenchant3,4118;
-				}
-				if (paraweaponenchant == 4806) {
-					set paraweaponenchant3,4471;
-				}
+				if (paraweaponenchant == 4767) set paraweaponenchant3,4118;
+				if (paraweaponenchant == 4806) set paraweaponenchant3,4471;
 				break;
 			case 6:
 				set paraweaponenchant3,4805;
@@ -5994,32 +5088,56 @@ moc_para01,112,79,3	script	Weapons Expert	851,{
 		mes "I've already enchanted your weapon, you need to complete more quests for the next enchantment.";
 		close;
 	}
+	end;
+L_Select:
+	next;
+	mes "[Weapons Expert]";
+	set .@menu$,"";
+	for(set .@i,0; .@i<getargcount(); set .@i,.@i+3) {
+		set .@menu$, .@menu$+getarg(.@i+1)+".:";
+		mes getarg(.@i+1)+": "+getarg(.@i+2)+".";
+		mes " ";
+	}
+	next;
+	set .@i, select(.@menu$)-1;
+	getitem getarg(.@i*3),1;
+	mes "[Weapons Expert]";
+	return;
+L_GetWeapon:
+	if (countitem(1197)) set paraweaponcount,1197;
+	else if (countitem(1289)) set paraweaponcount,1289;
+	else if (countitem(1391)) set paraweaponcount,1391;
+	else if (countitem(1434)) set paraweaponcount,1434;
+	else if (countitem(1583)) set paraweaponcount,1583;
+	else if (countitem(1658)) set paraweaponcount,1658;
+	else if (countitem(1831)) set paraweaponcount,1831;
+	else if (countitem(1931)) set paraweaponcount,1931;
+	else if (countitem(1986)) set paraweaponcount,1986;
+	else if (countitem(13066)) set paraweaponcount,13066;
+	else if (countitem(13114)) set paraweaponcount,13114;
+	else if (countitem(13310)) set paraweaponcount,13310;
+	else if (countitem(13434)) set paraweaponcount,13434;
+	else if (countitem(16014)) set paraweaponcount,16014;
+	else if (countitem(18106)) set paraweaponcount,18106;
+	return;
 }
 
-/* sec_in02,25,33,4	script	Assistant	422,{
+sec_in02,25,33,4	script	Assistant#para_suvquest	422,{
+	callfunc "F_GM_NPC";
 	mes "Password";
 	next;
-	input .@input;
-	if (.@input == 1854) {
+	if (callfunc("F_GM_NPC",1854,0) == 1) {
 		mes "Please select the variable you want to modify.";
 		next;
-		switch (select("para_suv01:para_suv02")) {
-		case 1:
-			mes "Enter the modified value";
-			next;
-			input .@input;
-			mes "Value of para_suv01 has been changed to "+.@input+".";
-			set para_suv01,.@input;
-			close;
-		case 2:
-			mes "Enter the modified value";
-			next;
-			input .@input;
-			mes "Value of para_suv02 has been changed to "+.@input+".";
-			set para_suv02,.@input;
-			close;
-		}
+		set .@var, select("para_suv01:para_suv02");
+		mes "Enter the modified value";
+		next;
+		input .@input,0,9999;
+		mes "Value of para_suv0"+.@var+" has been changed to "+.@input+".";
+		setd "para_suv0"+.@var,.@input;
+		close;
+	} else {
+		mes "......meow wee.";
+		close;
 	}
-	mes "......meow wee.";
-	close;
-}*/
+}
