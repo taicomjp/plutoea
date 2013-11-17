@@ -31,10 +31,10 @@
 //= 2.1 Assassins will now get their request item. (bugreport:1220) [L0ne_W0lf]
 //= 2.2 Updated Binocular and Stop Post quests. [L0ne_W0lf]
 //= 2.3 Replaced effect numerics with constants. [Samuray22]
-//= 2.4 Implemented Ep. 12.1 Continental Guard Quest. [L0ne_W0lf]
+//= 2.4 Implemented Ep. 12.1 洲際衛隊 警衛兵 Quest. [L0ne_W0lf]
 //=     Moved Dandelion's Request to a it's own file.
 //=     Added support NPCs required to finish Gaebolg quest.
-//= 2.5 Fixed Group of Evil never re-enabling. [L0ne_W0lf]
+//= 2.5 Fixed 黑暗之徒 never re-enabling. [L0ne_W0lf]
 //= 2.6 Added quest log commands for Resurrection of Satan Morroc. [L0ne_W0lf]
 //=     Added the two remaining episode 12.1 quests. 
 //=     Updated Satan Morroc Quest to allow peopel who have
@@ -48,129 +48,119 @@
 //= 3.2 Added GM management NPC and variable $@re_moc_time$. [Euphy]
 //============================================================ 
 
-// Stop Post Quest
-// ============================================================
-moc_ruins,113,181,4	script	William	89,{
-	mes "[William]";
-	mes "Welcome to";
-	mes "MacMillan's ^3355FFPost^000000 Workshop.";
+//停止標誌頭飾製作任務
+//============================================================ 
+moc_ruins,114,181,4	script	斯泰爾	89,{
+	mes "[斯泰爾]";
+	mes "歡迎光臨。歡迎您來到以製作^3355FF' 停止標誌頭飾 '^000000 聞名的斯泰爾家族商店。";
 	next;
-	mes "[William]";
-	mes "My family, the MacMillan Clan, has been producing Professional Traffic Signal Posts for more than 250 years. Nowadays, we are booking Special Orders for our unique ornament, ^3355FFStop Post^000000.";
+	mes "不知道您是否聽過我們的家族史..";
+	mes "我們家遠早在以馬車為主要交通工具時代就開始製作交通號誌牌，至今已經有兩百五十年的歷史了。";
+	mes "近來我們常接到一些專門訂購^3355FF' 停止標誌頭飾 '^000000 的訂單，現在流行將它拿來當裝飾品。";
 	next;
-	switch(select("Could I order one ^3355FFStop Post^000000?:Nah...")) {
+	switch( select( "訂購^3355FF' 停止標誌頭飾 '^000000。:結束對話。")) {
 	case 1:
-		mes "[William]";
-		mes "This unique ornament, ^3355FFStop Post^000000, is a traffic signal on the road, and doubles as a hair ornament! This, we solemnly promise on the strength of a 100-year guarantee.";
+		mes "由擁有兩百五十年悠久歷史的家族所製作的^3355FF' 停止標誌頭飾 '^000000發展出來的裝飾品..";
+		mes "有承襲著交通標誌牌傳統技術，令人眼睛為之一亮且堅固耐用。";
+		mes "相信一定不會使訂購的顧客失望。";
 		next;
-		mes "[William]";
-		mes "To produce a ^3355FFStop Post^000000, we need ^3355FF91100 Zeny^000000, ^3355FF50 Trunk^000000 and ^3355FF1 Black Dyestuffs^000000.";
+		mes "訂購^3355FF' 停止標誌頭飾'^000000 需要花費您^3355FF' 現金 91100 金幣 '^000000 與 ..";
+		mes "^3355FF' 木頭 50 塊 '^000000 還有 ^3355FF' 黑色染料 1 桶 '^000000 。";
 		next;
-		if ((countitem(1019) > 49) && (countitem(983) > 0) && (Zeny > 91099)) {
-			delitem 1019,50;  //Wooden_Block
-			delitem 983,1;  //Black_Dyestuffs
-			set Zeny, Zeny-91100;
-			mes "[William]";
-			mes "Here you are~!";
-			mes "This ^3355FFStop Post^000000 has";
-			mes "been especially made";
-			mes "just for you!";
-			mes "Thank you for stopping by!";
-			mes "...Get the joke?";
-			getitem 2272,1; // Stop_Post
+		if(countitem(1019) > 49 && countitem(983) > 0 && Zeny > 91099) {
+			delitem 1019,50;
+			delitem 983,1;
+			set Zeny,Zeny-91100;
+			mes "[斯泰爾]";
+			mes "好了 ！這是擁有兩百五十年悠久歷史的斯泰爾家族所製作的^3355FF' 停止標誌頭飾 '^000000 ！";
+			mes "謝謝您的光臨，歡迎下次再來！";
+			getitem 2272,1;
 			close;
 		}
-		else {
-			mes "[William]";
-			mes "So...";
-			mes "When you get those items, swing on by and we'll give you a Stop Post.";
-			close;
-		}
+		mes "[斯泰爾]";
+		mes "您所準備的材料不足喔?";
+		mes "請您再確認一下。";
+		close;
 	case 2:
-		mes "[William]";
-		mes "Anyway, thank you for coming by 'MacMillan's Workshop.' But think about buying something next time, will ya?";
+		mes "[斯泰爾]";
+		mes "感謝您向斯泰爾家族訂購商品。";
+		mes "祝您事事順心。";
 		close;
 	}
 }
 
-// Binoculars Quest
-// ============================================================
-moc_ruins,118,176,4	script	Alchemist	64,{
-	mes "[Marius]";
-	mes "Howdy, new customer!!";
-	mes "I know what you're gonna talk about. You want the Magic Glasses from me, riiiiight?";
+
+//望遠鏡製作任務
+//============================================================ 
+moc_ruins,118,176,4	script	煉金術公會	64,{
+	mes "[波立歐吉娜]";
+	mes "哈哈哈 - 又有顧客上門來啦！";
+	mes "我知道你要說什麼。";
+	mes "你是為了魔法眼鏡而來的對吧 ?";
 	next;
-	switch(select("What is that?:Manufacture:Ignore him")) {
+	switch(select( "什麼叫做魔法眼鏡?:製作魔法眼鏡。:跳過。")) {
 	case 1:
-		mes "[Marius]";
-		mes "Hmm~!";
-		mes "Well, the official name for them is ^3355FFBinoculars^000000! An optical device that works like a pair of field glasses, they're designed for simultaneous use by both eyes!";
+		mes "[波立歐吉娜]";
+		mes "是的 ！ 它的正式名稱應該是 ' ^3355FF望遠鏡^000000 ' ！";
+		mes "外型是長桶狀，裡頭";
+		mes "有好幾個玻璃片相疊在一起！";
+		mes "它是利用光線反射的作用";
+		mes "來看清楚在遠方的東西";
+		mes "近看的話是看不清楚的！";
 		next;
-		mes "[Marius]";
-		mes "They're made up of two small telescopes joined with a single focusing device. You can arrange the lenses to produce stereoscopic vision.";
-		next;
-		mes "[Marius]";
-		mes "So?";
-		mes "Ain't that";
-		mes "something, huh?";
-		mes "Muhahahahahaha!";
+		mes "[波立歐吉娜]";
+		mes "覺得如何? 很棒吧?！";
+		mes "阿哈哈哈哈！";
 		mes ". . . . .";
+		mes ".. 怎麼 ?你看起來好像不太相信的樣子?";
+		mes "我說的可是真的！！";
 		next;
-		mes "[Marius]";
-		mes "Hm? You don't seem to";
-		mes "believe what I just said?";
-		mes "Oh c'mon, jerk. It's real!!";
-		next;
-		mes "[Marius]";
-		mes "I will let you";
-		mes "know the items I need...";
-		mes "1 ^3355FFGeek Glasses^000000! 100 ^3355FFSteel^000000!";
-		mes "And ^3355FF50000 Zeny^000000!";
+		mes "[波立歐吉娜]";
+		mes "把製作望遠鏡所需要的東西";
+		mes "一個一個記下來 ..";
+		mes "^3355FF旋轉鏡片^000000 一個！ ^3355FF鋼鐵^000000 一百片！ 還有，費用是 ^3355FF50000 金幣^000000 ！";
 		close;
 	case 2:
-		if ((countitem(2243) > 0) && (countitem(999) > 99) && (Zeny > 49999)) {
-			mes "[Marius]";
-			mes "Perfect, perfect !";
-			mes "Now my masterpiece will be complete!";
-			mes "Muhahahaha !";
+		if (countitem(2243) > 0 && countitem(999) > 99 && Zeny > 49999) {
+			mes "[波立歐吉娜]";
+			mes "好！希望這副眼鏡能夠給你帶來更多的快樂";
 			next;
-			delitem 2243,1;  //Spinning_Eyes
-			delitem 999,100;  //Steel
-			set Zeny, Zeny-50000;
-			mes "[Marius]";
-			mes "Here you are!";
-			mes "Binoculars !";
-			getitem 2296,1; // Binoculars
+			delitem 2243,1;
+			delitem 999, 100;
+			set Zeny,Zeny-50000;
 			next;
-			mes "[Marius]";
-			mes "Just remember...";
-			mes "Don't peep at something you shouldn't look at. Well, at least try not to.";
+			mes "[波立歐吉娜]";
+			mes "這就是了！魔法眼鏡！";
+			getitem 2296,1;
+			next;
+			mes "[波立歐吉娜]";
+			mes "但是，我必須先說明......";
+			mes "不要用它來看你不該看的東西哦！哈哈哈哈！！...";
 			close;
 		}
-		else {
-			mes "[Marius]";
-			mes "Argggghhhhhhh!!";
-			mes "You didn't bring";
-			mes "enough items!!!!";
-			mes "How dare you";
-			mes "disgrace me!!!";
-			mes "Baaaadddd !!";
-			close;
-		}
+		mes "[波立歐吉娜]";
+		mes "不夠 ！ 不夠 ！ 不夠啊　！！";
+		mes "你怎麼可以對在塵世大陸上最頂尖的煉金者";
+		mes "那麼不敬！";
+		mes "真是太過分了！！";
+		close;
 	case 3:
-		mes "[Marius]";
-		mes "Hey you~!";
-		mes "Now you're in front of Marius, an Alchemist among Alchemists. Ignoring me, eh? Come on, I'll beat your ass!";
+		mes "[波立歐吉娜]";
+		mes "喂喂喂喂！";
+		mes "你這像是對";
+		mes "在塵世大陸遠近馳名";
+		mes "的光學大師波立歐吉娜－我本人";
+		mes "應該說的話嗎 ? 說啊 ?！";
 		close;
 	}
 }
 
-// Morroc Assassin Guild Bar [Disabled]
+// Morroc Assassin Guild Bar [已關閉]
 // ============================================================
 /*
-morocc,43,108,5	script	Sharp-Looking Kid#dan_07	82,{
+morocc,43,108,5	script	銳利印象的少年#dan_07	82,{
 	if (BaseClass == Job_Assassin) {
-		mes "[Jack]";
+		mes "[傑]";
 		mes "In spite of the chaotic mess in their town, ";
 		mes "there are still some of those who pay visits here.";
 		mes "Maybe the stronghold itself is a real one of a kind..";
@@ -178,16 +168,16 @@ morocc,43,108,5	script	Sharp-Looking Kid#dan_07	82,{
 	}
 	else {
 		if (countitem(7416) > 0) {
-			mes "[Jack]";
+			mes "[傑]";
 			mes "A letter of recommendation?";
 			mes "Oh, boy. Looks like you've brought me a very, very old relic from the past.";
 			mes "Well, guess you should go in and see the master.";
 			close;
 		}
 		else {
-			mes "[Jack]";
-			mes "Hey, what are you peeking at?";
-			mes "Don't you have better things to do? You'd better go to the shelter and save your ass.";
+			mes "[傑]";
+			mes "你看什麼呢?";
+			mes "你最好趕快離開這裡去安全的地方吧?";
 			close;
 		}
 	}
@@ -200,14 +190,14 @@ OnTouch:
 		end;
 	}
 	else {
-		mes "[Jack]";
-		mes "Wait, that's the restricted area....";
+		mes "[傑克]";
+		mes "啊! 那裏不是任何人可以進........";
 		mes "......";
-		mes "Oh, well.";
+		mes "去的啦";
 		next;
-		mes "[Jack]";
-		mes "Things have changed.";
-		mes "Just do whatever you want!";
+		mes "[傑克]";
+		mes "情況今非昔比了，";
+		mes "你隨便吧!";
 		close2;
 		warp "que_job01",9,94;
 		end;
@@ -865,71 +855,74 @@ yuno_in04,180,106,3	script	Reading Girl#moc_girl1	73,{
 	close;
 }
 
-morocc_in,46,125,5	script	Assistant#moc_ex1	729,{
-	mes "[Sephit]";
-	mes "I've always believed in Satan..";
-	mes "Haah... Guess it's good to be living, after all.";
+morocc_in,46,125,5	script	首席助理#moc_ex1	729,{
+	mes "[賽皮特]";
+	mes "我相信世界上有魔王的存在..";
+	mes "哈.. 人還是需要活久一點";
 	next;
-	mes "[Sephit]";
-	mes "Who would've thought to actually see the Satan while alive.....?";
+	mes "[賽皮特]";
+	mes "沒想到能在同個時代看到魔王.....";
 	close;
 }
 
-que_job01,70,84,1	script	Girl#moc_ex002	882,{
-	mes "[Girl]";
-	mes "Oh, the world.. the world is doomed..";
-	mes "-sobbing-";
-	mes "Nothing seems to be working now..";
+que_job01,70,84,1	script	少女#moc_ex002	882,{
+	mes "[少女]";
+	mes "這世界.. 到底是怎麼一回事，";
+	mes "嗚嗚..";
+	mes "怎麼沒一件事是順利的";
 	emotion e_sob;
 	next;
 	mes "["+ strcharinfo(0) +"]";
-	mes "....Tsk..tsk...";
-	mes "Good heavens.. I can't believe this young girl's drinking with sadness....";
+	mes "....嘖嘖...";
+	mes "年紀輕輕的就會借酒澆愁....";
 	close;
 }
 
-// Resurrection of Satan Morroc
+// 洲際衛隊 / 魔王夢羅克任務
 // ============================================================
-moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
+moc_fild20,354,183,3	script	洲際衛隊 警衛兵#01::MocConGuard	707,3,3,{
 	if ((rebirth_moc_edq == 0) && (rebirth_moc_edq < 4)) {
-		mes "[Continental Guard]";
-		mes "No commoners are allowed in the area beyond this point.";
-		mes "This place is extremely dangerous so you are restricted from entering.";
+		mes "[洲際衛隊 警衛兵]";
+		mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 		next;
-		switch(select("Cancel Conversation:Ask What Happened")) {
+		switch(select("取消對話:詢問怎麼回事")) {
 		case 1:
 			close;
 		case 2:
-			mes "[Continental Guard]";
-			mes "Didn't you know? Satan Morroc has resurrected and broke out of Morroc Village where he was confined.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "你還不知道嗎? 封印在夢羅克村落的魔王夢羅克復活了";
 			next;
-			mes "[Continental Guard]";
-			mes "His resurrection has caused irreparable damage to the village and to the desert around it, and now he has moved to the Sograt Desert.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "當魔王夢羅克魔復活之後移動至蘇克拉特沙漠附近去了，然而那附近的沙漠就成了魔王的總部";
 			next;
-			mes "[Continental Guard]";
-			mes "We are here to carry out the orders of the Prontera Kingdom by preventing commoners, aside from the members of the Morroc Subjugation, from accessing the area.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "目前夢羅克村落因魔王復活的影響，遭受到難以復建的極大傷害";
 			next;
-			mes "[Continental Guard]";
-			mes "If you'd like to know more information, I suggest that you speak to the Continental Guard in charge of the accident site in Morroc Village.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "普隆德拉 王國的奉普隆德拉王國的詔令，目前不隸屬於夢羅克討伐大隊的平民則全面禁止出入該處";
 			next;
-			switch(select("End Conversation:Ask About Guard's Location")) {
+			mes "[洲際衛隊 警衛兵]";
+			mes "細節方面請你親自去詢問在夢羅克村落負";
+			mes "責現場指揮的洲際衛隊吧?";
+			next;
+			switch(select("結束對話:詢問洲際衛隊的位置")) {
 			case 1:
 				close;
 			case 2:
-				mes "[Continental Guard]";
-				mes "The guard that you want to talk to is at a camp built in the center of Morroc Village.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "你是問洲際衛隊的位置嗎? 洲際衛隊目前駐紮在夢羅克村落中央的營地上";
 				next;
-				mes "[Continental Guard]";
-				mes "If you'd like, I can send you there directly.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "你願意的話我可以送你過去...";
 				next;
-				switch(select("No, thanks.:Please do.")) {
+				switch(select("不用了:麻煩你了")) {
 				case 1:
-					mes "[Continental Guard]";
-					mes "I see. Well then, for your safety, please leave this dangerous area as soon as possible.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "不用嗎?... 那麼路上小心，建議你趕快離開這裡";
 					close;
 				case 2:
-					mes "[Continental Guard]";
-					mes "Great. I'll send you to Morroc Village's accident site shortly.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "沒問題，我立刻送你到夢羅克村落的現場";
 					close2;
 					warp "morocc",160,61;
 					end;
@@ -938,11 +931,10 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 		}
 	}
 	else if ((rebirth_moc_edq > 3) && (rebirth_moc_edq < 8)) {
-		mes "[Continental Guard]";
-		mes "No commoners are allowed in the area beyond this point.";
-		mes "This place is extremely dangerous so you are restricted from entering.";
+		mes "[洲際衛隊 警衛兵]";
+		mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 		next;
-		switch(select("Cancel Conversation:Enter the Field to Investigate:Move to Morroc's Accident Site")) {
+		switch(select("取消對話:為了調查要去原野:前往夢羅克的現場")) {
 		case 1:
 			close;
 		case 2:
@@ -958,32 +950,32 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 					set .@partymembercount,.@partymembercount - 1;
 				}
 				if ((.@onlinemembers > 1) && (countitem(7826) > 0)) {
-					mes "[Continental Guard]";
+					mes "[洲際衛隊 警衛兵]";
 					mes "......";
 					next;
-					mes "[Continental Guard]";
-					mes "Yes, I've confirmed that you're a member of the Continental Guards. I wish you good luck in accomplishing your mission.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "確認過了，你是洲際衛隊的隊員，祝你順利地完達任務吧";
 					next;
-					mes "[Continental Guard]";
-					mes "I'll send you to the field shortly. Please use the warp at the field entrance to come back to this area.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "在立即送你到原野，回來時可透過原野入口處的傳送點，就能重新回到這裡來了";
 					close2;
 					warp "moc_fild21",38,193;
 					end;
 				}
 				else if ((.@onlinemembers < 2) && (countitem(7826) > 0)) {
-					mes "[Continental Guard]";
-					mes "Welcome, members of the Continental Guards. I have a special order from Chief Balrog for you, so let me read it for you.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "確認過了，你是洲際衛隊的隊員，剛好有來自巴祿隊長的特別命令，我來唸給你聽";
 					next;
-					mes "[Continental Guard]";
-					mes "'Due to the dangers of this area, I hereby prohibit members of the Continental Guard to investigate the area alone. You must organize a party of at least 2 members to carry out your missions from now on.'";
+					mes "[洲際衛隊 警衛兵]";
+					mes "'因為這裡是極度危險的地帶，所以嚴禁隊員們的單獨調查行為，下令務必遵守編組2人以上後才能行動'";
 					next;
-					mes "[Continental Guard]";
-					mes "...You understand that, right? Please go back to the site, and come back in a party of at least 2 members. Thank you.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "請回現場後找隊員們組隊後再來吧";
 					close;
 				}
 				else if (countitem(7826) < 1) {
-					mes "[Continental Guard]";
-					mes "Only members of the Continental Guards with Continental Guard Certificates are allowed to proceed beyond this point.";
+					mes "[洲際衛隊 警衛兵]";
+					mes "Only members of the 洲際衛隊 警衛兵s with 洲際衛隊 警衛兵 Certificates are allowed to proceed beyond this point.";
 					close;
 				}
 				else {
@@ -991,24 +983,24 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 				}
 			}
 			else {
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "We've received orders from Headquarters to block access to this area since an unusual space-time phenomenon has been detected from the Morroc field.";
 				next;
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "We need to wait until the phenomenon is over, and then we'll let you proceed with your investigation.";
 				close;
 			}
 		case 3:
-			mes "[Continental Guard]";
-			mes "Great. I'll send you to Morroc Village's accident site shortly.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "沒問題，我立刻送你到夢羅克村落的現場";
 			close2;
 			warp "morocc",160,61;
 			end;
 		}
 	}
 	else if (rebirth_moc_edq == 8) {
-		mes "[Continental Guard]";
-		mes "Ah, you're an adventurer working for the Continental Guard. Nice to meet you. Feel free to ask me if you need my assistance.";
+		mes "[洲際衛隊 警衛兵]";
+		mes "你是隸屬於洲際衛隊的冒險家喔，你好啊，找我有事嗎?";
 		next;
 		getpartymember(getcharid(1));
 		set .@partymembercount,$@partymembercount;
@@ -1020,35 +1012,35 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 			}
 			set .@partymembercount,.@partymembercount - 1;
 		}
-		switch(select("Enter the First Field to Investigate:Enter the Second Field to Investigate:Return to Morroc's Accident Site:Cancel Conversation")) {
+		switch(select("為了調查要去第一原野:為了調查要去第二原野:返回夢羅克現場:取消對話")) {
 		case 1:
 			if ((.@onlinemembers > 1) && (countitem(7826) > 0)) {
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "......";
 				next;
-				mes "[Continental Guard]";
-				mes "Yes, I've confirmed that you're a member of the Continental Guards. I wish you good luck in accomplishing your mission.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "Yes, I've confirmed that you're a member of the 洲際衛隊 警衛兵s. I wish you good luck in accomplishing your mission.";
 				next;
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "I'll send you to the field shortly. Please use the warp at the field entrance to come back to this area.";
 				close2;
 				warp "moc_fild21",38,193;
 				end;
 			}
 			else if ((.@onlinemembers < 2) && (countitem(7826) > 0)) {
-				mes "[Continental Guard]";
-				mes "Welcome, members of the Continental Guards. I have a special order from Chief Balrog for you, so let me read it for you.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "Welcome, members of the 洲際衛隊 警衛兵s. I have a special order from 隊長 巴祿 for you, so let me read it for you.";
 				next;
-				mes "[Continental Guard]";
-				mes "'Due to the dangers of this area, I hereby prohibit members of the Continental Guard to investigate the area alone. You must organize a party of at least 2 members to carry out your missions from now on.'";
+				mes "[洲際衛隊 警衛兵]";
+				mes "'Due to the dangers of this area, I hereby prohibit members of the 洲際衛隊 警衛兵 to investigate the area alone. You must organize a party of at least 2 members to carry out your missions from now on.'";
 				next;
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "...You understand that, right? Please go back to the site, and come back in a party of at least 2 members. Thank you.";
 				close;
 			}
 			else if (countitem(7826) < 1) {
-				mes "[Continental Guard]";
-				mes "Only members of the Continental Guards with Continental Guard Certificates are allowed to proceed beyond this point.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "Only members of the 洲際衛隊 警衛兵s with 洲際衛隊 警衛兵 Certificates are allowed to proceed beyond this point.";
 				close;
 			}
 			else {
@@ -1056,40 +1048,40 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 			}
 		case 2:
 			if ((.@onlinemembers > 1) && (countitem(7826) > 0)) {
-				mes "[Continental Guard]";
+				mes "[洲際衛隊 警衛兵]";
 				mes "......";
 				next;
-				mes "[Continental Guard]";
-				mes "Yes, I've confirmed that you're a member of the Continental Guards. I wish you good luck in accomplishing your mission.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "確認過了，你是洲際衛隊的隊員，祝你順利地完達任務吧";
 				next;
-				mes "[Continental Guard]";
-				mes "I'll send you to the field shortly. Please use the warp at the field entrance to come back to this area.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "在立即送你到原野，回來時可透過原野入口處的傳送點，就能重新回到這裡來了";
 				close2;
 				warp "moc_fild22",38,193;
 				end;
 			}
 			else if ((.@onlinemembers < 2) && (countitem(7826) > 0)) {
-				mes "[Continental Guard]";
-				mes "Welcome, members of the Continental Guards. I have a special order from Chief Balrog for you, so let me read it for you.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "確認過了，你是洲際衛隊的隊員，剛好有來自巴祿隊長的特別命令，我來唸給你聽";
 				next;
-				mes "[Continental Guard]";
-				mes "'Due to the dangers of this area, I hereby prohibit members of the Continental Guard to investigate the area alone. You must organize a party of at least 2 members to carry out your missions from now on.'";
+				mes "[洲際衛隊 警衛兵]";
+				mes "'因為這裡是極度危險的地帶，所以嚴禁隊員們的單獨調查行為，下令務必遵守編組2人以上後才能行動'";
 				next;
-				mes "[Continental Guard]";
-				mes "...So please go back to the site, and come back in a party of at least 2 members. Thank you.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "請回現場後找隊員們組隊後再來吧";
 				close;
 			}
 			else if (countitem(7826) < 1) {
-				mes "[Continental Guard]";
-				mes "Only members of the Continental Guards with Continental Guard Certificates are allowed to proceed beyond this point.";
+				mes "[洲際衛隊 警衛兵]";
+				mes "Only members of the 洲際衛隊 警衛兵s with 洲際衛隊 警衛兵 Certificates are allowed to proceed beyond this point.";
 				close;
 			}
 			else {
 				close;
 			}
 		case 3:
-			mes "[Continental Guard]";
-			mes "Great. I'll send you to Morroc Village's accident site shortly.";
+			mes "[洲際衛隊 警衛兵]";
+			mes "沒問題，我立刻送你到夢羅克村落的現場";
 			close2;
 			warp "morocc",160,61;
 			end;
@@ -1103,302 +1095,309 @@ moc_fild20,354,183,3	script	Continental Guard#01::MocConGuard	707,3,3,{
 
 //OnTouch2:
 OnTouch:
-	mes "[Continental Guard]";
-	mes "No commoners are allowed in the area beyond this point.";
-	mes "This place is extremely dangerous so you are restricted from entering.";
+	mes "[洲際衛隊 警衛兵]";
+	mes "這裡是禁止一般人進出的地方，這裡非常危險請勿在這附近走動";
 	close;
 	end;
 }
 
-moc_fild20,354,174,3	duplicate(MocConGuard)	Continental Guard#02	707,3,3
-moc_fild20,38,174,5	duplicate(MocConGuard)	Continental Guard#03	707,3,3
-moc_fild20,38,183,5	duplicate(MocConGuard)	Continental Guard#04	707,3,3
-moc_fild20,189,21,7	duplicate(MocConGuard)	Continental Guard#05	707,3,3
-moc_fild20,200,21,7	duplicate(MocConGuard)	Continental Guard#06	707,3,3
-moc_fild20,203,336,5	duplicate(MocConGuard)	Continental Guard#07	707,3,3
-moc_fild20,215,336,3	duplicate(MocConGuard)	Continental Guard#08	707,3,3
+moc_fild20,354,174,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#02	707,3,3
+moc_fild20,38,174,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#03	707,3,3
+moc_fild20,38,183,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#04	707,3,3
+moc_fild20,189,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#05	707,3,3
+moc_fild20,200,21,7	duplicate(MocConGuard)	洲際衛隊 警衛兵#06	707,3,3
+moc_fild20,203,336,5	duplicate(MocConGuard)	洲際衛隊 警衛兵#07	707,3,3
+moc_fild20,215,336,3	duplicate(MocConGuard)	洲際衛隊 警衛兵#08	707,3,3
 
--	script	Continental Messenger#00::ConMessenger	997,3,3,{
+-	script	夢羅克洲際衛隊傳令兵#00::ConMessenger	997,3,3,{
 	set .@area$,strnpcinfo(2);
-	if (.@area$ == "01") { set .@area$,"Prontera"; }
-	else if (.@area$ == "02") { set .@area$,"Geffen"; }
-	else if (.@area$ == "03") { set .@area$,"Payon"; }
-	else if (.@area$ == "04") { set .@area$,"Alberta"; }
-	else if (.@area$ == "05") { set .@area$,"Al De Baran"; }
+	if (.@area$ == "01") { set .@area$,"普隆德拉"; }
+	else if (.@area$ == "02") { set .@area$,"吉芬"; }
+	else if (.@area$ == "03") { set .@area$,"斐揚"; }
+	else if (.@area$ == "04") { set .@area$,"艾爾貝塔"; }
+	else if (.@area$ == "05") { set .@area$,"艾爾帕蘭"; }
+	mes "[洲際衛隊 傳令兵]";
 	if (BaseLevel > 79) {
-		mes "[Continental Guard Messenger]";
-		mes "Good day, "+ strcharinfo(0) +". We don't have the luxury of time in this dire situation so I'll try to make this quick.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "I'm a messenger dispatched here to " + .@area$ + " from the Morroc Continental Guard Headquarters. My duty is to deliver this important message to as many renowned adventurers as I can. I'm glad that I was finally able to find you, "+ strcharinfo(0) +".";
-		next;
-		select("Morroc Continental Guard Headquarters?");
-		mes "[Continental Guard Messenger]";
-		mes "Time's running out, so I can only give you a brief explanation.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "Satan Morroc, the heinous demon imprisoned deep in Morroc's underground for centuries, has resurrected and broken free.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The revival of Satan Morroc has completely devastated Morroc Village and the area surrounding it.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "All of the death and suffering... Anywhere else must seem like heaven compared to what's happening in and around Morroc.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The Morroc Continental Guard was immediately organized to fight Satan Morroc and bring relief to this dire situation. I'm here to inform everyone in the Rune-Midgarts Kingdom about this catastrophe.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "We need your help, "+ strcharinfo(0) +". We need reputable adventurers like you to seal away Satan Morroc once again.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "For more information, please speak to the captain of the Morroc Continental Guard. He is waiting for you, "+ strcharinfo(0) +".";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The Continental Guard Headquarters is located near the center palace of Morroc, so please go speak to the chief as soon as you can.";
-		close;
+		mes "你是"+ strcharinfo(0) +"啊，這是分秒必爭的緊急事件，";
+		mes "所以我就講重點吧";
+	mes "[洲際衛隊 傳令兵]";
+				next;
+	mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "";
+		mes "的傳令兵，我是來傳話給像你"+ strcharinfo(0) +"這樣有";
+		mes "聲望的各位冒險家們";
 	}
 	else {
-		mes "[Continental Guard Messenger]";
-		mes "I'm a messenger from the Morroc Continental Guards Headquarters, and I've come here to " + .@area$ + " with an urgent message for everyone here in Rune-Midgarts Kingdom.";
-		next;
-		select("Morroc Continental Guard Headquarters?");
-		mes "[Continental Guard Messenger]";
-		mes "Time's running out, so I can only give you a brief explanation.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "Satan Morroc, the heinous demon imprisoned deep in Morroc's underground for centuries, has resurrected and broken free.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The revival of Satan Morroc has completely devastated Morroc Village and the area surrounding it.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "All of the death and suffering... Anywhere else must seem like heaven compared to what's happening in and around Morroc.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The Morroc Continental Guard was immediately organized to fight Satan Morroc and bring relief to this dire situation. I'm here to inform everyone in the Rune-Midgarts Kingdom about this catastrophe.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "Part of my duty is to help recruit adventurers from around the world to help drive Satan Morroc back into confinement. It won't be easy, but he was defeated once before. Satan Morroc can be sealed away again.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "At least 70% of Morroc Village was destroyed by the fallout of Satan Morroc's resurrection.";
-		next;
-		mes "[Continental Guard Messenger]";
-		mes "The desert around Morroc has also turned into a land of death after it was claimed by Satan Morroc and his powerful doppelgangers and underlings.";
-		mes "So heed my warning, stay away from the Morroc area unless you're on a mission organized by the Morroc Continental Guard.";
-		close;
+		mes "我是從夢羅克洲際衛隊總部派到" + .@area$ + "";
+		mes "的傳令兵，我是來緊急警告盧恩";
+		mes "米德加茲全部的人";
 	}
+	next;
+	select("夢羅克洲際衛隊總部是怎麼一回事啊?");
+	mes "[洲際衛隊 傳令兵]";
+	mes "時間不多了，那我就簡單扼要的向你說明吧";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "魔王夢羅克...";
+	mes "已經復活了，數世紀以來封印在夢羅克地下宮庭深處的夢羅克...";
+	mes "就是那個夢羅克";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "受此影響，現在夢羅村落與附近地區瞬間成了廢墟";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "簡直是千瘡百孔...";
+	mes "有過之而無不及，現在夢羅克周圍呈現一片死寂";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	mes "然而緊急對策就是促成了組織魔王夢羅克洲際衛隊... 我是來向盧恩";
+	mes "米德加茲王國與全區傳達這項消息";
+	next;
+	mes "[洲際衛隊 傳令兵]";
+	if (BaseLevel > 79) {
+		mes "當然更重要的是如今迫切需要像"+ strcharinfo(0) +"一樣";
+		mes "出色的冒險家們的幫忙，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "詳細內容去詢問我們洲際衛隊的隊長吧!";
+		mes "他正等候著"+ strcharinfo(0) +"您呢";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "討伐大隊的總部是...";
+		mes "目前設在夢羅克中央宮廷附近的臨時哨所上";
+	} 
+	else {
+		mes "當然最重要的是如今迫切需要這裡所有優秀的冒險家們的協助，為了再次封印夢羅克...";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "目前夢羅克村落因受到魔王復活的影響，都是約 7成以上嚴重的損壞";
+		next;
+		mes "[洲際衛隊 傳令兵]";
+		mes "周圍鄰近的沙漠音魔王夢羅克和牠的幻影，以及強大魔物的出現，逐漸變成死地了... 你要多多保重";
+	}
+	close;
 
 OnTouch:
 	if (BaseLevel > 79) {
-		mes "[Continental Guard Messenger]";
-		mes "Are you... "+ strcharinfo(0) +"?";
-		mes "Ah, very well. I have an extremely important message for you.";
+		mes "[洲際衛隊 傳令兵]";
+		mes "請問你是... "+ strcharinfo(0) +"嗎?";
+		mes "正確的話請你先聽我說完，這是非常重要的事情";
 		next;
-		mes "[Continental Guard Messenger]";
-		mes "The situation is urgent, so please listen to me carefully.";
+		mes "[洲際衛隊 傳令兵]";
+		mes "事態緊急，請務必先聽我說";
 		close;
 	}
 	end;
 }
 
-prontera,164,304,3	duplicate(ConMessenger)	Continental Messenger#01	997,3,3
-geffen,128,90,3	duplicate(ConMessenger)	Continental Messenger#02	997,3,3
-payon,200,113,3	duplicate(ConMessenger)	Continental Messenger#03	997,3,3
-alberta,127,64,3	duplicate(ConMessenger)	Continental Messenger#04	998,3,3
-aldebaran,135,128,3	duplicate(ConMessenger)	Continental Messenger#05	998,3,3
+prontera,164,304,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#01	997,3,3
+geffen,128,90,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#02	997,3,3
+payon,200,113,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#03	997,3,3
+alberta,127,64,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#04	998,3,3
+aldebaran,135,128,3	duplicate(ConMessenger)	夢羅克洲際衛隊傳令兵#05	998,3,3
 
 morocc,176,103,3	script	Continental Official	754,{
 	if (rebirth_moc_edq > 3) {
-		mes "[Continental Guard Official]";
-		mes "On behalf of the Continental Guard, I thank you for your efforts. Now, let me see if I've received any news from Headquarters that you should know...";
+		mes "[洲際衛隊 行政官]";
+		mes "辛苦你了，有來自總部的新消息...";
 		next;
-		mes "[Continental Guard Official]";
-		mes "Hmm...";
+		mes "[洲際衛隊 行政官]";
+		mes "嗯...";
 		next;
-		mes "[Continental Guard Official]";
-		mes "Nothing yet. Please carry on with your current mission. Once again, thank you.";
+		mes "[洲際衛隊 行政官]";
+		mes "目前還沒有新消息... 祝你順利達成任務，報告完畢";
 		close;
 	}
 	else if (rebirth_moc_edq == 0) {
-		mes "[Continental Guard Official]";
-		mes "Welcome to the Morroc Subjugation Information Center. How may I help you?";
+		mes "[洲際衛隊 行政官]";
+		mes "我是負責夢羅克討伐大隊中央的咨詢官，請問有事嗎?";
 		next;
-		switch(select("What is this place for?:I'm here to volunteer.:Tell me about the village situation.")) {
+		switch(select("這裡是什麼地方呢?:我來報名:詢問村落的現況")) {
 		case 1:
-			mes "[Continental Guard Official]";
-			mes "I'm stationed here to assist adventurers who wish to volunteer and help the Continental Guard fight Satan Morroc.";
+			mes "[洲際衛隊 行政官]";
+			mes "這裡是負責遍佈於大陸各地勇猛的冒險家們，為了阻止魔王夢羅克而聚集報名洲際衛隊的地方";
 			next;
-			mes "[Continental Guard Official]";
-			mes "I am sure you are already aware that Satan Morroc's revival threatens the peace of the Rune-Midgarts kingdom, and if Satan Morroc is allowed to roam free, it will devour the entire world.";
+			mes "[洲際衛隊 行政官]";
+			mes "你也知道魔王的復活讓盧恩 米德加茲王國與這大陸所面臨的危機是有直接的關係";
 			next;
-			mes "[Continental Guard Official]";
-			mes "The Continental Guard is currently planning an array of countermeasures to suppress Satan Morroc under the order of the kingdom.";
+			mes "[洲際衛隊 行政官]";
+			mes "奉王國之命有意消滅魔王而招集的洲際衛隊，目前正如火如荼的進行阻止魔王的各項準備";
 			next;
-			mes "[Continental Guard Official]";
-			mes "If you have been invited by our messenger, or are confident in your skills, we encourage you to volunteer for the Continental Guards and bring peace back to this continent.";
+			mes "[洲際衛隊 行政官]";
+			mes "如果你也是受到詔令或是對自己的實力有信心的冒險家的話，請你現在報名以維護這大陸的和平吧";
 			close;
 		case 2:
 			if (BaseLevel > 79) {
-				mes "[Continental Guard Official]";
-				mes "Welcome, " + strcharinfo(0) + ". I've been waiting for you. I assume our messenger informed you of our situation.";
+				mes "[洲際衛隊 行政官]";
+				mes "啊... 你是";
+				mes strcharinfo(0) + "對吧，我正在等你，我想你已經了解我們這裡的情況吧";
 				next;
-				mes "[Continental Guard Official]";
-				mes "Let me process your application immediately. Please wait.";
+				mes "[洲際衛隊 行政官]";
+				mes "我會立刻登記後呈報上去，請稍等一下";
 				next;
-				mes "[Continental Guard Official]";
-				mes "Now please go speak to Chief Balrog of the Continental Guard. You can find him in the center.";
+				mes "[洲際衛隊 行政官]";
+				mes "現在請你去找位於中央的洲際衛隊隊長巴祿對話吧，謝謝你";
 				set rebirth_moc_edq,1;
 				setquest 3050;
 				close;
 			}
 			else {
-				mes "[Continental Guard Official]";
-				mes "I applaud you for your courage, but you will need more than just courage to help us.";
+				mes "[洲際衛隊 行政官]";
+				mes "雖高度肯定你的意志... 但也有不能單靠意志就可以解決的事情";
 				next;
-				mes "[Continental Guard Official]";
-				mes "Satan Morroc is most powerful evil that exists in the mortal world. Snuffing out your life would be so trivial to him.";
+				mes "[洲際衛隊 行政官]";
+				mes "魔王夢羅克比你遭遇過的任何魔物都強大，更有性命的危險";
 				next;
-				mes "[Continental Guard Official]";
-				mes "I strongly recommend that you just think about your own safety for now. When the final battle comes, I am sure that no place will be safe.";
+				mes "[洲際衛隊 行政官]";
+				mes "現在請你先顧好自己的安全和性命吧";
 				close;
 			}
 		case 3:
-			mes "[Continental Guard Official]";
-			mes "As you can see, the situation can't be worse. The village and the surrounding area were irreparably damaged by Satan Morroc's resurrection.";
+			mes "[洲際衛隊 行政官]";
+			mes "狀況很不理想，你也知道村落已遭受嚴重傷害，連帶這附近也非常危險了";
 			next;
-			mes "[Continental Guard Official]";
-			mes "Since the kingdom has dispatched Continental Guard Messengers everywhere, many able adventurers have flocked to this place, but... I'm afraid they still might not be enough to defeat the demon.";
+			mes "[洲際衛隊 行政官]";
+			mes "雖然王國下詔令後陸陸續續各地的冒險家們和勇士們都聚集到討伐大隊下... 但是力量仍不足以抵禦強大的魔王";
 			next;
-			mes "[Continental Guard Official]";
-			mes "Please follow our instructions, at least around this area, and stay out of danger for now.";
+			mes "[洲際衛隊 行政官]";
+			mes "在這附近請儘可能的聽從我們的指示，更注意自身的安全以免遭遇不測";
 			close;
 		}
 	}
 	else {
-		mes "[Continental Guard Official]";
-		mes "Your application already has been registered. Please go speak to Chief Balrog.";
+		mes "[洲際衛隊 行政官]";
+		mes "你已經完成報名了，請找巴祿隊長對話吧";
 		close;
 	}
 }
 
-morocc,159,113,3	script	Chief Balrog	752,{
+morocc,159,113,3	script	隊長 巴祿	752,{
 	if (rebirth_moc_edq == 0) {
-		mes "[Chief Balrog]";
-		mes "You've come here at a bad time, but it's nice to meet you. I'm Continental Guard Chief Balrog. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
+		mes "[隊長 巴祿]";
+		mes "年輕人你不幸在這非常時期來到了夢羅克，我是被派來阻止魔王夢羅克復活的洲際衛隊隊長巴祿";
 		next;
-		mes "[Chief Balrog]";
-		mes "I'm sorry, but I'm too busy checking through all these applications for future Continental Guards to greet you adventurers one by one.";
+		mes "[隊長 巴祿]";
+		mes "我實在太忙了無法一一向你這樣的冒險家說明，請你去找這附近的其他人吧";
 		next;
-		mes "[Chief Balrog]";
-		mes "Listen, it might be more helpful if you talk to some other people first. I'm sure one of the other Continental Guards or our messengers will be better equipped to help you out.";
+		mes "[隊長 巴祿]";
+		mes "我目前正忙於挑選要加入我們洲際衛隊的新血人才";
 		close;
 	}
 	else if (rebirth_moc_edq == 1) {
-		mes "[Chief Balrog]";
-		mes "You've come here at a bad time, but it's nice to meet you. I'm Continental Guard Chief Balrog. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
+		mes "[隊長 巴祿]";
+		mes "年輕人你不幸在這非常時期來到了夢羅克，我是被派來阻止魔王夢羅克復活的洲際衛隊隊長巴祿";
 		next;
-		mes "[Chief Balrog]";
-		mes "It looks like you have business with me. Please make it brief since I don't have a lot of time on my hands. There's lots of things I need to take care of...";
+		mes "[隊長 巴祿]";
+		mes "你找我有事嗎? 我現在很忙請你就簡單扼要的說吧";
 		next;
-		switch(select("Ask about Continental Guards:I want to join the Continental Guard.:End Conversation")) {
+		switch(select("詢問關於洲際衛隊:想加入洲際衛隊:結束對話")) {
 		case 1:
-			mes "[Chief Balrog]";
-			mes "The damage that Satan Morroc's resurrection has caused is obvious just by taking a look around this area.";
-			mes "What's scary is that all this was caused just by breaking out from it's prison. Just think of the damage it could do if it was left to roam around freely...";
+			mes "[隊長 巴祿]";
+			mes "嗯...";
+			mes "我想你來這裡的途中應該有發現到了吧，封印在這裡夢羅克王宮地下的魔王夢羅克復活了";
 			next;
-			mes "[Chief Balrog]";
-			mes "Morroc Village is completely devastated, and Satan Morroc has now claimed possession of the Sograt Desert.";
+			mes "[隊長 巴祿]";
+			mes "受此影響這裡夢羅克村落幾乎半毀了，而魔王移動至附近蘇克拉特沙漠後將附近占為己有";
 			next;
-			mes "[Chief Balrog]";
-			mes "I've no doubt that if left unchecked, Satan Morroc will take over the entire Midgart Continent. We've got to stop him right now before the entire world suffers.";
+			mes "[隊長 巴祿]";
+			mes "照這樣下去不僅是這裡夢羅克，連整個米德加茲大陸都會遭殃...";
 			next;
-			mes "[Chief Balrog]";
-			mes "That's why the kingdom has ordered us elite soldiers to form the Continental Guard, and recruit reputable adventurers around the world so that we can make a united stand against Satan Morroc.";
+			mes "[隊長 巴祿]";
+			mes "所以在王國的一聲詔令下，將最精銳部隊和聲名遠播的冒險家們聚集後組成討伐大隊以阻止魔王的侵犯";
 			next;
-			mes "[Chief Balrog]";
-			mes "Of course, it'll be incredibly difficult... We'll need to make sacrifices... I'm not even sure if we can win. Still, the fate of the world is at stake, and we've got to do something. Dark times have truly fallen upon us...";
+			mes "[隊長 巴祿]";
+			mes "當然很辛苦... 也不能保證結果如何...";
+			mes "但我們打死不退，為了這世界的未來...";
+			next;
+			mes "[隊長 巴祿]";
+			mes "勸你在這危險的時勢下回家好好孝順父母及過自己的生活吧";
 			close;
 		case 2:
-			mes "[Chief Balrog]";
-			mes "Huh? Do you want to join us and volunteer for the Continental Guard?";
+			mes "[隊長 巴祿]";
+			mes "什麼?... 嗯...";
+			mes "你也想加入我們洲際衛隊隊員嗎?";
 			next;
 			if (BaseLevel > 79) {
-				mes "[Chief Balrog]";
-				mes "What was your name? " + strcharinfo(0) + "? Oh yes, I've heard of you.";
+				mes "[隊長 巴祿]";
+				mes "嗯... 你叫什麼大名呢? 是" + strcharinfo(0) + "嗎?";
+				mes "嗯... 我也對你認識一些";
 				next;
-				mes "[Chief Balrog]";
-				mes "Hmm, it occurs to me that you don't understand the danger involved in all this. Do you have any idea how powerful Satan Morroc is?";
+				mes "[隊長 巴祿]";
+				mes "不過你可能還不清楚這件事情非同小可，魔王夢羅克你沒聽過嗎? 對象正是魔王";
 				next;
-				mes "[Chief Balrog]";
-				mes "You won't be able to help us if you don't fully understand the risks. I've seen thousands of foolhardy adventurers throw their lives away by thinking they could defeat Satan Morroc with their own strength.";
+				mes "[隊長 巴祿]";
+				mes "不要逞強了，你知道每天有多少像你一樣的菜鳥為了虛榮心而硬要加入我們的嗎?";
 				next;
-				mes "[Chief Balrog]";
-				mes "We are facing a threat that will determine the world's future, and fools that can't work in a team will be liabilities, not assets.";
+				mes "[隊長 巴祿]";
+				mes "雖說這關係著大陸命運的重大事件，但我只需要可以勝任此任務的優秀手下而已";
 				next;
-				mes "[Chief Balrog]";
-				mes "I'm sorry, but inexperienced adventurers would just get in our way. I hope you understand. If you really want to help us, then please focus on your training for now.";
+				mes "[隊長 巴祿]";
+				mes "如果有笨拙的冒險家來插一腳的話，反而會牽連我寶貴的手下，我不能放任這種事情發生，請你回去吧";
 				next;
-				switch(select("End Conversation:Ask Again")) {
+				switch(select("結束對話:再次要求加入洲際衛隊")) {
 				case 1:
 					close;
 				case 2:
-					mes "[Chief Balrog]";
-					mes "Look, I understand your enthusiasm, but you're mistaken if you think you can help us. I don't have time to fully explain the danger that we're all facing.";
+					mes "[隊長 巴祿]";
+					mes "不行... 以你現在的實力無法加入，你還不明白這是多麼危險的事情嗎";
 					next;
-					mes "[Chief Balrog]";
-					mes "Satan Morroc is nothing like the monsters you may have encountered. At best you'll throw your life away, but there's the chance that you might get one of my men killed by your mistakes and incompetence. I can't have that!";
+					mes "[隊長 巴祿]";
+					mes "你要尊重自己的生命懂嗎?";
+					mes "魔王的恐怖跟你之前消滅的魔物是皆然不同的";
 					next;
-					mes "[Chief Balrog]";
-					mes "Please understand that this is for your own good. Fight some Porings or whatever else might be a good match for your level.";
+					mes "[隊長 巴祿]";
+					mes "我是因為非常擔憂你的安危才說的，最好把你的精力用在消滅波利的地方吧";
 					next;
-					switch(select("End Conversation:You've just got to let me join!")) {
+					switch(select("結束對話:我一定要加入洲際衛隊")) {
 					case 1:
 						close;
 					case 2:
-						mes "[Chief Balrog]";
-						mes "Sigh... Why are you so persistent? Can't you understand that no means no? Let me say this one more time.";
+						mes "[隊長 巴祿]";
+						mes "哈哈... 年輕人還真是固執，我看你是吃了熊心豹子膽吧，我再說一次";
 						next;
-						mes "[Chief Balrog]";
-						mes "We're too busy fighting Satan Morroc to watch after rookies like you. You'd just be throwing your life away.";
+						mes "[隊長 巴祿]";
+						mes "以現在極度危險的處境之下，無法讓菜鳥加入，那些死去的士兵們不覺得可憐嗎?";
 						next;
-						mes "[Chief Balrog]";
-						mes "Stop bothering me. You'd be nothing but a burden.";
+						mes "[隊長 巴祿]";
+						mes "像你一樣的冒險家已經屍橫遍野，所以別再來煩我了，你的加入只會拖累我們而已";
 						next;
-						switch(select("Give Up:Give me a chance to prove myself!")) {
+						switch(select("放棄:證明我的實力")) {
 						case 1:
 							close;
 						case 2:
-							mes "[Chief Balrog]";
-							mes "Huh? You want a chance to prove yourself?";
+							mes "[隊長 巴祿]";
+							mes "什麼? 你是說要證明你的實力嗎?";
+							mes "嗯嗯...";
 							next;
 							mes "[" + strcharinfo(0) + "]";
-							mes "Yes, I'll do whatever it takes to join the Continental Guard!";
+							mes "我證明實力給你看的話，就讓我加入洲際衛隊吧";
 							next;
-							mes "[Chief Balrog]";
-							mes "Hmm...";
+							mes "[隊長 巴祿]";
+							mes "嗯...";
 							next;
-							mes "[Chief Balrog]";
-							mes "Interesting. You have my attention. Alright, I guess it's only fair that I acknowledge your strength if you can handle something for me.";
+							mes "[隊長 巴祿]";
+							mes "好吧，你好大的口氣就讓我瞧瞧你的本事吧，你若把這件事辦妥的話，我就承認你的實力";
 							next;
-							mes "[Chief Balrog]";
-							mes "The Continental Guard has been on full alert around this village and the desert. We need to be prepared in case Satan Morroc storms our defenses.";
+							mes "[隊長 巴祿]";
+							mes "我們洲際衛隊為了避免遭襲擊，於是２４小時的在這夢羅克村落和附近沙漠維持警戒";
 							next;
-							mes "[Chief Balrog]";
-							mes "Soldiers need firewood to keep the bonfires burning all night, but we've been suffering a firewood shortage.";
+							mes "[隊長 巴祿]";
+							mes "為了露營的士兵們我們用石清來生火，只是最近石清的供給量不足";
 							next;
-							mes "[Chief Balrog]";
-							mes "I happened to hear that the monsters in the Lava Dungeon have everlasting flame which would solve our bonfire problems. I want you to gather those flames for us.";
+							mes "[隊長 巴祿]";
+							mes "我聽說在熔岩洞穴和火山洞穴裡的魔物們";
+							mes "帶有不會熄滅的火種... 怎樣?";
+							mes "去收集那些火種來吧";
 							next;
-							switch(select("That's too hard! Let me think about it!:No problem.")) {
+							switch(select("不可能，再考慮一下:沒問題，難不到我")) {
 							case 1:
-								mes "[Chief Balrog]";
-								mes "Hmpf, I was right. I knew you wouldn't be able to handle such a simple task. I shouldn't have wasted my time with you.";
+								mes "[隊長 巴祿]";
+								mes "哼... 你在耍我嗎?";
+								mes "浪費我時間，快快退下";
 								close;
 							case 2:
-								mes "[Chief Balrog]";
-								mes "Excellent! Bring back ^0000FF30 Live Coals^000000. I'll be waiting for your return.";
+								mes "[隊長 巴祿]";
+								mes "很好，我就拭目以待吧，是 ^0000FF火種 30個^000000";
+								mes "記住了嗎?";
 								set rebirth_moc_edq,2;
 								changequest 3050,3051;
 								close;
@@ -1408,19 +1407,19 @@ morocc,159,113,3	script	Chief Balrog	752,{
 				}
 			}
 			else {
-				mes "[Chief Balrog]";
+				mes "[隊長 巴祿]";
 				mes "What? How can you even think of joining us when you don't have any real skills to offer?";
 				next;
-				mes "[Chief Balrog]";
+				mes "[隊長 巴祿]";
 				mes "I guarantee that you'd just drag my soldiers down with you. You'd only be a threat to Satan Morroc in your dreams. Just give it up.";
 				next;
-				mes "[Chief Balrog]";
+				mes "[隊長 巴祿]";
 				mes "You won't be able to help us if you don't fully understand the risks. I've seen thousands of foolhardy adventurers throw their lives away by thinking they could defeat Satan Morroc with their own strength.";
 				next;
-				mes "[Chief Balrog]";
+				mes "[隊長 巴祿]";
 				mes "We are facing a threat that will determine the world's future, and fools that can't work in a team will be liabilities, not assets.";
 				next;
-				mes "[Chief Balrog]";
+				mes "[隊長 巴祿]";
 				mes "I'm sorry, but inexperienced adventurers would just get in our way. I hope you understand. If you really want to help us, then please focus on your training for now.";
 				close;
 			}
@@ -1429,57 +1428,64 @@ morocc,159,113,3	script	Chief Balrog	752,{
 		}
 	}
 	else if (rebirth_moc_edq == 2) {
-		mes "[Chief Balrog]";
-		mes "So, did you find ^0000FF30 Live Coals^000000? You didn't come empty-handed, did you?";
+		mes "[隊長 巴祿]";
+		mes "你 ^0000FF火種 30個^000000 帶來了嗎?";
+		mes "你不會擱下大話卻是兩手空空的吧?";
 		next;
 		if (countitem(7098) > 29) {
-			mes "[Chief Balrog]";
-			mes "Let's see... One, two, three... Thirty, you've brought them all. Well, this was a pretty simple task. All it takes is time and a little effort. Anyone could do it.";
+			mes "[隊長 巴祿]";
+			mes "嗯... 一二三...";
+			mes "數量沒錯，這是基本功力，不要退縮";
 			next;
-			mes "[Chief Balrog]";
-			mes "Anyways, thank you for bringing the Live Coals. I guess you're stronger than I thought.";
-			next;
-			mes "[" + strcharinfo(0) + "]";
-			mes "Now will you let me join the Continental Guard?";
-			next;
-			mes "[Chief Balrog]";
-			mes "No, gathering these flames is a piece of cake compared to what we're going to do.";
-			next;
-			mes "[Chief Balrog]";
-			mes "I'm still not convinced that you're good enough to join us. Let me think... Hmm...";
+			mes "[隊長 巴祿]";
+			mes "總之謝謝你的火種，你比想像中更優秀";
 			next;
 			mes "[" + strcharinfo(0) + "]";
-			mes "I didn't think you would accept me so easily. I'm ready. Ask me whatever you want.";
+			mes "那你願意讓我加入洲際衛隊嗎?";
 			next;
-			mes "[Chief Balrog]";
-			mes "Ah, I've got an idea. Now, because this is an allied operation, we've accepted some mercenary soldiers from the Schwaltzvalt Republic to join the Continental Guard.";
+			mes "[隊長 巴祿]";
+			mes "呵! 你說什麼...";
+			mes "如果事情這麼簡單當初就不會拒絕你的";
 			next;
-			mes "[Chief Balrog]";
-			mes "These mercenaries have never seen the desert, and they're having trouble carrying out operations in the heat, dry air, and sandstorms. It's not their fault, but they could use a little help since they're out of their element.";
+			mes "[隊長 巴祿]";
+			mes "我想一下... 嗯嗯...";
 			next;
 			mes "[" + strcharinfo(0) + "]";
-			mes "(This guy seems threatening, but he seems to have a good heart.)";
+			mes "我也想應該沒這麼簡單，所以盡量測試我吧";
 			next;
-			mes "[Chief Balrog]";
-			mes "Now, I remember hearing that the monsters in the Ice Cave to the north have frozen hearts. Those hearts might be able to relieve those soldiers from the heat.";
+			mes "[隊長 巴祿]";
+			mes "你別催我等一下，嗯...";
 			next;
-			switch(select("That's too hard!:No problem. How many do you want?")) {
+			mes "[隊長 巴祿]";
+			mes "對了";
+			mes "你可以做這個，其實我的部隊並非全由米德加茲王過的士兵所組成，有些是從北部編入的傭兵，還有以秀發茲發德聯合名義併入的士兵等等...";
+			next;
+			mes "[隊長 巴祿]";
+			mes "問題是他們未曾在沙漠中執行過任務，有些人甚至連沙漠也沒看過，不知這些人是否能頂得住沙漠的熱氣和風沙...";
+			next;
+			mes "[" + strcharinfo(0) + "]";
+			mes "(原來他是個善解人意的人...)";
+			next;
+			mes "[隊長 巴祿]";
+			mes "聽說在北方冰洞穴處有出沒擁有冰心臟的魔物，如果能有那些士兵也不容易中暑了...";
+			next;
+			switch(select("我無能為力:我去收集，需要多少呢?")) {
 			case 1:
-				mes "[Chief Balrog]";
-				mes "I knew that'd be too tough for you. I'm glad you finally realized your limits before it was too late. It takes wisdom to recognize your weakness.";
+				mes "[隊長 巴祿]";
+				mes "現在退出還來得及，我當初還擔心被你的匹夫之勇害死自己";
 				next;
-				mes "[Chief Balrog]";
-				mes "You'd better pack up and return where you came from. You want to be far away from here when Satan Morroc attacks.";
+				mes "[隊長 巴祿]";
+				mes "那麼最好你快點躲到安全的地方吧，以免遭遇不測";
 				close;
 			case 2:
-				mes "[Chief Balrog]";
-				mes "Huh?! Are you sure you can bring those? Hmm...";
+				mes "[隊長 巴祿]";
+				mes "什麼? 你真的願意去收集嗎? 嗯嗯...";
 				next;
-				mes "[Chief Balrog]";
-				mes "Well... If you insist on giving it a try, then... I'll need at least 50 of those frozen hearts.";
+				mes "[隊長 巴祿]";
+				mes "我需要的數量不少喔，至少要有 50個";
 				next;
-				mes "[Chief Balrog]";
-				mes "Please bring me ^0000FF50 Glacial Hearts^000000. The faster you get them here, the better.";
+				mes "[隊長 巴祿]";
+				mes "怎麼樣? 帶給我 ^0000FF冰心臟 50個^000000吧，當然越快越好";
 				delitem 7098,30; //Live_Coal
 				set rebirth_moc_edq,3;
 				changequest 3051,3052;
@@ -1487,374 +1493,401 @@ morocc,159,113,3	script	Chief Balrog	752,{
 			}
 		}
 		else {
-			mes "[Chief Balrog]";
-			mes "Umm... Didn't you hear what I said? I said 30 Live Coals, 30.";
+			mes "[隊長 巴祿]";
+			mes "喂... 你沒聽清楚嗎? 需要火種 30個，火種 30個啦";
 			next;
-			mes "[Chief Balrog]";
-			mes "Now hurry up. If you feel like giving up, it's no problem. Let me know, though!";
+			mes "[隊長 巴祿]";
+			mes "你快去吧，不然你也可以隨時放棄啦...";
 			close;
 		}
 	}
 	else if (rebirth_moc_edq == 3) {
-		mes "[Chief Balrog]";
-		mes "So, did you find 50 Glacial Hearts?";
+		mes "[隊長 巴祿]";
+		mes "你好嗎? 冰心臟 50個都收齊了嗎?";
 		next;
 		if (countitem(7561) > 49) {
-			mes "[Chief Balrog]";
-			mes "Thank you. I'm sure that my soldiers will appreciate these... Those guys aren't used to the desert, and could use the relief.";
+			mes "[隊長 巴祿]";
+			mes "嗯... 辛苦了，我會好好使用你帶來的冰心臟";
 			next;
-			mes "[Chief Balrog]";
-			mes "Well... It looks like you earned this.";
+			mes "[隊長 巴祿]";
+			mes "這個請你收下吧";
 			delitem 7561,50; //Ice_Heart
 			getitem 7826,1; //Continental_Guard_Paper
 			set rebirth_moc_edq,4;
 			changequest 3052,3053;
 			next;
 			mes "[" + strcharinfo(0) + "]";
-			mes "What's this?";
+			mes "這是...?";
 			next;
-			mes "[Chief Balrog]";
-			mes "You'd know if you read it. It's a certificate that proves that you're a member of the Continental Guard. I admit that I'm impressed by your skills and gumption.";
+			mes "[隊長 巴祿]";
+			mes "就是承認你成為我們洲際衛隊隊員的證書，我也不得不佩服你的英勇表現";
 			next;
-			mes "[Chief Balrog]";
-			mes "Welcome to the Continental Guard, my friend. Are you ready to risk your life for the sake of peace in the world?";
+			mes "[隊長 巴祿]";
+			mes "從現在起將與你一起行動，你準備好了嗎? 要有犧牲自己的打算喔";
 			next;
-			mes "[Chief Balrog]";
-			mes "Your mission from here on will be simple, but extremely difficult: you will join the rest of the Continental Guard to keep Satan Morroc from fully reviving its true power.";
+			mes "[隊長 巴祿]";
+			mes "現在你要做的事情說容易又不簡單，請你與加入洲際衛隊的隊員攜手消滅魔王夢羅克以全面阻止其復活吧";
 			next;
-			mes "[Chief Balrog]";
-			mes "My soldiers are risking their lives to fight Morroc's doppelgangers and underlings in order to make it safer for their comrades to travel to Morroc's lair.";
+			mes "[隊長 巴祿]";
+			mes "前往夢羅克出沒地區的路上，現在由我們的隊員拼死封鎖使傷害降到最少，並與魔王的的手下激烈的廝殺之中";
 			next;
-			mes "[Chief Balrog]";
-			mes "It looks like your help could be useful after all. It's time for you to pitch in. Good luck.";
+			mes "[隊長 巴祿]";
+			mes "現在輪到各位大顯身手的時候了，祝大家好運囉";
 			close;
 		}
 		else {
-			mes "[Chief Balrog]";
-			mes "Umm... Didn't you hear what I said? I said 50 Glacial Hearts, 50.";
+			mes "[隊長 巴祿]";
+			mes "喂... 你沒聽清楚嗎? 需要冰心臟 50個，冰心臟 50個啦";
 			next;
-			mes "[Chief Balrog]";
-			mes "Now hurry up. If you feel like giving up, it's no problem. Let me know, though!";
+			mes "[隊長 巴祿]";
+			mes "你快去吧，不然你也可以隨時放棄啦?...";
 			close;
 		}
 	}
 	else if (rebirth_moc_edq == 4) {
-		mes "[Chief Balrog]";
-		mes "I guess you'd benefit from a full situational briefing. Shall I brief you now?";
+		mes "[隊長 巴祿]";
+		mes "原來如此...";
+		mes "好像是我沒有仔細向你說明這附近的現況";
+		mes "... 你想聽嗎?";
 		next;
-		switch(select("Yes:No")) {
+		switch(select("我想聽聽看:我不想聽")) {
 		case 1:
-			mes "[Chief Balrog]";
-			mes "I'm going to tell you some basic information about fighting Satan Morroc as a member of the Continental Guard.";
+			mes "[隊長 巴祿]";
+			mes "我要告訴你的是身為洲際衛隊隊員，對抗魔王夢羅克時應該要知道的情報";
 			next;
-			mes "[Chief Balrog]";
-			mes "Do you remember what Morroc was like before this happened? You would if you've been here before.";
+			mes "[隊長 巴祿]";
+			mes "你還記得這事態發展之前的夢羅克嗎? 當然我想你之前也許未曾來過...";
 			next;
-			mes "[Chief Balrog]";
-			mes "Right now, all of Morroc's entrances and the outer fields leading to other villages are currently under our control.";
+			mes "[隊長 巴祿]";
+			mes "你也知道目前夢羅克城內的各入口和通往其他村落的外圍原野皆有我們洲際衛隊管控中";
 			next;
-			mes "[Chief Balrog]";
-			mes "The main reason for this is because Satan Morroc has been sighted in Sograt Desert, but there's another important reason.";
+			mes "[隊長 巴祿]";
+			mes "理由除了是因魔王的復活，讓目前在蘇克拉特沙漠上出沒的魔物增加了危險性... 但還有其他原因";
 			next;
-			mes "[Chief Balrog]";
-			mes "Satan Morroc's power has been causing unnatural gaps in our time-space continuum. The gaps are isolated to this area for now, but we can't be sure if they'll spread.";
+			mes "[隊長 巴祿]";
+			mes "魔王夢羅克的強大力量引起了時空次元的龜裂，雖然目前只影響到這附近而已... 但早晚會波及到其他地方";
 			next;
-			mes "[Chief Balrog]";
-			mes "Due to the time-space gaps, Sograt Desert's terrain has changed, and some parts of the desert have disappeared.";
+			mes "[隊長 巴祿]";
+			mes "因受時空次元的龜裂，使現在的夢羅克沙漠都變形，甚至有些地方憑空消失的異常現象";
 			next;
-			mes "[Chief Balrog]";
-			mes "Furthermore, the situation's gotten worse since Satan Morroc's doppelgangers started appearing, and other monsters have become influenced by its power.";
+			mes "[隊長 巴祿]";
+			mes "另外歸順於魔王勢力的強大魔物們與魔王的幻影們繼續大量出現，造成嚴重的威脅";
 			next;
-			mes "[Chief Balrog]";
-			mes "That's all we know so far. If you go out, you'll see what I mean... You may even see horrors that we haven't discovered yet. If you need more information, please speak to the Continental Official.";
+			mes "[隊長 巴祿]";
+			mes "其實你也可以親自去證實... 我們所得到的情報舊這些了，更詳細的你去問洲際衛隊行政官吧";
 			next;
-			mes "[Chief Balrog]";
-			mes "Please do your best to hold back Satan Morroc. Don't forget that the future of the continent is in our hands. Dismissed.";
+			mes "[隊長 巴祿]";
+			mes "別忘了這大陸的未來掌握在我們的手裡，請你全力以赴去阻止魔王，我說完了";
 			close;
 		case 2:
-			mes "[Chief Balrog]";
-			mes "I see. Keep up your good work in fighting Satan Morroc. Don't forget that the future of the continent is in our hands.";
+			mes "[隊長 巴祿]";
+			mes "是嗎? 知道了... 那麼去跟隊員們專心完成任務吧，如果我們不能壓制魔王的話，這大陸也就沒未來了";
 			close;
 		}
 	}
 	else if (rebirth_moc_edq == 5) {
-		mes "[Chief Balrog]";
-		mes "Wah... What? Did you really defeat Satan Morroc?";
+		mes "[隊長 巴祿]";
+		mes "什麼? 你說擊敗了魔王夢羅克嗎?";
 		next;
-		mes "[Chief Balrog]";
-		mes "How? Do you have any proof of your victory?";
+		mes "[隊長 巴祿]";
+		mes "那魔王現在怎麼樣了呢?";
+		mes "擊敗的證據呢?";
 		next;
-		mes "[Chief Balrog]";
+		mes "[隊長 巴祿]";
 		mes "...No, I can't just accept and trust your verbal account. I mean, if you've completed such an important mission, you must bring me some evidence.";
 		next;
-		mes "[Chief Balrog]";
+		mes "[隊長 巴祿]";
 		mes "Go back, bring proof of your victory, and then come back.";
 		close;
 	}
 	else if (rebirth_moc_edq == 6) {
-		mes "[Chief Balrog]";
-		mes "What? Did you really defeat Satan Morroc?";
+		mes "[隊長 巴祿]";
+		mes "什麼? 你說擊敗了魔王夢羅克嗎?";
 		next;
-		mes "[Chief Balrog]";
-		mes "How? Do you have any proof of your victory?";
+		mes "[隊長 巴祿]";
+		mes "那魔王現在怎麼樣了呢?";
+		mes "擊敗的證據呢?";
 		next;
 		if (countitem(7820) > 0) {
-			mes "[Chief Balrog]";
-			mes "Is... Isn't this?";
+			mes "[隊長 巴祿]";
+			mes "這...這是...";
 			next;
-			mes "[Chief Balrog]";
-			mes "Wow... I think this is really the skin of Satan Morroc. Congratulations, soldier. You just saved this world and people from being consumed by destruction and evil.";
+			mes "[隊長 巴祿]";
+			mes "嗯...";
+			mes "應該沒錯，我高度肯定你的功勞，這大陸都幸好你才轉危為安了";
 			next;
-			mes "[Chief Balrog]";
-			mes "I guess you seriously wounded Satan Morroc, and it retreated to a time-space gap. No doubt it's trying to recoup its strength.";
+			mes "[隊長 巴祿]";
+			mes "我看樣子";
+			mes "魔王夢羅克是遭受到你們嚴重的傷害後，躲入時空的縫隙裡了";
 			next;
-			mes "[Chief Balrog]";
-			mes "My only regret is that we can't pursue Morroc beyond this dimension. I'm glad, however, that you defeated Satan Morroc and kept it from regaining its full strength. For now, anyway...";
+			mes "[隊長 巴祿]";
+			mes "令人婉惜的是我們目前沒能力跑到時空的另一邊去追殺夢羅克，但至少成功的阻止了魔王的再度降臨，可以暫時喘一口氣了...";
 			next;
-			mes "[Chief Balrog]";
-			mes "Our researchers might be able to learn some important new facts from this piece of skin... We need to learn all we can about that monster if peace is to be possible in our world's future.";
+			mes "[隊長 巴祿]";
+			mes "這碎片...";
+			mes "可以提供給我們豐富的有關未來魔王的步調和對策的情報";
 			next;
-			mes "[Chief Balrog]";
-			mes "Once again, I thank you for your distinguished service on behalf of the Continental Guard and the Rune-Midgarts Kingdom. I'll report your great achievement to His Majesty right away.";
+			mes "[隊長 巴祿]";
+			mes "首先對你的功勞我代表洲際衛隊和米德加茲王國向你表示十萬分的謝意，我會秉告陛下的";
 			next;
 			delitem 7820,1; //Morroc_Skin
-			getexp (checkre(3))?200000:2000000,0;
+			getexp 2000000,0;
 			set rebirth_moc_edq,7;
 			changequest 3055,3056;
-			mes "[Chief Balrog]";
-			mes "I've prepared a few things to give as a reward for you. Let's see... I have three items. Which one do you like to receive?";
+			mes "[隊長 巴祿]";
+			mes "我準備了幾項獎勵品，我看看...";
+			mes "共有三件你來挑選吧?";
 			next;
-			switch(select("1. Seal of Continental Guard:2. Morroc Charm Stone:3. Morroc Ring")) {
+			switch(select("1. 洲際衛隊的印鑑:2. 盧恩文字咒語石:3.死亡之扣環")) {
 			case 1:
-				mes "[Chief Balrog]";
-				mes "The Seal of Continental Guard is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
+				mes "[隊長 巴祿]";
+				mes "洲際衛隊的印鑑是強韌的象徵，這是由王國所親賜的珍貴物品";
 				next;
-				mes "[Chief Balrog]";
-				mes "The accessory's options are: ^0000FF MHP+50, +3% Attack Speed^000000.";
+				mes "[隊長 巴祿]";
+				mes "^0000FF MHP+50，裝備時攻擊速度會增加";
+				mes "3%^000000效果的裝飾品";
 				next;
-				mes "[Chief Balrog]";
-				mes "Do you really want the Seal of Continental Guard?";
+				mes "[隊長 巴祿]";
+				mes "你要收下這個洲際衛隊的印鑑嗎?";
 				next;
-				switch(select("1. Yes.:2. No.")) {
+				switch(select("1. 收下:2. 改收別的東西")) {
 				case 1:
-					mes "[Chief Balrog]";
-					mes "Great, then I'll reward you with the Seal of Continental Guard. Congratulations.";
+					mes "[隊長 巴祿]";
+					mes "知道了，我會送你洲際衛隊的印鑑";
 					next;
 					getitem 2730,1; //Morroc_Seal
 					set rebirth_moc_edq,8;
 					completequest 3056;
-					mes "[Chief Balrog]";
-					mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+					mes "[隊長 巴祿]";
+					mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 					next;
-					mes "[Chief Balrog]";
-					mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+					mes "[隊長 巴祿]";
+					mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 					next;
-					mes "[Chief Balrog]";
-					mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+					mes "[隊長 巴祿]";
+					mes "辛苦你了...";
+					mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 					close;
 				case 2:
-					mes "[Chief Balrog]";
-					mes "No problem. Take your time to think, and then speak to me again.";
+					mes "[隊長 巴祿]";
+					mes "喔是嗎...";
+					mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 					close;
 				}
 			case 2:
-				mes "[Chief Balrog]";
-				mes "The Morroc Charm Stone is an extremely valuable reward given directly from the kingdom court, and it is a symbol of prosperity and mana.";
+				mes "[隊長 巴祿]";
+				mes "盧恩文字咒語石是充滿魔力的象徵，這是由王國所親賜的珍貴物品";
 				next;
-				mes "[Chief Balrog]";
-				mes "The accessory's options are: ^0000FF MSP+50, -1% Casting Speed^000000.";
+				mes "[隊長 巴祿]";
+				mes "";
+				mes "^0000FFMSP+50，效果的裝飾品裝備時施法延遲時";
+				mes "間會減少 1%^000000效果的裝飾品";
 				next;
-				mes "[Chief Balrog]";
-				mes "Do you really want a Morroc Charm Stone?";
+				mes "[隊長 巴祿]";
+				mes "你要收下這個盧恩文字咒語石嗎?";
 				next;
-				switch(select("1. Yes.:2. No.")) {
+				switch(select("1. 收下:2. 改收別的東西")) {
 				case 1:
-					mes "[Chief Balrog]";
-					mes "Great, then I'll reward you with a Morroc Charm Stone. Congratulations.";
+					mes "[隊長 巴祿]";
+					mes "知道了，我會送你盧恩文字咒語石";
 					next;
 					getitem 2731,1; //Morroc_Charm_Stone
 					set rebirth_moc_edq,8;
 					completequest 3056;
-					mes "[Chief Balrog]";
-					mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+					mes "[隊長 巴祿]";
+					mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 					next;
-					mes "[Chief Balrog]";
-					mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+					mes "[隊長 巴祿]";
+					mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 					next;
-					mes "[Chief Balrog]";
-					mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+					mes "[隊長 巴祿]";
+					mes "辛苦你了...";
+					mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 					close;
 				case 2:
-					mes "[Chief Balrog]";
-					mes "No problem. Take your time to think, and then speak to me again.";
+					mes "[隊長 巴祿]";
+					mes "喔是嗎...";
+					mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 					close;
 				}
 			case 3:
-				mes "[Chief Balrog]";
-				mes "The Morroc Ring is an extremely valuable reward given directly from the kingdom court that symbolizes critical power.";
+				mes "[隊長 巴祿]";
+				mes "死亡之扣環是致命力量的象徵，這是由王國所親賜的珍貴物品";
 				next;
-				mes "[Chief Balrog]";
-				mes "The accessory's option is: ^0000FF CRI + 5^000000.";
+				mes "[隊長 巴祿]";
+				mes "有^0000FF CRI + 5^000000  效果的裝飾品";
 				next;
-				mes "[Chief Balrog]";
-				mes "Do you really want a Morroc Ring?";
+				mes "[隊長 巴祿]";
+				mes "你要收下這個死亡之扣環嗎?";
 				next;
-				switch(select("1. Yes.:2. No.")) {
+				switch(select("1. 收下:2. 改收別的東西")) {
 				case 1:
-					mes "[Chief Balrog]";
-					mes "Great, then I'll reward you with a Morroc Ring. Congratulations.";
+					mes "[隊長 巴祿]";
+					mes "知道了，我會送你死亡之扣環";
 					next;
 					getitem 2732,1; //Morroc_Ring
 					set rebirth_moc_edq,8;
 					completequest 3056;
-					mes "[Chief Balrog]";
-					mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+					mes "[隊長 巴祿]";
+					mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 					next;
-					mes "[Chief Balrog]";
-					mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+					mes "[隊長 巴祿]";
+					mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 					next;
-					mes "[Chief Balrog]";
-					mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+					mes "[隊長 巴祿]";
+					mes "辛苦你了...";
+					mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 					close;
 				case 2:
-					mes "[Chief Balrog]";
-					mes "No problem. Take your time to think about it, and then speak to me again.";
+					mes "[隊長 巴祿]";
+					mes "喔是嗎...";
+					mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 					close;
 				}
 			}
 		}
 		else {
-			mes "[Chief Balrog]";
+			mes "[隊長 巴祿]";
 			mes "...No, I can't just accept and trust your verbal account. I mean, if you've completed such an important mission, you must bring me some evidence.";
 			next;
-			mes "[Chief Balrog]";
+			mes "[隊長 巴祿]";
 			mes "Go back, bring proof of your victory, and then come back.";
 			close;
 		}
 	}
 	else if (rebirth_moc_edq == 7) {
-		mes "[Chief Balrog]";
-		mes "I've prepared a few things to give as a reward for you. Let's see... I have three items. Which one do you like to receive?";
+		mes "[隊長 巴祿]";
+		mes "我準備了幾項獎勵品，我看看...";
+		mes "共有三件你來挑選吧?";
 		next;
-		switch(select("1. Seal of Continental Guard:2. Morroc Charm Stone:3. Morroc Ring")) {
+		switch(select("1. 洲際衛隊的印鑑:2. 盧恩文字咒語石:3.死亡之扣環")) {
 		case 1:
-			mes "[Chief Balrog]";
-			mes "The Seal of Continental Guard is an extremely valuable reward given directly from the kingdom court. It is a symbol of strength.";
+			mes "[隊長 巴祿]";
+			mes "洲際衛隊的印鑑是強韌的象徵，這是由王國所親賜的珍貴物品";
 			next;
-			mes "[Chief Balrog]";
-			mes "The accessory's options are: ^0000FF MHP+50, +3% Attack Speed^000000.";
+			mes "[隊長 巴祿]";
+			mes "^0000FF MHP+50，裝備時攻擊速度會增加";
+			mes "3%^000000效果的裝飾品";
 			next;
-			mes "[Chief Balrog]";
-			mes "Do you really want the Seal of Continental Guard?";
+			mes "[隊長 巴祿]";
+			mes "你要收下這個洲際衛隊的印鑑嗎?";
 			next;
-			switch(select("1. Yes.:2. No.")) {
+			switch(select("1. 收下:2. 改收別的東西")) {
 			case 1:
-				mes "[Chief Balrog]";
-				mes "Great, then I'll reward you with the Seal of Continental Guard. Congratulations.";
+				mes "[隊長 巴祿]";
+				mes "知道了，我會送你洲際衛隊的印鑑";
 				next;
 				getitem 2730,1; //Morroc_Seal
 				set rebirth_moc_edq,8;
 				completequest 3056;
-				mes "[Chief Balrog]";
-				mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+				mes "[隊長 巴祿]";
+				mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 				next;
-				mes "[Chief Balrog]";
-				mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+				mes "[隊長 巴祿]";
+				mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 				next;
-				mes "[Chief Balrog]";
-				mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+				mes "[隊長 巴祿]";
+				mes "辛苦你了...";
+				mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 				close;
 			case 2:
-				mes "[Chief Balrog]";
-				mes "No problem. Take your time to think, and then speak to me again.";
+				mes "[隊長 巴祿]";
+				mes "喔是嗎...";
+				mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 				close;
 			}
 		case 2:
-			mes "[Chief Balrog]";
-			mes "The Morroc Charm Stone is an extremely valuable reward given directly from the kingdom court, and it is a symbol of prosperity and mana.";
+			mes "[隊長 巴祿]";
+			mes "盧恩文字咒語石是充滿魔力的象徵，這是由王國所親賜的珍貴物品";
 			next;
-			mes "[Chief Balrog]";
-			mes "The accessory's options are: ^0000FF MSP+50, -1% Casting Speed^000000.";
+			mes "[隊長 巴祿]";
+			mes "";
+			mes "^0000FFMSP+50，效果的裝飾品裝備時施法延遲時";
+			mes "間會減少 1%^000000效果的裝飾品";
 			next;
-			mes "[Chief Balrog]";
-			mes "Do you really want a Morroc Charm Stone?";
+			mes "[隊長 巴祿]";
+			mes "你要收下這個盧恩文字咒語石嗎?";
 			next;
-			switch(select("1. Yes.:2. No.")) {
+			switch(select("1. 收下:2. 改收別的東西")) {
 			case 1:
-				mes "[Chief Balrog]";
-				mes "Great, then I'll reward you with a Morroc Charm Stone. Congratulations.";
+				mes "[隊長 巴祿]";
+				mes "知道了，我會送你盧恩文字咒語石";
 				next;
 				getitem 2731,1; //Morroc_Charm_Stone
 				set rebirth_moc_edq,8;
 				completequest 3056;
-				mes "[Chief Balrog]";
-				mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+				mes "[隊長 巴祿]";
+				mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 				next;
-				mes "[Chief Balrog]";
-				mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+				mes "[隊長 巴祿]";
+				mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 				next;
-				mes "[Chief Balrog]";
-				mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+				mes "[隊長 巴祿]";
+				mes "辛苦你了...";
+				mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 				close;
 			case 2:
-				mes "[Chief Balrog]";
-				mes "No problem. Take your time to think, and then speak to me again.";
+				mes "[隊長 巴祿]";
+				mes "喔是嗎...";
+				mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 				close;
 			}
 		case 3:
-			mes "[Chief Balrog]";
-			mes "The Morroc Ring is an extremely valuable reward given directly from the kingdom court that symbolizes critical power.";
+			mes "[隊長 巴祿]";
+			mes "死亡之扣環是致命力量的象徵，這是由王國所親賜的珍貴物品";
 			next;
-			mes "[Chief Balrog]";
-			mes "The accessory's option is: ^0000FF CRI + 5^000000.";
+			mes "[隊長 巴祿]";
+			mes "有^0000FF CRI + 5^000000  效果的裝飾品";
 			next;
-			mes "[Chief Balrog]";
-			mes "Do you really want a Morroc Ring?";
+			mes "[隊長 巴祿]";
+			mes "你要收下這個死亡之扣環嗎?";
 			next;
-			switch(select("1. Yes.:2. No.")) {
+			switch(select("1. 收下:2. 改收別的東西")) {
 			case 1:
-				mes "[Chief Balrog]";
-				mes "Great, then I'll reward you with a Morroc Ring. Congratulations.";
+				mes "[隊長 巴祿]";
+				mes "知道了，我會送你死亡之扣環";
 				next;
 				getitem 2732,1; //Morroc_Ring
 				set rebirth_moc_edq,8;
 				completequest 3056;
-				mes "[Chief Balrog]";
-				mes "I hope you keep in mind that our battle is far from over. Our enemy is the king of demons... I fear that Satan Morroc will return someday soon.";
+				mes "[隊長 巴祿]";
+				mes "不過我想你也知道這一切尚未結束，畢竟對方也不是省油的燈...";
 				next;
-				mes "[Chief Balrog]";
-				mes "Enjoy your victory, but be ever watchful and vigilant. I will always be here to help and reward you for your service.";
+				mes "[隊長 巴祿]";
+				mes "請你不要鬆懈繼續刺探敵情和保持巡邏吧，當然我會準備適當的獎勵";
 				next;
-				mes "[Chief Balrog]";
-				mes "You should go rest now. Don't worry, we'll take care of everything else here.";
+				mes "[隊長 巴祿]";
+				mes "辛苦你了...";
+				mes "你可以放心的回去休息和享樂了，這裡就交給我們吧...";
 				close;
 			case 2:
-				mes "[Chief Balrog]";
-				mes "No problem. Take your time to think about it, and then speak to me again.";
+				mes "[隊長 巴祿]";
+				mes "喔是嗎...";
+				mes "明白了，那麼請你挑選其它東西，慢慢想吧";
 				close;
 			}
 		}
 	}
 	else if (rebirth_moc_edq == 8) {
-		mes "[Chief Balrog]";
-		mes "I've heard that the kingdom is planning to send out a large group of researchers to investigate the other world to which Satan Morroc has escaped.";
+		mes "[隊長 巴祿]";
+		mes "據說王國現正準備派遣大規模的研究員去調查魔王夢羅克在異界所造成的騷動";
 		next;
-		mes "[Chief Balrog]";
-		mes "That means it's time for both of us -- you and I -- to get to work. Who knows when Morroc will return to plague us?";
+		mes "[隊長 巴祿]";
+		mes "現在起你和我都要馬不停蹄的忙碌了，逃往異界後消失的魔王也不知何時會再出現...";
 		next;
-		mes "[Chief Balrog]";
-		mes "Please keep up the good work, and don't forget that the future of the continent and the kingdom relies on us.";
+		mes "[隊長 巴祿]";
+		mes "往後也要多麻煩你了，請你記住這大陸的存亡與否都掌握在你我的手裡";
 		close;
 	}
 	else {
-		mes "[Chief Balrog]";
-		mes "You've come here at a bad time, but it's nice to meet you. I'm Continental Guard Chief Balrog. We've been dispatched to Morroc in order to suppress Satan Morroc... We'll need all the strength and luck we can gather.";
+		mes "[隊長 巴祿]";
+		mes "年輕人你不幸在這非常時期來到了夢羅克，我是被派來阻止魔王夢羅克復活的洲際衛隊隊長巴祿";
 		next;
-		mes "[Chief Balrog]";
-		mes "I'm sorry, but I'm too busy checking through all these applications for future Continental Guards to greet you adventurers one by one.";
+		mes "[隊長 巴祿]";
+		mes "我實在太忙了無法一一向你這樣的冒險家說明，請你去找這附近的其他人吧";
 		next;
-		mes "[Chief Balrog]";
-		mes "Listen, it might be more helpful if you talk to some other people first. I'm sure one of the other Continental Guards or our messengers will be better equipped to help you out.";
+		mes "[隊長 巴祿]";
+		mes "我目前正忙於挑選要加入我們洲際衛隊的新血人才";
 		close;
 	}
 }
@@ -1884,15 +1917,15 @@ OnEnable:
 	end;
 
 OnTimer5000:
-	mapannounce "moc_fild21","Satan Morroc: I'm very impressed by you weaklings.",bc_map,"0xFFFF00";
+	mapannounce "moc_fild21","魔王夢羅克 : 連昆蟲都不如的你們，勇氣真是可嘉啊...",bc_map,"0xFFFF00";
 	end;
 
 OnTimer15000:
-	mapannounce "moc_fild21","Satan Morroc: You may as well deal with all your regrets now. I shall snuff out your life soon!",bc_map,"0xFFFF00";
+	mapannounce "moc_fild21","魔王夢羅克 : 現在想後悔也來不及了，甚至連後悔的時間也不會有的...",bc_map,"0xFFFF00";
 	end;
 
 OnTimer25000:
-	mapannounce "moc_fild21","Satan Morroc: It's only a matter of time until I get you, you worthless insects. Just a little while longer...",bc_map,"0xFFFF00";
+	mapannounce "moc_fild21","魔王夢羅克 : 再等一下吧... 可憐的傢伙們，再等一下下...",bc_map,"0xFFFF00";
 	stopnpctimer;
 	end;
 
@@ -1901,14 +1934,14 @@ OnDisable:
 	end;
 }
 
-moc_fild21,178,239,0	script	Group of Evil#edq	844,1,1,{
+moc_fild21,178,239,0	script	黑暗之徒#edq	844,1,1,{
 	if (((rebirth_moc_edq == 4) || (rebirth_moc_edq == 7)) && ($@re_moc == 1)) {
-		mes "Awed by the time-space gap where darkness is given life, you instinctively step back.";
+		mes "望著無法形容的巨大黑暗時空的縫隙處，被那壓迫感驚嚇而不自主的向後退了幾步";
 		next;
-		mes "You can feel the power of the darkness rise from the gap where light and darkness are mingled.";
+		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感覺到強烈的陰森氣息";
 		next;
 		mes "[" + strcharinfo(0) + "]";
-		mes "Wah...!";
+		mes "嗚... 嗚嗚";
 		close2;
 		if($@re_moc == 1) {
 			set $@re_moc,2;
@@ -1917,59 +1950,60 @@ moc_fild21,178,239,0	script	Group of Evil#edq	844,1,1,{
 		end;
 	}
 	else {
-		mes "Awed by the time-space gap where darkness is given life, you instinctively step back.";
+		mes "望著無法形容的巨大黑暗時空的縫隙處，被那壓迫感驚嚇而不自主的後退了幾步";
 		next;
-		mes "You can feel the power of the darkness rise from the gap where light and darkness are mingled.";
+		mes "在充滿光芒與黑暗渾沌的時空縫隙上，感覺到強烈的陰森氣息";
 		close;
 	}
 
 OnInit:
-	enablenpc "Group of Evil#edq";
+	enablenpc "黑暗之徒#edq";
 	end;
 
 OnEnable:
-	enablenpc "Group of Evil#edq";
+	enablenpc "黑暗之徒#edq";
 	set $@re_moc_time$,"";
 	end;
 
 OnDisable:
-	disablenpc "Group of Evil#edq";
-	donpcevent "Time-Space Gap#edq::OnEnable";
+	disablenpc "黑暗之徒#edq";
+	donpcevent "時空的裂縫#edq::OnEnable";
 	end;
 }
 
-moc_fild21,177,239,0	script	Time-Space Gap#edq	844,1,1,{
+moc_fild21,177,239,0	script	時空的裂縫#edq	844,1,1,{
 	if ((rebirth_moc_edq == 4) && ($@re_moc == 3)) {
-		mes "The time-space gap's frightening darkness seems to dissipate as Satan Morroc fades away.";
+		mes "在魔王消失之後時空的縫隙處，原本怵目驚心的黑暗氣息也漸漸退散了";
 		next;
-		mes "You can see the fragments floating in the gap, and the radiating lights are now slowing their movement.";
+		mes "在慢慢恢復平靜的縫隙之處，原本發出晶瑩光芒的碎片也漸漸散去了";
 		next;
-		mes "You stretch your hand and pick up a lusterless fragment.";
+		mes "伸手撿起了失去光芒的碎片";
 		getitem 7820,1; //Morroc_Skin
 		set rebirth_moc_edq,6;
 		changequest 3053,3055;
 		close;
 	}
 	else {
-		mes "Slowly, erratically, the mysterious curtain of darkness casts over your eyes as you stare at the time-space gap.";
+		mes "緩慢地...";
+		mes "但非常紊亂又奇妙的黑暗之帷幕開始忙忙地散開";
 		next;
-		mes "You feel like it's too dangerous to come any closer.";
+		mes "感覺到若再靠近應該會有危險";
 		close;
 	}
 
 OnInit:
-	disablenpc "Time-Space Gap#edq";
+	disablenpc "時空的裂縫#edq";
 	end;
 
 OnEnable:
 	initnpctimer;
-	enablenpc "Time-Space Gap#edq";
+	enablenpc "時空的裂縫#edq";
 	end;
 
 OnDisable:
 	stopnpctimer;
-	disablenpc "Time-Space Gap#edq";
-	donpcevent "Group of Evil#edq::OnEnable";
+	disablenpc "時空的裂縫#edq";
+	donpcevent "黑暗之徒#edq::OnEnable";
 	set $@re_moc,0;
 	end;
 
@@ -1980,7 +2014,7 @@ OnTimer1800000:
 OnTimer21600000:
 	stopnpctimer;
 	set $@re_moc,0;
-	donpcevent "Time-Space Gap#edq::OnDisable";
+	donpcevent "時空的裂縫#edq::OnDisable";
 	end;
 }
 
@@ -1992,7 +2026,7 @@ OnInit:
 OnEnable:
 	enablenpc "Satan Summon#edq";
 	initnpctimer;
-	monster "moc_fild21",177,217,"Satan Morroc",1916,1,"Satan Summon#edq::OnMyMobDead";
+	monster "moc_fild21",177,217,"魔王夢羅克",1916,1,"Satan Summon#edq::OnMyMobDead";
 	end;
 
 OnDisable:
@@ -2005,19 +2039,19 @@ OnDisable:
 OnMyMobDead:
 	set $@re_moc,3;
 	set $@re_moc_time$, gettimestr("%H%M%S",7);
-	mapannounce "moc_fild21","I'll let live just a little longer. You'll never find me through this time-space gap!",bc_map,"0xFFFF00";
-	donpcevent "Time-Space Gap#edq::OnEnable";
+	mapannounce "moc_fild21","我暫時讓你們茍延殘喘一下吧，你們是找不到移往時空裂縫的我",bc_map,"0xFFFF00";
+	donpcevent "時空的裂縫#edq::OnEnable";
 	donpcevent "Satan Broadcast#edq::OnDisable";
-	donpcevent "Group of Evil#edq::OnDisable";
+	donpcevent "黑暗之徒#edq::OnDisable";
 	disablenpc "Satan Summon#edq";
 	end;
 
 OnTimer5400000:
-	mapannounce "moc_fild21","You weaklings can't even scratch me!",bc_map,"0xFFFF00";
+	mapannounce "moc_fild21","要應付你們這些毛頭小子還挺累人的",bc_map,"0xFFFF00";
 	end;
 
 OnTimer5415000:
-	mapannounce "moc_fild21","I don't have time for this! Go away!",bc_map,"0xFFFF00";
+	mapannounce "moc_fild21","我很忙，我可沒時間浪費在你們身上啦!!",bc_map,"0xFFFF00";
 	stopnpctimer;
 	killmonster "moc_fild21","Satan Summon#edq::OnMyMobDead";
 	set $@re_moc,0;
@@ -2025,77 +2059,76 @@ OnTimer5415000:
 	end;
 }
 
-sec_in02,14,43,5	script	Morroc GlobalVar Admin::MorrocAdmin_sec	971,{
+sec_in02,14,43,5	script	魔王夢羅克全域變數控制::MorrocAdmin_sec	971,{
 	callfunc "F_GM_NPC";
-	mes "[Helper]";
+	mes "[小幫手]";
 	mes "Please enter the password and # button.";
 	next;
 	if (callfunc("F_GM_NPC",1854,0) < 1) {
-		mes "[Helper]";
+		mes "[小幫手]";
 		mes "Please press the numbers we always sing about.";
 		close;
 	} else {
-		mes "[Helper]";
-		mes "Hello. I am a post office.";
-		mes "I am currently checking Morroc status.";
+		mes "[小幫手]";
+		mes "為您確認一下目前夢羅克的狀態:";
 		next;
 		mes "=============";
-		mes "Current State";
+		mes "目前狀態";
 		mes "=============";
-		mes "^3131FF<Morroc>^000000";
+		mes "^3131FF<夢羅克>^000000";
 		if ($@re_moc == 0) {
 			mes "Reset. Enable to summon Morroc.";
-			mes "^3131FF<Continental Guards>^000000";
-			mes "Enable to enter to moc_fild21 field.";
+			mes "^3131FF<洲際衛隊 警衛兵s>^000000";
+			mes "允許進入 moc_fild21";
 		} else if ($@re_moc == 1) {
-			mes "^3131FF<Morroc>^000000";
+			mes "^3131FF<夢羅克>^000000";
 			mes "Some warrior entered after the reset. However, the warrior hasn't started the quest yet.";
 			mes "The warrior who has rebirth_moc_edq 4 and 7 is now enabled to summon Morroc.";
-			mes "^3131FF<Continental Guards>^000000";
+			mes "^3131FF<洲際衛隊 警衛兵s>^000000";
 			mes "The warrior who has rebirth_moc_edq 4 ~ 7 is now enabled to enter to moc_fild21.";
 		} else if ($@re_moc == 2) {
-			mes "^3131FF<Morroc>^000000";
+			mes "^3131FF<夢羅克>^000000";
 			mes "Morroc has been summoned. After 90 minutes has passed, it will revert back to reset status.";
-			mes "^3131FF<Continental Guards>^000000";
+			mes "^3131FF<洲際衛隊 警衛兵s>^000000";
 			mes "The warrior who has rebirth_moc_edq 4 ~ 7 is now enabled to enter to moc_fild21.";
 		} else if ($@re_moc == 3) {
-			mes "^3131FF<Morroc>^000000";
+			mes "^3131FF<夢羅克>^000000";
 			mes "Morroc has been killed. Death time is "+$@re_moc_time$+"(00 hr/00 min/00 sec).";
 			mes "After 6 hours later since the death time, it will be reset.";
 			mes "The warriors whom has remained in the field can continue the quest via Time Space Gap.";
-			mes "^3131FF<Continental Guards>^000000";
+			mes "^3131FF<洲際衛隊 警衛兵s>^000000";
 			mes "Disabled to enter to moc_fild21 from outside of the field.";
 		} else {
-			mes "^3131FF<Morroc>^000000";
+			mes "^3131FF<夢羅克>^000000";
 			mes "Morroc has been killed. Death time is "+$@re_moc_time$+"(00 hr/00 min/00 sec).";
 			mes "After 6 hours later since the death time, it will be reset.";
 			mes "It has been already passed 30 minutes after Morroc's death, so warriors can not continue the quest even if they click the Time Space Gap.";
-			mes "^3131FF<Continental Guards>^000000";
+			mes "^3131FF<洲際衛隊 警衛兵s>^000000";
 			mes "Disabled to enter to moc_fild21 from outside of the field.";
 		}
 		next;
-		mes "[Helper]";
-		mes "What do you want?";
+		mes "[小幫手]";
+		mes "要進行什麼操作呢?";
 		next;
-		switch(select("Cancel.:Reset")) {
+		switch(select("取消:重置")) {
 		case 1:
-			mes "[Helper]";
-			mes "Alright.";
+			mes "[小幫手]";
+			mes "好吧";
 			close;
 		case 2:
 			if (strnpcinfo(4) == "sec_in02")
 				mes "You can reset at moc_fild21 5 5.";
 			else {
-				mes "Reset starts.";
+				mes "重置開始";
 				next;
-				donpcevent "Group of Evil#edq::OnEnable";
-				mes "Group of Evil NPC is appeared.";
-				mes "Time-Space Gap NPC is disappeared.";
+				donpcevent "黑暗之徒#edq::OnEnable";
+				mes "黑暗之徒 NPC is appeared.";
+				mes "時空的裂縫 NPC is disappeared.";
 				mes "6 hours term timer is stopped.";
 				donpcevent "Satan Summon#edq::OnDisable";
 				mes "Morroc 90 minutes survival timer is stopped.";
 				mes "Morroc is being killed.";
-				mes "Now, Continental Guards will let players enter.";
+				mes "Now, 洲際衛隊 警衛兵將允許玩家進入";
 			}
 			close;
 		}
@@ -2103,16 +2136,16 @@ sec_in02,14,43,5	script	Morroc GlobalVar Admin::MorrocAdmin_sec	971,{
 }
 moc_fild21,5,5,5	duplicate(MorrocAdmin_sec)	Morroc GlobalVar Admin::MorrocAdmin_moc	971
 
-// The Crow of the Fate
+// 命運的烏鴉
 // ============================================================
-moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
+moc_ruins,137,70,3	script	撫摸書的男子#garas	48,{
 	if (BaseLevel > 59) {
 		if (checkweight(703,3) == 0) {
 			mes "- You have too many items in your inventory to proceed with this quest. -";
 			close;
 		}
 		if (barmunt_crow == 0) {
-			mes "^660000Morroc, the City of the Desert, has been completely devastated by Satan Morroc.^000000";
+			mes "^660000因被魔王夢羅克摧毀而變成廢墟的沙漠之都夢羅克^000000";
 			next;
 			mes "^660000The people of Morroc were resilient enough to endure the region's harsh weather, but their toughness to the weather could not prepare them enough as they witnessed the destruction brought down upon the city by Satan Morroc.^000000";
 			next;
@@ -2121,14 +2154,14 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 			mes "^660000Watching him makes you giggle, he looks no better than the dried corpses in the pyramid, but he is obviously alive and doesn't appear to be a monster. Somehow, you find yourself compelled to approach this interesting looking man.^000000";
 			next;
 			emotion e_lv;
-			mes "[Book-Touching Man]";
+			mes "[撫摸書的男子]";
 			mes "Ah... Mammi...";
 			next;
-			mes "[Book-Touching Man]";
+			mes "[撫摸書的男子]";
 			mes "Your healthy golden skin is glowing under the blessed sunlight of Morroc.";
 			next;
 			emotion e_sob;
-			mes "[Book-Touching Man]";
+			mes "[撫摸書的男子]";
 			mes "Your smile outshines the aura of the gods of Valhalla. You are a living gospel. Your smile even makes Goddess Freya hide in the shadows in shame! Ah.... Mammi, my Mammi!";
 			next;
 			mes "^660000You wave your hand close to his face to get his attention. He seems, however, to be in his own dreams, completely oblivious of your presense.^000000";
@@ -2139,7 +2172,7 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 				mes "Are you talking to yourself?";
 				next;
 				emotion e_omg;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "Wah! Oh, my god, you must be a messenger of the devil trying to interrupt me from feeling Mammi!";
 				mes "I'm not afraid of you, so bring it on!";
 				next;
@@ -2150,45 +2183,45 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 				mes "Who's Mammi?";
 				next;
 				emotion e_omg;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "What? Don't you know Mammi, one of the three greatest Rune-Midgart's idols?";
 				next;
 				emotion e_sigh;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "Man, you don't know anything, do you?! Well, judging by the stupid look on your face, I guess you're an adventurer running around on meaningless errands for others. Heh heh!";
 				next;
 				mes "^660000Umm... You now regret speaking to him in the first place.^000000";
 				next;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "My Mammi is different from those other celebrities that only rely on their beauty and lack any real substance.";
 				mes "She always carries books with her despite her hectic schedule. That alone should tell you that she's more intelligent than all the others! Ah... Mammi...";
 				next;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "She even mentioned in an interview in 'Morroc Times' that she wants to meet a man that loves books.";
 				next;
 				emotion e_awsm;
-				mes "[Book-Touching Man]";
+				mes "[撫摸書的男子]";
 				mes "That means... She's waiting for someone like me. Hehehe!";
-				mes "You see, every book in Rune-Midgart's Library has the name Benjamin written on them... That's me!";
+				mes "You see, every book in Rune-Midgart's Library has the name 班傑明 written on them... That's me!";
 				next;
-				mes "^660000This Benjamin seems to be a huge fan of a female celebrity called Mammi. He didn't shut his mouth and worshipped her beauty for a while, but then he suddenly stopped and looked depressed.^000000";
+				mes "^660000This 班傑明 seems to be a huge fan of a female celebrity called Mammi. He didn't shut his mouth and worshipped her beauty for a while, but then he suddenly stopped and looked depressed.^000000";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "I have a problem....";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "My Mammi said that she's fallen in love with a book written by ^FF0000'Oliver Hilpert'^000000 of Schwaltzvalt: ^FF0000'The Crow of the Fate,'^000000 but I didn't have a chance of even looking at it!";
 				next;
 				mes "^660000The Crow of the Fate^000000?";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "Unless you're blind, you know how terrible Morroc is nowadays.";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "I really need to read that book and tell her that I'm here for her, but I don't even have the time to regain my breath because of this situation in our hands!";
 				next;
 				emotion e_sob;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "My Mammi pillow cover is buried under debris... Gasp!";
 				mes "Mammi, I'm coming! Don't you die yet!";
 				next;
@@ -2197,31 +2230,31 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 				mes "^660000He inhaled deeply, and then suddenly turned his head toward you.^000000";
 				next;
 				emotion e_ic;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "....Ye... Yes, you!";
 				next;
 				mes "["+ strcharinfo(0) +"]";
 				mes "Huh?";
 				emotion e_swt2,1;
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "You look bored. You must be waiting for someone to give you something to do!";
 				mes "Help me connect with Mammi. Who knows? I may let you have a conversation with Mammi, whom everyone in Rune-Midgart adores.";
 				next;
 				mes "^660000Didn't you just call me an adventurer that runs around on meaningless errands for others...?^000000";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "All I'm asking is to check out a book from Prontera Library for me. It sounds easy, doesn't it?";
 				mes "Well, you don't look like someone who loves reading, but I hope you at least know how to check out a book from a library.";
 				next;
 				if (Sex == 1) {
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "If you help me, I'll show you a limited picture book edition of Mammi... Once. Hehehehe.";
 					mes "What do you say? You do want to help me, right?";
 					next;
 				}
 				else {
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "If you help me, I'll show you a limited picture book edition of Mammi... Once. Hehehehe.";
 					mes "So, aren't you interested in looking at another girl's pictures? Umm, if you want, I can introduce you to a handsome guard in Morroc...";
 					mes "What do you say? You do want to help me, right?";
@@ -2231,33 +2264,33 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 				next;
 				switch(select("Help him:Don't help him")) {
 				case 1:
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "Wow, are you really going to help me?";
 					next;
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "Thank you so much! Then remember this title: 'The Crow of the Fate' written by 'Oliver Hilpert.' I'm sure you can find it in Prontera Library.";
 					mes "Hehehe, Mammi! I'm almost there!";
 					set barmunt_crow,1;
 					setquest 2063;
 					close;
 				case 2:
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "What, don't you know how to check out a book from a library? Oh, my...";
 					close;
 				}
 			case 2:
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "Oh... Mammi... My Mammi...";
 				close;
 			}
 		}
 		else if (barmunt_crow == 1) {
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Don't you forget this title: 'The Crow of the Fate' written by 'Oliver Hilpert.' I'm sure you can find it in Prontera Library.";
 			close;
 		}
 		else if (barmunt_crow == 10) {
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Oh... Mammi... My Mammi...";
 			next;
 			mes "^660000Just like the last time that you saw him, Bejamin is living in his dreams, rubbing a book on his face.^000000";
@@ -2265,12 +2298,12 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 			mes "^660000You carefully approached him, and then gave him a pat on the shoulder.^000000";
 			next;
 			emotion e_omg;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Grrrr! Who dares touch me?!";
 			next;
 			mes "^660000...Umm... Obviously you weren't careful enough... ^000000";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Who dares interrupt me from feeling Mammi? Do you want a piece of me... Err?";
 			mes "Gosh, it's you. What took you so long? Wasn't Prontera Library, like, five minutes away?";
 			next;
@@ -2280,37 +2313,37 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 			next;
 			mes "^660000Feeling angry at him, you exaggerated a fit of sneezing which you have had for quite a while.^000000";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Oh... you did?";
 			mes "Hehehe, you're more reliable than I thought. Thanks for the book... Wait, does that mean I have to go up to Schwaltzvalt to return this? Man!";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "...No, I can do anything as long as it's for Mammi. Heh heh, you're a kind adventurer. Thanks.";
 			mes "Was it cold up there? I guess it is since Schwaltzvalt is located up north from here.";
 			next;
 			mes "["+ strcharinfo(0) +"]";
 			mes "..................";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Let me think. If this book is not yet available in Prontera Library, it must mean that not many people of Rune-Midgart have read this book.";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Grrrr... Mammi! Here I am, following your noble tastes to read such a rare book! Mammi...!";
 			emotion e_lv2;
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "I feel so excited to think about having a deep conversation with Mammi about literature! Yay!";
 			mes "I should go read this book right away. Hehehe!";
 			emotion e_ho;
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Oops, I must not forget to repay you. You know, I'm a polite man.";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Look, it's the picture book of Mammi I told you about.";
 			next;
 			cutin "mami01",4;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Ah... Look at this picture of her wearing the rolled-up puppy ears! Doesn't she look like a sad puppy wandering Comodo, the City of Lovers, all by herself?!";
 			mes "How could no one shed a tear after watching this sad picture of her?! Argh, Mammi! I'm coming to make you the happiest woman in the world!";
 			next;
@@ -2319,7 +2352,7 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 			mes "'She looks different than I thought with these glasses and pony tails... She really looks like someone who loves literature.";
 			mes "Wait, when did people start calling Comodo the City of Lovers? Hmm... This guy really thinks weird things!'";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "I've decided to give you this <Angel Mammi's Special picture book: In Comodo> which is full of her beautiful pictures in return of your favor. Ahem... What do you say?";
 			next;
 			mes "^660000He is staring at you arrogantly. Obviously, he doesn't care if you like the book or not.^000000";
@@ -2342,13 +2375,13 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 			set barmunt_crow,11;
 			getitem 7795,1; //Mami_Photo_Album
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Oh, right. If you're interested in this author, Oliver Hilpert, I suggest you read the prequel of <The Crow of the Fate>, ^3131FF<The Trace of the Fate>^000000 as well as the sequel.";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "That was also a bestseller.";
 			next;
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Now I need to start reading this book for the moment that I'll meet my Mammi, so please leave me alone.";
 			next;
 			mes "^660000As soon as he finished, he returned to escaping reality by indulging himself in his dreams of Mammi.^000000";
@@ -2372,27 +2405,27 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 		else if (barmunt_crow == 15) {
 			if ((countitem(7797) == 1) && (countitem(7796) == 1)) {
 				mes "["+ strcharinfo(0) +"]";
-				mes "Hey, Benjamin!";
+				mes "Hey, 班傑明!";
 				mes "I've got the perfect thing to help you appeal to Mammi. Do you want to see?";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "WH... WHAT?!";
 				mes "What is they? Show me!?";
 				next;
 				mes "^660000You have shown him an autograph and a written note by Oliver Hilpert.^000000";
 				next;
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "Oh, my god!";
 				mes "These will surely help me get closer to Mammi!";
 				mes "Give them to me!";
 				next;
 				switch(select("Give:Don't Give")) {
 				case 1:
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "Oh, "+ strcharinfo(0) +"!";
 					mes "You are the best! Thanks!";
 					next;
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "Maaaammmiii!";
 					mes "I'm going to see her tomorrow as soon as the morning comes! Mammi, I'm coming!";
 					delitem 7797,1; //Author_Memo
@@ -2404,19 +2437,19 @@ moc_ruins,137,70,3	script	Book-Touching Man#garas	48,{
 						getexp 900000,900000;
 					close;
 				case 2:
-					mes "[Benjamin]";
+					mes "[班傑明]";
 					mes "Huh? What, are you kidding me?";
 					close;
 				}
 			}
 			else {
-				mes "[Benjamin]";
+				mes "[班傑明]";
 				mes "Oh... Mammi... Oh...";
 				close;
 			}
 		}
 		else {
-			mes "[Benjamin]";
+			mes "[班傑明]";
 			mes "Oh... Mammi... Oh...";
 			close;
 		}
@@ -3090,7 +3123,7 @@ yuno_in04,117,102,3	script	Old News Scrapbook	844,{
 				mes "who was blessed by Mother Nature.";
 				mes "Her father left a will on his deathbed";
 				mes " to 'protect the water' against the evil,";
-				mes "and she is fighting against a group of evil villains";
+				mes "and she is fighting against a 黑暗之徒 villains";
 				mes "that are contaminating nature so that she can purify the water.";
 				mes "This book will be soon selected as an essential academic book of";
 				mes "the Schwaltzvalt Republic for";
@@ -3454,7 +3487,7 @@ yuno_in04,167,120,3	script	Worn-out Book#garas	111,{
 		mes "Lady Mammi!";
 		emotion e_lv2;
 		next;
-		mes "^660000Yes, it was the picture book of Mammi, an idol whom Benjamin of Morroc insists to be one of the three greatest idols in the Rune-Midgart Kingdom. That must be why Oliver is squealing in delight.^000000";
+		mes "^660000Yes, it was the picture book of Mammi, an idol whom 班傑明 of Morroc insists to be one of the three greatest idols in the Rune-Midgart Kingdom. That must be why Oliver is squealing in delight.^000000";
 		emotion e_dots,1;
 		next;
 		mes "["+ strcharinfo(0) +"]";
@@ -4255,7 +4288,7 @@ cave,22,186,3	script	Monsterous Man#zid	999,{
 	}
 	else if (barmunt_crow == 10) {
 		mes "Zid seemed to have lost his interest in the book.";
-		mes "You have decided to deliver the book to Benjamin of Morroc.";
+		mes "You have decided to deliver the book to 班傑明 of Morroc.";
 		close;
 	}
 	else {
