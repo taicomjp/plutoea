@@ -14,49 +14,49 @@
 //=     Updated dialogue to match the official script.
 //============================================================ 
 
-alde_alche,31,186,3	script	Craft Book Merchant#alde	883,{
-	mes "[Craft Book Merchant]";
-	mes "Welcome.";
-	mes "I'm here to sell";
-	mes "^0000FFspecial craft books^000000 for Geneticists.";
+alde_alche,31,186,3	script	製作書銷售員#alde	883,{
+	mes "[製作書銷售員]";
+	mes "你好，";
+	mes "我這裡有販售基因學者的";
+	mes "^0000FF特殊製作書^000000";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Geneticists have some skills";
-	mes "that require craft books to activate.";
+	mes "[製作書銷售員]";
+	mes "基因學者必須擁有製作書，";
+	mes "才能發動技能";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "The more craft books you have,";
-	mes "the more skills you can use.";
+	mes "[製作書銷售員]";
+	mes "擁有的書種類愈多，";
+	mes "可以使用技能的種類";
+	mes "當然就愈多";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Please understand that";
-	mes "I specialize in the sale of these special books and";
-	mes "I ^FF0000don't sell other items^000000.";
+	mes "[製作書銷售員]";
+	mes "有這裡出售的是特殊的書，";
+	mes "因此^FF0000不買其它物品^000000，";
+	mes "敬請見諒!";
 	next;
-	mes "[Craft Book Merchant]";
-	mes "Would you like to take a look at my craft books?";
+	mes "[製作書銷售員]";
+	mes "你想看看製作書嗎?";
 	next;
-	if(select("Sure.:No.") == 2) {
-		mes "[Craft Book Merchant]";
-		mes "Thank you for visiting my shop.";
-		mes "Please be safe on your travels.";
+	if(select("是的:不要") == 2) {
+		mes "[製作書銷售員]";
+		mes "歡迎再度光臨，";
+		mes "拜拜!";
 		close;
 	}
 	if (checkweight(1201,1) == 0) {
-		mes "[Craft Book Merchant]";
-		mes "I'm sorry, but your inventory is almost full.";
-		mes "Please empty your inventory first.";
+		mes "[製作書銷售員]";
+		mes "我想你的背包要塞不下了";
 		close;
 	}
 	if (MaxWeight - Weight < 2500) {
-		mes "[Craft Book Merchant]";
-		mes "Please empty your inventory first.";
+		mes "[製作書銷售員]";
+		mes "我想你的背包要塞不下了";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "Okay then, here's the list of available craft books.";
+	mes "[製作書銷售員]";
+	mes "好的，我給你看看製作書清單";
 	next;
-	switch(select("[Apple Bomb Craft Book] 100,000 zeny:[Pineapple Bomb Craft Book] 100,000 zeny:[Coconut Bomb Craft Book] 100,000 zeny:[Melon Bomb Craft Book] 100,000 zeny:[Banana Bomb Craft Book] 100,000 zeny:[Plant Gene Cultivation Method] 100,000 zeny:[Superior Potion Craft Manual] 100,000 zeny:[Mix Cooking Book] 100,000 zeny:[Health Improvement Research Book] 100,000 zeny:[Vigor Drink Recipe] 100,000 zeny:Close")){
+	switch(select("[蘋果炸彈製作書] 100,000 zeny:[鳳梨炸彈製作書] 100,000 zeny:[椰子炸彈製作書] 100,000 zeny:[哈密瓜炸彈製作書] 100,000 zeny:[香蕉炸彈製作書] 100,000 zeny:[植物基因栽培法] 100,000 zeny:[高級藥水製作手冊] 100,000 zeny:[混合料理書] 100,000 zeny:[體力爆發研究書] 100,000 zeny:[活力飲料製作書] 100,000 zeny:結束購買")){
 	case 1: set .@item,6279; break;
 	case 2: set .@item,6280; break;
 	case 3: set .@item,6281; break;
@@ -68,52 +68,51 @@ alde_alche,31,186,3	script	Craft Book Merchant#alde	883,{
 	case 9: set .@item,11023; break;
 	case 10: set .@item,11024; break;
 	case 11:
-		mes "[Craft Book Merchant]";
+		mes "[製作書銷售員]";
 		mes "Thank you for your patronage.";
 		mes "Please come again.";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "^0000FF["+getitemname(.@item)+"] costs";
+	mes "[製作書銷售員]";
+	mes "^0000FF["+getitemname(.@item)+"] 的價格是";
 	mes "100,000 zeny.";
-	mes "How many would you like to purchase?";
+	mes "請告訴我您想要買幾本?";
 	next;
 	input .@amount;
 	if (.@amount == 0) {
-		mes "[Craft Book Merchant]";
-		mes "Would you like to see some different books?";
+		mes "[製作書銷售員]";
+		mes "你還想看其它書嗎?";
 		close;
 	}
 	if (.@amount < 1 || .@amount > 99 ){
-		mes "[Craft Book Merchant]";
-		mes "You cannot purchase more than 100 at a time.";
+		mes "[製作書銷售員]";
+		mes "每次最多只能購買100本";
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "You've entered "+.@amount+"x ^0000FF["+getitemname(.@item)+"]^000000 to be purchased.";
-	mes "Would you like to continue?";
+	mes "[製作書銷售員]";
+	mes "購買 "+.@amount+"本^0000FF["+getitemname(.@item)+"]^000000，";
+	mes "你要繼續嗎?";
 	next;
-	if (select("Yes:No") == 1) {
+	if (select("是:不要") == 1) {
 		set .@total, .@amount * 100000;
 		if (Zeny < .@total) {
-			mes "[Craft Book Merchant]";
-			mes "I'm sorry, but you don't have enough money.";
+			mes "[製作書銷售員]";
+			mes "很抱歉，但顧客您的金幣不夠。";
 			close;
 		}
 		if (checkweight(.@item,.@amount) == 0){
-			mes "[Craft Book Merchant]";
-			mes "It doesn't seem like you can carry everything.";
-			mes "Please check the space in your inventory.";
+			mes "[製作書銷售員]";
+			mes "我想你的背包要塞不下了";
 			close;
 		}
-		mes "[Craft Book Merchant]";
-		mes "Thank you for your patronage.";
+		mes "[製作書銷售員]";
+		mes "謝謝!";
 		set Zeny,Zeny - .@total;
 		getitem .@item,.@amount;
 		close;
 	}
-	mes "[Craft Book Merchant]";
-	mes "Please take your time";
-	mes "before you make your decision.";
+	mes "[製作書銷售員]";
+	mes "購買製作書的時候，應該";
+	mes "要慎重一些";
 	close;
 }

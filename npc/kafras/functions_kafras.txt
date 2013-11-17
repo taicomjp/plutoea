@@ -79,11 +79,8 @@ function	script	F_Kafra	{
 		case 0:
 			// Default message (obsolete)
 			mes "[卡普拉 職員]";
-			mes "Welcome to the";
-			mes "Kafra Corporation.";
-			mes "The Kafra services";
-			mes "are always on your side.";
-			mes "How may I assist you?";
+			mes "隨時為您們服務.";
+			mes "需要什麼服務嗎?";
 			break;
 		case 1:
 			// Niflheim specific message
@@ -169,17 +166,16 @@ function	script	F_Kafra	{
 			if(getarg(1) != 4) callfunc "F_KafTele",getarg(0);
 			else {
 				mes "[卡普拉 職員]";
-				mes "Because of the ^FF0000Limited";
-				mes "Transport Agreement^000000, the";
-				mes "Kafra Corporation cannot";
-				mes "provide Teleport Services";
-				mes "in the Schwaltzvalt Republic.";
+				mes "我們卡普拉服務在秀發茲發德總公司，";
+				mes "因為和秀發茲發德 共和國";
+				mes "的協定，";
+				mes "'^ff0000在秀發茲發德內限制傳送服務^000000'";
+				mes "的關係，";
+				mes "目前不做任何傳送服務的";
 				next;
 				mes "[卡普拉 職員]";
-				mes "We ask that you please";
-				mes "use the Airship Service";
-				mes "instead. Thank you for your";
-				mes "understanding and cooperation.";
+				mes "想要移動到其它區域時，";
+				mes "請使用飛空艇";
 			}
 			next;
 		} else if (@K_Menu0$[.@j] == "手推車服務") {
@@ -206,8 +202,8 @@ function	script	F_KafStor	{
 	if(getarg(0) == 1){
 		if(guildopenstorage()){
 			mes "[卡普拉 職員]";
-			mes "I'm sorry but another guild member is using the guild storage";
-			mes "right now.  Please wait until that person is finished.";
+			mes "真的很抱歉，有其他會員正在使用倉庫";
+			mes "請稍等一下";
 			close2;
 			cutin "", 255;
 			end;
@@ -220,16 +216,13 @@ function	script	F_KafStor	{
 		mes "[卡普拉 職員]";
 		// Niflheim Specific Message
 		if (getarg(2) == 1) {
-			mes "^666666S-s-ssoooorry,";
-			mes "y-you're a-a-aaaa";
-			mes "Nooviiice... N-neeeds";
-			mes "B-basic sssskill l-level 6...^000000";
+			mes "對...對不起...";
+			mes "初...初學者...的基本技...技能";
+			mes "要到達6...6以上...才...可以...";
 			return;
 		}
-		mes "I'm sorry, but you";
-		mes "need the Novice's";
-		mes "Basic Skill Level 6 to";
-		mes "use the Storage Service.";
+		mes "對不起";
+		mes "想要使用倉庫服務的話，初學者的基本技能等級要到達 6級以上";
 		return;
 	}
 	// Accessing Normal Storage (Skipped if accessing Storage from Guild castle)
@@ -242,17 +235,14 @@ function	script	F_KafStor	{
 				// Niflheim Specific Message
 				if (getarg(2) == 1) {
 					percentheal -50,-50;
-					mes "^666666Zeeeeeny...";
-					mes "M-more z-zeny...!";
-					mes "N-neeed 150... zeny...";
-					mes "Ergh! T-taking bl-blood~!^000000";
+					mes "金幣...";
+					mes "金幣...不足...";
+					mes "使用費用是150...金幣...";
 					return;
 				}
 				// Standard Message
-				mes "I'm sorry, but you don't";
-				mes "have enough zeny to use";
-				mes "the Storage Service. Our";
-				mes "Storage access fee is "+getarg(1)+" zeny.";
+				mes "顧客　您的金額不足.";
+				mes "倉庫使用費用是 "+getarg(1)+"金幣.";
 				return;
 			}
 			set Zeny, Zeny-getarg(1);
@@ -267,15 +257,13 @@ function	script	F_KafStor	{
 			percentheal 0,-10;
 			mes "[卡普拉 職員]";
 			for (set .@i, 0; .@i < 5; set .@i, .@i + 1)
-				mes "^666666Thank you.. for... using...^000000";
+				mes "^666666謝謝... 您...的... 使用..^000000";
 		}
 		// Normal message
 		else {
 			mes "[卡普拉 職員]";
-			mes "Here, let me open";
-			mes "your Storage for you.";
-			mes "Thank you for using";
-			mes "the Kafra Service.";
+			mes "我要打開倉庫了，";
+			mes "謝謝您的使用";
 		}
 	}
 	callfunc("F_CheckKafCode");	//check your storage password, if set
@@ -303,10 +291,8 @@ function	script	F_KafTele	{
 	else {
 		if (Zeny<@wrpP[.@j]){
 			mes "[卡普拉 職員]";
-			mes "I'm sorry, but you don't have";
-			mes "enough zeny for the Teleport";
-			mes "Service. The fee to teleport";
-			mes "to "+@wrpD$[.@j]+" is "+@wrpP[.@j]+" zeny.";
+			mes "抱歉! 您要支付的金額不足，";
+			mes "麻煩您再確認一下吧!";
 			close2;
 			cutin "", 255;
 			end;
@@ -386,16 +372,11 @@ function	script	F_KafInfo	{
 		set .@j, select(implode(.@m$,":")) - 1;
 		if (.@m$[.@j] == "查詢儲蓄點數") {
 			mes "[卡普拉 職員]";
-			mes "Let's see...";
-			mes strcharinfo(0) + "...";
-			mes "Ah, you have a total of";
-			mes RESRVPTS+ " Special Reserve Points.";
+			mes strcharinfo(0) + "您的儲蓄點數是"+RESRVPTS+ "點";
 			next;
 			mes "[卡普拉 職員]";
-			mes "You can exchange your";
-			mes "Special Reserve Points for";
-			mes "rewards at the Kafra Main Office in Al De Baran. Please use our";
-			mes "convenient services to see the benefits of our rewards program.";
+			mes "我們卡普拉公司總部提供把儲蓄點數兌換成商品的服務，";
+			mes "請多利用便捷的卡普拉服務，順便換一些禮物哦～";
 			next;
 			if(getarg(0) == 1) return;
 		} else if (.@m$[.@j] == "卡普拉位置說明") {
@@ -419,17 +400,15 @@ function	script	F_KafInfo	{
 //===================================================================
 function	script	F_KafEnd	{
 	mes "[卡普拉 職員]";
-	if(getarg(1)==1) {	
+	if(getarg(1)==1) {
 		// Save
-		mes "Your Respawn Point";
-		mes "has been saved here";
+		mes "已經儲存好了，";
 		mes getarg(2)+".";
-		mes "Thank you for using";
-		mes "the Kafra Services.";
-	} else if(getarg(0)==0 || getarg(0)==5) {	
+		mes "謝謝您的使用";
+	} else if(getarg(0)==0 || getarg(0)==5) {
 		// Generic End
-		mes "We, here at Kafra Corporation,";
-		mes "are always endeavoring to provide you with the best services. We hope that we meet your adventuring needs and standards of excellence.";
+		mes "我們卡普拉公司為了提供最優質的服務而不遺餘力，讓各位安心使用!";
+		mes "謝謝您的光臨";
 	} else if(getarg(0)==1) {
 		// Niflheim End
 		percentheal 0,- 25;
@@ -474,10 +453,10 @@ function	script	F_SetKafCode	{
 		switch (select("更改密碼 -> 5000z:移除密碼 -> 1000z:結束")) {
 			case 1:
 				mes getarg(0);
-				mes "At first, please enter your ^0000FFold password^000000.";
+				mes "請先輸入您^0000FF既有的密碼^000000";
 				set @code,callfunc("F_EntKafCode");
 				if(!@code || @code != #kafra_code) {
-					mes "Wrong password. You can't set a new password.";
+					mes "密碼錯誤，無法更改密碼。";
 					emotion e_hmm;
 					break;
 				}
@@ -486,29 +465,29 @@ function	script	F_SetKafCode	{
 				break;
 			case 2:
 				mes getarg(0);
-				mes "Please, enter your password before its removal.";
+				mes "請先輸入您既有的密碼:";
 				set @code,callfunc("F_EntKafCode");
 				if(!@code) {
-					mes "The password hasn't been removed.";
+					mes "密碼錯誤";
 					emotion e_hmm;
 					break;
 				}
 				next;
 				mes getarg(0);
 				if(Zeny < 1000) {
-					mes "You don't have enough zeny.";
+					mes "您的金幣不足";
 					emotion e_cash;
 					break;
 				}
 				set Zeny,Zeny-1000;
 				if(@code == #kafra_code) {
 					set #kafra_code,0;
-					mes "You've successfully cleared your storage password.";
-					mes "Thank you for using "+getarg(1)+".";
+					mes "密碼已移除";
+					mes "感謝您使用 "+getarg(1)+".";
 					emotion e_thx;
 				} else {
-					mes "Wrong password. We won't return your 1000z.";
-					mes "Please, next time enter correct password.";
+					mes "密碼錯誤，手續費 1000z 將不退還，";
+					mes "下次請輸入正確的秘密。";
 					emotion e_sry;
 				}
 				break;
@@ -516,10 +495,10 @@ function	script	F_SetKafCode	{
 				break;
 		}
 	} else {
-		mes getarg(1)+" proudly presents you a new service:";
-		mes "Additional storage protection with a password.";
+		mes getarg(1)+" 隆重向你介紹倉庫密碼服務:";
+		mes "為您的倉庫設定保護密碼";
 		next;
-		switch (select("Set new password -> 5000z:Cancel")) {
+		switch (select("設定新密碼 -> 5000z:取消")) {
 			case 1: callsub S_SET,getarg(0),getarg(1); break;
 			case 2: break;		
 		}
@@ -530,7 +509,7 @@ function	script	F_SetKafCode	{
 
 S_SET:
 	mes getarg(0);
-	mes "Now enter your ^FF0000new password^000000 to protect your storage from thieves.";
+	mes "請輸入您的 ^FF0000新密碼^000000 以保護您的倉庫";
 	set @code,callfunc("F_EntKafCode");
 	if(!@code) {
 		mes "The password hasn't been changed.";
@@ -540,14 +519,14 @@ S_SET:
 	next;
 	mes getarg(0);
 	if(Zeny < 5000) {
-		mes "You don't have enough zeny.";
+		mes "您的金幣不足";
 		emotion e_cash;
 		return;
 	}
 	set Zeny,Zeny-5000;
 	set #kafra_code,@code;
-	mes "You've protected your storage with a secret password.";
-	mes "Thank you for using "+getarg(1)+".";
+	mes "已啟用倉庫密碼";
+	mes "感謝您使用 "+getarg(1)+".";
 	emotion e_thx;
 	return;
 }
@@ -561,14 +540,14 @@ function	script	F_EntKafCode	{
 	set @kafcode_try,@kafcode_try+1;
 	if(@kafcode_try>10) {
 		set @kafcode_try,0;
-		logmes "Hack: Tried to fit storage password.";
+		logmes "警告:多次倉庫密碼輸入錯誤";
 	}
 	if(input(@code_) == 1) {
-		mes "You can't use such big password.";
+		mes "密碼過長";
 		return 0;
 	}
 	if(@code_<1000) {
-		mes "You shouldn't use such short password.";
+		mes "密碼過短";
 		return 0;
 	}
 	return @code_;
