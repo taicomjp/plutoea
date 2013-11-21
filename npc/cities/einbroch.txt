@@ -32,96 +32,83 @@
 //= 1.8 Fixed Occurances of PcName. [L0ne_W0lf]
 //============================================================
 
-einbroch,218,198,5	script	Mark#ein	855,{
-	callfunc "EinTower","Mark";
+einbroch,218,198,5	script	馬克#ein	855,{
+	callfunc "EinTower","馬克";
 	end;
 }
 
-einbroch,175,196,5	script	Morei#ein	854,{
-	mes "[Morei]";
-	mes "Greetings,";
-	mes "I am Morei,";
-	mes "Assistant Guide";
-	mes "of Einbroch Tower.";
+einbroch,175,196,5	script	莫里#ein	854,{
+	mes "[莫里]";
+	mes "您好嗎~";
+	mes "我是瞭望台的管理服務員莫里,";
 	next;
-	mes "[Morei]";
-	mes "If you wish to return";
-	mes "to the ground floor,";
-	mes "please let me know.";
-	mes "Would you like to go";
-	mes "back to ground level?";
+	mes "[莫里]";
+	mes "想要再下去的話";
+	mes "就可以來找我囉";
+	mes "請問你結束瞭望台的參觀,";
+	mes "要準備下去了嗎?";
 	next;
-	switch(select("Yes.:No.")) {
-	case 1:
-		mes "[Morei]";
-		mes "I see.";
-		mes "Let me lead you";
-		mes "to the ground floor.";
-		mes "Thank you for using";
-		mes "our services.";
-		close2;
-		switch(rand(1,3)) {
-		case 1:
-			warp "einbroch",170,229;
-			end;
-		case 2:
-			warp "einbroch",216,188;
-			end;
-		case 3:
-			warp "einbroch",178,167;
-			end;
-		}
-	case 2:
-		mes "[Morei]";
-		mes "I see.";
-		mes "I hope you";
-		mes "enjoy your time";
-		mes "in Einbroch Tower.";
+	if(select("是的,我要下去了.:不是,我還要留在這參觀.")==2) {
+		mes "[莫里]";
+		mes "是的!!我知道了,";
+		mes "祝您玩的愉快";
 		close;
+	}
+	mes "[莫里]";
+	mes "是的!!我知道了";
+	mes "我現在馬上把您";
+	mes "移動到下面去";
+	mes "那麼歡迎您";
+	mes "下次再利用囉";
+	close2;
+	switch(rand(1,3)){
+	case 0:
+		warp "einbroch",218,196;
+		end;
+	case 1:
+		warp "einbroch",178,172;
+		end;
+	case 2:
+		warp "einbroch",172,228;
+		end;
 	}
 }
 
-einbroch,173,229,5	script	Oberu#ein	855,{
-	callfunc "EinTower","Oberu";
+einbroch,173,229,5	script	歐布魯#ein	855,{
+	callfunc "EinTower","歐布魯";
 	end;
 }
-einbroch,176,172,5	script	Khemko#ein	855,{
-	callfunc "EinTower","Khemko";
+einbroch,176,172,5	script	肯科#ein	855,{
+	callfunc "EinTower","肯科";
 	end;
 }
 
 function	script	EinTower	{
 	mes "[" + getarg(0) + "]";
-	mes "Good day~";
-	mes "I'm " + getarg(0) + ", your";
-	mes "guide to exploring";
-	mes "the Einbroch Tower.";
+	mes "你好嗎~這裡是艾音布羅克,";
+	mes "我是瞭望台的服務人員"+ getarg(0);
+	mes "我的工作是在瞭望台協助顧客";
+	mes "並將艾音布羅克的美景";
+	mes "一覽無遺的提供給顧客之服務";
 	next;
 	mes "[" + getarg(0) + "]";
-	mes "Einbroch Tower offers";
-	mes "the best view of our city";
-	mes "and it's a great place to";
-	mes "meet with friends or take";
-	mes "a date. The Einbroch Tower";
-	mes "admission fee is 10 zeny.";
+	mes "由於本瞭望台可以將四周的美景";
+	mes "盡收眼底,所以已變成";
+	mes "朋友和情侶們的";
+	mes "熱門約會地點";
 	next;
 	mes "[" + getarg(0) + "]";
-	mes "Right now, we're offering";
-	mes "a special promotion called";
-	mes "the Apple Combo Set for only";
-	mes "20 zeny. This set includes";
-	mes "Einbroch Tower admission";
-	mes "and an Apple to snack on.";
+	mes "使用瞭望台的費用是10金幣,";
+	mes "如果使用本瞭望台正在舉辦的";
+	mes "促銷活動之蘋果套餐的話,";
+	mes "將可以利用瞭望台和";
+	mes "獲得新鮮蘋果的雙重享受呢";
 	next;
-	switch(select("Tower Admission Only:Apple Combo Set:Cancel")) {
+	switch (select("我要使用一般的:我要使用蘋果套餐:取消")) {
 	case 1:
 		if (Zeny < 10) {
 			mes "[" + getarg(0) + "]";
-			mes "I'm sorry, but you";
-			mes "don't have enough";
-			mes "zeny. The Einbroch";
-			mes "Tower Admission";
-			mes "fee is 10 zeny.";
+			mes "十分抱歉,你沒有帶夠資金.";
 			close;
 		}
 		else {
@@ -138,9 +125,7 @@ function	script	EinTower	{
 	case 2:
 		if (Zeny < 20) {
 			mes "[" + getarg(0) + "]";
-			mes "I'm sorry, but you don't";
-			mes "have enough zeny. The";
-			mes "Apple Combo Set is 20 zeny.";
+			mes "十分抱歉，你沒有帶夠資金.";
 			close;
 		}
 		else {
@@ -181,133 +166,94 @@ function	script	EinTower	{
 	}
 }
 
-einbroch,232,272,3	script	Train Station Staff#ein1::EinbrochTrain	852,{
-	mes "[Staff]";
-	mes "Welcome to";
-	mes "the Train Station.";
-	mes "Trains to Einbech";
-	mes "are always running";
-	mes "so if you miss one,";
-	mes "it's no problem.";
+einbroch,232,272,3	script	火車站職員#ein1::EinbrochTrain	852,{
+	mes "[職員]";
+	mes "歡迎來到火車站.";
+	mes "通往艾音貝赫的火車運作中";
+	mes "所以你即使錯過了上一班車也不用著急.";
 	next;
-	mes "[Staff]";
-	mes "The fare to board the";
-	mes "train that runs the Einbroch";
-	mes "to Einbech line is 200 zeny.";
-	mes "Would you like to buy a ticket?";
+	mes "[職員]";
+	mes "到艾音貝赫的車票價格是200 zeny.";
+	mes "你需要購買火車票嗎?";
 	next;
-	switch(select("Yes.:No.:About the Environment...")) {
+	switch (select("是的.我要買.:不,我還不用走.:關於這裡的環境...")) {
 	case 1:
-		if (Zeny > 199) {
-			mes "[Staff]";
-			mes "Thank you";
-			mes "very much.";
-			mes "Have a safe trip.";
-			mes "^333333*Ahem*^000000 All aboard!";
-			close2;
-			set Zeny, Zeny-200;
-			warp "einbech",43,215;
-			end;
-		}
-		else {
-			mes "[Staff]";
-			mes "I'm sorry, but this";
-			mes "isn't enough zeny";
-			mes "to pay the train fare.";
+		if(Zeny < 200) {
+			mes "[職員]";
+			mes "十分抱歉";
+			mes "你沒足夠的資金購買車票.";
 			close;
 		}
+		mes "[職員]";
+		mes "謝謝光臨";
+		mes "祝你旅途愉快";
+		close2;
+		set Zeny,Zeny - 200;
+		warp "einbech",43,215;
+		end;
 	case 2:
-		mes "[Staff]";
-		mes "Very well, then.";
-		mes "Please enjoy your";
-		mes "stay in Einbroch.";
+		mes "[職員]";
+		mes "好的.我知道了.希望你在艾音布羅克過得開心.";
 		close;
 	case 3:
-		mes "[Staff]";
-		mes "Einbroch is infamous for";
-		mes "its air pollution, no doubt";
-		mes "caused by the industrial";
-		mes "facilities located here.";
-		mes "It's really horrible...";
+		mes "[職員]";
+		mes "艾音布羅克的空氣污染是由於那些無恥的工廠做成的.";
 		next;
-		mes "[Staff]";
-		mes "Sometimes the air pollution";
-		mes "gets so bad that it becomes";
-		mes "hard to breathe. If you hear";
-		mes "the Einbroch Smog Alert, you";
-		mes "should find shelter immediately!";
+		mes "[職員]";
+		mes "如果你在艾音布羅克聽到煙霧警告,";
+		mes "你最好馬上找個地方避難";
 		close;
 	}
 }
 	
 einbroch,252,301,3	duplicate(EinbrochTrain)	Train Station Staff#ein2	852
 
-einbroch,259,326,3	script	Leslie#ein_1	846,{
-	mes "[Leslie]";
-	mes "^666666*Cough cough!*^000000";
-	mes "Laaaand sakes!";
+einbroch,259,326,3	script	乘客#ein_1	846,{
+	mes "[乘客]";
+	mes "咳咳咳咳!";
+	mes "空氣這麼差,像我這樣的老人家要怎麼生活呢,這種地方竟然還有人住了幾十年還真不簡單,咳咳..";
 	next;
-	mes "[Leslie]";
-	mes "An old woman like me";
-	mes "can't breathe this air! How";
-	mes "do people even live in all this";
-	mes "smog? Sure, the air in Einbech";
-	mes "isn't pristine, but the air here in Einbroch is much worse! ^333333*Cough~!*^000000";
-	next;
-	mes "[Leslie]";
-	mes "I hate coming here";
-	mes "sometimes! The air is";
-	mes "totally polluted and this";
-	mes "city is full of stuck up";
-	mes "pricks! But they sell stuff";
-	mes "here I can't buy back home...";
+	mes "[乘客]";
+	mes "我是艾音貝赫的居民,我們住的村落空氣也不算好,不過這裡是在太嚴重了!咳咳咳咳";
 	close;
 }
 
-einbroch,236,191,3	script	Tan#ein	855,{
-	mes "[Tan]";
-	mes "All the factories";
-	mes "here in Einbroch are";
-	mes "causing a serious air";
-	mes "pollution problem.";
+einbroch,236,191,3	script	村落青年#ein	855,{
+	mes "[村落青年]";
+	mes "由於這村落工廠太多了，";
+	mes "所以空氣才會不得以不好啊";
 	next;
-	mes "[Tan]";
-	mes "I'm an Airship engineer and";
-	mes "everyday, all day long, I deal";
-	mes "with oil stains and all sorts";
-	mes "of pollutants. I'm surprised";
-	mes "I haven't gotten sick yet...";
+	mes "[村落青年]";
+	mes "我是飛空艇的修理工人，";
+	mes "我整天被油墨折磨忙翻了，";
+	mes "下班後又要人受煙霧的煎熬，";
+	mes "一整天讓我頭疼欲裂啊";
 	next;
-	mes "[Tan]";
-	mes "Still, I try to be careful";
-	mes "when I can. Whenever I go";
-	mes "out into the city's red fog,";
-	mes "I always wear my Flu Mask.";
-	mes "If you'll be here for a while,";
-	mes "you should carry one with you.";
+	mes "[村落青年]";
+	mes "今天天空也是呈現深紅色的，";
+	mes "我有種不祥的預感，";
+	mes "此時像我一樣能預知準備口罩的人，才是";
+	mes "真正帥氣的人";
+	next;
+	mes "[村落青年]";
+	mes "您也為了健康著想的話，";
+	mes "最好隨身攜帶一個口罩吧";
 	close;
 }
 	
-einbroch,228,121,5	script	Little Toby#ein-1	855,{
-	mes "[Little Toby]";
-	mes "Excuse me...";
-	mes "But I'm lost!";
-	mes "I can't find my";
-	mes "mom or dad!";
+einbroch,228,121,5	script	村落青年#ein-1	855,{
+	mes "[村落青年]";
+	mes "請問一下，這裡是哪裡呢？";
+	mes "這裡是機場沒錯吧？對吧？";
+	mes "我是來接父母的，他們有點晚到耶";
 	next;
-	mes "[Little Toby]";
-	mes "A-am I at the Airport?!";
-	mes "My parents are supposed";
-	mes "to come get me, but I still";
-	mes "haven't found them! We just";
-	mes "moved here, so I don't know";
-	mes "where anything is!";
+	mes "[村落青年]";
+	mes "因為我搬來這裡沒多久，";
+	mes "所以完全不認得路啊，到底這裡為什麼林";
+	mes "立這麼多的高樓大廈啊！！";
 	next;
-	mes "[Little Toby]";
-	mes "W-wait!";
-	mes "Where are you";
-	mes "going?! Don't leave";
-	mes "me, I'm all alone...!";
+	mes "[村落青年]";
+	mes "對我這樣的路癡簡直就是毒藥啊，毒藥！";
 	close;
 }
 
@@ -862,121 +808,109 @@ ein_in01,206,224,3	script	Hotel Employee#ein	855,{
 	close;
 }
 
-einbroch,244,255,5	script	Bulletin Board#ein1	858,{
+einbroch,244,255,5	script	標示牌#ein1	858,{
 	mes " ";
-	mes " Train Station ";
-	mes " ";
-	close;
-}
-
-einbroch,253,203,5	script	Bulletin Board#ein2	858,{
-	mes " ";
-	mes " Hotel ";
+	mes "火車站";
 	mes " ";
 	close;
 }
 
-einbroch,68,206,5	script	Bulletin Board#ein3	858,{
+einbroch,253,203,5	script	標示牌#ein2	858,{
 	mes " ";
-	mes " Airship Airport ";
-	mes " ";
-	close;
-}
-
-einbroch,90,84,5	script	Bulletin Board#ein4	858,{
-	mes " ";
-	mes " Laboratory ";
+	mes " 飯店 ";
 	mes " ";
 	close;
 }
 
-einbroch,101,106,5	script	Bulletin Board#ein5	858,{
+einbroch,68,206,5	script	標示牌#ein3	858,{
 	mes " ";
-	mes " Airship Repair Shop ";
-	mes " ";
-	close;
-}
-
-einbroch,220,208,5	script	Bulletin Board#ein6	858,{
-	mes " ";
-	mes " Weapon Shop ";
+	mes " 機場 ";
 	mes " ";
 	close;
 }
 
-einbroch,132,76,5	script	Bulletin Board#ein7	858,{
+einbroch,90,84,5	script	標示牌#ein4	858,{
 	mes " ";
-	mes " Factory ";
+	mes " 研究所 ";
 	mes " ";
 	close;
 }
 
-einbroch,152,46,5	script	Bulletin Board#ein11	858,{
-	mes "West - Laboratory, Airship Repair Shop";
-	mes "South - Einbroch Front Gate";
-	mes "North - Airport";
-	mes "Northeast - Train Station, Hotel, Weapon Shop";
+einbroch,101,106,5	script	標示牌#ein5	858,{
+	mes " ";
+	mes " 飛空艇 維修場 ";
+	mes " ";
 	close;
 }
 
-einbroch,235,141,5	script	Bulletin Board#ein22	858,{
-	mes "Southwest - Airship Repair Shop, Laboratory";
-	mes "Northwest - Airport";
-	mes "North - Weapon Shop, Hotel, Train Station";
+einbroch,220,208,5	script	標示牌#ein6	858,{
+	mes " ";
+	mes " 武器商店 ";
+	mes " ";
 	close;
 }
 
-einbroch,162,256,5	script	Bulletin Board#ein33	858,{
-	mes "East - Train Station";
-	mes "Southeast - Hotel";
-	mes "South - Weapon Shop,Factory";
-	mes "Southwest - Airport, Airship Repair Shop, Laboratory";
+einbroch,132,76,5	script	標示牌#ein7	858,{
+	mes " ";
+	mes " 工廠 ";
+	mes " ";
 	close;
 }
 
-einbroch,183,174,5	script	Bulletin Board#ein44	858,{
-	mes "East - Weapon Shop, Hotel";
-	mes "South - Factory";
-	mes "Southwest - Airship Repair Shop, Laboratory";
-	mes "Northwest - Airport";
+einbroch,152,46,5	script	標示牌#ein11	858,{
+	mes "西  邊 - 飛空艇 維修場,研究所";
+	mes "南  邊 - 艾音布羅克 大門";
+	mes "北  邊 - 機場";
+	mes "東北邊 - 火車站, 飯店, 武器店";
 	close;
 }
 
-einbroch,104,202,5	script	Bulletin Board#ein55	858,{
-	mes "Northeast - Train Station";
-	mes "East - Weapon Shop,Hotel";
-	mes "South - Airship Repair Shop, Laboratory";
+einbroch,235,141,5	script	標示牌#ein22	858,{
+	mes "西南邊 - 飛空艇 維修場,研究所";
+	mes "西北邊 - 機場";
+	mes "北  邊 - 武器店,飯店,火車站";
 	close;
 }
 
-ein_in01,31,217,3	script	Cendadt#ein	851,{
-	mes "[Cendadt]";
-	mes "This factory has a lot";
-	mes "of things that need fixing,";
-	mes "pronto! I'm amazed that";
-	mes "the place is still operating!";
+einbroch,162,256,5	script	標示牌#ein33	858,{
+	mes "東  邊 - 火車站";
+	mes "東南邊 - 飯店";
+	mes "南  邊 - 武器店, 工廠";
+	mes "西南邊 - 機場, 飛空艇 維修場, 商店, 研究所 ";
+	close;
+}
+
+einbroch,183,174,5	script	標示牌#ein44	858,{
+	mes "東  邊 - 武器店,飯店";
+	mes "南  邊 - 工廠";
+	mes "西南邊 - 飛空艇 維修場,研究所";
+	mes "西北邊 - 機場";
+	close;
+}
+
+einbroch,104,202,5	script	標示牌#ein55	858,{
+	mes "東北邊 - 火車站";
+	mes "東  邊 - 武器店,飯店";
+	mes "南  邊 - 飛空艇 維修場,研究所";
+	close;
+}
+
+ein_in01,31,217,3	script	善達特#ein	851,{
+	mes "[善達特]";
+	mes "本工廠的物資確實很缺乏,";
+	mes "目前還能正常運轉已經是奇跡了";
 	next;
-	mes "[Cendadt]";
-	mes "Lucky for us, I hear that";
-	mes "some altruistic adventurers";
-	mes "have been donating materials";
-	mes "to help keep this factory from";
-	mes "falling apart... Or worse.";
-	mes "But that's just a rumor.";
+	mes "[善達特]";
+	mes "聽說以前有人把擊敗魔物所得到的戰利品,";
+	mes "充作工廠的物質...";
+	mes "不曉得是不是真的";
 	next;
-	mes "[Cendadt]";
-	mes "^666666*Sigh*^000000";
-	mes "Even if it is true,";
-	mes "there's nothing no one";
-	mes "here can do. Nobody has";
-	mes "the courage to challenge";
-	mes "the system, you know?";
+	mes "[善達特]";
+	mes "假如這傳聞是屬實的話...";
+	mes "唉喲,即使是屬實的也莫可奈何啊,";
+	mes "我們工廠也沒有可以對抗魔物的強人啊";
 	next;
-	mes "[Cendadt]";
-	mes "I...";
-	mes "I better get";
-	mes "back to work";
-	mes "before I get";
-	mes "in trouble...";
+	mes "[善達特]";
+	mes "我還是乖乖的去工作了....咻物嗚";
 	close;
 }
