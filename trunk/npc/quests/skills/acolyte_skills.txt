@@ -1,121 +1,101 @@
-//===== rAthena Script =======================================
-//= Acolyte Skill Quest
-//===== By: ==================================================
-//= kobra_k88
-//===== Current Version: =====================================
-//= 1.8
-//===== Compatible With: ===================================== 
-//= rAthena SVN
-//===== Description: ========================================= 
-//= Quest for skills: Holy Light
-//===== Additional Comments: ================================= 
-//= 1.5 Rescripted to Aegis 10.3 stadards. [L0ne_W0lf]
-//= 1.6 Fixed a typo in job check. (Bugreport:1531) [L0ne_W0lf]
-//= 1.7 Updated to latest available official file. [Masao]
-//= 1.8 Fixed JobLevel requirements. [Euphy]
-//============================================================
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://plutoea.googlecode.com/svn/
+// ---------------------------------
+// - 服事任務技能 腳本 - 
+//===================================
+// 版本: 1.8
+//===================================
 
-prt_church,173,23,4	script	Cleric	79,{
-	mes "[Acolyte Klift]";
-	mes "Ahh . Brothers ! Does the task of";
-	mes "caring for out lost sheep burden";
-	mes "and tire you ?";
-	mes "I am here to assist you.";
+prt_church,173,23,4	script	主任 服事#qsk_al	79,{
+	mes "[服事 克利福特]";
+	mes "啊啊，兄弟姐妹們! 想要拯救";
+	mes "可憐的小綿羊";
+	mes "是否覺得心有餘力呢?";
+	mes "我想伴隨你，為你服務";
 	next;
-	switch (select("^3355FF' About acolyte's hidden ability '^000000 ..:^3355FF' Holy light '^000000 training:End conversation")) {
+	switch(select("有關^3355FF'服事隱藏的能力'^000000 ..:移交^3355FF' 神聖之光 '^000000:結束對話")) {
 	case 1:
-		mes "[Acolyte Klift]";
-		mes "Our members of the clergy";
-		mes "naturally learn a skill as";
-		mes "as they mature. As they approach ";
-		mes "their senior years as an acolyte";
-		mes "this special skill.";
+		mes "[服事 克利福特]";
+		mes "像我們這樣的聖職者";
+		mes "要獨自發現自己的";
+		mes "隱藏能力之外，";
+		mes "必須要透過資深聖職者們";
+		mes "移交後所得到的技能";
+		mes "才能徹底的發揮使用";
 		next;
-		mes "[Acolyte Klift]";
-		mes "Faced with great danger and";
-		mes "an endless struggle with evil,";
-		mes "our brethren are much in need of assistance.";
-		mes "^3355FF' Holy Light '^000000 is that skill.";
-		mes "To gain this ability for yourself,";
-		mes "takes some work.";
+		mes "[服事 克利福特]";
+		mes "為了防止邪惡的勢力逃脫";
+		mes "可以拯救他們";
+		mes "無限期的痛苦";
+		mes "可以使用有一個叫做^3355FF神聖之光^000000 技能";
+		mes "想把這技能移交給你的話";
+		mes "要使用特別的力量";
 		next;
-		mes "[Acolyte Klift]";
-		mes "To gain the skill, you must find these items.";
-		mes "^FF33551 Opal^000000";
-		mes "^FF33551 Crystal Blue^000000";
-		mes "^FF33551 Rosary^000000 ";
+		mes "[服事 克利福特]";
+		mes "所需要幾個媒介物是";
+		mes "^FF3355白寶石1個^000000";
+		mes "^FF3355水靈礦石1個^000000";
+		mes "^FF3355幸運珠鏈1個^000000";
+		mes "等等";
 		next;
-		mes "[Acolyte Klift]";
-		mes "In order to be able to even use this skill,";
-		mes "one must be have sufficient experience.";
-		mes "^FF3355 Job Level 30^000000";
-		mes "is required to learn this skill.";
+		mes "[服事 克利福特]";
+			mes "但是為了移交這能力時";
+			mes "需要某種程度的天份才可以";
+			mes "^FF3355職業等級 30 以上^000000";
+			mes "才能做移交的動作";
 		next;
-		mes "[Acolyte Klift]";
-		mes "As for a priest, because of their";
-		mes "already vast amount of experience,";
-		mes "they are able to gain this skill at any";
-		mes "job level.";
+		mes "[服事 克利福特]";
+		mes "以祭司來說";
+		mes "已經是認定有能力的職位";
+		mes "所以不受職業等級的影響";
+		mes "可以直接'移交'傳授";
 		close;
 	case 2:
 		if (getskilllv("AL_HOLYLIGHT") == 1) {
-			mes "[Acolyte Klift]";
-			mes "Brother, you already possess";
-			mes "the skill of ` Holy Light '.";
-			mes "You cannot gain a skill you";
-			mes "already possess ..";
-			mes "I pray that you are using";
-			mes "this skill for the work of good . .";
+			mes "[服事 克利福特]";
+			mes "親愛的兄弟姐妹，你已經成功移交";
+			mes "'神聖之光了'";
+			mes "請好好使用這個技能吧";
 			close;
 		}
 		if ((countitem(727) > 0) && (countitem(991) > 0) && (countitem(2608) > 0) && (JobLevel > 29 || (BaseJob == Job_Priest || BaseJob == Job_Monk)) && (BaseClass == Job_Acolyte)) {
-			mes "[Acolyte Klift]";
-			mes "Your faith has proven worthy";
-			mes "for you to gain the ' Holy Light ' skill.";
-			mes "Your skill is adequate";
-			mes "to use this skill.";
-			mes "Use it wisely. . .";
+			mes "[服事 克利福特]";
+			mes "對信任感，抱著忠誠態度的你";
+			mes "給你有使用神聖之光";
+			mes "的資格";
+			mes "對你以後即將要走的路";
+			mes "將與幸福同在 . . . . .";
 			next;
-			delitem 727,1; //White_Jewel
-			delitem 991,1; //Crystal_Blue
-			delitem 2608,1; //Rosary
+			delitem 727,1; //白寶石
+			delitem 991,1; //水靈礦石
+			delitem 2608,1; //幸運珠鏈
 			skill "AL_HOLYLIGHT",1,0;
-			mes "[Acolyte Klift]";
-			mes "You now know ' Holy Light '";
-			mes "May you use this skill only in the";
-			mes "best conduct . . . . .";
+			mes "[服事 克利福特]";
+			mes "來 ，以後你就";
+			mes "盡情的使用神聖之光吧 ，希望你把這能力";
+			mes "用在善行吧. . . . .";
 			close;
 		}
-		mes "[Acolyte Klift]";
-		mes "Oh, it is clear. . .";
-		mes "You are not yet ready to";
-		mes "receive the ' Holy Light ' skill.";
+		mes "[服事 克利福特]";
+		mes "噢噢，兄弟姐妹們";
+		mes "你還不夠資格移交";
+		mes "神聖之光啊..";
 		next;
-		mes "[Acolyte Klift]";
-		mes "You should listen carefully to what";
-		mes "is necessary for this skill.";
-		mes "If you listen closely,";
-		mes "you may learn what you lack.";
-		mes "So that you may improve upon yourself.";
+		mes "[服事 克利福特]";
+		mes "請仔細聽我說";
+		mes "有關服事隱藏能力";
+		mes "的說明";
+		mes "你就會了解，自己不足的地方";
+		mes "該怎麼去補充了";
 		close;
 	case 3:
-		mes "[Acolyte Klift]";
+		mes "[服事 克利福特]";
 		mes ". . . . .";
-		mes "I understand your zeal.";
-		mes "You have much time yet to";
-		mes "practice and gain experience.";
-		mes "Blessings upon you . . . . .";
+		mes "我瞭解你的意思了";
+		mes "請你慢慢的思考之後";
+		mes "好好的實踐吧";
+		mes "祝你前途無量啊 . . . . .";
 		close;
 	}
 }
-
-//============================================================ 
-// Old changelog
-//============================================================ 
-//= 1.0a Now using functions found in "Global_Functions.txt"
-//=     for class checks.
-//= 1.2 Added Baby Class Support [Lupus]
-//= 1.3 Removed callfunc Is_####_Class in favor of baseClass [Silentdragon]
-//= 1.4 Fixed an exploit [Lupus]
-//= 1.4a changed perm. variables to temp ones [Lupus]
-//============================================================
