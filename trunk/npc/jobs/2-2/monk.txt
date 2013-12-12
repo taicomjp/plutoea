@@ -1,383 +1,228 @@
-//===== rAthena Script ======================================= 
-//= Monk Job Quest
-//===== By: ==================================================
-//= Dino9021, Edited / Translated by Celest
-//===== Current Version: ===================================== 
-//= 2.5
-//===== Compatible With: ===================================== 
-//= rAthena SVN
-//===== Description: ========================================= 
-//= [Official Conversion]
-//= Job quest for Monk classes
-//===== Additional Comments: ================================= 
-//= 2.2 Rescripted to Aegis 10.3 stadards. [L0ne_W0lf]
-//=     No longer uses function "F_BlockHigh"
-//= 2.3 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
-//= 2.3a Deleted unused variables. [Samuray22]
-//= 2.4 Added Quest Log commands. [Kisuka]
-//= 2.5 Removed the need for use of 'goto.' [L0ne_W0lf]
-//============================================================ 
+//==================================
+// [冥] The PlutoEA Project [王]
+// http://plutoea.googlecode.com/svn
+// ---------------------------------
+// - 武道家 轉職腳本 - 
+//===================================
+// 版本：2.5
+//===================================
 
-prt_monk,59,247,1	script	Guarding Monk#mk	120,6,2,{
+prt_monk,59,247,1	script	修道僧#mk	120,6,2,{
 	if (Upper == 1) {
-		mes "[Tohobu]";
-		mes "Hmm? What business do you have here?";
-		mes "If you wish to enter this sacred area,";
-		mes "you must give me your name and job level!";
+		mes "[都好父]";
+		mes "嗯? 你找本主有什麼事嗎?";
+		mes "需要進入神聖的修練場前，";
+		mes "先告訴我你的姓名、職業等級和基本等級之後才能進去!";
 		next;
-		mes "[Tohobu]";
-		mes "....Eh?";
-		mes "Oh!^FF0000gosh^000000! I am sorry, I think I misunderstood you from someone I know.";
+		mes "[都好父]";
+		mes "....嗯?";
+		mes "哎呦!很抱歉，我好像看錯人了";
 		next;
-		mes "[Tohobu]";
+		mes "[都好父]";
 		mes ".......";
 		mes "........";
 		next;
-		mes "[Tohobu]";
-		mes "It is odd...I never misunderstand people...oh, well. Have a good day.";
+		mes "[都好父]";
+		mes "本主很少會看錯人的...";
+		mes "不管怎麼樣，祝你有個愉快的一天";
 		close;
 	}
-	if (BaseJob == Job_Acolyte && MONK_Q == 0) {
-		mes "[Tohobu]";
-		mes "Hmm? What business do you have here?";
-		mes "If you wish to enter this sacred area,";
-		mes "you must give me your name and job level!";
-		next;
-		mes "[Tohobu]";
-		mes "Now, please tell me your name and job level.";
-		next;
-		if (select("Ignore him.:Tell him.") == 1) {
-			mes "[Tohobu]";
-			mes "To ignore another is disrespectful, get out!";
-			close2;
-			warp "prt_fild03",357,256;
-			end;
-		}
-		mes "[Tohobu]";
-		mes "Hmm... " + strcharinfo(0) + " is your name?";
-		mes "...did I say it right?";
-		mes "Okay, and your job level is " + JobLevel + " correct?";
-		next;
-		mes "[Tohobu]";
-		mes "Very well... why have you come here";
-		mes "" + strcharinfo(0) + "?";
-		next;
-		switch(select("To visit and learn about monks.:I wish to become a monk...:I'm tired and need to rest...")) {
-		case 1:
-			mes "[Tohobu]";
-			mes "I see...";
-			mes "We monks live our lives for spiritual enlightenment.";
-			mes "We improve our bodies as well as our minds to reach true inner peace.";
-			mes "May you find your inner peace as well.";
-			set MONK_Q,1;
-			close;
-		case 2:
-			if (BaseJob == Job_Acolyte && JobLevel > 39) {
-				mes "[Tohobu]";
-				mes "Hmm you seem as though you have been training for this...";
-				mes "That is good. Go see our sensei Moohae. Speak with him.";
-				mes "He will help you start your training.";
-				set MONK_Q,2;
-				setquest 3016;
-				close;
-			}
-			else if (BaseJob == Job_Acolyte && JobLevel < 40) {
-				mes "[Tohobu]";
-				mes "Hmm, you do not seem ready to become a monk.";
-				mes "To become a monk you must be,";
-				mes "at least a job level 40 Acolyte.";
-				mes "If not, you are not yet ready to become a monk.";
-				next;
-				mes "[Tohobu]";
-				mes "Come back to me when you have trained more";
-				mes "and I will let you know if you are ready.";
-				next;
-				mes "[Tohobu]";
-				mes "I hope that you will soon join us on our";
-				mes "path of inner peace and enlightenment.";
-				mes "I'll be waiting here for you.";
-				set MONK_Q,1;
-				close;
-			}
-			else {
-				mes "[Tohobu]";
-				mes "Hahahha that was a good joke!";
-				close;
-			}
-		case 3:
-			mes "[Tohobu]";
-			mes "Yes, we all need to take a rest once in a while...";
-			mes "It is a good idea not to stress your self.";
-			mes "Come in and make yourself comfortable.";
-			mes "Rest as long as you need to.";
-			next;
-			mes "[Tohobu]";
-			mes "I hope that you become energized";
-			mes "when observing our brothers in their";
-			mes "pursuit of spiritual enlightenment.";
-			mes "I hope you reach it too.";
-			set MONK_Q,1;
-			close;
-		}
-	}
-	else {
-		if (MONK_Q == 1 && BaseJob == Job_Acolyte) {
-			mes "[Tohobu]";
-			mes "What do you think? Did your visit reveal anything to your spirit?";
-			next;
-			switch(select("No...:I wish to become a monk.:I need to rest...")) {
-			case 1:
-				mes "[Tohobu]";
-				mes "I see, there is no shame in that.";
-				mes "I hope that your experience here with";
-				mes "our brothers has helped you become one";
-				mes "step closer to true enlightenment.";
-				set MONK_Q,1;
-				close;
-			case 2:
-				if (BaseJob == Job_Acolyte && JobLevel > 39) {
-					mes "[Tohobu]";
-					mes "Hmm you seem as though you have been training for this...";
-					mes "That is good. Go see our sensei Moohae. Speak with him.";
-					mes "He will help you start your training.";
-					set MONK_Q,2;
-					setquest 3016;
-					close;
-				}
-				else if (BaseJob == Job_Acolyte && JobLevel < 40) {
-					mes "[Tohobu]";
-					mes "Hmm, you do not seem ready to become a monk.";
-					mes "To become a monk you must be,";
-					mes "at least a job level 40 Acolyte.";
-					mes "If not, you are not yet ready to become a monk.";
-					next;
-					mes "[Tohobu]";
-					mes "Come back to me when you have trained more on your own";
-					mes "and I will let you know if you are ready.";
-					next;
-					mes "[Tohobu]";
-					mes "I hope that you will soon join us in our";
-					mes "path to inner peace and enlightenment.";
-					mes "I'll be waiting here for you.";
-					set MONK_Q,1;
-					close;
-				}
-				else {
-					mes "[Tohobu]";
-					mes "Hahahha that was a good joke!";
-					close;
-				}
-			case 3:
-				mes "[Tohobu]";
-				mes "Yes, we all need to take a rest once in a while...";
-				mes "It is a good idea not to stress your self.";
-				mes "Come in and make yourself comfortable.";
-				mes "Rest as long as you need to.";
-				next;
-				mes "[Tohobu]";
-				mes "I hope that you become energized";
-				mes "when observing our brothers in their";
-				mes "pursuit of spiritual enlightenment.";
-				mes "I hope you reach it too.";
-				set MONK_Q,1;
-				close;
-			}
-		}
+	if (BaseJob == Job_Acolyte && (MONK_Q == 0 || MONK_Q == 1)) {
 		if (MONK_Q == 0) {
-			mes "[Tohobu]";
-			mes "Hmm? What business do you have here?";
-			mes "If you wish to enter this sacred area,";
-			mes "You must give me your name, job level, and level!";
+			mes "[都好父]";
+			mes "嗯?你找本主有什麼事嗎?";
+			mes "想要進入武道家的修練場前";
+			mes "先要告訴我你的姓名和職業等級，";
+			mes "基本等級之後才能進去!";
 			next;
-			mes "[Tohobu]";
-			mes "Now, please tell me your name as well as your job level!";
+			mes "[都好父]";
+			mes "來，告訴我你的姓名和職業等級，基本等級";
 			next;
-			if (select("Ignore.:Tell him.") == 1) {
-				mes "[Tohobu]";
-				mes "To ignore another is disrespectful, get out!";
+			if (select("不理他:告訴他") == 1) {
+				mes "[都好父]";
+				mes "沒禮貌的傢伙!快給我出去!";
 				close2;
 				warp "prt_fild03",357,256;
 				end;
 			}
-			mes "[Tohobu]";
-			mes "Hmm... " + strcharinfo(0) + " is your name?";
-			mes "...did I say it right?";
-			mes "Okay, and your job level is " + JobLevel + " correct?";
+			mes "[都好父]";
+			mes "嗯..你叫 " + strcharinfo(0);
+			mes "..是這樣念沒錯吧，";
+			mes "我看看，職業等級是 " + joblevel;
 			next;
-			mes "[Tohobu]";
-			mes "Okay, Now, why have you come here";
-			mes "" + strcharinfo(0) + "?";
-			next;
-			switch(select("To visit and learn about monks.:I wish to become a monk...:I'm tired and need to rest...")) {
-			case 1:
-				mes "[Tohobu]";
-				mes "I see...";
-				mes "We monks live our lives for God and spiritual enlightenment.";
-				mes "We improve our bodies as well as our minds to reach true inner peace.";
-				mes "May you find your inner peace as well.";
-				set MONK_Q,1;
+			mes "[都好父]";
+			mes "來找我有什麼事呢?";
+			mes strcharinfo(0) + " "+(Sex?"先生":"小姐")+"";
+			setarray .@MK$[0],"想要見識一下武道家修練的情形..","想要成為武道家..","想要在修練場休息一下..";
+		}
+		else {
+			mes "[都好父]";
+			mes "怎麼樣?看過之後有改變你的想法嗎?";
+			setarray .@MK$[0],"沒有","我要當武道家!","我要再休息一下";
+		}
+		next;
+		switch (select(.@MK$[0],.@MK$[1],.@MK$[2])) {
+		case 1:
+			mes "[都好父]";
+			mes "嗯，是嗎，我知道了";
+			mes "希望我們武道家修練的樣子，";
+			mes "能助於你成為，有力量的武道家";
+			set MONK_Q,1;
+			close;
+		case 2:
+			if (JobLevel > 39) {
+				mes "[都好父]";
+				mes "嗯..職業等級也到了一定的程度..";
+				mes "好吧..進去裡面找[武海]長老吧，";
+				mes "他會好好的引導你的";
+				set MONK_Q,2;
+				setquest 3016;
 				close;
-			case 2:
-				if (BaseJob == Job_Acolyte && JobLevel > 39) {
-					mes "[Tohobu]";
-					mes "Hmm you seem as though you have been training for this...";
-					mes "That is good. Go see our sensei Moohae, speak with him";
-					mes "and he will help you start new training.";
-					set MONK_Q,2;
-					setquest 3016;
-					close;
-				}
-				else if (BaseJob == Job_Acolyte && JobLevel < 40) {
-					mes "[Tohobu]";
-					mes "Hmm, you do not seem ready to become a monk.";
-					mes "To become a monk you must be,";
-					mes "at least a job level 40 Acolyte.";
-					mes "If not, you are not yet ready to become a monk.";
-					next;
-					mes "[Tohobu]";
-					mes "Come back to me when you have trained more on your own";
-					mes "and I will let you know if you are ready.";
-					next;
-					mes "[Tohobu]";
-					mes "I hope that you will soon join us in our";
-					mes "path to inner peace and enlightenment.";
-					mes "I'll be waiting here for you.";
-					set MONK_Q,1;
-					close;
-				}
-				else {
-					mes "[Tohobu]";
-					mes "Hahahha that was a good joke!";
-					close;
-				}
-			case 3:
-				mes "[Tohobu]";
-				mes "Yes, we all need to take a rest once in a while...";
-				mes "It is a good idea not to stress your self.";
-				mes "Come in and make yourself comfortable.";
-				mes "Rest as long as you need to.";
+			}
+			else {
+				mes "[都好父]";
+				mes "職業等級 40 級以上才能夠轉職啊...";
 				next;
-				mes "[Tohobu]";
-				mes "I hope that you become energized";
-				mes "when observing our brothers in their";
-				mes "pursuit of spiritual enlightenment.";
-				mes "I hope you reach it too.";
+				mes "[都好父]";
+				mes "別太心急，在世界上多磨練自己之後再來吧.";
+				mes "等到達到轉職條件之後再來找我吧... 哈哈.";
 				set MONK_Q,1;
 				close;
 			}
-		}
-		else if (MONK_Q == 1) {
-			mes "[Tohobu]";
-			mes "Listen carefully on your journey.";
-			mes "There is much to learn.";
+		case 3:
+			mes "[都好父]";
+			mes "好吧，看來你是走累了..";
+			mes "偶而也需要休息一下，";
+			mes "在武道家修練場這裡";
+			mes "休息一下再走吧，";
+			next;
+			mes "[都好父]";
+			mes "總是想要努力";
+			mes "有力量的是我們武道家";
+			mes "希望我們的樣子";
+			mes "能帶給你小小的安息";
+			set MONK_Q,1;
 			close;
 		}
-		else if (BaseJob == Job_Acolyte && MONK_Q == 2) {
-			mes "[Tohobu]";
-			mes "Hmm... would you like to meet sensei Moohae?";
-			mes "He is in the south east area in 'The Hall of Monks'.";
-			close;
-		}
-		else if (BaseJob == Job_Acolyte && MONK_Q > 2) {
-			mes "[Tohobu]";
-			mes "I hope you do well in your training and I look forward to seeing you again.";
-			close;
-		}
-		else {
-			mes "[Tohobu]";
-			mes "Welcome to the central chamber of our Church.";
-			mes "Please, try not to disturb the other monks.";
-			mes "Even if you are a monk yourself.";
-			close;
-		}
+	}
+	else if (MONK_Q == 1) {
+		mes "[都好父]";
+		mes "旅途上要仔細聆聽啊..";
+		mes "要學習的東西可多著呢";
+		close;
+	}
+	else if (BaseJob == Job_Acolyte && MONK_Q == 2) {
+		mes "[都好父]";
+		mes "嗯..去見[武海]長老吧!";
+		mes "他在東南邊方向，的[武道家的殿堂]裡";
+		close;
+	}
+	else if (BaseJob == Job_Acolyte && MONK_Q > 2) {
+		mes "[都好父]";
+		mes "希望你能順利地訓練自己，期待有朝一日能在看到你啊!";
+		close;
+	}
+	else {
+		mes "[都好父]";
+		mes "並不是很歡迎你來到聖卡畢利那修道院";
+		mes "不過歡迎光臨，";
+		mes "希望你不要妨礙到，正在修練中的武道家";
+		mes "就算你是武道家，也是一樣!";
+		close;
 	}
 
 OnTouch:
 	if (MONK_Q == 0) {
-		mes "[Tohobu]";
-		mes "How dare you set foot in";
-		mes "this holy building! ! !";
-		mes "Where is your respect?!";
+		mes "[都好父]";
+		mes "你這傢伙!沒有我的允許";
+		mes "竟然可以隨便進入";
+		mes "神聖的修練場!!";
 		next;
-		mes "[Tohobu]";
-		mes "Leave this place ! ! !";
+		mes "[都好父]";
+		mes "快給我出去!";
 		close;
 	}
 	if (MONK_Q == 1) {
-		mes "[Tohobu]";
-		mes "Hmmm... come in.";
-		mes "You may learn something...";
+		mes "[都好父]";
+		mes "旅途上要仔細聆聽啊..";
+		mes "要學習的東西可多著呢";
 		close;
 	}
 	if (BaseJob == Job_Acolyte && MONK_Q == 2) {
-		mes "[Tohobu]";
-		mes "Hmm.....you wish to see our sensei Moohae?";
-		mes "He is in the south east section of this building.";
+		mes "[都好父]";
+		mes "嗯..去見[武海]長老吧!";
+		mes "他在東南邊方向，的[武道家的殿堂]裡";
 		close;
 	}
 	if (BaseJob == Job_Acolyte && MONK_Q > 2) {
-		mes "[Tohobu]";
-		mes "I look forward to seeing you become a monk and joining us.";
+		mes "[都好父]";
+		mes "希望你能順利地訓練自己，期待有朝一日能在看到你啊!";
 		close;
 	}
 	end;
 }
 
-monk_in,99,58,1	script	Sensei Moohae#mk	60,{
-	mes "[Sensei Moohae]";
-	mes "Greetings, you seem to be on a pure path.";
-	mes "Come in, come in, what can I do for you today?";
+monk_in,99,58,1	script	長老#mk	60,{
+	mes "[武海 長老]";
+	if (Upper == 1) {
+		mes "在所有自然界裡，願神的祝福與你同在..!!";
+		mes "歡迎光臨，好好的休息之後在離開吧，輪迴第二回合的人。";
+		close;
+	}
+	mes "祝福你在大自然裡找到神..!!";
+	mes "歡迎光臨，找我有什麼事嗎?";
 	next;
 	if (SkillPoint) {
-		mes "[Sensei Moohae]";
-		mes "If you have free skill points, you will lose them during a job change.";
-		mes "Make sure to use any skill points you have.";
+		mes "[武海 長老]";
+		mes "如果你要轉職的話，請先確認沒有剩餘的技能點數吧!";
 		close;
 	}
 	if (BaseJob == Job_Acolyte && MONK_Q == 2 && JobLevel > 39) {
-		mes "[Sensei Moohae]";
-		mes "I sense a fighting spirit, do you wish to become a monk? ";
+		mes "[武海 長老]";
+		mes "嗯..是個想要成為武道家的年經人..?";
+		mes "是嗎";
 		next;
-		if (select("Yes.:No.") == 2) {
-			mes "[Sensei Moohae]";
-			mes "My apologies... It has been some time since";
-			mes "I have sensed someone with your strength.";
-			mes "I hope you find your path young one.";
+		if (select("是:不是") == 2) {
+			mes "[武海 長老]";
+			mes "嗯..應該是沒錯啊..";
+			mes "不是嗎，看老夫的氣力衷退了..";
+			mes "連這點小事情都看不出來..";
+			mes "那麼，走你的路吧，年經人。";
 			close;
 		}
-		mes "[Sensei Moohae]";
-		mes "There are still those who wish to follow the old ways.";
-		if (Sex)
-			mes "A strong young man. I am pleased of your will to join us.";
-		else
-			mes "Such a delicate flower. I am pleased to see your will to join us.";
+		mes "[武海 長老]";
+		mes "喔喔..這個時代還會有年輕人會記得我們武道家啊..";
+		mes "歡迎光臨，"+(Sex?"師弟":"師妹")+"!";
 		next;
-		mes "[Sensei Moohae]";
-		mes "Oh, you are the new pupil that wishes to join us...";
-		mes "Well there are a few things that you should know prior to beginning your training.";
+		mes "[武海 長老]";
+		mes "想要當武道家嗎!老夫真是高興啊..";
+		mes "首先，當武道家之前，要光大概知道一下";
+		mes "幾件事情，";
 		next;
-		mes "[Sensei Moohae]";
-		mes "We monks are on a path of inner peace and enlightenment.";
-		mes "We strive to bring such peace to all others with great care.";
+		mes "[武海 長老]";
+		mes "我們武道家們，要嚴格鍛練自己的身體";
+		mes "並要守護和平";
 		next;
-		mes "[Sensei Moohae]";
-		mes "We monks achieve this from mental and physical training.";
-		mes "We search for enlightenment in our surroundings and in nature.";
+		mes "[武海 長老]";
+		mes "鍛練身體是為了，幫助弱者";
+		mes "是為了保護弱者的";
 		next;
-		mes "[Sensei Moohae]";
-		mes "It is, of course, important to always keep our original faith in God.";
+		mes "[武海 長老]";
+		mes "當然，要把心情撫平，更重要的是不能得意忘行";
 		next;
-		mes "[Sensei Moohae]";
-		mes "This is not an easy life and the true test of becoming a monk is having the ability to endure all of which I said...";
-		mes "The life of a monk is not for everybody, only those strong enough can become a monk.";
+		mes "[武海 長老]";
+		mes "經歷這些過程會很辛苦的，";
+		mes "甚至會感覺到痛苦";
+		mes "看你可不可以忍受這種過程，";
+		mes "來決定你可不可以成為武道家";
 		next;
-		mes "[Sensei Moohae]";
-		mes "Now, that you understand all of this,";
-		mes "prepare yourself to train";
-		mes "your strength and spirit.";
+		mes "[武海 長老]";
+		mes "好..那就來測試一下";
+		mes "看你轉職成為武道家之後";
+		mes "是否確實有資格當武道家";
 		next;
-		mes "[Sensei Moohae]";
-		mes "Let us start with a simple task.";
+		mes "[武海 長老]";
+		mes "首先，小小的考驗一下你對武道家轉職的意志力";
 		next;
 		switch(rand(1,7)) {
 		case 1: setarray .@items[0], 938,5, 1055,10, 511,20, 3; changequest 3016,3017; break;
@@ -388,485 +233,344 @@ monk_in,99,58,1	script	Sensei Moohae#mk	60,{
 		case 6: setarray .@items[0], 913,10, 948,4, 7033,20, 8; changequest 3016,3022; break;
 		case 7: setarray .@items[0], 1027,5, 1025,20, 1042,10, 9; changequest 3016,3023; break;
 		}
-		mes "[Sensei Moohae]";
-		mes .@items[1]+" "+getitemname(.@items[0])+",";
-		mes .@items[3]+" "+getitemname(.@items[2])+",";
-		mes .@items[5]+" "+getitemname(.@items[4])+".";
-		mes "Find these items and return to me.";
+		mes "[武海 長老]";
+		mes .@items[1]+"個 "+getitemname(.@items[0])+",";
+		mes .@items[3]+"個 "+getitemname(.@items[2])+",";
+		mes .@items[5]+"個 "+getitemname(.@items[4])+".";
+		mes "找齊之後帶過來吧";
 		set MONK_Q,.@items[6];
 		next;
-		mes "[Sensei Moohae]";
+		mes "[武海 長老]";
 		switch (.@items[6]) {
-		case 3: mes "Why the face? This is a test of your abilities."; break; 
-		case 4: mes "What's wrong? This is a test of your abilities."; break; 
-		case 5: mes "You do understand don't you? This is a test of your abilities."; break; 
-		case 6: mes "Don't look at me like that. This is a test of your abilities."; break; 
-		case 7: mes "You don't seem concerned, this is a test of your abilities You should take this seriously."; break; 
-		case 8: mes "It is a test of your abilities so make sure you acquire these on your own."; break; 
-		case 9: mes "Don't be concerned, I believe you can do it. This is only to test your abilities."; break; 
+		case 3: mes "幹嘛垂著臉呢?這是要測試你的能力!"; break; 
+		case 4: mes "這是要測試你的能力!"; break; 
+		case 5: mes "曉得嗎? 這是要測試你的能力!"; break; 
+		case 6: mes "別這樣看著我啊，這是為了測驗你的能力!"; break; 
+		case 7: mes "你沒必要緊張，你應該要認真看待這個試煉!"; break; 
+		case 8: mes "這只要測驗你是否有恆心與毅力去追求你所想要的事物。"; break; 
+		case 9: mes "別擔心，我相信你做得到的，這只是要測驗你的能力。"; break; 
 		}
 		next;
-		mes "[Sensei Moohae]";
-		mes "If you are unable to return with these items, you are not yet ready to become a monk.";
-		mes "Be sure to collect all the items I listed.";
-		mes "May God be with you.";
+		mes "[武海 長老]";
+		mes "那麼全部拿到之後再來找我吧，";
+		mes "好出發吧，";
+		mes "願老天的保佑一起伴隨著你";
 		close;
 	}
-	else if (MONK_Q == 3) {
-		mes "[Sensei Moohae]";
-		mes "You are back, did you bring what I asked?";
+	else if (MONK_Q >= 3 && MONK_Q <= 9) {
+		mes "[武海 長老]";
+		mes "你回來啦，要你找的東西都帶來了嗎?";
 		next;
-		if (countitem(938) > 4 && countitem(1055) > 9 && countitem(511) > 19) {
-			mes "[Sensei Moohae]";
-			mes "Well done, you found all the items.";
-			mes "I will tell this to the elders.";
+		switch(MONK_Q) {
+		case 3: setarray .@items[0], 938,5, 1055,10, 511,20, 3; break;
+		case 4: setarray .@items[0], 942,20, 1002,5, 510,3, 4; break;
+		case 5: setarray .@items[0], 905,30, 909,5, 955,10, 5; break;
+		case 6: setarray .@items[0], 943,5, 935,20, 912,5, 6; break;
+		case 7: setarray .@items[0], 7053,5, 509,10, 508,10, 7; break;
+		case 8: setarray .@items[0], 913,10, 948,4, 7033,20, 8; break;
+		case 9: setarray .@items[0], 1027,5, 1025,20, 1042,10, 9; break;
+		}
+		if (countitem(.@items[0]) >= .@items[1] && countitem(.@items[2]) >= .@items[3] && countitem(.@items[4]) >= .@items[5]) {
+			mes "[武海 長老]";
+			mes "喔喔..真的都找到了啊!!";
+			mes "辛苦了!!";
+			mes "我相信你想要成為武道家的旨意";
+			mes "已傳達給大家了!!";
+			switch(MONK_Q) {
+			case 3: changequest 3017,3024; break;
+			case 4: changequest 3018,3024; break;
+			case 5: changequest 3019,3024; break;
+			case 6: changequest 3020,3024; break;
+			case 7: changequest 3021,3024; break;
+			case 8: changequest 3022,3024; break;
+			case 9: changequest 3023,3024; break;
+			}
 			set MONK_Q,10;
-			changequest 3017,3024;
-			delitem 938,5; //Sticky_Mucus
-			delitem 1055,10; //Earthworm_Peeling
-			delitem 511,20; //Green_Herb
+			delitem .@items[0],.@items[1];
+			delitem .@items[2],.@items[3];
+			delitem .@items[4],.@items[5];
 			next;
-			mes "[Sensei Moohae]";
-			mes "Let's see who is to see you next..";
-			mes "Ah... go find elder Touha.";
-			mes "He is in the north west.";
+			mes "[武海 長老]";
+			mes "我看看..有個叫";
+			mes "啊..[道武俠]的武道家想要想要見你";
+			mes "他在這裡的北邊，在武道家前輩";
+			mes "的墓地那裡";
 			close;
 		}
 		else {
-			mes "[Sensei Moohae]";
-			mes "How can you think to be done?";
-			mes "You do not have what I asked for!";
-			mes "5 Sticky Mucus,";
-			mes "10 Earthworm Peeling,";
-			mes "20 Green Herb.";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 4) {
-		mes "[Sensei Moohae]";
-		mes "...eh?";
-		next;
-		if (countitem(942) > 19 && countitem(1002) > 4 && countitem(510) > 2) {
-			mes "[Sensei Moohae]";
-			mes "Very good, you found all the items.";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3018,3024;
-			delitem 942,20; //Yoyo_Tail
-			delitem 1002,5; //Iron_Ore
-			delitem 510,3; //Blue_Herb
+			mes "[武海 長老]";
+			mes "嗯?";
+			mes "還沒準備好嗎?";
+			mes "我再跟你說一遍!!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Let's see who is to see you next..";
-			mes "Ah... go find elder Touha.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "Why did you return?";
-			mes "You do not have what I asked for!";
-			mes "20 Yoyo Tail,";
-			mes "5 Iron Ore,";
-			mes "3 Blue Herb.";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 5) {
-		mes "[Sensei Moohae]";
-		mes "Hmm?";
-		next;
-		if (countitem(905) > 29 && countitem(909) > 4 && countitem(955) > 9) {
-			mes "[Sensei Moohae]";
-			mes "See, that wasn't so bad you real found all the items.";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3019,3024;
-			delitem 905,30; //Stem
-			delitem 909,5; //Jellopy
-			delitem 955,10; //Worm_Peelings
-			next;
-			mes "[Sensei Moohae]";
-			mes "The next step will be given";
-			mes "to you by Touha.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "How can you think to be done?";
-			mes "You do not have what I asked for!";
-			mes "30 Stem,";
-			mes "5 Jellopy";
-			mes "10 Worm Peelings";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 6) {
-		mes "[Sensei Moohae]";
-		mes "I have been waiting for you.";
-		next;
-		if (countitem(943) > 4 && countitem(935) > 19 && countitem(912) > 4) {
-			mes "[Sensei Moohae]";
-			mes "Impressive, you really found all the items.";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3020,3024;
-			delitem 943,5; //Solid_Shell
-			delitem 935,20; //Shell
-			delitem 912,5; //Zargon
-			next;
-			mes "[Sensei Moohae]";
-			mes "Your next step will be with..";
-			mes "elder Touha. Go find him.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "How can you think to be done?";
-			mes "You do not have what I asked for!";
-			mes "5 Solid Shell,";
-			mes "20 Shell,";
-			mes "5 Zargon.";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 7) {
-		mes "[Sensei Moohae]";
-		mes "Hello again. Back so soon?";
-		next;
-		if (countitem(7053) > 4 && countitem(509) > 9 && countitem(508) > 9) {
-			mes "[Sensei Moohae]";
-			mes "Very nice, you found all the items.";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3021,3024;
-			delitem 7053,5; //Cyfar
-			delitem 509,10; //White_Herb
-			delitem 508,10; //Yellow_Herb
-			next;
-			mes "[Sensei Moohae]";
-			mes "Let's see who is to see you next..";
-			mes "Ah... go find elder Touha.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "Where are the items...?";
-			mes "You do not have what I asked for!";
-			mes "5 Cyfar,";
-			mes "10 White Herb,";
-			mes "10 Yellow Herb.";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 8) {
-		mes "[Sensei Moohae]";
-		mes "Hmm?";
-		next;
-		if (countitem(913) > 9 && countitem(948) > 4 && countitem(7033) > 19) {
-			mes "[Sensei Moohae]";
-			mes "Excellent, all the items I asked for.";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3022,3024;
-			delitem 913,10; //Tooth_Of_Bat
-			delitem 948,5; //Bear's_Foot
-			delitem 7033,20; //Poison_Spore
-			next;
-			mes "[Sensei Moohae]";
-			mes "Let's see who is to see you next..";
-			mes "Ah... go find elder Touha.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "How can you think to be done?";
-			mes "You do not have what I asked for!";
-			mes "10 Tooth of Bat,";
-			mes "5 Bear's Foot skin";
-			mes "20 Poison Spore";
-			mes "These are the items I require, go find them all.";
-			close;
-		}
-	}
-	else if (MONK_Q == 9) {
-		mes "[Sensei Moohae]";
-		mes "Welcome back.";
-		next;
-		if (countitem(1027) > 4 && countitem(1025) > 19 && countitem(1042) > 9) {
-			mes "[Sensei Moohae]";
-			mes "Wow, you found all the items!!";
-			mes "I will tell this to the elders.";
-			set MONK_Q,10;
-			changequest 3023,3024;
-			delitem 1027,5; //Porcupine_Spike
-			delitem 1025,20; //Spiderweb
-			delitem 1042,10; //Short_Leg
-			next;
-			mes "[Sensei Moohae]";
-			mes "Let's see who is to see you next..";
-			mes "Ah... go find elder Touha.";
-			mes "He is in the north west.";
-			close;
-		}
-		else {
-			mes "[Sensei Moohae]";
-			mes "How can you think to be done?";
-			mes "You do not have what I asked for!";
-			mes "5 Porcupine Quill,";
-			mes "20 Cobweb,";
-			mes "10 Bug Leg.";
-			mes "These are the items I require, go find them all.";
+			mes "[武海 長老]";
+			mes .@items[1]+"個 "+getitemname(.@items[0])+",";
+			mes .@items[3]+"個 "+getitemname(.@items[2])+",";
+			mes .@items[5]+"個 "+getitemname(.@items[4])+".";
+			mes "找齊之後帶過來吧";
 			close;
 		}
 	}
 	else if (MONK_Q > 9 && MONK_Q < 14) {
-		mes "[Sensei Moohae]";
-		mes "I told you already.";
-		mes "Go find ^CC0000Touha^000000.";
-		mes "He is a little north west of here.";
+		mes "[武海 長老]";
+		mes "再來..應該是轉職問答題..?";
+		mes "去找^CC0000道武俠^000000吧，";
+		mes "他在這裡的北邊，在武道家前輩";
+		mes "的墓地那裡";
 		close;
 	}
 	else if (MONK_Q > 13 && MONK_Q < 26) {
-		mes "[Sensei Moohae]";
-		mes "Oh, are you still in the process of training?";
-		mes "Hurry and finish!";
+		mes "[武海 長老]";
+		mes "嗯?你還在考轉職考試中嗎..?";
+		mes "好好加油吧!";
 		close;
 	}
 	else if (MONK_Q > 25 && MONK_Q < 27) {
-		mes "[Sensei Moohae]";
-		mes "I hear good things coming from your training.";
-		mes "Good luck and work hard. You will do great things as a monk.";
+		mes "[武海 長老]";
+		mes "聽說你的訓練進展得還不錯";
+		mes "努力加油啊，你一定能成為出色的武道家";
 		close;
 	}
 	else if (MONK_Q == 27 && BaseJob == Job_Acolyte) {
-		mes "[Sensei Moohae]";
-		mes ".......Hmmm.....";
-		mes "Go to Tomoon, get a special potion from him. It will look like a green potion, but it isn't. Bring it to me...";
+		mes "[武海 長老]";
+		mes ".......嗯";
+		mes "去找'道文'拿綠色的靈藥吧，把它帶過來之後喝下去";
 		close;
 	}
 	else if (MONK_Q == 28 && BaseJob == Job_Acolyte) {
 		if (countitem(506) > 0) {
-			mes "[Sensei Moohae]";
-			mes "Do you still have the medicine you were supposed to bring?";
-			mes "You must drink that green potion to strengthen yourself for becoming a monk.";
+			mes "[武海 長老]";
+			mes "嗯?你還沒吸取靈藥嗎?";
+			mes "那..快把那很像綠色藥的靈藥喝掉吧";
+			mes "不喝那靈藥的話，沒辦法達到武道家的";
+			mes "內功修為";
+			mes "記住,有幾個喝幾個,不能留下";
 		}
 		else if (countitem(506) == 0) {
-			mes "[Sensei Moohae]";
-			mes "Have you finished the task? Good, so you do have what it takes to become a monk.";
-			mes "You didn't throw away the precious potion did you?";
+			mes "[武海 長老]";
+			mes "已經完成所有過程了..你的血脈";
+			mes "已足夠成為武道家";
+			mes "當然，剛剛喝了靈藥你的內功";
+			mes "也因些而增加了";
 			next;
-			mes "[Sensei Moohae]";
-			mes "The potion you drank earlier must be taking its effect by now.";
-			mes "Now that you drank the potion your training to become a monk will begin shortly...";
+			mes "[武海 長老]";
+			mes "應該沒有..把貴重的藥物丟掉吧!";
+			mes "好，那麼來進行武道家的誓約之後";
+			mes "就可以完成轉職了";
 			next;
-			mes "[Sensei Moohae]";
-			mes "But first, answer me these questions.";
-			mes "Do you dedicate the remainder of your life to the pursuit of purity?";
+			mes "[武海 長老]";
+			mes "請問你願意把剩下的人生，全都為了";
+			mes "世界和平而活嗎?";
 			next;
-			if (select("Yes.:No.") == 2) {
-				mes "[Sensei Moohae]";
-				mes "....with that kind of reply...";
-				mes "Have you not enough heart to become a monk?";
-				mes "Do you feel you have not suffered enough?";
+			if (select("是:否") == 2) {
+				mes "[武海 長老]";
+				mes "....這個回答....";
+				mes "是還沒有心理準備成為武道家嗎?";
+				mes "還要再多跑幾次，再流些汗才會";
+				mes "有心裡準備嗎?";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Think about it a little more and return!";
-				mes "We cannot accept a monk who is tainted with doubt...";
+				mes "[武海 長老]";
+				mes "再考慮之後再過來吧!";
+				mes "我可不想培養出惡質的武道家..";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Will you take advantage of the abilities gained through our training to use for personal benefit?";
+			mes "[武海 長老]";
+			mes "你會把賦予的能力為自己使用";
+			mes "來取得利益嗎?";
 			next;
-			if (select("Yes.:No.") == 1) {
-				mes "[Sensei Moohae]";
-				mes "...then we cannot accept you as a monk. We, monks do not practice for personal benefit.";
-				mes "We lead our lives honorably and as holy executioners to the damned.";
+			if (select("是:否") == 1) {
+				mes "[武海 長老]";
+				mes "..不行，我們武道家的修練並不是為了";
+				mes "取的任何利益，";
+				mes "守護世界和平的人，怎麼可以藉此";
+				mes "來取得利益呢!";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Go back where you're from and reconsider what it means to be a monk...";
-				mes "How you stand before me now, you will never last as a monk and will be tainted by that which is evil...";
+				mes "[武海 長老]";
+				mes "好好想一想武道家真正用意再來吧";
+				mes "那種想法只會讓你變得更貪心，";
+				mes "走火入魔之後會喪失掉你的能力";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Will you punishing those who are against";
-			mes "veritas and aequitas? ^CCCCCC(Truth and Justice)^000000";
+			mes "[武海 長老]";
+			mes "你對傷害弱者的人，當處罰他們時";
+			mes "會不會豫不決呢?";
 			next;
-			if (select("Yes.:No.") == 2) {
-				mes "[Sensei Moohae]";
-				mes "Who do you think we, the monks are for!";
-				mes "Any creature that is against the will of such spawns from the dregs of the world!";
-				mes "They are not worthy to exist!";
+			if (select("不會:會") == 2) {
+				mes "[武海 長老]";
+				mes "你是怎麼想我們武道家的啊!";
+				mes "不管是什麼人只要傷害弱者，";
+				mes "他們都是這世界的垃圾!";
+				mes "也沒資格活在這世界上!";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Return when you are ready to face and eliminate that which is evil.";
-				mes "Then you will know what you have to do next without my instructions.";
+				mes "[武海 長老]";
+				mes "對那些在世界上對道德充滿否定的人，";
+				mes "從他們身上多學一點敵意再來吧";
+				mes "那你就知道要怎麼行動了";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Will you cooperate with others who have the same goal as yours and sacrifice yourself as a means to an end?";
+			mes "[武海 長老]";
+			mes "你為了保護一直被別人欺負的人";
+			mes "也會犧牲自己嗎?";
 			next;
-			if (select("Yes.:No.") == 2) {
-				mes "[Sensei Moohae]";
-				mes "Did you say no...? This is unacceptable...";
-				mes "If you can help your comrades by sacrificing yourself that is a true display of purity.";
+			if (select("會:不會") == 2) {
+				mes "[武海 長老]";
+				mes "不會..不是這樣的，";
+				mes "假如犧牲自我能殺掉更多的敵人";
+				mes "對夥伴們有幫助的話，這樣是很了不起";
+				mes "的行動啊";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Go back and contemplate upon what it means to sacrifice yourself for those you care for.";
-				mes "Sacrificing yourself for others may seem easy, but it's the most difficult thing to do as a human being.";
+				mes "[武海 長老]";
+				mes "犧牲到底是什麼意義，思考之後再來吧，";
+				mes "犧牲是一個簡單又困難的行動啊!";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Will you assist your comrades by gathering monsters to follow you?";
+			mes "[武海 長老]";
+			mes "你會拖著很多的魔物走動";
+			mes "幫助別人的戰鬥嗎?";
 			next;
-			if (select("Yes.:No.") == 1) {
-				mes "[Sensei Moohae]";
-				mes "That is not acceptable. Purposely taunting monsters to follow you can be very dangerous and harmful to others. This is not the way of a monk.";
-				mes "... that behavior is regarded as careless and is not tolerated.";
+			if (select("會:不會") == 1) {
+				mes "[武海 長老]";
+				mes "這樣不行，拖著很多魔物走動";
+				mes "不只是對他人";
+				mes "..";
+				mes "這種行是在侵害其他武道家的權力";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Even though you may be nearly invincible when hardening your body that skill is meant to be used for emergency situation not to be used for such disrespectful use!";
+				mes "[武海 長老]";
+				mes "就算成為金鋼不壞之身之後，這是使用在";
+				mes "危急或是遇到強敵時的緊急之策，並不是";
+				mes "使用在這種情況!";
 				next;
-				mes "[Sensei Moohae]";
-				mes "You might feel that's helping others, but it's not true.";
-				mes "Consider what it is you must do as a monk for others again.";
+				mes "[武海 長老]";
+				mes "感覺上那是在幫助別人的感覺，";
+				mes "結果上是執行惡行，";
+				mes "什麼是真正武道家之路，";
+				mes "再好好的思考一下吧";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Will you yell and shout the same things over and over again in towns or in fields?";
+			mes "[武海 長老]";
+			mes "你會在村落或其它原野上，跟其它人";
+			mes "反覆說著一樣的話嗎?";
 			next;
-			if (select("Yes.:No.") == 1) {
-				mes "[Sensei Moohae]";
-				mes "You are not allowed to do so. This doesn't apply only to monks but to everyone.";
-				mes "Nobody wants their peace disturbed!";
-				mes "Even if you mean well by it, it is disrespectful and not allowed.";
+			if (select("會:不會") == 1) {
+				mes "[武海 長老]";
+				mes "不行，這不只是對武道家，";
+				mes "對所有的人都包含在內";
+				mes "你再怎麼大叫也沒有人會";
+				mes "過來理你的!";
+				next;
+				mes "[武海 長老]";
+				mes "就算是要傳達神的話也是一樣的";
+				mes "你試著回顧一下自己的行為吧，";
+				mes "雖然很想要重新再考你一次，";
+				mes "不過這次就放過你吧!";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Are you willing to die for others on your monk's path of being a holy executioner?";
+			mes "[武海 長老]";
+			mes "你會覺自己是有意志的人，";
+			mes "會為正義而死嗎?";
 			next;
-			if (select("Yes.:No.") == 2) {
-				mes "[Sensei Moohae]";
-				mes "You cannot become a monk with such an attitude!!!";
-				mes "If we can eliminate at least one more enemy of ours by sacrificing ourselves, that's what is expected of you as a holy executioner in whom we are trained to be.";
+			if (select("會:不會") == 2) {
+				mes "[武海 長老]";
+				mes "以這種精神沒辦法成為武道家!!!";
+				mes "所謂死亡只是暫時性的，用我們的死能守";
+				mes "護這世界安全，這也是一種有意義的行動";
 				next;
-				mes "[Sensei Moohae]";
-				mes "If you are unwilling to sacrifice yourself for those you care about,";
-				mes "how can you expect to reach true enlightenment?";
-				mes "Ponder upon the real meaning of life and death!!";
+				mes "[武海 長老]";
+				mes "傷害弱者的人，必定會死，想要幫助弱者";
+				mes "的人，一定有老天補償!";
+				mes "你對人應該有什麼樣的態度，";
+				mes "好好地想一想吧!!";
 				close;
 			}
-			mes "Lastly, make your oath that you will keep these vows.";
+			mes "最後要發誓會遵守目前所說過的話，";
 			next;
-			if (select(" I vow to keep these oaths.:...eh...no...") == 2) {
-				mes "[Sensei Moohae]";
-				mes "..............";
+			if (select("我發誓:拒絕") == 2) {
+				mes "[武海 長老]";
+				mes "..........";
 				next;
-				mes "[Sensei Moohae]";
-				mes "Then your training isn't completed.";
-				if (Sex)
-					mes "You will not be accepted as a monk my boy.";
-				else
-					mes "You will not be accepted as a monk little girl.";
+				mes "[武海 長老]";
+				mes "好像..修練還未完成啊";
+				mes "不能讓"+(Sex?"師弟":"師妹")+"成為武道家啊!";
 				next;
-				mes "[Sensei Moohae]";
-				mes "In light of this, your training will start again from the beginning....";
+				mes "[武海 長老]";
+				mes "再..，重頭開始修練會比較好..";
+				mes "鎮定一下心情，再來找本主吧!";
 				next;
-				mes "Calm down yourself... I reconsidered... perhaps you are simply not ready for the commitment yet.";
-				mes "Come back later when you're ready...";
-				next;
-				mes "[Sensei Moohae]";
-				if (Sex)
-					mes "I hope that you are able to realize what you are to become soon my boy...";
-				else
-					mes "I hope that you are able to realize what you are to become soon my girl...";
+				mes "[武海 長老]";
+				mes "但願能把老天的旨意傳達給"+(Sex?"師弟":"師妹")+"...";
 				close;
 			}
-			mes "[Sensei Moohae]";
-			mes "Then your training is complete...";
-			mes "Please come closer.";
-			if (Sex)
-				mes "We welcome you brother, in our holy battle against evil!";
-			else
-				mes "We welcome you sister, in our holy battle against evil!";
+			mes "[武海 長老]";
+			mes "那，就這樣結束以上的誓約了";
+			mes "請大家集合，";
+			mes "你已成為我們的一份子!";
 			next;
-			mes "[Sensei Moohae]";
-			if (Sex)
-				mes "My brother, your oath has been heard by all around us.";
-			else
-				mes "My sister, your oath has been heard by all around us.";
+			mes "[武海 長老]";
+			mes ""+(Sex?"師弟":"師妹")+"的誓約由我和你的心靈，";
+			mes "已傳達到武道家兄弟們那裡了";
 			next;
-			mes "[Sensei Moohae]";
-			mes "I will now perform the ultimate techniques upon your body...";
+			mes "[武海 長老]";
+			mes "那麼，現在就來舉行脫胎換骨儀式吧..";
+			mes "首先請閉上你的雙眼..";
+			mes "然後放鬆你的身體";
 			next;
-			mes "[Sensei Moohae]";
-			mes "I will use these ancient techniques to amplify your strength through the use of pressure points on your body.";
+			mes "[武海 長老]";
+			mes "來..開始刺你的365個大穴和";
+			mes "1129個經絡破功";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Close your eyes.........";
+			mes "[武海 長老]";
+			mes "哈啊啊啊啊........";
 			next;
-			mes "[Sensei Moohae]";
-			mes "And relax your body.......";
+			mes "[武海 長老]";
+			mes "呼嗚嗚嗚嗚..";
 			next;
-			mes "["+ strcharinfo(0) +"]";
-			mes "^00CCCC- You breathe in deeply -^000000";
+			mes "[" + strcharinfo(0) + "]";
+			mes "- 他深呼吸之後 -";
 			next;
-			mes "["+ strcharinfo(0) +"]";
-			mes "^CC0000- You feel fingers poking you all over your body with swiftness -^000000";
+			mes "[" + strcharinfo(0) + "]";
+			mes "- 開始刺我全身的穴道 -";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Kiiii~~~Yahahhhhhhh!!!";
+			mes "[武海 長老]";
+			mes "啊～嗒嗒嗒嗒嗒嗒!!!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Ooooohaaa!!!";
+			mes "[武海 長老]";
+			mes "嗒咑咑咑咑嗒!!!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Kiii~~~Yahahhhhhhh!!!";
+			mes "[武海 長老]";
+			mes "啊～嗒嗒嗒嗒嗒嗒!!!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Haa~ Haa~ Haa~!!!!!";
+			mes "[武海 長老]";
+			mes "哇啦丘喔!!!!";
 			next;
-			mes "[Sensei Moohae]";
-			mes ".... now open your eyes......";
+			mes "[武海 長老]";
+			mes "呼嗚嗚嗚嗚....";
 			next;
-			mes "[Sensei Moohae]";
-			mes "....and see life through the eyes of a monk.";
-			next;
+			mes " - 你睜開雙眼，並用武道家的眼神望著這個世界 -";
 			set .@jlevel,JobLevel;
 			completequest 3032;
 			callfunc "Job_Change",Job_Monk;
 			callfunc "F_ClearJobVar";
-			mes "[Sensei Moohae]";
-			mes "....You are a monk.";
 			next;
-			mes "[Sensei Moohae]";
-			mes "...heh.";
+			mes "[武海 長老]";
+			mes "..咳咳!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Well...I guess I am too old to do that anymore...I was better when I was younger...";
+			mes "[武海 長老]";
+			mes "不愧..是老了嗎..體力不夠啊..";
+			mes "以前可是體力充沛啊..";
 			next;
-			mes "[Sensei Moohae]";
-			mes "...anyways, you are a monk now.";
-			mes "Welcome!";
+			mes "[武海 長老]";
+			mes "..好，你已經成為武道家了，";
+			mes "歡迎你成為我們的同志!";
 			next;
-			mes "[Sensei Moohae]";
-			mes "I hope you will keep your vow..";
+			mes "[武海 長老]";
+			mes "不要忘記以上的誓約..";
 			next;
-			mes "[Sensei Moohae]";
-			mes "continue your training on your path and practice harder.";
+			mes "[武海 長老]";
+			mes "維持不變的信念，也要勤於鍛練身體啊";
 			next;
-			mes "[Sensei Moohae]";
-			mes "Now...you may leave where the wind may take you.";
-			mes "Oh and I have a gift for you before you leave.";
+			mes "[武海 長老]";
+			mes "好..開始走向武道家的路吧，";
+			mes "這就是我送給你的小小禮物";
 			if (.@jlevel == 50)
 				getitem 1804,1; //Knuckle_Duster_
 			else
@@ -875,173 +579,183 @@ monk_in,99,58,1	script	Sensei Moohae#mk	60,{
 		close;
 	}
 	else if (BaseJob == Job_Acolyte) {
-		mes "[Sensei Moohae]";
-		mes "You are...an acolyte..?";
-		mes "If you seek consultation, go to the Sanctuary in Prontera. This place is for Monks, not for you.";
-		mes "Unless you intend to become a monk....please leave.";
+		mes "[武海 長老]";
+		mes "你是..服事啊";
+		mes "如果是來告解的話，去普隆德拉聖堂那裡吧";
+		mes "這裡是武道家修練場，並不是給你告解的地方";
+		mes "沒有想要成為武道家的話，";
+		mes "去別的地方看看吧!";
 		close;
 	}
 	else if (BaseJob == Job_Monk) {
-		mes "[Sensei Moohae]";
-		mes "How's your practice going?";
-		mes "I hope you are still training and keeping your vows.";
+		mes "[武海 長老]";
+		mes "修練還順利嗎?";
+		mes "請精進於修練吧";
 		next;
-		mes "[Sensei Moohae]";
-		mes "We must always continue our training in life and stay true to our path.";
-		mes "Otherwise evil will come and taint our mind with impurities.";
+		mes "[武海 長老]";
+		mes "如果不把我們的身體鍛練好，";
+		mes "就沒有辦法幫助別人，給敵人看到時";
+		mes "一定會找上門，在我們的心裡種下";
+		mes "邪惡之心";
 		next;
-		mes "[Sensei Moohae]";
-		mes "Don't forget your vows, stay on your path and";
-		mes "do not let any evil taint your pure heart.";
+		mes "[武海 長老]";
+		mes "不要忘記，我們永遠都是保護弱者的人，";
+		mes "以及守護世界和平的人，";
+		mes "隨時要注意到，不要掉入到邪惡之心";
+		mes "的考驗中";
 		close;
 	}
 	else {
-		mes "[Sensei Moohae]";
-		mes "If you seek consultation, go to the Sanctuary in Prontera.";
-		mes "We do not have anything of interest to you here, please leave and do not disturb the other monks.";
+		mes "[武海 長老]";
+		mes "如果是來告解的話，去普隆德拉聖堂那裡吧";
+		mes "這裡是武道家修練場，並不是給你告解的地方";
 		close;
 	}
 }
 
-prt_monk,251,255,1	script	Touha#mk	79,{
+prt_monk,251,255,1	script	道武俠#mk	79,{
 	if (MONK_Q >= 10 && MONK_Q < 14) {
 		if (MONK_Q == 10) {
-			mes "[Touha]";
-			mes "What brings you to me.";
-			mes "Do you wish to share a conversation with me?";
+			mes "[道武俠]";
+			mes "有什麼事嗎?";
+			mes "想要跟我聊一些有關神的事嗎?";
 			next;
-			mes "[Touha]";
-			mes "Oh, I see. You're on the monk in training.";
-			mes "You already possess a similar spirit as a monk's.";
+			mes "[道武俠]";
+			mes "喔，你正在進行武道家的修行，";
+			mes "你所散發的氣，跟武道家的那個很類似，";
 			next;
-			mes "[Touha]";
-			mes "By the looks of you, it seems, you";
-			mes "have already visited Sensei Moohae. Good.";
+			mes "[道武俠]";
+			mes "看來氣脈已打開，";
+			mes "應該是從武海 長老大人那裡過來的吧，";
+			mes "很好，";
 			next;
-			mes "[Touha]";
-			mes "Let me inform you about certain things you must know as a monk.";
-			mes "Then I will help you to strengthen your body so that you can bear your next training.";
+			mes "[道武俠]";
+			mes "我先講一下有關武道家精神部份";
+			mes "的必要事項，";
+			mes "以及有關武道家的簡單教理，";
+			mes "再來幫你調整氣血之後，幫你做成可以";
+			mes "參加下一關考試的身體，";
 			next;
-			mes "[Touha]";
-			mes "Calm your mind.";
-			mes "Relax your body...are you ready?";
+			mes "[道武俠]";
+			mes "好好記住我講的話，再來默念，";
+			mes "慢慢的把心鎮定下來..準備好了嗎?";
 			next;
-			if (select("Yes.:No.") == 2) {
-				mes "[Touha]";
-				mes "Please come back when you're ready.";
+			if (select("是:不是") == 2) {
+				mes "[道武俠]";
+				mes "準備好了再過來吧!";
 				close;
 			}
-			mes "[Touha]";
-			mes "Ok...then.";
+			mes "[道武俠]";
+			mes "好..那我們開始吧";
 			next;
-			mes "[Touha]";
-			mes "Please repeat after me.";
+			mes "[道武俠]";
+			mes "請隨在我後面複誦";
 			next;
 			changequest 3024,3025;
 		}
 		else {
-			mes "[Touha]";
-			mes "Now, pay attention this time...";
+			mes "[道武俠]";
+			mes "這次要特別仔細聽啊...";
 			next;
 		}
-		mes "[Touha]";
+		mes "[道武俠]";
 		set .@rand,rand(1,3);
 		if ((.@rand == 1) || (MONK_Q == 11)) {
 			set MONK_Q,11;
 			mes "I seek the path";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "of enlightenment.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "We monks";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "shall hold true";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "to what we believe";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "and will help protect others";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "through the teachings";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "we learn through our lives.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "In nomine Patris, et Filii";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "et Spiritus Sancti.";
 		}
 		else if ((.@rand == 2) || (MONK_Q == 12)) {
 			set MONK_Q,12;
 			mes "I commit myself to";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "veritas and aequitas.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "I will follow my path";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "to enlightenment and purity.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "I will protect my";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "brothers with my life.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "Evil shall never be";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "victorious while I breathe.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "In nomine Patris, et Filii";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "et Spiritus Sancti.";
 		}
 		else if ((.@rand == 3) || (MONK_Q == 13)) {
 			set MONK_Q,13;
 			mes "And shepherds we shall be,";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "for thee my lord for thee.";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "Power hath descended forth";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "from the hand";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "so our feet may swiftly carry";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "out thy command. And we shall";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "flow a river forth to thee and";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "teeming with souls shall it ever be";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "In nomine Patris, et Filii";
 			next;
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "et Spiritus Sancti.";
 		}
 		next;
 		if (MONK_Q == 10) {
-			mes "[Touha]";
+			mes "[道武俠]";
 			mes "Ok, that is all. Now repeat what I have spoken.";
 			mes "" + strcharinfo(0) + ", your turn.";
 			next;
@@ -1588,382 +1302,404 @@ prt_monk,251,255,1	script	Touha#mk	79,{
 			}
 		}
 		next;
-		mes "[Touha]";
+		mes "[道武俠]";
 		mes "...";
 		next;
-		mes "[Touha]";
+		mes "[道武俠]";
 		mes "Hmm...";
 		next;
 		if (.@monk_t > 90) {
 			set MONK_Q,14;
 			changequest 3025,3026;
-			mes "[Touha]";
-			mes "...well done, that was perfect. You pay attention well...";
+			mes "[道武俠]";
+			mes "呵嗯..";
 			next;
-			mes "[Touha]";
-			mes "However, now is not the time to relax. Your path is still long ahead of you.";
+			mes "[道武俠]";
+			mes "..真厲害!太完美了";
 			next;
-			mes "[Touha]";
-			mes "Now as I promised, I will help strengthen your body.";
+			mes "[道武俠]";
+			mes "不過別太早放下心，武道家的路還很遠呢，";
 			next;
-			mes "Focus your mind and do not move.";
+			mes "[道武俠]";
+			mes "嗒啊!..";
 			next;
-			mes "^33CCFFYou feel wind all around your body.^000000";
+			mes "咻喀!";
 			next;
-			mes "^33CCFFAn energy within you grows.^000000";
+			mes "咻苦!";
 			next;
-			mes "[Touha]";
-			mes "I feel what grows within you.";
-			mes "You may now continue on...";
+			mes "啪厭!";
 			next;
-			mes "[Touha]";
-			mes "...the next course will be with Boohae.";
+			mes "[道武俠]";
+			mes "以我們的約定，你的血脈已經照武道家";
+			mes "的血脈流著";
 			next;
-			mes "[Touha]";
-			mes "I wish you well on your journey.";
-			mes "Don't forget, his name is ^CC0000Boohae^000000.";
+			mes "[道武俠]";
+			mes "好..再來就去找[富海]先生吧，";
+			next;
+			mes "[道武俠]";
+			mes "好，出發吧，是^CC0000富海^000000先生，不要忘記";
 			close;
 		}
 		else {
-			mes "[Touha]";
-			mes "I see you did not pay attention.. If you wish to become a monk, you must take this seriously.";
+			mes "[道武俠]";
+			mes "好，總之辛苦你了";
 			next;
-			mes "[Touha]";
-			mes "Perhaps the path of a monk is too difficult for you?";
-			mes "You must take this seriously if you wish to continue...";
+			mes "[道武俠]";
+			mes "呵嗯..";	
 			next;
-			mes "[Touha]";
-			mes "I will give you another chance.";
+			mes "[道武俠]";
+			mes "真是的，連這個都不知道嗎?";
 			next;
-			mes "[Touha]";
-			mes "If you cannot pay attention and repeat what I ask you to, I will not allow you to continue your training here..";
+			mes "[道武俠]";	
+			mes "你自已無妨懷疑一下，";
+			mes "自己的本質也無所謂啦?";
+			mes "..真是的，這不是在開玩笑吧";
+			mes "來，來，再來嘗試一次";
+			next;
+			mes "[道武俠]";	
+			mes "我怕漏掉先跟你說，在通過這次關之前";
+			mes "不論找誰都是沒有用的，";
 			close;
 		}
 	}
 	else if (MONK_Q == 14) {
-		mes "[Touha]";
-		mes "Hmm... did you forget who to visit?";
+		mes "[道武俠]";
+		mes "嗯?忘記要找誰了嗎?";
 		next;
-		mes "[Touha]";
-		mes "I wonder about your abilities if you cannot remember such a simple thing.";
+		mes "[道武俠]";
+		mes "......現在，";
 		next;
-		mes "[Touha]";
-		mes "...are you testing my patience?";
+		mes "[道武俠]";
+		mes "..你在考驗我的忍耐性嗎?";
 		next;
-		mes "[Touha]";
-		mes "You wear my patience thin...";
-		mes "... go visit Boohae.";
+		mes "[道武俠]";
+		mes "..好吧，我再講一次，";
+		mes "請去找[富海]先生";
 		close;
 	}
 	else if (MONK_Q > 14 && BaseJob == Job_Acolyte) {
-		mes "[Touha]";
-		mes "...do your best for the final test.";
+		mes "[道武俠]";
+		mes "..剩下的考試，祝你一切順利";
 		close;
 	}
 	else {
-		mes "[Touha]";
-		mes "Never shall innocent blood be shed.";
+		mes "[道武俠]";
+		mes "我們武道家!";
+		mes "擁有無限力量的人!";
+		mes "擁有無限智慧的人!";
 		next;
-		mes "[Touha]";
-		mes "Yet the blood of the wicked shall flow like a river.";
+		mes "[道武俠]";
+		mes "以我們無限的力量和智慧!";
+		mes "守護世界和平!";
 		next;
-		mes "[Touha]";
-		mes "We shall spread our blackened wings and be the vengeful striking hammer of god.";
+		mes "[道武俠]";
+		mes "所以說!!";
+		mes "你也是敵人嗎?";
+		mes "擋住了我的路!!!";
 		next;
-		mes "[Touha]";
-		mes "We shall flow a river forth to thee, and teeming with souls shall it ever be.";
+		mes "[道武俠]";
+		mes "只要擋住我!!就打!!";
+		mes "嗒啊啊啊啊!!";
 		next;
-		mes "[Touha]";
-		mes "In nomine Patris, et Filii, et Spiritus Sancti.";
+		mes "[道武俠]";
+		mes "呵哈哈哈哈!!";
 		next;
-		mes "[Touha]";
-		mes "...You don't have to be afraid of me...";
+		mes "[道武俠]";
+		mes "不必害怕，走你的路吧!";
 		close;
 	}
 }
 
-prt_monk,57,179,1	script	Boohae#mk	110,{
+prt_monk,57,179,1	script	富海#mk	110,{
 	if (MONK_Q == 14 && BaseJob == Job_Acolyte) {
-		mes "[Boohae]";
+		mes "[富海]";
 		mes "...";
 		next;
-		mes "[Boohae]";
+		mes "[富海]";
 		mes "......";
 		next;
-		mes "[Boohae]";
+		mes "[富海]";
 		mes ".........";
 		next;
-		mes "[Boohae]";
+		mes "[富海]";
 		mes "............";
 		next;
-		select("...excuse me...?");
-		mes "[Boohae]";
-		mes "...";
-		mes "You just interrupted my meditation, I should break your legs...";
+		select("喂..請問..");
+		mes "[富海]";
+		mes "..什麼事?";
+		mes "竟然妨礙到我的修練";
+		mes "如果不是重要的事情";
 		next;
-		mes "[Boohae]";
-		mes "........";
-		mes "I will give you a chance to explain why you interrupted me.";
+		mes "[富海]";
+		mes "......";
+		mes "你的命，很難保全";
 		next;
-		mes "[Boohae]";
-		mes ".....";
+		mes "[富海]";
+		mes "好，有什麼事?";
+		mes "請說明，";
 		next;
-		mes "[Boohae]";
-		mes "Well, start explaining... or you'll be crawling soon...";
-		next;
-		if (select("Touha sent me.:Sorry, nothing.") == 2) {
-			mes "[Boohae]";
+		if (select("是[道武俠]的武道家介紹我來的:沒什麼事") == 2) {
+			mes "[富海]";
 			mes "........";
-			mes "...you must have a death wish to have interrupted me intentionally...";
+			mes "..幫你挖土讓你永遠站不起來吧!嗯?";
 			close;
 		}
-		mes "[Boohae]";
-		mes "I see...";
-		mes "Well then, let's see....";
+		mes "[富海]";
+		mes "嗯，是嗎?";
+		mes "這樣啊..";
 		next;
-		mes "[Boohae]";
-		mes "....your body seems..";
-		mes "strengthened. Good...";
+		mes "[富海]";
+		mes "呵嗯..你的血脈..";
+		mes "嗯，好..";
 		next;
-		mes "[Boohae]";
-		mes "What did you do with Touha?";
+		mes "[富海]";
+		mes "不過，你跟[道武俠]武道家";
+		mes "都做了什麼事啊?";
 		next;
-		switch(select("Umm... well...ah..:We recited a holy pledge.:He diagnosed my physical status.")) {
+		switch(select("啊..那個..嘛..:默念文章之後就來這裡了:接受血脈診斷之後就來這裡了")) {
 		case 1:
-			mes "[Boohae]";
-			mes "You are not ready if you";
-			mes "cannot answer a simple question.";
-			mes "Leave me to my prayers.";
+			mes "[富海]";
+			mes "你沒有領悟到重點啊...";
+			mes "連自己到搞不清楚的話就別來煩我吧!";
 			close;
 		case 2:
-			mes "[Boohae]";
-			mes "... I see...";
-			mes "Didn't he do anything for you?";
+			mes "[富海]";
+			mes "嗯..還有呢";
+			mes "他沒有幫你作什麼事嗎?";
 			next;
-			switch(select("Umm... well...ah..:He diagnosed my physical status.:He taught me about being a monk.:He modified my body.")) {
+			switch(select("啊..那是..什麼啦..：檢查身體:告訴我成為武道家的初步事項:把我的血脈轉換成武道家的血脈")) {
 			case 1:
-				mes "[Boohae]";
-				mes "You are not ready if you";
-				mes "cannot answer a simple question.";
-				mes "Leave me to my prayers.";
+				mes "[富海]";
+				mes "你沒有領悟到重點啊...";
+				mes "連自己到搞不清楚的話就別來煩我吧!";
 				close;
 			case 2:
-				mes "[Boohae]";
-				mes "That is unimportant to me...";
-				mes "Stop disturbing me and go away!";
+				mes "[富海]";
+				mes "話是沒錯，不過不是正確答案，";
+				mes "請你確實的瞭解?";
 				close;
 			case 3:
-				mes "[Boohae]";
-				mes "The teachings of becoming a monk are learned after becoming one.";
-				mes "This is not what I am looking for...";
+				mes "[富海]";
+				mes "成為武道家可不是用嘴巴說就可以!";
+				mes "這不是我期望的答案..";
 				close;
 			case 4:
-				mes "[Boohae]";
-				mes "Very well, you seem to realize your body has something new inside.";
-				mes "Well then, we shall move on to the next step...";
+				mes "[富海]";
+				mes "好，至少可以知道自己的身體";
+				mes "有了什麼變化吧，";
+				mes "好..來，進行下一個階段吧..";
 				next;
 				break;
 			}
 			break;
 		case 3:
-			mes "[Boohae]";
-			mes "...You interrupted me to tell me that...?";
-			mes "Get lost before I break your legs...";
+			mes "[富海]";
+			mes "...你就只是想告訴我這些嗎...?";
+			mes "在我打斷你腳骨之前快點開溜吧!";
 			close;
 		}
-		mes "[Boohae]";
-		mes "Alright... well we have two tests...";
-		mes "Choose which one you want to do...";
+		mes "[富海]";
+		mes "那，我跟其它人不一樣把選擇的權";
+		mes "利交給你";
+		mes "下列中選一項，來進行修練吧!";
 		next;
-		if (select("Gathering mushrooms:Marathon") == 1) {
+		if (select("採集蘑菇:馬拉松") == 1) {
 			set MONK_Q,15;
 			changequest 3026,3027;
-			mes "[Boohae]";
-			mes "Hmm....gathering mushrooms. So you want to test your tolerance huh?";
-			mes "Go prepare and come back later when you're ready.";
+			mes "[富海]";
+			mes "採集蘑菇，好啊，可以讓你體會一下忍耐的";
+			mes "極限，讓你感覺到神獻給你強的意志力";
+			mes "意義";
+			mes "那麼準備好之後再來吧!";
 			close;
 		}
 		set MONK_Q,16;
 		changequest 3026,3028;
-		mes "[Boohae]";
-		mes "Good choice. Forcing your physical limits to their boundaries and grants a higher amount of self control.";
-		mes "Go prepare and come back later when you're ready.";
+		mes "[富海]";
+		mes "馬拉松，好啊，可以讓你體會一下體力的";
+		mes "極限，讓你感覺到神獻給你強的體力";
+		mes "意義";
+		mes "那麼準備好之後再來吧!";
 		close;
 	}
 	if (MONK_Q == 15) {
-		mes "[Boohae]";
-		mes "So, are you ready? You won't need anything but a great deal of determination.";
+		mes "[富海]";
+		mes "嗯，都準備好了嗎?，";
+		mes "只要確知自己有此能力耐的話";
+		mes "也不必準備什麼";
 		next;
-		mes "[Boohae]";
-		mes "The gathering mushroom test is intended,";
-		mes "to test your patience.";
+		mes "[富海]";
+		mes "你所選擇的採集蘑菇考試是";
+		mes "堅持要說的話..是考驗自己的考試，";
 		next;
-		mes "[Boohae]";
-		mes "Go inside the building near this abbey.";
+		mes "[富海]";
+		mes "再來，去修道院中心附近的建築物裡面，";
 		next;
-		mes "[Boohae]";
-		mes "Other monk candidates will be with you for the same test,";
-		next;
-		mes "[Boohae]";
-		mes "The more people that are there, the less mushrooms they'll find.";
-		mes "So I hope you will understand that they are testing their patience, just like you.";
+		mes "[富海]";
+		mes "這個考試只要收集到一定的蘑菇，";
+		mes "就可以過關了";
+		mes "好那麼，出發吧!";
 		close;
 	}
 	if (MONK_Q == 16) {
-		mes "[Boohae]";
-		mes "Welcome back, did you prepare? You won't need anything except strong legs.";
+		mes "[富海]";
+		mes "嗯，都準備好了嗎?，";
+		mes "不過雙腿齊全的話";
+		mes "也不必準備什麼";
 		next;
-		mes "[Boohae]";
-		mes "The marathon is intended,";
-		mes "to test your self-control ability.";
+		mes "[富海]";
+		mes "你所選擇的馬拉松考試是";
+		mes "堅持要說的話..是克服自己的考試，";
 		next;
-		mes "[Boohae]";
-		mes "Go inside the building near this abbey.";
+		mes "[富海]";
+		mes "再來，去修道院中心附近的建築物裡面，";
 		next;
-		mes "[Boohae]";
-		mes "All you have to do is run around the building as many times as you're required.";
-		mes "Well... get going.";
+		mes "[富海]";
+		mes "這個考試只要按照指定的次數，";
+		mes "指定的場合繞著跑就好了，";
+		mes "好那麼，出發吧!";
 		close;
 	}
 	if (MONK_Q == 17) {
-		mes "[Boohae]";
-		mes "Now, go visit 'Tomoon'. How many times should I tell you this?";
-		mes "Now you have a lot of chance to damage your body because you're so exhausted right now.";
-		mes "'Tomoon' is staying in a deepest place inside a building near this abbey.";
-		close;
-	}
-	if (MONK_Q > 17 && MONK_Q < 24) {
-		mes "[Boohae]";
-		mes "...........";
-		next;
-		mes "-He seems to be in meditation.-";
+		mes "[富海]";
+		mes "不是叫你去找'道文'嗎? 要我重複多少次啊";
 		close;
 	}
 	else {
-		mes "[Boohae]";
-		mes "Hmmmm....!!";
+		mes "[富海]";
+		mes "哈啊啊啊啊..!!";
 		next;
-		mes "-He seems to be in meditation.-";
+		mes "-疑似陷入冥想中-";
 		close;
 	}
 }
 
-prt_monk,199,169,3	script	Door Keeper#mk	746,{
-	mes "[Keeper Chorip]";
-	mes "....this place is for those";
-	mes " in testing for becoming a monk.";
+prt_monk,199,169,3	script	守門將#mk	746,{
+	mes "[守門將 曹立]";
+	mes "..這裡是";
+	mes "武道家轉職考場";
 	next;
 	if (MONK_Q == 14) {
-		mes "[Keeper Chorip]";
-		mes "Huh? Did you just say Boohae?";
+		mes "[守門將 曹立]";
+		mes "你是說要找 '富海'嗎?";
 		next;
-		mes "[Keeper Chorip]";
-		mes "Boohae... tends to hide in some quite places, so you might not be able to find him. For instance... a corner...";
+		mes "[守門將 曹立]";
+		mes "富海... 他喜歡比較安靜的場所，你在這裡是找不到他的...他可能在...類似角落的地方";
 		close;
 	}
 	else if (MONK_Q > 14 && MONK_Q < 25) {
-		mes "[Keeper Chorip]";
-		mes "Is your name " + strcharinfo(0) + "?";
+		mes "[守門將 曹立]";
+		mes "你的名字是 " + strcharinfo(0) + "嗎?";
 		next;
-		if (select("Yes.:No.") == 1) {
-			mes "[Keeper Chorip]";
-			mes "Alright you're cool... go on in. Your test is waiting for you. Good luck.";
+		if (select("是:不是") == 1) {
+			mes "[守門將 曹立]";
+			mes "嗯!很好!很爽快，進去吧!";
+			mes "考試正在等著你!!";
 			close;
 		}
-		mes "[Keeper Chorip]";
-		mes "Yeah right, I know who you are... get in there... your test is ready.";
+		mes "[守門將 曹立]";
+		mes "什麼不是啊!!進去吧!!";
+		mes "考試正在等著你呢!!";
 		close;
 	}
 	else {
-		mes "[Keeper Chorip]";
-		mes "...please be quiet inside.";
+		mes "[守門將 曹立]";
+		mes "在考場裡請保持安靜";
 		close;
 	}
 }
 
-monk_test,329,61,3	script	Bashu#mk	753,{
+monk_test,329,61,3	script	助教#mk	753,{
 	if (MONK_Q > 14 && MONK_Q < 25) {
 		if (MONK_Q == 15) {
-			mes "[Bashu]";
-			mes "So, which test do you want to do...?";
+			mes "[巴修]";
+			mes "請問要去哪一個考場?";
 			next;
-			mes "[Bashu]";
-			mes "From what I've heard, you chose the mushroom test...";
-			mes "Oh well, it's still your choice.";
+			mes "[巴修]";
+			mes "以我所知，你之前選擇的是採集蘑菇";
+			mes "也就是忍耐力的考試..";
+			mes "不過選擇什麼是你的自由";
 		}
 		else if (MONK_Q == 16) {
-			mes "[Bashu]";
-			mes "Which test hall do you wish to enter?";
+			mes "[巴修]";
+			mes "請問要去哪一個考場?";
 			next;
-			mes "[Bashu]";
-			mes "Well, as far as I've been told, you chose the marathon test...";
-			mes "Oh well, it's your choice.";
+			mes "[巴修]";
+			mes "以我所知，你之前選擇的是馬拉松";
+			mes "也就是跑步考試..";
+			mes "不過選擇什麼是你的自由";
 		}
 		else {
-			mes "[Bashu]";
-			mes "Which test hall do you wish to enter?";
-			mes "You can choose which one you want.";
+			mes "[巴修]";
+			mes "請問要去哪一個考場?";
+			mes "你可以選擇你喜歡的考場";
 			next;
 		}
 		next;
-		if (select("Tolerance - Gathering Mushrooms:Self-Control - Marathon") == 1) {
-			mes "You have decided to take the test of tolerance by ^FF0000gathering mushrooms^000000.";
+		if (select("忍耐力 - 採集蘑菇:自我克服 - 馬拉松") == 1) {
+			mes "你選擇的是 忍耐力 - ^FF0000採集蘑菇^000000.";
 			close2;
 			warp "job_monk",226,175;
 			end;
 		}
-		mes "You have decided to take the test of self control by taking a ^FF0000marathon^000000.";
+		mes "你選擇的是 自我克服 - ^FF0000馬拉松^000000.";
 		close2;
 		warp "monk_test",386,387;
 		end;
 	}
 	else {
-		mes "[Bashu]";
-		mes "Welcome... this place is a training place for monks, Saint Capitolina Abbey.";
-		mes "When you go inside....you will meet Tomoon the oldest monk who succeeds to the predecessors,";
+		mes "[巴修]";
+		mes "您好..這裡是武道家修練場，";
+		mes "聖 卡畢利那 修道院的武道家修練所，";
+		mes "進去裡面之後....";
+		mes "可以看到管理前輩武道家成績的道文武道家";
 		next;
-		mes "[Bashu]";
-		mes "Please be advised and do not touch anything.";
-		mes "And please avoid talking loud in front of Tomoon.";
+		mes "[巴修]";
+		mes "請不要隨便動任何東西，";
+		mes "也不要在道文武道家面前大吵大鬧，";
 		next;
-		mes "[Bashu]";
-		mes "I hope you will have a great time in here.";
+		mes "[巴修]";
+		mes "那麼，希望你與神有個快樂的對話時間";
 		close;
 	}
 }
 
-monk_test,386,388,4	script	Apprentice Monk#mk	110,{
-	mes "[Monk Apprentice]";
-	mes "W... welcome!";
-	mes "Th... this place is for testing the tolerance of monk candidates!";
+monk_test,386,388,4	script	助教#mk2	110,{
+	mes "[見習 武道家]";
+	mes "歡..歡迎光臨!";
+	mes "這..這裡是考驗武道家忍..忍耐性的考場";
 	next;
-	mes "[Monk Apprentice]";
-	mes "Ju... just run...";
-	mes "until you're told to stop,";
-	mes "Ru...ruu....run!";
+	mes "[見習 武道家]";
+	mes "一 .. 一直跑就可以了!";
+	mes "直到下命令停止之前，";
+	mes "快..快跑....跑..跑啊!";
 	next;
-	mes "[Monk Apprentice]";
-	mes "M... m... me? I'll run one of these days!";
+	mes "[見習 武道家]";
+	mes "跑..跑啊!我!總有一天會這裡跑!";
 	next;
-	mes "[Monk Apprentice]";
-	mes "M... monk... are you going to be... a... m...m...monk??";
+	mes "[見習 武道家]";
+	mes "我..我要!";
+	mes "成為武道家..武武武..武道家!";
 	next;
-	mes "[Monk Apprentice]";
-	mes "Ar...are...you...sure you are.. aren't... going to quit?";
+	mes "[見習 武道家]";
+	mes "中..中中..中途 放..放棄?嗯?繼續?";
+	mes "放棄?";
 	next;
-	if (select("Quit.:Keep running.") == 1) {
-		mes "[Monk Apprentice]";
-		mes "" + strcharinfo(0) + "...q.q..q. .quit! ...the marathon!! Y...you do not have what it takes to be a m... monk!";
-		mapannounce "monk_test","" + strcharinfo(0) + "...q.q..q. .quit! ...the marathon!! Y...you do not have what it takes to be a m... monk!",bc_map;
+	if (select("放棄:繼續跑") == 1) {
+		mes "[見習 武道家]";
+		mes strcharinfo(0) + "..放..放棄轉職!";
+		mes "跑步，在馬拉松中途放棄!! 沒..沒有";
+		mes "..沒有耐性!!!哈哈哈哈!!";
+		mapannounce "monk_test","" + strcharinfo(0) + "..放..放棄轉職!跑步，在馬拉松中途放棄!! 沒..沒有..沒有耐性!!!哈哈哈哈!!",bc_map;
 		close2;
 		set MONK_Q,15;
 		changequest 3028,3027;
 		warp "prt_monk",194,168;
 		end;
 	}
-	mes "[Monk Apprentice]";
-	mes "Until you're told to stop,";
-	mes "Ru...ruu....run!";
+	mes "[見習 武道家]";
+	mes "直到下命令停止之前，";
+	mes "快..快跑....跑..跑啊!";
 	close;
 }
 
@@ -1977,15 +1713,14 @@ OnTouch:
 	else if (MONK_Q == 24) {
 		set MONK_Q,25;
 		changequest 3028,3029;
-		mapannounce "monk_test","Now! This is the last lap!! If you make it you need to go visit Tomoon for the next test!",bc_map;
+		mapannounce "monk_test","助教 : 接下來是..最..最後一圈囉!請..請再加把勁吧!",bc_map;
 		warp "monk_test",385,388;
 		end;
 	}
 	else if (MONK_Q == 25) {
-		mes "[Supervisor]";
-		mes "Now...you may go visit Tomoon.";
-		mes "Tomoon is in the deepest room inside a building near this abbey.";
-		mapannounce "monk_test","Congratulations!" + strcharinfo(0) +"!! You completed the marathon!",bc_map;
+		mes "[助教]";
+		mes "恭..恭喜" + strcharinfo(0)+ "過關了，接著請去找下一位考官[道文]，他在修道院的最深處";
+		mapannounce "monk_test","恭喜!" + strcharinfo(0) +" 完成了馬拉松試驗!",bc_map;
 		close2;
 		warp "prt_monk",194,168;
 		end;
@@ -1994,7 +1729,7 @@ OnTouch:
 
 monk_test,82,384,0	script	Trap#t_monk1_1::MonkTrap	-1,{
 OnTouch:
-	mapannounce "monk_test",""+ strcharinfo(0) + ", you're trapped. You will be returned.",bc_map;
+	mapannounce "monk_test",""+ strcharinfo(0) + "，你已掉入陷阱，即將要回到開始的位置",bc_map;
 	warp "monk_test",387,387;
 	end;
 }
@@ -2025,22 +1760,22 @@ monk_test,387,42,0	duplicate(MonkTrap)	Trap#t_monk7_2	-1,1,0
 monk_test,389,43,0	duplicate(MonkTrap)	Trap#t_monk7_3	-1
 monk_test,389,42,0	duplicate(MonkTrap)	Trap#t_monk7_4	-1
 
-job_monk,225,180,1	script	Hyunmoo#mk	89,{
+job_monk,225,180,1	script	玄武#mk	89,{
 	if ((countitem(1069) > 0 || countitem(1070) > 0) && (countitem(1069) < 30 || countitem(1070) < 30)) {
-		mes "[Hyunmoo]";
-		mes "You didn't bring enough mushrooms... go get some more.";
+		mes "[玄武]";
+		mes "還早還早~ 再努力點吧!";
 		next;
-		mes "[Hyunmoo]";
-		mes "Or is it you want to quit... do you want to quit?";
+		mes "[玄武]";
+		mes "還是說其實你是想要放棄啊?";
 		next;
-		switch(select("No.:Yes.") == 1) {
-			mes "[Hyunmoo]";
-			mes "Then move!";
+		switch(select("繼續採集:放棄採集") == 1) {
+			mes "[玄武]";
+			mes "加緊動作!";
 			close;
 		}
-		mes "[Hyunmoo]";
-		mes ".....I figured as much....you don't have a spirit.";
-		mapannounce "job_monk","" + strcharinfo(0) + ", has quit his testing to become a monk.",bc_map;
+		mes "[玄武]";
+		mes "..又是個沒毅力的傢伙，居然放棄了啊";
+		mapannounce "job_monk","" + strcharinfo(0) + ", 放棄武道家轉職考試!",bc_map;
 		close2;
 		set MONK_Q,16;
 		changequest 3027,3028;
@@ -2048,59 +1783,69 @@ job_monk,225,180,1	script	Hyunmoo#mk	89,{
 		end;
 	}
 	else if (MONK_Q > 14 && MONK_Q < 25 && (countitem(1069) == 0 || countitem(1070)  == 0)) {
-		mes "[Hyunmoo]";
-		mes "Nice to meet you. My name is Hyunmoo. I am in charge of the mushroom test.";
+		mes "[玄武]";
+		mes "歡迎光臨，我是負責採集蘑菇考試的";
+		mes "玄武";
 		next;
-		mes "[Hyunmoo]";
-		mes "Your task will be to gather mushrooms.";
-		mes "Understand?";
+		mes "[玄武]";
+		mes "現在開始諸君們要經歷的苦難是";
+		mes "全部把他當作是修練的一種過程";
+		mes "瞭解嗎?";
 		next;
-		mes "[Hyunmoo]";
-		mes "Picking the mushrooms is to train your tolerance.";
-		mes "We planted a garden in order to survive as well as to discipline our minds.";
+		mes "[玄武]";
+		mes "為了我們武道家的生活";
+		mes "你們必須要為我們奉獻";
+		mes "我們有栽培一些農作物，";
+		mes "也是身心修練的一種";
 		next;
-		mes "[Hyunmoo]";
-		mes "I believe there is no better way to find true inner peace then to be one with nature.";
-		mes "So we created our garden, however these mushrooms started sprouting up everywhere!";
+		mes "[玄武]";
+		mes "我們認為想要誕解神的旨意";
+		mes "沒有比這個更好的課程，";
+		mes "所以說呢，前陣子開始有種";
+		mes "發出惡臭的菇類不斷的";
+		mes "在這裡蔓延";
 		next;
-		mes "[Hyunmoo]";
-		mes "What we ask of you as part of your training is to remove these mushrooms.";
-		mes "Go help the others remove as many mushrooms as you can and bring me back";
-		mes "enough ^FF0000Orange Net Mushrooms^000000 and ^FF0000Orange Gooey Mushroom^000000 as proof.";
+		mes "[玄武]";
+		mes "你們要作的事情就是，";
+		mes "要把那些香菇全部毀滅";
+		mes "只要帶來一定的證物就可以過關，";
+		mes "所謂的證物就是 ^ff0000惡臭香菇、毒香菇^000000";
 		next;
-		mes "[Hyunmoo]";
-		mes "Now, go get some mushrooms.";
-		mes "Check back with me when you have picked some, I will tell you if it is enough.";
-		mes "And remember, find peace when gardening.";
+		mes "[玄武]";
+		mes "想要增進內功並成為武道家的話";
+		mes "就趕快去採來吧!";
+		mes "不跟你說要采多少，";
+		mes "采適當的量就回來吧!";
+		mes "聽懂了就開始行動吧!";
 		next;
-		mes "[Hyunmoo]";
-		mes "...or do you want to quit?";
+		mes "[玄武]";
+		mes "還是是你想要放棄啊?";
 		next;
-		if (select("No.:Yes.") == 1) {
-			mes "[Hyunmoo]";
-			mes "Alright then, keep going.";
+		if (select("採集蘑菇:我要放棄") == 1) {
+			mes "[玄武]";
+			mes "好! 那就繼續加油吧";
 			close;
 		}
-		mes "[Hyunmoo]";
-		mes ".....yeah I thought as much....you don't have the spirit needed to become a monk.";
-		mapannounce "job_monk","" + strcharinfo(0) + ", has quit his testing to become a monk.",bc_map;
+		mes "[玄武]";
+		mes "..又是個沒毅力的傢伙，居然放棄了啊";
+		mapannounce "job_monk","" + strcharinfo(0) + ", 放棄武道家轉職考試!",bc_map;
 		delitem 1069,countitem(1069); //Mushroom_Of_Thief_1
 		delitem 1070,countitem(1070); //Mushroom_Of_Thief_2
 		close2;
-		mapannounce "job_monk","" + strcharinfo(0) + ", has quit his training to become a monk.",bc_map;
 		warp "prt_monk",194,168;
 		set MONK_Q,16;
 		changequest 3027,3028;
 		end;
 	}
 	else if (MONK_Q > 14 && MONK_Q < 25 && (countitem(1069) > 29 || countitem(1070) > 29)) {
-		mes "[Hyunmoo]";
-		mes "...hmm... not bad.";
-		mes "Ok, you passed.";
+		mes "[玄武]";
+		mes "嗯..馬馬虎虎採完了啊?";
+		mes "好，過關!";
 		next;
-		mes "[Hyunmoo]";
-		mes "Go meet Tomoon for your next test.";
-		mes "Tomoon is staying in the deepest room inside a building near this abbey.";
+		mes "[玄武]";
+		mes "再來去找，[道文]武道家吧";
+		mes "[道文]武道家，在修道院附近建築物";
+		mes "內部的最深處";
 		set MONK_Q,25;
 		changequest 3027,3029;
 		delitem 1069,countitem(1069); //Mushroom_Of_Thief_1
@@ -2110,78 +1855,82 @@ job_monk,225,180,1	script	Hyunmoo#mk	89,{
 		end;
 	}
 	else if (MONK_Q > 24) {
-		mes "[Hyunmoo]";
-		mes "Didn't I tell you to go meet ^FF0000Tomoon^000000? Or do you want to pick some more mushrooms?";
-		mes "Tomoon is staying in the deepest room inside a building near this abbey.";
+		mes "[玄武]";
+		mes "我不是叫你去找，[道文]武道家?";
+		mes "還想要測試我的耐性嗎??";
+		mes "[道文]武道家，在修道院附近建築物";
+		mes "內部的最深處";
 		close;
 	}
 }
 
-prt_monk,225,180,1	script	Hyunmoo#mk2	89,{
-	if (MONK_Q < 25) {
-		mes "[Hyunmoo]";
-		mes "As I see vegetables growing, I feel myself growing within.";
-		next;
-		mes "[Hyunmoo]";
-		mes "As I see other monks working hard on growing vegetables,";
-		mes "it warms my heart to see others enjoying gardening as I do.";
-		next;
-		mes "[Hyunmoo]";
-		mes "To be honest with you, I think gardening is the greatest thing ever...";
-		mes "We should give thanks to the brothers who prepare our food for us through their hard work.";
-		next;
-		mes "[Hyunmoo]";
-		mes "Don't forget to thank them as you go by for their hard work.";
-		close;
-	}
-	else if (MONK_Q > 24 && BaseJob == Job_Acolyte) {
-		mes "[Hyunmoo]";
-		mes "Didn't I tell you to go meet Tomoon? Or do you want to pick more mushrooms?";
-		mes "Tomoon is staying in the deepest room inside a building near this abbey.";
+prt_monk,225,180,1	script	玄武#mk2	89,{
+	if (MONK_Q > 24 && BaseJob == Job_Acolyte) {
+		mes "[玄武]";
+		mes "我不是叫你去找，[道文]武道家?";
+		mes "還想要測試我的耐性嗎??";
+		mes "[道文]武道家，在修道院附近建築物";
+		mes "內部的最深處";
 		close;
 	}
 	else {
-		mes "[Hyunmoo]";
-		mes "As I see vegetables growing, I feel myself growing within.";
+		mes "[玄武]";
+		mes "看著農作物的成長，我就會深深";
+		mes "感到神的恩典";
 		next;
-		mes "[Hyunmoo]";
-		mes "As I see other monks working hard on growing vegetables,";
-		mes "it warms my heart to see others enjoying gardening as I do.";
+		mes "[玄武]";
+		mes "還有，看看我們那身體強壯的武道家";
+		mes "努力栽培的農作物!";
+		mes "那畫面有多美麗啊!";
 		next;
-		mes "[Hyunmoo]";
-		mes "To be honest with you, I think gardening is the greatest thing ever...";
-		mes "We should give thanks to the brothers who prepare our food for us through their hard work.";
+		mes "[玄武]";
+		mes "說真的，種田的行為看起來不知道";
+		mes "有多美麗啊!";
+		mes "你所喝的藍色藥水，也是一定是很多人";
+		mes "感到神的旨意而栽培出來的";
 		next;
-		mes "[Hyunmoo]";
-		mes "Don't forget to thank them as you go by for their hard work.";
+		mes "[玄武]";
+		mes "我們總是要感謝";
+		next;
+		mes "[玄武]";
+		mes "神留給你的這一切，以及那些努力把";
+		mes "這一切加工以方便使用的人";
+		next;
+		mes "[玄武]";
+		mes "農者天下之大本..這是麼多美的話!";
 		close;
 	}
 }
 
-monk_test,319,139,1	script	Tomoon#mk	52,{
+monk_test,319,139,1	script	道文#mk	52,{
 	if (MONK_Q == 25) {
-		mes "[Tomoon]";
-		mes "Welcome young one.";
-		mes "My name is Tomoon, I am in charge of the last test of spiritual training!";
+		mes "[道文]";
+		mes "來的正好";
+		mes "這裡是最後一關，我是驅魔修行的負責人";
+		mes "道文!";
 		next;
-		mes "[Tomoon]";
-		mes "Now you don't need to be instructed any more then this:";
-		mes "^990000Terminate every living thing in your way!^000000 That's all!";
+		mes "[道文]";
+		mes "好..!!還需要說什麼話呢";
+		mes "有擋路的人!就打!就這樣!";
 		next;
-		mes "[Tomoon]";
-		mes "While you're wandering around within the maze, if you encounter any evil creatures, just kill them! Release their tortured souls!!";
+		mes "[道文]";
+		mes "當你迷路正在徘徊時所有擋住你的敵人!";
+		mes "打他!砍他!";
+		mes "告訴他神與你的旨意，讓他們和世界訣別!!";
 		next;
-		mes "[Tomoon]";
-		mes "Do not compare us to the weakling priests! We are monks and we will always be the strongest!!";
+		mes "[道文]";
+		mes "不要跟懦弱的祭司比較!";
+		mes "我們一向是身體最強壯的武道家";
 		next;
-		mes "[Tomoon]";
-		mes "We are not like priests who cower behind the strength of others!";
+		mes "[道文]";
+		mes "我們跟只會跑腿又懦弱的祭司是不一樣的!";
 		next;
-		mes "[Tomoon]";
-		mes "Now, focus!! Keep your fists tight and your eyes open! It's time to show me what you got.";
+		mes "[道文]";
+		mes "好!握住拳頭!站起來!就是現在";
 		next;
-		mes "[Tomoon]";
-		mes "Let's see if you got what it takes to be a true monk!!";
+		mes "[道文]";
+		mes "儘管，儘管發揮你的實力吧!!";
+		mes "咳哈哈哈哈哈哈!!";
 		close2;
 		set MONK_Q,26;
 		changequest 3029,3031;
@@ -2189,84 +1938,94 @@ monk_test,319,139,1	script	Tomoon#mk	52,{
 		end;
 	}
 	else if (MONK_Q == 26) {
-		mes "[Tomoon]";
-		mes "Hmm... you failed?";
-		mes "Cheer up! Failure is but a process to success!";
-		mes "Go! Start again! Kill them all!!";
+		mes "[道文]";
+		mes "嗯...失敗了嗎?";
+		mes "別灰心啊，失敗為成功之母!";
+		mes "再一次去殺光牠們吧!";
 		close2;
 		warp "monk_test",88,74;
 		end;
 	}
 	else if (MONK_Q == 27) {
-		mes "[Tomoon]";
-		mes "Excellent job!!";
-		mes "I knew you'd make it through!";
-		mes "Now...I will give you a secret potion which will double your physical strength.";
+		mes "[道文]";
+		mes "做的好!!咳哈哈哈哈!";
+		mes "果然我沒有看錯人!";
+		mes "來..我特別，傳授給你可以讓你";
+		mes "內功升值1甲子以上的秘藥";
 		next;
-		getitem 506,1; //Green_Potion
-		mes "Drink this potion and you will be able to become a monk!!!";
-		mes "... now go back to sensei Moohae!!!";
+		getitem 506,1; //綠色藥水
+		mes "[道文]";
+		mes "把它喝了之後，你的內功會增強，因而";
+		mes "可以轉職為武道家!!";
+		mes "好..那麼，就去找第一次申請轉職的地方";
+		mes "去[武海]長老那裡吧!!";
 		set MONK_Q,28;
 		changequest 3031,3032;
 		close;
 	}
 	else if (MONK_Q == 28) {
-		mes "[Tomoon]";
-		mes "I already told you, go back to sensei Moohae!!!";
+		mes "[道文]";
+		mes "去找[武海]長老吧!!";
 		close;
 	}
 	else {
-		mes "[Tomoon]";
-		mes "....be quiet.";
-		mes ".....";
+		mes "[道文]";
+		mes "..悄悄的走過去吧，";
+		mes "呼嗚嗚嗚嗚嗚....";
 		next;
-		mes "[Tomoon]";
-		mes "I will not allow anyone to cause any trouble in this abbey.";
+		mes "[道文]";
+		mes "這裡，聖 卡畢利那";
+		mes "修道院中心如果出了問題，那麼先輩";
+		mes "武道家的業績很可能成為泡沫";
 		next;
-		mes "[Tomoon]";
-		mes "You'd better not be thinking about causing any trouble.";
+		mes "[道文]";
+		mes "如果不想看到後面，被封印的宿敵";
+		mes "醒來的話，最好不要打擾我";
 		close;
 	}
 }
 
-monk_test,82,85,1	script	Proctor#mk	95,{
-	mes "[Proctor]";
-	mes "So, are you ready to undergo the spiritual training?";
+monk_test,82,85,1	script	考試 監督#mk	95,{
+	mes "[考試 監督]";
+	mes "好，準備好要進行驅魔修行了嗎?";
 	next;
-	switch(select("Yes!:No.:What do I have to do?")) {
+	switch(select("是的!:還沒:我該做什麼呢?")) {
 	case 1:
-		mes "[Proctor]";
-		mes "Alright! I wish you luck. If you get lost and can't find a way out, simply log out and log back in.";
-		mes "Then you will return to your save point. What's that mean? Heck if I know, I'm just told to say that. Oh yes and also, please cooperate with your comrades.";
+		mes "[考試 監督]";
+		mes "好的! 若是真的找不到路的話，只要重新登入就可以回到儲存的位置了!";
+		mes "這代表你要從起點來過呢，偷偷告訴你，你要和其他轉職的同伴們一起進行也是可以的。";
 		close2;
 		set MONK_Q,26;
 		warp "monk_test",125,277;
 		end;
 	case 2:
-		mes "[Proctor]";
-		mes "I see. Take your time.";
+		mes "[考試 監督]";
+		mes "我知道了，請把握時間!";
 		close;
 	case 3:
-		mes "[Proctor]";
-		mes "Inside this test hall is the maze of spirits.";
-		mes "There are spirits inside which will block you from moving freely.";
+		mes "[考試 監督]";
+		mes "考場是看不到的迷宮型成的";
+		mes "想要移動也不易移動，都是用透明的";
+		mes "牆所組成的";
 		next;
-		mes "[Proctor]";
-		mes "If you want to exit the test hall, you must make your way to the warp portal located at the opposite side from the start point.";
+		mes "[考試 監督]";
+		mes "想要走出這迷宮的方法，就是在開始的";
+		mes "地點及反方向的傳送點逃出";
 		next;
-		mes "[Proctor]";
-		mes "....Oh yes and also there are monsters wandering around in the maze, please clear them.";
-		mes "Good luck.";
+		mes "[考試 監督]";
+		mes "在迷宮裡，偶而會出現一些魔物在徘徊，";
+		mes "就打敗他們就好了，";
+		mes "那麼祝你一路順風";
 		close;
 	}
 }
 
 monk_test,144,277,0	script	mob_monk#1_1	-1,1,1,{
 OnTouch:
-	monster "monk_test",144,277,"Zombie",1015,1;
-	monster "monk_test",144,277,"Zombie",1015,1;
-	monster "monk_test",144,277,"Zombie",1015,1;
-	monster "monk_test",144,277,"Zombie",1015,1;
+	monster "monk_test",144,277,"腐屍",1015,1;
+	monster "monk_test",144,277,"腐屍",1015,1;
+	monster "monk_test",144,277,"腐屍",1015,1;
+	monster "monk_test",144,277,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2276,10 +2035,10 @@ OnDisable:
 
 monk_test,134,291,0	script	mob_monk#1_2	-1,1,1,{
 OnTouch:
-	monster "monk_test",134,291,"Zombie",1015,1;
-	monster "monk_test",134,291,"Zombie",1015,1;
-	monster "monk_test",134,291,"Zombie",1015,1;
-	monster "monk_test",134,291,"Zombie",1015,1;
+	monster "monk_test",134,291,"腐屍",1015,1;
+	monster "monk_test",134,291,"腐屍",1015,1;
+	monster "monk_test",134,291,"腐屍",1015,1;
+	monster "monk_test",134,291,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2289,7 +2048,7 @@ OnDisable:
 
 monk_test,157,284,0	script	mob_monk#1_3	-1,1,1,{
 OnTouch:
-	monster "monk_test",157,284,"Mummy",1041,1;
+	monster "monk_test",157,284,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2299,7 +2058,7 @@ OnDisable:
 
 monk_test,156,261,0	script	mob_monk#1_4	-1,1,1,{
 OnTouch:
-	monster "monk_test",156,261,"Mummy",1041,1;
+	monster "monk_test",156,261,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2309,11 +2068,11 @@ OnDisable:
 
 monk_test,149,268,0	script	mob_monk#1_5	-1,1,1,{
 OnTouch:
-	monster "monk_test",149,268,"Zombie",1015,1;
-	monster "monk_test",149,268,"Zombie",1015,1;
-	monster "monk_test",149,268,"Zombie",1015,1;
-	monster "monk_test",149,268,"Zombie",1015,1;
-	monster "monk_test",149,268,"Zombie",1015,1;
+	monster "monk_test",149,268,"腐屍",1015,1;
+	monster "monk_test",149,268,"腐屍",1015,1;
+	monster "monk_test",149,268,"腐屍",1015,1;
+	monster "monk_test",149,268,"腐屍",1015,1;
+	monster "monk_test",149,268,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2323,8 +2082,8 @@ OnDisable:
 
 monk_test,166,278,0	script	exit_monk#1	45,1,1,{
 OnTouch:
-	mes "[Proctor]";
-	mes "You did well. Please return to Tomoon, he's waiting for you.";
+	mes "[考試 監督]";
+	mes "恭喜" + strcharinfo(0)+ "通過驅魔修行，接著請與 '道文' 武道家進行對話。";
 	set MONK_Q,27;
 	donpcevent "mob_monk#1_5::OnDisable";
 	donpcevent "mob_monk#1_4::OnDisable";
@@ -2336,44 +2095,47 @@ OnTouch:
 	end;
 }
 
-monk_test,88,91,1	script	Proctor#mk2	52,{
-	mes "[Proctor]";
-	mes "So, are you ready to undergo this spiritual training?";
+monk_test,88,91,1	script	考試 監督#mk2	52,{
+	mes "[考試 監督]";
+	mes "好，準備好要進行驅魔修行了嗎?";
 	next;
-	switch(select("Yes!:No.:Check the caution for the test.")) {
+	switch(select("是的!:還沒:我該做什麼呢?")) {
 	case 1:
-		mes "[Proctor]";
-		mes "Alright! I wish you luck. If you get lost and can't find a way out, simply log out and log back in.";
-		mes "Then you will return to your save point. What's that mean? Heck if I know, I'm just told to say that. Oh yes and also, please cooperate with your comrades.";
+		mes "[考試 監督]";
+		mes "好的! 若是真的找不到路的話，只要重新登入就可以回到儲存的位置了!";
+		mes "這代表你要從起點來過呢，偷偷告訴你，你要和其他轉職的同伴們一起進行也是可以的。";
 		close2;
 		set MONK_Q,26;
 		warp "monk_test",125,177;
 		end;
 	case 2:
-		mes "[Proctor]";
-		mes "I see. Take your time.";
+		mes "[考試 監督]";
+		mes "我知道了，請把握時間!";
 		close;
 	case 3:
-		mes "[Proctor]";
-		mes "Inside this test hall is the maze of spirits.";
-		mes "There are spirits inside which will block you from moving freely.";
+		mes "[考試 監督]";
+		mes "考場是看不到的迷宮型成的";
+		mes "想要移動也不易移動，都是用透明的";
+		mes "牆所組成的";
 		next;
-		mes "[Proctor]";
-		mes "If you want to exit the test hall, you must make your way to the warp portal located at the opposite side from the start point.";
+		mes "[考試 監督]";
+		mes "想要走出這迷宮的方法，就是在開始的";
+		mes "地點及反方向的傳送點逃出";
 		next;
-		mes "[Proctor]";
-		mes "....Oh yes and also there are monsters wandering around in the maze, please clear them.";
-		mes "Good luck.";
+		mes "[考試 監督]";
+		mes "在迷宮裡，偶而會出現一些魔物在徘徊，";
+		mes "就打敗他們就好了，";
+		mes "那麼祝你一路順風";
 		close;
 	}
 }
 
 monk_test,140,181,0	script	mob_monk#2_1	-1,1,1,{
 OnTouch:
-	monster "monk_test",140,181,"Zombie",1015,1;
-	monster "monk_test",140,181,"Zombie",1015,1;
-	monster "monk_test",140,181,"Zombie",1015,1;
-	monster "monk_test",140,181,"Zombie",1015,1;
+	monster "monk_test",140,181,"腐屍",1015,1;
+	monster "monk_test",140,181,"腐屍",1015,1;
+	monster "monk_test",140,181,"腐屍",1015,1;
+	monster "monk_test",140,181,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2383,10 +2145,10 @@ OnDisable:
 
 monk_test,150,164,0	script	mob_monk#2_2	-1,1,1,{
 OnTouch:
-	monster "monk_test",150,164,"Zombie",1015,1;
-	monster "monk_test",150,164,"Zombie",1015,1;
-	monster "monk_test",150,164,"Zombie",1015,1;
-	monster "monk_test",150,164,"Zombie",1015,1;
+	monster "monk_test",150,164,"腐屍",1015,1;
+	monster "monk_test",150,164,"腐屍",1015,1;
+	monster "monk_test",150,164,"腐屍",1015,1;
+	monster "monk_test",150,164,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2396,7 +2158,7 @@ OnDisable:
 
 monk_test,158,192,0	script	mob_monk#2_3	-1,1,1,{
 OnTouch:
-	monster "monk_test",158,192,"Mummy",1041,1;
+	monster "monk_test",158,192,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2406,7 +2168,7 @@ OnDisable:
 
 monk_test,165,186,0	script	mob_monk#2_4	-1,1,1,{
 OnTouch:
-	monster "monk_test",165,186,"Mummy",1041,1;
+	monster "monk_test",165,186,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2416,11 +2178,11 @@ OnDisable:
 
 monk_test,162,182,0	script	mob_monk#2_5	-1,1,1,{
 OnTouch:
-	monster "monk_test",162,182,"Zombie",1015,1;
-	monster "monk_test",162,182,"Zombie",1015,1;
-	monster "monk_test",162,182,"Zombie",1015,1;
-	monster "monk_test",162,182,"Zombie",1015,1;
-	monster "monk_test",162,182,"Zombie",1015,1;
+	monster "monk_test",162,182,"腐屍",1015,1;
+	monster "monk_test",162,182,"腐屍",1015,1;
+	monster "monk_test",162,182,"腐屍",1015,1;
+	monster "monk_test",162,182,"腐屍",1015,1;
+	monster "monk_test",162,182,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2430,8 +2192,8 @@ OnDisable:
 
 monk_test,166,178,0	script	exit_monk#2	45,1,1,{
 OnTouch:
-	mes "[Proctor]";
-	mes "You did well. Please return to Tomoon, he's waiting for you.";
+	mes "[考試 監督]";
+	mes "恭喜" + strcharinfo(0)+ "通過驅魔修行，接著請與 '道文' 武道家進行對話。";
 	set MONK_Q,27;
 	donpcevent "mob_monk#2_5::OnDisable";
 	donpcevent "mob_monk#2_4::OnDisable";
@@ -2443,44 +2205,47 @@ OnTouch:
 	end;
 }
 
-monk_test,95,85,1	script	Proctor#btl#3	79,{
-	mes "[Proctor]";
-	mes "So, are you ready to undergo this spiritual training?";
+monk_test,95,85,1	script	考試 監督#btl#3	79,{
+	mes "[考試 監督]";
+	mes "好，準備好要進行驅魔修行了嗎?";
 	next;
-	switch(select("Yes!:No.:Check the caution for the test.")) {
+	switch(select("是的!:還沒:我該做什麼呢?")) {
 	case 1:
-		mes "[Proctor]";
-		mes "Alright! I wish you luck. If you get lost and can't find a way out, simply log out and log back in.";
-		mes "Then you will return to your save point. What's that mean? Heck if I know, I'm just told to say that. Oh yes and also, please cooperate with your comrades.";
+		mes "[考試 監督]";
+		mes "好的! 若是真的找不到路的話，只要重新登入就可以回到儲存的位置了!";
+		mes "這代表你要從起點來過呢，偷偷告訴你，你要和其他轉職的同伴們一起進行也是可以的。";
 		close2;
 		set MONK_Q,26;
 		warp "monk_test",230,277;
 		end;
 	case 2:
-		mes "[Proctor]";
-		mes "I see. Take your time.";
+		mes "[考試 監督]";
+		mes "我知道了，請把握時間!";
 		close;
 	case 3:
-		mes "[Proctor]";
-		mes "Inside this test hall is the maze of spirits.";
-		mes "There are spirits inside which will block you from moving freely.";
+		mes "[考試 監督]";
+		mes "考場是看不到的迷宮型成的";
+		mes "想要移動也不易移動，都是用透明的";
+		mes "牆所組成的";
 		next;
-		mes "[Proctor]";
-		mes "If you want to exit the test hall, you must make your way to the warp portal located at the opposite side from the start point.";
+		mes "[考試 監督]";
+		mes "想要走出這迷宮的方法，就是在開始的";
+		mes "地點及反方向的傳送點逃出";
 		next;
-		mes "[Proctor]";
-		mes "....Oh yes and also there are monsters wandering around in the maze, please clear them.";
-		mes "Good luck.";
+		mes "[考試 監督]";
+		mes "在迷宮裡，偶而會出現一些魔物在徘徊，";
+		mes "就打敗他們就好了，";
+		mes "那麼祝你一路順風";
 		close;
 	}
 }
 
 monk_test,249,277,0	script	mob_monk#3_1	-1,1,1,{
 OnTouch:
-	monster "monk_test",249,277,"Zombie",1015,1;
-	monster "monk_test",249,277,"Zombie",1015,1;
-	monster "monk_test",249,277,"Zombie",1015,1;
-	monster "monk_test",249,277,"Zombie",1015,1;
+	monster "monk_test",249,277,"腐屍",1015,1;
+	monster "monk_test",249,277,"腐屍",1015,1;
+	monster "monk_test",249,277,"腐屍",1015,1;
+	monster "monk_test",249,277,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2489,10 +2254,10 @@ OnDisable:
 
 monk_test,231,296,0	script	mob_monk#3_2	-1,1,1,{
 OnTouch:
-	monster "monk_test",231,296,"Zombie",1015,1;
-	monster "monk_test",231,296,"Zombie",1015,1;
-	monster "monk_test",231,296,"Zombie",1015,1;
-	monster "monk_test",231,296,"Zombie",1015,1;
+	monster "monk_test",231,296,"腐屍",1015,1;
+	monster "monk_test",231,296,"腐屍",1015,1;
+	monster "monk_test",231,296,"腐屍",1015,1;
+	monster "monk_test",231,296,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2502,7 +2267,7 @@ OnDisable:
 
 monk_test,264,292,0	script	mob_monk#3_3	-1,1,1,{
 OnTouch:
-	monster "monk_test",264,292,"Mummy",1041,1;
+	monster "monk_test",264,292,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2512,7 +2277,7 @@ OnDisable:
 
 monk_test,252,284,0	script	mob_monk#3_4	-1,1,1,{
 OnTouch:
-	monster "monk_test",252,284,"Mummy",1041,1;
+	monster "monk_test",252,284,"木乃伊",1041,1;
 	end;
 
 OnDisable:
@@ -2522,12 +2287,12 @@ OnDisable:
 
 monk_test,257,285,0	script	mob_monk#3_5	-1,1,1,{
 OnTouch:
-	monster "monk_test",257,285,"Zombie",1015,1;
-	monster "monk_test",257,285,"Zombie",1015,1;
-	monster "monk_test",257,285,"Zombie",1015,1;
-	monster "monk_test",257,285,"Zombie",1015,1;
-	monster "monk_test",257,285,"Zombie",1015,1;
-	monster "monk_test",257,285,"Zombie",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
+	monster "monk_test",257,285,"腐屍",1015,1;
 	end;
 
 OnDisable:
@@ -2537,8 +2302,8 @@ OnDisable:
 
 monk_test,270,278,0	script	exit_monk#3	45,1,1,{
 OnTouch:
-	mes "[Proctor]";
-	mes "You did well. Please return to Tomoon, he's waiting for you.";
+	mes "[考試 監督]";
+	mes "恭喜" + strcharinfo(0)+ "通過驅魔修行，接著請與 '道文' 武道家進行對話。";
 	set MONK_Q,27;
 	donpcevent "mob_monk#3_5::OnDisable";
 	donpcevent "mob_monk#3_4::OnDisable";
@@ -2579,7 +2344,7 @@ OnEnable:
 
 monk_test,137,338,1	script	switchreset#monkmonk	79,{
 	mes "Grrrr...";
-	mes "All monsters in the monk job chance place have been reset.";
+	mes "考試用的魔物已被重置";
 	mes "Timer's activated.";
 	donpcevent "mob_monk#1_1::OnDisable";
 	donpcevent "mob_monk#1_2::OnDisable";
@@ -2603,24 +2368,5 @@ monk_test,137,338,1	script	switchreset#monkmonk	79,{
 //============================================================ 
 // Monsters of Mushroom Collecting
 //============================================================ 
-job_monk,0,0,0,0	monster	Thief Mushroom	1182,70,0,0,0
-job_monk,0,0,0,0	monster	Thief Bug Larva	1051,20,0,0,0
-
-//============================================================ 
-// Old changelog
-//============================================================ 
-//= 1.1 Fixed missing '";'. Now it's loading fine [Lupus]
-//= 1.1+ Edited/Translated 5% [Celest]
-//= 1.2 Made Poetry Quiz passable, Fixed Marathon Part [Lupus]
-//= 1.3 Added Baby Class Support [Lupus]
-//= 1.5 Fixed possible EXP abuse [Lupus]
-//= 1.6 Added a func which prevent advanced classes passing
-//=     2nd Job Quests again. It also guides adv classes where
-//=     to go. [Lupus]
-//= 1.7 Fixed warps19/20 [Yor]
-//= 1.8 Fixed bugs. Fixed Green Potion exploit. Getting rid of Jfunc mess [Lupus]
-//= 1.9 Added a missing check in Fuhai and fixed a LOT of Engrish. [Zephiris]
-//= 1.9b Fixed another bug in Fuhai. [Zephiris]
-//= 2.0 Changed numbers to constants. [Vicious]
-//= 2.1 Removed Duplicates [Silent]
-//============================================================ 
+job_monk,0,0,0,0	monster	盜蘑菇	1182,70,0,0,0
+job_monk,0,0,0,0	monster	盜蟲	1051,20,0,0,0
