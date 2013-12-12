@@ -18,7 +18,7 @@
 //= 1.4 Optimized and fixed wrong item id. [Joseph]
 //============================================================ 
 
--	script	傭兵管理員#main	-1,{
+-	script	Mercenary Manager#main	-1,{
 	setarray .@name$, 	"槍", 			"劍", 			"弓";
 	setarray .@faith$, 	"SPEAR_MERC_GUILD",	"SWORD_MERC_GUILD",	"ARCH_MERC_GUILD";
 	setarray .@item, 	12182,				12172,				12162;
@@ -36,7 +36,7 @@
 			mes "[傭兵管理員]";
 			mes "呵呵... 你想跟哪種傭兵簽約呢?";
 			next;
-			setarray .@suffix$, "th","st","nd","rd";
+			setarray .@suffix$, "","","","";
 			for (set .@i, 1; .@i <= 9; set .@i, .@i + 1)
 				set .@menu$, .@menu$ + .@i + .@suffix$[((.@i <= 3)? .@i : 0)] + "等級" + .@npc$ + "傭兵:";
 			set .@Grade, select(.@menu$);
@@ -46,20 +46,15 @@
 			setarray .@FaithCost[7], 50,100,300;
 			set .@FaithCost, .@FaithCost[.@Grade];
 			mes "[傭兵管理員]";
-			mes "So you want to hire a " + .@Grade + .@suffix$[((.@Grade <= 3)? .@i : 0)];
-			mes "Grade " + .@npc$ + " Mercenary?";
-			mes "You need to have attained";
-			mes "Base Level " + .@BaseLevel + " or higher, and";
-			mes "must pay the " + .@ZenyCost + ",000 zeny fee.";
+			mes "你要跟" + .@Grade + .@suffix$[((.@Grade <= 3)? .@i : 0)];
+			mes "等級的" + .@npc$ + "傭兵簽約嗎?";
+			mes "與" + .@Grade + "等級的簽約條件是自己的等級在" + .@BaseLevel + "級以上就可以了，";
+			mes "還有簽約金是" + .@ZenyCost + "000金幣，";
+			mes "請問您要與傭兵簽約嗎?";
 			next;
-			if(select("Yes:No") == 2) {
+			if(select("要:不要") == 2) {
 				mes "[傭兵管理員]";
-				mes "Oh, really? Well, now";
-				mes "might not be a good time";
-				mes "for you to consider hiring";
-				mes "a Mercenary, but please feel";
-				mes "free to come back if your";
-				mes "needs change. Thank you~";
+				mes "是嗎? 那歡迎你下次再來吧";
 			}
 			else if(.@FaithCost && .@faith_merc < .@FaithCost) {
 				mes "[傭兵管理員]";
@@ -167,46 +162,44 @@
 		mes "以上才可以，";
 		mes "請問您要與10等級傭兵簽約嗎?";
 		next;
-		if( select("要:不要") == 2 )
+		if( select("要:不要") == 2 ) {
 			mes "[傭兵管理員]";
-				mes "畢竟要與10等級傭兵一起共事不是件容易的事情";
-			}
-			else if (.@faith_merc < 500) {
-				mes "[傭兵管理員]";
-				mes "嗯.. 你與我們槍傭兵公會間的";
-				mes "信賴度不足啊，";
-				mes "若想與10等級傭兵簽約的話，";
-				mes "需要500以上的信賴度";
-			}
-			else if (BaseLevel < 90) {
-				mes "[傭兵管理員]";
-				mes "哎呀...";
-				mes "你的等級還不夠啊，";
-				mes "等到了90等級候再來吧";
-			}
-			else {
-				mes "[傭兵管理員]";
-				mes "恭喜你啊，你看來像是要來場遠征吧";
-				mes "難怪會與10等級的傭兵簽約，";
-				mes "祝您一路順風";
-				mercenary_set_faith getd(.@faith$[.@type]),-400;
-				getitem .@item[.@type],1;
-			}
-			close;
+			mes "畢竟要與10等級傭兵一起共事不是件容易的事情";
+		}
+		else if (.@faith_merc < 500) {
+			mes "[傭兵管理員]";
+			mes "嗯.. 你與我們槍傭兵公會間的";
+			mes "信賴度不足啊，";
+			mes "若想與10等級傭兵簽約的話，";
+			mes "需要500以上的信賴度";
+		}
+		else if (BaseLevel < 90) {
+			mes "[傭兵管理員]";
+			mes "哎呀...";
+			mes "你的等級還不夠啊，";
+			mes "等到了90等級候再來吧";
+		}
+		else {
+			mes "[傭兵管理員]";
+			mes "恭喜你啊，你看來像是要來場遠征吧";
+			mes "難怪會與10等級的傭兵簽約，";
+			mes "祝您一路順風";
+			mercenary_set_faith getd(.@faith$[.@type]),-400;
+			getitem .@item[.@type],1;
+		}
+		close;
 	}
 }
-prontera,41,337,5	duplicate(傭兵管理員#main)	傭兵公會相關人員#Spear	105
-pay_arche,99,167,4	duplicate(傭兵管理員#main)	傭兵公會相關人員#Bow	732
+prontera,41,337,5	duplicate(Mercenary Manager#main)	傭兵公會相關人員#槍	105
+pay_arche,99,167,4	duplicate(Mercenary Manager#main)	傭兵公會相關人員#弓	732
 
 // Mercenary Merchant NPCs
 //============================================================
 -	script	Mercenary Merchant#dummy::MercMerchant	-1,{
-	mes "[Mercenary Goods Merchant]";
-	mes "Hello, I sell goods";
-	mes "that Mercenaries can";
-	mes "use. Is there anything";
-	mes "in particular that";
-	mes "you're looking for?";
+	mes "[物品銷售商]";
+	mes "你好，";
+	mes "這裡販售與傭兵相關的物品，";
+	mes "你在找什麼東西呢?";
 	next;
 	setarray .@item, 12184,	12185,	12241,	12242,	12243;
 	setarray .@cost, 1750,	3000,	560,	1050,	2100;
@@ -216,62 +209,41 @@ pay_arche,99,167,4	duplicate(傭兵管理員#main)	傭兵公會相關人員#Bow	732
 	set .@str$, .@cost[.@m] + "";
 	set .@len, getstrlen(.@str$);
 	set .@str_cost$, (.@len <= 3)? .@str$ : insertchar(.@str$,",",.@len-3);
-	mes "[Mercenary Goods Merchant]";
-	mes getitemname(.@item[.@m]);
-	mes "each cost " + .@str_cost$ + " zeny.";
-	mes "How many would you like?";
+	mes "[物品銷售商]";
+	mes "你要買"+ getitemname(.@item[.@m]) +"嗎?";
+	mes "每瓶單價是" + .@str_cost$ + "金幣";
+	mes "你需要幾個呢?";
 	next;
 	input .@input;
 	if (!.@input) {
-		mes "[Mercenary Goods Merchant]";
-		mes "You changed your mind?";
-		mes "Alright, feel free to come";
-		mes "back to me whenever you want";
-		mes "to buy any Mercenary Potions.";
+		mes "[物品銷售商]";
+		mes "謝謝光臨，";
+		mes "你訂購物品的數量是0個";
 		close;
 	}
 	else if (.@input < 0 || .@input > 10000) {
-		mes "[Mercenary Goods Merchant]";
-		mes "I'm sorry, but you";
-		mes "can only buy up to";
-		mes "10,000 of these potions";
-		mes "at a time. Please enter";
-		mes "a number from 1 to 10,000.";
+		mes "[物品銷售商]";
+		mes "請輸入0到10000之間的數量";
 		close;
 	}
 	else if (set(.@total_po, .@input * .@cost[.@m]) > Zeny) {
-		mes "[Mercenary Goods Merchant]";
-		mes "I'm sorry, but you don't";
-		mes "have enough zeny for this";
-		mes "many potions. Well, I'll be";
-		mes "be here when you're ready";
-		mes "to purchase something";
-		mes "for your Mercenaries.";
+		mes "[物品銷售商]";
+		mes "你所持有的金幣不足呢，";
+		mes "在你持有的金幣範圍內購買吧";
 		close;
 	}
 	else if (!checkweight(.@item[.@m], .@input)) {
-		mes "[Mercenary Goods Merchant]";
-		mes "If I gave you that many";
-		mes "potions, you wouldn't be";
-		mes "able to carry them with you.";
-		mes "Please come back after";
-		mes "you free up some space";
-		mes "in your Inventory.";
+		mes "[物品銷售商]";
+		mes "您訂購的物品重量會超過負重量的上限";
+		mes "請減少負重量後再訂購吧";
 		close;
 	}
-	mes "[Mercenary Goods Merchant]";
-	if (.@input == 1) 
-		mes "Here's your " + getitemname(.@item[.@m]) + ".";
-	else {
-		mes "Here you are, this is exactly";
-		mes .@input + " " + getitemname(.@item[.@m]) + "s.";
-	}
-	mes "Thank you, and please come";
-	mes "again when you need more";
-	mes "potions for your Mercenaries.";
+	mes "[物品銷售商]";
+	mes "謝謝您的光臨，";
+	mes "這是您的" + .@input + "個" + getitemname(.@item[.@m]) + "。";
 	set Zeny, Zeny - .@total_po;
 	getitem .@item[.@m], .@input;
 	close;
 }
-prontera,30,337,4	duplicate(MercMerchant)	Mercenary Merchant#Spear	700
-pay_arche,102,167,5	duplicate(MercMerchant)	Mercenary Merchant#Bow	879
+prontera,30,337,4	duplicate(MercMerchant)	傭兵物品銷售商#槍	700
+pay_arche,102,167,5	duplicate(MercMerchant)	傭兵物品銷售商#弓	879

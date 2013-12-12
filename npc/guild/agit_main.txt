@@ -24,7 +24,7 @@
 //=   Spawn guardians when guild castle data is recieved.
 //=
 //= - Enables Kafra Services inside Guild Strongholds.
-//=   Visible Name required: Kafra Employee
+//=   Visible Name required: 卡普拉 職員
 //=   Storage, Guild Storage, Teleport Service, Cart rental.
 //=
 //= - Treasure Chest spawning.
@@ -126,7 +126,7 @@ OnAgitBreak:
 
 	// Refresh castle data, disable Kafra and reset Invest information.
 	donpcevent strnpcinfo(0)+"::OnRecvCastle";
-	disablenpc "Kafra Staff#"+strnpcinfo(2);
+	disablenpc "卡普拉 職員#"+strnpcinfo(2);
 	for( set .@i, 4; .@i <= 9; set .@i, .@i+1 ) {
 		SetCastleData strnpcinfo(2), .@i, 0;
 	}
@@ -159,7 +159,7 @@ OnGuildBreak:
 	if (strnpcinfo(0) == "Gld_Agit_Manager") end;
 	// Kill guardians, disable the Kafra, and set owner to 0.
 	killmonster strnpcinfo(2),"Guardian#"+strnpcinfo(2)+"::OnGuardianDied";
-	disablenpc "Kafra Staff#"+strnpcinfo(2);
+	disablenpc "卡普拉 職員#"+strnpcinfo(2);
 	SetCastleData strnpcinfo(2),1,0;
 	// Wait before refreshing guild information.
 	sleep 7000;
@@ -277,7 +277,7 @@ OnRecvCastle:
 		}
 		donpcevent "Agit#"+strnpcinfo(2)+"::OnStartArena";
 		// Disable Kafra Staff...
-		disablenpc "Kafra Staff#"+strnpcinfo(2);
+		disablenpc "卡普拉 職員#"+strnpcinfo(2);
 		end;
 	}
 	else {
@@ -309,14 +309,14 @@ OnRecvCastle:
 		// And load purchased Guardian in castles.
 		donpcevent "Guardian#"+strnpcinfo(2)+"::OnSpawnGuardians";
 		// And display Kafra if purchased.
-		if (GetCastleData(strnpcinfo(2),9) < 1) disablenpc "Kafra Staff#"+strnpcinfo(2);
+		if (GetCastleData(strnpcinfo(2),9) < 1) disablenpc "卡普拉 職員#"+strnpcinfo(2);
 	}
 	end;
 }
 
 // WoE : Guild Kafras
 //============================================================
--	script	Kafra Staff#woe::guildkafra	-1,{
+-	script	卡普拉 職員#woe::guildkafra	-1,{
 
 	set .@GID,GetCastleData(strnpcinfo(2),1);
 
@@ -343,23 +343,20 @@ OnRecvCastle:
 
 	cutin "kafra_01",2;
 	if (getcharid(2) == .@GID) {
-		mes "[Kafra Employee]";
-		mes "Welcome. ^ff0000" + GetGuildName(.@GID) + "^000000 Member.";
-		mes "The Kafra Corporation will stay with you wherever you go.";
+		mes "[卡普拉 職員]";
+		mes "歡迎光臨 ^ff0000" + getguildname(.@GID) + "^000000 會員們";
+		mes "卡普拉服務(有限公司) ，永遠在各位身邊為您服務的";
 		next;
-		switch (select("Use Storage:Use Teleport Service:Rent a Pushcart:Cancel")) {
+		switch (select("使用倉庫服務:使用空間移動服務:使用手推車服務:結束")) {
 		case 1:
 			if (getskilllv("NV_BASIC") < 6) {
-				mes "[Kafra Employee]";
-				mes "I'm sorry, but you";
-				mes "need the Novice's";
-				mes "Basic Skill Level 6 to";
-				mes "use the Storage Service.";
+				mes "[卡普拉 職員]";
+				mes "對不起 想要使用倉庫服務的話，初學者的基本技能等級要到達 6級以上.";
 				close2;
 				cutin "",255;
 				end;
 			}
-			mes "[Kafra Employee]";
+			mes "[卡普拉 職員]";
 			mes "Here, let me open";
 			mes "your Storage for you.";
 			mes "Thank you for using";
@@ -369,18 +366,14 @@ OnRecvCastle:
 			openstorage;
 			end;
 		case 2:
-			mes "[Kafra Employee]";
-			mes "Please choose";
-			mes "your destination.";
+			mes "[卡普拉 職員]";
+			mes "請說你想要去的地方.";
 			next;
-			switch (select(.@destination$+" -> 200z:Cancel")) {
+			switch (select(.@destination$+" -> 200z:取消")) {
 			case 1:
 				if (Zeny < 200) {
-					mes "[Kafra Employee]";
-					mes "I'm sorry, but you don't have";
-					mes "enough zeny for the Teleport";
-					mes "Service. The fee to teleport";
-					mes "to "+.@destination$+" is 200 zeny.";
+					mes "[卡普拉 職員]";
+					mes "顧客　您的金額不足. 請再確認";
 					close2;
 					cutin "",255;
 					end;
@@ -397,41 +390,27 @@ OnRecvCastle:
 			}
 		case 3:
 			if (BaseClass != Job_Merchant) {
-				mes "[Kafra Employee]";
-				mes "I'm sorry, but the";
-				mes "Pushcart rental service";
-				mes "is only available to Merchants,";
-				mes "Blacksmiths, Master Smiths,";
-				mes "Alchemists, Biochemists,";
-				mes "Mechanics and Geneticists.";
+				mes "[卡普拉 職員]";
+				mes "很抱歉，手推車是商人和鐵匠、鍊金術師專用的服務";
 				close2;
 				cutin "",255;
 				end;
 			}
 			if (checkcart()) {
-				mes "[Kafra Employee]";
-				mes "You already have";
-				mes "a Pushcart equipped.";
-				mes "Unfortunately, we can't";
-				mes "rent more than one to";
-				mes "each customer at a time.";
+				mes "[卡普拉 職員]";
+				mes "你已經租過手推車了";
 				close2;
 				cutin "",255;
 				end;
 			}
-			mes "[Kafra Employee]";
-			mes "The Pushcart rental";
-			mes "fee is 800 zeny. Would";
-			mes "you like to rent a Pushcart?";
+			mes "[卡普拉 職員]";
+			mes "手推車使用費用是 800金幣. 您要使用嗎?";
 			next;
-			switch (select("Rent a Pushcart.:Cancel")) {
+			switch (select("使用.:取消.")) {
 			case 1:
 				if (Zeny < 800) {
-					mes "[Kafra Employee]";
-					mes "I'm sorry, but you";
-					mes "don't have enough";
-					mes "zeny to pay the Pushcart";
-					mes "rental fee of 800 zeny.";
+					mes "[卡普拉 職員]";
+					mes "顧客　您的金額不足. 手推車使用費是 800金幣.";
 					close2;
 					cutin "",255;
 					end;
@@ -448,16 +427,16 @@ OnRecvCastle:
 				end;
 			}
 		case 4:
-			mes "[Kafra Employee]";
-			mes "We, here at Kafra Corporation,";
-			mes "are always endeavoring to provide you with the best services. We hope that we meet your adventuring needs and standards of excellence.";
+			mes "[卡普拉 職員]";
+			mes "我們卡普拉公司的服務是為了讓顧客們放心和方便的使用. 我們會盡我們最大的努力做到更好的服務與嚴格的營業管理.";
+			mes "謝謝您們使用我們卡普拉公司的服務.";
 			close2;
 			cutin "",255;
 			end;
 		}
 	}
-	mes "[Kafra Employee]";
-	mes "I am instructed to only offer my services to the ^ff0000"+GetGuildName(.@GID)+"^000000 Guild. Please try another Kafra Employee around here. Sorry for the inconvenience.";
+	mes "[卡普拉 職員]";
+	mes "我已簽訂契約專為^ff0000" + GetGuildName(.@GID) + "^000000會員服務 ，請使用我們其它地方的卡普拉職員 ，如有不便之處敬請見諒";
 	close2;
 	cutin "",255;
 	end;
@@ -606,34 +585,39 @@ OnRecvCastle:
 
 	if (.@GID == 0) {
 		mes "["+strnpcinfo(1)+"]";
-		mes "I have been waiting for a master to fulfill my destiny.";
-		mes "Brave soul... fate will guide you towards your future...";
+		mes "我在此等待我的主人... 勇敢的冒險者啊! 追隨你的命運吧!";
 		close;
 	}
 	if (GetGuildMaster(.@GID) != strcharinfo(0)) {
 		mes "["+strnpcinfo(1)+"]";
-		mes "No matter how much you pester me, I'll still follow my master ^ff0000"+GetGuildMaster(.@GID)+"^000000. Where are the Guardians?! Send these ruffians away right now!";
+		mes "不管你們怎麼威脅我";
+		mes "，我只願意追隨我的主人 ^FF0000" + getguildmaster(.@GID) + "^000000 !";
+		mes "監護人你們在哪裡呀!";
+		mes "趕快把這些無理的傢伙們趕走吧!";
 		close;
 	}
 	mes "["+strnpcinfo(1)+"]";
-	mes "Welcome. My honorable master, ^ff0000"+strcharinfo(0)+"^000000...";
-	mes "Your humble servent, "+strnpcinfo(1)+", is here to serve you.";
+	mes "歡迎光臨 ，";
+	mes "我的主人^ff0000" + getguildmaster(.@GID) + "^000000先生/小姐.";
+	mes "..";
+	mes "請儘管吩咐";
+	mes "，我將忠誠地為你完成任務";
 	next;
-	switch (select("Castle briefing:Invest in commercial growth:Invest in Castle Defenses:Summon Guardian:Hire / Fire a Kafra Employee:Go into Master's room")) {
+	switch (select("查看秘密基地狀況:投資商業發展度:投資防禦度:設置監護人:雇用 / 解雇 倉庫職員:進入主人房間")) {
 	case 1:
 		mes "["+strnpcinfo(1)+"]";
-		mes "I will report the Castle briefing, Master.";
+		mes "現在向你報告秘密基地的狀況";
 		mes " ";
-		mes "^0000ffNow, the commercial growth level is "+GetCastleData(strnpcinfo(2),2)+".";
+		mes "^0000ff現在商業發展度是 "+GetCastleData(strnpcinfo(2),2)+".";
 		if (GetCastleData(strnpcinfo(2),4)) {
-			mes " You invested "+GetCastleData(strnpcinfo(2),4)+" times in past 1 day.";
+			mes "　 - 在過去一天之內，投資了 "+GetCastleData(strnpcinfo(2),4)+" 次";
 		}
-		mes " Now, the Castle Defense level is "+GetCastleData(strnpcinfo(2),3)+".^000000";
+		mes "　 現在的防禦度是 "+GetCastleData(strnpcinfo(2),3)+"^000000";
 		if (GetCastleData(strnpcinfo(2),5)) {
-			mes " ^0000ff- You invested "+GetCastleData(strnpcinfo(2),5)+" times in past 1 day.^000000";
+			mes " ^0000ff- 在過去一天之內，投資了 "+GetCastleData(strnpcinfo(2),5)+" 次^000000";
 		}
 		mes " ";
-		mes "That's all I have to report, Master.";
+		mes "報告完畢";
 		close;
 	case 2:
 		set .@Economy,GetCastleData(strnpcinfo(2),2);
@@ -662,43 +646,44 @@ OnRecvCastle:
 			set .@eco_invest,.@eco_invest*4;
 		}
 		mes "["+strnpcinfo(1)+"]";
-		mes "If you invest in commercial growth, the quantity of goods made by the guild will increase. Therfore, if you consider our future, investments will be a necessity.";
+		mes "提高商業發展度的話 ，在工會裡生產的物品數量會增加，為了以後著想的話，不能不投資啊";
 		mes " ";
-		mes "Initially, you are able to invest just once but if you pay more money, you will be able to invest twice.";
+		mes "照原先的方式，一天只能投資一次 ，假如多付一點金錢的話 ，一天可以投資兩次";
+		mes " ";
 		if (.@Economy >= 100) {
 			mes " ";
-			mes "^ff0000The commercial growth level of our Castle is at it's highest, 100%. No more investments are needed. Just as I have expected from a great economist like you, Master.^000000";
+			mes "^ff0000目前商業發展度以經是100了，你已經不需要再加入任何投資了^000000";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),4) >= 2) {
 			mes " ";
-			mes "^ff0000You have already invested twice today. You cannot invest any more.^000000 I expect riches of the guild to grow at a high rate.";
+			mes "^ff0000可是你已經在今天之內投資了兩次，再不能投資了^000000.讓發展度趕快上升，期待著富貴的日子囉";
 			close;
 		}
 		if (GetCastleData(strnpcinfo(2),4) == 0) {
 			mes " ";
-			mes "The current investment amount required is ^ff0000"+.@eco_invest+"^000000 zeny. Will you invest?";
+			mes "現在需要的投資金額是 ^ff0000"+.@eco_invest+"^000000 金幣 ，請問你要投資嗎?";
 		}
 		else {
 			mes " ";
-			mes "You've invested once today... if you wish to invest once more, ^ff0000"+.@eco_invest+"^000000 more zeny will be needed.";
+			mes "現在你已經投資一次了... 還要再投資嗎? 還需要追加 ^ff0000"+.@eco_invest+"^000000 金幣噢?";
 		}
 		next;
-		switch (select("Invest in commercial growth:Cancel")) {
+		switch (select("對商業發展度投資:取消")) {
 		case 1:
 			if (Zeny < .@eco_invest) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "I'm sorry but there is not enough zeny to invest. You will have to try again when you have the funds, Master.";
+				mes "主人 ，你沒有足夠的資金可以投資商業發展度";
 				close;
 			}
 			set Zeny, Zeny - .@eco_invest;
 			SetCastleData strnpcinfo(2),4,GetCastleData(strnpcinfo(2),4)+1;
 			mes "[ "+strnpcinfo(1)+"]";
-			mes "We finished the investment safely. I expect that our growth level will be increased by tomorrow.";
+			mes "順利地完成投資了! 期待著我們往後要面臨的未來 ，明天的話發展度會上升";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I'll do as you bid, my master... There is no hurry. We will do our best.";
+			mes "我將依照你的吩咐去執行 ，是我的主人... 不需要太著急 ，我們會做得很好";
 			close;
 		}
 	case 3:
@@ -823,23 +808,23 @@ OnRecvCastle:
 	case 5:
 		if (GetCastleData(strnpcinfo(2),9) == 1) {
 			mes "["+strnpcinfo(1)+"]";
-			mes "We are currently hiring a Kafra Employee... Do you want to fire the Kafra Employee?";
+			mes "We are currently hiring a 卡普拉 職員... Do you want to fire the 卡普拉 職員?";
 			next;
 			switch (select("Fire:Cancel")) {
 			case 1:
 				cutin "kafra_01",2;
-				mes "[ Hired Kafra Employee ]";
+				mes "[ Hired 卡普拉 職員 ]";
 				mes "I worked so hard... How can you do that, Master?... Please... Please reconsider... Check it again, Master... Please...";
 				next;
 				switch (select("Fire:Cancel")) {
 				case 1:
-					mes "[ Hired Kafra Employee ]";
+					mes "[ Hired 卡普拉 職員 ]";
 					mes "Oh, my goodness! This is nonsense!";
 					next;
 					cutin "",255;
 					break;
 				case 2:
-					mes "[ Hired Kafra Employee ]";
+					mes "[ Hired 卡普拉 職員 ]";
 					mes "I'll work hard for you... Thank you!";
 					close;
 				}
@@ -849,11 +834,11 @@ OnRecvCastle:
 				mes "She worked hard in my opinion. It was a good decision to keep her.";
 				close;
 			}
-			disablenpc "Kafra Staff#"+strnpcinfo(2);
+			disablenpc "卡普拉 職員#"+strnpcinfo(2);
 			SetCastleData strnpcinfo(2),9,0;
 			mes "["+strnpcinfo(1)+"]";
 			mes "....";
-			mes "I have discharged the Kafra Employee... But... are you unsatisfied with something?";
+			mes "I have discharged the 卡普拉 職員... But... are you unsatisfied with something?";
 			close;
 		}
 		mes "["+strnpcinfo(1)+"]";
@@ -864,33 +849,33 @@ OnRecvCastle:
 		case 1:
 			if (getgdskilllv(.@GID,10001) == 0) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Master, we can't hire a Kafra Employee because we don't have a contract with the Kafra Main Office. If you want to obtain a contract with the Kafra Main Office, you will need to learn the Guild skill first.";
+				mes "Master, we can't hire a 卡普拉 職員 because we don't have a contract with the Kafra Main Office. If you want to obtain a contract with the Kafra Main Office, you will need to learn the Guild skill first.";
 				close;
 			}
 			if (Zeny < 10000) {
 				mes "["+strnpcinfo(1)+"]";
-				mes "Well... I'm sorry but we don't have enough funds to hire a Kafra Employee.";
+				mes "Well... I'm sorry but we don't have enough funds to hire a 卡普拉 職員.";
 				close;
 			}
 			set Zeny, Zeny - 10000;
-			enablenpc "Kafra Staff#"+strnpcinfo(2);
+			enablenpc "卡普拉 職員#"+strnpcinfo(2);
 			SetCastleData strnpcinfo(2),9,1;
 			mes "["+strnpcinfo(1)+"]";
-			mes "We obtained a contract with the kafra Main Office, and hired a Kafra Employee.";
+			mes "We obtained a contract with the kafra Main Office, and hired a 卡普拉 職員.";
 			next;
 			cutin "kafra_01",2;
-			mes "[ Hired Kafra Employee ]";
+			mes "[ Hired 卡普拉 職員 ]";
 			mes "How do you do? I was dispatched from the Main Office.";
 			mes "I'll do my best to not tarnish the reputation of the Guild.";
 			next;
 			cutin "",255;
 			mes "["+strnpcinfo(1)+"]";
-			mes "The Contract terms of the hired Kafra Employee are for 1 month and after this term, you will need to to pay an additional fee.";
+			mes "The Contract terms of the hired 卡普拉 職員 are for 1 month and after this term, you will need to to pay an additional fee.";
 			mes "It will be useful for our members.";
 			close;
 		case 2:
 			mes "["+strnpcinfo(1)+"]";
-			mes "I did as you ordered, but some of our members will be unhappy. It will be better to hire a Kafra Employee quickly.";
+			mes "I did as you ordered, but some of our members will be unhappy. It will be better to hire a 卡普拉 職員 quickly.";
 			close;
 		}
 	case 6:
@@ -1270,7 +1255,7 @@ OnClock0001:
 		set .@box,1 << .@i;
 		// Spawn or do not spawn chests if one already exists.
 		if ((getd("$@"+strnpcinfo(2)+"_treasure") & .@box) == 0) {
-			monster strnpcinfo(2),.@treasurex[.@i],.@treasurey[.@i],"Treasure Chest",.@boxid,1,"Treasure#"+strnpcinfo(2)+"::OnTreasureDied"+.@i;
+			monster strnpcinfo(2),.@treasurex[.@i],.@treasurey[.@i],"寶物箱子",.@boxid,1,"Treasure#"+strnpcinfo(2)+"::OnTreasureDied"+.@i;
 			setd "$@"+strnpcinfo(2)+"_treasure",getd("$@"+strnpcinfo(2)+"_treasure") | .@box;
 		}
 	}
