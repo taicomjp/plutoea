@@ -19,25 +19,21 @@
 //= 1.5 Added Izlude duplicates. [Euphy]
 //============================================================ 
 
-// Poison Herb Merchants (Guillotine Cross)
+// 毒草銷售員 (Guillotine Cross)
 //============================================================
 -	script	::phs	-1,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2000) {
-		mes "- Wait a minute !! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please try again -";
-		mes "- after you lose some weight. -";
+		mes "- 請先確認自己的負重量 -";
 		close;
 	}
-	mes "[Poison Herb Merchant]";
-	mes "I am the professional";
-	mes "Poison Herb merchant.";
-	mes "Each Herb costs 4,000 zeny.";
-	mes "What would you like?";
+	mes "[毒草銷售員]";
+	mes "我是專門販售毒草的";
+	mes "毒草商人，請問你需要";
+	mes "哪一種呢? 毒草的價格是";
+	mes "不二價，通通是 4000金幣";
 	next;
-	set .@i, select("Nerium:Rantana:Makulata:Seratum:Scopolia:Amoena:Poison Kit:Cancel")-1;
-	mes "[Poison Herb Merchant]";
+	set .@i, select("毒夾竹桃:毒馬櫻丹:毒香草:蛇足毒草:毒山莨菪:大王黛粉毒藥:製毒工具組")-1;
+	mes "[毒草銷售員]";
 	if (.@i < 6) {
 		set .@item,7932+.@i;
 		set .@price,4000;
@@ -53,105 +49,100 @@
 		mes "Well, I see. Come back again~!";
 		close;
 	}
-	mes "How many do you want?";
-	mes "You can only buy a maximum of '"+.@max+"' ea.";
-	mes "Enter '0' if you want to cancel.";
+	mes "需要多少數量呢 最多可買";
+	mes ""+.@max+"個，若想取消交易";
+	mes "請輸入0即可";
 	next;
 	input .@amount;
 	if (.@amount == 0) {
-		mes "[Poison Herb Merchant]";
-		mes "You've cancelled the trade.";
+		mes "[毒草銷售員]";
+		mes "取消交易了";
 		close;
 	}
 	if (.@amount > .@max) {
-		mes "[Poison Herb Merchant]";
-		mes "The number must be less than "+.@max$+"!";
+		mes "[毒草銷售員]";
+		mes "請先確認數量上限後，";
+		mes "再重新輸入吧!";
 		close;
 	}
 	set .@total, .@amount * .@price;
 	if (Zeny < .@total) {
-		mes "[Poison Herb Merchant]";
-		mes "You don't have enough money.";
-		mes "Check how much money you have first.";
+		mes "[毒草銷售員]";
+		mes "你擁有的金幣不足，";
+		mes "先摸摸自己的荷包吧";
 		close;
 	}
 	set Zeny, Zeny - .@total;
 	getitem .@item, .@amount;
-	mes "[Poison Herb Merchant]";
-	mes "Thank you. Come back again~!";
+	mes "[毒草銷售員]";
+	mes "謝謝~ 歡迎再度光臨";
 	close;
 }
-job3_guil01,79,96,3	duplicate(phs)	Poison Herb Merchant	877
-morocc,191,94,4	duplicate(phs)	Poison Herb Merchant#moc	877	//Official: (190,96) -> in a wall
-lhz_in02,16,205,4	duplicate(phs)	Poison Herb Merchant#lhz	877
+job3_guil01,79,96,3	duplicate(phs)	毒草銷售員	877
+morocc,191,94,4	duplicate(phs)	毒草銷售員#moc	877	//Official: (190,96) -> in a wall
+lhz_in02,16,205,4	duplicate(phs)	毒草銷售員#lhz	877
 
 // Rune Stone Merchants (Rune Knight)
 //============================================================
 -	script	::runesale	-1,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2000) {
-		mes "- Wait a minute !! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please try again -";
-		mes "- after you lose some weight. -";
+		mes "- 負重量不足 -";
 		close;
 	}
-	mes "[Rune Merchant]";
-	mes "Hey, do you need Runes?!";
-	mes "I sell all sorts of Rune Stones!";
-	mes "What would you like?";
+	mes "[盧恩銷售員]";
+	mes "你需要盧恩嗎? 跟我買";
+	mes "就可以了! 只要告訴我";
+	mes "你需要哪一種盧恩!";
 	next;
-	set .@i, select("Buy high-quality Rune Stones.:Buy ordinary Rune Stones.");
-	mes "[Rune Merchant]";
+	set .@i, select("購買高級盧恩原石:購買一般盧恩原石");
+	mes "[盧恩銷售員]";
 	if (.@i == 1) {
-		mes "High-quality Runes!";
-		mes "They cost 2,500 zeny each!";
-		set .@item,12734; //Runstone_Quality
+		mes "你要買高級的喔!那個!";
+		mes "只要2,500金幣!你想買";
+		set .@item,12734; //高級盧恩原石
 		set .@price,2500;
 	} else {
-		mes "Ordinary Rune Stones?";
-		mes "They cost 1,000 zeny each!";
-		set .@item,12737; //Runstone_Ordinary
+		mes "你要買高級的喔!那個!";
+		mes "只要1,000金幣!你想買";
+		set .@item,12737; //一般盧恩原石
 		set .@price,1000;
 		setarray .@rune[0],12737,1000;
 	}
-	mes "Tell me how many you want,";
-	mes "and remember, you can only";
-	mes "buy a maximum of '2000' ea.";
+	mes "多少個，告訴我一聲";
+	mes "就可以囉!";
+	mes "最多可以買到2000個!";
 	next;
 	input .@amount;
 	if (.@amount == 0) {
-		mes "[Rune Merchant]";
-		mes "You're not buying? Please leave!";
+		mes "[盧恩銷售員]";
+		mes "不買就走開!";
 		close;
 	}
 	if (.@amount > 2000) {
-		mes "[Rune Merchant]";
-		mes "The number must be less than 2,000!";
+		mes "[盧恩銷售員]";
+		mes "最多只能買 2,000個!";
 		close;
 	}
 	set .@total, .@amount * .@price;
 	if (Zeny < .@total) {
-		mes "[Rune Merchant]";
-		mes "Zeny! Zeny!";
-		mes "You don't have enough money.";
-		mes "Check how much money you have first.";
+		mes "[盧恩銷售員]";
+		mes "金幣! 金幣!";
+		mes "您身上的金幣似乎不夠啊";
 		close;
 	}
 	if (!checkweight(.@item,.@amount)) {
-		mes "[Rune Merchant]";
-		mes "It doesn't seem like you are able to carry it all, why are you trying it?!";
+		mes "[盧恩銷售員]";
+		mes "我不敢保證你身上還有足夠的負重量可以負荷呢..";
 		close;
 	}
 	set Zeny, Zeny - .@total;
 	getitem .@item, .@amount;
-	mes "[Rune Merchant]";
-	mes "Thank you.";
-	mes "Please come back again~!";
+	mes "[盧恩銷售員]";
+	mes "歡迎下次光臨!";
 	close;
 }
-job3_rune01,90,62,3	duplicate(runesale)	Rune Merchant#job3	853
-prontera,168,228,3	duplicate(runesale)	Rune Merchant#prt	853
+job3_rune01,90,62,3	duplicate(runesale)	盧恩銷售員#job3	853
+prontera,168,228,3	duplicate(runesale)	盧恩銷售員#prt	853
 
 // Rare Herb Merchants (Guillotine Cross)
 //============================================================
@@ -220,63 +211,60 @@ job3_guil01,91,93,3	script	Rare Herb Collector	49,{
 //============================================================
 -	script	::pss	-1,{
 	if (checkweight(1201,1) == 0 || MaxWeight - Weight < 2000) {
-		mes "- Wait a minute !! -";
-		mes "- Currently you're carrying -";
-		mes "- too many items with you. -";
-		mes "- Please try again -";
-		mes "- after you lose some weight. -";
+		mes "- 負重量不足 -";
 		close;
 	}
-	mes "[Point Merchant]";
-	mes "Hello. I'm selling a catalyst called ^FF0000Points^000000 for Sorcerers. What would you like?";
+	mes "[碎片商人]";
+	mes "你好!";
+	mes "我是銷售做為各種觸媒的^FF0000碎片^000000，你需要什麼呢?";
 	next;
-	set .@i, select("Scarlet Points - 200z:Lime Green Points - 200z:Indigo Points - 200z:Yellow Wish Points - 200z:Cancel")-1;
-	mes "[Point Merchant]";
+	set .@i, select("火靈碎片 - 200z:地靈碎片 - 200z:水靈碎片 - 200z:風靈碎片 - 200z:結束對話")-1;
+	mes "[碎片商人]";
 	if (.@i == 4) {
-		mes "You can't find the stuff you need?";
+		mes "沒有需要的東西嗎?";
 		close;
 	}
 	setarray .@itemid[0],6360,6363,6361,6362;
-	setarray .@color$[0],"Scarlet","Lime Green","Indigo","Yellow Wish";
-	mes "You have chosen "+.@color$[.@i]+" Points.";
-	mes "How many do you want?";
-	mes "If you want to cancel, enter 0.";
+	setarray .@color$[0],"火靈","地靈","水靈","風靈";
+	mes "你選的是"+.@color$[.@i]+"碎片，";
+	mes "你要買多少呢?";
+	mes "取消請輸入0。";
 	next;
 	input .@amount;
-	mes "[Point Merchant]";
+	mes "[碎片商人]";
 	if (.@amount == 0) {
-		mes "You've cancelled the trade.";
+		mes "已取消!";
 		close;
 	}
 	if (Zeny < .@amount*200) {
-		mes "You don't seem to have enough money.";
+		mes "你的錢似乎不夠";
 		close;
 	}
 	if (!checkweight(.@itemid[.@i],.@amount)) {
-		mes "You don't have enough space in your inventory to buy this amount.";
+		mes "負重量不足";
 		close;
 	}
 	set Zeny, Zeny-(.@amount*200);
 	getitem .@itemid[.@i],.@amount;
-	mes "Thank you very much. See you~!";
+	mes "謝謝光臨!";
 	close;
 }
-gef_tower,105,172,5	duplicate(pss)	Point Merchant#Sorcerer	700
-prt_in,131,66,0	duplicate(pss)	Point Merchant#Prontera	700
-alberta,105,52,7	duplicate(pss)	Point Merchant#Alberta	700
-aldebaran,133,114,5	duplicate(pss)	Point Merchant#Aldebaran	700
-comodo,193,159,5	duplicate(pss)	Point Merchant#Comodo	700
-geffen,129,49,5	duplicate(pss)	Point Merchant#Geffen	700
-izlude,138,163,5	duplicate(pss)	Point Merchant#Izlude	700	// Old coordinates: izlude (135,121)
-izlude_a,138,163,5	duplicate(pss)	Point Merchant#Izlude_a	700
-izlude_b,138,163,5	duplicate(pss)	Point Merchant#Izlude_b	700
-izlude_c,138,163,5	duplicate(pss)	Point Merchant#Izlude_c	700
-izlude_d,138,163,5	duplicate(pss)	Point Merchant#Izlude_d	700
-malangdo,214,163,5	duplicate(pss)	Point Merchant#Malangdo	700
-mora,115,118,3	duplicate(pss)	Point Merchant#Mora	700
-ra_in01,256,273,3	duplicate(pss)	Point Merchant#Rachel	700
-veins,202,128,5	duplicate(pss)	Point Merchant#Veins	700
-dicastes01,207,200,5	duplicate(pss)	Point Merchant#Dicastes	700
-manuk,261,206,3	duplicate(pss)	Point Merchant#Manuk	700
-splendide,207,160,5	duplicate(pss)	Point Merchant#Splendide	700
-mid_camp,224,237,3	duplicate(pss)	Point Merchant#Midgard	700
+gef_tower,105,172,5	duplicate(pss)	碎片商人#Sorcerer	700
+prt_in,131,66,0	duplicate(pss)	碎片商人#Prontera	700
+alberta,105,52,7	duplicate(pss)	碎片商人#Alberta	700
+aldebaran,133,114,5	duplicate(pss)	碎片商人#Aldebaran	700
+comodo,193,159,5	duplicate(pss)	碎片商人#Comodo	700
+geffen,129,49,5	duplicate(pss)	碎片商人#Geffen	700
+izlude,138,163,5	duplicate(pss)	碎片商人#Izlude	700	// Old coordinates: izlude (135,121)
+izlude_a,138,163,5	duplicate(pss)	碎片商人#Izlude_a	700
+izlude_b,138,163,5	duplicate(pss)	碎片商人#Izlude_b	700
+izlude_c,138,163,5	duplicate(pss)	碎片商人#Izlude_c	700
+izlude_d,138,163,5	duplicate(pss)	碎片商人#Izlude_d	700
+malangdo,214,163,5	duplicate(pss)	碎片商人#Malangdo	700
+mora,115,118,3	duplicate(pss)	碎片商人#Mora	700
+ra_in01,256,273,3	duplicate(pss)	碎片商人#Rachel	700
+veins,202,128,5	duplicate(pss)	碎片商人#Veins	700
+dicastes01,207,200,5	duplicate(pss)	碎片商人#Dicastes	700
+manuk,261,206,3	duplicate(pss)	碎片商人#Manuk	700
+splendide,207,160,5	duplicate(pss)	碎片商人#Splendide	700
+mid_camp,224,237,3	duplicate(pss)	碎片商人#Midgard	700
