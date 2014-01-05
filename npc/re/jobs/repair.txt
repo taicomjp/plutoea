@@ -57,72 +57,72 @@ Super Novice: SUPNOV_Q -> job_super
 Expanded Super Novice: EXSUPNOV_Q -> job_super2
 */
 
-prt_in,38,104,4	script	Valerie	811,{
+prt_in,38,104,4	script	巴琪莉#repair	811,{
 	if (checkweight(1201,1) == 0) {
-		mes "I think you have too many items. Let's try it again after you take some out.";
+		mes "請注意您的負重量";
 		close;
 	}
 	if (MaxWeight - Weight < 1000) {
-		mes "You're overweight with items so I don't think we can proceed any further. Challenge me after you've taken some items off.";
+		mes "請注意您的負重量";
 		close;
 	}
 	mes "[巴琪莉]";
-	mes "I am Valerie; I help those with abnormalities. I am friends with Valkyrie.";
+	mes "我是專門照顧專職/轉生考試過程中身體出現異常徵兆的玩家，名字叫巴琪莉，跟巴希莉是朋友關係。";
 	next;
 	mes "[巴琪莉]";
-	mes "If both abnormalities disappear then we must start the test over from scratch. What would you like to do?";
+	mes "當異常徵兆都消失後，考試課程必須重新來過，你的決定是?";
 	next;
-	switch(select("I don't have any abnormalities:I think my body has some abnormalities")) {
+	switch(select("我沒有異常徵兆:我身體有異常")) {
 	case 1:
 		mes "[巴琪莉]";
-		mes "That's a relief. Then please take care.";
+		mes "太好了，那請慢走!";
 		close;
 	case 2:
 		mes "[巴琪莉]";
-		mes "Are you sure you want to intialize it and start over?";
+		mes "你確定要初始化後重新開始嗎?";
 		next;
-		if(select("Nope:Yes, I want to start completely over") == 1) {
+		if(select("不要:是，我要重新開始!") == 1) {
 			mes "[巴琪莉]";
-			mes "I understand. I'll see you next time";
+			mes "沒關係，請下次再來!";
 			close;
 		}
 		mes "[巴琪莉]";
-		mes "All items related to the existing conditions will disappear. Are you okay with this?";
+		mes "目前已持有之專職相關物品可能都會消失哦! 你確定嗎?";
 		next;
-		if(select("Nope:Yes, I want to start completely over.") == 1) {
+		if(select("不要:是，我要重新開始!") == 1) {
 			mes "[巴琪莉]";
-			mes "I understand. I'll see you next time.";
+			mes "沒關係，請下次再來!";
 			close;
 		}
 		mes "[巴琪莉]";
-		mes "It seems that there are a sea of people who seemed to be cursed of not being able to get a significant other after going through with this. Are you still okay with this? ";
+		mes "這樣有可能會得到找不到戀人的詛咒哦! 你確定嗎?";
 		next;
-		if(select("Nope:I still want to intialize.") == 1) {
+		if(select("不要:是，我要初始化!") == 1) {
 			mes "[巴琪莉]";
-			mes "I understand. I will see you next time.";
+			mes "沒關係，請下次再來!";
 			close;
 		}
 		mes "[巴琪莉]";
-		mes "In extreme cases, some become crippled and can get ulcers. Do you still want to intilize former processes?";
+		mes "嚴重時有可能會丟頭路哦，你確定轉職課程要初始化嗎?";
 		next;
-		if(select("Nope:Please intilize the former processes") == 1) {
+		if(select("不要:轉職課程初始化") == 1) {
 			mes "[巴琪莉]";
-			mes "I understand. I will see you next time";
+			mes "沒關係，請下次再來!";
 			close;
 		}
 		specialeffect2 EF_INVENOM;
 		progressbar "0xffff00",3;
 
-		// Warlock - quest items
+		// 咒術士 - quest items
 		if (isequipped(2796) || isequipped(2797)) {
 			mes "[巴琪莉]";
-			mes "Please unequip the Magical Stone or Magical Stone Ring and try again.";
+			mes "請卸除您身上的魔力石吧";
 			close;
 		}
 		if (countitem(2796) || countitem(2797)) {
 			if (isequipped(2796) || isequipped(2797)) {
 				mes "[巴琪莉]";
-				mes "Please talk to me after your replace all Magical Stones.";
+				mes "請完整地卸除您身上的魔力石吧";
 				close;
 			}
 			setarray .@items[0], 2796, 2797, 6152, 6151; //Magical_Stone,Magical_Stone_,Glittering_Crystal,Peice_Of_Great_Bradium
@@ -131,29 +131,29 @@ prt_in,38,104,4	script	Valerie	811,{
 					delitem .@items[.@i], countitem(.@items[.@i]);
 			}
 			mes "[巴琪莉]";
-			mes "You're carrying something that is unnecessary. I will sort it out for you.";
+			mes "你身上帶了一些多餘的雜物呢，我會順道幫你整理一番。";
 			close;
 		}
 
 		// Baby and third job characters meet no further conditions.
 		if (eaclass()&(EAJL_BABY|EAJL_THIRD)) {
 			mes "[巴琪莉]";
-			mes "I don't think you should have any further business with me.";
+			mes "我想你現在應該用不著來找我吧";
 			close;
 		}
 
-		// Rebirth - variable
+		// 轉生 - 變數
 		if ((Class >= Job_Swordman && Class <= Job_Crusader2) && ADVJOB != 0) {
 			set ADVJOB,0;
 			mes "[巴琪莉]";
-			mes "You're carrying big karma- You should erase it.";
+			mes "你帶有太多業障，我會為您一一清除。";
 			next;
 			mes "[巴琪莉]";
-			mes "Please talk to me again as there could be additional problems.";
+			mes "如果問題還是接連發生的話，再回來找我吧";
 			close;
 		}
 
-		// Second job - variable and quests
+		// 二轉職業 - variable and quests
 		// callsub L_Second, "<variable>", <quest>;
 		if (Class == Job_Swordman) {
 			callsub L_Second, "KNIGHT_Q", 9012;
@@ -176,7 +176,7 @@ prt_in,38,104,4	script	Valerie	811,{
 			callsub L_Second, "MONK_Q", 3032;
 		}
 
-		// Third job - variable and quests
+		// 三轉職業 - variable and quests
 		// callsub L_Third, "<variable>", <main quest>, <first quest>, <last quest>{, <additional quest>};
 		if (BaseJob == Job_Assassin)
 			callsub L_Third, "job_3rd_gc", 7100, 7091, 7116;
@@ -206,7 +206,7 @@ prt_in,38,104,4	script	Valerie	811,{
 			callsub L_Third, "job_soc", 12098, 12096, 12098;
 
 		mes "[巴琪莉]";
-		mes "I don't think you should have any further business with me.";
+		mes "我想你現在應該用不著來找我了吧";
 		close;
 	}
 
@@ -216,10 +216,10 @@ L_Second:
 		if (checkquest(getarg(1)) == 2)
 			erasequest getarg(1);
 		mes "[巴琪莉]";
-		mes "I will help clear your problems for you that came from your former attempts.";
+		mes "我會為你解決身上的疑難雜症";
 		next;
 		mes "[巴琪莉]";
-		mes "Please talk to me again as there could be additional problems.";
+		mes "如果問題還是接連發生的話，再回來找我吧";
 		close;
 	} else
 		return;
@@ -240,16 +240,16 @@ L_Third:
 				erasequest getarg(4);
 		}
 		mes "[巴琪莉]";
-		mes "I will help clear your problems for you that came from your former attempts.";
+		mes "我會為你解決身上的疑難雜症";
 		next;
 		mes "[巴琪莉]";
-		mes "Please talk to me again as there could be additional problems.";
+		mes "如果問題還是接連發生的話，再回來找我吧";
 		close;
 	} else
 		return;
 }
 
--	script	Valerie#sign	-1,{
+-	script	巴琪莉#sign	-1,{
 	mes "^ff00ff喬遷通知：因付不起辦公室的租金，只好先搬至普隆德拉精煉場對面的大樓。^000000";
 	mes " ";
 	mes "^ff00ff巴琪莉^000000";
@@ -280,7 +280,7 @@ xmas,166,209,4	duplicate(Valerie#sign)	巴琪莉#wan	837
 
 sec_in02,12,40,5	script	Job Repair	57,1,1,{
 	callfunc "F_GM_NPC";
-	mes "Please input your password.";
+	mes "請輸入密碼";
 	next;
 	if (callfunc("F_GM_NPC","1854",1) == 1) {
 		set job_arch,100;

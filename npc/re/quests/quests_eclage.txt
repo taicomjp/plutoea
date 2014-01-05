@@ -12,52 +12,52 @@
 //= 0.1 NPCs are mostly placeholders. [Euphy]
 //============================================================
 
-// Teleport Cats (14.2 Cat Hand Addition)
+// 貓咪傳送師 (14.2 Cat Hand Addition)
 //============================================================
 -	script	Teleport Cat#ep14_2	-1,{
-	switch(atoi(charat(strnpcinfo(1),16))) {
+	switch(atoi(charat(strnpcinfo(1),11))) {
 	case 1:
-		setarray .@map$[0],"Entrance to Mora";
+		setarray .@map$[0],"穆拉村入口";
 		setarray .@cost[0],15;
 		break;
 	case 2:
-		setarray .@map$[0],"Near Eclage","Near Splendide";
+		setarray .@map$[0],"埃克拉珠附近","史波浪壯麗附近";
 		setarray .@cost[0],15,55;
 		break;
 	case 3:
-		setarray .@map$[0],"Entrance to Mora","Midgard Allied Forces Post";
+		setarray .@map$[0],"穆拉村入口","米德加爾特聯盟營區";
 		setarray .@cost[0],55,10;
 		break;
 	case 4:
-		setarray .@map$[0],"Near Splendide","Manuk Field";
+		setarray .@map$[0],"史波浪壯麗附近","魔怒克原野";
 		setarray .@cost[0],10,10;
 		break;
 	case 5:
-		setarray .@map$[0],"Midgard Allied Forces Post","Near El Dicastes";
+		setarray .@map$[0],"米德加爾特聯盟營區","艾爾迪卡斯附近";
 		setarray .@cost[0],10,20;
 		break;
 	case 6:
-		setarray .@map$[0],"Manuk Field";
+		setarray .@map$[0],"魔怒克原野";
 		setarray .@cost[0],20;
 		break;
 	}
-	mes "[Teleport Cat]";
-	mes "What a nice day, isn't it!";
-	mes "Welcome to Cat Merchant Group. We do anything to please our customers. We would even lie on our back if you want!";
+	mes "[貓咪傳送師]";
+	mes "你好，客人~";
+	mes "我會渾身解數討好願意付錢的客人，歡迎光臨貓咪手商隊~";
 	next;
-	mes "[Teleport Cat]";
-	mes "We provide teleport service between various regions based on our accumulated knowledge. We accept Malangdo Canned Specialties or Zeny, so you can pay however you like it~";
+	mes "[貓咪傳送師]";
+	mes "我們貓咪手商隊提供異世界各區段的傳輸服務，可用綿綿島風味罐頭或罐頭支付費用";
 	next;
-	set .@menu$,"Forget it:";
+	set .@menu$,"取消~:";
 	for(set .@i,0; .@i<getarraysize(.@map$); set .@i,.@i+1) {
 		set .@menu$, .@menu$+
-			.@map$[.@i]+" ("+.@cost[.@i]+" Canned Food):"+
+			.@map$[.@i]+" (罐頭"+.@cost[.@i]+"個):"+
 			.@map$[.@i]+" ("+.@cost[.@i]+",000 Zeny):";
 	}
 	set .@i, select(.@menu$)-2;
 	if (.@i == -1) {
-		mes "[Teleport Cat]";
-		mes "I'll see you later then.";
+		mes "[貓咪傳送師]";
+		mes "有需要再來吧~";
 		close;
 	}
 	set .@choice$, .@map$[.@i/2];
@@ -65,33 +65,33 @@
 	if (.@i % 2) {
 		set .@price, .@price*1000;
 		if (Zeny < .@price) {
-			mes "[Teleport Cat]";
+			mes "[貓咪傳送師]";
 			mes "I'm afraid it's not enough. Sorry, but it can't be done for free~";
 			close;
 		}
 		set Zeny, Zeny-.@price;
 	} else {
 		if (countitem(12636) < .@price) {
-			mes "[Teleport Cat]";
+			mes "[貓咪傳送師]";
 			mes "I'm afraid it's not enough. Sorry, but it can't be done for free~";
 			close;
 		}
 		delitem 12636,.@price; //Malang_Sp_Can
 	}
-	if (compare(.@choice$,"Midgard Allied Forces Post")) warp "mid_camp",180,247;
-	else if (compare(.@choice$,"Manuk Field")) warp "man_fild02",133,47;
-	else if (compare(.@choice$,"Near Splendide")) warp "spl_fild02",51,240;
-	else if (compare(.@choice$,"Near El Dicastes")) warp "dic_fild01",159,264;
-	else if (compare(.@choice$,"Entrance to Mora")) warp "bif_fild02",291,323;
-	else if (compare(.@choice$,"Near Eclage")) warp "ecl_fild01",116,309;
+	if (compare(.@choice$,"米德加爾特聯盟營區")) warp "mid_camp",180,247;
+	else if (compare(.@choice$,"魔怒克原野")) warp "man_fild02",133,47;
+	else if (compare(.@choice$,"史波浪壯麗附近")) warp "spl_fild02",51,240;
+	else if (compare(.@choice$,"艾爾迪卡斯附近")) warp "dic_fild01",159,264;
+	else if (compare(.@choice$,"穆拉村入口")) warp "bif_fild02",291,323;
+	else if (compare(.@choice$,"埃克拉珠附近")) warp "ecl_fild01",116,309;
 	close;
 }
-ecl_fild01,118,311,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.1	421
-bif_fild02,293,325,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.2	421
-spl_fild02,53,242,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.3	421
-mid_camp,207,234,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.4	421
-man_fild02,135,49,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.5	421
-dic_fild01,161,266,4	duplicate(Teleport Cat#ep14_2)	Teleport Cat No.6	421
+ecl_fild01,118,311,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 1號	421
+bif_fild02,293,325,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 2號	421
+spl_fild02,53,242,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 3號	421
+mid_camp,207,234,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 4號	421
+man_fild02,135,49,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 5號	421
+dic_fild01,161,266,4	duplicate(Teleport Cat#ep14_2)	貓咪傳送師 6號	421
 
 // Eclage's Entrance
 //============================================================
@@ -1258,7 +1258,7 @@ ecl_in01,82,70,2	script	Eclage Guard#tl02	447,{
 					next;
 					mes "[Minuel]";
 					mes "I would like to decorate it with unpolished beauty.";
-					mes "You can get the materials by hunting the monsters near Splendide, where I'm not supoosed to go.";
+					mes "You can get the materials by hunting the monsters 史波浪壯麗附近, where I'm not supoosed to go.";
 					next;
 					mes "[Minuel]";
 					mes "I've heard some rumors about Hillslions, and they seem to appear in Sapha's areas.";
@@ -1284,7 +1284,7 @@ ecl_in01,82,70,2	script	Eclage Guard#tl02	447,{
 		}
 		mes "[Minuel]";
 		mes "I asked you for 5 Horns of Hillslion, 5 Mystic Horns, and 5 Horse's Hooves.";
-		mes "You'll be able to get Mystic Horns by catching Cornuses near Splendide.";
+		mes "You'll be able to get Mystic Horns by catching Cornuses 史波浪壯麗附近.";
 		close;
 	}
 }
